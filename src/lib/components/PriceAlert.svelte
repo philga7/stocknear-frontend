@@ -35,6 +35,12 @@
       };
 
       // Make the POST request to the endpoint
+
+      toast.success(`Successfully created price alert`, {
+        style:
+          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+      });
+
       const response = await fetch("/api/create-price-alert", {
         method: "POST",
         headers: {
@@ -46,11 +52,6 @@
       $newPriceAlertData = await response?.json();
 
       //const output = await response.json();
-
-      toast.success(`Successfully created price alert`, {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
       targetPrice = currentPrice;
     }
   }
