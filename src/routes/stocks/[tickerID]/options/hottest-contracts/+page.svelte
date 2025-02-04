@@ -978,11 +978,11 @@
                         : "n/a"}
                     </td>
                     <td class="text-sm sm:text-[1rem] text-end text-white">
-                      {#if item?.changeOI >= 0 && item?.changeOI !== undefined}
+                      {#if item?.changeOI >= 0 && item?.changeOI !== null}
                         <span class="text-[#00FC50]"
                           >+{item?.changeOI?.toLocaleString("en-US")}</span
                         >
-                      {:else if item?.changeOI < 0 && item?.changeOI !== undefined}
+                      {:else if item?.changeOI < 0 && item?.changeOI !== null}
                         <span class="text-[#FF2F1F]"
                           >{item?.changeOI?.toLocaleString("en-US")}</span
                         >
