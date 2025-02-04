@@ -37,7 +37,7 @@
   >
     <div class="mx-auto h-1.5 w-20 flex-shrink-0 rounded-full" />
     <div class="text-white mb-5 text-center">
-      <h3 class="font-bold text-2xl mb-5">{title}</h3>
+      <h3 class="font-bold text-xl sm:text-2xl mb-5">{title}</h3>
       <span class="text-white text-[1rem] font-normal">{@html content}</span>
     </div>
 

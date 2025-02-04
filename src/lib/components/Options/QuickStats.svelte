@@ -1,6 +1,5 @@
 <script lang="ts">
   import InfoModal from "$lib/components/InfoModal.svelte";
-  import * as HoverCard from "$lib/components/shadcn/hover-card/index.js";
   import { abbreviateNumberWithColor } from "$lib/utils";
 
   export let rawData = {};
@@ -8,14 +7,14 @@
 
 <div class="text-white">
   <label
-    for="dailyStats"
+    for="avgOptionsStats"
     class="mr-1 cursor-pointer flex flex-row items-center text-white text-xl sm:text-2xl font-bold w-fit"
   >
-    Daily Stats
+    Avg. Options Trading Stats
     <InfoModal
-      title={"Daily Stats"}
-      content={"Daily options activity stats provide insights into the trading behavior of options contracts. These statistics help traders and analysts understand market sentiment, liquidity, and potential price movements for underlying assets."}
-      id={"dailyStats"}
+      title={"Avg. Options Trading Stats"}
+      content={"Average options activity stats provide insights into the trading behavior of options contracts. These statistics help traders to understand market sentiment, liquidity, and potential price movements for underlying assets."}
+      id={"avgOptionsStats"}
     />
   </label>
   <div
@@ -30,7 +29,7 @@
             >Call Volume</td
           >
           <td
-            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
             >{@html abbreviateNumberWithColor(
               rawData?.call_volume,
               false,
@@ -46,7 +45,7 @@
             >Call Premium</td
           >
           <td
-            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
             >{@html abbreviateNumberWithColor(
               rawData?.call_premium,
               false,
@@ -59,10 +58,10 @@
           class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
-            >Total Premium</td
+            >Premium</td
           >
           <td
-            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
             >{@html abbreviateNumberWithColor(
               rawData?.call_premium + rawData?.put_premium,
               false,
@@ -77,7 +76,7 @@
             >Call Open Interest</td
           >
           <td
-            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
             >{@html abbreviateNumberWithColor(
               rawData?.call_open_interest,
               false,
@@ -92,7 +91,7 @@
             >Implied Volatility (IV)
           </td>
           <td
-            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
             >{rawData?.iv}%</td
           ></tr
         >
@@ -103,7 +102,7 @@
             >Total Open Interest</td
           >
           <td
-            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
             >{@html abbreviateNumberWithColor(
               rawData?.total_open_interest,
               false,
@@ -115,11 +114,11 @@
           class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
-            >GEX</td
+            >Volume</td
           >
           <td
-            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-            >{@html abbreviateNumberWithColor(rawData?.gex, false, true)}</td
+            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+            >{rawData?.volume?.toLocaleString("en-US")}</td
           ></tr
         >
       </tbody>
@@ -133,7 +132,7 @@
             >Put Volume</td
           >
           <td
-            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
             >{@html abbreviateNumberWithColor(
               rawData?.put_volume,
               false,
@@ -149,7 +148,7 @@
             >Put Premium</td
           >
           <td
-            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
             >{@html abbreviateNumberWithColor(
               rawData?.put_premium,
               false,
@@ -165,7 +164,7 @@
             >P/C Ratio</td
           >
           <td
-            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
             >{rawData?.putCallRatio}</td
           ></tr
         >
@@ -177,7 +176,7 @@
             >Put Open Interest</td
           >
           <td
-            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
             >{@html abbreviateNumberWithColor(
               rawData?.put_open_interest,
               false,
@@ -193,7 +192,7 @@
             >Open Interest (OI) Change</td
           >
           <td
-            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
           >
             {#if rawData?.changeOI >= 0}
               <span class="text-[#00FC50]"
@@ -216,7 +215,7 @@
             >% OI Change</td
           >
           <td
-            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
           >
             {#if rawData?.changesPercentageOI >= 0}
               <span class="text-[#00FC50]"
@@ -243,10 +242,8 @@
             >IV Rank</td
           >
           <td
-            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-            >{rawData?.ivRank !== undefined
-              ? rawData?.ivRank?.toFixed(2)
-              : "n/a"}</td
+            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+            >{rawData?.iv_rank ?? "n/a"}</td
           ></tr
         >
       </tbody>
