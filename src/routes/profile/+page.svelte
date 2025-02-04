@@ -10,6 +10,7 @@
     subscribeUser,
   } from "$lib/notifications";
   import { onMount } from "svelte";
+  import InfoModal from "$lib/components/InfoModal.svelte";
 
   export let data;
   export let form;
@@ -287,7 +288,19 @@
 
             <div class="flex flex-col items-start w-full mt-4 mb-4">
               <div class="flex w-full md:w-1/3 justify-between items-center">
-                <span class="text-white">Earnings Surprise</span>
+                <div class="flex flex-row items-center">
+                  <label
+                    for="earningsSurpriseInfo"
+                    class=" cursor-pointer flex flex-row items-center text-white"
+                  >
+                    <h4>Earnings Surprise</h4>
+                  </label>
+                  <InfoModal
+                    title={"Earnings Surprise"}
+                    content={"Earnings Surprise occurs when a company’s reported earnings differ from analyst expectations, impacting stock prices based on positive or negative results."}
+                    id={"earningsSurpriseInfo"}
+                  />
+                </div>
                 <label class="inline-flex cursor-pointer relative">
                   <input
                     on:click={() => toggleMode("earningsSurprise")}
@@ -304,7 +317,19 @@
               <div
                 class=" mt-2 flex w-full md:w-1/3 justify-between items-center"
               >
-                <span class="text-white"> Why Priced Moved </span>
+                <div class="flex flex-row items-center">
+                  <label
+                    for="whyPriceMovedInfo"
+                    class=" cursor-pointer flex flex-row items-center text-white"
+                  >
+                    <h4>Why Price Moved</h4>
+                  </label>
+                  <InfoModal
+                    title={"Why Price Moved"}
+                    content={"Why Price Moved is a one-sentence explanation of why a stock is moving higher or down. By removing noise and collecting signals from news, press releases and SEC filings, we can pinpoint the trigger for price movements."}
+                    id={"whyPriceMovedInfo"}
+                  />
+                </div>
                 <label class="inline-flex cursor-pointer relative">
                   <input
                     on:click={() => toggleMode("wiim")}
