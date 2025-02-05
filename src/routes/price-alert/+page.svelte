@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { numberOfUnreadNotification, openPriceAlert } from "$lib/store";
+  import { openPriceAlert } from "$lib/store";
   import {
     groupNews,
     groupEarnings,
@@ -88,16 +88,9 @@
           "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
       });
     } else {
-      const postData = {
-        priceAlertIdList: deletePriceAlertList,
-      };
-
-      const response = await fetch("/api/delete-price-alert", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(postData),
+      toast.success(`Price alerts deleted successfully`, {
+        style:
+          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
       });
 
       const symbolsToDelete = priceAlertList
@@ -127,9 +120,21 @@
         groupedEarnings = [];
       }
 
+      const postData = {
+        priceAlertIdList: deletePriceAlertList,
+      };
+
       deletePriceAlertList = [];
       numberOfChecked = 0;
       editMode = !editMode;
+
+      await fetch("/api/delete-price-alert", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postData),
+      });
     }
   }
 
@@ -457,13 +462,17 @@
                               ? 'hidden'
                               : ''} bg-[#2E3238] h-[18px] w-[18px] rounded-sm ring-offset-0 mr-3 cursor-pointer"
                           />
-                          {#if !editMode}
+                          {#if editMode}
+                            <label
+                              class="text-blue-400 sm:hover:text-white cursor-pointer"
+                            >
+                              {item?.symbol}
+                            </label>
+                          {:else}
                             <HoverStockChart
                               symbol={item?.symbol}
                               assetType={item?.type}
                             />
-                          {:else}
-                            {item?.symbol}
                           {/if}
                         </td>
 

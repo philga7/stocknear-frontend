@@ -942,7 +942,7 @@
 <!--End Login Modal-->
 
 <!--Start SellTrade Modal-->
-<PriceAlert {data} ticker={$etfTicker} assetType={$assetType} />
+<PriceAlert {data} ticker={$etfTicker} assetType="etf" />
 
 <!--Start Add Watchlist Modal-->
 <input type="checkbox" id="addWatchListModal" class="modal-toggle" />
