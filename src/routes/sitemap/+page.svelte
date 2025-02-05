@@ -21,6 +21,10 @@
       link: "/options-flow",
     },
     {
+      title: "Market Flow",
+      link: "/market-flow",
+    },
+    {
       title: "Earnings",
       link: "/earnings-calendar",
     },

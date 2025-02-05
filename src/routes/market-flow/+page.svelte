@@ -1,14 +1,14 @@
 <script lang="ts">
-  import { numberOfUnreadNotification, screenWidth } from "$lib/store";
+  import { screenWidth } from "$lib/store";
 
   import HoverStockChart from "$lib/components/HoverStockChart.svelte";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
-  import { abbreviateNumberWithColor, sectorNavigation } from "$lib/utils";
+  import { abbreviateNumberWithColor } from "$lib/utils";
   import InfoModal from "$lib/components/InfoModal.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
 
-  import * as HoverCard from "$lib/components/shadcn/hover-card/index.js";
   import { Chart } from "svelte-echarts";
+  import SEO from "$lib/components/SEO.svelte";
 
   import { init, use } from "echarts/core";
   import { LineChart, BarChart } from "echarts/charts";
@@ -31,16 +31,13 @@
   export let data;
   let isLoading = false;
   let optionsData = null;
-  let sectorData = data?.getData?.sectorData || [];
-  //let topSectorTickers = data?.getData?.topSectorTickers || {};
+  //let sectorData = data?.getData?.sectorData || [];
+  let topSectorTickers = data?.getData?.topSectorTickers || {};
   let marketTideData = data?.getData?.marketTide || {};
   let selectedSector = "SPY";
-  let originalData = [...sectorData]; // Unaltered copy of raw data
 
-  let stockList = sectorData ?? [];
-
-  //let originalTopTickers = [...topSectorTickers[selectedSector]];
-  //let displayTopTickers = topSectorTickers[selectedSector];
+  let originalTopTickers = [...topSectorTickers[selectedSector]];
+  let displayTopTickers = topSectorTickers[selectedSector];
 
   function findLastNonNull(dataArray, key) {
     for (let i = dataArray.length - 1; i >= 0; i--) {
@@ -83,20 +80,6 @@
     return formattedDate;
   }
 
-  $: columns = [
-    { key: "ticker", label: "Symbol", align: "left" },
-    { key: "name", label: "Name", align: "left" },
-    { key: "price", label: "Price", align: "right" },
-    { key: "changesPercentage", label: "% Change", align: "right" },
-    { key: "call_volume", label: "Call Vol", align: "right" },
-    { key: "avg30_call_volume", label: "Avg Call Vol", align: "right" },
-    { key: "put_volume", label: "Put Vol", align: "right" },
-    { key: "avg30_put_volume", label: "Avg Put Vol", align: "right" },
-    { key: "call_premium", label: "Call Prem", align: "right" },
-    { key: "put_premium", label: "Put Prem", align: "right" },
-    { key: "premium_ratio", label: "🐻/🐂 Prem", align: "right" },
-  ];
-
   $: sortOrders = {
     rank: { order: "none", type: "number" },
     date: { order: "none", type: "date" },
@@ -128,63 +111,6 @@
     { key: "netPutPremium", label: "Net Put Prem", align: "right" },
     { key: "ivRank", label: "IV Rank", align: "right" },
   ];
-
-  const sortData = (key) => {
-    // Reset all other keys to 'none' except the current key
-    for (const k in sortOrders) {
-      if (k !== key) {
-        sortOrders[k].order = "none";
-      }
-    }
-
-    // Cycle through 'none', 'asc', 'desc' for the clicked key
-    const orderCycle = ["none", "asc", "desc"];
-
-    const currentOrderIndex = orderCycle.indexOf(sortOrders[key].order);
-    sortOrders[key].order =
-      orderCycle[(currentOrderIndex + 1) % orderCycle.length];
-    const sortOrder = sortOrders[key].order;
-
-    // Reset to original data when 'none' and stop further sorting
-    if (sortOrder === "none") {
-      originalData = [...sectorData]; // Reset originalData to sectorData
-      stockList = originalData?.slice(0, 50); // Reset displayed data
-      return;
-    }
-
-    // Define a generic comparison function
-    const compareValues = (a, b) => {
-      const { type } = sortOrders[key];
-      let valueA, valueB;
-
-      switch (type) {
-        case "date":
-          valueA = new Date(a[key]);
-          valueB = new Date(b[key]);
-          break;
-        case "string":
-          valueA = a[key].toUpperCase();
-          valueB = b[key].toUpperCase();
-          return sortOrder === "asc"
-            ? valueA.localeCompare(valueB)
-            : valueB.localeCompare(valueA);
-        case "number":
-        default:
-          valueA = parseFloat(a[key]);
-          valueB = parseFloat(b[key]);
-          break;
-      }
-
-      if (sortOrder === "asc") {
-        return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
-      } else {
-        return valueA > valueB ? -1 : valueA < valueB ? 1 : 0;
-      }
-    };
-
-    // Sort using the generic comparison function
-    stockList = [...originalData].sort(compareValues)?.slice(0, 50);
-  };
 
   const sortTopTickers = (key) => {
     // Reset all other keys to 'none' except the current key
@@ -247,7 +173,7 @@
 
   function getPlotOptions() {
     isLoading = true;
-    let dates = marketTideData?.map((item) => item?.timestamp);
+    let dates = marketTideData?.map((item) => item?.time);
     const priceList = marketTideData?.map((item) => item?.close);
     const netCallPremList = marketTideData?.map(
       (item) => item?.net_call_premium,
@@ -261,7 +187,6 @@
     const options = {
       silent: true,
       animation: false,
-      backgroundColor: "#18181D",
       legend: {
         data: ["Price", "Vol", "Net Call Premium", "Net Put Premium"],
         textStyle: {
@@ -515,40 +440,13 @@
     */
 </script>
 
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""} Live
-    Market Flow · Stocknear
-  </title>
-  <meta
-    name="description"
-    content={`Track and compare historical and current options activity
-              performances of the market & sectors`}
-  />
-
-  <!-- Other meta tags -->
-  <meta property="og:title" content={`Live Market Flow · Stocknear`} />
-  <meta
-    property="og:description"
-    content={`Track and compare historical and current options activity`}
-  />
-  <meta property="og:type" content="website" />
-  <!-- Add more Open Graph meta tags as needed -->
-
-  <!-- Twitter specific meta tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={`Live Market Flow · Stocknear`} />
-  <meta
-    name="twitter:description"
-    content={`              performances of the market & sectors`}
-  />
-  <!-- Add more Twitter meta tags as needed -->
-</svelte:head>
+<SEO
+  title="Live Market Flow - Real-Time S&P 500 Options Sentiment"
+  description="Get real-time insights on S&P 500 market flow sentiment through options premium analysis. Track trends and make informed trading decisions."
+/>
 
 <section class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden">
-  <div class="w-full overflow-hidden m-auto mt-5">
+  <div class="w-full overflow-hidden m-auto">
     <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
       <div
         class="relative flex justify-center items-start overflow-hidden w-full"
@@ -559,7 +457,7 @@
               <div class="flex flex-row items-center mb-3">
                 <label
                   for="marketTideInfo"
-                  class="mr-1 cursor-pointer flex flex-row items-center text-white text-2xl font-bold"
+                  class="mr-1 cursor-pointer flex flex-row items-center text-white text-xl sm:text-2xl font-bold"
                 >
                   Market Tide
                 </label>
@@ -578,7 +476,7 @@
                     <div
                       class="mt-1 break-words font-semibold leading-8 text-white text-sm sm:text-[1rem]"
                     >
-                      {formatDate(findLastNonNull(marketTideData, "timestamp"))}
+                      {formatDate(findLastNonNull(marketTideData, "time"))}
                     </div>
                   </div>
                 </div>
@@ -633,15 +531,13 @@
                 </div>
               </div>
 
-              <div
-                class="pb-8 sm:pb-2 rounded-md bg-table border border-gray-800"
-              >
+              <div class="pb-8 sm:pb-2 rounded border border-gray-600">
                 <div class="app w-full h-[300px] mt-5">
                   {#if isLoading}
                     <div class="flex justify-center items-center h-80">
                       <div class="relative">
                         <label
-                          class="bg-secondary rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                          class="bg-secondary z-10 rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                         >
                           <span
                             class="loading loading-spinner loading-md text-white"
@@ -673,7 +569,7 @@
                   />
                 </div>
               </div>
-              <!--
+
               <div
                 class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-scroll"
               >
@@ -692,7 +588,8 @@
                       <tr
                         class="sm:hover:bg-[#245073] border-b border-gray-800 sm:hover:bg-opacity-[0.2] odd:bg-odd {index +
                           1 ===
-                          sectorData?.length && data?.user?.tier !== 'Pro'
+                          originalTopTickers?.length &&
+                        data?.user?.tier !== 'Pro'
                           ? 'opacity-[0.1]'
                           : ''}"
                       >
@@ -705,13 +602,15 @@
                         <td
                           class="text-sm sm:text-[1rem] text-start whitespace-nowrap"
                         >
-                          <HoverStockChart symbol={item?.ticker} />
+                          <HoverStockChart symbol={item?.symbol} />
                         </td>
 
                         <td
                           class="text-start text-sm sm:text-[1rem] whitespace-nowrap text-white"
                         >
-                          {item?.name}
+                          {item?.name?.length > 20
+                            ? item?.name?.slice(0, 20) + "..."
+                            : item?.name}
                         </td>
 
                         <td
@@ -731,35 +630,35 @@
 
                         <td class="text-sm sm:text-[1rem] text-end">
                           {@html abbreviateNumberWithColor(
-                            item?.netPremium,
+                            item?.net_premium,
                             false,
                             true,
                           )}
                         </td>
                         <td class="text-sm sm:text-[1rem] text-end">
                           {@html abbreviateNumberWithColor(
-                            item?.netCallPremium,
+                            item?.net_call_premium,
                             false,
                             true,
                           )}
                         </td>
                         <td class="text-sm sm:text-[1rem] text-end">
                           {@html abbreviateNumberWithColor(
-                            item?.netPutPremium,
+                            item?.net_put_premium,
                             false,
                             true,
                           )}
                         </td>
 
                         <td class="text-sm sm:text-[1rem] text-end">
-                          {item?.ivRank}
+                          {item?.iv_rank}
                         </td>
                       </tr>
                     {/each}
                   </tbody>
                 </table>
               </div>
-              -->
+
               <!--
               <div class="mb-3 mt-10">
                 <div class="flex flex-row items-center">

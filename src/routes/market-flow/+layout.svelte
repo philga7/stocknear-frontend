@@ -47,11 +47,12 @@
       <div
         class="relative flex justify-center items-start overflow-hidden w-full"
       >
-        <main class="w-full lg:w-3/4 lg:pr-5">
+        <main class="w-full lg:w-3/4 lg:pr-10">
+          <!--
+          
           <h1 class="mb-6 text-white text-2xl sm:text-3xl font-bold">
             {activeIdx === 0 ? "Market Flow" : "Sector Flow"}
           </h1>
-
           <nav class=" border-b-[2px] overflow-x-scroll whitespace-nowrap">
             <ul class="flex flex-row items-center w-full text-lg text-white">
               {#each tabs as item, i}
@@ -66,6 +67,7 @@
               {/each}
             </ul>
           </nav>
+          -->
 
           <slot />
 
