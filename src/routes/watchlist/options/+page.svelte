@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { numberOfUnreadNotification } from "$lib/store";
-
   import HoverStockChart from "$lib/components/HoverStockChart.svelte";
   import { abbreviateNumber } from "$lib/utils";
   import SEO from "$lib/components/SEO.svelte";
@@ -46,14 +44,13 @@
     var day = date.getDate();
     var year = date.getFullYear();
 
-    // Extract the last two digits of the year
-    var shortYear = year.toString().slice(-2);
+    var shortYear = year?.toString().slice(-2);
 
     // Add leading zeros if necessary
     month = (month < 10 ? "0" : "") + month;
     day = (day < 10 ? "0" : "") + day;
 
-    var formattedDate = month + "/" + day + "/" + year;
+    var formattedDate = month + "/" + day + "/" + shortYear;
 
     return formattedDate;
   }
@@ -222,7 +219,8 @@
                         class="text-slate-200 font-semibold text-sm text-start"
                         >Date</td
                       >
-                      <td class="text-slate-200 font-semibold text-sm text-end"
+                      <td
+                        class="text-slate-200 font-semibold text-sm text-start"
                         >Expiry</td
                       >
                       <td class="text-slate-200 font-semibold text-sm text-end"
