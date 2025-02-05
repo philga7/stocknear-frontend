@@ -206,29 +206,6 @@
           class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
-            >Open Interest (OI) Change</td
-          >
-          <td
-            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-          >
-            {#if rawData?.changeOI >= 0}
-              <span class="text-[#00FC50]"
-                >+{rawData?.changeOI?.toLocaleString("en-US")}</span
-              >
-            {:else if rawData?.changeOI < 0}
-              <span class="text-[#FF2F1F]"
-                >{rawData?.changeOI?.toLocaleString("en-US")}
-              </span>
-            {:else}
-              <span class="text-white"> n/a </span>
-            {/if}</td
-          ></tr
-        >
-
-        <tr
-          class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
-          ><td
-            class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >🐻/🐂 Prem
           </td>
           <td
@@ -307,6 +284,28 @@
             </HoverCard.Root></td
           >
         </tr>
+
+        <tr
+          class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
+          ><td
+            class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
+            >(Net Call x Net Put) Prem</td
+          >
+          <td
+            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+          >
+            {@html abbreviateNumberWithColor(
+              rawData?.net_call_premium,
+              false,
+              true,
+            )}
+            x {@html abbreviateNumberWithColor(
+              rawData?.net_put_premium,
+              false,
+              true,
+            )}
+          </td></tr
+        >
       </tbody>
     </table>
   </div>
