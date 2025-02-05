@@ -1,6 +1,6 @@
 <script lang="ts">
   import { displayCompanyName, screenWidth, stockTicker } from "$lib/store";
-  import QuickStats from "$lib/components/Options/QuickStats.svelte";
+  import DailyStats from "$lib/components/Options/DailyStats.svelte";
   import { Chart } from "svelte-echarts";
   import { abbreviateNumberWithColor, monthNames } from "$lib/utils";
   import { onMount } from "svelte";
@@ -301,7 +301,7 @@
 
         {#if Object?.keys(dailyStats)?.length > 0}
           <div class="w-full mb-10">
-            <QuickStats rawData={dailyStats} />
+            <DailyStats rawData={dailyStats} />
           </div>
         {/if}
 

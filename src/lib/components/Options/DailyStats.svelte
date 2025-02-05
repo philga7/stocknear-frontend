@@ -1,20 +1,21 @@
 <script lang="ts">
   import InfoModal from "$lib/components/InfoModal.svelte";
   import { abbreviateNumberWithColor } from "$lib/utils";
+  import * as HoverCard from "$lib/components/shadcn/hover-card/index.js";
 
   export let rawData = {};
 </script>
 
 <div class="text-white">
   <label
-    for="avgOptionsStats"
+    for="dailyStats"
     class="mr-1 cursor-pointer flex flex-row items-center text-white text-xl sm:text-2xl font-bold w-fit"
   >
-    Avg. Options Trading Stats
+    Daily Stats
     <InfoModal
-      title={"Avg. Options Trading Stats"}
-      content={"Average options activity stats provide insights into the trading behavior of options contracts. These statistics help traders to understand market sentiment, liquidity, and potential price movements for underlying assets."}
-      id={"avgOptionsStats"}
+      title={"Daily Stats"}
+      content={"Options activity stats provide insights into the trading behavior of options contracts. These statistics help traders to understand market sentiment, liquidity, and potential price movements for underlying assets."}
+      id={"dailyStats"}
     />
   </label>
   <div
@@ -92,7 +93,7 @@
           </td>
           <td
             class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-            >{rawData?.iv}%</td
+            >{rawData?.iv}</td
           ></tr
         >
         <tr
@@ -114,11 +115,15 @@
           class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
-            >Volume</td
-          >
+            >Net Premium
+          </td>
           <td
             class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-            >{rawData?.volume?.toLocaleString("en-US")}</td
+            >{@html abbreviateNumberWithColor(
+              rawData?.net_premium,
+              false,
+              true,
+            )}</td
           ></tr
         >
       </tbody>
@@ -189,6 +194,18 @@
           class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
+            >IV Rank</td
+          >
+          <td
+            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+            >{rawData?.iv_rank ?? "n/a"}</td
+          ></tr
+        >
+
+        <tr
+          class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
+          ><td
+            class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >Open Interest (OI) Change</td
           >
           <td
@@ -212,40 +229,84 @@
           class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
-            >% OI Change</td
-          >
+            >🐻/🐂 Prem
+          </td>
           <td
-            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+            class="whitespace-nowrap w-full px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
           >
-            {#if rawData?.changesPercentageOI >= 0}
-              <span class="text-[#00FC50]"
-                >+{rawData?.changesPercentageOI >= 1000
-                  ? abbreviateNumberWithColor(rawData?.changesPercentageOI)
-                  : rawData?.changesPercentageOI?.toFixed(2)}%</span
+            <HoverCard.Root>
+              <HoverCard.Trigger
+                class="rounded-sm underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-black"
               >
-            {:else if rawData?.changesPercentageOI < 0}
-              <span class="text-[#FF2F1F]"
-                >{rawData?.changesPercentageOI <= -1000
-                  ? abbreviateNumberWithColor(rawData?.changesPercentageOI)
-                  : rawData?.changesPercentageOI?.toFixed(2)}%
-              </span>
-            {:else}
-              <span class="text-white"> n/a </span>
-            {/if}</td
-          ></tr
-        >
+                <div class="flex items-center sm:justify-end">
+                  <!-- Bar Container -->
+                  <div
+                    class="flex w-full max-w-28 h-5 bg-gray-200 rounded-md overflow-hidden"
+                  >
+                    <!-- Bearish -->
+                    <div
+                      class="bg-red-500 h-full"
+                      style="width: calc(({rawData
+                        ?.premium_ratio[0]} / ({rawData
+                        ?.premium_ratio[0]} + {rawData
+                        ?.premium_ratio[1]} + {rawData
+                        ?.premium_ratio[2]})) * 100%)"
+                    ></div>
 
-        <tr
-          class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
-          ><td
-            class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
-            >IV Rank</td
+                    <!-- Neutral -->
+                    <div
+                      class="bg-gray-300 h-full"
+                      style="width: calc(({rawData
+                        ?.premium_ratio[1]} / ({rawData
+                        ?.premium_ratio[0]} + {rawData
+                        ?.premium_ratio[1]} + {rawData
+                        ?.premium_ratio[2]})) * 100%)"
+                    ></div>
+
+                    <!-- Bullish -->
+                    <div
+                      class="bg-green-500 h-full"
+                      style="width: calc(({rawData
+                        ?.premium_ratio[2]} / ({rawData
+                        ?.premium_ratio[0]} + {rawData
+                        ?.premium_ratio[1]} + {rawData
+                        ?.premium_ratio[2]})) * 100%)"
+                    ></div>
+                  </div>
+                </div>
+              </HoverCard.Trigger>
+              <HoverCard.Content
+                class="w-auto bg-secondary border border-gray-600"
+              >
+                <div class="flex justify-between space-x-4">
+                  <div class="space-y-1 flex flex-col items-start text-white">
+                    <div>
+                      Bearish: {@html abbreviateNumberWithColor(
+                        rawData?.premium_ratio[0],
+                        false,
+                        true,
+                      )}
+                    </div>
+                    <div>
+                      Neutral: {@html abbreviateNumberWithColor(
+                        rawData?.premium_ratio[1],
+                        false,
+                        true,
+                      )}
+                    </div>
+                    <div>
+                      Bullish: {@html abbreviateNumberWithColor(
+                        rawData?.premium_ratio[2],
+                        false,
+                        true,
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </HoverCard.Content>
+            </HoverCard.Root></td
           >
-          <td
-            class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-            >{rawData?.iv_rank ?? "n/a"}</td
-          ></tr
-        >
+        </tr>
       </tbody>
     </table>
   </div>
