@@ -11,7 +11,8 @@ export const load = async ({ locals }) => {
     });
 
   let output = await response?.json();
-    output.sectorData = user?.tier !== "Pro" ? output?.sectorData?.slice(0, 3) : output?.sectorData;
+    output.topPosNetPremium = user?.tier !== "Pro" ? output?.topPosNetPremium?.slice(0, 3) : output?.topPosNetPremium;
+     output.topNegNetPremium = user?.tier !== "Pro" ? output?.topNegNetPremium?.slice(0, 3) : output?.topNegNetPremium;
     return output;
   };
 
