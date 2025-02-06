@@ -32,12 +32,15 @@
   let isLoading = false;
   let optionsData = null;
   //let sectorData = data?.getData?.sectorData || [];
-  let topSectorTickers = data?.getData?.topSectorTickers || {};
-  let marketTideData = data?.getData?.marketTide || {};
-  let selectedSector = "SPY";
+  let topPosNetPremium = data?.getData?.topPosNetPremium || [];
+  let topNegNetPremium = data?.getData?.topNegNetPremium || {};
 
-  let originalTopTickers = [...topSectorTickers[selectedSector]];
-  let displayTopTickers = topSectorTickers[selectedSector];
+  let marketTideData = data?.getData?.marketTide || {};
+  let originalPosTickers = topPosNetPremium;
+  let displayPosTickers = topPosNetPremium;
+
+  let originalNegTickers = topNegNetPremium;
+  let displayNegTickers = topNegNetPremium;
 
   function findLastNonNull(dataArray, key) {
     for (let i = dataArray.length - 1; i >= 0; i--) {
@@ -89,15 +92,12 @@
     changesPercentage: { order: "none", type: "number" },
     call_volume: { order: "none", type: "number" },
     put_volume: { order: "none", type: "number" },
-    premium_ratio: { order: "none", type: "number" },
-    avg30_call_volume: { order: "none", type: "string" },
-    avg30_put_volume: { order: "none", type: "number" },
-    netPremium: { order: "none", type: "number" },
-    netCallPremium: { order: "none", type: "number" },
-    netPutPremium: { order: "none", type: "number" },
+    net_premium: { order: "none", type: "number" },
+    net_call_premium: { order: "none", type: "number" },
+    net_put_premium: { order: "none", type: "number" },
     call_premium: { order: "none", type: "number" },
     put_premium: { order: "none", type: "number" },
-    ivRank: { order: "none", type: "number" },
+    iv_rank: { order: "none", type: "number" },
   };
 
   $: topColumns = [
@@ -106,13 +106,13 @@
     { key: "name", label: "Name", align: "left" },
     { key: "price", label: "Price", align: "right" },
     { key: "changesPercentage", label: "% Change", align: "right" },
-    { key: "netPremium", label: "Net Prem", align: "right" },
-    { key: "netCallPremium", label: "Net Call Prem", align: "right" },
-    { key: "netPutPremium", label: "Net Put Prem", align: "right" },
-    { key: "ivRank", label: "IV Rank", align: "right" },
+    { key: "net_premium", label: "Net Prem", align: "right" },
+    { key: "net_call_premium", label: "Net Call Prem", align: "right" },
+    { key: "net_put_premium", label: "Net Put Prem", align: "right" },
+    { key: "iv_rank", label: "IV Rank", align: "right" },
   ];
 
-  const sortTopTickers = (key) => {
+  const sortPosTickers = (key) => {
     // Reset all other keys to 'none' except the current key
     for (const k in sortOrders) {
       if (k !== key) {
@@ -130,8 +130,8 @@
 
     // Reset to original data when 'none' and stop further sorting
     if (sortOrder === "none") {
-      originalTopTickers = [...topSectorTickers[selectedSector]]; // Reset originalTopTickers to sectorData
-      displayTopTickers = originalTopTickers;
+      originalPosTickers = [...topPosNetPremium]; // Reset originalPosTickers to sectorData
+      displayPosTickers = originalPosTickers?.slice(0, 50);
       return;
     }
 
@@ -166,7 +166,66 @@
     };
 
     // Sort using the generic comparison function
-    displayTopTickers = [...originalTopTickers]
+    displayPosTickers = [...originalPosTickers]
+      .sort(compareValues)
+      ?.slice(0, 50);
+  };
+
+  const sortNegTickers = (key) => {
+    // Reset all other keys to 'none' except the current key
+    for (const k in sortOrders) {
+      if (k !== key) {
+        sortOrders[k].order = "none";
+      }
+    }
+
+    // Cycle through 'none', 'asc', 'desc' for the clicked key
+    const orderCycle = ["none", "asc", "desc"];
+
+    const currentOrderIndex = orderCycle.indexOf(sortOrders[key].order);
+    sortOrders[key].order =
+      orderCycle[(currentOrderIndex + 1) % orderCycle.length];
+    const sortOrder = sortOrders[key].order;
+
+    // Reset to original data when 'none' and stop further sorting
+    if (sortOrder === "none") {
+      originalNegTickers = [...topNegNetPremium];
+      displayNegTickers = originalNegTickers?.slice(0, 50);
+      return;
+    }
+
+    // Define a generic comparison function
+    const compareValues = (a, b) => {
+      const { type } = sortOrders[key];
+      let valueA, valueB;
+
+      switch (type) {
+        case "date":
+          valueA = new Date(a[key]);
+          valueB = new Date(b[key]);
+          break;
+        case "string":
+          valueA = a[key].toUpperCase();
+          valueB = b[key].toUpperCase();
+          return sortOrder === "asc"
+            ? valueA.localeCompare(valueB)
+            : valueB.localeCompare(valueA);
+        case "number":
+        default:
+          valueA = parseFloat(a[key]);
+          valueB = parseFloat(b[key]);
+          break;
+      }
+
+      if (sortOrder === "asc") {
+        return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
+      } else {
+        return valueA > valueB ? -1 : valueA < valueB ? 1 : 0;
+      }
+    };
+
+    // Sort using the generic comparison function
+    displayNegTickers = [...originalNegTickers]
       .sort(compareValues)
       ?.slice(0, 50);
   };
@@ -174,7 +233,9 @@
   function getPlotOptions() {
     isLoading = true;
     let dates = marketTideData?.map((item) => item?.time);
-    const priceList = marketTideData?.map((item) => item?.close);
+    const priceList = marketTideData?.map((item) =>
+      item?.close !== null ? item?.close?.toFixed(2) : item?.close,
+    );
     const netCallPremList = marketTideData?.map(
       (item) => item?.net_call_premium,
     );
@@ -296,7 +357,7 @@
               let [hours, minutes] = timePart.split(":").map(Number);
 
               // Only show labels at 30-minute intervals (XX:00 and XX:30)
-              if (minutes % 60 === 0) {
+              if (minutes % 30 === 0) {
                 const amPm = hours >= 12 ? "PM" : "AM";
                 hours = hours % 12 || 12;
                 return minutes === 0
@@ -305,7 +366,7 @@
               }
               return "";
             },
-            interval: 29, // Show label every 30 minutes (29 intervals between)
+            interval: "auto", // Show label every 30 minutes (29 intervals between)
           },
         },
 
@@ -426,18 +487,6 @@
     return options;
   }
   optionsData = marketTideData ? getPlotOptions() : null;
-
-  /*
-  $: {
-    if (selectedSector) {
-      originalTopTickers = [...topSectorTickers[selectedSector]];
-      displayTopTickers =
-        data?.user?.tier === "Pro"
-          ? displayTopTickers
-          : displayTopTickers?.slice(0, 3);
-    }
-  }
-    */
 </script>
 
 <SEO
@@ -557,15 +606,15 @@
               >
                 <div class="flex flex-row items-center">
                   <label
-                    for="topSectorTickers"
+                    for="topPosNetPrem"
                     class="mr-1 cursor-pointer flex flex-row items-center text-white text-xl sm:text-2xl font-bold"
                   >
-                    Top S&P500 Stocks by Net Premium
+                    Top Stocks by Positive Net Prem
                   </label>
                   <InfoModal
-                    title={"Top S&P500 Stocks by Net Premium"}
-                    content={"This list highlights top stocks based on net premium, displaying price changes and options activity. Discover which stocks are driving the sector and explore detailed options data."}
-                    id={"topSectorTickers"}
+                    title={"Top Stocks by Positive Net Prem"}
+                    content={"This list highlights top stocks based on positive net premium, displaying price changes and options activity. Discover which stocks are driving the sector and explore detailed options data."}
+                    id={"topPosNetPrem"}
                   />
                 </div>
               </div>
@@ -580,15 +629,15 @@
                     <TableHeader
                       columns={topColumns}
                       {sortOrders}
-                      sortData={sortTopTickers}
+                      sortData={sortPosTickers}
                     />
                   </thead>
                   <tbody>
-                    {#each displayTopTickers as item, index}
+                    {#each displayPosTickers as item, index}
                       <tr
                         class="sm:hover:bg-[#245073] border-b border-gray-800 sm:hover:bg-opacity-[0.2] odd:bg-odd {index +
                           1 ===
-                          originalTopTickers?.length &&
+                          originalPosTickers?.length &&
                         data?.user?.tier !== 'Pro'
                           ? 'opacity-[0.1]'
                           : ''}"
@@ -659,19 +708,18 @@
                 </table>
               </div>
 
-              <!--
               <div class="mb-3 mt-10">
                 <div class="flex flex-row items-center">
                   <label
-                    for="sectorFlowInfo"
+                    for="topNegNetPrem"
                     class="mr-1 cursor-pointer flex flex-row items-center text-white text-xl sm:text-2xl font-bold"
                   >
-                    Sector Flow
+                    Top Stocks by Negative Net Prem
                   </label>
                   <InfoModal
-                    title={"Sector Flow"}
+                    title={"Top Stocks by Negative Net Prem"}
                     content={"Sector Flow offers insights into options activity, helping traders identify trends and make informed decisions across market sectors."}
-                    id={"sectorFlowInfo"}
+                    id={"topNegNetPrem"}
                   />
                 </div>
               </div>
@@ -682,37 +730,40 @@
                   class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md text-white w-full bg-table border border-gray-800 m-auto"
                 >
                   <thead>
-                    <TableHeader {columns} {sortOrders} {sortData} />
+                    <TableHeader
+                      columns={topColumns}
+                      {sortOrders}
+                      sortData={sortNegTickers}
+                    />
                   </thead>
                   <tbody>
-                    {#each stockList as item, index}
+                    {#each displayNegTickers as item, index}
                       <tr
                         class="sm:hover:bg-[#245073] border-b border-gray-800 sm:hover:bg-opacity-[0.2] odd:bg-odd {index +
                           1 ===
-                          originalData?.length && data?.user?.tier !== 'Pro'
+                          originalNegTickers?.length &&
+                        data?.user?.tier !== 'Pro'
                           ? 'opacity-[0.1]'
                           : ''}"
                       >
                         <td
+                          class="text-start text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                        >
+                          {item?.rank}
+                        </td>
+
+                        <td
                           class="text-sm sm:text-[1rem] text-start whitespace-nowrap"
                         >
-                          <HoverStockChart
-                            symbol={item?.ticker}
-                            assetType="etf"
-                          />
+                          <HoverStockChart symbol={item?.symbol} />
                         </td>
 
                         <td
                           class="text-start text-sm sm:text-[1rem] whitespace-nowrap text-white"
                         >
-                          <a
-                            href={sectorNavigation?.find(
-                              (listItem) => listItem?.title === item?.name,
-                            )?.link}
-                            class="sm:hover:underline sm:hover:underline-offset-4 text-white"
-                          >
-                            {item?.name}
-                          </a>
+                          {item?.name?.length > 20
+                            ? item?.name?.slice(0, 20) + "..."
+                            : item?.name}
                         </td>
 
                         <td
@@ -732,129 +783,34 @@
 
                         <td class="text-sm sm:text-[1rem] text-end">
                           {@html abbreviateNumberWithColor(
-                            item?.call_volume,
+                            item?.net_premium,
                             false,
                             true,
                           )}
                         </td>
-
                         <td class="text-sm sm:text-[1rem] text-end">
                           {@html abbreviateNumberWithColor(
-                            item?.avg30_call_volume,
+                            item?.net_call_premium,
                             false,
                             true,
                           )}
                         </td>
-
                         <td class="text-sm sm:text-[1rem] text-end">
                           {@html abbreviateNumberWithColor(
-                            item?.put_volume,
+                            item?.net_put_premium,
                             false,
                             true,
                           )}
                         </td>
 
                         <td class="text-sm sm:text-[1rem] text-end">
-                          {@html abbreviateNumberWithColor(
-                            item?.avg30_put_volume,
-                            false,
-                            true,
-                          )}
-                        </td>
-
-                        <td class="text-sm sm:text-[1rem] text-end">
-                          {@html abbreviateNumberWithColor(
-                            item?.call_premium,
-                            false,
-                            true,
-                          )}
-                        </td>
-
-                        <td class="text-sm sm:text-[1rem] text-end">
-                          {@html abbreviateNumberWithColor(
-                            item?.put_premium,
-                            false,
-                            true,
-                          )}
-                        </td>
-
-                        <td class="text-sm sm:text-[1rem] text-end">
-                          <HoverCard.Root>
-                            <HoverCard.Trigger
-                              class="rounded-sm underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-black"
-                            >
-                              <div class="flex items-center justify-end">
-                                <div
-                                  class="flex w-full max-w-28 h-5 bg-gray-200 rounded-md overflow-hidden"
-                                >
-                                  <div
-                                    class="bg-red-500 h-full"
-                                    style="width: calc(({item
-                                      ?.premium_ratio[0]} / ({item
-                                      ?.premium_ratio[0]} + {item
-                                      ?.premium_ratio[1]} + {item
-                                      ?.premium_ratio[2]})) * 100%)"
-                                  ></div>
-
-                                  <div
-                                    class="bg-gray-300 h-full"
-                                    style="width: calc(({item
-                                      ?.premium_ratio[1]} / ({item
-                                      ?.premium_ratio[0]} + {item
-                                      ?.premium_ratio[1]} + {item
-                                      ?.premium_ratio[2]})) * 100%)"
-                                  ></div>
-
-                                  <div
-                                    class="bg-green-500 h-full"
-                                    style="width: calc(({item
-                                      ?.premium_ratio[2]} / ({item
-                                      ?.premium_ratio[0]} + {item
-                                      ?.premium_ratio[1]} + {item
-                                      ?.premium_ratio[2]})) * 100%)"
-                                  ></div>
-                                </div>
-                              </div>
-                            </HoverCard.Trigger>
-                            <HoverCard.Content
-                              class="w-auto bg-secondary border border-gray-600"
-                            >
-                              <div class="flex justify-between space-x-4">
-                                <div
-                                  class="space-y-1 flex flex-col items-start text-white"
-                                >
-                                  <div>
-                                    Bearish: {@html abbreviateNumberWithColor(
-                                      item?.premium_ratio[0],
-                                      false,
-                                      true,
-                                    )}
-                                  </div>
-                                  <div>
-                                    Neutral: {@html abbreviateNumberWithColor(
-                                      item?.premium_ratio[1],
-                                      false,
-                                      true,
-                                    )}
-                                  </div>
-                                  <div>
-                                    Bullish: {@html abbreviateNumberWithColor(
-                                      item?.premium_ratio[2],
-                                      false,
-                                      true,
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-                            </HoverCard.Content>
-                          </HoverCard.Root>
+                          {item?.iv_rank}
                         </td>
                       </tr>
                     {/each}
                   </tbody>
                 </table>
               </div>
-              -->
             </div>
             <UpgradeToPro {data} />
           </div>
