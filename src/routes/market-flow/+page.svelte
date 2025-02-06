@@ -613,7 +613,7 @@
                   </label>
                   <InfoModal
                     title={"Top Stocks by Positive Net Prem"}
-                    content={"This list highlights top stocks based on positive net premium, displaying price changes and options activity. Discover which stocks are driving the sector and explore detailed options data."}
+                    content={"This list showcases top stocks with a positive net premium, indicating bullish sentiment. Track price movements, analyze options activity, and uncover the stocks leading their sectors with detailed options data."}
                     id={"topPosNetPrem"}
                   />
                 </div>
@@ -718,7 +718,7 @@
                   </label>
                   <InfoModal
                     title={"Top Stocks by Negative Net Prem"}
-                    content={"Sector Flow offers insights into options activity, helping traders identify trends and make informed decisions across market sectors."}
+                    content={"This list showcases top stocks with a negative net premium, indicating bullish sentiment. Track price movements, analyze options activity, and uncover the stocks leading their sectors with detailed options data."}
                     id={"topNegNetPrem"}
                   />
                 </div>
