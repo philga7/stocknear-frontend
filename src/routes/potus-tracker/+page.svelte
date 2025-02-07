@@ -7,6 +7,7 @@
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
 
   import { Chart } from "svelte-echarts";
+  import ScrollToTop from "$lib/components/ScrollToTop.svelte";
 
   import { init, use } from "echarts/core";
   import { LineChart, BarChart } from "echarts/charts";
@@ -437,7 +438,7 @@
               </div>
             {:else}
               <h3 class="text-white text-lg font-semibold mb-2 mt-6">
-                AI-Powered Analysis of the Latest Executive Orders
+                AI Analysis of Recent Executive Orders
               </h3>
               <div class="space-y-4">
                 {#each Object.entries(groupedOrders) as [date, items], indexA}
@@ -503,7 +504,7 @@
                             class="text-sm flex flex-col items-start w-full mb-1"
                           >
                             <span
-                              class="text-white sm:text-lg font-semibold inline-block"
+                              class="text-white text-lg font-semibold inline-block"
                               >{item.title}</span
                             >
                           </div>
@@ -672,6 +673,8 @@
     </div>
   </div>
 </section>
+
+<ScrollToTop />
 
 <style>
   .app {
