@@ -119,11 +119,9 @@
           </td>
           <td
             class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-            >{@html abbreviateNumberWithColor(
-              rawData?.net_premium,
-              false,
-              true,
-            )}</td
+            >{@html rawData?.net_premium
+              ? abbreviateNumberWithColor(rawData?.net_premium, false, true)
+              : "n/a"}</td
           ></tr
         >
       </tbody>
@@ -211,78 +209,88 @@
           <td
             class="whitespace-nowrap w-full px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
           >
-            <HoverCard.Root>
-              <HoverCard.Trigger
-                class="rounded-sm underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-black"
-              >
-                <div class="flex items-center sm:justify-end">
-                  <!-- Bar Container -->
-                  <div
-                    class="flex w-full max-w-28 h-5 bg-gray-200 rounded-md overflow-hidden"
-                  >
-                    <!-- Bearish -->
+            {#if rawData?.premium_ratio?.at(0)}
+              <HoverCard.Root>
+                <HoverCard.Trigger
+                  class="rounded-sm underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-black"
+                >
+                  <div class="flex items-center sm:justify-end">
+                    <!-- Bar Container -->
                     <div
-                      class="bg-red-500 h-full"
-                      style="width: calc(({rawData
-                        ?.premium_ratio[0]} / ({rawData
-                        ?.premium_ratio[0]} + {rawData
-                        ?.premium_ratio[1]} + {rawData
-                        ?.premium_ratio[2]})) * 100%)"
-                    ></div>
+                      class="flex w-full max-w-28 h-5 bg-gray-200 rounded-md overflow-hidden"
+                    >
+                      <!-- Bearish -->
+                      <div
+                        class="bg-red-500 h-full"
+                        style="width: calc(({rawData?.premium_ratio?.at(
+                          0,
+                        )} / ({rawData?.premium_ratio?.at(
+                          0,
+                        )} + {rawData?.premium_ratio?.at(
+                          1,
+                        )} + {rawData?.premium_ratio?.at(2)})) * 100%)"
+                      ></div>
 
-                    <!-- Neutral -->
-                    <div
-                      class="bg-gray-300 h-full"
-                      style="width: calc(({rawData
-                        ?.premium_ratio[1]} / ({rawData
-                        ?.premium_ratio[0]} + {rawData
-                        ?.premium_ratio[1]} + {rawData
-                        ?.premium_ratio[2]})) * 100%)"
-                    ></div>
+                      <!-- Neutral -->
+                      <div
+                        class="bg-gray-300 h-full"
+                        style="width: calc(({rawData?.premium_ratio?.at(
+                          1,
+                        )} / ({rawData?.premium_ratio?.at(
+                          0,
+                        )} + {rawData?.premium_ratio?.at(
+                          1,
+                        )} + {rawData?.premium_ratio?.at(2)})) * 100%)"
+                      ></div>
 
-                    <!-- Bullish -->
-                    <div
-                      class="bg-green-500 h-full"
-                      style="width: calc(({rawData
-                        ?.premium_ratio[2]} / ({rawData
-                        ?.premium_ratio[0]} + {rawData
-                        ?.premium_ratio[1]} + {rawData
-                        ?.premium_ratio[2]})) * 100%)"
-                    ></div>
-                  </div>
-                </div>
-              </HoverCard.Trigger>
-              <HoverCard.Content
-                class="w-auto bg-secondary border border-gray-600"
-              >
-                <div class="flex justify-between space-x-4">
-                  <div class="space-y-1 flex flex-col items-start text-white">
-                    <div>
-                      Bearish: {@html abbreviateNumberWithColor(
-                        rawData?.premium_ratio[0],
-                        false,
-                        true,
-                      )}
-                    </div>
-                    <div>
-                      Neutral: {@html abbreviateNumberWithColor(
-                        rawData?.premium_ratio[1],
-                        false,
-                        true,
-                      )}
-                    </div>
-                    <div>
-                      Bullish: {@html abbreviateNumberWithColor(
-                        rawData?.premium_ratio[2],
-                        false,
-                        true,
-                      )}
+                      <!-- Bullish -->
+                      <div
+                        class="bg-green-500 h-full"
+                        style="width: calc(({rawData?.premium_ratio?.at(
+                          2,
+                        )} / ({rawData?.premium_ratio?.at(
+                          0,
+                        )} + {rawData?.premium_ratio?.at(
+                          1,
+                        )} + {rawData?.premium_ratio?.at(2)})) * 100%)"
+                      ></div>
                     </div>
                   </div>
-                </div>
-              </HoverCard.Content>
-            </HoverCard.Root></td
-          >
+                </HoverCard.Trigger>
+                <HoverCard.Content
+                  class="w-auto bg-secondary border border-gray-600"
+                >
+                  <div class="flex justify-between space-x-4">
+                    <div class="space-y-1 flex flex-col items-start text-white">
+                      <div>
+                        Bearish: {@html abbreviateNumberWithColor(
+                          rawData?.premium_ratio?.at(0),
+                          false,
+                          true,
+                        )}
+                      </div>
+                      <div>
+                        Neutral: {@html abbreviateNumberWithColor(
+                          rawData?.premium_ratio?.at(1),
+                          false,
+                          true,
+                        )}
+                      </div>
+                      <div>
+                        Bullish: {@html abbreviateNumberWithColor(
+                          rawData?.premium_ratio?.at(2),
+                          false,
+                          true,
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </HoverCard.Content>
+              </HoverCard.Root>
+            {:else}
+              n/a
+            {/if}
+          </td>
         </tr>
 
         <tr
@@ -294,16 +302,20 @@
           <td
             class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
           >
-            {@html abbreviateNumberWithColor(
-              rawData?.net_call_premium,
-              false,
-              true,
-            )}
-            x {@html abbreviateNumberWithColor(
-              rawData?.net_put_premium,
-              false,
-              true,
-            )}
+            {#if rawData?.net_call_premium || rawData?.net_put_premium}
+              {@html abbreviateNumberWithColor(
+                rawData?.net_call_premium,
+                false,
+                true,
+              )}
+              x {@html abbreviateNumberWithColor(
+                rawData?.net_put_premium,
+                false,
+                true,
+              )}
+            {:else}
+              n/a
+            {/if}
           </td></tr
         >
       </tbody>
