@@ -281,6 +281,10 @@
       title: "Biggest Online Gambling Stocks",
       link: "/list/online-gambling",
     },
+    {
+      title: "Biggest U.S. Companies with Highest Buybacks",
+      link: "/list/most-buybacks",
+    },
   ];
 
   navigation = [...navigationIndustry, ...navigation];

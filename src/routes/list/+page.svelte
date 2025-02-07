@@ -227,6 +227,12 @@
     </li>
 
     <li>
+      <a class="text-blue-400 sm:hover:text-white" href="/list/most-buybacks/"
+        >Biggest Buybacks</a
+      >
+    </li>
+
+    <li>
       <a class="text-blue-400 sm:hover:text-white" href="/list/reit-stocks"
         >All REITs</a
       >

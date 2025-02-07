@@ -112,6 +112,7 @@
     { name: "Piotroski F-Score", rule: "piotroskiScore", type: "float" },
     { name: "Total Liabilities", rule: "totalLiabilities", type: "int" },
     { name: "RSI", rule: "rsi", type: "float" },
+    { name: "Stock Buybacks", rule: "commonStockRepurchased", type: "int" },
     { name: "Short Ratio", rule: "shortRatio", type: "int" },
     { name: "Short Interest", rule: "sharesShort", type: "int" },
     { name: "Short % Float", rule: "shortFloatPercent", type: "percent" },
