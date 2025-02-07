@@ -1,53 +1,18 @@
 <script lang="ts">
-  import {
-    stockTicker,
-    numberOfUnreadNotification,
-    displayCompanyName,
-  } from "$lib/store";
+  import { stockTicker, displayCompanyName } from "$lib/store";
 
   import Infobox from "$lib/components/Infobox.svelte";
   import GreekByExpiry from "$lib/components/Options/GreekByExpiry.svelte";
+  import SEO from "$lib/components/SEO.svelte";
 
   export let data;
   let rawData = data?.getData || [];
 </script>
 
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""}
-    {$displayCompanyName} ({$stockTicker}) Delta Exposure by Expiry · Stocknear
-  </title>
-  <meta
-    name="description"
-    content={`Analyze Delta Exposure by expiry for ${$displayCompanyName} (${$stockTicker}). Access historical volume, open interest trends, and save options contracts for detailed analysis and insights.`}
-  />
-
-  <!-- Other meta tags -->
-  <meta
-    property="og:title"
-    content={`${$displayCompanyName} (${$stockTicker}) Delta Exposure by Expiry · Stocknear`}
-  />
-  <meta
-    property="og:description"
-    content={`Analyze Delta Exposure by expiry for ${$displayCompanyName} (${$stockTicker}). Access historical volume, open interest trends, and save options contracts for detailed analysis and insights.`}
-  />
-  <meta property="og:type" content="website" />
-  <!-- Add more Open Graph meta tags as needed -->
-
-  <!-- Twitter specific meta tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta
-    name="twitter:title"
-    content={`${$displayCompanyName} (${$stockTicker}) Delta Exposure by Expiry · Stocknear`}
-  />
-  <meta
-    name="twitter:description"
-    content={`Analyze Delta Exposure by expiry for ${$displayCompanyName} (${$stockTicker}). Access historical volume, open interest trends, and save options contracts for detailed analysis and insights.`}
-  />
-  <!-- Add more Twitter meta tags as needed -->
-</svelte:head>
+<SEO
+  title="Delta Exposure by Expiry"
+  description={`Analyze Delta Exposure by expiry for ${$displayCompanyName} (${$stockTicker}). Access historical volume, open interest trends, and save options contracts for detailed analysis and insights.`}
+/>
 
 <section
   class="w-full bg-default overflow-hidden text-white min-h-screen pb-40"

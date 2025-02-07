@@ -6,7 +6,8 @@ export const load = async ({ locals, params }) => {
   const getData = async () => {
     const postData = {
       params: params.tickerID,
-      category: "strike"
+      category: "strike",
+      type: "dex",
     };
 
     const response = await fetch(apiURL + "/options-gex-dex", {

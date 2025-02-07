@@ -111,7 +111,7 @@
               >
                 OI
               </a>
-              <!--
+
               <a
                 href={`/etf/${$etfTicker}/options/gex`}
                 on:click={() => changeSubSection("gex")}
@@ -130,7 +130,6 @@
               >
                 DEX
               </a>
-              -->
             </ul>
           </nav>
           <div class="mt-2 sm:mt-0">

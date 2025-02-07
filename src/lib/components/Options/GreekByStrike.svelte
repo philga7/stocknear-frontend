@@ -44,10 +44,10 @@
     } else {
       return {
         ...item,
-        net_delta: (item?.call_delta || 0) + (item?.put_delta || 0),
+        net_dex: (item?.call_dex || 0) + (item?.put_dex || 0),
         put_call_ratio:
-          item?.call_delta > 0
-            ? Math.abs((item?.put_delta || 0) / item?.call_delta)
+          item?.call_dex > 0
+            ? Math.abs((item?.put_dex || 0) / item?.call_dex)
             : null,
       };
     }
@@ -61,9 +61,9 @@
     const processedData = rawData
       ?.map((d) => ({
         strike: d?.strike,
-        callValue: isGamma ? d?.call_gex : d?.call_delta,
-        putValue: isGamma ? d?.put_gex : d?.put_delta,
-        netValue: isGamma ? d?.net_gex : d?.net_delta,
+        callValue: isGamma ? d?.call_gex : d?.call_dex,
+        putValue: isGamma ? d?.put_gex : d?.put_dex,
+        netValue: isGamma ? d?.net_gex : d?.net_dex,
       }))
       ?.sort((a, b) => a?.strike - b?.strike);
 
@@ -168,17 +168,17 @@
   $: columns = [
     { key: "strike", label: "Strike Price", align: "left" },
     {
-      key: isGamma ? "call_gex" : "call_delta",
+      key: isGamma ? "call_gex" : "call_dex",
       label: `Call ${isGamma ? "GEX" : "Delta"}`,
       align: "right",
     },
     {
-      key: isGamma ? "put_gex" : "put_delta",
+      key: isGamma ? "put_gex" : "put_dex",
       label: `Put ${isGamma ? "GEX" : "Delta"}`,
       align: "right",
     },
     {
-      key: isGamma ? "net_gex" : "net_delta",
+      key: isGamma ? "net_gex" : "net_dex",
       label: `Net ${isGamma ? "GEX" : "Delta"}`,
       align: "right",
     },
@@ -191,9 +191,9 @@
 
   $: sortOrders = {
     strike: { order: "none", type: "number" },
-    [isGamma ? "call_gex" : "call_delta"]: { order: "none", type: "number" },
-    [isGamma ? "put_gex" : "put_delta"]: { order: "none", type: "number" },
-    [isGamma ? "net_gex" : "net_delta"]: { order: "none", type: "number" },
+    [isGamma ? "call_gex" : "call_dex"]: { order: "none", type: "number" },
+    [isGamma ? "put_gex" : "put_dex"]: { order: "none", type: "number" },
+    [isGamma ? "net_gex" : "net_dex"]: { order: "none", type: "number" },
     put_call_ratio: { order: "none", type: "number" },
   };
 
@@ -312,7 +312,7 @@
               class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
             >
               {@html abbreviateNumberWithColor(
-                (isGamma ? item?.call_gex : item?.call_delta)?.toFixed(2),
+                (isGamma ? item?.call_gex : item?.call_dex)?.toFixed(2),
                 false,
                 true,
               )}
@@ -321,7 +321,7 @@
               class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
             >
               {@html abbreviateNumberWithColor(
-                (isGamma ? item?.put_gex : item?.put_delta)?.toFixed(2),
+                (isGamma ? item?.put_gex : item?.put_dex)?.toFixed(2),
                 false,
                 true,
               )}
@@ -331,7 +331,7 @@
               class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
             >
               {@html abbreviateNumberWithColor(
-                (isGamma ? item?.net_gex : item?.net_delta)?.toFixed(2),
+                (isGamma ? item?.net_gex : item?.net_dex)?.toFixed(2),
                 false,
                 true,
               )}
