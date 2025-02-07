@@ -1,9 +1,6 @@
 <script lang="ts">
-  import {
-    stockTicker,
-    numberOfUnreadNotification,
-    displayCompanyName,
-  } from "$lib/store";
+  import { etfTicker, displayCompanyName } from "$lib/store";
+  import SEO from "$lib/components/SEO.svelte";
 
   import Infobox from "$lib/components/Infobox.svelte";
   import GreekByExpiry from "$lib/components/Options/GreekByExpiry.svelte";
@@ -12,42 +9,10 @@
   let rawData = data?.getData || [];
 </script>
 
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""}
-    {$displayCompanyName} ({$stockTicker}) Gamma Exposure by Expiry · Stocknear
-  </title>
-  <meta
-    name="description"
-    content={`Analyze Gamma Exposure by expiry for ${$displayCompanyName} (${$stockTicker}). Access historical volume, open interest trends, and save options contracts for detailed analysis and insights.`}
-  />
-
-  <!-- Other meta tags -->
-  <meta
-    property="og:title"
-    content={`${$displayCompanyName} (${$stockTicker}) Gamma Exposure by Expiry · Stocknear`}
-  />
-  <meta
-    property="og:description"
-    content={`Analyze Gamma Exposure by expiry for ${$displayCompanyName} (${$stockTicker}). Access historical volume, open interest trends, and save options contracts for detailed analysis and insights.`}
-  />
-  <meta property="og:type" content="website" />
-  <!-- Add more Open Graph meta tags as needed -->
-
-  <!-- Twitter specific meta tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta
-    name="twitter:title"
-    content={`${$displayCompanyName} (${$stockTicker}) Gamma Exposure by Expiry · Stocknear`}
-  />
-  <meta
-    name="twitter:description"
-    content={`Analyze Gamma Exposure by expiry for ${$displayCompanyName} (${$stockTicker}). Access historical volume, open interest trends, and save options contracts for detailed analysis and insights.`}
-  />
-  <!-- Add more Twitter meta tags as needed -->
-</svelte:head>
+<SEO
+  title="Gamma Exposure By Expiry"
+  description={`Analyze gamma exposure for ${$displayCompanyName} (${$etfTicker}) by expiry. Access historical volume, open interest trends, and save options contracts for detailed analysis and insights.`}
+/>
 
 <section
   class="w-full bg-default overflow-hidden text-white min-h-screen pb-40"

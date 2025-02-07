@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { stockTicker, displayCompanyName } from "$lib/store";
+
   import Infobox from "$lib/components/Infobox.svelte";
   import GreekExposure from "$lib/components/Options/GreekExposure.svelte";
   import SEO from "$lib/components/SEO.svelte";
@@ -8,7 +10,7 @@
 
 <SEO
   title="Daily Gamma Exposure"
-  description="Analyze daily gamma exposure with historic options volume and open interest data. Save individual contracts for future reference and optimize your trading strategy."
+  description={`Analyze daily gamma exposure for ${$displayCompanyName} (${$stockTicker}). Access historical volume, open interest trends, and save options contracts for detailed analysis and insights.`}
 />
 
 <section

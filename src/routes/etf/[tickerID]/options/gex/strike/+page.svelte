@@ -1,54 +1,18 @@
 <script lang="ts">
-  import {
-    stockTicker,
-    numberOfUnreadNotification,
-    displayCompanyName,
-  } from "$lib/store";
+  import { etfTicker, displayCompanyName } from "$lib/store";
 
   import Infobox from "$lib/components/Infobox.svelte";
+  import SEO from "$lib/components/SEO.svelte";
 
   import GreekByStrike from "$lib/components/Options/GreekByStrike.svelte";
 
   export let data;
 </script>
 
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""}
-    {$displayCompanyName} ({$stockTicker}) Gamma Exposure by Strike Price ·
-    Stocknear
-  </title>
-  <meta
-    name="description"
-    content={`Discover detailed Gamma Exposure analysis by strike price for ${$displayCompanyName} (${$stockTicker}). Explore historical volume, open interest, and save individual options contracts for in-depth insights.`}
-  />
-
-  <!-- Other meta tags -->
-  <meta
-    property="og:title"
-    content={`${$displayCompanyName} (${$stockTicker}) Gamma Exposure by Strike Price · Stocknear`}
-  />
-  <meta
-    property="og:description"
-    content={`Discover detailed Gamma Exposure analysis by strike price for ${$displayCompanyName} (${$stockTicker}). Explore historical volume, open interest, and save individual options contracts for in-depth insights.`}
-  />
-  <meta property="og:type" content="website" />
-  <!-- Add more Open Graph meta tags as needed -->
-
-  <!-- Twitter specific meta tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta
-    name="twitter:title"
-    content={`${$displayCompanyName} (${$stockTicker}) Gamma Exposure by Strike Price · Stocknear`}
-  />
-  <meta
-    name="twitter:description"
-    content={`Discover detailed Gamma Exposure analysis by strike price for ${$displayCompanyName} (${$stockTicker}). Explore historical volume, open interest, and save individual options contracts for in-depth insights.`}
-  />
-  <!-- Add more Twitter meta tags as needed -->
-</svelte:head>
+<SEO
+  title="Gamma Exposure By Strike Price"
+  description={`Analyze gamma exposure for ${$displayCompanyName} (${$etfTicker}) by strike price. Access historical volume, open interest trends, and save options contracts for detailed analysis and insights.`}
+/>
 
 <section
   class="w-full bg-default overflow-hidden text-white min-h-screen pb-40"
