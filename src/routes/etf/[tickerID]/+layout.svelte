@@ -256,7 +256,7 @@
       $etfTicker = data?.getParams;
       $assetType = "stock";
       $displayCompanyName = data?.companyName;
-      $currentPortfolioPrice = data?.getStockQuote?.price;
+      $currentPortfolioPrice = data?.getStockQuote?.price?.toFixed(2);
       prePostData = data?.getPrePostQuote || {};
       const output = [...data?.getOneDayPrice] ?? [];
       oneDayPrice = output?.map((item) => ({

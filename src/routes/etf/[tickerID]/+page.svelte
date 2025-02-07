@@ -150,7 +150,7 @@
       if ($realtimePrice !== null && $realtimePrice !== 0) {
         $currentPortfolioPrice = $realtimePrice;
       } else if ($realtimePrice === null || $realtimePrice === 0) {
-        $realtimePrice = data?.getStockQuote?.price;
+        $realtimePrice = data?.getStockQuote?.price?.toFixed(2);
         $currentPortfolioPrice = $realtimePrice;
       } else if (oneDayPrice?.length !== 0) {
         const length = oneDayPrice?.length;
@@ -412,9 +412,13 @@
   }
 
   let displayLegend = {
-    close: data?.getStockQuote?.price,
+    close: data?.getStockQuote?.price
+      ? data?.getStockQuote?.price?.toFixed(2)
+      : "n/a",
     date: "-",
-    change: data?.getStockQuote?.changesPercentage,
+    change: data?.getStockQuote?.changesPercentage
+      ? data?.getStockQuote?.changesPercentage?.toFixed(2)
+      : "n/a",
   };
 
   let displayLastLogicalRangeValue;
@@ -672,7 +676,7 @@
 </script>
 
 <SEO
-  title={`${$etfTicker} ${$currentPortfolioPrice !== null && $currentPortfolioPrice !== 0 ? $currentPortfolioPrice : data?.getStockQuote?.price} ${displayLegend?.change >= 0 ? "▲" : "▼"} ${displayLegend?.change}%`}
+  title={`${$etfTicker} ${$currentPortfolioPrice !== null && $currentPortfolioPrice !== 0 ? $currentPortfolioPrice : data?.getStockQuote?.price?.toFixed(2)} ${displayLegend?.change >= 0 ? "▲" : "▼"} ${displayLegend?.change}%`}
   description={`Get a real-time ${data?.companyName} (${$etfTicker}) stock chart, price quote with breaking news, financials, statistics, charts and more.`}
 />
 

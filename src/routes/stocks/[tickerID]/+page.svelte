@@ -414,9 +414,13 @@
   }
 
   let displayLegend = {
-    close: data?.getStockQuote?.price,
+    close: data?.getStockQuote?.price
+      ? data?.getStockQuote?.price?.toFixed(2)
+      : "n/a",
     date: "-",
-    change: data?.getStockQuote?.changesPercentage,
+    change: data?.getStockQuote?.changesPercentage
+      ? data?.getStockQuote?.changesPercentage?.toFixed(2)
+      : "n/a",
   };
 
   let displayLastLogicalRangeValue;
@@ -674,7 +678,7 @@
 </script>
 
 <SEO
-  title={`${$stockTicker} ${$currentPortfolioPrice !== null && $currentPortfolioPrice !== 0 ? $currentPortfolioPrice : data?.getStockQuote?.price} ${displayLegend?.change >= 0 ? "▲" : "▼"} ${displayLegend?.change}%`}
+  title={`${$stockTicker} ${$currentPortfolioPrice !== null && $currentPortfolioPrice !== 0 ? $currentPortfolioPrice : data?.getStockQuote?.price?.toFixed(2)} ${displayLegend?.change >= 0 ? "▲" : "▼"} ${displayLegend?.change}%`}
   description={`Get a real-time ${data?.companyName} (${$stockTicker}) stock chart, price quote with breaking news, financials, statistics, charts and more.`}
 />
 
