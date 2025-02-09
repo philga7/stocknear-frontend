@@ -31,43 +31,51 @@
     }
   }
 
+  // Memoize the YouTube video check function
+  const videoCheckCache = new Map();
   function checkIfYoutubeVideo(link: string): string | null {
+    if (videoCheckCache.has(link)) {
+      return videoCheckCache.get(link);
+    }
     try {
       const url = new URL(link);
-      if (
-        url.hostname === "www.youtube.com" ||
-        url.hostname === "youtube.com"
-      ) {
-        return url.searchParams.get("v");
-      }
-      return null;
+      const result = (url.hostname === "www.youtube.com" || url.hostname === "youtube.com") 
+        ? url.searchParams.get("v") 
+        : null;
+      videoCheckCache.set(link, result);
+      return result;
     } catch {
+      videoCheckCache.set(link, null);
       return null;
     }
   }
 
+  // Use a more efficient load more implementation
   function loadMoreData() {
-    const nextIndex = newsList.length; // Start from the current length of newsList
-    const remainingArticles = rawData?.slice(nextIndex, nextIndex + 20); // Get the next 20 articles
-
-    // Append the new articles to the newsList
-    if (remainingArticles.length > 0) {
-      newsList = [...newsList, ...remainingArticles];
-    }
+    const nextIndex = newsList.length;
+    newsList = [...newsList, ...rawData.slice(nextIndex, nextIndex + 20)];
   }
 
-  $: filteredNewsList =
-    displaySection === "videos"
-      ? newsList.filter((item) => checkIfYoutubeVideo(item.url) !== null)
-      : displaySection === "press-releases"
-        ? rawDataPressRelease
-        : newsList;
+  // Pre-calculate video status once when data changes
+  $: hasVideos = rawData.some((item) => checkIfYoutubeVideo(item.url) !== null);
+
+  // Optimize filtered list computation
+  $: filteredNewsList = (() => {
+    switch(displaySection) {
+      case 'videos':
+        return newsList.filter((item) => checkIfYoutubeVideo(item.url) !== null);
+      case 'press-releases':
+        return rawDataPressRelease;
+      default:
+        return newsList;
+    }
+  })();
 
   $: {
     if ($stockTicker || $etfTicker) {
       rawData = data?.getNews || [];
       rawDataPressRelease = [];
-      newsList = rawData?.slice(0, 20) ?? [];
+      newsList = rawData?.slice(0, 10) ?? [];
       displaySection = "all";
     }
   }
@@ -109,7 +117,7 @@
                 : ''}">All</button
             >
           </li>
-          {#if rawData.some((item) => checkIfYoutubeVideo(item.url) !== null)}
+          {#if hasVideos}
             <li>
               <button
                 on:click={() => (displaySection = "videos")}
@@ -141,7 +149,7 @@
     {#if rawData?.length > 0}
       {#if filteredNewsList?.length > 0}
         <div class="grid grid-cols-1 gap-2 pb-5 pt-5">
-          {#each filteredNewsList as item, index}
+          {#each filteredNewsList as item, index (item.url)}
             <div class="w-full flex flex-col bg-default rounded-md m-auto">
               {#if checkIfYoutubeVideo(item.url)}
                 {#if showVideo[index]}
