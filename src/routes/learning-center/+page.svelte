@@ -27,7 +27,8 @@
             </h1>
           </div>
 
-          <div class="w-full grid grid-cols-1 sm:grid-cols-3 sm:gap-5">
+          <div class="w-full grid grid-cols-1 sm:grid-cols-3 gap-y-5 sm:gap-y-0 sm:gap-5">
+
             {#if allBlogPosts?.length !== 0}
               {#each allBlogPosts as item}
                 <div
@@ -48,13 +49,13 @@
                     >
                   </div>
                   <div
-                    class="flex flex-1 flex-col justify-between bg-table p-4 xs:p-5 sm:p-6"
+                    class="flex flex-1 flex-col justify-between bg-table p-3 sm:p-6"
                   >
                     <div class="flex-1">
                       <a
                         href={"/learning-center/article/" + convertToSlug(item?.title)}
                         class="block"
-                        ><h2 class="text-xl font-semibold text-white">
+                        ><h2 class="text-lg sm:text-xl font-semibold text-white">
                           {item?.title}
                         </h2>
                         <p class="mt-3 text-sm text-white">
