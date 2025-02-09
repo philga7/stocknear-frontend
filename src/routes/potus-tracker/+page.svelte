@@ -424,7 +424,7 @@
                           </div>
 
                           <span class="text-sm sm:text-[1rem] text-gray-400">
-                            {item.time_formatted} - {item.location}
+                            {item.time_formatted} {item.location !== null ? `- ${item?.location}` : ''} 
                           </span>
                         </div>
 
