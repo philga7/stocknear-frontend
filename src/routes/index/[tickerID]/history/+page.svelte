@@ -488,7 +488,7 @@
                             <td
                               class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
                             >
-                              {item?.volume?.toLocaleString("en-US")}
+                              {item?.volume ? item?.volume?.toLocaleString("en-US") : 'n/a'}
                             </td>
                           </tr>
                         {/each}
