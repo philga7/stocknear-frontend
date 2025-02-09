@@ -267,7 +267,6 @@
       rawData = prepareDataset(data?.getData, timePeriod);
       originalData = rawData;
       stockList = rawData?.slice(0, 50);
-      console.log(rawData);
       isLoaded = true;
     }
   }

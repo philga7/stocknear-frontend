@@ -18,15 +18,26 @@ const cleanString = (input) => {
 };
 
 const fetchData = async (apiURL, apiKey, endpoint, ticker) => {
-  const response = await fetch(`${apiURL}${endpoint}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-API-KEY": apiKey,
-    },
-    body: JSON.stringify({ ticker }),
-  });
-  return response.json();
+  try {
+    const response = await fetch(`${apiURL}${endpoint}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-KEY": apiKey,
+      },
+      body: JSON.stringify({ ticker }),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`Error fetching ${endpoint}:`, error);
+    return [];
+  }
 };
 
 const fetchWatchlist = async (pb, userId) => {
@@ -46,52 +57,68 @@ export const load = async ({ params, locals }) => {
   const { apiURL, apiKey, pb, user } = locals;
   const { tickerID } = params;
 
-  const endpoints = [
-   "/etf-profile",
-    "/etf-holdings",
-    "/etf-sector-weighting",
-    "/stock-dividend",
-    "/stock-quote",
-    "/pre-post-quote",
-    "/wiim",
-    "/one-day-price",
-    "/stock-news",
-  ];
+  try {
+    const endpoints = [
+      "/etf-profile",
+      "/etf-holdings",
+      "/etf-sector-weighting",
+      "/stock-dividend",
+      "/stock-quote",
+      "/pre-post-quote",
+      "/wiim",
+      "/one-day-price",
+      "/stock-news",
+    ];
 
-  const promises = [
-    ...endpoints.map((endpoint) =>
-      fetchData(apiURL, apiKey, endpoint, tickerID),
-    ),
-    fetchWatchlist(pb, user?.id),
-  ];
+    const promises = [
+      ...endpoints.map((endpoint) =>
+        fetchData(apiURL, apiKey, endpoint, tickerID),
+      ),
+      fetchWatchlist(pb, user?.id),
+    ];
 
-  const [
-     getETFProfile,
-    getETFHoldings,
-    getETFSectorWeighting,
-    getStockDividend,
-    getStockQuote,
-    getPrePostQuote,
-    getWhyPriceMoved,
-    getOneDayPrice,
-    getNews,
-    getUserWatchlist,
-  ] = await Promise.all(promises);
+    const [
+      getETFProfile,
+      getETFHoldings,
+      getETFSectorWeighting,
+      getStockDividend,
+      getStockQuote,
+      getPrePostQuote,
+      getWhyPriceMoved,
+      getOneDayPrice,
+      getNews,
+      getUserWatchlist,
+    ] = await Promise.all(promises);
 
-
-
-  return {
-     getETFProfile,
-    getETFHoldings,
-    getETFSectorWeighting,
-    getStockDividend,
-    getStockQuote,
-    getPrePostQuote,
-    getWhyPriceMoved,
-    getOneDayPrice,
-    getNews,
-    getUserWatchlist,
-    companyName: cleanString(getETFProfile?.at(0)?.name),
-    getParams: params.tickerID,
-  };
+    return {
+      getETFProfile: getETFProfile || [],
+      getETFHoldings: getETFHoldings || [],
+      getETFSectorWeighting: getETFSectorWeighting || [],
+      getStockDividend: getStockDividend || [],
+      getStockQuote: getStockQuote || [],
+      getPrePostQuote: getPrePostQuote || [],
+      getWhyPriceMoved: getWhyPriceMoved || [],
+      getOneDayPrice: getOneDayPrice || [],
+      getNews: getNews || [],
+      getUserWatchlist: getUserWatchlist || [],
+      companyName: cleanString(getETFProfile?.at(0)?.name),
+      getParams: params.tickerID,
+    };
+  } catch (error) {
+    console.error('Error in load function:', error);
+    return {
+      getETFProfile: [],
+      getETFHoldings: [],
+      getETFSectorWeighting: [],
+      getStockDividend: [],
+      getStockQuote: [],
+      getPrePostQuote: [],
+      getWhyPriceMoved: [],
+      getOneDayPrice: [],
+      getNews: [],
+      getUserWatchlist: [],
+      companyName: '',
+      getParams: params.tickerID,
+    };
+  }
 };
