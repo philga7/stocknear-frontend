@@ -1,6 +1,5 @@
 <script>
-  import { numberOfUnreadNotification } from "$lib/store";
-
+  import SEO from "$lib/components/SEO.svelte";
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
 
   const tabs = [
@@ -183,130 +182,117 @@
   ];
 </script>
 
-<svelte:head>
-  <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""} Sitemap
-    - Stocknear
-  </title>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
 
-  <!-- Other meta tags -->
-  <meta property="og:title" content="Sitemap - Stocknear" />
-  <meta property="og:type" content="website" />
-  <!-- Add more Open Graph meta tags as needed -->
 
-  <!-- Twitter specific meta tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Sitemap - Stocknear" />
-  <!-- Add more Twitter meta tags as needed -->
-</svelte:head>
+<SEO title="Sitemap - Stocknear | Complete Financial Market Directory" description="Navigate through Stocknear's complete collection of financial tools and market analysis resources. Access real-time stock data, ETFs, options flow, and more." />
 
-<section
-  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pb-20 pt-5 px-4 lg:px-3"
->
-  <div class="text-sm sm:text-[1rem] breadcrumbs">
-    <ul>
-      <li><a href="/" class="text-gray-300">Home</a></li>
-      <li class="text-gray-300">Sitemap</li>
-    </ul>
-  </div>
+<main>
+  <section
+    class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pb-20 pt-5 px-4 lg:px-3"
+    aria-label="Sitemap Navigation"
+  >
+    <nav class="text-sm sm:text-[1rem] breadcrumbs" aria-label="Breadcrumb">
+      <ul>
+        <li><a href="/" class="text-gray-300">Home</a></li>
+        <li class="text-gray-300" aria-current="page">Sitemap</li>
+      </ul>
+    </nav>
 
-  <div class="w-full overflow-hidden m-auto mt-5">
-    <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
-      <div
-        class="relative flex justify-center items-start overflow-hidden w-full"
-      >
-        <main class="w-full lg:w-3/4 lg:pr-10">
-          <div class="mb-6 border-b-[2px]">
-            <h1 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
-              Sitemap
-            </h1>
-          </div>
-
-          <div class=" w-full bg-default m-auto text-white">
-            <div class="content">
-              <p class="text-[1rem] sm:text-lg">
-                Explore a list of popular pages on our site. If you're searching
-                for a specific stock symbol, try using the search bar for quick
-                results.
-              </p>
-              <h2 class="text-white text-3xl font-semibold mt-8 mb-5">Pages</h2>
-              <ul
-                class="list-outside list-disc space-y-1 p-1 pl-6 md:columns-2 md:gap-x-8 md:text-xl"
-              >
-                {#each tabs as item}
-                  <li>
-                    <a
-                      class="sm:hover:underline sm:hover:underline-offset-4"
-                      href={item?.link}>{item?.title}</a
-                    >
-                  </li>
-                {/each}
-              </ul>
+    <div class="w-full overflow-hidden m-auto mt-5">
+      <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
+        <div class="relative flex justify-center items-start overflow-hidden w-full">
+          <article class="w-full lg:w-3/4 lg:pr-10">
+            <div class="mb-6 border-b-[2px]">
+              <h1 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
+                Sitemap
+              </h1>
             </div>
-          </div>
-        </main>
 
-        <aside class="hidden lg:block relative fixed w-1/4 mt-4">
-          <div
-            class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
-          >
-            <a
-              href="/pricing"
-              class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
-            >
-              <div class="w-full flex justify-between items-center p-3 mt-3">
-                <h2 class="text-start text-xl font-semibold text-white ml-3">
-                  Pro Subscription
-                </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+            <div class=" w-full bg-default m-auto text-white">
+              <div class="content">
+                <p class="text-[1rem] sm:text-lg">
+                  Explore a comprehensive list of Stocknear's financial tools and resources. Find real-time stock data, market analysis, ETFs, options flow, and more. Use our search bar for quick access to specific stock symbols.
+                </p>
+                <h2 class="text-white text-3xl font-semibold mt-8 mb-5">Site Directory</h2>
+                <nav aria-label="Site Pages">
+                  <ul
+                    class="list-outside list-disc space-y-1 p-1 pl-6 md:columns-2 md:gap-x-8 md:text-xl"
+                  >
+                    {#each tabs as item}
+                      <li>
+                        <a
+                          class="sm:hover:underline sm:hover:underline-offset-4"
+                          href={item?.link}
+                          title={`Visit ${item?.title} page`}
+                        >{item?.title}</a>
+                      </li>
+                    {/each}
+                  </ul>
+                </nav>
               </div>
-              <span class="text-white p-3 ml-3 mr-3">
-                Upgrade now for unlimited access to all data and tools.
-              </span>
-            </a>
-          </div>
+            </div>
+          </article>
 
-          <div
-            class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
-          >
-            <a
-              href="/donation"
-              class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
+          <aside class="hidden lg:block relative fixed w-1/4 mt-4">
+            <div
+              class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
             >
-              <div class="w-full flex justify-between items-center p-3 mt-3">
-                <h2 class="text-start text-xl font-semibold text-white ml-3">
-                  Sponsor Us
-                </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
-              </div>
-              <span class="text-white p-3 ml-3 mr-3">
-                Learn more about why we're doing this here
-              </span>
-            </a>
-          </div>
+              <a
+                href="/pricing"
+                class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
+              >
+                <div class="w-full flex justify-between items-center p-3 mt-3">
+                  <h2 class="text-start text-xl font-semibold text-white ml-3">
+                    Pro Subscription
+                  </h2>
+                  <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                </div>
+                <span class="text-white p-3 ml-3 mr-3">
+                  Upgrade now for unlimited access to all data and tools.
+                </span>
+              </a>
+            </div>
 
-          <div
-            class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
-          >
-            <a
-              href="/contact"
-              class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
+            <div
+              class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
             >
-              <div class="w-full flex justify-between items-center p-3 mt-3">
-                <h2 class="text-start text-xl font-semibold text-white ml-3">
-                  Contact Us
-                </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
-              </div>
-              <span class="text-white p-3 ml-3 mr-3">
-                Let me know if you need something
-              </span>
-            </a>
-          </div>
-        </aside>
+              <a
+                href="/donation"
+                class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
+              >
+                <div class="w-full flex justify-between items-center p-3 mt-3">
+                  <h2 class="text-start text-xl font-semibold text-white ml-3">
+                    Sponsor Us
+                  </h2>
+                  <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                </div>
+                <span class="text-white p-3 ml-3 mr-3">
+                  Learn more about why we're doing this here
+                </span>
+              </a>
+            </div>
+
+            <div
+              class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
+            >
+              <a
+                href="/contact"
+                class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
+              >
+                <div class="w-full flex justify-between items-center p-3 mt-3">
+                  <h2 class="text-start text-xl font-semibold text-white ml-3">
+                    Contact Us
+                  </h2>
+                  <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                </div>
+                <span class="text-white p-3 ml-3 mr-3">
+                  Let me know if you need something
+                </span>
+              </a>
+            </div>
+          </aside>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+</main>

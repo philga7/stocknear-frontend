@@ -158,7 +158,7 @@ const sitemap = (
           ? "/stocks/"
           : ticker.type === "ETF"
             ? "/etf/"
-            : "/crypto/";
+            : "/index/";
       return `
     <url>
       <loc>${website}${path}${ticker.id}</loc>

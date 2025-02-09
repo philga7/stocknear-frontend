@@ -67,7 +67,7 @@
 
     nextPage = true;
     goto(
-      `/${assetType === "ETF" ? "etf" : assetType === "Crypto" ? "crypto" : "stocks"}/${symbol}`,
+      `/${assetType === "ETF" ? "etf" : assetType === "Index" ? "index" : "stocks"}/${symbol}`,
     );
   }
 
@@ -498,7 +498,7 @@
             {#each searchHistory?.length > 0 ? searchHistory : popularList as item}
               <li class="border-b border-gray-600">
                 <a
-                  href={`/${item?.type === "ETF" ? "etf" : item?.type === "Crypto" ? "crypto" : "stocks"}/${item?.symbol}`}
+                  href={`/${item?.type === "ETF" ? "etf" : item?.type === "Index" ? "index" : "stocks"}/${item?.symbol}`}
                   on:click={() => popularTicker(item?.symbol)}
                   class="mb-2 {item?.symbol === focusedSuggestion
                     ? 'cursor-pointer flex justify-start items-center p-2 text-white bg-primary rounded group'
@@ -530,7 +530,7 @@
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <!-- svelte-ignore a11y-label-has-associated-control -->
                 <a
-                  href={`/${item?.type === "ETF" ? "etf" : item?.type === "Crypto" ? "crypto" : "stocks"}/${item?.symbol}`}
+                  href={`/${item?.type === "ETF" ? "etf" : item?.type === "Index" ? "index" : "stocks"}/${item?.symbol}`}
                   on:click={() => searchBarTicker(item?.symbol)}
                   class="mb-2 {item?.symbol === focusedSuggestion
                     ? 'shake-ticker cursor-pointer flex justify-start items-center p-2 text-white bg-primary rounded group'

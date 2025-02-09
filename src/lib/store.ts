@@ -146,6 +146,8 @@ export const searchBarData = writable([]);
 
 export const stockTicker = writable(<string>"");
 export const etfTicker = writable(<string>"");
+export const indexTicker = writable(<string>"");
+
 export const cryptoTicker = writable(<string>"");
 export const assetType = writable(<string>"");
 
