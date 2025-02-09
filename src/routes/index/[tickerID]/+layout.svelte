@@ -34,7 +34,7 @@
   let socket;
 
   $indexTicker = data?.getParams;
-  $assetType = "stock";
+  $assetType = "index";
   $displayCompanyName = data?.companyName;
 
   let isScrolled = false;
@@ -68,16 +68,14 @@
   function changeSection(state) {
     const sectionMap = {
       options: "/options",
-      metrics: "metrics",
+      holdings: "holdings",
       history: "/history",
     };
 
     if (state !== "overview" && sectionMap[state]) {
       displaySection = state;
-      //goto(`/etf/${$indexTicker}${sectionMap[state]}`);
     } else {
       displaySection = "overview";
-      //goto(`/etf/${$indexTicker}/`);
     }
   }
 
@@ -325,7 +323,7 @@
   $: charNumber = $screenWidth < 640 ? 25 : 40;
 
   $: {
-    if ($indexTicker && $page.url.pathname === `/etf/${$indexTicker}`) {
+    if ($indexTicker && $page.url.pathname === `/index/${$indexTicker}`) {
       displaySection = "overview";
     }
   }
@@ -374,10 +372,7 @@
                     class="flex-1 flex-shrink-0 flex flex-row items-center justify-between -mt-2"
                   >
                     <a
-                      href={/^\/(stocks|etf)/.test($previousPage)
-                        ? "/"
-                        : $previousPage || "/"}
-                    >
+                    href={/^\/(stocks|etf|index)/.test($previousPage || "") ? "/" : $previousPage || "/"}>
                       <svg
                         class="w-5 h-5 inline-block"
                         xmlns="http://www.w3.org/2000/svg"
@@ -430,7 +425,7 @@
                     <label
                       class="mr-4"
                       on:click={() =>
-                        shareContent("https://stocknear.com/etf/" + $indexTicker)}
+                        shareContent("https://stocknear.com/index/" + $indexTicker)}
                     >
                       <svg
                         class="w-6 h-6 inline-block"
@@ -854,7 +849,7 @@
                         class="flex flex-row items-center w-full text-[1rem] text-white"
                       >
                         <a
-                          href={`/etf/${$indexTicker}`}
+                          href={`/index/${$indexTicker}`}
                           on:click={() => changeSection("overview")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'overview'
@@ -865,7 +860,7 @@
                         </a>
 
                         <a
-                          href={`/etf/${$indexTicker}/holdings`}
+                          href={`/index/${$indexTicker}/holdings`}
                           on:click={() => changeSection("holdings")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'holdings'
@@ -875,7 +870,7 @@
                           Holdings
                         </a>
                         <a
-                          href={`/etf/${$indexTicker}/options`}
+                          href={`/index/${$indexTicker}/options`}
                           on:click={() => changeSection("options")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'options'
@@ -885,28 +880,10 @@
                           Options
                         </a>
 
+                      
+                  
                         <a
-                          href={`/etf/${$indexTicker}/insider`}
-                          on:click={() => changeSection("insider")}
-                          class="p-2 px-5 cursor-pointer {displaySection ===
-                          'insider'
-                            ? 'text-white bg-secondary sm:hover:bg-opacity-[0.95] font-semibold'
-                            : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary sm:hover:bg-opacity-[0.95]'}"
-                        >
-                          Insider
-                        </a>
-                        <a
-                          href={`/etf/${$indexTicker}/dividends`}
-                          on:click={() => changeSection("dividends")}
-                          class="p-2 px-5 cursor-pointer {displaySection ===
-                          'dividends'
-                            ? 'text-white bg-secondary sm:hover:bg-opacity-[0.95] font-semibold'
-                            : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary sm:hover:bg-opacity-[0.95]'}"
-                        >
-                          Dividends
-                        </a>
-                        <a
-                          href={`/etf/${$indexTicker}/history`}
+                          href={`/index/${$indexTicker}/history`}
                           on:click={() => changeSection("history")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'history'
@@ -940,7 +917,7 @@
 <!--End Login Modal-->
 
 <!--Start SellTrade Modal-->
-<PriceAlert {data} ticker={$indexTicker} assetType="etf" />
+<PriceAlert {data} ticker={$indexTicker} assetType="index" />
 
 <!--Start Add Watchlist Modal-->
 <input type="checkbox" id="addWatchListModal" class="modal-toggle" />

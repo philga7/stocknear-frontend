@@ -1,9 +1,14 @@
 export const load = async ({ locals, params }) => {
   const { apiKey, apiURL } = locals;
   const getETFHoldings = async () => {
-    const postData = {
-      ticker: params.tickerID,
-    };
+
+    console.log(params.tickerID?.toLowerCase())
+
+    let postData = {ticker: params.tickerID,}
+    if (params.tickerID?.toLowerCase() === '^spx') {
+      postData['ticker'] = 'spy';
+    }
+  
     
     // make the POST request to the endpoint
     const response = await fetch(apiURL + "/etf-holdings", {

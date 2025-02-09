@@ -71,9 +71,8 @@ export const load = async ({ params, locals }) => {
 
     const promises = endpoints.map((endpoint) => {
       // Use SPY for specific endpoints when tickerID is ^SPC or ^spc
-      const useSpyTicker = tickerID?.toLowerCase() === "^spc" && 
-        ["/etf-holdings", "/etf-sector-weighting", "/wiim", "/stock-news"].includes(endpoint);
-      
+      const useSpyTicker = tickerID?.toLowerCase() === "^spx" && 
+        ["/etf-holdings", "/etf-sector-weighting", "/wiim", "/stock-news"]?.includes(endpoint);
       return fetchData(apiURL, apiKey, endpoint, useSpyTicker ? "SPY" : tickerID);
     });
 

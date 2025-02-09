@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { stockTicker, etfTicker } from "$lib/store";
+  import { stockTicker, etfTicker, indexTicker } from "$lib/store";
   import InfoModal from "$lib/components/InfoModal.svelte";
   import { get } from "svelte/store";
   import { formatDate } from "$lib/utils";
@@ -35,7 +35,7 @@
   }
 
   $: {
-    if (get(stockTicker) || get(etfTicker)) {
+    if (get(stockTicker) || get(etfTicker) || get(indexTicker)) {
       showFullHistory = false;
       wiim = data?.getWhyPriceMoved || [];
     }

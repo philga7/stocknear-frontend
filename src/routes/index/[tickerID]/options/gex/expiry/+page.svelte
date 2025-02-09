@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { etfTicker, displayCompanyName } from "$lib/store";
+  import { indexTicker, displayCompanyName } from "$lib/store";
   import SEO from "$lib/components/SEO.svelte";
 
   import Infobox from "$lib/components/Infobox.svelte";
@@ -11,7 +11,7 @@
 
 <SEO
   title="Gamma Exposure By Expiry"
-  description={`Analyze gamma exposure for ${$displayCompanyName} (${$etfTicker}) by expiry. Access historical volume, open interest trends, and save options contracts for detailed analysis and insights.`}
+  description={`Analyze gamma exposure for ${$displayCompanyName} (${$indexTicker}) by expiry. Access historical volume, open interest trends, and save options contracts for detailed analysis and insights.`}
 />
 
 <section

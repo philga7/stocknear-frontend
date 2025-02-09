@@ -7,7 +7,7 @@
   import {
     setCache,
     getCache,
-    etfTicker,
+    indexTicker,
     screenWidth,
     displayCompanyName,
   } from "$lib/store";
@@ -479,7 +479,7 @@
       output = cachedData;
     } else {
       const postData = {
-        ticker: $etfTicker,
+        ticker: $indexTicker,
         contract: contractId,
       };
 
@@ -551,8 +551,8 @@
 </script>
 
 <SEO
-  title={`${$displayCompanyName} (${$etfTicker}) - Explore the Hottest Options Contracts | Stocknear`}
-  description={`Analyze historical volume, open interest, and trends in option chains for ${$displayCompanyName} (${$etfTicker}). Discover actionable insights for trading decisions.`}
+  title={`${$displayCompanyName} (${$indexTicker}) - Explore the Hottest Options Contracts | Stocknear`}
+  description={`Analyze historical volume, open interest, and trends in option chains for ${$displayCompanyName} (${$indexTicker}). Discover actionable insights for trading decisions.`}
 />
 
 <section
@@ -828,7 +828,7 @@
       <p class="text-white text-[1rem] sm:text-xl font-semibold cursor-text">
         Contract: <span
           class={optionType === "C" ? "text-[#00FC50]" : "text-[#FF2F1F]"}
-          >{$etfTicker}
+          >{$indexTicker}
           {strikePrice}
           {optionType}
           {dateExpiration} ({daysLeft(dateExpiration)})

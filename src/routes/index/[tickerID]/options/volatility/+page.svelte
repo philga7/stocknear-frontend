@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { etfTicker, displayCompanyName } from "$lib/store";
+  import { indexTicker, displayCompanyName } from "$lib/store";
 
   import Infobox from "$lib/components/Infobox.svelte";
   import SEO from "$lib/components/SEO.svelte";
@@ -10,7 +10,7 @@
 </script>
 
 <SEO
-  title={`${$displayCompanyName} (${$etfTicker}) Volatility · Stocknear`}
+  title={`${$displayCompanyName} (${$indexTicker}) Volatility · Stocknear`}
   description={`Track volatility and implied volatility trends with our interactive chart. Analyze price movements, 30-day implied volatility, and realized volatility to make data-driven trading decisions.`}
 />
 

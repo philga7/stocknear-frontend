@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { stockTicker, etfTicker, setCache, getCache } from "$lib/store";
+  import { stockTicker, etfTicker, indexTicker, setCache, getCache } from "$lib/store";
   import { formatDate } from "$lib/utils";
   import { page } from "$app/stores";
 
@@ -72,7 +72,7 @@
   })();
 
   $: {
-    if ($stockTicker || $etfTicker) {
+    if ($stockTicker || $etfTicker || $indexTicker) {
       rawData = data?.getNews || [];
       rawDataPressRelease = [];
       newsList = rawData?.slice(0, 10) ?? [];
@@ -128,7 +128,8 @@
               >
             </li>
           {/if}
-          {#if !$page?.url?.pathname.includes("etf")}
+          {#if !["etf", "index"].some(sub => $page.url.pathname?.includes(sub))}
+
             <li>
               <button
                 on:click={() => getPressRelease()}

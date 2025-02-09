@@ -1,12 +1,12 @@
 <script lang="ts">
   import {
-    etfTicker,
-    numberOfUnreadNotification,
+    indexTicker,
     displayCompanyName,
   } from "$lib/store";
   import { formatString } from "$lib/utils";
   import Table from "$lib/components/Table/Table.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
+  import SEO from "$lib/components/SEO.svelte";
 
   export let data;
   let rawData = data?.getETFHoldings?.holdings || [];
@@ -57,42 +57,8 @@
   let htmlOutput = generateStatementInfoHTML();
 </script>
 
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""}
-    {$displayCompanyName} ({$etfTicker}) Holdings List · Stocknear
-  </title>
-  <meta
-    name="description"
-    content={`Get the Holdings List of ${$displayCompanyName} (${$etfTicker}).`}
-  />
 
-  <!-- Other meta tags -->
-  <meta
-    property="og:title"
-    content={`${$displayCompanyName} (${$etfTicker}) Holdings List · Stocknear`}
-  />
-  <meta
-    property="og:description"
-    content={`Get the Holdings List of ${$displayCompanyName} (${$etfTicker}).`}
-  />
-  <meta property="og:type" content="website" />
-  <!-- Add more Open Graph meta tags as needed -->
-
-  <!-- Twitter specific meta tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta
-    name="twitter:title"
-    content={`${$displayCompanyName} (${$etfTicker}) Holdings List · Stocknear`}
-  />
-  <meta
-    name="twitter:description"
-    content={`Get the Holdings List of ${$displayCompanyName} (${$etfTicker}).`}
-  />
-  <!-- Add more Twitter meta tags as needed -->
-</svelte:head>
+<SEO title={`${$displayCompanyName} (${$indexTicker}) Holdings List`} description={`Get the Holdings List of ${$displayCompanyName} (${$indexTicker}).`} />
 
 <section
   class="bg-default overflow-hidden text-white h-full min-h-screen mb-20 sm:mb-0 w-full mt-2 sm:mt-0"
@@ -104,7 +70,7 @@
       <div class="mt-5 sm:mt-0 sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto">
         <div class="flex flex-row items-center md:space-x-4 md:border-0">
           <h1 class=" text-xl sm:text-2xl font-bold">
-            {$etfTicker} Holdings List
+            {$indexTicker} Holdings List
           </h1>
           {#if data?.getETFHoldings?.lastUpdate}
             <div

@@ -34,7 +34,7 @@
   let socket;
 
   $etfTicker = data?.getParams;
-  $assetType = "stock";
+  $assetType = "etf";
   $displayCompanyName = data?.companyName;
 
   let isScrolled = false;
@@ -380,9 +380,7 @@
                     class="flex-1 flex-shrink-0 flex flex-row items-center justify-between -mt-2"
                   >
                     <a
-                      href={/^\/(stocks|etf)/.test($previousPage)
-                        ? "/"
-                        : $previousPage || "/"}
+                    href={/^\/(stocks|etf|index)/.test($previousPage || "") ? "/" : $previousPage || "/"}
                     >
                       <svg
                         class="w-5 h-5 inline-block"

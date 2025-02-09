@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { etfTicker } from "$lib/store";
+  import { indexTicker } from "$lib/store";
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
   import { page } from "$app/stores";
 
@@ -11,7 +11,6 @@
     const subSectionMap = {
       overview: "/options",
       "hottest-contracts": "/options/hottest-contracts",
-      "unusual-activity": "/options/unusual-activity",
       volatility: "/options/volatility",
       gex: "/options/gex",
       dex: "/options/dex",
@@ -20,10 +19,10 @@
 
     if (state !== "overview" && subSectionMap[state]) {
       displaySubSection = state;
-      //goto(`/etf/${$etfTicker}${subSectionMap[state]}`);
+      //goto(`/index/${$indexTicker}${subSectionMap[state]}`);
     } else {
       displaySubSection = state;
-      //goto(`/etf/${$etfTicker}/statistics`);
+      //goto(`/index/${$indexTicker}/statistics`);
     }
   }
 
@@ -33,7 +32,6 @@
       const sectionMap = {
         overview: "overview",
         "hottest-contracts": "hottest-contracts",
-        "unusual-activity": "unusual-activity",
         volatility: "volatility",
         gex: "gex",
         dex: "dex",
@@ -64,7 +62,7 @@
           >
             <ul class="flex flex-row items-center w-full text-white">
               <a
-                href={`/etf/${$etfTicker}/options`}
+                href={`/index/${$indexTicker}/options`}
                 on:click={() => changeSubSection("overview")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'overview'
                   ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
@@ -73,17 +71,7 @@
                 Overview
               </a>
               <a
-                href={`/etf/${$etfTicker}/options/unusual-activity`}
-                on:click={() => changeSubSection("unusual-activity")}
-                class="p-2 px-5 cursor-pointer {displaySubSection ===
-                'unusual-activity'
-                  ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
-                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
-              >
-                Unusual Activity
-              </a>
-              <a
-                href={`/etf/${$etfTicker}/options/hottest-contracts`}
+                href={`/index/${$indexTicker}/options/hottest-contracts`}
                 on:click={() => changeSubSection("hottest-contracts")}
                 class="p-2 px-5 cursor-pointer {displaySubSection ===
                 'hottest-contracts'
@@ -93,7 +81,7 @@
                 Hottest Contracts
               </a>
               <a
-                href={`/etf/${$etfTicker}/options/volatility`}
+                href={`/index/${$indexTicker}/options/volatility`}
                 on:click={() => changeSubSection("volatility")}
                 class="p-2 px-5 cursor-pointer {displaySubSection ===
                 'volatility'
@@ -103,7 +91,7 @@
                 Volatility
               </a>
               <a
-                href={`/etf/${$etfTicker}/options/oi`}
+                href={`/index/${$indexTicker}/options/oi`}
                 on:click={() => changeSubSection("oi")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'oi'
                   ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
@@ -113,7 +101,7 @@
               </a>
 
               <a
-                href={`/etf/${$etfTicker}/options/gex`}
+                href={`/index/${$indexTicker}/options/gex`}
                 on:click={() => changeSubSection("gex")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'gex'
                   ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
@@ -122,7 +110,7 @@
                 GEX
               </a>
               <a
-                href={`/etf/${$etfTicker}/options/dex`}
+                href={`/index/${$indexTicker}/options/dex`}
                 on:click={() => changeSubSection("dex")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'dex'
                   ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
@@ -142,7 +130,7 @@
             class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
-              href={`/options-flow?query=${$etfTicker}`}
+              href={`/options-flow?query=${$indexTicker}`}
               class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
             >
               <div class="w-full flex justify-between items-center p-3 mt-3">

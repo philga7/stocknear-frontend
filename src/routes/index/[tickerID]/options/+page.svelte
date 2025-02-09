@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { displayCompanyName, screenWidth, etfTicker } from "$lib/store";
+  import { displayCompanyName, screenWidth, indexTicker } from "$lib/store";
   import DailyStats from "$lib/components/Options/DailyStats.svelte";
   import { Chart } from "svelte-echarts";
   import { abbreviateNumberWithColor, monthNames } from "$lib/utils";
@@ -286,7 +286,7 @@
 
 <SEO
   title="Options Activity"
-  description={`Detailed informaton of unusual options activity for ${$displayCompanyName} (${$etfTicker}).`}
+  description={`Detailed informaton of unusual options activity for ${$displayCompanyName} (${$indexTicker}).`}
 />
 
 <section class="w-full bg-default overflow-hidden text-white min-h-screen">
@@ -358,7 +358,7 @@
 
           {#if optionList?.length !== 0}
             <h3 class="text-xl sm:text-2xl text-white font-bold text-start">
-              Historical {$etfTicker} Data
+              Historical {$indexTicker} Data
             </h3>
 
             <div class="flex justify-start items-center m-auto overflow-x-auto">

@@ -1,7 +1,6 @@
 <script lang="ts">
   import {
-    etfTicker,
-    numberOfUnreadNotification,
+    indexTicker,
     displayCompanyName,
   } from "$lib/store";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
@@ -10,6 +9,7 @@
   import { Button } from "$lib/components/shadcn/button/index.js";
   import { goto } from "$app/navigation";
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
+  import SEO from "$lib/components/SEO.svelte";
 
   import { onMount } from "svelte";
 
@@ -252,7 +252,7 @@
       const a = document.createElement("a");
       a.setAttribute("hidden", "");
       a.setAttribute("href", url);
-      a.setAttribute("download", `${$etfTicker}_price_history.csv`);
+      a.setAttribute("download", `${$indexTicker}_price_history.csv`);
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -272,42 +272,10 @@
   }
 </script>
 
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""}
-    {$displayCompanyName} ({$etfTicker}) Historical Stock Price Data · Stocknear
-  </title>
-  <meta
-    name="description"
-    content={`Get a complete stock price history for ${$etfTicker}, starting from its first trading day. Includes open, high, low, close and volume.`}
-  />
 
-  <!-- Other meta tags -->
-  <meta
-    property="og:title"
-    content={`${$displayCompanyName} (${$etfTicker}) Historical Stock Price Data · Stocknear`}
-  />
-  <meta
-    property="og:description"
-    content={`Get a complete stock price history for NVIDIA, starting from its first trading day. Includes open, high, low, close and volume.`}
-  />
-  <meta property="og:type" content="website" />
-  <!-- Add more Open Graph meta tags as needed -->
+<SEO title={`${$displayCompanyName} (${$indexTicker}) Historical Stock Price Data`} description={`Get a complete stock price history for ${$displayCompanyName} (${$indexTicker}), starting from its first trading day. Includes open, high, low, close and volume.`} />
 
-  <!-- Twitter specific meta tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta
-    name="twitter:title"
-    content={`${$displayCompanyName} (${$etfTicker}) Historical Stock Price Data · Stocknear`}
-  />
-  <meta
-    name="twitter:description"
-    content={`Get a complete stock price history for NVIDIA, starting from its first trading day. Includes open, high, low, close and volume.`}
-  />
-  <!-- Add more Twitter meta tags as needed -->
-</svelte:head>
+
 
 <section
   class="bg-default overflow-hidden text-white h-full min-h-screen mb-20 sm:mb-0 w-full mt-2 sm:mt-0"
@@ -323,7 +291,7 @@
               class="flex flex-col sm:flex-row items-start w-full sm:justify-between md:space-x-4 md:border-0 w-full mb-5"
             >
               <h1 class="text-xl sm:text-2xl font-bold mb-3 sm:mb-0">
-                {$etfTicker} Stock Price History
+                {$indexTicker} Stock Price History
               </h1>
               <div
                 class="flex flex-row items-center ml-auto w-fit mt-2 sm:mt-0"

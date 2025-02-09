@@ -965,20 +965,7 @@
                 ></tr
               >
                 
-                  <tr
-                  class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
-                  ><td
-                    class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-sm sm:text-[1rem]"
-                    >Day's Range</td
-                  >
-                  <td
-                    class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                    >{data?.getStockQuote?.dayLow?.toFixed(2)} - {data?.getStockQuote?.dayHigh?.toFixed(
-                      2,
-                    )}</td
-                  ></tr
-                >
-
+              
                 <tr
                 class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
                 ><td
@@ -1002,6 +989,20 @@
                 >{data?.getStockQuote?.priceAvg50?.toFixed(2)}</td
               ></tr
             >
+
+            <tr
+            class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
+            ><td
+              class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-sm sm:text-[1rem]"
+              >Day's Range</td
+            >
+            <td
+              class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+              >{data?.getStockQuote?.dayLow?.toFixed(2)} - {data?.getStockQuote?.dayHigh?.toFixed(
+                2,
+              )}</td
+            ></tr
+          >
              
                 </tbody>
               </table>
@@ -1046,19 +1047,7 @@
                     ></tr
                   >
      
-                  <tr
-                    class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
-                    ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-sm sm:text-[1rem]"
-                      >52-Week Range</td
-                    >
-                    <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                      >{data?.getStockQuote?.yearLow?.toFixed(2)} - {data?.getStockQuote?.yearHigh?.toFixed(
-                        2,
-                      )}</td
-                    ></tr
-                  >
+                
 
                   <tr
                     class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
@@ -1085,6 +1074,20 @@
                     >{data?.getStockQuote?.priceAvg200?.toFixed(2)}</td
                   ></tr
                 >
+
+                <tr
+                class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
+                ><td
+                  class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-sm sm:text-[1rem]"
+                  >52-Week Range</td
+                >
+                <td
+                  class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+                  >{data?.getStockQuote?.yearLow?.toFixed(2)} - {data?.getStockQuote?.yearHigh?.toFixed(
+                    2,
+                  )}</td
+                ></tr
+              >
 
                 </tbody>
               </table>
