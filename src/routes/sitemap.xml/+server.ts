@@ -22,6 +22,7 @@ const pages = [
   { title: "/list/dividend/dividend-kings" },
   { title: "/list/dividend/dividend-aristocrats" },
   { title: "/list/magnificent-seven" },
+  { title: "/list/most-buybacks" },
   { title: "/list/market-cap/mega-cap-stocks" },
   { title: "/list/market-cap/large-cap-stocks" },
   { title: "/list/market-cap/mid-cap-stocks" },
