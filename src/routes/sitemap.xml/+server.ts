@@ -96,8 +96,12 @@ export async function GET({ locals }) {
     const articles = await pb.collection("articles").getFullList({
         sort: "-created",
       });
+    
+      const tutorials = await pb.collection("tutorials").getFullList({
+        sort: "-created",
+      });
 
-  const body = sitemap(stocks, articles, pages);
+  const body = sitemap(stocks, articles, pages, tutorials);
   const response = new Response(body);
   response.headers.set("Cache-Control", "max-age=0, s-maxage=3600");
   response.headers.set("Content-Type", "application/xml");
@@ -109,6 +113,7 @@ const sitemap = (
   stocks,
   articles,
   pages,
+  tutorials,
 ) => `<?xml version="1.0" encoding="UTF-8" ?>
 <urlset
   xmlns="https://www.sitemaps.org/schemas/sitemap/0.9"
@@ -135,6 +140,15 @@ const sitemap = (
   </url>
   `,
     )
+    .join("")}
+    ${tutorials
+   .map(
+     (item) => `
+ <url>
+   <loc>${website}/learning-center/article/${convertToSlug(item?.title)}</loc>
+ </url>
+ `,
+   )
     .join("")}
   ${stocks
     .map((ticker) => {
