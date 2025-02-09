@@ -61,7 +61,7 @@
       } else if (["BTC", "USD"]?.includes(symbol)) {
         path = "";
       } else {
-        path = `/crypto/${symbol}`;
+        path = `/index/${symbol}`;
       }
     }
     return path;
