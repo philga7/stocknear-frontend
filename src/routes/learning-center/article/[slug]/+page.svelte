@@ -25,8 +25,8 @@
         <article
           class="z-5 relative mx-1 -mt-10 rounded-t-md bg-default p-3 xs:p-4 lg:-mt-16 lg:ml-3 lg:p-5 xl:mx-4"
         >
-          <header class="pb-3 border-b-[2px] border-white w-full min-w-[850px] max-w-[850px]">
-            <h1 class="mb-3 text-3xl font-bold text-white md:text-4xl ">
+          <header class="pb-3 border-b-[2px] border-white w-full sm:min-w-[850px] sm:max-w-[850px]">
+            <h1 class="mb-3 text-2xl sm:text-3xl font-bold text-white md:text-4xl ">
               {article?.title}
             </h1>
             <div class="text-white">
@@ -57,8 +57,10 @@
 
           <div class="text-lg mt-4">
             <div class="content">
+              
               {@html article?.description}
-          
+
+            
 
     
             </div>
