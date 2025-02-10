@@ -453,14 +453,16 @@
             <td
               class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
             >
-              {#if item?.putCallRatio <= 1}
+              {#if item?.putCallRatio <= 1 && item?.putCallRatio !== null}
                 <span class="text-[#00FC50]"
                   >{item?.putCallRatio?.toFixed(2)}</span
                 >
-              {:else}
+              {:else if item?.putCallRatio >= 0 && item?.putCallRatio !== null}
                 <span class="text-[#FF2F1F]"
                   >{item?.putCallRatio?.toFixed(2)}</span
                 >
+              {:else}
+              n/a
               {/if}
             </td>
           </tr>
