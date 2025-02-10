@@ -502,8 +502,10 @@
                                         )
                                       : "n/a"}
                                   </span>
-                                  {#if item?.revenueEst !== null && item?.revenueEst !== null}
-                                    {#if item?.revenueEst / item?.revenuePrior - 1 >= 0}
+                                  {#if item?.revenueEst !== null && item?.revenuePrior !== null && item?.revenuePrior !== 0}
+                                    {#if !isFinite((item?.revenueEst / item?.revenuePrior - 1) * 100)}
+                                      <span class="ml-1"></span>
+                                    {:else if item?.revenueEst / item?.revenuePrior - 1 >= 0}
                                       <span class="ml-1 text-[#22C55E]">
                                         +{(
                                           (item?.revenueEst /

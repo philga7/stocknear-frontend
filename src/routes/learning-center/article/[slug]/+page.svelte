@@ -25,8 +25,12 @@
         <article
           class="z-5 relative mx-1 -mt-10 rounded-t-md bg-default p-3 xs:p-4 lg:-mt-16 lg:ml-3 lg:p-5 xl:mx-4"
         >
-          <header class="pb-3 border-b-[2px] border-white w-full sm:min-w-[850px] sm:max-w-[850px]">
-            <h1 class="mb-3 text-2xl sm:text-3xl font-bold text-white md:text-4xl ">
+          <header
+            class="pb-3 border-b-[2px] border-white w-full sm:min-w-[850px] sm:max-w-[850px]"
+          >
+            <h1
+              class="mb-3 text-2xl sm:text-3xl font-bold text-white md:text-4xl"
+            >
               {article?.title}
             </h1>
             <div class="text-white">
@@ -43,10 +47,10 @@
               </div>
             </div>
             <div class="flex flex-col text-white mt-3">
-              <div class="flex flex-wrap gap-x-2 gap-y-3 ">
-                {#each article?.tags as tags}
+              <div class="flex flex-wrap gap-x-2 gap-y-3">
+                {#each article?.tags || [] as tags}
                   <label
-                    class="px-2 text-sm py-1 text-black rounded bg-white   ml-0"
+                    class="px-2 text-sm py-1 text-black rounded bg-white ml-0"
                   >
                     {tags}
                   </label>
@@ -57,12 +61,7 @@
 
           <div class="text-lg mt-4">
             <div class="content">
-              
               {@html article?.description}
-
-            
-
-    
             </div>
           </div>
         </article>
