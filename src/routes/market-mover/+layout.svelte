@@ -44,12 +44,6 @@
   }
 </script>
 
-<!-- HEADER FOR BETTER SEO -->
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-</svelte:head>
-
 <section
   class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden pb-20 pt-5 px-4 lg:px-3"
 >

@@ -4,7 +4,10 @@
   const emailAddress = "support@stocknear.com";
 </script>
 
-<SEO title="Privacy Policiy" description="" />
+<SEO
+  title="Privacy Policy"
+  description="Learn about how Stocknear protects your privacy and handles your data. Our comprehensive privacy policy outlines our commitment to data security and transparency."
+/>
 
 <section
   class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden pb-20 pt-5 px-4 lg:px-3"

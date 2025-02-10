@@ -10,7 +10,7 @@
   import { Button } from "$lib/components/shadcn/button/index.js";
   import { goto } from "$app/navigation";
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
-
+  import SEO from "$lib/components/SEO.svelte";
   import { onMount } from "svelte";
 
   export let data;
@@ -269,43 +269,12 @@
   }
 </script>
 
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""}
-    {$displayCompanyName} ({$stockTicker}) Historical Stock Price Data ·
-    Stocknear
-  </title>
-  <meta
-    name="description"
-    content={`Get a complete stock price history for ${$stockTicker}, starting from its first trading day. Includes open, high, low, close and volume.`}
-  />
 
-  <!-- Other meta tags -->
-  <meta
-    property="og:title"
-    content={`${$displayCompanyName} (${$stockTicker}) Historical Stock Price Data · Stocknear`}
-  />
-  <meta
-    property="og:description"
-    content={`Get a complete stock price history for NVIDIA, starting from its first trading day. Includes open, high, low, close and volume.`}
-  />
-  <meta property="og:type" content="website" />
-  <!-- Add more Open Graph meta tags as needed -->
 
-  <!-- Twitter specific meta tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta
-    name="twitter:title"
-    content={`${$displayCompanyName} (${$stockTicker}) Historical Stock Price Data · Stocknear`}
-  />
-  <meta
-    name="twitter:description"
-    content={`Get a complete stock price history for NVIDIA, starting from its first trading day. Includes open, high, low, close and volume.`}
-  />
-  <!-- Add more Twitter meta tags as needed -->
-</svelte:head>
+<SEO
+  title={`${$displayCompanyName} (${$stockTicker}) Stock Price History · Stocknear`}
+  description={`Get a complete stock price history for ${$displayCompanyName} (${$stockTicker}), starting from its first trading day. Includes open, high, low, close and volume.`}
+/>
 
 <section
   class="bg-default overflow-hidden text-white h-full min-h-screen mb-20 sm:mb-0 w-full mt-2 sm:mt-0"

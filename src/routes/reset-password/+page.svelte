@@ -2,6 +2,7 @@
   import toast from "svelte-french-toast";
   import { pb } from "$lib/pocketbase";
   import { goto } from "$app/navigation";
+  import SEO from "$lib/components/SEO.svelte";
 
   let loading = false;
   let email: String;
@@ -27,16 +28,12 @@
 
 </script>
 
-<!-- HEADER FOR BETTER SEO -->
-<svelte:head>
-  <meta charset="utf-8" />
-  <title>Reset Password · Stocknear</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta
-    name="description"
-    content="Reset your password to sign in to your stocknear account."
-  />
-</svelte:head>
+
+<SEO
+  title="Reset Password"
+  description="Reset your password to sign in to your Stocknear account."
+/>
+
 
 <div
   class="flex flex-col items-center min-h-screen w-full max-w-3xl m-auto mt-40"

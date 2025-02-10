@@ -18,6 +18,7 @@
   import { GridComponent, TooltipComponent } from "echarts/components";
   import { CanvasRenderer } from "echarts/renderers";
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
+  import SEO from "$lib/components/SEO.svelte";
 
   use([LineChart, BarChart, GridComponent, TooltipComponent, CanvasRenderer]);
 
@@ -256,36 +257,12 @@
   }
 </script>
 
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""} Wallstreetbets
-    Tracker · Stocknear
-  </title>
-  <meta
-    name="description"
-    content={`Track the stocks and discussion of Wallstreetbets in realtime.`}
-  />
 
-  <!-- Other meta tags -->
-  <meta property="og:title" content={`Wallstreetbets Tracker · Stocknear`} />
-  <meta
-    property="og:description"
-    content={`Track the stocks and discussion of Wallstreetbets in realtime.`}
-  />
-  <meta property="og:type" content="website" />
-  <!-- Add more Open Graph meta tags as needed -->
 
-  <!-- Twitter specific meta tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={`Wallstreetbets Tracker · Stocknear`} />
-  <meta
-    name="twitter:description"
-    content={`Track the stocks and discussion of Wallstreetbets in realtime.`}
-  />
-  <!-- Add more Twitter meta tags as needed -->
-</svelte:head>
+<SEO 
+  title="Reddit Stock Tracker - WSB Analytics & Insights"
+  description="Track WallStreetBets stock discussions and trends in real-time. Get detailed analytics, sentiment analysis, and trading insights from Reddit's largest stock community."
+/>
 
 <section
   class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pb-20 pt-5 px-4 lg:px-3"

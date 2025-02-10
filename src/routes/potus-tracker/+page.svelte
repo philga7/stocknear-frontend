@@ -77,6 +77,13 @@
   let activeIdx = 0;
   let subActiveIdx = 0;
 
+  let expandedDescriptions: { [key: string]: boolean } = {};
+
+  function truncateText(text: string, maxLength: number = 250) {
+    if (text.length <= maxLength) return text;
+    return text.slice(0, maxLength) + "...";
+  }
+
   function plotData() {
     const history = data?.getEggPrice?.history || [];
     const dateList = history.map((item) => item?.date ?? null);
@@ -424,7 +431,10 @@
                           </div>
 
                           <span class="text-sm sm:text-[1rem] text-gray-400">
-                            {item.time_formatted} {item.location !== null ? `- ${item?.location}` : ''} 
+                            {item.time_formatted}
+                            {item.location !== null
+                              ? `- ${item?.location}`
+                              : ""}
                           </span>
                         </div>
 
@@ -459,7 +469,9 @@
                     <br />
 
                     {#each items as item, indexB}
-                      <div class="flex flex-col items-start space-y-1 mb-6">
+                      <div
+                        class="flex flex-col items-start space-y-1 mb-6 border-b border-gray-800 pb-4"
+                      >
                         <div class="flex flex-row items-center space-x-2">
                           <div class="relative">
                             <svg
@@ -520,9 +532,25 @@
                           {item?.sentiment}
                         </div>
 
-                        <span class="text-[1rem] ml-7 pt-2"
-                          >{item.description}</span
-                        >
+                        <span class="text-[1rem] ml-7 pt-2">
+                          {#if item.description.length > 150}
+                            {expandedDescriptions[item.title]
+                              ? item.description
+                              : truncateText(item.description)}
+                            <button
+                              on:click={() =>
+                                (expandedDescriptions[item.title] =
+                                  !expandedDescriptions[item.title])}
+                              class="text-blue-400 hover:text-blue-300 ml-1 font-medium"
+                            >
+                              {expandedDescriptions[item.title]
+                                ? "Read less"
+                                : "Read more"}
+                            </button>
+                          {:else}
+                            {item.description}
+                          {/if}
+                        </span>
 
                         <a
                           href={item?.link}

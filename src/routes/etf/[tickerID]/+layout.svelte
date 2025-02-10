@@ -70,20 +70,14 @@
       insider: "/insider",
       options: "/options",
       dividends: "/dividends",
-      statistics: "/statistics",
-      metrics: "metrics",
-      forecast: "/forecast",
-      financials: "/financials",
+      holdings: "/holdings",
       history: "/history",
-      profile: "/profile",
     };
 
     if (state !== "overview" && sectionMap[state]) {
       displaySection = state;
-      //goto(`/etf/${$etfTicker}${sectionMap[state]}`);
     } else {
       displaySection = "overview";
-      //goto(`/etf/${$etfTicker}/`);
     }
   }
 
@@ -342,7 +336,6 @@
       const sectionMap = {
         holdings: "holdings",
         options: "options",
-        options: "options",
         insider: "insider",
         dividends: "dividends",
         history: "history",
@@ -380,7 +373,9 @@
                     class="flex-1 flex-shrink-0 flex flex-row items-center justify-between -mt-2"
                   >
                     <a
-                    href={/^\/(stocks|etf|index)/.test($previousPage || "") ? "/" : $previousPage || "/"}
+                      href={/^\/(stocks|etf|index)/.test($previousPage || "")
+                        ? "/"
+                        : $previousPage || "/"}
                     >
                       <svg
                         class="w-5 h-5 inline-block"

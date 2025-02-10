@@ -7,6 +7,7 @@
   } from "$lib/store";
   import { getPartyForPoliticians } from "$lib/utils";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
+  import SEO from "$lib/components/SEO.svelte";
 
   export let data;
 
@@ -183,43 +184,10 @@
   };
 </script>
 
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""}
-    {$displayCompanyName} ({$etfTicker}) US Congress & Senate Trading ·
-    stocknear
-  </title>
-  <meta
-    name="description"
-    content={`Get the latest US congress & senate trading of ${$displayCompanyName} (${$etfTicker}) from democrates and republicans.`}
-  />
-
-  <!-- Other meta tags -->
-  <meta
-    property="og:title"
-    content={`${$displayCompanyName} (${$etfTicker}) US Congress & Senate Trading · Stocknear`}
-  />
-  <meta
-    property="og:description"
-    content={`Get the latest US congress & senate trading of ${$displayCompanyName} (${$etfTicker}) from democrates and republicans.`}
-  />
-  <meta property="og:type" content="website" />
-  <!-- Add more Open Graph meta tags as needed -->
-
-  <!-- Twitter specific meta tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta
-    name="twitter:title"
-    content={`${$displayCompanyName} (${$etfTicker}) US Congress & Senate Trading · Stocknear`}
-  />
-  <meta
-    name="twitter:description"
-    content={`Get the latest US congress & senate trading of ${$displayCompanyName} (${$etfTicker}) from democrates and republicans.`}
-  />
-  <!-- Add more Twitter meta tags as needed -->
-</svelte:head>
+<SEO
+  title={`${$displayCompanyName} (${$etfTicker}) US Congress & Senate Trading`}
+  description={`Get the latest US congress & senate trading of ${$displayCompanyName} (${$etfTicker}) from democrates and republicans.`}
+/>
 
 <section
   class="w-full bg-default overflow-hidden min-h-screen text-white h-full"
@@ -243,7 +211,7 @@
                 >
                   <!--Start Buy/Sell-->
                   <div
-                    class="flex flex-row items-center flex-wrap w-full px-3 sm:px-4 border border-gray-600 bg-primary rounded-md h-20"
+                    class="flex flex-row items-center flex-wrap w-full px-3 sm:px-4 border border-gray-600 rounded h-20"
                   >
                     <div class="flex flex-col items-start">
                       <span
@@ -305,7 +273,7 @@
                   <!--End Buy/Sell-->
                   <!--Start Dem/Rep-->
                   <div
-                    class="flex flex-row items-center flex-wrap w-full px-3 sm:px-4 border border-gray-600 bg-primary rounded-md h-20"
+                    class="flex flex-row items-center flex-wrap w-full px-3 sm:px-4 border border-gray-600 rounded h-20"
                   >
                     <div class="flex flex-col items-start">
                       <span
@@ -368,10 +336,10 @@
               <!--End Widget-->
 
               <div
-                class="mt-6 flex justify-start items-center w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-scroll"
+                class="mt-6 flex justify-start items-center w-full m-auto rounded-none sm:rounded mb-4 overflow-x-scroll"
               >
                 <table
-                  class="table table-sm sm:table-md table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto"
+                  class="table table-sm sm:table-md table-compact rounded-none sm:rounded w-full bg-table border border-gray-800 m-auto"
                 >
                   <thead>
                     <TableHeader {columns} {sortOrders} {sortData} />
@@ -475,7 +443,7 @@
             <div class="flex justify-center items-center h-80">
               <div class="relative">
                 <label
-                  class="bg-secondary rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                  class="bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                 >
                   <span class="loading loading-spinner loading-md text-gray-400"
                   ></span>

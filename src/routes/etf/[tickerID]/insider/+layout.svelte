@@ -14,14 +14,14 @@
       <div
         class="relative flex justify-center items-start overflow-hidden w-full"
       >
-        <main class="w-full lg:w-3/4">
+        <main class="w-full lg:w-3/4 lg:pr-10">
           <slot />
         </main>
 
-        <aside class="hidden lg:block relative fixed w-1/4 ml-4">
+        <aside class="hidden lg:block relative fixed w-1/4 mt-3">
           {#if newsList?.length !== 0}
             <div
-              class="w-full sm:hover:text-white text-white border border-gray-600 bg-primary rounded-md h-fit pb-4 mt-4 cursor-pointer"
+              class="w-full sm:hover:text-white text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit"
             >
               <div class="p-4 text-sm">
                 <h3 class="text-lg text-white font-semibold mb-3">

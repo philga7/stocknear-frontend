@@ -3,6 +3,7 @@
   import { abbreviateNumber } from "$lib/utils";
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
+  import SEO from "$lib/components/SEO.svelte";
 
   export let data;
 
@@ -85,36 +86,10 @@
   };
 </script>
 
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""} 100
-    Newest ETFs · Stocknear
-  </title>
-  <meta
-    name="description"
-    content={`A list of the 100 most recently launched ETFs on the US stock market, sorted by the inception date.`}
-  />
-
-  <!-- Other meta tags -->
-  <meta property="og:title" content={`100 Newest ETFs · Stocknear`} />
-  <meta
-    property="og:description"
-    content={`A list of the 100 most recently launched ETFs on the US stock market, sorted by the inception date.`}
-  />
-  <meta property="og:type" content="website" />
-  <!-- Add more Open Graph meta tags as needed -->
-
-  <!-- Twitter specific meta tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={`100 Newest ETFs · Stocknear`} />
-  <meta
-    name="twitter:description"
-    content={`A list of the 100 most recently launched ETFs on the US stock market, sorted by the inception date.`}
-  />
-  <!-- Add more Twitter meta tags as needed -->
-</svelte:head>
+<SEO
+  title="New Launches of ETFs"
+  description="A list of the 100 most recently launched ETFs on the US stock market, sorted by the inception date."
+/>
 
 <section
   class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden pb-20 pt-5 px-4 lg:px-3"

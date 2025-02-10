@@ -10,6 +10,7 @@
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import { goto } from "$app/navigation";
   import Infobox from "$lib/components/Infobox.svelte";
+  import SEO from "$lib/components/SEO.svelte";
   export let data;
 
   let analystRating = data?.getAnalystRating ?? {};
@@ -194,42 +195,13 @@
   $: charNumber = $screenWidth < 640 ? 20 : 30;
 </script>
 
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""}
-    {$displayCompanyName} ({$stockTicker}) Analyst Ratings · Stocknear
-  </title>
-  <meta
-    name="description"
-    content={`A list of analyst ratings for Advanced Micro Devices (AMD) stock. See upgrades, downgrades, price targets and more from top Wall Street stock analysts.`}
-  />
 
-  <!-- Other meta tags -->
-  <meta
-    property="og:title"
-    content={`${$displayCompanyName} (${$stockTicker}) Analyst Ratings · Stocknear`}
-  />
-  <meta
-    property="og:description"
-    content={`A list of analyst ratings for Advanced Micro Devices (AMD) stock. See upgrades, downgrades, price targets and more from top Wall Street stock analysts.`}
-  />
-  <meta property="og:type" content="website" />
-  <!-- Add more Open Graph meta tags as needed -->
 
-  <!-- Twitter specific meta tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta
-    name="twitter:title"
-    content={`${$displayCompanyName} (${$stockTicker}) Analyst Ratings · Stocknear`}
-  />
-  <meta
-    name="twitter:description"
-    content={`A list of analyst ratings for Advanced Micro Devices (AMD) stock. See upgrades, downgrades, price targets and more from top Wall Street stock analysts.`}
-  />
-  <!-- Add more Twitter meta tags as needed -->
-</svelte:head>
+<SEO
+  title={`${$displayCompanyName} (${$stockTicker}) Analyst Ratings · Stocknear`}
+  description={`A list of analyst ratings for Advanced Micro Devices (AMD) stock. See upgrades, downgrades, price targets and more from top Wall Street stock analysts.`}
+/>
+
 
 <section
   class="bg-default overflow-hidden text-white h-full min-h-screen mb-40 sm:mb-0 w-full"

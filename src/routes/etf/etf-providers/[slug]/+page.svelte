@@ -6,6 +6,7 @@
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import HoverStockChart from "$lib/components/HoverStockChart.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
+  import SEO from "$lib/components/SEO.svelte";
 
   export let data;
   let rawData = data?.getETFProviderData;
@@ -133,34 +134,10 @@
   let htmlOutput = generateStatementInfoHTML();
 </script>
 
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""}
-    {etfProviderData?.length}
-    {etfProviderName} ETFs - A Complete List · Stocknear
-  </title>
-  <meta name="description" content={``} />
-
-  <!-- Other meta tags -->
-  <meta
-    property="og:title"
-    content={`${etfProviderName} (${etfProviderData?.length}) ETFs - A Complete List`}
-  />
-  <meta property="og:description" content={``} />
-  <meta property="og:type" content="website" />
-  <!-- Add more Open Graph meta tags as needed -->
-
-  <!-- Twitter specific meta tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta
-    name="twitter:title"
-    content={`${etfProviderName} (${etfProviderData?.length}) ETFs - A Complete List`}
-  />
-  <meta name="twitter:description" content={``} />
-  <!-- Add more Twitter meta tags as needed -->
-</svelte:head>
+<SEO
+  title={`${etfProviderName} ETF List: Complete Guide to ${etfProviderData?.length} Exchange Traded Funds`}
+  description={`Explore ${etfProviderName}'s complete ETF lineup of ${etfProviderData?.length} funds with $${abbreviateNumber(totalAssets)} AUM. Compare expense ratios, assets, and performance metrics to find the right ETF for your portfolio.`}
+/>
 
 <section class="w-full overflow-hidden m-auto">
   {#if rawData?.length !== 0}

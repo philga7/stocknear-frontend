@@ -13,6 +13,7 @@
   import { LineChart, BarChart, GaugeChart } from "echarts/charts";
   import { GridComponent, TooltipComponent } from "echarts/components";
   import { CanvasRenderer } from "echarts/renderers";
+  import SEO from "$lib/components/SEO.svelte";
 
   export let data;
   use([
@@ -451,42 +452,12 @@
   }
 </script>
 
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""}
-    {$displayCompanyName} ({$stockTicker}) Forecast Overview · Stocknear
-  </title>
-  <meta
-    name="description"
-    content={`A list of analyst ratings for Advanced Micro Devices (AMD) stock. See upgrades, downgrades, price targets and more from top Wall Street stock analysts.`}
-  />
 
-  <!-- Other meta tags -->
-  <meta
-    property="og:title"
-    content={`${$displayCompanyName} (${$stockTicker}) Forecast Overview · Stocknear`}
-  />
-  <meta
-    property="og:description"
-    content={`A list of analyst ratings for Advanced Micro Devices (AMD) stock. See upgrades, downgrades, price targets and more from top Wall Street stock analysts.`}
-  />
-  <meta property="og:type" content="website" />
-  <!-- Add more Open Graph meta tags as needed -->
 
-  <!-- Twitter specific meta tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta
-    name="twitter:title"
-    content={`${$displayCompanyName} (${$stockTicker}) Forecast Overview · Stocknear`}
-  />
-  <meta
-    name="twitter:description"
-    content={`A list of analyst ratings for Advanced Micro Devices (AMD) stock. See upgrades, downgrades, price targets and more from top Wall Street stock analysts.`}
-  />
-  <!-- Add more Twitter meta tags as needed -->
-</svelte:head>
+<SEO
+  title={`${$displayCompanyName} (${$stockTicker}) Forecast Overview · Stocknear`}
+  description={`A list of analyst ratings for Advanced Micro Devices (AMD) stock. See upgrades, downgrades, price targets and more from top Wall Street stock analysts.`}
+/>
 
 <section class="w-full bg-default overflow-hidden text-white h-full">
   <div class="w-full flex h-full overflow-hidden">

@@ -1,7 +1,7 @@
 <script>
   import { enhance } from "$app/forms";
   import Input from "$lib/components/Input.svelte";
-
+  import SEO from "$lib/components/SEO.svelte";
   import toast from "svelte-french-toast";
 
   export let form;
@@ -57,16 +57,12 @@
   }
 </script>
 
-<!-- HEADER FOR BETTER SEO -->
-<svelte:head>
-  <meta charset="utf-8" />
-  <title>Sign Up · Stocknear</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta
-    name="description"
-    content="Sign Up to stocknear to become part of the largest trading community in the world."
-  />
-</svelte:head>
+
+
+<SEO
+  title="Sign Up"
+  description="Sign Up to Stocknear to become part of the largest trading community in the world."
+/>
 
 <div
   class="relative w-full max-w-3xl mx-auto min-h-screen pb-40 sm:mt-10 {oauthLoading

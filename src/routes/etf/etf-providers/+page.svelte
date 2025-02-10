@@ -5,6 +5,8 @@
 
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
+  import SEO from "$lib/components/SEO.svelte";
+
   export let data;
   let etfProviderList = data?.getAllETFProviders;
 
@@ -83,42 +85,10 @@
   };
 </script>
 
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""} Largest
-    ETF Providers by Assets Under Management · Stocknear
-  </title>
-
-  <meta
-    name="description"
-    content={`A complete list of all the companies that provide exchange-traded funds (ETFs) that are actively traded on the U.S. stock market.`}
-  />
-  <!-- Other meta tags -->
-  <meta
-    property="og:title"
-    content={`Largest ETF Providers by Assets Under Management · Stocknear`}
-  />
-  <meta
-    property="og:description"
-    content={`A complete list of all the companies that provide exchange-traded funds (ETFs) that are actively traded on the U.S. stock market.`}
-  />
-  <meta property="og:type" content="website" />
-  <!-- Add more Open Graph meta tags as needed -->
-
-  <!-- Twitter specific meta tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta
-    name="twitter:title"
-    content={`Largest ETF Providers by Assets Under Management · Stocknear`}
-  />
-  <meta
-    name="twitter:description"
-    content={`A complete list of all the companies that provide exchange-traded funds (ETFs) that are actively traded on the U.S. stock market.`}
-  />
-  <!-- Add more Twitter meta tags as needed -->
-</svelte:head>
+<SEO
+  title="Largest ETF Providers by Assets Under Management"
+  description="A complete list of all the companies that provide exchange-traded funds (ETFs) that are actively traded on the U.S. stock market."
+/>
 
 <section class="w-full overflow-hidden m-auto">
   <Infobox
