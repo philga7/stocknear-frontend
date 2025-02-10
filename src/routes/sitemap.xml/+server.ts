@@ -3,7 +3,7 @@ import { convertToSlug } from "$lib/utils";
 const pages = [
   { title: "/" },
   { title: "/reddit-tracker" },
-  { title: "/list/most-shorted-stocks"},
+  { title: "/list/most-shorted-stocks" },
   { title: "/stocks" },
   { title: "/etf" },
   { title: "/etf/etf-providers" },
@@ -29,10 +29,10 @@ const pages = [
   { title: "/list/market-cap/small-cap-stocks" },
   { title: "/list/market-cap/micro-cap-stocks" },
   { title: "/list/market-cap/nano-cap-stocks" },
-    { title: "/list/highest-open-interest" },
-    { title: "/list/highest-open-interest-change" },
-     { title: "/list/highest-option-iv-rank" },
-      { title: "/list/highest-option-premium" },
+  { title: "/list/highest-open-interest" },
+  { title: "/list/highest-open-interest-change" },
+  { title: "/list/highest-option-iv-rank" },
+  { title: "/list/highest-option-premium" },
   { title: "/list/bitcoin-etfs" },
   { title: "/stock-screener" },
   { title: "/market-news" },
@@ -66,7 +66,7 @@ const pages = [
   { title: "/analysts" },
   { title: "/analysts/top-stocks" },
   { title: "/heatmap" },
-    { title: "/market-flow" },
+  { title: "/market-flow" },
 ];
 
 const website = "https://stocknear.com";
@@ -75,8 +75,6 @@ const website = "https://stocknear.com";
 export async function GET({ locals }) {
   //get all posts;
   const { apiKey, apiURL, pb } = locals;
-
-
 
   const rawData = await fetch(apiURL + "/full-searchbar", {
     method: "GET",
@@ -92,16 +90,15 @@ export async function GET({ locals }) {
     type: item?.type,
   }));
 
+  const articles = await pb.collection("articles").getFullList({
+    sort: "-created",
+  });
 
-    const articles = await pb.collection("articles").getFullList({
-        sort: "-created",
-      });
-    
-      const tutorials = await pb.collection("tutorials").getFullList({
-        sort: "-created",
-      });
+  const tutorials = await pb.collection("tutorials").getFullList({
+    sort: "-created",
+  });
 
-  const body = sitemap(stocks, articles, pages, tutorials);
+  const body = sitemap(stocks, articles, pages);
   const response = new Response(body);
   response.headers.set("Cache-Control", "max-age=0, s-maxage=3600");
   response.headers.set("Content-Type", "application/xml");
@@ -113,7 +110,6 @@ const sitemap = (
   stocks,
   articles,
   pages,
-  tutorials,
 ) => `<?xml version="1.0" encoding="UTF-8" ?>
 <urlset
   xmlns="https://www.sitemaps.org/schemas/sitemap/0.9"
@@ -133,23 +129,23 @@ const sitemap = (
     )
     .join("")}
      ${articles
-    .map(
-      (item) => `
+       .map(
+         (item) => `
   <url>
     <loc>${website}/blog/article/${convertToSlug(item?.title)}</loc>
   </url>
   `,
-    )
-    .join("")}
+       )
+       .join("")}
     ${tutorials
-   .map(
-     (item) => `
+      .map(
+        (item) => `
  <url>
    <loc>${website}/learning-center/article/${convertToSlug(item?.title)}</loc>
  </url>
  `,
-   )
-    .join("")}
+      )
+      .join("")}
   ${stocks
     .map((ticker) => {
       // Determine the path based on the type of the ticker
@@ -158,7 +154,7 @@ const sitemap = (
           ? "/stocks/"
           : ticker.type === "ETF"
             ? "/etf/"
-            : "/index/";
+            : "/crypto/";
       return `
     <url>
       <loc>${website}${path}${ticker.id}</loc>

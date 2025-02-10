@@ -18,9 +18,11 @@
 
   let filterList = [];
   let weekdayFiltered = [];
-  let weekday; // Added declaration
+  let weekday = []; // our unordered week data
   let syncWorker: Worker | undefined;
-  let pagePathName = $page?.url?.pathname;
+  let pagePathName: string = "";
+  // reassign pagePathName reactively
+  $: pagePathName = $page?.url?.pathname || "";
 
   const maxWeeksChange = 6;
   const today = new Date();
@@ -31,20 +33,26 @@
   let sortMode = false;
   $: testList = [];
 
+  // Get calendar data from our load function
   $: economicCalendar = data?.getEconomicCalendar;
+  // Calculate the week days
   $: daysOfWeek = getDaysOfWeek(currentWeek);
+  // Format days for header labels
   $: formattedWeekday = daysOfWeek.map((day) => format(day.date, "EEE, MMM d"));
-  $: {
-    if (!sortMode) {
-      weekday = getWeekdayData(economicCalendar, daysOfWeek);
-      rawData = weekday;
-    }
 
-    // Reapply filters whenever weekday data changes
-    if (filterList.length > 0 && syncWorker) {
-      loadWorker();
-    }
+  // Recalculate weekday data when the economicCalendar or days change – but only when not sorting
+  $: if (!sortMode) {
+    weekday = getWeekdayData(economicCalendar, daysOfWeek);
+    rawData = weekday;
   }
+
+  // Whenever filters are applied and the worker exists, trigger filtering
+  $: if (filterList.length > 0 && syncWorker) {
+    loadWorker();
+  }
+
+  // Create a consolidated derived value for our header and table rendering
+  $: displayWeekData = filterList.length === 0 ? weekday : weekdayFiltered;
 
   const startBoundary = subWeeks(
     startOfWeek(today, { weekStartsOn: 1 }),
@@ -54,13 +62,13 @@
     startOfWeek(today, { weekStartsOn: 1 }),
     maxWeeksChange,
   );
-
   $: previousMax = currentWeek <= startBoundary;
   $: nextMax = currentWeek >= endBoundary;
 
   let currentDate = new Date();
   let selectedWeekday = Math.min((currentDate.getDay() + 6) % 7, 4);
 
+  // Returns an array of weekdays (Monday - Friday) for a given week.
   function getDaysOfWeek(week) {
     const startDate = startOfWeek(week, { weekStartsOn: 1 });
     return Array.from({ length: 5 }, (_, i) => ({
@@ -69,23 +77,27 @@
     }));
   }
 
+  // Retrieves and sorts calendar data for each day.
   function getWeekdayData(calendar, days) {
     if (!calendar) return [];
     return days.map((day) => {
       const dayData = calendar.filter(
         (item) => item.date === format(day.date, "yyyy-MM-dd"),
       );
-      return dayData?.sort(
+      return dayData.sort(
         (a, b) =>
-          new Date(`1970-01-01T${a.time}`) - new Date(`1970-01-01T${b.time}`),
+          new Date(`1970-01-01T${a.time}`).getTime() -
+          new Date(`1970-01-01T${b.time}`).getTime(),
       );
     });
   }
 
+  // Handle messages from our filtering web worker.
   const handleMessage = (event) => {
     weekdayFiltered = event.data?.finalData?.output ?? [];
   };
 
+  // Tell the web worker to filter our data
   const loadWorker = async () => {
     syncWorker?.postMessage({ rawData, filterList });
   };
@@ -115,7 +127,6 @@
       state === "previous"
         ? subWeeks(currentWeek, 1)
         : addWeeks(currentWeek, 1);
-
     if (newWeek >= startBoundary && newWeek <= endBoundary) {
       currentWeek = newWeek;
     }
@@ -123,21 +134,21 @@
 
   function saveRules() {
     try {
-      // Save the version along with the rules
-      localStorage?.setItem(pagePathName, JSON?.stringify(filterList));
+      localStorage?.setItem(pagePathName, JSON.stringify(filterList));
     } catch (e) {
-      console.log("Failed saving filterlist: ", e);
+      console.error("Failed saving filterlist:", e);
     }
   }
+
+  // Notice we now initialize checkedItems just once instead of using a reactive assignment.
+  let checkedItems: Set<any> = new Set();
 
   onMount(async () => {
     try {
       const savedRules = localStorage?.getItem(pagePathName);
-
       if (savedRules) {
         filterList = JSON.parse(savedRules);
       }
-
       checkedItems = new Set(filterList);
 
       if (!syncWorker) {
@@ -146,28 +157,22 @@
         syncWorker.onmessage = handleMessage;
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   });
 
-  function handleInput(event) {
-    const searchQuery = event.target.value?.toLowerCase() || "";
-
+  // Update the global searchQuery (avoid shadowing) and debounce the filtering.
+  function handleInput(event: InputEvent) {
+    searchQuery = (event.target as HTMLInputElement)?.value.toLowerCase() || "";
     setTimeout(() => {
       testList = [];
-
       if (searchQuery.length > 0) {
-        const rawList = listOfRelevantCountries;
-        testList =
-          rawList?.filter((item) => {
-            const index = item?.toLowerCase();
-            return index?.startsWith(searchQuery);
-          }) || [];
+        testList = listOfRelevantCountries.filter((item) =>
+          item.toLowerCase().startsWith(searchQuery),
+        );
       }
     }, 50);
   }
-
-  $: checkedItems = new Set();
 
   async function handleChangeValue(value) {
     if (checkedItems.has(value)) {
@@ -190,23 +195,20 @@
   function handleReset() {
     filterList = [];
     checkedItems = new Set();
-
     economicCalendar = data?.getEconomicCalendar;
     daysOfWeek = getDaysOfWeek(currentWeek);
     formattedWeekday = daysOfWeek.map((day) => format(day.date, "EEE, MMM d"));
     weekday = getWeekdayData(economicCalendar, daysOfWeek);
     rawData = weekday;
-
     currentWeek = startOfWeek(today, { weekStartsOn: 1 });
     selectedWeekday = Math.min((currentDate.getDay() + 6) % 7, 4);
-
     previousMax = currentWeek <= startBoundary;
     nextMax = currentWeek >= endBoundary;
-
     saveRules();
   }
 
-  let columns = [
+  // Static columns (do not change across renders)
+  const columns = [
     { key: "time", label: "Time", align: "left" },
     { key: "country", label: "Country", align: "left" },
     { key: "event", label: "Event", align: "left" },
@@ -228,86 +230,70 @@
 
   const sortData = (key) => {
     sortMode = true;
-    for (const k in sortOrders) {
-      if (k !== key) {
-        sortOrders[k].order = "none";
-      }
-    }
+    Object.keys(sortOrders).forEach((k) => {
+      if (k !== key) sortOrders[k].order = "none";
+    });
 
-    // Cycle through 'none', 'asc', 'desc' for the clicked key
+    // Cycle through "none", "asc", "desc"
     const orderCycle = ["none", "asc", "desc"];
     const currentOrderIndex = orderCycle.indexOf(
       sortOrders[key]?.order || "none",
     );
     sortOrders[key] = {
-      ...(sortOrders[key] || {}),
+      ...sortOrders[key],
       order: orderCycle[(currentOrderIndex + 1) % orderCycle.length],
     };
-    const sortOrder = sortOrders[key]?.order;
 
-    // Reset to original data when 'none' and stop further sorting
+    const sortOrder = sortOrders[key].order;
     if (sortOrder === "none") {
       sortMode = false;
       return;
     }
 
-    // Generic comparison function
     const compareValues = (a, b) => {
       const { type } = sortOrders[key];
       let valueA, valueB;
-
       switch (type) {
         case "date":
-          valueA = new Date(a[key]);
-          valueB = new Date(b[key]);
+          valueA = new Date(a[key]).getTime();
+          valueB = new Date(b[key]).getTime();
           break;
-        case "rating":
         case "string":
-          // Retrieve values
-          valueA = a[key];
-          valueB = b[key];
-
-          // Handle null or undefined values, always placing them at the bottom
-          if (valueA == null && valueB == null) {
-            return 0; // Both are null/undefined, no need to change the order
-          } else if (valueA == null) {
-            return 1; // null goes to the bottom
-          } else if (valueB == null) {
-            return -1; // null goes to the bottom
-          }
-
-          // Convert the values to uppercase for case-insensitive comparison
-          valueA = valueA?.toUpperCase();
-          valueB = valueB?.toUpperCase();
-
-          // Perform the sorting based on ascending or descending order
+          valueA = a[key] ? a[key].toUpperCase() : "";
+          valueB = b[key] ? b[key].toUpperCase() : "";
           return sortOrder === "asc"
-            ? valueA?.localeCompare(valueB)
-            : valueB?.localeCompare(valueA);
+            ? valueA.localeCompare(valueB)
+            : valueB.localeCompare(valueA);
         case "number":
         default:
           valueA = parseFloat(a[key]);
           valueB = parseFloat(b[key]);
           break;
       }
-
-      if (sortOrder === "asc") {
-        return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
-      } else {
-        return valueA > valueB ? -1 : valueA < valueB ? 1 : 0;
-      }
+      return sortOrder === "asc"
+        ? valueA < valueB
+          ? -1
+          : valueA > valueB
+            ? 1
+            : 0
+        : valueA > valueB
+          ? -1
+          : valueA < valueB
+            ? 1
+            : 0;
     };
 
-    // Sort and update the originalData and stockList
-    weekday[selectedWeekday] = [...rawData[selectedWeekday]].sort(
-      compareValues,
-    );
+    // Create a new array copy to trigger reactivity (instead of in-place mutation)
+    weekday = [
+      ...weekday.slice(0, selectedWeekday),
+      [...rawData[selectedWeekday]].sort(compareValues),
+      ...weekday.slice(selectedWeekday + 1),
+    ];
   };
 </script>
 
 <SEO
-  title="Worldwide
-    Economic Calendar"
+  title="Worldwide Economic Calendar"
   description="A list of upcoming economic events on the US stock market, with dates, times and estimation."
 />
 
@@ -337,11 +323,10 @@
           <div class="flex justify-center w-full m-auto h-full overflow-hidden">
             <!-- Content area -->
             <div class="relative flex flex-col flex-1 overflow-hidden">
-              <!-- Cards -->
+              <!-- Header Dates -->
               <div
-                class=" w-full flex flex-row justify-center m-auto items-center"
+                class="w-full flex flex-row justify-center m-auto items-center"
               >
-                <!-- Start Columns -->
                 <label
                   on:click={() => changeWeek("previous")}
                   class="{previousMax
@@ -352,13 +337,14 @@
                     class="w-6 h-6 m-auto rotate-180"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
-                    ><path
+                  >
+                    <path
                       fill="white"
                       d="M8.025 22L6.25 20.225L14.475 12L6.25 3.775L8.025 2l10 10l-10 10Z"
-                    /></svg
-                  >
+                    />
+                  </svg>
                 </label>
-                {#each filterList?.length === 0 ? weekday : weekdayFiltered as day, index}
+                {#each displayWeekData as day, index (formattedWeekday[index])}
                   <div
                     class="w-full text-white {index === selectedWeekday
                       ? ''
@@ -366,13 +352,13 @@
                   >
                     <label
                       on:click={() => toggleDate(index)}
-                      class=" m-auto w-full cursor-pointer h-16 {index ===
+                      class="m-auto w-full cursor-pointer h-16 {index ===
                       selectedWeekday
                         ? 'bg-white text-black font-semibold'
                         : ''} rounded sm:rounded-none flex bg-default border border-gray-600 mb-3"
                     >
                       <div
-                        class=" flex flex-row justify-center items-center w-full"
+                        class="flex flex-row justify-center items-center w-full"
                       >
                         <label
                           on:click={() => clickWeekday("previous", index)}
@@ -382,18 +368,19 @@
                             class="w-8 h-8 inline-block rotate-180"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
-                            ><path
+                          >
+                            <path
                               fill="black"
                               d="M8.025 22L6.25 20.225L14.475 12L6.25 3.775L8.025 2l10 10l-10 10Z"
-                            /></svg
-                          >
+                            />
+                          </svg>
                         </label>
                         <div
                           class="flex flex-col items-center truncate m-auto p-1"
                         >
                           <span class="text-md">{formattedWeekday[index]}</span>
-                          <span class="text-[1rem] sm:text-sm m-auto pt-1 pb-1">
-                            {day?.length} Events</span
+                          <span class="text-[1rem] sm:text-sm m-auto pt-1 pb-1"
+                            >{day?.length} Events</span
                           >
                         </div>
                         <label
@@ -404,11 +391,12 @@
                             class="w-8 h-8 inline-block"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
-                            ><path
+                          >
+                            <path
                               fill="black"
                               d="M8.025 22L6.25 20.225L14.475 12L6.25 3.775L8.025 2l10 10l-10 10Z"
-                            /></svg
-                          >
+                            />
+                          </svg>
                         </label>
                       </div>
                     </label>
@@ -424,14 +412,16 @@
                     class="w-6 h-6 m-auto"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
-                    ><path
+                  >
+                    <path
                       fill="white"
                       d="M8.025 22L6.25 20.225L14.475 12L6.25 3.775L8.025 2l10 10l-10 10Z"
-                    /></svg
-                  >
+                    />
+                  </svg>
                 </label>
               </div>
 
+              <!-- Dropdown Filters -->
               <div
                 class="flex flex-row items-center w-full sm:w-fit m-auto sm:m-0 pt-6 pb-3"
               >
@@ -467,32 +457,28 @@
                         class="relative sticky z-40 focus:outline-none -top-1"
                         tabindex="0"
                         role="menu"
-                        style=""
                       >
                         <input
                           bind:value={searchQuery}
                           on:input={handleInput}
                           autocomplete="off"
-                          class=" absolute fixed sticky w-full border-0 bg-default border-b border-gray-200
-          focus:border-gray-200 focus:ring-0 text-white placeholder:text-gray-300"
+                          class="absolute sticky w-full border-0 bg-default border-b border-gray-200 focus:border-gray-200 focus:ring-0 text-white placeholder:text-gray-300"
                           type="search"
                           placeholder="Search..."
                         />
                       </div>
                       <DropdownMenu.Group>
-                        {#each testList.length > 0 && searchQuery?.length > 0 ? testList : searchQuery?.length > 0 && testList?.length === 0 ? [] : listOfRelevantCountries as item}
+                        {#each searchQuery.length > 0 ? testList : listOfRelevantCountries as item}
                           <DropdownMenu.Item class="sm:hover:bg-primary">
                             <div class="flex items-center">
                               <label
-                                on:click={() => {
-                                  handleChangeValue(item);
-                                }}
+                                on:click={() => handleChangeValue(item)}
                                 class="cursor-pointer text-white"
                                 for={item}
                               >
                                 <input
                                   type="checkbox"
-                                  checked={checkedItems?.has(item)}
+                                  checked={checkedItems.has(item)}
                                 />
                                 <span class="ml-2">{item}</span>
                               </label>
@@ -507,7 +493,7 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="border-gray-600 border bg-default sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
+                        class="border-gray-600 border bg-default sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
                       >
                         <span class="truncate text-white"
                           >Filter Importance</span
@@ -534,41 +520,25 @@
                         class="relative sticky z-40 focus:outline-none -top-1"
                         tabindex="0"
                         role="menu"
-                        style=""
                       ></div>
                       <DropdownMenu.Group>
                         {#each [1, 2, 3] as i}
                           <DropdownMenu.Item class="sm:hover:bg-primary">
                             <div class="flex items-center">
                               <label
-                                on:click={() => {
-                                  handleChangeValue(i);
-                                }}
+                                on:click={() => handleChangeValue(i)}
                                 class="flex flex-row items-center cursor-pointer text-white"
                                 for={i}
                               >
                                 <input
                                   type="checkbox"
-                                  checked={checkedItems?.has(i)}
+                                  checked={checkedItems.has(i)}
                                 />
                                 <div class="ml-2 flex flex-row items-center">
                                   {#if i > 0}
-                                    {#each Array(i).fill() as _, index}
+                                    {#each Array(i) as _}
                                       <svg
                                         class="w-4 h-4 text-[#FBCE3C]"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="currentColor"
-                                        viewBox="0 0 22 20"
-                                      >
-                                        <path
-                                          d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"
-                                        />
-                                      </svg>
-                                    {/each}
-                                    {#each Array(3 - i).fill() as _}
-                                      <svg
-                                        class="w-4 h-4 text-gray-300 dark:text-gray-500"
                                         aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="currentColor"
@@ -589,34 +559,35 @@
                     </DropdownMenu.Content>
                   </DropdownMenu.Root>
 
-                  {#if filterList?.length !== 0}
+                  {#if filterList.length !== 0}
                     <Button
-                      on:click={() => handleReset()}
-                      class="w-fit border-gray-600 border bg-default sm:hover:bg-primary ease-out  flex flex-row justify-start items-center px-3 py-2 text-white rounded-md truncate"
+                      on:click={handleReset}
+                      class="w-fit border-gray-600 border bg-default sm:hover:bg-primary ease-out flex flex-row justify-start items-center px-3 py-2 text-white rounded-md truncate"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         class="inline-block w-4 h-4 mr-2"
                         viewBox="0 0 21 21"
-                        ><g
+                      >
+                        <g
                           fill="none"
-                          fill-rule="evenodd"
                           stroke="currentColor"
                           stroke-linecap="round"
                           stroke-linejoin="round"
-                          ><path d="M3.578 6.487A8 8 0 1 1 2.5 10.5" /><path
-                            d="M7.5 6.5h-4v-4"
-                          /></g
-                        ></svg
-                      >
+                        >
+                          <path d="M3.578 6.487A8 8 0 1 1 2.5 10.5" />
+                          <path d="M7.5 6.5h-4v-4" />
+                        </g>
+                      </svg>
                       Reset All
                     </Button>
                   {/if}
                 </div>
               </div>
 
+              <!-- Events Table -->
               <div class="z-0 mb-40">
-                {#each filterList?.length === 0 ? weekday : weekdayFiltered as day, index}
+                {#each displayWeekData as day, index}
                   {#if index === selectedWeekday}
                     {#if day?.length !== 0}
                       <div class="flex flex-row items-center mt-5">
@@ -624,19 +595,15 @@
                           {formattedWeekday[index]?.split(", ")[1]} · {day?.length}
                           Events
                         </h2>
-                        {#if filterList?.length !== 0}
+                        {#if filterList.length !== 0}
                           <div
                             class="ml-auto text-[1rem] sm:text-lg flex flex-row items-center relative block rounded-md px-2 py-1 focus:outline-none"
                           >
                             <span class="text-white">Filters</span>
                             <span
-                              class="ml-2 rounded-full avatar w-5 h-5 text-xs font-semibold text-white text-center flex-shrink-0
-                                                  flex items-center justify-center bg-red-500 {filterList?.length !==
-                              0
-                                ? 'bg-red-500'
-                                : 'bg-gray-600'}"
+                              class="ml-2 rounded-full avatar w-5 h-5 text-xs font-semibold text-white text-center flex-shrink-0 flex items-center justify-center bg-red-500"
                             >
-                              {filterList?.length}
+                              {filterList.length}
                             </span>
                           </div>
                         {/if}
@@ -651,16 +618,14 @@
                           </thead>
                           <tbody>
                             {#each day as item}
-                              <!-- row -->
                               <tr
                                 class="sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] odd:bg-odd border border-gray-800"
                               >
                                 <td class="text-white text-sm sm:text-[1rem]">
-                                  <label class="p-1.5 rounded-md">
-                                    {item?.time}
-                                  </label>
+                                  <label class="p-1.5 rounded-md"
+                                    >{item?.time}</label
+                                  >
                                 </td>
-
                                 <td
                                   class="flex flex-row items-center text-sm sm:text-[1rem] whitespace-nowrap"
                                 >
@@ -670,93 +635,98 @@
                                       class="w-4 h-4 sm:w-6 sm:h-6"
                                       xmlns="http://www.w3.org/2000/svg"
                                       viewBox="0 0 512 512"
-                                      ><mask id="circleFlagsEu0"
-                                        ><circle
+                                    >
+                                      <mask id="circleFlagsEu0">
+                                        <circle
                                           cx="256"
                                           cy="256"
                                           r="256"
                                           fill="#fff"
-                                        /></mask
-                                      ><g mask="url(#circleFlagsEu0)"
-                                        ><path
+                                        />
+                                      </mask>
+                                      <g mask="url(#circleFlagsEu0)">
+                                        <path
                                           fill="#0052b4"
                                           d="M0 0h512v512H0z"
-                                        /><path
+                                        />
+                                        <path
                                           fill="#ffda44"
                                           d="m256 100.2l8.3 25.5H291l-21.7 15.7l8.3 25.6l-21.7-15.8l-21.7 15.8l8.3-25.6l-21.7-15.7h26.8zm-110.2 45.6l24 12.2l18.9-19l-4.2 26.5l23.9 12.2l-26.5 4.2l-4.2 26.5l-12.2-24l-26.5 4.3l19-19zM100.2 256l25.5-8.3V221l15.7 21.7l25.6-8.3l-15.8 21.7l15.8 21.7l-25.6-8.3l-15.7 21.7v-26.8zm45.6 110.2l12.2-24l-19-18.9l26.5 4.2l12.2-23.9l4.2 26.5l26.5 4.2l-24 12.2l4.3 26.5l-19-19zM256 411.8l-8.3-25.5H221l21.7-15.7l-8.3-25.6l21.7 15.8l21.7-15.8l-8.3 25.6l21.7 15.7h-26.8zm110.2-45.6l-24-12.2l-18.9 19l4.2-26.5l-23.9-12.2l26.5-4.2l4.2-26.5l12.2 24l26.5-4.3l-19 19zM411.8 256l-25.5 8.3V291l-15.7-21.7l-25.6 8.3l15.8-21.7l-15.8-21.7l25.6 8.3l15.7-21.7v26.8zm-45.6-110.2l-12.2 24l19 18.9l-26.5-4.2l-12.2 23.9l-4.2-26.5l-26.5-4.2l24-12.2l-4.3-26.5l19 19z"
-                                        /></g
-                                      ></svg
-                                    >
+                                        />
+                                      </g>
+                                    </svg>
                                   {:else if item?.country === "UK"}
                                     <svg
                                       style="clip-path: circle(50%);"
                                       class="w-4 h-4 sm:w-6 sm:h-6"
                                       xmlns="http://www.w3.org/2000/svg"
                                       viewBox="0 0 512 512"
-                                      ><mask id="circleFlagsUk0"
-                                        ><circle
+                                    >
+                                      <mask id="circleFlagsUk0">
+                                        <circle
                                           cx="256"
                                           cy="256"
                                           r="256"
                                           fill="#fff"
-                                        /></mask
-                                      ><g mask="url(#circleFlagsUk0)"
-                                        ><path
+                                        />
+                                      </mask>
+                                      <g mask="url(#circleFlagsUk0)">
+                                        <path
                                           fill="#eee"
                                           d="m0 0l8 22l-8 23v23l32 54l-32 54v32l32 48l-32 48v32l32 54l-32 54v68l22-8l23 8h23l54-32l54 32h32l48-32l48 32h32l54-32l54 32h68l-8-22l8-23v-23l-32-54l32-54v-32l-32-48l32-48v-32l-32-54l32-54V0l-22 8l-23-8h-23l-54 32l-54-32h-32l-48 32l-48-32h-32l-54 32L68 0z"
-                                        /><path
+                                        />
+                                        <path
                                           fill="#0052b4"
                                           d="M336 0v108L444 0Zm176 68L404 176h108zM0 176h108L0 68ZM68 0l108 108V0Zm108 512V404L68 512ZM0 444l108-108H0Zm512-108H404l108 108Zm-68 176L336 404v108z"
-                                        /><path
+                                        />
+                                        <path
                                           fill="#d80027"
                                           d="M0 0v45l131 131h45zm208 0v208H0v96h208v208h96V304h208v-96H304V0zm259 0L336 131v45L512 0zM176 336L0 512h45l131-131zm160 0l176 176v-45L381 336z"
-                                        /></g
-                                      ></svg
-                                    >
+                                        />
+                                      </g>
+                                    </svg>
                                   {:else}
                                     <img
                                       style="clip-path: circle(50%);"
                                       class="w-4 h-4 sm:w-6 sm:h-6"
                                       src={`https://hatscripts.github.io/circle-flags/flags/${item?.countryCode}.svg`}
+                                      loading="lazy"
+                                      alt="{item?.country} flag"
                                     />
                                   {/if}
-                                  <span class="text-white ml-2">
-                                    {item?.country}
-                                  </span>
+                                  <span class="text-white ml-2"
+                                    >{item?.country}</span
+                                  >
                                 </td>
-
                                 <td
                                   class="text-start text-white text-sm sm:text-[1rem] whitespace-nowrap"
                                 >
                                   {item?.event?.length > 40
-                                    ? item?.event?.slice(0, 40) + "..."
+                                    ? item?.event.slice(0, 40) + "..."
                                     : item?.event}
                                 </td>
-
                                 <td
                                   class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
                                 >
-                                  {item?.actual !== (null || "")
+                                  {item?.actual !== null && item?.actual !== ""
                                     ? abbreviateNumber(item?.actual)
                                     : "-"}
                                 </td>
-
                                 <td
                                   class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
                                 >
-                                  {item?.consensus !== (null || "")
+                                  {item?.consensus !== null &&
+                                  item?.consensus !== ""
                                     ? abbreviateNumber(item?.consensus)
                                     : "-"}
                                 </td>
-
                                 <td
                                   class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
                                 >
-                                  {item?.prior !== (null || "")
+                                  {item?.prior !== null && item?.prior !== ""
                                     ? abbreviateNumber(item?.prior)
                                     : "-"}
                                 </td>
-
                                 <td
                                   class="text-white text-start text-sm sm:text-[1rem] whitespace-nowrap"
                                 >
@@ -818,7 +788,7 @@
             class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
-              href={"/earnings-calendar"}
+              href="/earnings-calendar"
               class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
             >
               <div class="w-full flex justify-between items-center p-3 mt-3">
@@ -827,9 +797,9 @@
                 </h2>
                 <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
               </div>
-              <span class="text-white p-3 ml-3 mr-3">
-                Get the latest Earnings of companies
-              </span>
+              <span class="text-white p-3 ml-3 mr-3"
+                >Get the latest Earnings of companies</span
+              >
             </a>
           </div>
 
@@ -837,7 +807,7 @@
             class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
-              href={"/dividends-calendar"}
+              href="/dividends-calendar"
               class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
             >
               <div class="w-full flex justify-between items-center p-3 mt-3">
@@ -846,9 +816,9 @@
                 </h2>
                 <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
               </div>
-              <span class="text-white p-3 ml-3 mr-3">
-                Get the latest dividend announcement
-              </span>
+              <span class="text-white p-3 ml-3 mr-3"
+                >Get the latest dividend announcement</span
+              >
             </a>
           </div>
         </aside>

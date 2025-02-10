@@ -7,8 +7,8 @@
 </script>
 
 <SEO
-  title="Data Disclaimer"
-  description="All data shown on this website is for informational purposes only and should not be relied upon to make trading or investing decisions."
+  title="Data Disclaimer | StockNear - Financial Data Sources & Accuracy"
+  description="Comprehensive information about our financial data sources, accuracy standards, and usage guidelines for stock market data, analyst estimates, and financial metrics."
 />
 
 <section
@@ -36,11 +36,14 @@
           <div class="w-full bg-default m-auto">
             <div>
               <p class="text-white mb-5 text-[1rem] sm:text-lg">
-                The data on this site is for informational purposes only and
-                should not be used for trading or investment decisions.
+                The financial data presented on Stocknear is provided for
+                informational and educational purposes only. This information
+                should not be construed as financial advice or used as the sole
+                basis for trading or investment decisions.
                 <br /><br />
-                We strive for accuracy and quality. If you spot errors, please contact
-                us via
+                We maintain rigorous standards for data accuracy and quality assurance.
+                If you identify any discrepancies or require clarification, please
+                reach out to us via
                 <a
                   href={discordURL}
                   target="_blank"
@@ -49,7 +52,7 @@
                 >
                   Discord
                 </a>
-                or email us at
+                or contact our support team at
                 <a
                   href="mailto:{emailAddress}"
                   class="text-blue-400 hover:underline"
@@ -59,86 +62,103 @@
               </p>
 
               <h2 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
-                Stock Charts
+                Market Data & Stock Charts
               </h2>
               <p class="text-white mb-10 mt-5 text-[1rem] sm:text-lg">
-                Intraday and historical stock chart data are provided by
+                Our comprehensive market data and real-time stock charts are
+                powered by
                 <a
                   href="https://site.financialmodelingprep.com/pricing-plans?couponCode=stocknear"
                   target="_blank"
                   rel="noopener noreferrer"
                   class="text-blue-400 hover:underline"
                 >
-                  FMP
-                </a>.
+                  Financial Modeling Prep (FMP)
+                </a>, a leading provider of financial data services. This
+                includes intraday pricing, historical data, and technical
+                indicators.
               </p>
 
               <h2 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
-                Stocks Covered
+                Market Coverage
               </h2>
               <p class="text-white mb-10 mt-5 text-[1rem] sm:text-lg">
-                Stocknear covers all stocks and ETFs listed on major US
-                exchanges (NASDAQ, NYSE, NYSE American, NYSE Arca) and many OTC
-                stocks. We also include international companies trading on US
-                exchanges and aim to add global stock exchanges soon.
+                Stocknear provides comprehensive coverage of securities listed
+                on major U.S. exchanges, including NASDAQ, NYSE, NYSE American,
+                and NYSE Arca. Our database encompasses stocks, ETFs, ADRs, and
+                select OTC securities. We are actively expanding our coverage to
+                include additional global exchanges and financial instruments.
               </p>
 
               <h2 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
-                Historical Financials
+                Financial Fundamentals
               </h2>
               <p class="text-white mb-10 mt-5 text-[1rem] sm:text-lg">
-                Fundamental financial data is sourced from
+                Our fundamental financial data is sourced from
                 <a
                   href="https://site.financialmodelingprep.com/pricing-plans?couponCode=stocknear"
                   target="_blank"
                   rel="noopener noreferrer"
                   class="text-blue-400 hover:underline"
                 >
-                  FMP
-                </a>, based on official SEC filings (10-K, 10-Q). Data is
-                updated daily, but delays may occur if companies file late. All
-                displayed data is official, audited, and SEC-submitted.
+                  Financial Modeling Prep
+                </a>
+                and is derived from official SEC filings (Forms 10-K, 10-Q, and 8-K).
+                While our systems update this information daily, there may be inherent
+                delays due to standard SEC filing windows and corporate reporting
+                schedules. All financial data presented is based on official, audited
+                company submissions to regulatory authorities.
               </p>
 
               <h2 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
-                Price Targets and Analyst Estimates
+                Analyst Coverage & Market Projections
               </h2>
               <p class="text-white mb-10 mt-5 text-[1rem] sm:text-lg">
-                Price targets and ratings are from Benzinga, sourced from Wall
-                Street analysts. Revenue and EPS forecasts come from Benzinga
-                and <a
+                Our analyst coverage integrates data from multiple authoritative
+                sources. Price targets and analyst ratings are provided by
+                Benzinga, representing consensus views from leading Wall Street
+                analysts. Revenue projections and EPS forecasts are aggregated
+                from both Benzinga and
+                <a
                   href="https://site.financialmodelingprep.com/pricing-plans?couponCode=stocknear"
                   target="_blank"
                   rel="noopener noreferrer"
                   class="text-blue-400 hover:underline"
                 >
-                  FMP
-                </a>. Analyst accuracy and performance metrics are also provided
-                by Benzinga. Differences across sources may occur but are
-                directionally consistent. Use this information cautiously as
-                predictions are often inaccurate.
+                  Financial Modeling Prep
+                </a>. While we strive to present the most accurate forecasts,
+                users should note that market predictions are inherently
+                uncertain and should be considered as part of a broader
+                investment research process.
               </p>
 
               <h2 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
-                ETF Holdings
+                ETF Analytics
               </h2>
               <p class="text-white mb-10 mt-5 text-[1rem] sm:text-lg">
-                Most ETF holdings data is provided by <a
+                Our ETF holdings data and analytics are provided through our
+                partnership with
+                <a
                   href="https://site.financialmodelingprep.com/pricing-plans?couponCode=stocknear"
                   target="_blank"
                   rel="noopener noreferrer"
                   class="text-blue-400 hover:underline"
                 >
-                  FMP
-                </a>.
+                  Financial Modeling Prep
+                </a>, ensuring accurate and timely information on fund
+                compositions, allocations, and performance metrics.
               </p>
 
               <h2 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
-                Options Data
+                Options Market Data
               </h2>
               <p class="text-white mb-10 mt-5 text-[1rem] sm:text-lg">
-                Options flow data is sourced from Benzinga via OPRA. Individual
-                ticker options data is from Intrinio, also sourced from OPRA.
+                Our options market data infrastructure combines real-time
+                options flow information from Benzinga and individual options
+                chain data from Intrinio, both sourced through the Options Price
+                Reporting Authority (OPRA). This provides comprehensive coverage
+                of options market activity and pricing across all major
+                exchanges.
               </p>
             </div>
           </div>
