@@ -120,7 +120,7 @@
                             class="pr-0.5 mt-2 flex flex-row items-center w-full text-sm"
                           >
                             <div class="">
-                              {item?.date?.length !== undefined
+                              {item?.date !== undefined
                                 ? new Date(item?.date)?.toLocaleString(
                                     "en-US",
                                     {
@@ -197,27 +197,37 @@
                       ></td><td
                         class="border-primary px-3.5 py-0.5 border-t border-l rounded-tl-md px-4 last:pr-11 w-17 last:w-24.5 border-l px-1 text-right"
                         ><span class="text-white text-sm sm:text-[1rem]"
-                          >{item?.forward_2_days_close?.toFixed(2)}</span
+                          >{item?.forward_2_days_close !== undefined
+                            ? item?.forward_2_days_close?.toFixed(2)
+                            : "n/a"}</span
                         ></td
                       ><td
                         class="border-primary px-3.5 py-0.5 border-t px-4 last:pr-11 w-17 last:w-24.5 px-1 text-right"
                         ><span class="text-white text-sm sm:text-[1rem]"
-                          >{item?.forward_3_days_close?.toFixed(2)}</span
+                          >{item?.forward_3_days_close !== undefined
+                            ? item?.forward_3_days_close?.toFixed(2)
+                            : "n/a"}</span
                         ></td
                       ><td
                         class="border-primary px-3.5 py-0.5 border-t px-4 last:pr-11 w-17 last:w-24.5 px-1 text-right"
                         ><span class="text-white text-sm sm:text-[1rem]"
-                          >{item?.forward_4_days_close?.toFixed(2)}</span
+                          >{item?.forward_4_days_close !== undefined
+                            ? item?.forward_4_days_close?.toFixed(2)
+                            : "n/a"}</span
                         ></td
                       ><td
                         class="border-primary px-3.5 py-0.5 border-t border-l px-4 last:pr-11 w-17 last:w-24.5 px-1 text-right"
                         ><span class="text-white text-sm sm:text-[1rem]"
-                          >{item?.forward_6_days_close?.toFixed(2)}</span
+                          >{item?.forward_6_days_close !== undefined
+                            ? item?.forward_6_days_close?.toFixed(2)
+                            : "n/a"}</span
                         ></td
                       ><td
                         class="border-primary px-3.5 py-0.5 border-t border-r px-4 last:pr-11 w-17 last:w-24.5 px-1 text-right"
                         ><span class="text-white text-sm sm:text-[1rem]"
-                          >{item?.backward_4_days_close?.toFixed(2)}</span
+                          >{item?.backward_4_days_close
+                            ? item?.backward_4_days_close?.toFixed(2)
+                            : "n/a"}</span
                         ></td
                       ></tr
                     >
@@ -332,10 +342,12 @@
                           class="w-full text-sm sm:text-[1rem] items-baseline justify-end whitespace-nowrap {item?.forward_2_days_change_percent >=
                           0
                             ? "text-positive before:content-['+']"
-                            : 'text-negative'}"
-                          >{item?.forward_2_days_change_percent?.toFixed(
-                            2,
-                          )}%<span class="w-0 text-center"></span></span
+                            : item?.forward_2_days_change_percent < 0
+                              ? 'text-negative'
+                              : 'text-white'}"
+                          >{item?.forward_2_days_change_percent !== undefined
+                            ? item?.forward_2_days_change_percent + "%"
+                            : "n/a"}<span class="w-0 text-center"></span></span
                         ></td
                       ><td
                         class="px-4 last:pr-11 w-17 last:w-24.5 border-primary px-3.5 py-0.5 px-1 text-right"
@@ -343,10 +355,12 @@
                           class="w-full text-sm sm:text-[1rem] items-baseline justify-end whitespace-nowrap {item?.forward_3_days_change_percent >=
                           0
                             ? "text-positive before:content-['+']"
-                            : 'text-negative'}"
-                          >{item?.forward_3_days_change_percent?.toFixed(
-                            2,
-                          )}%<span class="w-0 text-center"></span></span
+                            : item?.forward_3_days_change_percent < 0
+                              ? 'text-negative'
+                              : 'text-white'}"
+                          >{item?.forward_3_days_change_percent !== undefined
+                            ? item?.forward_3_days_change_percent + "%"
+                            : "n/a"}<span class="w-0 text-center"></span></span
                         ></td
                       ><td
                         class="px-4 last:pr-11 w-17 last:w-24.5 border-primary px-3.5 py-0.5 px-1 text-right"
@@ -354,10 +368,12 @@
                           class="w-full text-sm sm:text-[1rem] items-baseline justify-end whitespace-nowrap {item?.forward_4_days_change_percent >=
                           0
                             ? "text-positive before:content-['+']"
-                            : 'text-negative'}"
-                          >{item?.forward_4_days_change_percent?.toFixed(
-                            2,
-                          )}%<span class="w-0 text-center"></span></span
+                            : item?.forward_4_days_change_percent < 0
+                              ? 'text-negative'
+                              : 'text-white'}"
+                          >{item?.forward_4_days_change_percent !== undefined
+                            ? item?.forward_4_days_change_percent + "%"
+                            : "n/a"}<span class="w-0 text-center"></span></span
                         ></td
                       ><td
                         class="px-4 last:pr-11 w-17 last:w-24.5 border-primary px-3.5 py-0.5 border-l px-1 text-right"
@@ -365,10 +381,12 @@
                           class="w-full text-sm sm:text-[1rem] items-baseline justify-end whitespace-nowrap {item?.forward_6_days_change_percent >=
                           0
                             ? "text-positive before:content-['+']"
-                            : 'text-negative'}"
-                          >{item?.forward_6_days_change_percent?.toFixed(
-                            2,
-                          )}%<span class="w-0 text-center"></span></span
+                            : item?.forward_6_days_change_percent < 0
+                              ? 'text-negative'
+                              : 'text-white'}"
+                          >{item?.forward_6_days_change_percent !== undefined
+                            ? item?.forward_6_days_change_percent + "%"
+                            : "n/a"}<span class="w-0 text-center"></span></span
                         ></td
                       ><td
                         class="px-4 last:pr-11 w-17 last:w-24.5 border-primary px-3.5 py-0.5 border-r px-1 text-right"
