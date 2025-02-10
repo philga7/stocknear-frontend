@@ -1,6 +1,6 @@
 export const load = async ({ locals }) => {
-    const { apiKey, apiURL} = locals;
-   const getNews = async () => {
+  const { apiKey, apiURL } = locals;
+  const getNews = async () => {
     const postData = { newsType: "ipo-news" };
     // make the POST request to the endpoint
     const response = await fetch(apiURL + "/market-news", {
@@ -17,9 +17,7 @@ export const load = async ({ locals }) => {
     return output;
   };
 
-
   const getIPOCalendar = async () => {
-
     // make the POST request to the endpoint
     const postData = { year: "all" };
 
@@ -34,11 +32,8 @@ export const load = async ({ locals }) => {
 
     const output = await response.json();
 
-
     return output;
   };
-
-
 
   // Make sure to return a promise
   return {

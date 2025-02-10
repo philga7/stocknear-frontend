@@ -5,6 +5,7 @@
   export let data;
 
   let ipoNews = data?.getNews;
+  console.log(ipoNews);
   let rawData = data?.getIPOCalendar?.slice(0, 200) ?? [];
   const excludedRules = new Set([
     "volume",

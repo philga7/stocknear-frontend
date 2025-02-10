@@ -1,13 +1,7 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
   import { goto } from "$app/navigation";
-  import {
-    clearCache,
-    screenWidth,
-    numberOfUnreadNotification,
-    getCache,
-    setCache,
-  } from "$lib/store";
+  import { clearCache, screenWidth, getCache, setCache } from "$lib/store";
   import toast from "svelte-french-toast";
   import {
     abbreviateNumber,
