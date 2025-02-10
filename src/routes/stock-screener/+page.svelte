@@ -1817,42 +1817,53 @@
     // Find the index of the rule to be deleted or updated
     const index = ruleOfList?.findIndex((rule) => rule.name === state);
     if (index !== -1) {
-      // Get the rule
+      // Get the rule and its default values
       const rule = ruleOfList[index];
+      const defaultCondition = allRules[state].defaultCondition;
+      const defaultValue = allRules[state].defaultValue;
 
-      // Check if the value is "any"
-      if (Array?.isArray(rule.value)) {
-        ruleOfList.splice(index, 1);
+      // Check if current values differ from defaults
+      const isAtDefaultValues =
+        ruleCondition[state] === defaultCondition &&
+        (Array.isArray(valueMappings[state]) && Array.isArray(defaultValue)
+          ? JSON.stringify(valueMappings[state]) ===
+            JSON.stringify(defaultValue)
+          : valueMappings[state] === defaultValue);
+
+      if (!isAtDefaultValues) {
+        // If not at defaults, reset to defaults
+        ruleCondition[state] = defaultCondition;
+        valueMappings[state] = defaultValue;
+
+        // Update the rule in ruleOfList
+        ruleOfList[index] = {
+          ...rule,
+          condition: defaultCondition,
+          value: defaultValue,
+        };
+        ruleOfList = [...ruleOfList]; // Trigger reactivity
       } else {
-        // For single string values
-        if (rule.value !== "any") {
-          // Set value to "any"
-          ruleOfList[index].value = "any";
-        } else {
-          // Remove the rule if its value is already "any"
-          ruleOfList.splice(index, 1);
+        // If already at defaults, remove the rule
+        ruleOfList.splice(index, 1);
+        ruleOfList = [...ruleOfList];
+
+        // Reset checkedItems for multi-select rules
+        if (checkedItems.has(state)) {
+          checkedItems.delete(state);
+        }
+
+        // Handle cases when the list is empty or matches the current rule name
+        if (ruleOfList?.length === 0) {
+          ruleName = "";
+          filteredData = [];
+          displayResults = [];
+        } else if (state === ruleName) {
+          ruleName = "";
         }
       }
 
-      // Update the stock screener data
-      ruleName = ruleOfList[index]?.name || "";
-      await handleChangeValue(ruleOfList[index]?.value);
+      await updateStockScreenerData();
     }
-
-    // Handle cases when the list is empty or matches the current rule name
-    if (ruleOfList?.length === 0) {
-      ruleName = "";
-      filteredData = [];
-      displayResults = [];
-    } else if (state === ruleName) {
-      ruleName = "";
-    }
-
-    // Ensure the array reference is updated
-    ruleOfList = [...ruleOfList];
-
-    await updateStockScreenerData();
-    // await handleSave(false);
   }
 
   async function handleScroll() {
@@ -1976,13 +1987,19 @@ const handleKeyDown = (event) => {
 
   function changeRuleCondition(name: string, state: string) {
     ruleName = name;
-    if (
+    const newState = state?.toLowerCase();
+
+    // Initialize array for "between" condition
+    if (newState === "between") {
+      valueMappings[ruleName] = ["", ""];
+    } else if (
       ruleCondition[ruleName] === "between" &&
-      ["over", "under", "exactly"]?.includes(state?.toLowerCase())
+      ["over", "under", "exactly"].includes(newState)
     ) {
-      valueMappings[ruleName] = "";
+      valueMappings[ruleName] = "any";
     }
-    ruleCondition[ruleName] = state?.toLowerCase();
+
+    ruleCondition[ruleName] = newState;
   }
 
   let checkedItems = new Map(
@@ -2038,6 +2055,23 @@ const handleKeyDown = (event) => {
   }
 
   async function handleChangeValue(value, { shouldSort = true } = {}) {
+    // Add this check at the beginning of the function
+    if (ruleCondition[ruleName] === "between") {
+      // Ensure valueMappings[ruleName] is always an array for "between" condition
+      if (!Array.isArray(valueMappings[ruleName])) {
+        valueMappings[ruleName] = ["", ""];
+      }
+
+      // If value is a single value (from input), update only the specified index
+      if (!Array.isArray(value) && typeof currentIndex === "number") {
+        valueMappings[ruleName][currentIndex] = value;
+        value = valueMappings[ruleName];
+      } else if (Array.isArray(value)) {
+        // Only for preset ranges from dropdown
+        valueMappings[ruleName] = value;
+      }
+    }
+
     if (checkedItems.has(ruleName)) {
       const itemsSet = checkedItems.get(ruleName);
 
@@ -2121,6 +2155,11 @@ const handleKeyDown = (event) => {
     } else {
       console.warn(`Unhandled rule: ${ruleName}`);
     }
+
+    // Add this at the end of the function to ensure the filter is applied
+    if (ruleCondition[ruleName] === "between" && value.some((v) => v !== "")) {
+      await updateStockScreenerData();
+    }
   }
 
   async function stepSizeValue(value, condition) {
@@ -2143,22 +2182,41 @@ const handleKeyDown = (event) => {
     await handleChangeValue(newValue);
   }
 
+  let currentIndex = null;
+
   async function handleValueInput(event, ruleName, index = null) {
     const newValue = event.target.value;
-    if (newValue?.length === 0) {
-      const index = ruleOfList?.findIndex((rule) => rule.name === ruleName);
-      if (index !== -1) {
-        ruleOfList[index].value = "any";
-      }
-    }
+
     if (ruleCondition[ruleName] === "between") {
-      const currentValues = valueMappings[ruleName] || ["", ""];
-      currentValues[index] = newValue;
-      await handleChangeValue(currentValues, { shouldSort: false });
+      // Ensure valueMappings[ruleName] is initialized as an array
+      if (!Array.isArray(valueMappings[ruleName])) {
+        valueMappings[ruleName] = ["", ""];
+      }
+
+      // Store the current index being modified
+      currentIndex = index;
+
+      if (newValue?.length === 0) {
+        valueMappings[ruleName][index] = "";
+      }
+
+      await handleChangeValue(newValue, { shouldSort: false });
+
+      // Reset currentIndex after handling the value
+      currentIndex = null;
     } else {
+      if (newValue?.length === 0) {
+        const ruleIndex = ruleOfList?.findIndex(
+          (rule) => rule.name === ruleName,
+        );
+        if (ruleIndex !== -1) {
+          ruleOfList[ruleIndex].value = "any";
+        }
+      }
       await handleChangeValue(newValue);
     }
   }
+
   async function popularStrategy(state: string) {
     ruleOfList = [];
     const strategies = {
