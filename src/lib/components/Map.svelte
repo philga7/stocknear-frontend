@@ -1,5 +1,5 @@
 <script>
-  import { onMount, onDestroy } from "svelte";
+  import { onMount } from "svelte";
   import { browser } from "$app/environment";
   import "ol/ol.css";
   import Map from "ol/Map";
@@ -23,6 +23,7 @@
   let map;
   let animationFrame;
   let pulseProgress = 0;
+  let vectorLayer;
 
   // Pulsing style function
   const createPulseStyle = (progress) => {
@@ -36,30 +37,30 @@
     });
   };
 
-  // Animation loop
+  // Animation loop function
   const animate = () => {
     pulseProgress = (pulseProgress + 0.02) % 1;
-    vectorLayer
-      .getSource()
-      .getFeatures()[0]
-      .setStyle([
+    const feature = vectorLayer.getSource().getFeatures()[0];
+    if (feature) {
+      feature.setStyle([
         new Style({
           image: new Circle({
             radius: 6,
-            fill: new Fill({
-              color: "#2e86de",
-            }),
+            fill: new Fill({ color: "#2e86de" }),
           }),
         }),
         createPulseStyle(pulseProgress),
       ]);
+    }
     animationFrame = requestAnimationFrame(animate);
   };
 
-  let vectorLayer;
-
   onMount(() => {
     if (!browser) return;
+
+    // Determine if the user is on a mobile device.
+    // Here we use a simple viewport width check—adjust the threshold if needed.
+    const isMobile = window.innerWidth <= 640;
 
     const whiteHousePoint = new Feature({
       geometry: new Point(fromLonLat([LON, LAT])),
@@ -90,16 +91,22 @@
         maxZoom: 18,
       }),
       controls: [],
-      interactions: defaultInteractions({
-        mouseWheelZoom: false, // Disable scroll zoom
-        pinchZoom: false, // Disable pinch-to-zoom
-      }),
+      // For mobile devices, disable all interactions to prevent dragging or zooming.
+      interactions: isMobile
+        ? []
+        : defaultInteractions({
+            mouseWheelZoom: false, // Disable scroll zoom on desktop as well
+            pinchZoom: false, // Disable pinch-to-zoom on desktop
+          }),
     });
 
     animate();
 
     return () => {
-      if (map) map.setTarget(undefined);
+      cancelAnimationFrame(animationFrame);
+      if (map) {
+        map.setTarget(undefined);
+      }
     };
   });
 </script>
