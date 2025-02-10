@@ -6,7 +6,40 @@
 
   export let data;
 
-  let rawData = data?.getData || [];
+  let rawData = data?.getData?.history || [];
+  let earningsData = data?.getData?.stats || {};
+
+  // Calculate metrics
+  function calculateMetrics(data) {
+    if (!data || data.length === 0)
+      return { avgPriceImpact: 0, volatilityImpact: 0 };
+
+    const nextDayChanges = data
+      ?.map((item) => item?.forward_2_days_change_percent)
+      ?.filter((change) => change !== undefined);
+
+    // Average price impact
+    const avgPriceImpact =
+      nextDayChanges?.reduce((sum, change) => sum + change, 0) /
+      nextDayChanges?.length;
+
+    // Volatility impact (average absolute range)
+    const volatilityImpact =
+      data.reduce((sum, item) => {
+        if (item?.high && item?.low && item?.close) {
+          const range = ((item.high - item.low) / item.close) * 100;
+          return sum + range;
+        }
+        return sum;
+      }, 0) / data.length;
+
+    return {
+      avgPriceImpact: avgPriceImpact?.toFixed(1),
+      volatilityImpact: volatilityImpact?.toFixed(1),
+    };
+  }
+
+  const metrics = calculateMetrics(rawData);
 
   function checkTime(timeString) {
     if (!timeString) {
@@ -53,11 +86,119 @@
           </div>
 
           {#if rawData?.length !== 0 && rawData?.at(0)?.high !== undefined}
-            <div class="mb-10 w-full">
+            <div
+              class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6"
+            >
+              <div
+                class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
+              >
+                <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
+                  <span>EPS Beats Estimate</span>
+                  <span class="ml-1 text-violet-400">●</span>
+                </div>
+                <div class="flex items-baseline">
+                  <span class="text-2xl font-bold text-white"
+                    >{earningsData.positiveEpsPercent}%</span
+                  >
+                  <div class="flex flex-col ml-2">
+                    <span class="text-sm text-[#c3c6d0]"
+                      >{`${earningsData?.positiveEpsSurprises}/${earningsData?.totalReports}`}
+                      quarters</span
+                    >
+                    <span class="text-xs text-violet-400">
+                      {earningsData?.positiveEpsSurprises >
+                      earningsData?.totalReports / 2
+                        ? "Above Average"
+                        : "Below Average"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
+              >
+                <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
+                  <span>Revenue Beats Estimate</span>
+                  <span class="ml-1 text-red-400">●</span>
+                </div>
+                <div class="flex items-baseline">
+                  <span class="text-2xl font-bold text-white"
+                    >{earningsData.positiveRevenuePercent}%</span
+                  >
+                  <div class="flex flex-col ml-2">
+                    <span class="text-sm text-[#c3c6d0]"
+                      >{`${earningsData?.positiveRevenueSurprises}/${earningsData?.totalReports}`}
+                      quarters</span
+                    >
+                    <span class="text-xs text-red-400">
+                      {earningsData?.positiveRevenueSurprises >
+                      earningsData?.totalReports / 2
+                        ? "Above Average"
+                        : "Below Average"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
+              >
+                <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
+                  <span>Avg. Price Impact</span>
+                  <span
+                    class="ml-1 text-{metrics.avgPriceImpact >= 0
+                      ? 'green'
+                      : 'red'}-400">●</span
+                  >
+                </div>
+                <div class="flex items-baseline">
+                  <span class="text-2xl font-bold text-white"
+                    >{metrics.avgPriceImpact >= 0
+                      ? "+"
+                      : ""}{metrics.avgPriceImpact}%</span
+                  >
+                  <div class="flex flex-col ml-2">
+                    <span class="text-sm text-[#c3c6d0]">Next Day</span>
+                    <span
+                      class="text-xs text-{metrics.avgPriceImpact >= 0
+                        ? 'green'
+                        : 'red'}-400"
+                    >
+                      {metrics.avgPriceImpact >= 0 ? "Positive" : "Negative"} Trend
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
+              >
+                <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
+                  <span>Volatility Impact</span>
+                  <span class="ml-1 text-yellow-400">●</span>
+                </div>
+                <div class="flex items-baseline">
+                  <span class="text-2xl font-bold text-white"
+                    >±{metrics.volatilityImpact}%</span
+                  >
+                  <div class="flex flex-col ml-2">
+                    <span class="text-sm text-[#c3c6d0]">Range</span>
+                    <span class="text-xs text-yellow-400">
+                      {Number(metrics.volatilityImpact) > 3 ? "High" : "Normal"}
+                      Impact
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-5 mt-5 w-full">
               <Infobox
                 text="This table provides an overview of how a stock's price historically reacted around earnings reports. It displays key metrics like price changes over specific timeframes and Relative Strength Index (RSI)."
               />
             </div>
+
             <div class="w-full overflow-x-auto">
               <table
                 class="table-fixed leading-3 border-separate border-spacing-0 font-sans tabular-nums text-white w-full"
