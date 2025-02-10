@@ -12,27 +12,40 @@
   let selectedFormat: "png" | "jpeg" | "svg" = "png";
   let selectedTimePeriod = "1D";
   let iframeUrl: string;
+  let loading = true;
 
   async function getHeatMap() {
-    const cachedData = getCache(selectedTimePeriod, "getHeatmap");
-    if (cachedData) {
-      rawData = cachedData;
-    } else {
-      const postData = { params: selectedTimePeriod };
-      const response = await fetch("/api/heatmap", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(postData),
-      });
+    loading = true;
+    try {
+      const cachedData = getCache(selectedTimePeriod, "getHeatmap");
+      if (cachedData) {
+        rawData = cachedData;
+      } else {
+        const postData = { params: selectedTimePeriod };
+        const response = await fetch("/api/heatmap", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(postData),
+        });
 
-      rawData = await response.json();
-      setCache(selectedTimePeriod, rawData, "getHeatmap");
+        rawData = await response.json();
+        setCache(selectedTimePeriod, rawData, "getHeatmap");
+      }
+
+      const htmlContent = rawData;
+
+      const blob = new Blob([htmlContent], { type: "text/html" });
+      if (iframeUrl) {
+        URL.revokeObjectURL(iframeUrl);
+      }
+      iframeUrl = URL.createObjectURL(blob);
+    } catch (error) {
+      console.error("Error loading heatmap:", error);
+    } finally {
+      loading = false;
     }
-
-    const blob = new Blob([rawData], { type: "text/html" });
-    iframeUrl = URL.createObjectURL(blob);
   }
 
   async function downloadPlot(item) {
@@ -91,10 +104,6 @@
     }
   }
 </script>
-
-<svelte:head>
-  <script src="https://cdn.plot.ly/plotly-2.18.0.min.js" defer></script>
-</svelte:head>
 
 <SEO
   title="S&P 500 Stock Market Heatmap"
@@ -226,12 +235,25 @@
             </div>
           </div>
           <div class="w-full min-h-screen bg-[#09090B] overflow-hidden">
+            {#if loading}
+              <div class="flex justify-center items-center h-[50vh]">
+                <div
+                  class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"
+                ></div>
+              </div>
+            {/if}
+
             {#if rawData}
               <iframe
                 bind:this={iframe}
                 src={iframeUrl}
-                class="w-full h-screen border-none"
-                on:load={() => (iframeLoaded = true)}
+                class="w-full h-screen border-none {loading ? 'hidden' : ''}"
+                on:load={() => {
+                  iframeLoaded = true;
+                  loading = false;
+                }}
+                loading="eager"
+                title="S&P 500 Heatmap"
               />
             {/if}
           </div>
@@ -240,3 +262,13 @@
     </div>
   </div>
 </section>
+
+<style>
+  iframe {
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .hidden {
+    opacity: 0;
+  }
+</style>
