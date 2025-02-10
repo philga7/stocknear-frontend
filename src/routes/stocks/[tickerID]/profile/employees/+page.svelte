@@ -1,6 +1,5 @@
 <script lang="ts">
   import {
-    numberOfUnreadNotification,
     displayCompanyName,
     screenWidth,
     stockTicker,
@@ -14,6 +13,8 @@
   import { GridComponent, TooltipComponent } from "echarts/components";
   import { CanvasRenderer } from "echarts/renderers";
   import Infobox from "$lib/components/Infobox.svelte";
+  import SEO from "$lib/components/SEO.svelte";
+  
   use([BarChart, GridComponent, TooltipComponent, CanvasRenderer]);
 
   import { abbreviateNumber } from "$lib/utils";
@@ -408,45 +409,11 @@
   let htmlOutput = generateEmployeeInfoHTML();
 </script>
 
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""}
-    {$displayCompanyName} ({$stockTicker}) Number of Employees {historyList
-      ?.at(-1)
-      ?.filingDate?.slice(0, 4)} - {historyList?.at(0)?.filingDate?.slice(0, 4)}
-    · Stocknear
-  </title>
-  <meta
-    name="description"
-    content={`Current and historical number of employees for ${$displayCompanyName} (${$stockTicker}) with related statistics, a chart and a data table.`}
-  />
 
-  <!-- Other meta tags -->
-  <meta
-    property="og:title"
-    content={`${$displayCompanyName} (${$stockTicker}) Number of Employees ${historyList?.at(-1)?.filingDate?.slice(0, 4)} - ${historyList?.at(0)?.filingDate?.slice(0, 4)} · Stocknear`}
-  />
-  <meta
-    property="og:description"
-    content={`Current and historical number of employees for ${$displayCompanyName} (${$stockTicker}) with related statistics, a chart and a data table.`}
-  />
-  <meta property="og:type" content="website" />
-  <!-- Add more Open Graph meta tags as needed -->
-
-  <!-- Twitter specific meta tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta
-    name="twitter:title"
-    content={`${$displayCompanyName} (${$stockTicker}) Number of Employees ${historyList?.at(-1)?.filingDate?.slice(0, 4)} - ${historyList?.at(0)?.filingDate?.slice(0, 4)} · Stocknear`}
-  />
-  <meta
-    name="twitter:description"
-    content={`Current and historical number of employees for ${$displayCompanyName} (${$stockTicker}) with related statistics, a chart and a data table.`}
-  />
-  <!-- Add more Twitter meta tags as needed -->
-</svelte:head>
+<SEO
+  title={`${$displayCompanyName} (${$stockTicker}) Number of Employees ${historyList?.at(-1)?.filingDate?.slice(0, 4)} - ${historyList?.at(0)?.filingDate?.slice(0, 4)} · Stocknear`}
+  description={`Current and historical number of employees for ${$displayCompanyName} (${$stockTicker}) with related statistics, a chart and a data table.`}
+/>
 
 <section class="bg-default w-full overflow-hidden text-white h-full">
   <div class="w-full flex justify-center m-auto h-full overflow-hidden">

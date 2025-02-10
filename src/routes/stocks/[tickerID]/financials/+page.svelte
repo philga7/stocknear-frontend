@@ -18,6 +18,8 @@
   import { GridComponent, TooltipComponent } from "echarts/components";
   import { CanvasRenderer } from "echarts/renderers";
   import Infobox from "$lib/components/Infobox.svelte";
+  import SEO from "$lib/components/SEO.svelte";
+  
   use([LineChart, BarChart, GridComponent, TooltipComponent, CanvasRenderer]);
 
   export let data;
@@ -420,37 +422,11 @@
   }
 </script>
 
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""}
-    {$displayCompanyName} ({$stockTicker}) Financials - Income Statement ·
-    stocknear
-  </title>
-  <meta
-    name="description"
-    content={`Detailed annual and timeFramely income statement for ${$displayCompanyName} (${$stockTicker}). See many years of revenue, expenses and profits or losses.`}
-  />
-  <meta
-    property="og:title"
-    content={`${$displayCompanyName} (${$stockTicker}) Financials - Income Statement · Stocknear`}
-  />
-  <meta
-    property="og:description"
-    content={`Detailed annual and timeFramely income statement for ${$displayCompanyName} (${$stockTicker}). See many years of revenue, expenses and profits or losses.`}
-  />
-  <meta property="og:type" content="website" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta
-    name="twitter:title"
-    content={`${$displayCompanyName} (${$stockTicker}) Financials - Income Statement · Stocknear`}
-  />
-  <meta
-    name="twitter:description"
-    content={`Detailed annual and timeFramely income statement for ${$displayCompanyName} (${$stockTicker}). See many years of revenue, expenses and profits or losses.`}
-  />
-</svelte:head>
+
+<SEO
+  title={`${$displayCompanyName} (${$stockTicker}) Financials - Income Statement · Stocknear`}
+  description={`Detailed annual and timeFramely income statement for ${$displayCompanyName} (${$stockTicker}). See many years of revenue, expenses and profits or losses.`}
+/>
 
 <section class="bg-default w-full overflow-hidden text-white h-full">
   <div

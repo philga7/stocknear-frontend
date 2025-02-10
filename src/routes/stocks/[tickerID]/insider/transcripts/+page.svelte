@@ -10,6 +10,8 @@
   import { Button } from "$lib/components/shadcn/button/index.js";
   import Infobox from "$lib/components/Infobox.svelte";
   import { onMount } from "svelte";
+  import SEO from "$lib/components/SEO.svelte";
+
 
   let chats = [];
   let date;
@@ -76,46 +78,15 @@
   });
 </script>
 
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""}
-    {$displayCompanyName} ({$stockTicker}) · Q{quarter}
-    {year} · Earnings Call Transcript · Stocknear
-  </title>
-  <meta
-    name="description"
-    content={`Get the latest Earnings Call Transcript of ${$displayCompanyName} (${$stockTicker}) for different years and quarters.`}
-  />
 
-  <!-- Other meta tags -->
-  <meta
-    property="og:title"
-    content={`${$displayCompanyName} (${$stockTicker}) · Q${quarter} ${year} · Earnings Call Transcript · Stocknear`}
-  />
-  <meta
-    property="og:description"
-    content={`Get the latest Earnings Call Transcript of ${$displayCompanyName} (${$stockTicker}) for different years and quarters.`}
-  />
-  <meta property="og:type" content="website" />
-  <!-- Add more Open Graph meta tags as needed -->
 
-  <!-- Twitter specific meta tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta
-    name="twitter:title"
-    content={`${$displayCompanyName} (${$stockTicker}) · Q${quarter} ${year} · Earnings Call Transcript · Stocknear`}
-  />
-  <meta
-    name="twitter:description"
-    content={`Get the latest Earnings Call Transcript of ${$displayCompanyName} (${$stockTicker}) for different years and quarters.`}
-  />
-  <!-- Add more Twitter meta tags as needed -->
-</svelte:head>
+<SEO title={`${$displayCompanyName} (${$stockTicker}) Q${quarter} ${year} · Earnings Call Transcript · Stocknear`}
+  description={`Get the latest Earnings Call Transcript of ${$displayCompanyName} (${$stockTicker}) for different years and quarters.`}
+/>
 
 <section
   class="w-full bg-default overflow-hidden text-white min-h-screen mb-40 sm:mb-0"
+
 >
   <div class="h-full overflow-hidden">
     <div class="relative flex justify-center items-center overflow-hidden">

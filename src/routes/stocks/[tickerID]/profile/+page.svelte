@@ -41,8 +41,8 @@ ${paragraphs.join("\n")}
 </script>
 
 <SEO
-  title={`${$displayCompanyName} (${$stockTicker?.toUpperCase()}) Company Profile & Overview`}
-  description={`Company profile for ${$displayCompanyName} (${$stockTicker?.toUpperCase()}) with a description, list of executives, contact details and other key facts.`}
+  title={`${$displayCompanyName} (${$stockTicker}) Company Profile & Overview`}
+  description={`Company profile for ${$displayCompanyName} (${$stockTicker}) with a description, list of executives, contact details and other key facts.`}
 />
 
 <section class="w-full bg-default overflow-hidden text-white h-full">
