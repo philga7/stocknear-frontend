@@ -82,65 +82,87 @@
           </div>
 
           {#if rawData?.length !== 0}
-            <div class="grid grid-cols-1 gap-2">
+            <div
+              class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6"
+            >
               <div
-                class="mb-4 bg-inherit flex flex-col divide-y divide-gray-600 rounded-md border border-gray-600 sm:grid sm:grid-cols-3 sm:divide-x sm:divide-y-0"
+                class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
               >
-                <div class="px-4 py-3 sm:px-2 sm:py-5 md:px-3 lg:p-6">
-                  <div class="flex items-center justify-between sm:block">
-                    <div class="text-[1rem] font-semibold text-white">
-                      FTD Shares
-                    </div>
-                    <div
-                      class="mt-1 break-words font-semibold leading-8 text-white text-xl sm:text-2xl"
-                    >
-                      {abbreviateNumber(
-                        rawData?.slice(-1)?.at(0)?.failToDeliver,
-                        false,
-                      )}
-                    </div>
+                <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
+                  <span>Total FTD Shares</span>
+                  <span class="ml-1 text-violet-400">●</span>
+                </div>
+                <div class="flex items-baseline">
+                  <span class="text-2xl font-bold text-white">
+                    {abbreviateNumber(
+                      rawData?.slice(-1)?.at(0)?.failToDeliver,
+                      false,
+                    )}</span
+                  >
+                  <div class="flex flex-col ml-2">
+                    <span class="text-sm text-violet-400">
+                      {rawData?.slice(-1)?.at(0)?.failToDeliver > 1e5
+                        ? "Above Average"
+                        : "Below Average"}
+                    </span>
                   </div>
                 </div>
-                <div class="px-4 py-3 sm:px-2 sm:py-5 md:px-3 lg:p-6">
-                  <div class="flex items-center justify-between sm:block">
-                    <div class="text-[1rem] font-semibold text-white">
-                      FTD / Avg Volume
-                    </div>
-                    <div
-                      class="mt-1 break-words font-semibold leading-8 text-white text-xl sm:text-2xl"
-                    >
-                      {relativeFTD > 0.01
-                        ? relativeFTD + "%"
-                        : relativeFTD !== "n/a"
-                          ? "< 0.01%"
-                          : "n/a"}
-                    </div>
+              </div>
+
+              <div
+                class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
+              >
+                <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
+                  <span>FTD / Avg. Volume</span>
+                  <span class="ml-1 text-red-400">●</span>
+                </div>
+                <div class="flex items-baseline">
+                  <span class="text-2xl font-bold text-white"
+                    >{relativeFTD > 0.01
+                      ? relativeFTD + "%"
+                      : relativeFTD !== "n/a"
+                        ? "< 0.01%"
+                        : "n/a"}</span
+                  >
+                  <div class="flex flex-col ml-2">
+                    <span class="text-sm text-red-400">
+                      {relativeFTD > 20 ? "High Impact" : "Low Impact"}
+                    </span>
                   </div>
                 </div>
-                <div class="px-4 py-3 sm:px-2 sm:py-5 md:px-3 lg:p-6">
-                  <div class="flex items-center justify-between sm:block">
-                    <div class="text-[1rem] font-semibold text-white">
-                      1-Year Change
-                    </div>
-                    <div
-                      class="mt-1 break-words font-semibold leading-8 text-[1rem] sm:text-lg {changePercentageYearAgo >=
-                        0 && changePercentageYearAgo !== null
+              </div>
+
+              <div
+                class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
+              >
+                <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
+                  <span>1-Year Change</span>
+                  <span class="ml-1">●</span>
+                </div>
+                <div class="flex items-baseline">
+                  <span class="text-2xl font-bold text-white"
+                    >{changePercentageYearAgo > 100
+                      ? "> 100"
+                      : changePercentageYearAgo?.toFixed(1)}%</span
+                  >
+                  <div class="flex flex-col ml-2">
+                    <span
+                      class="text-sm {changePercentageYearAgo >= 0 &&
+                      changePercentageYearAgo !== null
                         ? "before:content-['+'] text-[#00FC50]"
                         : changePercentageYearAgo < 0 &&
                             changePercentageYearAgo !== null
                           ? 'text-[#FF2F1F]'
                           : 'text-white'}"
                     >
-                      {changePercentageYearAgo !== null
-                        ? abbreviateNumber(
-                            changePercentageYearAgo?.toFixed(2),
-                          ) + "%"
-                        : "n/a"}
-                    </div>
+                      {changePercentageYearAgo >= 0 ? "Positive" : "Negative"} Trend
+                    </span>
                   </div>
                 </div>
               </div>
+            </div>
 
+            <div class="grid grid-cols-1 gap-2">
               <FailToDeliver {data} {rawData} />
             </div>
           {:else}
