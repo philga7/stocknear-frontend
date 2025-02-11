@@ -17,7 +17,7 @@ export const load = async ({ locals, params }) => {
     });
 
     let output = await response.json();
-    output = user?.tier !== 'Pro' ? output?.slice(0,3) : output;
+    output.history = user?.tier !== 'Pro' ? output?.history?.slice(0,3) : output.history;
     return output;
   };
 
