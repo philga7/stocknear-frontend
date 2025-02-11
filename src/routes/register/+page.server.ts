@@ -61,7 +61,7 @@ export const actions = {
       error(err.status, err.message);
     }
 
-    redirect(301, "/");
+    redirect(301, "/profile");
   },
 
    oauth2: async ({ url, locals, request, cookies }) => {

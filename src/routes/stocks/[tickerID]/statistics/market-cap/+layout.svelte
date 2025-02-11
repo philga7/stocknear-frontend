@@ -1,6 +1,5 @@
 <script lang="ts">
   import { abbreviateNumber } from "$lib/utils";
-  import ArrowLogo from "lucide-svelte/icons/move-up-right";
 
   export let data;
   const similarStocks = data?.getSimilarStocks;
@@ -96,9 +95,8 @@
                   >
                     Pro Subscription
                   </h2>
-                  <ArrowLogo class="w-6 h-6 sm:w-8 sm:h-8 mr-3 flex-shrink-0" />
                 </div>
-                <span class="text-white p-3 sm:ml-3 sm:mr-3">
+                <span class="text-white p-3 sm:ml-3 sm:mr-3 -mt-4">
                   Upgrade now for unlimited access to all data and tools.
                 </span>
               </a>
@@ -115,7 +113,7 @@
                     Market Capitalization
                   </h2>
                 </div>
-                <span class="text-white">
+                <div class="text-white mt-3">
                   Market capitalization, also called net worth, is the total
                   value of all of a company's outstanding shares. It is
                   calculated by multiplying the stock price by the number of
@@ -123,7 +121,7 @@
                   <br />
                   <br />
                   Formula: Market Cap = Stock Price * Shares Outstanding
-                </span>
+                </div>
               </div>
             </div>
           </div>
