@@ -553,7 +553,7 @@
                           </td>
                         </tr>
                         {#if checkedSymbol === item?.ticker}
-                          <tr
+                          <tr class="bg-default"
                             ><td colspan="8" class="px-0" style=""
                               ><div class="-mt-0.5 px-0 pb-2">
                                 <div class="relative h-[400px]">
@@ -574,6 +574,7 @@
                                           )}
                                           symbol={item?.ticker}
                                           numOfRatings={item?.ratings}
+                                          {data}
                                         />
                                       </div>
                                     </div>

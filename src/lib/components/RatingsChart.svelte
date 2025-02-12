@@ -19,6 +19,7 @@
     CanvasRenderer,
   ]);
 
+  export let data;
   export let symbol;
   export let ratingsList;
   export let numOfRatings = 0;
@@ -57,14 +58,14 @@
     }
 
     // Filter the data based on the calculated start date
-    const filteredData = historicalData.filter((item) => {
-      const itemDate = new Date(item.time);
+    const filteredData = historicalData?.filter((item) => {
+      const itemDate = new Date(item?.time);
       return itemDate >= startDate && itemDate <= currentDate;
     });
 
     // Extract the dates and close values from the filtered data
-    const dates = filteredData.map((item) => item.time);
-    const closeValues = filteredData.map((item) => item.close);
+    const dates = filteredData?.map((item) => item?.time);
+    const closeValues = filteredData?.map((item) => item?.close);
 
     return { dates, closeValues };
   }
@@ -275,15 +276,35 @@
     {#if historicalData?.length > 0}
       <div class="app w-full relative">
         <div class="flex justify-start space-x-2 absolute left-16 top-0 z-10">
-          {#each ["1Y", "3Y", "5Y", "Max"] as item}
-            <label
-              on:click={() => (timePeriod = item)}
-              class="px-4 py-2 {timePeriod === item
-                ? 'bg-white text-black shadow-xl'
-                : 'text-white bg-table text-opacity-[0.6]'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
-            >
-              {item}
-            </label>
+          {#each ["1Y", "3Y", "5Y", "Max"] as item, index}
+            {#if data?.user?.tier === "Pro" || index === 0}
+              <label
+                on:click={() => (timePeriod = item)}
+                class="px-4 py-2 {timePeriod === item
+                  ? 'bg-white text-black shadow-xl'
+                  : 'text-white bg-table text-opacity-[0.6]'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+              >
+                {item}
+              </label>
+            {:else if data?.user?.tier !== "Pro"}
+              <a
+                href="/pricing"
+                class="px-4 py-2 flex flex-row items-center {timePeriod === item
+                  ? 'bg-white text-black shadow-xl'
+                  : 'text-white bg-table text-opacity-[0.6]'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+              >
+                {item}
+                <svg
+                  class="ml-1 mt-0.5 w-3.5 h-3.5 inline-block"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  ><path
+                    fill="#A3A3A3"
+                    d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                  /></svg
+                >
+              </a>
+            {/if}
           {/each}
         </div>
         <h2
@@ -309,7 +330,7 @@
     <div class="flex justify-center items-center h-80">
       <div class="relative">
         <label
-          class="bg-primary rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+          class="bg-default rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
         >
           <span
             class="loading loading-spinner loading-md sm:loading-[1rem] text-gray-400"

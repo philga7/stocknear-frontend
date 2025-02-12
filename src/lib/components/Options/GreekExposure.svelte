@@ -372,15 +372,36 @@
     {#if options !== null}
       <div class="app w-full relative">
         <div class="flex justify-start space-x-2 absolute right-0 top-0 z-10">
-          {#each ["3M", "6M", "1Y"] as item}
-            <label
-              on:click={() => (timePeriod = item)}
-              class="px-3 py-1 text-sm {timePeriod === item
-                ? 'bg-white text-black '
-                : 'text-white bg-table text-opacity-[0.6]'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
-            >
-              {item}
-            </label>
+          {#each ["3M", "6M", "1Y"] as item, index}
+            {#if data?.user?.tier === "Pro" || index === 0}
+              <label
+                on:click={() => (timePeriod = item)}
+                class="px-3 py-1 text-sm {timePeriod === item
+                  ? 'bg-white text-black '
+                  : 'text-white bg-table text-opacity-[0.6]'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+              >
+                {item}
+              </label>
+            {:else if data?.user?.tier !== "Pro"}
+              <a
+                href="/pricing"
+                class="px-3 py-1 text-sm flex flex-row items-center {timePeriod ===
+                item
+                  ? 'bg-white text-black '
+                  : 'text-white bg-table text-opacity-[0.6]'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+              >
+                {item}
+                <svg
+                  class="ml-1 -mt-w-3.5 h-3.5 inline-block"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  ><path
+                    fill="#A3A3A3"
+                    d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                  /></svg
+                >
+              </a>
+            {/if}
           {/each}
         </div>
 
@@ -462,7 +483,7 @@
                   >{item?.putCallRatio?.toFixed(2)}</span
                 >
               {:else}
-              n/a
+                n/a
               {/if}
             </td>
           </tr>

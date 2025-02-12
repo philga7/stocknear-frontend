@@ -12,28 +12,26 @@
     try {
       await pb.collection("users").requestPasswordReset(email);
       toast.success("Password resetted. Check your emails!", {
-        style: "border-radius: 200px; background: #2A2E39; color: #fff;",
+        style:
+          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
       });
       goto("/login");
     } catch (err) {
       toast.error(
         { err },
         {
-          style: "border-radius: 200px; background: #2A2E39; color: #fff;",
+          style:
+            "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
         },
       );
     }
   }
-
-
 </script>
-
 
 <SEO
   title="Reset Password"
   description="Reset your password to sign in to your Stocknear account."
 />
-
 
 <div
   class="flex flex-col items-center min-h-screen w-full max-w-3xl m-auto mt-40"

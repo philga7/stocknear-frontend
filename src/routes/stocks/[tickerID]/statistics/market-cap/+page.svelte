@@ -405,7 +405,7 @@
     >
       <main class="w-full">
         <div class="sm:pl-7 sm:pb-7 sm:pt-7 m-auto mt-2 sm:mt-0">
-          <div class="mb-3">
+          <div class="">
             <h1 class="text-xl sm:text-2xl text-white font-bold">Market Cap</h1>
           </div>
 
@@ -431,7 +431,7 @@
               />
 
               <div
-                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6"
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 mt-3"
               >
                 <div
                   class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
@@ -471,7 +471,7 @@
                 </div>
 
                 <div
-                  class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
+                  class="bg-gray-800/30 rounded p-4 sm:hover:bg-gray-800/40 transition-colors"
                 >
                   <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
                     <span>1-Year Change</span>

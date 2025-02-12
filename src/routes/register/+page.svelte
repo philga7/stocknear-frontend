@@ -18,19 +18,22 @@
         case "redirect":
           isClicked = true;
           toast.success("Registration successfully!", {
-            style: "border-radius: 200px; background: #2A2E39; color: #fff;",
+            style:
+              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
           });
           await update();
           break;
         case "failure":
           toast.error("Invalid credentials", {
-            style: "border-radius: 200px; background: #2A2E39; color: #fff;",
+            style:
+              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
           });
           await update();
           break;
         case "error":
           toast.error(result.error.message, {
-            style: "border-radius: 200px; background: #2A2E39; color: #fff;",
+            style:
+              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
           });
           break;
         default:
@@ -56,8 +59,6 @@
     isHoveredGithub = !isHoveredGithub;
   }
 </script>
-
-
 
 <SEO
   title="Sign Up"

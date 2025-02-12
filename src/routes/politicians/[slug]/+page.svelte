@@ -424,6 +424,7 @@
                                     style="position: relative; height: 0px; z-index: 1;"
                                   >
                                     <RatingsChart
+                                      {data}
                                       title="Transactions"
                                       ratingsList={rawData?.history?.map(
                                         (item) => ({
