@@ -121,8 +121,9 @@
 
   <div class="flex flex-col m-auto justify-center items-center">
     <div class="text-center mb-10 w-full px-4 sm:px-3 mt-10">
-      <Feedback {data} />
-
+      {#if data?.user}
+        <Feedback {data} />
+      {/if}
       <div
         class="text-center mb-10 relative w-fit flex justify-center m-auto text-white"
       >
