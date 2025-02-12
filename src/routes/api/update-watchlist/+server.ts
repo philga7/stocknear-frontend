@@ -5,39 +5,95 @@ export const POST = (async ({ request, locals }) => {
   const { user, pb } = locals;
   const data = await request.json();
 
-  const ticker = data?.ticker; // This can be a string (single ticker) or an array (list of tickers)
+  // `tickerInput` can be a string (single ticker) or an array (list of tickers)
+  const tickerInput = data?.ticker || [];
   const watchListId = data?.watchListId;
   let output;
 
+
+  // Determine the ticker limit: 50 for Pro users, 5 for non-Pro users.
+  const isProUser = user?.tier === "Pro";
+  const tickerLimit = isProUser ? 100 : 5;
+
   try {
     const watchList = await pb.collection("watchlist").getOne(watchListId);
+    // Ensure current tickers are in an array.
+    let currentTickers = watchList?.ticker;
+    if (typeof currentTickers === "string") {
+      try {
+        currentTickers = JSON.parse(currentTickers);
+      } catch (err) {
+        currentTickers = [];
+      }
+    }
+    currentTickers = currentTickers || [];
 
-    if (Array.isArray(ticker)) {
-      // If `ticker` is a list, update the watchlist directly with the new list of tickers.
-      output = await pb.collection("watchlist").update(watchListId, {
-        ticker: ticker,
+    if (Array.isArray(tickerInput)) {
+      // When replacing the entire ticker list:
+      if(data?.mode === 'delete') {
+         output = await pb.collection("watchlist").update(watchListId, {
+        ticker: tickerInput,
       });
-    } else if (watchList?.ticker?.includes(ticker)) {
-      // Remove single ticker from the watchlist if it's already present.
-      const newTickerList = watchList?.ticker.filter((item) => item !== ticker);
-      output = await pb
-        .collection("watchlist")
-        .update(watchListId, { ticker: newTickerList });
+
+      } else {
+
+         if (tickerInput.length > tickerLimit) {
+        return new Response(
+          JSON.stringify({
+            error: isProUser
+              ? `You can only have up to ${tickerLimit} stocks in your watchlist.`
+              : `Upgrade to Pro to add unlimited stocks!`,
+          }),
+          { status: 403 }
+        );
+      }
+      
+      output = await pb.collection("watchlist").update(watchListId, {
+        ticker: tickerInput,
+      });
+
+      
+      }
+     
     } else {
-      // Add single ticker to the watchlist if it's not present.
-      const newTickerList = [...watchList?.ticker, ticker];
-      output = await pb
-        .collection("watchlist")
-        .update(watchListId, { ticker: newTickerList });
+      // Single ticker update.
+      if (currentTickers?.includes(tickerInput)) {
+        // Remove the ticker if it's already present.
+        const newTickerList = currentTickers?.filter((item) => item !== tickerInput);
+        output = await pb.collection("watchlist").update(watchListId, { ticker: newTickerList });
+      } else {
+        // Add the ticker if not already present.
+        const newTickerList = [...currentTickers, tickerInput];
+        if (newTickerList.length > tickerLimit) {
+          return new Response(
+            JSON.stringify({
+              error: isProUser
+                ? `You can only have up to ${tickerLimit} stocks in your watchlist.`
+                : `Upgrade to Pro to add unlimited stocks`,
+            }),
+            { status: 403 }
+          );
+        }
+        output = await pb.collection("watchlist").update(watchListId, { ticker: newTickerList });
+      }
     }
   } catch (e) {
-    // If the watchlist doesn't exist, create a new one with either the single ticker or list.
+    // If the watchlist doesn't exist, create a new one.
+    const tickersArray = Array.isArray(tickerInput) ? tickerInput : [tickerInput];
+    if (tickersArray.length > tickerLimit) {
+      return new Response(
+        JSON.stringify({
+          error: isProUser
+            ? `You can only have up to ${tickerLimit} stocks in your watchlist.`
+            : `Upgrade to Pro to add unlimited stocks!`,
+        }),
+        { status: 403 }
+      );
+    }
     output = await pb.collection("watchlist").create(
       serialize({
         user: user?.id,
-        ticker: Array.isArray(ticker)
-          ? JSON.stringify(ticker)
-          : JSON.stringify([ticker]),
+        ticker: JSON.stringify(tickersArray),
         title: "Favorites",
       })
     );

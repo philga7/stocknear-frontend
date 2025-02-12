@@ -472,6 +472,7 @@
       const postData = {
         ticker: watchList?.map((item) => item?.symbol),
         watchListId: displayWatchList?.id,
+        mode: "delete",
       };
 
       const response = await fetch("/api/update-watchlist", {
@@ -513,57 +514,86 @@
     }
     displayList = rawTabData?.slice(0, 8);
   }
-  async function handleAddTicker(event, ticker) {
-    // Ensure inputValue is reset
 
-    if (!watchList?.some((item) => item?.symbol === ticker)) {
-    } else {
-      toast.error(`This symbol is already in your watchlist`, {
+  async function handleAddTicker(event, ticker) {
+    event.preventDefault(); // Prevent the default form submission behavior
+
+    // Check if the ticker is already in the watchlist.
+    if (watchList?.some((item) => item?.symbol === ticker)) {
+      toast.error("This symbol is already in your watchlist", {
         style:
           "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
       });
-
       inputValue = "";
-      event.preventDefault();
       return;
     }
 
-    // Exit edit mode
+    // Exit edit mode.
     editMode = false;
 
-    // Prepare the data to send to the API
+    // Prepare the data to send to the API.
     const postData = {
       ticker: ticker,
       watchListId: displayWatchList?.id,
     };
 
-    // Send the updated watchlist to the server
-    const response = await fetch("/api/update-watchlist", {
+    // Create a promise for the fetch request.
+    const promise = fetch("/api/update-watchlist", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(postData),
-    });
-
-    // Update the allList with the new watchlist
-    allList = allList?.map((item) => {
-      if (item?.id === displayWatchList?.id) {
-        return { ...item, tickers: watchList }; // Update tickers in the watchlist
+    }).then(async (response) => {
+      const output = await response.json();
+      // If the response is not OK, throw an error with the message from the API.
+      if (!response.ok) {
+        throw new Error(output.error || "Failed to update watchlist");
       }
-      return item; // Return unchanged item
+      return output;
     });
 
-    // Refresh the displayWatchList with the updated watchlist
-    displayWatchList = allList?.find(
-      (item) => item?.id === displayWatchList?.id,
+    // Use toast.promise to display notifications based on the promise's state.
+    toast.promise(
+      promise,
+      {
+        loading: "Updating watchlist...",
+        success: "Watchlist updated successfully!",
+        error: (err) => err.message || "Failed to update watchlist",
+      },
+      {
+        style:
+          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+      },
     );
 
-    // Fetch the updated watchlist data (assuming this function refreshes the UI or state)
-    await getWatchlistData();
+    try {
+      // Await the promise, which returns the updated watchlist data.
+      const updatedData = await promise;
 
-    inputValue = "";
-    event?.preventDefault();
+      // Update the local allList with the updated watchlist.
+      // (Assuming updatedData.ticker contains the new ticker list.)
+      allList = allList?.map((item) => {
+        if (item?.id === displayWatchList?.id) {
+          return { ...item, tickers: updatedData.ticker };
+        }
+        return item;
+      });
+
+      // Refresh displayWatchList from the updated list.
+      displayWatchList = allList?.find(
+        (item) => item?.id === displayWatchList?.id,
+      );
+
+      // Refresh the watchlist data (UI or state refresh).
+      await getWatchlistData();
+
+      // Reset the input value.
+      inputValue = "";
+    } catch (error) {
+      console.error("Error updating watchlist:", error);
+      // Note: The error toast is already displayed by toast.promise.
+    }
   }
 
   async function handleResetAll() {

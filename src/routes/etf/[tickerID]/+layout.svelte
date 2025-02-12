@@ -83,57 +83,65 @@
 
   async function toggleUserWatchlist(watchListId: string) {
     try {
-      isTickerIncluded = !isTickerIncluded;
-
+      // Find the index of the watchlist
       const watchlistIndex = userWatchList?.findIndex(
         (item) => item?.id === watchListId,
       );
 
-      if (watchlistIndex !== -1) {
-        const existingTickerIndex =
-          userWatchList[watchlistIndex]?.ticker?.indexOf($etfTicker);
+      if (watchlistIndex !== -1 && watchlistIndex !== undefined) {
+        const watchlist = userWatchList[watchlistIndex];
+        const existingTickerIndex = watchlist?.ticker?.indexOf($etfTicker);
+
+        let updatedTickers = [...(watchlist?.ticker || [])]; // Ensure we don't mutate directly
 
         if (existingTickerIndex !== -1) {
-          // If the $etfTicker exists, remove it from the array
-          userWatchList[watchlistIndex]?.ticker?.splice(existingTickerIndex, 1);
+          // Remove the ticker if it exists
+          updatedTickers.splice(existingTickerIndex, 1);
         } else {
-          // If the $etfTicker doesn't exist, add it to the array
-          userWatchList[watchlistIndex]?.ticker?.push($etfTicker);
+          // Add the ticker if it doesn't exist
+          updatedTickers.push($etfTicker);
+
+          // Check tier limits
+          if (data?.user?.tier !== "Pro" && updatedTickers.length > 5) {
+            toast.error("Upgrade to Pro to add unlimited stocks!", {
+              style:
+                "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+            });
+            return;
+          }
         }
 
-        // Update the userWatchList
-        userWatchList = [...userWatchList];
-      }
+        // Update the local state immutably
+        userWatchList = userWatchList.map((item, idx) =>
+          idx === watchlistIndex ? { ...item, ticker: updatedTickers } : item,
+        );
 
-      const postData = {
-        watchListId: watchListId,
-        ticker: $etfTicker,
-      };
+        // Send API request
+        const response = await fetch("/api/update-watchlist", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ watchListId, ticker: $etfTicker }),
+        });
 
-      const response = await fetch("/api/update-watchlist", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(postData),
-      });
+        const output = await response.json();
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const output = await response.json();
-
-      // Update the userWatchList with the response from the server
-      if (watchlistIndex !== -1) {
-        userWatchList[watchlistIndex] = output;
-        userWatchList = [...userWatchList];
+        // Update userWatchList based on API response
+        userWatchList = userWatchList.map((item) =>
+          item.id === watchListId ? output : item,
+        );
       } else {
+        // If watchlist doesn't exist, create a new entry
+        const response = await fetch("/api/update-watchlist", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ watchListId, ticker: $etfTicker }),
+        });
+
+        const output = await response.json();
         userWatchList = [...userWatchList, output];
       }
     } catch (error) {
       console.error("An error occurred:", error);
-      // Handle the error appropriately (e.g., show an error message to the user)
     }
   }
 

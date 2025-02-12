@@ -3,11 +3,12 @@ import { serialize } from "object-to-formdata";
 
 export const POST: RequestHandler = async ({ request, locals }) => {
   const data = await request.json();
-  const { pb } = locals;
+  const { pb, user } = locals;
 
   let output;
 
-  try {
+  if(user?.tier === 'Pro') {
+        try {
     // Ensure itemIdList is always an array.
     const itemIdList = Array.isArray(data?.itemIdList)
       ? data?.itemIdList
@@ -48,4 +49,11 @@ export const POST: RequestHandler = async ({ request, locals }) => {
   }
 
   return new Response(JSON.stringify(output?.id));
+
+
+  } else {
+      return new Response(JSON.stringify("failure"));
+
+  }
+
 };
