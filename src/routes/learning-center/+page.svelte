@@ -27,15 +27,16 @@
             </h1>
           </div>
 
-          <div class="w-full grid grid-cols-1 sm:grid-cols-3 gap-y-5 sm:gap-y-0 sm:gap-5">
-
+          <div class="w-full grid grid-cols-1 sm:grid-cols-3 gap-y-5 sm:gap-5">
             {#if allBlogPosts?.length !== 0}
               {#each allBlogPosts as item}
                 <div
                   class="flex flex-col overflow-hidden rounded shadow-lg sm:hover:shadow-2xl border border-gray-600"
                 >
                   <div class="flex-shrink-0">
-                    <a href={"/learning-center/article/" + convertToSlug(item?.title)}
+                    <a
+                      href={"/learning-center/article/" +
+                        convertToSlug(item?.title)}
                       ><img
                         class="h-48 w-full object-cover"
                         src={getImageURL(
@@ -53,9 +54,12 @@
                   >
                     <div class="flex-1">
                       <a
-                        href={"/learning-center/article/" + convertToSlug(item?.title)}
+                        href={"/learning-center/article/" +
+                          convertToSlug(item?.title)}
                         class="block"
-                        ><h2 class="text-lg sm:text-xl font-semibold text-white">
+                        ><h2
+                          class="text-lg sm:text-xl font-semibold text-white"
+                        >
                           {item?.title}
                         </h2>
                         <p class="mt-3 text-sm text-white">
@@ -67,22 +71,22 @@
                     </div>
                     <div class="mt-3 flex items-center">
                       <div class="flex space-x-1 text-sm text-white">
-                        <span class="font-semibold">Published:</span> <time datetime={item?.created} class="ml-1">
+                        <span class="font-semibold">Published:</span>
+                        <time datetime={item?.created} class="ml-1">
                           {new Date(item?.created)?.toLocaleString("en-US", {
                             month: "short",
                             day: "numeric",
                             year: "numeric",
                             daySuffix: "2-digit",
                           })}</time
-
                         >
                       </div>
                     </div>
                     <div class="flex flex-col text-white mt-3">
-                      <div class="flex flex-wrap gap-x-2 gap-y-3 ">
+                      <div class="flex flex-wrap gap-x-2 gap-y-3">
                         {#each item?.tags as tags}
                           <label
-                            class="px-2 text-sm py-1 text-black rounded bg-white   ml-0"
+                            class="px-2 text-sm py-1 text-black rounded bg-white ml-0"
                           >
                             {tags}
                           </label>
@@ -92,7 +96,7 @@
                   </div>
                 </div>
               {/each}
-              {:else}
+            {:else}
               <div class="w-full">
                 <Infobox text="No blog posts found" />
               </div>
