@@ -287,13 +287,13 @@
   }
 
   async function createWatchList(event) {
-    event.preventDefault(); // prevent the default form submission behavior
+    event.preventDefault(); // Prevent the default form submission behavior
 
-    const formData = new FormData(event.target); // create a FormData object from the form
-
+    const formData = new FormData(event.target); // Create a FormData object from the form
     const title = formData.get("title");
 
-    if (!title || title?.length === 0) {
+    // Validate the title input
+    if (!title || title.toString().trim().length === 0) {
       toast.error("Title cannot be empty!", {
         style:
           "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
@@ -301,7 +301,7 @@
       return;
     }
 
-    if (title?.length > 100) {
+    if (title.toString().length > 100) {
       toast.error("Title is too long. Keep it simple and concise bruv!", {
         style:
           "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
@@ -309,54 +309,66 @@
       return;
     }
 
-    const postData = {};
-
-    // Iterate through the FormData entries and populate the object
-    for (const [key, value] of formData?.entries()) {
+    // Build the POST data object
+    const postData: Record<string, any> = {};
+    for (const [key, value] of formData.entries()) {
       postData[key] = value;
     }
-    try {
-      const response = await fetch("/api/create-watchlist", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(postData),
-      }); // make a POST request to the server with the FormData object
-      if (response?.ok) {
-        const output = await response.json();
-        try {
-          // Save the version along with the rules
-          localStorage?.setItem(
-            "last-watchlist-id",
-            JSON?.stringify(output?.id),
-          );
-        } catch (e) {
-          console.log("Failed saving indicator rules: ", e);
-        }
 
-        toast.success("Watchlist created successfully!", {
-          style:
-            "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-        });
-
-        const clicked = document.getElementById("addWatchlist");
-        clicked?.dispatchEvent(new MouseEvent("click"));
-        const anchor = document.createElement("a");
-        anchor.href = "/watchlist/stocks";
-        anchor.dispatchEvent(new MouseEvent("click"));
-      } else {
-        toast.error("Something went wrong. Please try again!", {
-          style:
-            "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-        });
+    // Create a promise for the POST request
+    const promise = fetch("/api/create-watchlist", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(postData),
+    }).then(async (response) => {
+      const output = await response.json();
+      if (!response.ok) {
+        // If the server returned an error (e.g. non‑Pro user already has a watchlist),
+        // throw an error to be caught by toast.promise.
+        throw new Error(
+          output.error || "Something went wrong. Please try again!",
+        );
       }
-    } catch (error) {
-      console.error("Error:", error);
-      toast.error("An error occurred. Please try again later.", {
+      return output;
+    });
+
+    // Use toast.promise to display a loading toast, then a success or error message
+    toast.promise(
+      promise,
+      {
+        loading: "Creating watchlist...",
+        success: "Watchlist created successfully!",
+        error: (err) =>
+          err.message || "Something went wrong. Please try again!",
+      },
+      {
         style:
           "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      },
+    );
+
+    try {
+      const output = await promise;
+
+      // Save the watchlist ID to localStorage (optional)
+      try {
+        localStorage.setItem("last-watchlist-id", JSON.stringify(output?.id));
+      } catch (e) {
+        console.log("Failed saving watchlist id: ", e);
+      }
+
+      // Dispatch events to close the modal and navigate to the watchlist page
+      const clicked = document.getElementById("addWatchlist");
+      clicked?.dispatchEvent(new MouseEvent("click"));
+
+      const anchor = document.createElement("a");
+      anchor.href = "/watchlist/stocks";
+      anchor.dispatchEvent(new MouseEvent("click"));
+    } catch (error) {
+      console.error("Error creating watchlist:", error);
+      // No additional toast.error is needed here since toast.promise already handles errors.
     }
   }
 
@@ -633,6 +645,7 @@
     try {
       const savedRules = localStorage?.getItem("watchlist-ruleOfList");
       const savedLastWatchlistId = localStorage?.getItem("last-watchlist-id");
+
       if (savedRules) {
         const parsedRules = JSON.parse(savedRules);
 
@@ -666,21 +679,30 @@
       }
 
       // Update checked items and sort the indicators
-      checkedItems = new Set(ruleOfList.map((item) => item.name));
+      checkedItems = new Set(ruleOfList?.map((item) => item.name));
       allRows = sortIndicatorCheckMarks(allRows);
 
-      if (
-        typeof savedLastWatchlistId !== "undefined" &&
-        savedLastWatchlistId?.length > 0
-      ) {
+      // Parse savedLastWatchlistId safely
+      if (savedLastWatchlistId && savedLastWatchlistId.length > 0) {
+        let parsedLastWatchlistId;
+        try {
+          parsedLastWatchlistId = JSON.parse(savedLastWatchlistId);
+        } catch (error) {
+          console.error(
+            "Error parsing last watchlist id from localStorage. Using raw value instead.",
+            error,
+          );
+          parsedLastWatchlistId = savedLastWatchlistId;
+        }
+
         displayWatchList = allList?.find(
-          (item) => item?.id === JSON?.parse(savedLastWatchlistId),
+          (item) => item?.id === parsedLastWatchlistId,
         );
       }
 
-      // If no valid watchlist found, default to the first element of allList
+      // If no valid watchlist is found, default to the first element of allList
       if (!displayWatchList && allList?.length > 0) {
-        displayWatchList = allList?.at(0);
+        displayWatchList = allList.at(0);
       } else if (!displayWatchList) {
         displayWatchList = {};
       }
@@ -696,7 +718,7 @@
 
       isLoaded = true;
     } catch (e) {
-      console.log(e);
+      console.error("onMount error:", e);
     }
 
     if ($isOpen) {

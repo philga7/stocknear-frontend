@@ -15,44 +15,70 @@
   }
 
   async function handleCreateAlert() {
+    // Validate input locally.
     if (targetPrice < 0) {
-      toast.error(`Target Price must be above zero`, {
+      toast.error("Target Price must be above zero", {
         style:
           "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
       });
-    } else {
-      const closePopup = document.getElementById("priceAlertModal");
-      closePopup?.dispatchEvent(new MouseEvent("click"));
+      return;
+    }
 
-      const postData = {
-        userId: data?.user?.id,
-        symbol: ticker,
-        name: data?.getStockQuote?.name,
-        assetType: assetType,
-        priceWhenCreated: currentPrice,
-        condition: condition,
-        targetPrice: targetPrice,
-      };
+    // Optionally close the modal popup.
+    const closePopup = document.getElementById("priceAlertModal");
+    closePopup?.dispatchEvent(new MouseEvent("click"));
 
-      // Make the POST request to the endpoint
+    // Prepare data for the POST request.
+    const postData = {
+      userId: data?.user?.id,
+      symbol: ticker,
+      name: data?.getStockQuote?.name,
+      assetType: assetType,
+      priceWhenCreated: currentPrice,
+      condition: condition,
+      targetPrice: targetPrice,
+    };
 
-      toast.success(`Successfully created price alert`, {
+    // Create a promise for the POST request.
+    const promise = fetch("/api/create-price-alert", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(postData),
+    }).then(async (response) => {
+      const result = await response.json();
+      // If the response is not ok, throw an error to be caught by toast.promise.
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to create price alert");
+      }
+      return result;
+    });
+
+    // Use toast.promise to handle pending, success, and error states.
+    toast.promise(
+      promise,
+      {
+        loading: "Creating price alert...",
+        success: "Successfully created price alert",
+        error: (err) => err.message || "Failed to create price alert",
+      },
+      {
         style:
           "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      },
+    );
 
-      const response = await fetch("/api/create-price-alert", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(postData),
-      });
-
-      $newPriceAlertData = await response?.json();
-
-      //const output = await response.json();
+    // Await the promise and handle the result.
+    try {
+      const newPriceAlertData = await promise;
+      // Update reactive store or state as needed.
+      $newPriceAlertData = newPriceAlertData;
+      // Optionally reset targetPrice or perform further actions.
       targetPrice = currentPrice;
+    } catch (error) {
+      // The error is already handled by toast.promise, but you can log it here.
+      console.error("Error creating price alert:", error);
     }
   }
 
