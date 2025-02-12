@@ -18,8 +18,13 @@ export const load = async ({ locals, params }) => {
     return matchingArticle;
   };
 
+  const getParams = async() => {
+    return params?.slug
+  }
+
   // Make sure to return a promise
   return {
     getArticle: await getArticle(),
+    getParams: await getParams(),
   };
 };

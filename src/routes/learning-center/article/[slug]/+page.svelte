@@ -3,7 +3,13 @@
   import SEO from "$lib/components/SEO.svelte";
   export let data;
 
-  const article = data?.getArticle;
+  let article = data?.getArticle;
+
+  $: {
+    if (data?.getParams) {
+      article = data?.getArticle;
+    }
+  }
 </script>
 
 <SEO
@@ -80,7 +86,7 @@
                   </h4>
                   <p class="text-base text-white lg:text-lg">
                     Get a daily email with the top market-moving news in bullet
-                    point format, for free.
+                    point format, for Pro Members only.
                   </p>
                   <div>
                     <a
