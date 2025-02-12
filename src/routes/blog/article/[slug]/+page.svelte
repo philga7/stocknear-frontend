@@ -3,7 +3,13 @@
   import SEO from "$lib/components/SEO.svelte";
   export let data;
 
-  const article = data?.getArticle;
+  let article = data?.getArticle;
+
+  $: {
+    if (data?.getParams) {
+      article = data?.getArticle;
+    }
+  }
 </script>
 
 <SEO
@@ -25,8 +31,12 @@
         <article
           class="z-5 relative mx-1 -mt-10 rounded-t-md bg-default p-3 xs:p-4 lg:-mt-16 lg:ml-3 lg:p-5 xl:mx-4"
         >
-          <header class="pb-3 border-b-[2px] border-white w-full sm:min-w-[850px] sm:max-w-[850px]">
-            <h1 class="mb-3 text-2xl sm:text-3xl font-bold text-white md:text-4xl ">
+          <header
+            class="pb-3 border-b-[2px] border-white w-full sm:min-w-[850px] sm:max-w-[850px]"
+          >
+            <h1
+              class="mb-3 text-2xl sm:text-3xl font-bold text-white md:text-4xl"
+            >
               {article?.title}
             </h1>
             <div class="text-white">
@@ -42,17 +52,11 @@
                 )}
               </div>
             </div>
-          
           </header>
 
           <div class="text-lg mt-4">
             <div class="content">
-              
               {@html article?.description}
-
-            
-
-    
             </div>
           </div>
         </article>
@@ -71,7 +75,7 @@
                   </h4>
                   <p class="text-base text-white lg:text-lg">
                     Get a daily email with the top market-moving news in bullet
-                    point format, for free.
+                    point format, for Pro Members only.
                   </p>
                   <div>
                     <a

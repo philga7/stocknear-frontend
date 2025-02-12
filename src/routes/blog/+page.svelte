@@ -28,11 +28,10 @@
             </h1>
           </div>
 
-          <div class="w-full grid grid-cols-1 sm:grid-cols-3 gap-y-5 sm:gap-y-0 sm:gap-5">
+          <div class="w-full grid grid-cols-1 sm:grid-cols-3 gap-y-5 gap-5">
             {#if allBlogPosts?.length !== 0}
               {#each allBlogPosts as item}
                 <div
-
                   class="flex flex-col overflow-hidden rounded-lg shadow-lg sm:hover:shadow-2xl border border-gray-600"
                 >
                   <div class="flex-shrink-0">
@@ -56,7 +55,9 @@
                       <a
                         href={"/blog/article/" + convertToSlug(item?.title)}
                         class="mt-2 block"
-                        ><h2 class="text-lg sm:text-xl font-semibold text-white">
+                        ><h2
+                          class="text-lg sm:text-xl font-semibold text-white"
+                        >
                           {item?.title}
                         </h2>
                         <p class="mt-3 text-sm text-white">
