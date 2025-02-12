@@ -1,89 +1,123 @@
 import crypto from "node:crypto";
 
-export const config = {
-  runtime: "nodejs20.x",
-};
-
 // Your secret key provided by Lemon Squeezy
 const SECRET_KEY = import.meta.env.VITE_LEMON_SQUEEZY_SECRET_KEY;
 
-// Request handler for the payment route
+if (!SECRET_KEY) {
+  throw new Error("Missing Lemon Squeezy secret key.");
+}
+
+/**
+ * Verifies that the provided signature matches the HMAC digest for the given payload.
+ *
+ * @param {string} payload - The raw request body.
+ * @param {string} signatureHeader - The signature from the request header.
+ * @returns {boolean} - True if the signature is valid; otherwise, false.
+ */
+function isValidSignature(payload, signatureHeader) {
+  const hmac = crypto.createHmac("sha256", SECRET_KEY);
+  const computedDigestHex = hmac.update(payload).digest("hex");
+
+  // Convert both values to buffers for timing-safe comparison
+  const computedBuffer = Buffer.from(computedDigestHex, "utf8");
+  const signatureBuffer = Buffer.from(signatureHeader, "utf8");
+
+  // Ensure the buffers are the same length; if not, they can't be equal.
+  if (computedBuffer.length !== signatureBuffer.length) {
+    return false;
+  }
+
+  return crypto.timingSafeEqual(computedBuffer, signatureBuffer);
+}
+
+/**
+ * Determines the user's tier based on the payment status and refund flag.
+ *
+ * @param {string} status - The payment status.
+ * @param {boolean} refunded - Whether the payment was refunded.
+ * @returns {string} - "Pro" if conditions match, otherwise "Free".
+ */
+function determineTier(status, refunded) {
+  // List of statuses that qualify for the "Pro" tier if not refunded
+  const proStatuses = new Set(["paid", "active", "cancelled", "on_trial"]);
+  return !refunded && proStatuses.has(status) ? "Pro" : "Free";
+}
+
 export const POST = async ({ request, locals }) => {
   try {
-    // Retrieve the X-Signature header from the request
-    const body = await request.text();
+    const bodyText = await request.text();
 
-    const hmac = crypto.createHmac("sha256", SECRET_KEY);
-    const digest = Buffer.from(hmac.update(body).digest("hex"), "utf8");
-    const signature = Buffer.from(
-      request?.headers?.get("x-Signature") || "",
-      "utf8",
-    );
-
-    if (!crypto.timingSafeEqual(digest, signature)) {
-      console.log("error");
-      return new Response(JSON.stringify({ error: "Invalid signature" }), {
-        status: 403,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    // Retrieve the signature header; return early if missing.
+    const signatureHeader = request.headers.get("x-Signature");
+    if (!signatureHeader) {
+      console.error("Missing x-Signature header.");
+      return new Response(
+        JSON.stringify({ error: "Missing signature header" }),
+        {
+          status: 403,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
     }
 
-    // Print out the data (replace this with your actual handling logic)
-    const output = JSON.parse(body);
-    //console.log('Received payment data:', output);
-    const userId = output?.meta?.custom_data?.userId;
-    const status = output?.data?.attributes?.status;
-    const refunded = output?.data?.attributes?.refunded;
-    let tier;
-    if (status === "paid" && refunded !== true) {
-      tier = "Pro";
-    } else if (status === "active" && refunded !== true) {
-      tier = "Pro";
-    } else if (status === "cancelled" && refunded !== true) {
-      tier = "Pro";
-    } else if (status === "on_trial" && refunded !== true) {
-      tier = "Pro";
-    } else {
-      tier = "Free";
+    if (!isValidSignature(bodyText, signatureHeader)) {
+      console.error("Signature verification failed.");
+      return new Response(
+        JSON.stringify({ error: "Invalid signature" }),
+        {
+          status: 403,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
     }
-    //console.log(status, refunded, tier)
+
+    // Parse the JSON payload
+    const payload = JSON.parse(bodyText);
+    const userId = payload?.meta?.custom_data?.userId;
+    const { status, refunded } = payload?.data?.attributes || {};
+
+    if (!userId || status === undefined) {
+      console.error("Missing userId or status in payload:", payload);
+      return new Response(
+        JSON.stringify({ error: "Invalid payload structure" }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
+
+    const tier = determineTier(status, refunded);
+
+    // Update the user and log the payment
     try {
       await locals.pb.collection("users").update(userId, {
-        tier: tier,
+        tier,
         freeTrial: false,
       });
 
-      /*
-      if(status !== 'paid') {
-        const data = {'user': userId, 'data': output}
-        await locals.pb.collection('payments').create(data);
-      }
-      */
-      const data = { user: userId, data: output };
-      await locals.pb.collection("payments").create(data);
-    } catch (e) {
-      console.log(e);
+      const paymentData = { user: userId, data: payload };
+      await locals.pb.collection("payments").create(paymentData);
+    } catch (dbError) {
+      console.error("Database error:", dbError);
+      // Depending on your requirements, you might want to propagate this error.
     }
 
-    // Return a response indicating successful receipt of data
     return new Response(
       JSON.stringify({ message: "Payment data received successfully" }),
       {
         status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      },
+        headers: { "Content-Type": "application/json" },
+      }
     );
   } catch (error) {
     console.error("Error processing request:", error);
-    return new Response(JSON.stringify({ error: "Internal server error" }), {
-      status: 500,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    return new Response(
+      JSON.stringify({ error: "Internal server error" }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   }
 };

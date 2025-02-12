@@ -509,7 +509,7 @@
                       ? 'cursor-pointer'
                       : 'cursor-not-allowed'} {subscriptionData?.card_brand !==
                       null && subscriptionData?.card_brand?.length !== 0
-                      ? 'bg-white sm:hover:bg-white/80 text-black font-semibold'
+                      ? 'bg-white sm:hover:bg-white/80 text-black'
                       : 'bg-gray-600 opacity-[0.8] text-white'} text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
                   >
                     Change to Annual Plan
@@ -592,10 +592,10 @@
     method="POST"
     action="?/cancelSubscription"
     use:enhance={submitCancellation}
-    class="modal-box w-full bg-[#272727A] flex flex-col items-center"
+    class="modal-box w-full bg-secondary flex flex-col items-center"
   >
     <div
-      class="mx-auto mb-8 h-1.5 w-20 flex-shrink-0 rounded-full bg-[#404040]"
+      class="mx-auto mb-8 h-1.5 w-20 flex-shrink-0 rounded-full bg-gray-500"
     />
     <div class="text-white mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">Are you sure?</h3>
@@ -609,7 +609,7 @@
       on:click={() => (isClicked = !isClicked)}
       class="{!isClicked
         ? ''
-        : 'hidden'} cursor-pointer px-7 py-2 mb-5 rounded bg-red-600 text-center text-white text-[1rem] font-normal"
+        : 'hidden'} cursor-pointer px-7 py-2 mb-5 rounded bg-white sm:hover:bg-white/80 ease-out duration-50 text-center text-black text-[1rem] font-normal"
     >
       Cancel Subscription
       <input
@@ -620,11 +620,11 @@
     </button>
     {#if isClicked === true}
       <label
-        class="cursor-pointer px-7 py-2 mb-5 rounded-full bg-red-600 text-center text-white text-[1rem] font-normal"
+        class="cursor-pointer px-7 py-2 mb-5 rounded bg-white sm:hover:bg-white/80 ease-out duration-50 text-center text-black text-[1rem] font-normal"
       >
         <div class="flex flex-row m-auto">
           <span class="loading loading-infinity"></span>
-          <span class="text-white ml-2">Proceeding</span>
+          <span class="text-black ml-2">Proceeding</span>
         </div>
       </label>
     {/if}
@@ -649,10 +649,10 @@
     method="POST"
     action="?/reactivateSubscription"
     use:enhance={submitReactivate}
-    class="modal-box w-full bg-[#272727A] flex flex-col items-center"
+    class="modal-box w-full bg-secondary flex flex-col items-center"
   >
     <div
-      class="mx-auto mb-8 h-1.5 w-20 flex-shrink-0 rounded-full bg-[#404040]"
+      class="mx-auto mb-8 h-1.5 w-20 flex-shrink-0 rounded-full bg-gray-500"
     />
     <div class="text-white mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">Reactivate Subscription</h3>
@@ -666,7 +666,7 @@
       on:click={() => (isClicked = !isClicked)}
       class="{!isClicked
         ? ''
-        : 'hidden'} cursor-pointer px-7 py-2 mb-5 rounded bg-[#fff] sm:hover:bg-gray-300 text-center text-black text-[1rem] font-medium"
+        : 'hidden'} cursor-pointer px-7 py-2 mb-5 rounded bg-white sm:hover:bg-white/80 ease-out duration-50 text-center text-black text-[1rem] font-normal"
     >
       Proceed
       <input
@@ -677,11 +677,11 @@
     </button>
     {#if isClicked === true}
       <label
-        class="cursor-pointer px-7 py-2 mb-5 rounded-full bg-[#417143] text-center text-white text-[1rem] font-normal"
+        class="cursor-pointer px-7 py-2 mb-5 rounded bg-white sm:hover:bg-white/80 ease-out duration-50 text-center text-black text-[1rem] font-normal"
       >
         <div class="flex flex-row m-auto">
           <span class="loading loading-infinity"></span>
-          <span class="text-white ml-2">Proceeding</span>
+          <span class="text-black ml-2">Proceeding</span>
         </div>
       </label>
     {/if}
@@ -703,10 +703,10 @@
     method="POST"
     action="?/changeSubscription"
     use:enhance={submitChangePlan}
-    class="modal-box w-full bg-[#272727A] flex flex-col items-center"
+    class="modal-box w-full bg-secondary flex flex-col items-center"
   >
     <div
-      class="mx-auto mb-8 h-1.5 w-20 flex-shrink-0 rounded-full bg-[#404040]"
+      class="mx-auto mb-8 h-1.5 w-20 flex-shrink-0 rounded-full bg-gray-500"
     />
     <div class="text-white mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">Are you sure?</h3>
@@ -719,7 +719,7 @@
       on:click={() => (isClicked = !isClicked)}
       class="{!isClicked
         ? ''
-        : 'hidden'} cursor-pointer px-7 py-2 mb-5 rounded-full text-center bg-[#fff] text-black font-semibold text-[1rem] font-semibold"
+        : 'hidden'} cursor-pointer px-7 py-2 mb-5 rounded text-center bg-[#fff] text-black text-[1rem]"
     >
       Proceed
       <input
@@ -730,7 +730,7 @@
     </button>
     {#if isClicked === true}
       <label
-        class="cursor-pointer px-7 py-2 mb-5 rounded-full bg-[#fff] text-center text-black text-[1rem] font-normal"
+        class="cursor-pointer px-7 py-2 mb-5 rounded bg-[#fff] text-center text-black text-[1rem] font-normal"
       >
         <div class="flex flex-row m-auto">
           <span class="loading loading-infinity"></span>
@@ -752,9 +752,9 @@
   ></label>
 
   <!-- Desktop modal content -->
-  <div class="modal-box w-full bg-default flex flex-col items-center">
+  <div class="modal-box w-full bg-secondary flex flex-col items-center">
     <div
-      class="mx-auto mb-8 h-1.5 w-20 flex-shrink-0 rounded-full bg-[#404040]"
+      class="mx-auto mb-8 h-1.5 w-20 flex-shrink-0 rounded-full bg-gray-500"
     />
     <div class="text-white mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">Paypal not supported</h3>
