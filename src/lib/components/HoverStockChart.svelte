@@ -98,7 +98,7 @@
         layout: {
           background: {
             type: ColorType.Solid,
-            color: "#2A2E39",
+            color: "#11151D",
           },
           lineColor: "#2B2B43",
           textColor: "#D9D9D9",
@@ -182,14 +182,12 @@
         >
       </HoverCard.Trigger>
     </div>
-    <HoverCard.Content
-      class=" w-96 bg-secondary border border-gray-500 shadow-lg"
-    >
+    <HoverCard.Content class=" w-96 bg-[#11151D] border border-gray-600">
       <div class="flex justify-between space-x-4 w-full text-white">
         <div class="space-y-1 w-full">
           <!--Hover Stock Chart-->
           <label
-            class=" text-sm flex flex-row items-center justify-start bg-secondary"
+            class=" text-sm flex flex-row items-center justify-start bg-[#11151D]"
           >
             <div class="flex flex-col items-start w-full">
               <div class=" flex flex-col items-start pb-1">
