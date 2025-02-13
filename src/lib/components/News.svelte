@@ -1,5 +1,11 @@
 <script lang="ts">
-  import { stockTicker, etfTicker, indexTicker, setCache, getCache } from "$lib/store";
+  import {
+    stockTicker,
+    etfTicker,
+    indexTicker,
+    setCache,
+    getCache,
+  } from "$lib/store";
   import { formatDate } from "$lib/utils";
   import { page } from "$app/stores";
 
@@ -39,9 +45,10 @@
     }
     try {
       const url = new URL(link);
-      const result = (url.hostname === "www.youtube.com" || url.hostname === "youtube.com") 
-        ? url.searchParams.get("v") 
-        : null;
+      const result =
+        url.hostname === "www.youtube.com" || url.hostname === "youtube.com"
+          ? url.searchParams.get("v")
+          : null;
       videoCheckCache.set(link, result);
       return result;
     } catch {
@@ -61,10 +68,12 @@
 
   // Optimize filtered list computation
   $: filteredNewsList = (() => {
-    switch(displaySection) {
-      case 'videos':
-        return newsList.filter((item) => checkIfYoutubeVideo(item.url) !== null);
-      case 'press-releases':
+    switch (displaySection) {
+      case "videos":
+        return newsList.filter(
+          (item) => checkIfYoutubeVideo(item.url) !== null,
+        );
+      case "press-releases":
         return rawDataPressRelease;
       default:
         return newsList;
@@ -74,6 +83,12 @@
   $: {
     if ($stockTicker || $etfTicker || $indexTicker) {
       rawData = data?.getNews || [];
+      if (rawData?.length > 0) {
+        rawData?.sort(
+          (a, b) => new Date(b?.publishedDate) - new Date(a?.publishedDate),
+        );
+      }
+
       rawDataPressRelease = [];
       newsList = rawData?.slice(0, 10) ?? [];
       displaySection = "all";
@@ -128,8 +143,7 @@
               >
             </li>
           {/if}
-          {#if !["etf", "index"].some(sub => $page.url.pathname?.includes(sub))}
-
+          {#if !["etf", "index"].some( (sub) => $page.url.pathname?.includes(sub), )}
             <li>
               <button
                 on:click={() => getPressRelease()}

@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { numberOfUnreadNotification } from "$lib/store";
-
   export let title;
   export let description;
   export let image;
@@ -13,7 +11,6 @@
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
   />
   <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""}
     {title} - Stocknear
   </title>
 

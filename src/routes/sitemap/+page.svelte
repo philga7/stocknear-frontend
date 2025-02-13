@@ -1,7 +1,9 @@
 <script>
   import SEO from "$lib/components/SEO.svelte";
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
+  import { convertToSlug } from "$lib/utils";
 
+  export let data;
   const tabs = [
     {
       title: "Stocks",
@@ -182,9 +184,10 @@
   ];
 </script>
 
-
-
-<SEO title="Sitemap - Stocknear | Complete Financial Market Directory" description="Navigate through Stocknear's complete collection of financial tools and market analysis resources. Access real-time stock data, ETFs, options flow, and more." />
+<SEO
+  title="Sitemap | Complete Financial Market Directory"
+  description="Navigate through Stocknear's complete collection of financial tools and market analysis resources. Access real-time stock data, ETFs, options flow, and more."
+/>
 
 <main>
   <section
@@ -200,7 +203,9 @@
 
     <div class="w-full overflow-hidden m-auto mt-5">
       <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
-        <div class="relative flex justify-center items-start overflow-hidden w-full">
+        <div
+          class="relative flex justify-center items-start overflow-hidden w-full"
+        >
           <article class="w-full lg:w-3/4 lg:pr-10">
             <div class="mb-6 border-b-[2px]">
               <h1 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
@@ -211,20 +216,63 @@
             <div class=" w-full bg-default m-auto text-white">
               <div class="content">
                 <p class="text-[1rem] sm:text-lg">
-                  Explore a comprehensive list of Stocknear's financial tools and resources. Find real-time stock data, market analysis, ETFs, options flow, and more. Use our search bar for quick access to specific stock symbols.
+                  Explore a comprehensive list of Stocknear's financial tools
+                  and resources. Find real-time stock data, market analysis,
+                  ETFs, options flow, and more. Use our search bar for quick
+                  access to specific stock symbols.
                 </p>
-                <h2 class="text-white text-3xl font-semibold mt-8 mb-5">Site Directory</h2>
+                <h2 class="text-white text-3xl font-semibold mt-8 mb-5">
+                  Pages
+                </h2>
                 <nav aria-label="Site Pages">
                   <ul
-                    class="list-outside list-disc space-y-1 p-1 pl-6 md:columns-2 md:gap-x-8 md:text-xl"
+                    class="list-outside list-disc space-y-1 p-1 pl-6 md:gap-x-8 md:text-xl"
                   >
                     {#each tabs as item}
                       <li>
                         <a
                           class="sm:hover:underline sm:hover:underline-offset-4"
                           href={item?.link}
-                          title={`Visit ${item?.title} page`}
-                        >{item?.title}</a>
+                          title={`Visit ${item?.title} page`}>{item?.title}</a
+                        >
+                      </li>
+                    {/each}
+                  </ul>
+                </nav>
+
+                <h2 class="text-white text-3xl font-semibold mt-8 mb-5">
+                  Articles
+                </h2>
+                <nav aria-label="Site Pages">
+                  <ul
+                    class="list-outside list-disc space-y-1 p-1 pl-6 md:gap-x-8 md:text-xl"
+                  >
+                    {#each data?.getBlogPosts as item}
+                      <li>
+                        <a
+                          href={"/blog/article/" + convertToSlug(item?.title)}
+                          class="sm:hover:underline sm:hover:underline-offset-4"
+                          title={`Visit ${item?.title} page`}>{item?.title}</a
+                        >
+                      </li>
+                    {/each}
+                  </ul>
+                </nav>
+
+                <h2 class="text-white text-3xl font-semibold mt-8 mb-5">
+                  Learning Center
+                </h2>
+                <nav aria-label="Site Pages">
+                  <ul
+                    class="list-outside list-disc space-y-1 p-1 pl-6 md:gap-x-8 md:text-xl"
+                  >
+                    {#each data?.getTutorialPost as item}
+                      <li>
+                        <a
+                          href={"/blog/article/" + convertToSlug(item?.title)}
+                          class="sm:hover:underline sm:hover:underline-offset-4"
+                          title={`Visit ${item?.title} page`}>{item?.title}</a
+                        >
                       </li>
                     {/each}
                   </ul>

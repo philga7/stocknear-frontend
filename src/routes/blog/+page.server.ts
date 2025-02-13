@@ -13,6 +13,7 @@ export const load = async ({locals}) => {
     return output;
   };
 
+  
   // Make sure to return a promise
   return {
     getAllBlogPost: await getAllBlogPost(),
