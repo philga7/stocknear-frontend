@@ -6,7 +6,7 @@
   let article = data?.getArticle;
 
   $: {
-    if (data?.getParams) {
+    if (data?.getParams && typeof window !== "undefined") {
       article = data?.getArticle;
     }
   }
