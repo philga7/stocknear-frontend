@@ -516,6 +516,7 @@
                   id={"marketTideInfo"}
                 />
               </div>
+              <!--
               <div
                 class="mt-5 mb-4 flex flex-col divide-y divide-gray-600 rounded-md border border-gray-600 sm:grid sm:grid-cols-4 sm:divide-x sm:divide-y-0"
               >
@@ -576,6 +577,69 @@
                         true,
                       )}
                     </div>
+                  </div>
+                </div>
+              </div>
+            -->
+              <div class="text-white text-sm italic mb-3">
+                Last Updated: {formatDate(
+                  findLastNonNull(marketTideData, "time"),
+                )}
+              </div>
+              <div
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6"
+              >
+                <div
+                  class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
+                >
+                  <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
+                    <span>Volume</span>
+                    <span class="ml-1 text-yellow-400">●</span>
+                  </div>
+                  <div class="flex items-baseline">
+                    <span class="text-2xl font-bold text-white">
+                      {@html abbreviateNumberWithColor(
+                        findLastNonNull(marketTideData, "net_volume"),
+                        false,
+                        true,
+                      )}</span
+                    >
+                  </div>
+                </div>
+
+                <div
+                  class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
+                >
+                  <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
+                    <span>Net Call Prem</span>
+                    <span class="ml-1 text-green-500">●</span>
+                  </div>
+                  <div class="flex items-baseline">
+                    <span class="text-2xl font-bold text-white"
+                      >{@html abbreviateNumberWithColor(
+                        findLastNonNull(marketTideData, "net_call_premium"),
+                        false,
+                        true,
+                      )}</span
+                    >
+                  </div>
+                </div>
+
+                <div
+                  class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
+                >
+                  <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
+                    <span>Net Put Prem</span>
+                    <span class="ml-1 text-red-400">●</span>
+                  </div>
+                  <div class="flex items-baseline">
+                    <span class="text-2xl font-bold text-white"
+                      >{@html abbreviateNumberWithColor(
+                        findLastNonNull(marketTideData, "net_put_premium"),
+                        false,
+                        true,
+                      )}</span
+                    >
                   </div>
                 </div>
               </div>
