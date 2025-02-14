@@ -187,9 +187,7 @@
           </li>
           <li class="mt-2 inline-block mr-2 md:block md:mr-0">
             <a
-              href="https://stocknear.lemonsqueezy.com/affiliates"
-              rel="noopener noreferrer"
-              target="_blank"
+              href="/affiliate-program"
               class="no-underline sm:hover:underline text-gray-100 sm:hover:text-blue-400"
               >Affiliate Program</a
             >

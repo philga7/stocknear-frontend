@@ -67,6 +67,7 @@ const pages = [
   { title: "/analysts/top-stocks" },
   { title: "/heatmap" },
   { title: "/market-flow" },
+   { title: "/affiliate-program" },
 ];
 
 const website = "https://stocknear.com";
