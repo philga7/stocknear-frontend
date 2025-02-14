@@ -508,79 +508,15 @@
                   for="marketTideInfo"
                   class="mr-1 cursor-pointer flex flex-row items-center text-white text-xl sm:text-2xl font-bold"
                 >
-                  Market Tide
+                  Market Flow
                 </label>
                 <InfoModal
-                  title={"Market Tide"}
-                  content={"Market Tide evaluates the balance between advancing and declining stocks by analyzing SPY price movements, net call premiums, and net put premiums, providing a real-time snapshot of market sentiment and momentum. <a href='/learning-center/article/market-sentiment-through-options-activity-riding-the-tide' class='text-blue-400 sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4'>Learn more</a>"}
+                  title={"Market Flow"}
+                  content={"Market Flow evaluates the balance between advancing and declining stocks by analyzing SPY price movements, net call premiums, and net put premiums, providing a real-time snapshot of market sentiment and momentum. <a href='/learning-center/article/market-sentiment-through-options-activity-riding-the-tide' class='text-blue-400 sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4'>Learn more</a>"}
                   id={"marketTideInfo"}
                 />
               </div>
-              <!--
-              <div
-                class="mt-5 mb-4 flex flex-col divide-y divide-gray-600 rounded-md border border-gray-600 sm:grid sm:grid-cols-4 sm:divide-x sm:divide-y-0"
-              >
-                <div class="px-4 py-3 sm:px-2 sm:py-5 md:px-3 lg:p-6">
-                  <div class="flex items-center justify-between sm:block">
-                    <div class="text-[1rem] font-semibold text-white">Date</div>
-                    <div
-                      class="mt-1 break-words font-semibold leading-8 text-white text-sm sm:text-[1rem]"
-                    >
-                      {formatDate(findLastNonNull(marketTideData, "time"))}
-                    </div>
-                  </div>
-                </div>
 
-                <div class="px-4 py-3 sm:px-2 sm:py-5 md:px-3 lg:p-6">
-                  <div class="flex items-center justify-between sm:block">
-                    <div class="text-[1rem] font-semibold text-white">
-                      Volume
-                    </div>
-                    <div
-                      class="mt-1 break-words font-semibold leading-8 text-white text-sm sm:text-[1rem]"
-                    >
-                      {@html abbreviateNumberWithColor(
-                        findLastNonNull(marketTideData, "net_volume"),
-                        false,
-                        true,
-                      )}
-                    </div>
-                  </div>
-                </div>
-                <div class="px-4 py-3 sm:px-2 sm:py-5 md:px-3 lg:p-6">
-                  <div class="flex items-center justify-between sm:block">
-                    <div class="text-[1rem] font-semibold text-white">
-                      Net Call Premium
-                    </div>
-                    <div
-                      class="mt-1 break-words font-semibold leading-8 text-white text-sm sm:text-[1rem]"
-                    >
-                      {@html abbreviateNumberWithColor(
-                        findLastNonNull(marketTideData, "net_call_premium"),
-                        false,
-                        true,
-                      )}
-                    </div>
-                  </div>
-                </div>
-                <div class="px-4 py-3 sm:px-2 sm:py-5 md:px-3 lg:p-6">
-                  <div class="flex items-center justify-between sm:block">
-                    <div class="text-[1rem] font-semibold text-white">
-                      Net Put Premium
-                    </div>
-                    <div
-                      class="mt-1 break-words font-semibold leading-8 text-white text-sm sm:text-[1rem]"
-                    >
-                      {@html abbreviateNumberWithColor(
-                        findLastNonNull(marketTideData, "net_put_premium"),
-                        false,
-                        true,
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            -->
               <div class="text-white text-sm italic mb-3">
                 Last Updated: {formatDate(
                   findLastNonNull(marketTideData, "time"),
