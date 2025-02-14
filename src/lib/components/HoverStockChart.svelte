@@ -8,6 +8,7 @@
   import { afterUpdate } from "svelte";
   export let symbol;
   export let assetType = "stock";
+  export let link = null;
 
   let priceData = [];
   let changesPercentage = 0;
@@ -54,18 +55,19 @@
   function getHref(symbol: string) {
     let path = "";
     if (symbol?.length !== 0) {
-      if (["stocks", "stock"]?.includes(assetType?.toLowerCase())) {
-        path = `/stocks/${symbol}`;
+      if (["stocks", "stock"].includes(assetType?.toLowerCase())) {
+        path = `/stocks/${symbol}${link ? `/${link}` : ""}`;
       } else if (assetType?.toLowerCase() === "etf") {
-        path = `/etf/${symbol}`;
-      } else if (["BTC", "USD"]?.includes(symbol)) {
+        path = `/etf/${symbol}${link ? `/${link}` : ""}`;
+      } else if (["BTC", "USD"].includes(symbol)) {
         path = "";
       } else {
-        path = `/index/${symbol}`;
+        path = `/index/${symbol}${link ? `/${link}` : ""}`;
       }
     }
     return path;
   }
+
   $: topLineColor = changesPercentage >= 0 ? "#71CA96" : "#FF7070";
 
   let width = $screenWidth < 640 ? 80 : 150; //= ($screenWidth <= 1200 && $screenWidth > 900) ? 360 : ($screenWidth <= 900 && $screenWidth > 700) ? 260 : ($screenWidth <= 700 && $screenWidth >=600 ) ? 200 : ($screenWidth < 600 && $screenWidth >=500 ) ? 150 : 80;

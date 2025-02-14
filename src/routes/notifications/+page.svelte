@@ -187,6 +187,55 @@
                       </div>
                     </div>
                   </div>
+                {:else if item?.notifyType === "topAnalyst"}
+                  <div
+                    class=" pb-3 sm:p-3 mb-6 sm:mb-3 text-white w-full {!item?.readed
+                      ? 'bg-[#F9AB00] bg-opacity-[0.1]'
+                      : ''} "
+                  >
+                    <div class="flex flex-row items-center w-full">
+                      <!-- svelte-ignore a11y-label-has-associated-control -->
+                      <a class="avatar w-8 h-8 flex-shrink-0 mr-4">
+                        <img
+                          style="clip-path: circle(50%);"
+                          class="flex-shrink-0 w-8 h-8 rounded-full inline-block"
+                          src={`https://financialmodelingprep.com/image-stock/${item?.liveResults?.symbol}.png`}
+                          alt="Company Logo"
+                        />
+                      </a>
+
+                      <div class="text-white text-sm sm:text-[1rem]">
+                        <!-- svelte-ignore a11y-click-events-have-key-events -->
+                        <!-- svelte-ignore a11y-label-has-associated-control -->
+                        <div class="flex flex-col items-start">
+                          <div>
+                            <div class="flex flex-col items-start">
+                              <div class="text-md mt-0.5">
+                                <span class="font-semibold"
+                                  >New Top Analyst Rating for</span
+                                >
+                                <HoverStockChart
+                                  symbol={item?.liveResults?.symbol}
+                                  assetType={item?.liveResults?.assetType}
+                                  link="forecast/analyst"
+                                />
+                              </div>
+                              <div class="text-md mt-0.5">
+                                The rating company {item?.liveResults?.analyst} has
+                                issued a new rating of „{item?.liveResults
+                                  ?.rating_current}“ with an updated price
+                                target of ${item?.liveResults
+                                  ?.adjusted_pt_current}.
+                              </div>
+                            </div>
+                          </div>
+                          <span class="text-sm mt-1 text-[#A6ADBB0"
+                            >{formatDate(item?.created)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 {:else if item?.notifyType === "earningsSurprise"}
                   <div
                     class=" pb-3 sm:p-3 mb-6 sm:mb-3 text-white w-full {!item?.readed

@@ -1,22 +1,27 @@
 import type { RequestHandler } from "./$types";
 
 export const POST: RequestHandler = async ({ request, locals }) => {
-  const data = await request.json();
   const { pb } = locals;
-  let output = 'failure';
 
-  
   try {
-        await pb.collection("notificationChannels").update(data?.id, {
-          'earningsSurprise': data?.earningsSurprise,
-          'wiim': data?.wiim,
-        })
-        output = 'success';
-    }
-    catch(e) {
-        console.log(e)
-        output = 'failure';
+    const payload = await request.json();
+    const { id, ...updateData } = payload;
+
+    if (!id) {
+      return new Response(
+        JSON.stringify({ status: "failure", message: "Missing id" }),
+        { status: 400 }
+      );
     }
 
-  return new Response(JSON.stringify(output));
+    await pb.collection("notificationChannels").update(id, updateData);
+
+    return new Response(JSON.stringify({ status: "success" }), { status: 200 });
+  } catch (e: any) {
+    console.error(e);
+    return new Response(
+      JSON.stringify({ status: "failure", error: e.message }),
+      { status: 500 }
+    );
+  }
 };

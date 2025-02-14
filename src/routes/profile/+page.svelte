@@ -343,6 +343,35 @@
                   ></div>
                 </label>
               </div>
+              <div
+                class=" mt-2 flex w-full md:w-1/3 justify-between items-center"
+              >
+                <div class="flex flex-row items-center">
+                  <label
+                    for="topAnalystInfo"
+                    class=" cursor-pointer flex flex-row items-center text-white"
+                  >
+                    <h4>Top Analyst Rating</h4>
+                  </label>
+                  <InfoModal
+                    title={"Top Analysts"}
+                    content={" Filter for analysts rated 4+ stars focusing on their win rate and average return per rating. Analysts with 4+ stars typically exhibit both high accuracy and high return per rating."}
+                    id={"topAnalystInfo"}
+                  />
+                </div>
+                <label class="inline-flex cursor-pointer relative">
+                  <input
+                    on:click={() => toggleMode("topAnalyst")}
+                    type="checkbox"
+                    checked={mode["topAnalyst"]}
+                    value={mode["topAnalyst"]}
+                    class="sr-only peer"
+                  />
+                  <div
+                    class="w-10 h-5 bg-gray-600 rounded-full peer-checked:after:translate-x-4 peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[0.25rem] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-purple-500"
+                  ></div>
+                </label>
+              </div>
             </div>
 
             <h3 class="text-white text-xl font-semibold mb-2 mt-4">
