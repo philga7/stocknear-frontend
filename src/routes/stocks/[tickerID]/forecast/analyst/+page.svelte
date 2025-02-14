@@ -195,13 +195,10 @@
   $: charNumber = $screenWidth < 640 ? 20 : 30;
 </script>
 
-
-
 <SEO
   title={`${$displayCompanyName} (${$stockTicker}) Analyst Ratings · Stocknear`}
   description={`A list of analyst ratings for Advanced Micro Devices (AMD) stock. See upgrades, downgrades, price targets and more from top Wall Street stock analysts.`}
 />
-
 
 <section
   class="bg-default overflow-hidden text-white h-full min-h-screen mb-40 sm:mb-0 w-full"
@@ -318,7 +315,7 @@
           >
             <div class="text-[1rem] font-normal text-white">Upside</div>
             <div
-              class="mt-1 break-words font-semibold leading-8 text-[1rem] sm:text-lg {changesPercentage >=
+              class="mt-1 break-words font-semibold leading-8 text-xl sm:text-2xl {changesPercentage >=
               0
                 ? "before:content-['+'] after:content-['%'] text-[#00FC50]"
                 : changesPercentage < 0
@@ -513,7 +510,7 @@
                       <div class="flex flex-col items-end">
                         {#if latestInfoDate(item?.date)}
                           <label
-                            class="bg-[#fff] text-black font-semibold text-xs rounded-md px-2 py-0.5 ml-3 mb-1"
+                            class="bg-[#fff] text-black font-semibold text-xs rounded px-2 py-0.5 ml-3 mb-1"
                           >
                             New
                           </label>
