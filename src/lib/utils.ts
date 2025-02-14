@@ -777,8 +777,9 @@ export function formatDate(dateStr) {
         });
 
         const parseDate = (date) => {
-            const parts = nyFormatter?.formatToParts(date);
-            const extract = (type) => parts?.find((p) => p?.type === type)?.value?.padStart(2, '0');
+            const parts = nyFormatter.formatToParts(date);
+            const extract = (type) =>
+                parts.find((p) => p.type === type)?.value.padStart(2, '0');
             return new Date(
                 `${extract('year')}-${extract('month')}-${extract('day')}T${extract('hour')}:${extract('minute')}:${extract('second')}`
             );
@@ -790,7 +791,12 @@ export function formatDate(dateStr) {
         // Calculate the time difference in seconds
         const seconds = Math.floor((nyCurrentObj - nyDateObj) / 1000);
 
-        // Define time intervals in seconds
+        // Everything below 12 hours (43,200 seconds) returns "Now"
+        if (seconds < 43200) {
+            return 'Now';
+        }
+
+        // Define time intervals for 12 hours or more
         const intervals = [
             { unit: 'year', seconds: 31536000 },
             { unit: 'month', seconds: 2592000 },
@@ -802,18 +808,20 @@ export function formatDate(dateStr) {
 
         // Determine the appropriate time interval
         for (const { unit, seconds: secondsInUnit } of intervals) {
-            const count = Math?.floor(seconds / secondsInUnit);
+            const count = Math.floor(seconds / secondsInUnit);
             if (count >= 1) {
                 return `${count} ${unit}${count === 1 ? '' : 's'} ago`;
             }
         }
-        // If less than a minute
-        return 'Just now';
+
+        // Fallback (should not be reached due to our threshold)
+        return 'Now';
     } catch (error) {
         console.error('Error formatting date:', error);
         return 'Invalid date';
     }
 }
+
 
 
 
