@@ -15,21 +15,27 @@
 <SEO
   title={article?.title}
   description={article?.abstract}
-  image={getImageURL(article?.collectionId, article?.id, article?.cover)}
+  image={article?.comver
+    ? getImageURL(article?.collectionId, article?.id, article?.cover)
+    : ""}
 />
 
 <div>
   <main id="main" class="mt-2 text-white min-h-screen pb-40">
     <div class="mx-auto max-w-screen-xl">
-      <img
-        src={getImageURL(article?.collectionId, article?.id, article?.cover)}
-        class="h-[200px] w-full object-cover lg:h-[350px]"
-        loading="lazy"
-        alt="Wallpaper"
-      />
+      {#if article?.cover}
+        <img
+          src={getImageURL(article?.collectionId, article?.id, article?.cover)}
+          class="h-[200px] w-full object-cover lg:h-[350px]"
+          loading="lazy"
+          alt="Wallpaper"
+        />
+      {/if}
       <div class="lg:flex">
         <article
-          class="z-5 relative mx-1 -mt-10 rounded-t-md bg-default p-3 xs:p-4 lg:-mt-16 lg:ml-3 lg:p-5 xl:mx-4"
+          class="z-5 relative mx-1 {article?.cover
+            ? '-mt-10 lg:-mt-16'
+            : 'mt-5'} rounded-t-md bg-default p-3 xs:p-4 lg:ml-3 lg:p-5 xl:mx-4"
         >
           <header
             class="pb-3 border-b-[2px] border-white w-full sm:min-w-[850px] sm:max-w-[850px]"

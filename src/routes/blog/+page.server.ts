@@ -8,6 +8,7 @@ export const load = async ({locals}) => {
       // make the POST request to the endpoint
       const output = await pb.collection("articles").getFullList({
         sort: "-created",
+        filter: "category='blog'"
       });
 
     return output;

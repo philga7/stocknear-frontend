@@ -221,12 +221,12 @@
                   ETFs, options flow, and more. Use our search bar for quick
                   access to specific stock symbols.
                 </p>
-                <h2 class="text-white text-3xl font-semibold mt-8 mb-5">
+                <h2 class="text-white text-xl sm:text-2xl font-bold mt-8 mb-5">
                   Pages
                 </h2>
                 <nav aria-label="Site Pages">
                   <ul
-                    class="list-outside list-disc space-y-1 p-1 pl-6 md:gap-x-8 md:text-xl"
+                    class="list-outside list-disc space-y-1 p-1 pl-6 md:gap-x-8 md:text-lg"
                   >
                     {#each tabs as item}
                       <li>
@@ -240,14 +240,35 @@
                   </ul>
                 </nav>
 
-                <h2 class="text-white text-3xl font-semibold mt-8 mb-5">
+                <h2 class="text-white text-xl sm:text-2xl font-bold mt-8 mb-5">
                   Articles
                 </h2>
                 <nav aria-label="Site Pages">
                   <ul
-                    class="list-outside list-disc space-y-1 p-1 pl-6 md:gap-x-8 md:text-xl"
+                    class="list-outside list-disc space-y-1 p-1 pl-6 md:gap-x-8 md:text-lg"
                   >
                     {#each data?.getBlogPosts as item}
+                      {#if item?.category === "blog"}
+                        <li>
+                          <a
+                            href={"/blog/article/" + convertToSlug(item?.title)}
+                            class="sm:hover:underline sm:hover:underline-offset-4"
+                            title={`Visit ${item?.title} page`}>{item?.title}</a
+                          >
+                        </li>
+                      {/if}
+                    {/each}
+                  </ul>
+                </nav>
+
+                <h2 class="text-white text-xl sm:text-2xl font-bold mt-8 mb-5">
+                  Learning Center
+                </h2>
+                <nav aria-label="Site Pages">
+                  <ul
+                    class="list-outside list-disc space-y-1 p-1 pl-6 md:gap-x-8 md:text-lg"
+                  >
+                    {#each data?.getTutorialPost as item}
                       <li>
                         <a
                           href={"/blog/article/" + convertToSlug(item?.title)}
@@ -259,21 +280,23 @@
                   </ul>
                 </nav>
 
-                <h2 class="text-white text-3xl font-semibold mt-8 mb-5">
-                  Learning Center
+                <h2 class="text-white text-xl sm:text-2xl font-bold mt-8 mb-5">
+                  Financial terms
                 </h2>
                 <nav aria-label="Site Pages">
                   <ul
-                    class="list-outside list-disc space-y-1 p-1 pl-6 md:gap-x-8 md:text-xl"
+                    class="list-outside list-disc space-y-1 p-1 pl-6 md:gap-x-8 md:text-lg"
                   >
-                    {#each data?.getTutorialPost as item}
-                      <li>
-                        <a
-                          href={"/blog/article/" + convertToSlug(item?.title)}
-                          class="sm:hover:underline sm:hover:underline-offset-4"
-                          title={`Visit ${item?.title} page`}>{item?.title}</a
-                        >
-                      </li>
+                    {#each data?.getBlogPosts as item}
+                      {#if item?.category === "term"}
+                        <li>
+                          <a
+                            href={"/blog/article/" + convertToSlug(item?.title)}
+                            class="sm:hover:underline sm:hover:underline-offset-4"
+                            title={`Visit ${item?.title} page`}>{item?.title}</a
+                          >
+                        </li>
+                      {/if}
                     {/each}
                   </ul>
                 </nav>
