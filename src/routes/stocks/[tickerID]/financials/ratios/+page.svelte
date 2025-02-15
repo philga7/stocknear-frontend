@@ -1,7 +1,6 @@
 <script lang="ts">
   import { Chart } from "svelte-echarts";
   import {
-    numberOfUnreadNotification,
     displayCompanyName,
     stockTicker,
     coolMode,
@@ -47,6 +46,11 @@
     {
       propertyName: "priceEarningsRatio",
       label: "PE Ratio",
+      text: "The price-to-earnings (P/E) ratio is a valuation metric that shows how expensive a stock is relative to earnings.",
+    },
+    {
+      propertyName: "priceEarningsToGrowthRatio",
+      label: "PEG Ratio",
       text: "The price-to-earnings (P/E) ratio is a valuation metric that shows how expensive a stock is relative to earnings.",
     },
     {
@@ -406,7 +410,6 @@
   }
 </script>
 
-
 <SEO
   title={`${$displayCompanyName} (${$stockTicker}) Financial Ratios and Metrics · Stocknear`}
   description={`Financial ratios and metrics for ${$displayCompanyName} (${$stockTicker}). Includes annual, quarterly and trailing numbers with full history and charts.`}
@@ -599,6 +602,9 @@
                       <option disabled>Choose a Variable</option>
                       <option value="priceEarningsRatio" selected
                         >PE Ratio</option
+                      >
+                      <option value="priceEarningsToGrowthRatio" selected
+                        >PEG Ratio</option
                       >
                       <option value="priceToSalesRatio">PS Ratio</option>
                       <option value="priceToBookRatio">PB Ratio</option>

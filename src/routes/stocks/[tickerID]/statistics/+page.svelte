@@ -240,9 +240,9 @@
               >
                 The PE ratio is {rawData?.priceEarningsRatio} and the forward PE
                 ratio is {rawData?.forwardPE}.
-                {rawData?.peg !== null
+                {rawData?.priceEarningsToGrowthRatio !== null
                   ? `${companyName}'s PEG ratio is
-                ${rawData?.peg}.`
+                ${rawData?.priceEarningsToGrowthRatio}.`
                   : ""}
               </p>
 
@@ -302,7 +302,9 @@
                     </td>
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
-                      >{rawData?.peg !== null ? rawData?.peg : "n/a"}</td
+                      >{rawData?.priceEarningsToGrowthRatio !== null
+                        ? rawData?.priceEarningsToGrowthRatio
+                        : "n/a"}</td
                     >
                   </tr></tbody
                 >

@@ -688,7 +688,7 @@
       defaultValue: "any",
       category: "Valuation & Ratios",
     },
-    peg: {
+    priceEarningsToGrowthRatio: {
       label: "PEG Ratio",
       step: [100, 10, 5, 3, 1, 0.5, 0],
       defaultCondition: "over",
