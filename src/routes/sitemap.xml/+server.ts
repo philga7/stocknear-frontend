@@ -67,6 +67,7 @@ const pages = [
   { title: "/analysts/top-stocks" },
   { title: "/heatmap" },
   { title: "/market-flow" },
+  { title: "/market-flow/sector-flow" },
    { title: "/affiliate-program" },
 ];
 
