@@ -5,6 +5,7 @@
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import { abbreviateNumberWithColor } from "$lib/utils";
   import InfoModal from "$lib/components/InfoModal.svelte";
+
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
 
   import { Chart } from "svelte-echarts";
@@ -366,7 +367,7 @@
               }
               return "";
             },
-            interval: "auto", // Show label every 30 minutes (29 intervals between)
+            interval: 30,
           },
         },
 
@@ -503,21 +504,18 @@
         <main class="w-full">
           <div class="w-full m-auto">
             {#if optionsData !== null}
-              <div class="flex flex-row items-center mb-3">
-                <label
-                  for="marketTideInfo"
-                  class="mr-1 cursor-pointer flex flex-row items-center text-white text-xl sm:text-2xl font-bold"
+              <p class="mt-4 text-white">
+                Market Flow evaluates the balance between advancing and
+                declining stocks by analyzing SP& 500 price movements, net call
+                premiums and net put premiums, providing a real-time snapshot of
+                market sentiment and momentum. <a
+                  href="/learning-center/article/market-sentiment-through-options-activity-riding-the-tide"
+                  class="text-blue-400 sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
+                  >Learn more here.</a
                 >
-                  Market Flow
-                </label>
-                <InfoModal
-                  title={"Market Flow"}
-                  content={"Market Flow evaluates the balance between advancing and declining stocks by analyzing SPY price movements, net call premiums, and net put premiums, providing a real-time snapshot of market sentiment and momentum. <a href='/learning-center/article/market-sentiment-through-options-activity-riding-the-tide' class='text-blue-400 sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4'>Learn more</a>"}
-                  id={"marketTideInfo"}
-                />
-              </div>
+              </p>
 
-              <div class="text-white text-sm italic mb-3">
+              <div class="text-white text-sm italic mt-5 mb-3">
                 Last Updated: {formatDate(
                   findLastNonNull(marketTideData, "time"),
                 )}

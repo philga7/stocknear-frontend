@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { numberOfUnreadNotification, screenWidth } from "$lib/store";
+  import { screenWidth } from "$lib/store";
 
   import HoverStockChart from "$lib/components/HoverStockChart.svelte";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
@@ -9,6 +9,7 @@
 
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
+  import SEO from "$lib/components/SEO.svelte";
 
   import { Chart } from "svelte-echarts";
 
@@ -48,16 +49,19 @@
     "Consumer Cyclical": "XLY",
   };
 
-  let sectorData = data?.getData?.sectorData || [];
-  let topSectorTickers = data?.getData?.topSectorTickers || {};
+  //let sectorData = data?.getData?.sectorData || [];
+  let topPosNetPremium =
+    data?.getData?.topPosNetPremium[sectorDict[selectedSector]] || [];
+  let topNegNetPremium =
+    data?.getData?.topNegNetPremium[sectorDict[selectedSector]] || [];
+
   let marketTideData =
-    data?.getData?.marketTide[sectorDict[selectedSector]] || {};
-  let originalData = [...sectorData]; // Unaltered copy of raw data
+    data?.getData?.sectorFlow[sectorDict[selectedSector]] || {};
+  let originalPosTickers = topPosNetPremium;
+  let displayPosTickers = topPosNetPremium;
 
-  let stockList = sectorData ?? [];
-
-  let originalTopTickers = [...topSectorTickers[selectedSector]];
-  let displayTopTickers = topSectorTickers[selectedSector];
+  let originalNegTickers = topNegNetPremium;
+  let displayNegTickers = topNegNetPremium;
 
   function findLastNonNull(dataArray, key) {
     for (let i = dataArray.length - 1; i >= 0; i--) {
@@ -109,15 +113,12 @@
     changesPercentage: { order: "none", type: "number" },
     call_volume: { order: "none", type: "number" },
     put_volume: { order: "none", type: "number" },
-    premium_ratio: { order: "none", type: "number" },
-    avg30_call_volume: { order: "none", type: "string" },
-    avg30_put_volume: { order: "none", type: "number" },
-    netPremium: { order: "none", type: "number" },
-    netCallPremium: { order: "none", type: "number" },
-    netPutPremium: { order: "none", type: "number" },
-    gexRatio: { order: "none", type: "number" },
-    gexNetChange: { order: "none", type: "number" },
-    ivRank: { order: "none", type: "number" },
+    net_premium: { order: "none", type: "number" },
+    net_call_premium: { order: "none", type: "number" },
+    net_put_premium: { order: "none", type: "number" },
+    call_premium: { order: "none", type: "number" },
+    put_premium: { order: "none", type: "number" },
+    iv_rank: { order: "none", type: "number" },
   };
 
   $: topColumns = [
@@ -126,15 +127,13 @@
     { key: "name", label: "Name", align: "left" },
     { key: "price", label: "Price", align: "right" },
     { key: "changesPercentage", label: "% Change", align: "right" },
-    { key: "netPremium", label: "Net Prem", align: "right" },
-    { key: "netCallPremium", label: "Net Call Prem", align: "right" },
-    { key: "netPutPremium", label: "Net Put Prem", align: "right" },
-    { key: "gexRatio", label: "Gex Ratio", align: "right" },
-    { key: "gexNetChange", label: "Gex Change", align: "right" },
-    { key: "ivRank", label: "IV Rank", align: "right" },
+    { key: "net_premium", label: "Net Prem", align: "right" },
+    { key: "net_call_premium", label: "Net Call Prem", align: "right" },
+    { key: "net_put_premium", label: "Net Put Prem", align: "right" },
+    { key: "iv_rank", label: "IV Rank", align: "right" },
   ];
 
-  const sortData = (key) => {
+  const sortPosTickers = (key) => {
     // Reset all other keys to 'none' except the current key
     for (const k in sortOrders) {
       if (k !== key) {
@@ -152,8 +151,8 @@
 
     // Reset to original data when 'none' and stop further sorting
     if (sortOrder === "none") {
-      originalData = [...sectorData]; // Reset originalData to sectorData
-      stockList = originalData?.slice(0, 50); // Reset displayed data
+      originalPosTickers = [...topPosNetPremium]; // Reset originalPosTickers to sectorData
+      displayPosTickers = originalPosTickers?.slice(0, 50);
       return;
     }
 
@@ -188,10 +187,12 @@
     };
 
     // Sort using the generic comparison function
-    stockList = [...originalData].sort(compareValues)?.slice(0, 50);
+    displayPosTickers = [...originalPosTickers]
+      .sort(compareValues)
+      ?.slice(0, 50);
   };
 
-  const sortTopTickers = (key) => {
+  const sortNegTickers = (key) => {
     // Reset all other keys to 'none' except the current key
     for (const k in sortOrders) {
       if (k !== key) {
@@ -209,8 +210,8 @@
 
     // Reset to original data when 'none' and stop further sorting
     if (sortOrder === "none") {
-      originalTopTickers = [...topSectorTickers[selectedSector]]; // Reset originalTopTickers to sectorData
-      displayTopTickers = originalTopTickers;
+      originalNegTickers = [...topNegNetPremium];
+      displayNegTickers = originalNegTickers?.slice(0, 50);
       return;
     }
 
@@ -245,15 +246,17 @@
     };
 
     // Sort using the generic comparison function
-    displayTopTickers = [...originalTopTickers]
+    displayNegTickers = [...originalNegTickers]
       .sort(compareValues)
       ?.slice(0, 50);
   };
 
   function getPlotOptions() {
     isLoading = true;
-    let dates = marketTideData?.map((item) => item?.timestamp);
-    const priceList = marketTideData?.map((item) => item?.close);
+    let dates = marketTideData?.map((item) => item?.time);
+    const priceList = marketTideData?.map((item) =>
+      item?.close !== null ? item?.close?.toFixed(2) : item?.close,
+    );
     const netCallPremList = marketTideData?.map(
       (item) => item?.net_call_premium,
     );
@@ -266,7 +269,6 @@
     const options = {
       silent: true,
       animation: false,
-      backgroundColor: "#18181D",
       legend: {
         data: ["Price", "Vol", "Net Call Premium", "Net Put Premium"],
         textStyle: {
@@ -376,7 +378,7 @@
               let [hours, minutes] = timePart.split(":").map(Number);
 
               // Only show labels at 30-minute intervals (XX:00 and XX:30)
-              if (minutes % 60 === 0) {
+              if (minutes % 30 === 0) {
                 const amPm = hours >= 12 ? "PM" : "AM";
                 hours = hours % 12 || 12;
                 return minutes === 0
@@ -385,7 +387,7 @@
               }
               return "";
             },
-            interval: 29, // Show label every 30 minutes (29 intervals between)
+            interval: 30,
           },
         },
 
@@ -505,56 +507,34 @@
     isLoading = false;
     return options;
   }
+  optionsData = marketTideData ? getPlotOptions() : null;
 
   $: {
     if (selectedSector) {
-      originalTopTickers = [...topSectorTickers[selectedSector]];
-      displayTopTickers = topSectorTickers[selectedSector];
-      displayTopTickers =
-        data?.user?.tier === "Pro"
-          ? displayTopTickers
-          : displayTopTickers?.slice(0, 3);
+      topPosNetPremium =
+        data?.getData?.topPosNetPremium[sectorDict[selectedSector]] || [];
+      topNegNetPremium =
+        data?.getData?.topNegNetPremium[sectorDict[selectedSector]] || [];
+
       marketTideData =
-        data?.getData?.marketTide[sectorDict[selectedSector]] || {};
+        data?.getData?.sectorFlow[sectorDict[selectedSector]] || {};
+      originalPosTickers = topPosNetPremium;
+      displayPosTickers = topPosNetPremium;
+
+      originalNegTickers = topNegNetPremium;
+      displayNegTickers = topNegNetPremium;
       optionsData = marketTideData ? getPlotOptions() : null;
     }
   }
 </script>
 
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""} Live
-    Market Flow · Stocknear
-  </title>
-  <meta
-    name="description"
-    content={`Track and compare historical and current options activity
-              performances of the market & sectors`}
-  />
-
-  <!-- Other meta tags -->
-  <meta property="og:title" content={`Live Market Flow · Stocknear`} />
-  <meta
-    property="og:description"
-    content={`Track and compare historical and current options activity`}
-  />
-  <meta property="og:type" content="website" />
-  <!-- Add more Open Graph meta tags as needed -->
-
-  <!-- Twitter specific meta tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={`Live Market Flow · Stocknear`} />
-  <meta
-    name="twitter:description"
-    content={`              performances of the market & sectors`}
-  />
-  <!-- Add more Twitter meta tags as needed -->
-</svelte:head>
+<SEO
+  title="Live Sector Flow - Real-Time Sector Options Sentiment"
+  description="Get real-time insights on all sectors of the stock market flow sentiment through options premium analysis. Track trends and make informed trading decisions."
+/>
 
 <section class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden">
-  <div class="w-full overflow-hidden m-auto mt-5">
+  <div class="w-full overflow-hidden m-auto">
     <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
       <div
         class="relative flex justify-center items-start overflow-hidden w-full"
@@ -562,145 +542,131 @@
         <main class="w-full">
           <div class="w-full m-auto">
             {#if optionsData !== null}
-              <div
-                class="flex flex-wrap sm:flex-row items-center sm:justify-between mb-4"
-              >
-                <div class="flex flex-row items-center">
-                  <label
-                    for="sectorTideInfo"
-                    class="mr-1 cursor-pointer flex flex-row items-center text-white text-xl sm:text-2xl font-bold"
-                  >
-                    {selectedSector} Tide
-                  </label>
-                  <InfoModal
-                    title={"Sector Tide"}
-                    content={`Sector Tide evaluates the balance between advancing and declining stocks by analyzing ${selectedSector} sector price movements, net call premiums, and net put premiums, providing a real-time snapshot of market sentiment and momentum. <a href='/learning-center/market-tide' class='text-blue-400 sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4'>Learn more</a>`}
-                    id={"sectorTideInfo"}
-                  />
-                </div>
+              <p class="mt-4 text-white">
+                <strong>{selectedSector}</strong> Flow tracks sector stocks, net
+                call/put premiums, and price movements to gauge market sentiment
+                and momentum in real time.
+              </p>
 
-                <div
-                  class="flex flex-row items-center w-fit ml-auto mt-2 sm:mt-0"
-                >
-                  <div class="relative inline-block text-left grow">
-                    <DropdownMenu.Root>
-                      <DropdownMenu.Trigger asChild let:builder>
-                        <Button
-                          builders={[builder]}
-                          class="w-full border-gray-600 border bg-default sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
-                        >
-                          <span class="truncate text-white"
-                            >{selectedSector}</span
-                          >
-                          <svg
-                            class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                            style="max-width:40px"
-                            aria-hidden="true"
-                          >
-                            <path
-                              fill-rule="evenodd"
-                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                              clip-rule="evenodd"
-                            ></path>
-                          </svg>
-                        </Button>
-                      </DropdownMenu.Trigger>
-                      <DropdownMenu.Content
-                        class="w-56 h-fit max-h-72 overflow-y-auto scroller"
+              <div
+                class="flex flex-row items-center w-fit ml-auto mt-2 sm:mt-0"
+              >
+                <div class="relative inline-block text-left grow">
+                  <DropdownMenu.Root>
+                    <DropdownMenu.Trigger asChild let:builder>
+                      <Button
+                        builders={[builder]}
+                        class="w-full border-gray-600 border bg-default sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
                       >
-                        <DropdownMenu.Label class="text-gray-400">
-                          Select Sector
-                        </DropdownMenu.Label>
-                        <DropdownMenu.Separator />
-                        <DropdownMenu.Group>
-                          {#each sectorList as sector}
-                            <DropdownMenu.Item
-                              on:click={() => (selectedSector = sector)}
-                              class="cursor-pointer hover:bg-primary"
-                            >
-                              {sector}
-                            </DropdownMenu.Item>
-                          {/each}
-                        </DropdownMenu.Group>
-                      </DropdownMenu.Content>
-                    </DropdownMenu.Root>
-                  </div>
+                        <span class="truncate text-white">{selectedSector}</span
+                        >
+                        <svg
+                          class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          style="max-width:40px"
+                          aria-hidden="true"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clip-rule="evenodd"
+                          ></path>
+                        </svg>
+                      </Button>
+                    </DropdownMenu.Trigger>
+                    <DropdownMenu.Content
+                      class="w-56 h-fit max-h-72 overflow-y-auto scroller"
+                    >
+                      <DropdownMenu.Label class="text-gray-400">
+                        Select Sector
+                      </DropdownMenu.Label>
+                      <DropdownMenu.Separator />
+                      <DropdownMenu.Group>
+                        {#each sectorList as sector}
+                          <DropdownMenu.Item
+                            on:click={() => (selectedSector = sector)}
+                            class="cursor-pointer hover:bg-primary"
+                          >
+                            {sector}
+                          </DropdownMenu.Item>
+                        {/each}
+                      </DropdownMenu.Group>
+                    </DropdownMenu.Content>
+                  </DropdownMenu.Root>
                 </div>
               </div>
-              <div
-                class="mt-5 mb-4 flex flex-col divide-y divide-gray-600 rounded-md border border-gray-600 sm:grid sm:grid-cols-4 sm:divide-x sm:divide-y-0"
-              >
-                <div class="px-4 py-3 sm:px-2 sm:py-5 md:px-3 lg:p-6">
-                  <div class="flex items-center justify-between sm:block">
-                    <div class="text-[1rem] font-semibold text-white">Date</div>
-                    <div
-                      class="mt-1 break-words font-semibold leading-8 text-white text-sm sm:text-[1rem]"
-                    >
-                      {formatDate(findLastNonNull(marketTideData, "timestamp"))}
-                    </div>
-                  </div>
-                </div>
 
-                <div class="px-4 py-3 sm:px-2 sm:py-5 md:px-3 lg:p-6">
-                  <div class="flex items-center justify-between sm:block">
-                    <div class="text-[1rem] font-semibold text-white">
-                      Volume
-                    </div>
-                    <div
-                      class="mt-1 break-words font-semibold leading-8 text-white text-sm sm:text-[1rem]"
-                    >
+              <div class="text-white text-sm italic mt-5 mb-3">
+                Last Updated: {formatDate(
+                  findLastNonNull(marketTideData, "time"),
+                )}
+              </div>
+              <div
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6"
+              >
+                <div
+                  class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
+                >
+                  <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
+                    <span>Volume</span>
+                    <span class="ml-1 text-yellow-400">●</span>
+                  </div>
+                  <div class="flex items-baseline">
+                    <span class="text-2xl font-bold text-white">
                       {@html abbreviateNumberWithColor(
                         findLastNonNull(marketTideData, "net_volume"),
                         false,
                         true,
-                      )}
-                    </div>
+                      )}</span
+                    >
                   </div>
                 </div>
-                <div class="px-4 py-3 sm:px-2 sm:py-5 md:px-3 lg:p-6">
-                  <div class="flex items-center justify-between sm:block">
-                    <div class="text-[1rem] font-semibold text-white">
-                      Net Call Premium
-                    </div>
-                    <div
-                      class="mt-1 break-words font-semibold leading-8 text-white text-sm sm:text-[1rem]"
-                    >
-                      {@html abbreviateNumberWithColor(
+
+                <div
+                  class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
+                >
+                  <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
+                    <span>Net Call Prem</span>
+                    <span class="ml-1 text-green-500">●</span>
+                  </div>
+                  <div class="flex items-baseline">
+                    <span class="text-2xl font-bold text-white"
+                      >{@html abbreviateNumberWithColor(
                         findLastNonNull(marketTideData, "net_call_premium"),
                         false,
                         true,
-                      )}
-                    </div>
+                      )}</span
+                    >
                   </div>
                 </div>
-                <div class="px-4 py-3 sm:px-2 sm:py-5 md:px-3 lg:p-6">
-                  <div class="flex items-center justify-between sm:block">
-                    <div class="text-[1rem] font-semibold text-white">
-                      Net Put Premium
-                    </div>
-                    <div
-                      class="mt-1 break-words font-semibold leading-8 text-white text-sm sm:text-[1rem]"
-                    >
-                      {@html abbreviateNumberWithColor(
+
+                <div
+                  class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
+                >
+                  <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
+                    <span>Net Put Prem</span>
+                    <span class="ml-1 text-red-400">●</span>
+                  </div>
+                  <div class="flex items-baseline">
+                    <span class="text-2xl font-bold text-white"
+                      >{@html abbreviateNumberWithColor(
                         findLastNonNull(marketTideData, "net_put_premium"),
                         false,
                         true,
-                      )}
-                    </div>
+                      )}</span
+                    >
                   </div>
                 </div>
               </div>
-              <div
-                class="pb-8 sm:pb-2 rounded-md bg-table border border-gray-800"
-              >
+
+              <div class="pb-8 sm:pb-2 rounded border border-gray-600">
                 <div class="app w-full h-[300px] mt-5">
                   {#if isLoading}
                     <div class="flex justify-center items-center h-80">
                       <div class="relative">
                         <label
-                          class="bg-secondary rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                          class="bg-secondary z-10 rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                         >
                           <span
                             class="loading loading-spinner loading-md text-white"
@@ -714,121 +680,221 @@
                 </div>
               </div>
             {/if}
-          </div>
-          <div class="w-full m-auto mt-10">
-            <div class="flex flex-wrap sm:flex-row items-center mb-4">
-              <div class="flex flex-row items-center">
-                <label
-                  for="topSectorTickers"
-                  class="mr-1 cursor-pointer flex flex-row items-center text-white text-xl sm:text-2xl font-bold"
+            <div class="w-full m-auto mt-10">
+              <div
+                class="flex flex-wrap sm:flex-row items-center sm:justify-between mb-4"
+              >
+                <div class="flex flex-row items-center">
+                  <label
+                    for="topPosNetPrem"
+                    class="mr-1 cursor-pointer flex flex-row items-center text-white text-xl sm:text-2xl font-bold"
+                  >
+                    Top Stocks by Positive Net Prem
+                  </label>
+                  <InfoModal
+                    title={"Top Stocks by Positive Net Prem"}
+                    content={"This list showcases top stocks with a positive net premium, indicating bullish sentiment. Track price movements, analyze options activity, and uncover the stocks leading their sectors with detailed options data."}
+                    id={"topPosNetPrem"}
+                  />
+                </div>
+              </div>
+
+              <div
+                class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-scroll"
+              >
+                <table
+                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md text-white w-full bg-table border border-gray-800 m-auto"
                 >
-                  Top {selectedSector} Stocks by Net Premium
-                </label>
-                <InfoModal
-                  title={"Top Sector Stocks by Net Premium"}
-                  content={"This list highlights top stocks in each sector based on net premium, displaying price changes and options activity. Discover which stocks are driving the sector and explore detailed options data."}
-                  id={"topSectorTickers"}
-                />
+                  <thead>
+                    <TableHeader
+                      columns={topColumns}
+                      {sortOrders}
+                      sortData={sortPosTickers}
+                    />
+                  </thead>
+                  <tbody>
+                    {#each displayPosTickers as item, index}
+                      <tr
+                        class="sm:hover:bg-[#245073] border-b border-gray-800 sm:hover:bg-opacity-[0.2] odd:bg-odd {index +
+                          1 ===
+                          originalPosTickers?.length &&
+                        data?.user?.tier !== 'Pro'
+                          ? 'opacity-[0.1]'
+                          : ''}"
+                      >
+                        <td
+                          class="text-start text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                        >
+                          {item?.rank}
+                        </td>
+
+                        <td
+                          class="text-sm sm:text-[1rem] text-start whitespace-nowrap"
+                        >
+                          <HoverStockChart symbol={item?.symbol} />
+                        </td>
+
+                        <td
+                          class="text-start text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                        >
+                          {item?.name?.length > 20
+                            ? item?.name?.slice(0, 20) + "..."
+                            : item?.name}
+                        </td>
+
+                        <td
+                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                        >
+                          {item?.price}
+                        </td>
+
+                        <td
+                          class="text-sm sm:text-[1rem] {item?.changesPercentage >=
+                          0
+                            ? "text-[#00FC50] before:content-['+'] "
+                            : 'text-[#FF2F1F]'} text-end"
+                        >
+                          {item?.changesPercentage}%
+                        </td>
+
+                        <td class="text-sm sm:text-[1rem] text-end">
+                          {@html abbreviateNumberWithColor(
+                            item?.net_premium,
+                            false,
+                            true,
+                          )}
+                        </td>
+                        <td class="text-sm sm:text-[1rem] text-end">
+                          {@html abbreviateNumberWithColor(
+                            item?.net_call_premium,
+                            false,
+                            true,
+                          )}
+                        </td>
+                        <td class="text-sm sm:text-[1rem] text-end">
+                          {@html abbreviateNumberWithColor(
+                            item?.net_put_premium,
+                            false,
+                            true,
+                          )}
+                        </td>
+
+                        <td class="text-sm sm:text-[1rem] text-end">
+                          {item?.iv_rank}
+                        </td>
+                      </tr>
+                    {/each}
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="mb-3 mt-10">
+                <div class="flex flex-row items-center">
+                  <label
+                    for="topNegNetPrem"
+                    class="mr-1 cursor-pointer flex flex-row items-center text-white text-xl sm:text-2xl font-bold"
+                  >
+                    Top Stocks by Negative Net Prem
+                  </label>
+                  <InfoModal
+                    title={"Top Stocks by Negative Net Prem"}
+                    content={"This list showcases top stocks with a negative net premium, indicating bullish sentiment. Track price movements, analyze options activity, and uncover the stocks leading their sectors with detailed options data."}
+                    id={"topNegNetPrem"}
+                  />
+                </div>
+              </div>
+
+              <div
+                class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-scroll"
+              >
+                <table
+                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md text-white w-full bg-table border border-gray-800 m-auto"
+                >
+                  <thead>
+                    <TableHeader
+                      columns={topColumns}
+                      {sortOrders}
+                      sortData={sortNegTickers}
+                    />
+                  </thead>
+                  <tbody>
+                    {#each displayNegTickers as item, index}
+                      <tr
+                        class="sm:hover:bg-[#245073] border-b border-gray-800 sm:hover:bg-opacity-[0.2] odd:bg-odd {index +
+                          1 ===
+                          originalNegTickers?.length &&
+                        data?.user?.tier !== 'Pro'
+                          ? 'opacity-[0.1]'
+                          : ''}"
+                      >
+                        <td
+                          class="text-start text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                        >
+                          {item?.rank}
+                        </td>
+
+                        <td
+                          class="text-sm sm:text-[1rem] text-start whitespace-nowrap"
+                        >
+                          <HoverStockChart symbol={item?.symbol} />
+                        </td>
+
+                        <td
+                          class="text-start text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                        >
+                          {item?.name?.length > 20
+                            ? item?.name?.slice(0, 20) + "..."
+                            : item?.name}
+                        </td>
+
+                        <td
+                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                        >
+                          {item?.price}
+                        </td>
+
+                        <td
+                          class="text-sm sm:text-[1rem] {item?.changesPercentage >=
+                          0
+                            ? "text-[#00FC50] before:content-['+'] "
+                            : 'text-[#FF2F1F]'} text-end"
+                        >
+                          {item?.changesPercentage}%
+                        </td>
+
+                        <td class="text-sm sm:text-[1rem] text-end">
+                          {@html abbreviateNumberWithColor(
+                            item?.net_premium,
+                            false,
+                            true,
+                          )}
+                        </td>
+                        <td class="text-sm sm:text-[1rem] text-end">
+                          {@html abbreviateNumberWithColor(
+                            item?.net_call_premium,
+                            false,
+                            true,
+                          )}
+                        </td>
+                        <td class="text-sm sm:text-[1rem] text-end">
+                          {@html abbreviateNumberWithColor(
+                            item?.net_put_premium,
+                            false,
+                            true,
+                          )}
+                        </td>
+
+                        <td class="text-sm sm:text-[1rem] text-end">
+                          {item?.iv_rank}
+                        </td>
+                      </tr>
+                    {/each}
+                  </tbody>
+                </table>
               </div>
             </div>
-
-            <div
-              class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-scroll"
-            >
-              <table
-                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md text-white w-full bg-table border border-gray-800 m-auto"
-              >
-                <thead>
-                  <TableHeader
-                    columns={topColumns}
-                    {sortOrders}
-                    sortData={sortTopTickers}
-                  />
-                </thead>
-                <tbody>
-                  {#each displayTopTickers as item, index}
-                    <tr
-                      class="sm:hover:bg-[#245073] border-b border-gray-800 sm:hover:bg-opacity-[0.2] odd:bg-odd {index +
-                        1 ===
-                        sectorData?.length && data?.user?.tier !== 'Pro'
-                        ? 'opacity-[0.1]'
-                        : ''}"
-                    >
-                      <td
-                        class="text-start text-sm sm:text-[1rem] whitespace-nowrap text-white"
-                      >
-                        {item?.rank}
-                      </td>
-
-                      <td
-                        class="text-sm sm:text-[1rem] text-start whitespace-nowrap"
-                      >
-                        <HoverStockChart symbol={item?.ticker} />
-                      </td>
-
-                      <td
-                        class="text-start text-sm sm:text-[1rem] whitespace-nowrap text-white"
-                      >
-                        {item?.name}
-                      </td>
-
-                      <td
-                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
-                      >
-                        {item?.price}
-                      </td>
-
-                      <td
-                        class="text-sm sm:text-[1rem] {item?.changesPercentage >=
-                        0
-                          ? "text-[#00FC50] before:content-['+'] "
-                          : 'text-[#FF2F1F]'} text-end"
-                      >
-                        {item?.changesPercentage}%
-                      </td>
-
-                      <td class="text-sm sm:text-[1rem] text-end">
-                        {@html abbreviateNumberWithColor(
-                          item?.netPremium,
-                          false,
-                          true,
-                        )}
-                      </td>
-                      <td class="text-sm sm:text-[1rem] text-end">
-                        {@html abbreviateNumberWithColor(
-                          item?.netCallPremium,
-                          false,
-                          true,
-                        )}
-                      </td>
-                      <td class="text-sm sm:text-[1rem] text-end">
-                        {@html abbreviateNumberWithColor(
-                          item?.netPutPremium,
-                          false,
-                          true,
-                        )}
-                      </td>
-
-                      <td class="text-sm sm:text-[1rem] text-end">
-                        {item?.gexRatio}
-                      </td>
-                      <td class="text-sm sm:text-[1rem] text-end">
-                        {@html abbreviateNumberWithColor(
-                          item?.gexNetChange,
-                          false,
-                          true,
-                        )}
-                      </td>
-                      <td class="text-sm sm:text-[1rem] text-end">
-                        {item?.ivRank}
-                      </td>
-                    </tr>
-                  {/each}
-                </tbody>
-              </table>
-            </div>
+            <UpgradeToPro {data} />
           </div>
-          <UpgradeToPro {data} />
         </main>
       </div>
     </div>

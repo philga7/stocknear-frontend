@@ -7,7 +7,7 @@
 
   const tabs = [
     {
-      title: "Market Flow",
+      title: "Overview",
       path: "/market-flow",
     },
     {
@@ -48,8 +48,6 @@
         class="relative flex justify-center items-start overflow-hidden w-full"
       >
         <main class="w-full lg:w-3/4 lg:pr-10">
-          <!--
-          
           <h1 class="mb-6 text-white text-2xl sm:text-3xl font-bold">
             {activeIdx === 0 ? "Market Flow" : "Sector Flow"}
           </h1>
@@ -67,7 +65,6 @@
               {/each}
             </ul>
           </nav>
-          -->
 
           <slot />
 
