@@ -1064,14 +1064,6 @@
       defaultValue: "any",
       category: ["Most Popular", "Valuation & Ratios"],
     },
-    priceEarningsToGrowthRatio: {
-      label: "Price / Earnings Growth",
-      step: [10, 5, 3, 2, 1, 0],
-
-      defaultCondition: "over",
-      defaultValue: "any",
-      category: "Valuation & Ratios",
-    },
     stockBasedCompensation: {
       label: "Stock-Based Compensation",
       step: ["10B", "1B", "100M", "10M", "1M", 0],
