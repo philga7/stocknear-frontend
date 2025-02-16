@@ -801,7 +801,7 @@
                                       2,
                                     )}%
                                   </div>
-                                  <div class="mt-1 text-xs sm:text-sm sm:flex">
+                                  <div class="mt-1 text-xs sm:flex">
                                     <span class="flex items-center">
                                       {#if prePostData?.time?.includes("AM")}
                                         <svg
@@ -836,7 +836,7 @@
                                         class="ml-0.5 whitespace-nowrap font-semibold md:ml-1 mb-0.5 sm:mb-0"
                                         >{prePostData?.time?.includes("AM")
                                           ? "Pre-market"
-                                          : "After-hours"}</span
+                                          : "After-hours"}:</span
                                       ></span
                                     >
                                     <span class="sm:ml-1 whitespace-nowrap"

@@ -85,7 +85,7 @@
 
         <li
           class="ml-[20px] sm:ml-[30px]"
-          style="color: #fff; line-height: 22px; margin-top:20px; margin-bottom: 15px; list-style-type: disc;"
+          style="color: #fff; line-height: 22px; margin-top:10px; margin-bottom: 10px; list-style-type: disc;"
         >
           Revenue of <span class="font-semibold"
             >{abbreviateNumber(rawData?.revenue, true)}</span
@@ -103,7 +103,7 @@
         </li>
         <li
           class="ml-[20px] sm:ml-[30px]"
-          style="color: #fff; line-height: 22px; margin-top: 0px; margin-bottom: 15px; list-style-type: disc;"
+          style="color: #fff; line-height: 22px; margin-top: 0px; margin-bottom: 0px; list-style-type: disc;"
         >
           EPS of <span class="font-semibold">{rawData?.eps}</span>
           {rawData?.epsSurprise > 0 ? "exceeds" : "misses"} estimates by {rawData?.epsSurprise?.toFixed(
