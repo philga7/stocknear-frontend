@@ -33,10 +33,8 @@
 
     if (state !== "overview" && subSectionMap[state]) {
       displaySubSection = state;
-      //goto(`/stocks/${$stockTicker}${subSectionMap[state]}`);
     } else {
       displaySubSection = state;
-      //goto(`/stocks/${$stockTicker}/stats`);
     }
   }
 
@@ -82,6 +80,17 @@
             >
               Analysts Ratings
             </a>
+            <!--
+            <a
+              href={`/stocks/${$stockTicker}/forecast/ai`}
+              on:click={() => changeSubSection("ai")}
+              class="p-2 px-5 cursor-pointer {displaySubSection === 'ai'
+                ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
+                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
+            >
+              AI Forecast
+            </a>
+            -->
           </ul>
         </nav>
       </div>

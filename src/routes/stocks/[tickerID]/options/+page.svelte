@@ -1,6 +1,8 @@
 <script lang="ts">
   import { displayCompanyName, screenWidth, stockTicker } from "$lib/store";
   import DailyStats from "$lib/components/Options/DailyStats.svelte";
+  import TickerFlow from "$lib/components/Options/TickerFlow.svelte";
+
   import { Chart } from "svelte-echarts";
   import { abbreviateNumberWithColor, monthNames } from "$lib/utils";
   import { onMount } from "svelte";
@@ -16,6 +18,7 @@
 
   export let data;
   let dailyStats = data?.getDailyStats;
+  let tickerFlow = data?.getTickerFlow;
 
   let filteredList = [];
 
@@ -299,6 +302,11 @@
           <Infobox text="No Options data available" />
         {/if}
 
+        {#if tickerFlow?.length > 0}
+          <div class="w-full mb-5">
+            <TickerFlow {tickerFlow} />
+          </div>
+        {/if}
         {#if Object?.keys(dailyStats)?.length > 0}
           <div class="w-full mb-10">
             <DailyStats rawData={dailyStats} />
