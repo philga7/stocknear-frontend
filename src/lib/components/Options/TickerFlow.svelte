@@ -168,8 +168,8 @@
       },
       grid: [
         {
-          left: "3%",
-          right: "3%",
+          left: $screenWidth < 640 ? "3%" : "0%",
+          right: $screenWidth < 640 ? "3%" : "0%",
           top: $screenWidth < 640 ? "15%" : "5%",
           height: "60%",
           containLabel: true,
@@ -417,7 +417,7 @@
               </div>
 
               <div>
-                <div class="app w-full h-[300px] mt-5">
+                <div class="app w-full h-[250px] mt-5">
                   {#if isLoading}
                     <div class="flex justify-center items-center h-80">
                       <div class="relative">
@@ -445,13 +445,13 @@
 
 <style>
   .app {
-    height: 600px;
+    height: 400px;
     max-width: 100%; /* Ensure chart width doesn't exceed the container */
   }
 
   @media (max-width: 640px) {
     .app {
-      height: 510px;
+      height: 400px;
     }
   }
 
