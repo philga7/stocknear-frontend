@@ -19,7 +19,7 @@
   import { CanvasRenderer } from "echarts/renderers";
   import Infobox from "$lib/components/Infobox.svelte";
   import SEO from "$lib/components/SEO.svelte";
-  
+
   use([LineChart, BarChart, GridComponent, TooltipComponent, CanvasRenderer]);
 
   export let data;
@@ -422,7 +422,6 @@
   }
 </script>
 
-
 <SEO
   title={`${$displayCompanyName} (${$stockTicker}) Financials - Income Statement · Stocknear`}
   description={`Detailed annual and timeFramely income statement for ${$displayCompanyName} (${$stockTicker}). See many years of revenue, expenses and profits or losses.`}
@@ -445,9 +444,7 @@
                     (item) => item?.propertyName === displayStatement,
                   )?.label}
                 {:else}
-                  Income Statement {filterRule === "annual"
-                    ? "(Annual)"
-                    : "(Quarter)"}
+                  {$displayCompanyName?.replace("Inc.", "")} Income Statement
                 {/if}
               </h1>
             </div>

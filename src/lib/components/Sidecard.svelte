@@ -87,77 +87,87 @@
   }
 </script>
 
-<div class="px-0.5 lg:px-0">
-  <h2 class="mb-2 text-2xl text-white font-semibold">
-    About {$stockTicker}
-  </h2>
-  <p class="text-gray-200">
-    {snippet}
-  </p>
-  <div class="inline-block">
-    <a
-      href={`/stocks/${$stockTicker}/profile`}
-      class="w-full text-md mt-1 cursor-pointer font-medium sm:hover:text-white text-blue-400 sm:hover:underline"
-    >
-      [Show more]
-    </a>
-  </div>
-
-  <div
-    class="mt-3 grid grid-cols-2 gap-3 w-full border-b border-gray-600 lg:border-none pb-8 lg:pb-0"
-  >
-    <div class="col-span-1 text-gray-200">
-      <span class="block font-semibold">Industry</span>
-      <a
-        href={getIndustryHref(industry)}
-        class="sm:hover:text-blue-400 text-white underline underline-offset-4"
-        >{industry}</a
-      >
-    </div>
-    <div class="col-span-1 text-gray-200">
-      <span class="block font-semibold">Sector</span>
-      <a
-        href={sectorNavigation?.find((item) => item?.title === sector)?.link}
-        class="sm:hover:text-blue-400 text-white underline underline-offset-4"
-        >{sector}</a
-      >
-    </div>
-    <div class="col-span-1 text-gray-200">
-      <span class="block font-semibold">IPO Date</span>
-      <span>{ipoDate}</span>
-    </div>
-    <div class="col-span-1 text-gray-200">
-      <span class="block font-semibold">Employees</span>
-      <a
-        href={`/stocks/${$stockTicker}/statistics/employees`}
-        class="sm:hover:text-blue-400 text-white underline underline-offset-4"
-        >{new Intl.NumberFormat("en")?.format(employees)}</a
-      >
-    </div>
-    <div class="col-span-1 text-gray-200">
-      <span class="block font-semibold">Stock Exchange</span>
-      <span>{exchange}</span>
-    </div>
-    <div class="col-span-1 text-gray-200">
-      <span class="block font-semibold">Ticker Symbol</span>
-      <span>{$stockTicker}</span>
-    </div>
-    {#if website}
-      <div class="col-span-1 whitespace-nowrap text-gray-200">
-        <span class="block font-semibold">Website</span>
+<div class="space-y-3">
+  <div class="h-auto w-full">
+    <!--Start Content-->
+    <div class="w-auto lg:w-full flex flex-col m-auto">
+      <h2 class="mb-2 text-2xl text-white font-semibold">
+        About {$stockTicker}
+      </h2>
+      <p class="text-gray-200">
+        {snippet}
+      </p>
+      <div class="inline-block">
         <a
-          href={website}
-          class="hover:sm:text-white truncate text-blue-400"
-          target="_blank">{website}</a
+          href={`/stocks/${$stockTicker}/profile`}
+          class="w-full text-md mt-1 cursor-pointer font-medium sm:hover:text-white text-blue-400 sm:hover:underline"
         >
+          [Show more]
+        </a>
       </div>
-    {/if}
+
+      <div class="mt-3 grid grid-cols-2 gap-3 w-full">
+        <div class="col-span-1 text-gray-200">
+          <span class="block font-semibold">Industry</span>
+          <a
+            href={getIndustryHref(industry)}
+            class="sm:hover:text-blue-400 text-white underline underline-offset-4"
+            >{industry}</a
+          >
+        </div>
+        <div class="col-span-1 text-gray-200">
+          <span class="block font-semibold">Sector</span>
+          <a
+            href={sectorNavigation?.find((item) => item?.title === sector)
+              ?.link}
+            class="sm:hover:text-blue-400 text-white underline underline-offset-4"
+            >{sector}</a
+          >
+        </div>
+        <div class="col-span-1 text-gray-200">
+          <span class="block font-semibold">IPO Date</span>
+          <span>{ipoDate}</span>
+        </div>
+        <div class="col-span-1 text-gray-200">
+          <span class="block font-semibold">Employees</span>
+          <a
+            href={`/stocks/${$stockTicker}/statistics/employees`}
+            class="sm:hover:text-blue-400 text-white underline underline-offset-4"
+            >{new Intl.NumberFormat("en")?.format(employees)}</a
+          >
+        </div>
+        <div class="col-span-1 text-gray-200">
+          <span class="block font-semibold">Stock Exchange</span>
+          <span>{exchange}</span>
+        </div>
+        <div class="col-span-1 text-gray-200">
+          <span class="block font-semibold">Ticker Symbol</span>
+          <span>{$stockTicker}</span>
+        </div>
+        {#if website}
+          <div class="col-span-1 whitespace-nowrap text-gray-200">
+            <span class="block font-semibold">Website</span>
+            <a
+              href={website}
+              class="hover:sm:text-white truncate text-blue-400"
+              target="_blank">{website}</a
+            >
+          </div>
+        {/if}
+      </div>
+      <a
+        href={`/stocks/${$stockTicker}/profile`}
+        class="rounded cursor-pointer w-full m-auto py-2 h-full mt-6 text-lg text-center font-semibold text-black sm:hover:hover:bg-gray-300 bg-[#ffff] transition duration-100"
+      >
+        Full Company Profile
+      </a>
+    </div>
   </div>
 </div>
 
 {#if Object?.keys(data?.getAnalystRating ?? {})?.length !== 0}
   <div
-    class="space-y-3 pt-5 {Object?.keys(data?.getAnalystRating ?? {})
+    class="space-y-3 pt-10 sm:pt-5 {Object?.keys(data?.getAnalystRating ?? {})
       ?.length !== 0
       ? ''
       : 'hidden'}"

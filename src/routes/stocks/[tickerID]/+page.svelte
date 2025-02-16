@@ -1186,7 +1186,7 @@
               </div>
 
               <div
-                class="w-full mt-5 m-auto sm:pl-6 sm:pb-6 {Object?.keys(
+                class="w-full m-auto mt-5 sm:mt-0 sm:pl-6 sm:pb-6 {Object?.keys(
                   data?.getNextEarnings || {},
                 )?.length !== 0
                   ? ''
@@ -1196,7 +1196,7 @@
               </div>
 
               <div
-                class="w-full mt-5 sm:mt-0 m-auto sm:pl-6 sm:pb-6 {data
+                class="w-full mt-10 sm:mt-0 m-auto sm:pl-6 sm:pb-6 {data
                   ?.getWhyPriceMoved?.length !== 0
                   ? ''
                   : 'hidden'}"
