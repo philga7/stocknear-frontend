@@ -8,6 +8,7 @@
   } from "$lib/utils";
 
   import { goto } from "$app/navigation";
+  import HoverStockChart from "$lib/components/HoverStockChart.svelte";
 
   export let data;
 
@@ -62,7 +63,7 @@
       website = info?.website;
 
       totalAssetPercentage = topHoldingList
-        ?.slice(0, 5)
+        ?.slice(0, 10)
         ?.reduce((acc, current) => acc + current?.weightPercentage, 0)
         ?.toFixed(2);
     }
@@ -117,31 +118,24 @@
     <div class="h-auto w-full">
       <!--Start Content-->
       <div class="w-auto lg:w-full flex flex-col m-auto">
-        <h2
-          class="mb-2 text-2xl text-white font-semibold flex flex-row items-center"
-        >
-          <span>Top Sectors</span>
+        <h2 class="mb-2 text-2xl text-white flex flex-row items-center">
+          <span class="font-bold">Top Sectors</span>
         </h2>
 
         <div class="mt-2 w-full overflow-hidden">
-          <table class="w-full table table-sm table table-compact w-full">
+          <table class="w-full text-white">
             <thead>
-              <tr>
-                <th
-                  class="text-white font-semibold text-sm text-start bg-default"
-                  >Sector</th
-                >
+              <tr class="border-y border-gray-800">
+                <th class="px-1 py-1.5 text-left xs:px-2">Sector</th>
 
-                <th class="text-white font-semibold text-sm text-end bg-default"
-                  >Weight %</th
-                >
+                <th class="px-1 py-1.5 text-right xs:px-2">Weight %</th>
               </tr>
             </thead>
             <tbody>
               {#each topSectorList as item}
                 {#if item?.weightPercentage > 0}
                   <tr class="text-white border-b border-[#27272A]">
-                    <td class="text-start text-sm sm:text-[1rem]">
+                    <td class="px-1 py-1.5 text-left xs:px-2">
                       <a
                         href={sectorNavigation?.find(
                           (listItem) => listItem?.title === item?.sector,
@@ -152,7 +146,7 @@
                       </a>
                     </td>
 
-                    <td class="text-white font-semibold text-end">
+                    <td class="px-1 py-1.5 text-right xs:px-2">
                       {abbreviateNumber(item?.weightPercentage?.toFixed(2))}%
                     </td>
                   </tr>
@@ -182,59 +176,44 @@
     <div class="h-auto w-full">
       <!--Start Content-->
       <div class="w-auto lg:w-full flex flex-col m-auto">
-        <h2
-          class="mb-2 text-2xl text-white font-semibold flex flex-row items-center"
-        >
-          <span>Top Holdings</span>
+        <h2 class="mb-2 text-2xl text-white flex flex-row items-center">
+          <span class="font-bold">Top 10 Holdings</span>
           <span class="text-white font-semibold ml-auto text-sm">
             {totalAssetPercentage}% of assets
           </span>
         </h2>
 
         <div class="mt-2 w-full">
-          <table class="table table-sm table-compact w-full">
-            <thead>
-              <tr>
-                <th
-                  class="text-white font-semibold text-sm text-start bg-default"
-                  >Company</th
-                >
-
-                <th class="text-white font-semibold text-sm text-end bg-default"
-                  >Portfolio</th
-                >
-              </tr>
-            </thead>
+          <table class="w-full text-white">
+            <thead
+              ><tr class="border-y border-gray-800"
+                ><th class="px-1 py-1.5 text-left xs:px-2">Name</th>
+                <th class="px-1 py-1.5 text-left xs:px-2">Symbol</th>
+                <th class="px-1 py-1.5 text-right xs:px-2">Weight</th></tr
+              ></thead
+            >
             <tbody>
-              {#each topHoldingList?.slice(0, 5) as item}
+              {#each topHoldingList?.slice(0, 10) as item}
                 {#if item?.symbol !== null}
                   <tr
                     on:click={() => stockSelector(item?.symbol)}
-                    class="lg:shake-ticker sm:hover:text-white text-blue-400 cursor-pointer lg:hover:bg-[#245073] lg:hover:bg-opacity-[0.2] [#09090B] border-b border-[#27272A]"
+                    class="cursor-pointer lg:hover:bg-[#245073] lg:hover:bg-opacity-[0.2] [#09090B] border-b border-[#27272A]"
                   >
-                    <td class="">
-                      <div class="flex flex-row items-center">
-                        <div class="flex flex-col w-full">
-                          <span class="text-sm font-medium"
-                            >{item?.symbol ?? "n/a"}</span
-                          >
-                          <span class="text-white text-sm">
-                            {#if typeof item?.name !== "undefined"}
-                              {item?.name?.length > 20
-                                ? formatString(item?.name?.slice(0, 20)) + "..."
-                                : formatString(item?.name)?.replace(
-                                    "Usd",
-                                    "USD",
-                                  )}
-                            {:else}
-                              n/a
-                            {/if}
-                          </span>
-                        </div>
-                      </div>
+                    <td class="px-1 py-1.5 text-left xs:px-2">
+                      {#if typeof item?.name !== "undefined"}
+                        {item?.name?.length > 20
+                          ? formatString(item?.name?.slice(0, 20)) + "..."
+                          : formatString(item?.name)?.replace("Usd", "USD")}
+                      {:else}
+                        n/a
+                      {/if}
                     </td>
 
-                    <td class="text-white font-semibold text-end">
+                    <td class="px-1 py-1.5 text-left xs:px-2">
+                      <HoverStockChart symbol={item?.symbol} />
+                    </td>
+
+                    <td class="px-1 py-1.5 text-right xs:px-2">
                       {abbreviateNumber(item?.weightPercentage?.toFixed(2))}%
                     </td>
                   </tr>
@@ -248,7 +227,7 @@
           href={`/etf/${$etfTicker}/holdings`}
           class="rounded cursor-pointer w-full m-auto py-2 h-full mt-6 text-[1rem] text-center font-semibold text-black sm:hover:hover:bg-gray-300 bg-[#ffff] transition duration-100"
         >
-          All Holdings
+          View More Holdings
         </a>
       </div>
     </div>
@@ -265,36 +244,27 @@
     <div class="h-auto w-full">
       <!--Start Content-->
       <div class="w-auto lg:w-full flex flex-col m-auto">
-        <h2
-          class="mb-2 text-2xl text-white font-semibold flex flex-row items-center"
-        >
-          <span>Dividends</span>
+        <h2 class="mb-2 text-2xl text-white flex flex-row items-center">
+          <span class="font-bold">Dividends</span>
           <span class="text-white font-semibold ml-auto text-sm">
             Dividend Yield {dividendYield ?? "0"}%
           </span>
         </h2>
 
         <div class="mt-2 w-full">
-          <table class="table table-sm table-compact text-start flex w-full">
-            <thead>
-              <tr>
-                <th
-                  class="text-white font-semibold text-sm text-start bg-default"
-                  >Ex-Dividend</th
-                >
-                <th class="text-white font-semibold text-sm text-end bg-default"
-                  >Payment Date</th
-                >
-                <th class="text-white font-semibold text-sm text-end bg-default"
-                  >Amount</th
-                >
-              </tr>
-            </thead>
+          <table class="w-full text-white">
+            <thead
+              ><tr class="border-y border-gray-800"
+                ><th class="px-1 py-1.5 text-left xs:px-2">Ex-Dividend</th>
+                <th class="px-1 py-1.5 text-left xs:px-2">Amount</th>
+                <th class="px-1 py-1.5 text-right xs:px-2">Payment Date</th></tr
+              ></thead
+            >
 
             <tbody>
               {#each dividendHistoryList?.slice(0, 5) as item}
                 <tr class="text-white bg-default border-b border-[#27272A]">
-                  <td class="text-start text-sm text-white font-medium">
+                  <td class="px-1 py-1.5 text-left xs:px-2">
                     {new Date(item?.date)?.toLocaleString("en-US", {
                       month: "short",
                       day: "numeric",
@@ -303,7 +273,11 @@
                     })}
                   </td>
 
-                  <td class="text-end text-sm text-white font-medium">
+                  <td class="px-1 py-1.5 text-left xs:px-2">
+                    ${item?.adjDividend?.toFixed(4)}
+                  </td>
+
+                  <td class="px-1 py-1.5 text-right xs:px-2">
                     {item?.paymentDate?.length !== 0
                       ? new Date(item?.paymentDate)?.toLocaleString("en-US", {
                           month: "short",
@@ -312,10 +286,6 @@
                           daySuffix: "2-digit",
                         })
                       : "n/a"}
-                  </td>
-
-                  <td class="text-end text-sm text-white font-medium">
-                    ${item?.adjDividend?.toFixed(2)}
                   </td>
                 </tr>
               {/each}

@@ -799,6 +799,7 @@
                 <DropdownMenu.Trigger asChild let:builder>
                   <Button
                     size="icon"
+                    aria-label="Settings"
                     class="overflow-hidden rounded-md bg-default sm:hover:bg-primary border border-gray-600 w-10 h-10"
                     builders={[builder]}
                   >
@@ -842,6 +843,7 @@
                   <form class="cursor-pointer" action="/logout" method="POST">
                     <button
                       type="submit"
+                      aria-label="Logout"
                       class="w-full text-start cursor-pointer"
                     >
                       <DropdownMenu.Item
