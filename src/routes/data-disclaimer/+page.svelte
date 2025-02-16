@@ -7,7 +7,7 @@
 </script>
 
 <SEO
-  title="Data Disclaimer | StockNear - Financial Data Sources & Accuracy"
+  title="Data Disclaimer | Financial Data Sources & Accuracy"
   description="Comprehensive information about our financial data sources, accuracy standards, and usage guidelines for stock market data, analyst estimates, and financial metrics."
 />
 
