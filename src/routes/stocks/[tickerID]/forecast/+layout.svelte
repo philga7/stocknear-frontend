@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { stockTicker, screenWidth } from "$lib/store";
+  import { stockTicker } from "$lib/store";
   import { onDestroy } from "svelte";
   import { page } from "$app/stores";
   import ScrollToTop from "$lib/components/ScrollToTop.svelte";
@@ -80,7 +80,6 @@
             >
               Analysts Ratings
             </a>
-            <!--
             <a
               href={`/stocks/${$stockTicker}/forecast/ai`}
               on:click={() => changeSubSection("ai")}
@@ -90,7 +89,6 @@
             >
               AI Forecast
             </a>
-            -->
           </ul>
         </nav>
       </div>

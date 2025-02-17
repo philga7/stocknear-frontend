@@ -34,7 +34,6 @@
 
   const calculatePriceChange = (targetPrice) =>
     targetPrice && price ? ((targetPrice / price - 1) * 100)?.toFixed(2) : 0;
-
   const numOfAnalyst = data?.getAnalystRating?.numOfAnalyst || 0;
   const avgPriceTarget = data?.getAnalystRating?.avgPriceTarget || 0;
   const medianPriceTarget = data?.getAnalystRating?.medianPriceTarget || 0;
@@ -451,8 +450,6 @@
     return differenceInDays <= 1;
   }
 </script>
-
-
 
 <SEO
   title={`${$displayCompanyName} (${$stockTicker}) Forecast Overview · Stocknear`}
