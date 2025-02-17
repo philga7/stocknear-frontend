@@ -73,26 +73,21 @@
   }
 
   function formatDate(dateStr) {
-    // Parse the input date string (YYYY-mm-dd)
-    var date = new Date(dateStr);
+    // Convert the input date string to a Date object in New York time
+    let date = new Date(dateStr + "T00:00:00Z"); // Assume input is in UTC
 
-    // Get month, day, and year
-    var month = date.getMonth() + 1; // Month starts from 0
-    var day = date.getDate();
-    var year = date.getFullYear();
+    // Convert to New York Time Zone
+    let options = {
+      timeZone: "Europe/Berlin",
+      month: "2-digit",
+      day: "2-digit",
+      year: "2-digit",
+    };
 
-    // Extract the last two digits of the year
-    var shortYear = year.toString().slice(-2);
+    let formatter = new Intl.DateTimeFormat("en-US", options);
 
-    // Add leading zeros if necessary
-    month = (month < 10 ? "0" : "") + month;
-    day = (day < 10 ? "0" : "") + day;
-
-    var formattedDate = month + "/" + day + "/" + year;
-
-    return formattedDate;
+    return formatter.format(date);
   }
-
   function getScroll() {
     const scrollThreshold = container.scrollHeight * 0.8; // 80% of the container height
 
