@@ -106,14 +106,14 @@
           <div
             class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 bg-inherit transition ease-out duration-100"
           >
-            <div class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0">
-              <div class="pl-4 pr-4">
-                <div class="w-full flex justify-between items-center mt-3">
+            <div class="w-auto lg:w-full p-2 flex flex-col m-auto px-2">
+              <div>
+                <div class="p-2 w-full flex justify-between items-center mt-3">
                   <h2 class="text-start text-xl font-semibold text-white">
                     Market Capitalization
                   </h2>
                 </div>
-                <div class="text-white mt-3">
+                <div class="text-white p-2">
                   Market capitalization, also called net worth, is the total
                   value of all of a company's outstanding shares. It is
                   calculated by multiplying the stock price by the number of
@@ -122,6 +122,12 @@
                   <br />
                   Formula: Market Cap = Stock Price * Shares Outstanding
                 </div>
+                <a
+                  href="/blog/article/market-capitalization"
+                  class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
+                >
+                  Full Definition
+                </a>
               </div>
             </div>
           </div>
@@ -156,7 +162,7 @@
                           ><a
                             href={`/stocks/${item?.symbol}`}
                             class="sm:hover:text-white text-blue-400"
-                            >{item?.symbol}</a
+                            >{item?.name}</a
                           ></td
                         >
                         <td class="text-right cursor-normal text-[1rem]"
