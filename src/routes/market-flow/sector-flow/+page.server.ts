@@ -10,7 +10,17 @@ export const load = async ({ locals }) => {
       },
     });
 
-  let output = await response?.json();
+let output = await response?.json();
+ if (user?.tier !== "Pro") {
+    Object.keys(output.topPosNetPremium).forEach(ticker => {
+        output.topPosNetPremium[ticker] = output.topPosNetPremium[ticker].slice(0, 3);
+    });
+
+    Object.keys(output.topNegNetPremium).forEach(ticker => {
+        output.topNegNetPremium[ticker] = output.topNegNetPremium[ticker].slice(0, 3);
+    });
+}
+
     return output;
   };
 

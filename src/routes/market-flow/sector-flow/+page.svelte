@@ -1,5 +1,6 @@
 <script lang="ts">
   import { screenWidth } from "$lib/store";
+  import { goto } from "$app/navigation";
 
   import HoverStockChart from "$lib/components/HoverStockChart.svelte";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
@@ -584,12 +585,34 @@
                       <DropdownMenu.Separator />
                       <DropdownMenu.Group>
                         {#each sectorList as sector}
-                          <DropdownMenu.Item
-                            on:click={() => (selectedSector = sector)}
-                            class="cursor-pointer hover:bg-primary"
-                          >
-                            {sector}
-                          </DropdownMenu.Item>
+                          {#if sector === "Technology" || data?.user?.tier === "Pro"}
+                            <DropdownMenu.Item
+                              on:click={() => (selectedSector = sector)}
+                              class="cursor-pointer hover:bg-primary"
+                            >
+                              {sector}
+                            </DropdownMenu.Item>
+                          {:else}
+                            <DropdownMenu.Item
+                              on:click={() => goto("/pricing")}
+                              class="cursor-pointer hover:bg-primary"
+                            >
+                              {sector}
+                              <svg
+                                class="ml-1 size-4"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                                style="max-width: 40px;"
+                              >
+                                <path
+                                  fill-rule="evenodd"
+                                  d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                                  clip-rule="evenodd"
+                                >
+                                </path>
+                              </svg>
+                            </DropdownMenu.Item>
+                          {/if}
                         {/each}
                       </DropdownMenu.Group>
                     </DropdownMenu.Content>
