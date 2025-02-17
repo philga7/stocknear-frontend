@@ -551,7 +551,7 @@
 </script>
 
 <SEO
-  title={`${$displayCompanyName} (${$stockTicker}) - Explore the Hottest Options Contracts | Stocknear`}
+  title={`${$displayCompanyName} (${$stockTicker}) | Explore the Hottest Options Contracts`}
   description={`Analyze historical volume, open interest, and trends in option chains for ${$displayCompanyName} (${$stockTicker}). Discover actionable insights for trading decisions.`}
 />
 
@@ -630,12 +630,16 @@
                     <td
                       class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
                     >
-                      {item?.last}
+                      {item?.last ?? "n/a"}
                     </td>
                     <td
                       class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
                     >
-                      {item?.low}-{item?.high}
+                      {#if item?.low && item?.high}
+                        {item?.low}-{item?.high}
+                      {:else}
+                        n/a
+                      {/if}
                     </td>
                     <td
                       class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
@@ -654,14 +658,16 @@
                         <span class="text-[#00FC50]"
                           >+{item?.changeOI?.toLocaleString("en-US")}</span
                         >
-                      {:else}
+                      {:else if item?.changeOI < 0}
                         <span class="text-[#FF2F1F]"
                           >{item?.changeOI?.toLocaleString("en-US")}</span
                         >
+                      {:else}
+                        n/a
                       {/if}
                     </td>
                     <td class="text-sm sm:text-[1rem] text-end">
-                      {item?.iv}%
+                      {item?.iv ? item?.iv + "%" : "n/a"}
                     </td>
                     <td
                       class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
@@ -744,12 +750,16 @@
                     <td
                       class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
                     >
-                      {item?.last}
+                      {item?.last ?? "n/a"}
                     </td>
                     <td
                       class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
                     >
-                      {item?.low}-{item?.high}
+                      {#if item?.low && item?.high}
+                        {item?.low}-{item?.high}
+                      {:else}
+                        n/a
+                      {/if}
                     </td>
                     <td
                       class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
@@ -768,14 +778,16 @@
                         <span class="text-[#00FC50]"
                           >+{item?.changeOI?.toLocaleString("en-US")}</span
                         >
-                      {:else}
+                      {:else if item?.changeOI < 0}
                         <span class="text-[#FF2F1F]"
                           >{item?.changeOI?.toLocaleString("en-US")}</span
                         >
+                      {:else}
+                        n/a
                       {/if}
                     </td>
                     <td class="text-sm sm:text-[1rem] text-end">
-                      {item?.iv}%
+                      {item?.iv ? item?.iv + "%" : "n/a"}
                     </td>
                     <td
                       class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
