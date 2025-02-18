@@ -15,12 +15,11 @@
 
     // Get the date components in New York time zone
     const options = {
-      year: "numeric",
+      year: "2-digit", // Shortened year
       month: "numeric",
-      day: "numeric",
+      day: "2-digit", // Ensures day has two digits
       hour: "numeric",
       minute: "numeric",
-      second: "numeric",
       timeZone: "America/New_York",
       hour12: true, // Enable AM/PM format
     };
@@ -31,12 +30,11 @@
 
     const year = parts.find((p) => p.type === "year").value;
     const month = parts.find((p) => p.type === "month").value;
-    const day = parts.find((p) => p.type === "day").value;
+    const day = parts.find((p) => p.type === "day").value.padStart(2, "0");
     const hour = parts.find((p) => p.type === "hour").value.padStart(2, "0");
     const minute = parts
       .find((p) => p.type === "minute")
       .value.padStart(2, "0");
-
     const ampm = parts.find((p) => p.type === "dayPeriod").value; // AM/PM
 
     return `${month}/${day}/${year} ${hour}:${minute} ${ampm}`;
