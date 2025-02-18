@@ -40,11 +40,11 @@
     consensusRating = "Strong Sell";
   } else if (avgChange < -10) {
     consensusRating = "Sell";
-  } else if (avgChange < 5) {
+  } else if (avgChange <= 15) {
     consensusRating = "Hold";
-  } else if (avgChange >= 20) {
+  } else if (avgChange >= 35) {
     consensusRating = "Strong Buy";
-  } else if (avgChange >= 5) {
+  } else if (avgChange >= 20) {
     consensusRating = "Buy";
   } else {
     consensusRating = "Hold";
@@ -323,7 +323,7 @@
                     {/if}
                   </div>
                   <div class="-mt-36 text-center text-xl font-semibold">
-                    Analyst Consensus: <span
+                    AI Consensus: <span
                       class="font-bold {['Strong Buy', 'Buy']?.includes(
                         consensusRating,
                       )
