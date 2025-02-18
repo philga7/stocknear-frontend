@@ -764,62 +764,58 @@ export function abbreviateNumber(number, addDollarSign = false) {
 }
 
 export function formatDate(dateStr) {
-    try {
-        // Parse the input date string in New York timezone
-        const nyFormatter = new Intl.DateTimeFormat('en-US', {
-            timeZone: 'America/New_York',
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-        });
+  try {
+    // Parse the input date string in Berlin timezone
+    const berlinFormatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Europe/Berlin',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    });
 
-        const parseDate = (date) => {
-            const parts = nyFormatter.formatToParts(date);
-            const extract = (type) =>
-                parts.find((p) => p.type === type)?.value.padStart(2, '0');
-            return new Date(
-                `${extract('year')}-${extract('month')}-${extract('day')}T${extract('hour')}:${extract('minute')}:${extract('second')}`
-            );
-        };
+    const parseDate = (date) => {
+      const parts = berlinFormatter?.formatToParts(date);
+      const extract = (type) =>
+        parts.find((p) => p.type === type)?.value.padStart(2, '0');
+      return new Date(
+        `${extract('year')}-${extract('month')}-${extract('day')}T${extract('hour')}:${extract('minute')}:${extract('second')}`
+      );
+    };
 
-        const nyDateObj = parseDate(new Date(dateStr));
-        const nyCurrentObj = parseDate(new Date());
+    const berlinDateObj = parseDate(new Date(dateStr));
+    const berlinCurrentObj = parseDate(new Date());
 
-        // Calculate the time difference in seconds
-        const seconds = Math.floor((nyCurrentObj - nyDateObj) / 1000);
+    // Calculate the time difference in seconds
+    const seconds = Math.floor((berlinCurrentObj - berlinDateObj) / 1000);
 
-        // Everything below 12 hours (43,200 seconds) returns "Now"
-        if (seconds < 43200) {
-            return 'Now';
-        }
+    // Define time intervals including seconds so that even differences < 60 are handled
+    const intervals = [
+      { unit: 'year', seconds: 31536000 },
+      { unit: 'month', seconds: 2592000 },
+      { unit: 'week', seconds: 604800 },
+      { unit: 'day', seconds: 86400 },
+      { unit: 'hour', seconds: 3600 },
+      { unit: 'minute', seconds: 60 },
+      { unit: 'second', seconds: 1 },
+    ];
 
-        // Define time intervals for 12 hours or more
-        const intervals = [
-            { unit: 'year', seconds: 31536000 },
-            { unit: 'month', seconds: 2592000 },
-            { unit: 'week', seconds: 604800 },
-            { unit: 'day', seconds: 86400 },
-            { unit: 'hour', seconds: 3600 },
-            { unit: 'minute', seconds: 60 },
-        ];
-
-        // Determine the appropriate time interval
-        for (const { unit, seconds: secondsInUnit } of intervals) {
-            const count = Math.floor(seconds / secondsInUnit);
-            if (count >= 1) {
-                return `${count} ${unit}${count === 1 ? '' : 's'} ago`;
-            }
-        }
-
-        // Fallback (should not be reached due to our threshold)
-        return 'Now';
-    } catch (error) {
-        console.error('Error formatting date:', error);
-        return 'Invalid date';
+    // Determine the appropriate time interval
+    for (const { unit, seconds: secondsInUnit } of intervals) {
+      const count = Math.floor(seconds / secondsInUnit);
+      if (count >= 1) {
+        return `${count} ${unit}${count === 1 ? '' : 's'} ago`;
+      }
     }
+
+    // Fallback in case the difference is 0 seconds
+    return 'Just now';
+  } catch (error) {
+    console.error('Error formatting date:', error);
+    return 'Invalid date';
+  }
 }
 
 
