@@ -76,6 +76,8 @@ export const POST = async ({ request, locals }) => {
     const userId = payload?.meta?.custom_data?.userId;
     const { status, refunded } = payload?.data?.attributes || {};
 
+    const productName = payload?.data?.attributes?.first_order_item?.product_name;
+    
     if (!userId || status === undefined) {
       console.error("Missing userId or status in payload:", payload);
       return new Response(
@@ -91,10 +93,13 @@ export const POST = async ({ request, locals }) => {
 
     // Update the user and log the payment
     try {
+  
       await locals.pb.collection("users").update(userId, {
         tier,
         freeTrial: false,
+        lifetime: productName?.includes("Life Time"),
       });
+
 
       const paymentData = { user: userId, data: payload };
       await locals.pb.collection("payments").create(paymentData);

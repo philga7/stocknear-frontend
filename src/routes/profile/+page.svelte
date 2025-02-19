@@ -556,7 +556,7 @@
               <span class="text-white mt-5">
                 Please wait a moment; you will be updated to Pro in a second.
               </span>
-            {:else if subscriptionData?.first_order_item?.product_name === "Pro Subscription (Lifetime Access)"}{:else}
+            {:else if subscriptionData?.first_order_item?.product_name?.includes("Life Time")}{:else}
               <a href="/pricing" class="sm:hover:text-white text-blue-400">
                 Get Full Access with Pro Subscription.
               </a>
