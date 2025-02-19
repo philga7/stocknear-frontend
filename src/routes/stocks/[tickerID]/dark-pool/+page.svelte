@@ -1,15 +1,12 @@
 <script lang="ts">
-  import {
-    numberOfUnreadNotification,
-    displayCompanyName,
-    stockTicker,
-  } from "$lib/store";
+  import { displayCompanyName, stockTicker } from "$lib/store";
   import HistoricalVolume from "$lib/components/DarkPool/HistoricalVolume.svelte";
   import PriceLevel from "$lib/components/DarkPool/PriceLevel.svelte";
   import InfoModal from "$lib/components/InfoModal.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
   import HottestTrades from "$lib/components/DarkPool/HottestTrades.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
+  import SEO from "$lib/components/SEO.svelte";
 
   export let data;
   let historicalDarkPool = data?.getHistoricalDarkPool || [];
@@ -17,41 +14,10 @@
   let hottestTrades = data?.getPriceLevel?.hottestTrades || [];
 </script>
 
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""}
-    {$displayCompanyName} ({$stockTicker}) Dark Pool Trades · Stocknear
-  </title>
-
-  <meta
-    name="description"
-    content={`Get the latest dark pool trade insights for ${$displayCompanyName} (${$stockTicker}), including stock price quote, financials, news, statistics, and charts.`}
-  />
-
-  <!-- Other meta tags -->
-  <meta
-    property="og:title"
-    content={`${$displayCompanyName} (${$stockTicker}) Dark Pool Trades · Stocknear`}
-  />
-  <meta
-    property="og:description"
-    content={`Get the latest dark pool trade information for ${$displayCompanyName} (${$stockTicker})`}
-  />
-  <meta property="og:type" content="website" />
-
-  <!-- Twitter specific meta tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta
-    name="twitter:title"
-    content={`${$displayCompanyName} (${$stockTicker}) Dark Pool Trades · Stocknear`}
-  />
-  <meta
-    name="twitter:description"
-    content={`Get the latest dark pool trade insights for ${$displayCompanyName} (${$stockTicker}), including stock price quote, financials, statistics, and more.`}
-  />
-</svelte:head>
+<SEO
+  title={`${$displayCompanyName} (${$stockTicker}) Dark Pool Trading Insights & Data`}
+  description={`Explore exclusive dark pool trading data for ${$displayCompanyName} (${$stockTicker}). Get insights into hidden market activity, stock price movements, institutional trades, financials, and key statistics.`}
+/>
 
 <section class="w-full bg-default overflow-hidden text-white h-full">
   <div class="w-full flex h-full overflow-hidden">

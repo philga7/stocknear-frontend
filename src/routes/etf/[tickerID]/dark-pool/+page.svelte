@@ -1,62 +1,23 @@
 <script lang="ts">
-  import {
-    numberOfUnreadNotification,
-    displayCompanyName,
-    etfTicker,
-  } from "$lib/store";
+  import { displayCompanyName, etfTicker } from "$lib/store";
   import HistoricalVolume from "$lib/components/DarkPool/HistoricalVolume.svelte";
   import PriceLevel from "$lib/components/DarkPool/PriceLevel.svelte";
   import InfoModal from "$lib/components/InfoModal.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
   import HottestTrades from "$lib/components/DarkPool/HottestTrades.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
-  import { onMount } from "svelte";
+  import SEO from "$lib/components/SEO.svelte";
 
   export let data;
   let historicalDarkPool = data?.getHistoricalDarkPool || [];
   let priceLevel = data?.getPriceLevel?.priceLevel || [];
   let hottestTrades = data?.getPriceLevel?.hottestTrades || [];
-  let isLoaded = false;
-  onMount(() => {
-    isLoaded = true;
-  });
 </script>
 
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""}
-    {$displayCompanyName} ({$etfTicker}) Dark Pool Trades · Stocknear
-  </title>
-
-  <meta
-    name="description"
-    content={`Get the latest dark pool trade insights for ${$displayCompanyName} (${$etfTicker}), including stock price quote, financials, news, statistics, and charts.`}
-  />
-
-  <!-- Other meta tags -->
-  <meta
-    property="og:title"
-    content={`${$displayCompanyName} (${$etfTicker}) Dark Pool Trades · Stocknear`}
-  />
-  <meta
-    property="og:description"
-    content={`Get the latest dark pool trade information for ${$displayCompanyName} (${$etfTicker})`}
-  />
-  <meta property="og:type" content="website" />
-
-  <!-- Twitter specific meta tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta
-    name="twitter:title"
-    content={`${$displayCompanyName} (${$etfTicker}) Dark Pool Trades · Stocknear`}
-  />
-  <meta
-    name="twitter:description"
-    content={`Get the latest dark pool trade insights for ${$displayCompanyName} (${$etfTicker}), including stock price quote, financials, statistics, and more.`}
-  />
-</svelte:head>
+<SEO
+  title={`${$displayCompanyName} (${$etfTicker}) Dark Pool Trading Insights & Data`}
+  description={`Explore exclusive dark pool trading data for ${$displayCompanyName} (${$etfTicker}). Get insights into hidden market activity, stock price movements, institutional trades, financials, and key statistics.`}
+/>
 
 <section class="w-full bg-default overflow-hidden text-white h-full">
   <div class="w-full flex h-full overflow-hidden">
@@ -88,34 +49,21 @@
             />
           {/if}
         </div>
-        {#if isLoaded}
-          {#if priceLevel?.length > 0}
-            <PriceLevel
-              rawData={priceLevel}
-              metrics={data?.getPriceLevel?.metrics}
-            />
-          {/if}
-          {#if hottestTrades?.length > 0}
-            <HottestTrades {data} rawData={hottestTrades} />
-          {/if}
-          {#if data?.user?.tier === "Pro"}
-            {#if historicalDarkPool?.length > 10}
-              <HistoricalVolume rawData={historicalDarkPool} />
-            {/if}
-          {:else}
-            <UpgradeToPro {data} />
+        {#if priceLevel?.length > 0}
+          <PriceLevel
+            rawData={priceLevel}
+            metrics={data?.getPriceLevel?.metrics}
+          />
+        {/if}
+        {#if hottestTrades?.length > 0}
+          <HottestTrades {data} rawData={hottestTrades} />
+        {/if}
+        {#if data?.user?.tier === "Pro"}
+          {#if historicalDarkPool?.length > 10}
+            <HistoricalVolume rawData={historicalDarkPool} />
           {/if}
         {:else}
-          <div class="flex justify-center items-center h-80">
-            <div class="relative">
-              <label
-                class="bg-secondary rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-              >
-                <span class="loading loading-spinner loading-md text-gray-400"
-                ></span>
-              </label>
-            </div>
-          </div>
+          <UpgradeToPro {data} />
         {/if}
       </div>
     </div>
