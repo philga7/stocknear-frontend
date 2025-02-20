@@ -10,13 +10,13 @@
   description="Stay ahead in the market with our pro newsletter! Get the latest updates, trends, and insights delivered straight to your inbox."
 />
 
-<div class="w-full max-w-7xl min-h-screen text-white m-auto mt-5">
+<div class="w-full max-w-7xl min-h-screen text-white m-auto mt-5 mb-40">
   <main
     id="main"
     class="mx-auto max-w-screen-lg space-x-20 p-6 md:flex md:p-10"
   >
     <div class="md:text-lg [&amp;_li]:mb-5 [&amp;_p]:mb-5">
-      <h1 class="mb-5 text-center text-3xl md:text-4xl font-bold">
+      <h1 class="mb-10 sm:mb-5 text-center text-3xl md:text-4xl font-bold">
         Stay informed in just 2 minutes per day
       </h1>
       <p>
@@ -50,18 +50,16 @@
       </ul>
 
       <p class="mt-4">
-        The newsletter is completely free for <a
-          class="text-blue-400 sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
-          href="/pricing">Pro Members</a
-        >, delivered to your inbox every morning before the market opens, Monday
-        to Friday.
+        The newsletter is completely free and will be delivered to your inbox
+        every morning before the market opens, Monday to Friday (except
+        holidays).
       </p>
-      {#if data?.user?.tier !== "Pro"}
+      {#if !data?.user}
         <a
-          href="/pricing"
+          href="/register"
           class="mt-10 btn bg-[#fff] border border-gray-600 sm:hover:bg-gray-300 transition duration-100 btn-md w-full rounded-md m-auto text-black font-semibold text-[1rem]"
         >
-          <span class="text-[1rem] sm:text-lg">Get Pro Membership</span>
+          <span class="text-[1rem] sm:text-lg">Sign Up for Free</span>
         </a>
       {/if}
     </div>

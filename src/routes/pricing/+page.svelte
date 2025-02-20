@@ -693,34 +693,6 @@
               >Unlimited Dark Pool Data</span
             >
           </li>
-          <li class="flex items-center space-x-3">
-            <!-- Icon -->
-            <svg
-              class="flex-shrink-0 w-5 h-5"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 48 48"
-              ><mask id="ipSSuccess0"
-                ><g
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="4"
-                  ><path
-                    fill="#fff"
-                    stroke="#fff"
-                    d="m24 4l5.253 3.832l6.503-.012l1.997 6.188l5.268 3.812L41 24l2.021 6.18l-5.268 3.812l-1.997 6.188l-6.503-.012L24 44l-5.253-3.832l-6.503.012l-1.997-6.188l-5.268-3.812L7 24l-2.021-6.18l5.268-3.812l1.997-6.188l6.503.012L24 4Z"
-                  /><path stroke="#09090B" d="m17 24l5 5l10-10" /></g
-                ></mask
-              ><path
-                fill="#00FC50"
-                d="M0 0h48v48H0z"
-                mask="url(#ipSSuccess0)"
-              /></svg
-            >
-            <span class="text-white text-[1rem] font-semibold"
-              >Pro Newsletter</span
-            >
-          </li>
         </ol>
         <div class="divider"></div>
         <div class="m-auto w-full text-white font-medium text-sm mb-6">
@@ -1115,51 +1087,7 @@
                       >
                     </td>
                   </tr>
-                  <!-- Row -->
-                  <tr class="border-t first:border-t-2 border-gray-800">
-                    <td
-                      class="text-sm sm:text-base font-medium text-white pr-2 py-4"
-                    >
-                      <div class="flex items-center justify-between max-w-xs">
-                        <div>Pro Newsletter</div>
-                      </div>
-                    </td>
-                    <td class="text-sm px-2 py-4 text-center font-medium">
-                      <svg
-                        class="flex-shrink-0 w-4 h-4 inline-flex"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 36 36"
-                        ><path
-                          fill="#dd2e44"
-                          d="M21.533 18.002L33.768 5.768a2.5 2.5 0 0 0-3.535-3.535L17.998 14.467L5.764 2.233a2.498 2.498 0 0 0-3.535 0a2.498 2.498 0 0 0 0 3.535l12.234 12.234L2.201 30.265a2.498 2.498 0 0 0 1.768 4.267c.64 0 1.28-.244 1.768-.732l12.262-12.263l12.234 12.234a2.493 2.493 0 0 0 1.768.732a2.5 2.5 0 0 0 1.768-4.267z"
-                        /></svg
-                      >
-                    </td>
-                    <td class="text-sm px-2 py-4 text-center font-medium">
-                      <svg
-                        class="flex-shrink-0 w-5 h-5 inline-flex"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 48 48"
-                        ><mask id="ipSSuccess0"
-                          ><g
-                            fill="none"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="4"
-                            ><path
-                              fill="#fff"
-                              stroke="#fff"
-                              d="m24 4l5.253 3.832l6.503-.012l1.997 6.188l5.268 3.812L41 24l2.021 6.18l-5.268 3.812l-1.997 6.188l-6.503-.012L24 44l-5.253-3.832l-6.503.012l-1.997-6.188l-5.268-3.812L7 24l-2.021-6.18l5.268-3.812l1.997-6.188l6.503.012L24 4Z"
-                            /><path stroke="#09090B" d="m17 24l5 5l10-10" /></g
-                          ></mask
-                        ><path
-                          fill="#00FC50"
-                          d="M0 0h48v48H0z"
-                          mask="url(#ipSSuccess0)"
-                        /></svg
-                      >
-                    </td>
-                  </tr>
+
                   <!-- Row -->
                   <tr class="border-t first:border-t-2 border-gray-800">
                     <td
