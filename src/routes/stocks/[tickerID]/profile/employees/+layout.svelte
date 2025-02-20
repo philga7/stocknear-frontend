@@ -61,53 +61,57 @@
                 <thead class="text-white"
                   ><tr
                     ><th
-                      class="whitespace-nowrap border-b border-gray-600 font-semibold text-[1rem] text-left"
+                      class="whitespace-nowrap border-b border-gray-600 font-semibold text-[1rem] text-left px-2"
                       >Company</th
                     >
                     <th
-                      class="whitespace-nowrap border-b border-gray-600 font-semibold text-[1rem] text-right"
+                      class="whitespace-nowrap border-b border-gray-600 font-semibold text-[1rem] text-right px-2"
                       >Employees</th
                     ></tr
                   ></thead
                 >
                 <tbody>
                   {#each similarStocks?.slice(0, 8) as item, index}
-                    <tr
-                      class="border-gray-800 {index !==
-                      similarStocks?.slice(0, 8).length - 1
-                        ? 'border-b'
-                        : ''}"
-                      ><td class="text-left"
-                        ><a
-                          href={`/stocks/${item?.symbol}/profile/employees`}
-                          class="text-[1rem] sm:hover:text-white text-blue-400"
-                          >{item?.name?.length > 30
-                            ? item?.name?.slice(0, 30) + "..."
-                            : item?.name}</a
-                        ></td
-                      >
-                      <td class="text-right text-[1rem] cursor-normal"
-                        >{item?.employees !== null &&
-                        item?.employees !== undefined
-                          ? parseFloat(item?.employees).toLocaleString(
-                              "en-US",
-                              {
-                                maximumFractionDigits: 2,
-                                minimumFractionDigits: 0,
-                              },
-                            )
-                          : "n/a"}</td
-                      >
-                    </tr>
+                    {#if item?.name}
+                      <tr
+                        class="border-gray-800 {index !==
+                        similarStocks?.slice(0, 8).length - 1
+                          ? 'border-b'
+                          : ''}"
+                        ><td class="text-left px-2"
+                          ><a
+                            href={`/stocks/${item?.symbol}/profile/employees`}
+                            class="text-[1rem] sm:hover:text-white text-blue-400"
+                            >{item?.name?.length > 30
+                              ? item?.name?.slice(0, 30) + "..."
+                              : item?.name}</a
+                          ></td
+                        >
+                        <td class="text-right text-[1rem] cursor-normal px-2"
+                          >{item?.employees !== null &&
+                          item?.employees !== undefined
+                            ? parseFloat(item?.employees).toLocaleString(
+                                "en-US",
+                                {
+                                  maximumFractionDigits: 2,
+                                  minimumFractionDigits: 0,
+                                },
+                              )
+                            : "n/a"}</td
+                        >
+                      </tr>
+                    {/if}
                   {/each}
                 </tbody>
               </table>
-              <a
-                href={`/list/most-employees`}
-                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
-              >
-                Employee Rankings
-              </a>
+              <div class="px-2">
+                <a
+                  href={`/list/most-employees`}
+                  class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
+                >
+                  Employee Rankings
+                </a>
+              </div>
             </div>
           {/if}
 

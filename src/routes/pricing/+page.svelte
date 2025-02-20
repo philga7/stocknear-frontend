@@ -74,17 +74,17 @@
   }
 </script>
 
+<SEO
+  title="Pricing"
+  descriptiion="Get unlimited access to all of our data and tools, including full financial history, full ETF holdings, and more."
+/>
+
 <svelte:head>
   <script>
     window.lemonSqueezyAffiliateConfig = { store: "stocknear" };
   </script>
   <script src="https://lmsqueezy.com/affiliate.js" defer></script>
 </svelte:head>
-
-<SEO
-  title="Pricing"
-  descriptiion="Get unlimited access to all of our data and tools, including full financial history, full ETF holdings, and more."
-/>
 
 <section
   class="bg-default min-h-screen mb-40 w-full max-w-3xl sm:max-w-screen-xl pt-10 m-auto"

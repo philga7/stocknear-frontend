@@ -1,12 +1,12 @@
 export const load = async ({ locals, params }) => {
-  const getHistoricalMarketCap = async () => {
+  const getHistoricalRevenue = async () => {
     const { apiKey, apiURL } = locals;
     const postData = {
       ticker: params.tickerID,
     };
 
     // make the POST request to the endpoint
-    const response = await fetch(apiURL + "/historical-market-cap", {
+    const response = await fetch(apiURL + "/historical-revenue", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -24,6 +24,6 @@ export const load = async ({ locals, params }) => {
 
   // Make sure to return a promise
   return {
-    getHistoricalMarketCap: await getHistoricalMarketCap(),
+    getHistoricalRevenue: await getHistoricalRevenue(),
   };
 };

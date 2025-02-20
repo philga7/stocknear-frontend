@@ -18,11 +18,10 @@
 
   export let data;
 
-  let optionsData;
+  let optionsData = null;
 
-  let rawData = data?.getHistoricalMarketCap || [];
+  let rawData = data?.getHistoricalRevenue || {};
   let tableList = [];
-  let changePercentageYearAgo = 0;
   let timePeriod = "3Y";
 
   const tabs = [
@@ -35,227 +34,20 @@
   ];
   let activeIdx = 0;
 
-  function getMarketCapCategory(marketCap) {
-    const BILLION = 1_000_000_000;
-    const MILLION = 1_000_000;
-
-    const marketCapNavigation = [
-      {
-        threshold: 200 * BILLION,
-        name: "Mega-Cap",
-        link: "/list/market-cap/mega-cap-stocks",
-      },
-      {
-        minThreshold: 10 * BILLION,
-        maxThreshold: 200 * BILLION,
-        name: "Large-Cap",
-        link: "/list/market-cap/large-cap-stocks",
-      },
-      {
-        minThreshold: 2 * BILLION,
-        maxThreshold: 10 * BILLION,
-        name: "Mid-Cap",
-        link: "/list/market-cap/mid-cap-stocks",
-      },
-      {
-        minThreshold: 300 * MILLION,
-        maxThreshold: 2 * BILLION,
-        name: "Small-Cap",
-        link: "/list/market-cap/small-cap-stocks",
-      },
-      {
-        minThreshold: 50 * MILLION,
-        maxThreshold: 300 * MILLION,
-        name: "Micro-Cap",
-        link: "/list/market-cap/micro-cap-stocks",
-      },
-      {
-        maxThreshold: 50 * MILLION,
-        name: "Nano-Cap",
-        link: "/list/market-cap/nano-cap-stocks",
-      },
-    ];
-
-    if (!marketCap) return null;
-
-    // Convert string to number if needed
-    const capValue =
-      typeof marketCap === "string" ? parseFloat(marketCap) : marketCap;
-
-    return marketCapNavigation.find((category) => {
-      if (category.threshold) {
-        return capValue >= category.threshold;
-      }
-      if (category.minThreshold && category.maxThreshold) {
-        return (
-          capValue >= category.minThreshold && capValue < category.maxThreshold
-        );
-      }
-      if (category.maxThreshold) {
-        return capValue < category.maxThreshold;
-      }
-      return false;
-    });
-  }
-
-  function computeYearOverYearChange(rawData) {
-    if (rawData.length < 2) {
-      return null; // Not enough rawData to compute change
-    }
-
-    // Step 1: Get the last entry in the list
-    const lastEntry = rawData[rawData.length - 1];
-    const lastDate = new Date(lastEntry.date);
-    const lastMarketCap = data?.getStockQuote?.marketCap;
-
-    // Step 2: Find the entry closest to one year before the last date
-    let closestEntry = null;
-    for (let i = rawData.length - 2; i >= 0; i--) {
-      const entryDate = new Date(rawData[i].date);
-      const oneYearAgo = new Date(lastDate);
-      oneYearAgo.setFullYear(lastDate.getFullYear() - 1);
-
-      // Check if the entry is close to one year ago
-      if (entryDate <= oneYearAgo) {
-        closestEntry = rawData[i];
-        break;
-      }
-    }
-
-    if (!closestEntry) {
-      return null; // No suitable entry found for comparison
-    }
-
-    const previousMarketCap = closestEntry.marketCap;
-
-    // Step 3: Calculate the percentage change
-    const change =
-      ((lastMarketCap - previousMarketCap) / previousMarketCap) * 100;
-
-    return change;
-  }
-
-  function filterEndOfYearDates(data) {
-    // Step 1: Group data by year
-    const groupedByYear = data.reduce((acc, item) => {
-      const year = new Date(item.date).getFullYear();
-      if (!acc[year]) {
-        acc[year] = [];
-      }
-      acc[year].push(item);
-      return acc;
-    }, {});
-
-    // Step 2: For each year, find the entry with the latest date
-    const annualData = Object.values(groupedByYear).map((yearData) => {
-      return yearData.reduce((latest, current) => {
-        return new Date(latest.date) > new Date(current.date)
-          ? latest
-          : current;
-      });
-    });
-
-    return annualData;
-  }
-
-  function filterEndOfQuarterDates(data) {
-    // Step 1: Group data by year and quarter
-    const groupedByQuarter = data?.reduce((acc, item) => {
-      const date = new Date(item?.date);
-      const year = date.getFullYear();
-      const quarter = Math?.floor(date?.getMonth() / 3) + 1; // Get the quarter (1-4)
-
-      const key = `${year}-Q${quarter}`;
-      if (!acc[key]) {
-        acc[key] = [];
-      }
-      acc[key].push(item);
-      return acc;
-    }, {});
-
-    // Step 2: For each year-quarter group, find the entry with the latest date
-    const quarterlyData = Object?.values(groupedByQuarter)?.map(
-      (quarterData) => {
-        return quarterData?.reduce((latest, current) => {
-          return new Date(latest?.date) > new Date(current?.date)
-            ? latest
-            : current;
-        });
-      },
-    );
-
-    return quarterlyData;
-  }
-
   function changeTablePeriod(index) {
     activeIdx = index;
     if (activeIdx === 0) {
-      tableList = filterEndOfYearDates(rawData);
+      tableList = rawData?.annual;
     } else {
-      tableList = filterEndOfQuarterDates(rawData);
+      tableList = rawData?.quarter;
     }
     tableList?.sort((a, b) => new Date(b?.date) - new Date(a?.date));
   }
-
-  optionsData = plotData();
-  tableList = filterEndOfYearDates(rawData);
-  tableList?.sort((a, b) => new Date(b?.date) - new Date(a?.date));
-  changePercentageYearAgo = computeYearOverYearChange(rawData);
 
   async function changeStatement(state) {
     timePeriod = state;
 
     optionsData = await plotData();
-  }
-
-  function filterDataByTimePeriod(rawData, timePeriod) {
-    let dates = [];
-    let marketCapList = [];
-    const now = new Date();
-
-    // Calculate the date threshold based on the selected time period
-    let thresholdDate;
-    switch (timePeriod) {
-      case "1M":
-        thresholdDate = new Date(now);
-        thresholdDate.setMonth(now.getMonth() - 1);
-        break;
-      case "6M":
-        thresholdDate = new Date(now);
-        thresholdDate.setMonth(now.getMonth() - 6);
-        break;
-      case "1Y":
-        thresholdDate = new Date(now);
-        thresholdDate.setFullYear(now.getFullYear() - 1);
-        break;
-      case "3Y":
-        thresholdDate = new Date(now);
-        thresholdDate.setFullYear(now.getFullYear() - 3);
-        break;
-      case "5Y":
-        thresholdDate = new Date(now);
-        thresholdDate.setFullYear(now.getFullYear() - 5);
-        break;
-      case "10Y":
-        thresholdDate = new Date(now);
-        thresholdDate.setFullYear(now.getFullYear() - 10);
-        break;
-      case "Max":
-      default:
-        thresholdDate = new Date(0); // Set to the earliest possible date
-        break;
-    }
-
-    // Filter the data based on the threshold date
-    rawData?.forEach((item) => {
-      const itemDate = new Date(item?.date);
-      if (itemDate >= thresholdDate) {
-        dates?.push(item?.date);
-        marketCapList?.push(item?.marketCap);
-      }
-    });
-
-    return { dates, marketCapList };
   }
 
   function plotData() {
@@ -355,45 +147,18 @@
 
     return options;
   }
-  const exportData = (format = "csv") => {
-    if (data?.user?.tier === "Pro") {
-      // Add headers row
-      const csvRows = [];
-      csvRows.push("date,market-cap");
 
-      // Add data rows
-      const filteredData = filterDataByTimePeriod(rawData, "Max");
-      const { dates, marketCapList } = filteredData;
-
-      dates.forEach((date, index) => {
-        csvRows.push(`${date},${marketCapList[index]}`);
-      });
-
-      // Create CSV blob and trigger download
-      const csv = csvRows.join("\n");
-      const blob = new Blob([csv], { type: "text/csv" });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.setAttribute("hidden", "");
-      a.setAttribute("href", url);
-      a.setAttribute(
-        "download",
-        `${$stockTicker?.toLowerCase()}_market_cap.csv`,
-      );
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    } else {
-      goto("/pricing");
+  $: {
+    if ($stockTicker) {
+      tableList = rawData?.annual;
+      tableList?.sort((a, b) => new Date(b?.date) - new Date(a?.date));
     }
-  };
-
-  $: capCategory = getMarketCapCategory(data?.getStockQuote?.marketCap);
+  }
 </script>
 
 <SEO
   title={`${$displayCompanyName} (${$stockTicker}) Market Cap & Net Worth`}
-  description={`Historical Market Cap of ${$displayCompanyName}.`}
+  description={`Historical Revenue of ${$displayCompanyName}.`}
 />
 
 <section class="bg-default w-full overflow-hidden text-white h-full">
@@ -410,22 +175,7 @@
           {#if rawData?.length !== 0}
             <div class="grid grid-cols-1 gap-2 mt-3 mb-3 sm:mt-0 sm:mb-0">
               <Infobox
-                text={`${$displayCompanyName} has a market cap or net worth of ${abbreviateNumber(
-                  data?.getStockQuote?.marketCap,
-                )} as of ${new Date()?.toLocaleString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                  daySuffix: "2-digit",
-                })}. Its market cap has ${
-                  changePercentageYearAgo > 0
-                    ? "increased"
-                    : changePercentageYearAgo < 0
-                      ? "decreased"
-                      : "unchanged"
-                } by ${abbreviateNumber(
-                  changePercentageYearAgo?.toFixed(2),
-                )}% in one year.`}
+                text="Apple had revenue of $124.30B in the quarter ending December 28, 2024, with 3.95% growth. This brings the company's revenue in the last twelve months to $395.76B, up 2.61% year-over-year. In the fiscal year ending September 28, 2024, Apple had annual revenue of $391.04B with 2.02% growth."
               />
 
               <div
@@ -434,13 +184,14 @@
                 <div
                   class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
                 >
-                  <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
-                    <span>Market Cap</span>
-                    <span class="ml-1 text-violet-400">●</span>
+                  <div
+                    class="text-[#c3c6d0] text-sm sm:text-[1rem] mb-2 flex items-center"
+                  >
+                    <span>Revenue (ttm)</span>
                   </div>
                   <div class="flex items-baseline">
                     <span class="text-xl font-bold text-white">
-                      {abbreviateNumber(data?.getStockQuote?.marketCap)}</span
+                      {abbreviateNumber(rawData?.revenue, true)}</span
                     >
                   </div>
                 </div>
@@ -448,22 +199,14 @@
                 <div
                   class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
                 >
-                  <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
-                    <span>Category</span>
-                    <span class="ml-1 text-red-400">●</span>
+                  <div
+                    class="text-[#c3c6d0] text-sm sm:text-[1rem] mb-2 flex items-center"
+                  >
+                    <span>Revenue Growth</span>
                   </div>
                   <div class="flex items-baseline">
                     <span class="text-xl font-bold text-white"
-                      >{#if capCategory}
-                        <a
-                          class="sm:hover:text-white text-blue-400"
-                          href={capCategory.link}
-                        >
-                          {capCategory.name}
-                        </a>
-                      {:else}
-                        n/a
-                      {/if}</span
+                      >{rawData?.growthRevenue}%</span
                     >
                   </div>
                 </div>
@@ -471,30 +214,62 @@
                 <div
                   class="bg-gray-800/30 rounded p-4 sm:hover:bg-gray-800/40 transition-colors"
                 >
-                  <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
-                    <span>1-Year Change</span>
-                    <span class="ml-1">●</span>
+                  <div
+                    class="text-[#c3c6d0] text-sm sm:text-[1rem] mb-2 flex items-center"
+                  >
+                    <span>Price / Sales Ratio</span>
                   </div>
                   <div class="flex items-baseline">
                     <span class="text-xl font-bold text-white"
-                      >{changePercentageYearAgo > 100
-                        ? "> 100"
-                        : changePercentageYearAgo?.toFixed(1)}%</span
+                      >{rawData?.priceToSalesRatio}</span
                     >
-                    <div class="flex flex-col ml-2">
-                      <span
-                        class="text-sm {changePercentageYearAgo >= 0 &&
-                        changePercentageYearAgo !== null
-                          ? "before:content-['+'] text-[#00FC50]"
-                          : changePercentageYearAgo < 0 &&
-                              changePercentageYearAgo !== null
-                            ? 'text-[#FF2F1F]'
-                            : 'text-white'}"
-                      >
-                        {changePercentageYearAgo >= 0 ? "Positive" : "Negative"}
-                        Trend
-                      </span>
-                    </div>
+                  </div>
+                </div>
+
+                <div
+                  class="bg-gray-800/30 rounded p-4 sm:hover:bg-gray-800/40 transition-colors"
+                >
+                  <div
+                    class="text-[#c3c6d0] text-sm sm:text-[1rem] mb-2 flex items-center"
+                  >
+                    <span>Revenue / Employee </span>
+                  </div>
+                  <div class="flex items-baseline">
+                    <span class="text-xl font-bold text-white"
+                      >{abbreviateNumber(
+                        rawData?.revenuePerEmployee,
+                        true,
+                      )}</span
+                    >
+                  </div>
+                </div>
+
+                <div
+                  class="bg-gray-800/30 rounded p-4 sm:hover:bg-gray-800/40 transition-colors"
+                >
+                  <div
+                    class="text-[#c3c6d0] text-sm sm:text-[1rem] mb-2 flex items-center"
+                  >
+                    <span>Employees </span>
+                  </div>
+                  <div class="flex items-baseline">
+                    <span class="text-xl font-bold text-white"
+                      >{rawData?.employees?.toLocaleString("en-US")}</span
+                    >
+                  </div>
+                </div>
+                <div
+                  class="bg-gray-800/30 rounded p-4 sm:hover:bg-gray-800/40 transition-colors"
+                >
+                  <div
+                    class="text-[#c3c6d0] text-sm sm:text-[1rem] mb-2 flex items-center"
+                  >
+                    <span>Market Cap </span>
+                  </div>
+                  <div class="flex items-baseline">
+                    <span class="text-xl font-bold text-white"
+                      >{abbreviateNumber(data?.getStockQuote?.marketCap)}</span
+                    >
                   </div>
                 </div>
               </div>
@@ -503,121 +278,23 @@
                 class="flex flex-col sm:flex-row items-start sm:items-center w-full sm:mt-10 mb-8"
               >
                 <h1 class="text-2xl text-white font-bold mb-3 sm:mb-0">
-                  Historical Chart
+                  Revenue Chart
                 </h1>
                 <div
                   class="flex flex-row items-center w-fit sm:w-[50%] md:w-auto sm:ml-auto"
-                >
-                  <div class="relative inline-block text-left grow">
-                    <DropdownMenu.Root>
-                      <DropdownMenu.Trigger asChild let:builder>
-                        <Button
-                          builders={[builder]}
-                          class="w-full border-gray-600 border bg-default sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
-                        >
-                          <span class="truncate text-white text-xs sm:text-sm"
-                            >{timePeriod}</span
-                          >
-                          <svg
-                            class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                            style="max-width:40px"
-                            aria-hidden="true"
-                          >
-                            <path
-                              fill-rule="evenodd"
-                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                              clip-rule="evenodd"
-                            ></path>
-                          </svg>
-                        </Button>
-                      </DropdownMenu.Trigger>
-                      <DropdownMenu.Content
-                        class="w-56 h-fit max-h-72 overflow-y-auto scroller"
-                      >
-                        <DropdownMenu.Label class="text-gray-400">
-                          Select time frame
-                        </DropdownMenu.Label>
-                        <DropdownMenu.Separator />
-                        <DropdownMenu.Group>
-                          <DropdownMenu.Item
-                            on:click={() => changeStatement("1M")}
-                            class="cursor-pointer hover:bg-primary"
-                          >
-                            1 Month
-                          </DropdownMenu.Item>
-                          <DropdownMenu.Item
-                            on:click={() => changeStatement("6M")}
-                            class="cursor-pointer hover:bg-primary"
-                          >
-                            6 Months
-                          </DropdownMenu.Item>
-                          <DropdownMenu.Item
-                            on:click={() => changeStatement("1Y")}
-                            class="cursor-pointer hover:bg-primary"
-                          >
-                            1 Year
-                          </DropdownMenu.Item>
-                          <DropdownMenu.Item
-                            on:click={() => changeStatement("3Y")}
-                            class="cursor-pointer hover:bg-primary"
-                          >
-                            3 Years
-                          </DropdownMenu.Item>
-                          <DropdownMenu.Item
-                            on:click={() => changeStatement("5Y")}
-                            class="cursor-pointer hover:bg-primary"
-                          >
-                            5 Years
-                          </DropdownMenu.Item>
-                          <DropdownMenu.Item
-                            on:click={() => changeStatement("10Y")}
-                            class="cursor-pointer hover:bg-primary"
-                          >
-                            10 Years
-                          </DropdownMenu.Item>
-                          <DropdownMenu.Item
-                            on:click={() => changeStatement("Max")}
-                            class="cursor-pointer hover:bg-primary"
-                          >
-                            Max
-                          </DropdownMenu.Item>
-                        </DropdownMenu.Group>
-                      </DropdownMenu.Content>
-                    </DropdownMenu.Root>
-                  </div>
-                  <Button
-                    on:click={() => exportData("csv")}
-                    class="ml-2 w-full border-gray-600 border bg-default sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
-                  >
-                    <span class="truncate text-white text-xs sm:text-sm"
-                      >Download</span
-                    >
-                    <svg
-                      class="{data?.user?.tier === 'Pro'
-                        ? 'hidden'
-                        : ''} ml-1 -mt-0.5 w-3.5 h-3.5"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      ><path
-                        fill="#A3A3A3"
-                        d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                      /></svg
-                    >
-                  </Button>
+                ></div>
+              </div>
+              {#if optionsData !== null}
+                <div class="app w-full">
+                  <Chart {init} options={optionsData} class="chart" />
                 </div>
-              </div>
-
-              <div class="app w-full">
-                <Chart {init} options={optionsData} class="chart" />
-              </div>
+              {/if}
 
               <div
                 class="mt-10 flex flex-col sm:flex-row items-start sm:items-center w-full justify-between"
               >
                 <h3 class="text-xl sm:text-2xl text-white font-bold">
-                  Market Cap History
+                  Revenue History
                 </h3>
 
                 <div
@@ -683,7 +360,7 @@
                         >Date</th
                       >
                       <th class="text-white font-semibold text-end text-sm"
-                        >Market Cap</th
+                        >Revenue</th
                       >
                       <th class="text-white font-semibold text-end text-sm"
                         >% Change</th
@@ -705,35 +382,35 @@
                         <td
                           class="text-white text-sm sm:text-[1rem] text-right whitespace-nowrap"
                         >
-                          {@html abbreviateNumber(item?.marketCap, false, true)}
+                          {@html abbreviateNumber(item?.revenue, false, true)}
                         </td>
 
                         <td
                           class="text-white text-sm sm:text-[1rem] whitespace-nowrap font-medium text-end"
                         >
-                          {#if index + 1 - tableList?.length === 0}
-                            -
-                          {:else if item?.marketCap - tableList[index + 1]?.marketCap > 0}
+                          {#if index === tableList?.length - 1}
+                            n/a
+                          {:else if item?.revenue > tableList[index + 1]?.revenue}
                             <span class="text-[#00FC50]">
                               +{(
-                                ((item?.marketCap -
-                                  tableList[index + 1]?.marketCap) /
-                                  item?.marketCap) *
+                                ((item?.revenue -
+                                  tableList[index + 1]?.revenue) /
+                                  tableList[index + 1]?.revenue) *
                                 100
                               )?.toFixed(2)}%
                             </span>
-                          {:else if item?.marketCap - tableList[index + 1]?.marketCap < 0}
+                          {:else if item?.revenue < tableList[index + 1]?.revenue}
                             <span class="text-[#FF2F1F]">
                               -{(
-                                Math?.abs(
-                                  (tableList[index + 1]?.marketCap -
-                                    item?.marketCap) /
-                                    item?.marketCap,
+                                Math.abs(
+                                  (item?.revenue -
+                                    tableList[index + 1]?.revenue) /
+                                    tableList[index + 1]?.revenue,
                                 ) * 100
                               )?.toFixed(2)}%
                             </span>
                           {:else}
-                            -
+                            n/a
                           {/if}
                         </td>
                       </tr>

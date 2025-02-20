@@ -711,29 +711,29 @@
                         <td
                           class="text-white text-sm sm:text-[1rem] whitespace-nowrap font-medium text-end"
                         >
-                          {#if index + 1 - tableList?.length === 0}
-                            -
-                          {:else if item?.marketCap - tableList[index + 1]?.marketCap > 0}
+                          {#if index === tableList?.length - 1}
+                            n/a
+                          {:else if item?.marketCap > tableList[index + 1]?.marketCap}
                             <span class="text-[#00FC50]">
                               +{(
                                 ((item?.marketCap -
                                   tableList[index + 1]?.marketCap) /
-                                  item?.marketCap) *
+                                  tableList[index + 1]?.marketCap) *
                                 100
                               )?.toFixed(2)}%
                             </span>
-                          {:else if item?.marketCap - tableList[index + 1]?.marketCap < 0}
+                          {:else if item?.marketCap < tableList[index + 1]?.marketCap}
                             <span class="text-[#FF2F1F]">
                               -{(
-                                Math?.abs(
-                                  (tableList[index + 1]?.marketCap -
-                                    item?.marketCap) /
-                                    item?.marketCap,
+                                Math.abs(
+                                  (item?.marketCap -
+                                    tableList[index + 1]?.marketCap) /
+                                    tableList[index + 1]?.marketCap,
                                 ) * 100
                               )?.toFixed(2)}%
                             </span>
                           {:else}
-                            -
+                            n/a
                           {/if}
                         </td>
                       </tr>

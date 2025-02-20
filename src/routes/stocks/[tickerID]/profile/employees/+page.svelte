@@ -1,9 +1,5 @@
 <script lang="ts">
-  import {
-    displayCompanyName,
-    screenWidth,
-    stockTicker,
-  } from "$lib/store";
+  import { displayCompanyName, screenWidth, stockTicker } from "$lib/store";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
   import { goto } from "$app/navigation";
@@ -14,7 +10,7 @@
   import { CanvasRenderer } from "echarts/renderers";
   import Infobox from "$lib/components/Infobox.svelte";
   import SEO from "$lib/components/SEO.svelte";
-  
+
   use([BarChart, GridComponent, TooltipComponent, CanvasRenderer]);
 
   import { abbreviateNumber } from "$lib/utils";
@@ -409,7 +405,6 @@
   let htmlOutput = generateEmployeeInfoHTML();
 </script>
 
-
 <SEO
   title={`${$displayCompanyName} (${$stockTicker}) Number of Employees ${historyList?.at(-1)?.filingDate?.slice(0, 4)} - ${historyList?.at(0)?.filingDate?.slice(0, 4)} · Stocknear`}
   description={`Current and historical number of employees for ${$displayCompanyName} (${$stockTicker}) with related statistics, a chart and a data table.`}
@@ -653,7 +648,7 @@
                       class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
                     >
                       {#if Number(item?.employeeCount - historyList[index + 1]?.employeeCount)}
-                        {new Intl.NumberFormat("en")?.format(
+                        {new Intl.NumberFormat("en").format(
                           item?.employeeCount -
                             historyList[index + 1]?.employeeCount,
                         )}
@@ -664,25 +659,27 @@
                     <td
                       class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white text-end"
                     >
-                      {#if index + 1 - historyList?.length === 0}
+                      {#if index === historyList?.length - 1}
                         n/a
-                      {:else if item?.employeeCount - historyList[index + 1]?.employeeCount > 0}
+                      {:else if item?.employeeCount > historyList[index + 1]?.employeeCount}
                         <span class="text-[#00FC50]">
                           +{(
                             ((item?.employeeCount -
                               historyList[index + 1]?.employeeCount) /
-                              item?.employeeCount) *
+                              historyList[index + 1]?.employeeCount) *
                             100
-                          )?.toFixed(2)}%
+                          ).toFixed(2)}%
                         </span>
-                      {:else if item?.employeeCount - historyList[index + 1]?.employeeCount < 0}
+                      {:else if item?.employeeCount < historyList[index + 1]?.employeeCount}
                         <span class="text-[#FF2F1F]">
                           -{(
-                            ((historyList[index + 1]?.employeeCount -
-                              item?.employeeCount) /
-                              item?.employeeCount) *
+                            (Math.abs(
+                              item?.employeeCount -
+                                historyList[index + 1]?.employeeCount,
+                            ) /
+                              historyList[index + 1]?.employeeCount) *
                             100
-                          )?.toFixed(2)}%
+                          ).toFixed(2)}%
                         </span>
                       {:else}
                         n/a
