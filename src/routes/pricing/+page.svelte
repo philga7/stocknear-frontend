@@ -171,7 +171,7 @@
               ? 'text-white'
               : 'text-gray-500'} text-sm font-semibold uppercase"
           >
-            Get 3 Months Free
+            Get 4 Months Free
           </span>
         </div>
       </div>
@@ -431,8 +431,7 @@
 
         <div class="flex flex-col mb-6 items-center">
           <div class="flex flex-row items-center">
-            <span class="mr-2 text-4xl font-bold">{mode ? "$7.50" : "$10"}</span
-            >
+            <span class="mr-2 text-4xl font-bold">{mode ? "$10" : "$15"}</span>
             <span class="text-white text-xl">/month</span>
           </div>
           {#if mode}
@@ -792,7 +791,7 @@
 
         <div class="flex flex-col mb-6 items-center">
           <div class="flex flex-row items-center">
-            <span class="mr-2 text-4xl font-bold">$449</span>
+            <span class="mr-2 text-4xl font-bold">$599</span>
           </div>
         </div>
 
@@ -1519,8 +1518,8 @@
                   <p
                     class="text-sm sm:text-[1rem] pb-5 text-gray-200 overflow-hidden transition-all duration-300 ease-in-out"
                   >
-                    Yes, you can choose the annual option for $90 per year. This
-                    allows you to save 25% compared to the monthly plan
+                    Yes, you can choose the annual option for $120 per year.
+                    This allows you to save 33.33% compared to the monthly plan
                   </p>
                 </div>
               </details>
