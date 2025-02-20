@@ -1,11 +1,8 @@
 <script lang="ts">
-  import {
-    numberOfUnreadNotification,
-    displayCompanyName,
-    stockTicker,
-  } from "$lib/store";
+  import { displayCompanyName, stockTicker } from "$lib/store";
   import { abbreviateNumber } from "$lib/utils";
   import ScrollToTop from "$lib/components/ScrollToTop.svelte";
+  import SEO from "$lib/components/SEO.svelte";
 
   export let data;
   let rawData = data?.getStatistics ?? {};
@@ -30,43 +27,10 @@
   }
 </script>
 
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""}
-    {$displayCompanyName} ({$stockTicker}) Statistics & Valuation Metrics ·
-    stocknear
-  </title>
-  <meta
-    name="description"
-    content={`Detailed statistics for ${$displayCompanyName} (${$stockTicker}) stock, including valuation, metrics, financial numbers, share information and more.`}
-  />
-
-  <!-- Other meta tags -->
-  <meta
-    property="og:title"
-    content={`${$displayCompanyName} (${$stockTicker}) Statistics & Valuation Metrics · Stocknear`}
-  />
-  <meta
-    property="og:description"
-    content={`Detailed statistics for ${$displayCompanyName} (${$stockTicker}) stock, including valuation, metrics, financial numbers, share information and more.`}
-  />
-  <meta property="og:type" content="website" />
-  <!-- Add more Open Graph meta tags as needed -->
-
-  <!-- Twitter specific meta tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta
-    name="twitter:title"
-    content={`${$displayCompanyName} (${$stockTicker}) Statistics & Valuation Metrics · Stocknear`}
-  />
-  <meta
-    name="twitter:description"
-    content={`Detailed statistics for ${$displayCompanyName} (${$stockTicker}) stock, including valuation, metrics, financial numbers, share information and more.`}
-  />
-  <!-- Add more Twitter meta tags as needed -->
-</svelte:head>
+<SEO
+  title={`${$displayCompanyName} (${$stockTicker}) Statistics & Valuation Metrics`}
+  description={`Detailed statistics for ${$displayCompanyName} (${$stockTicker}) stock, including valuation, metrics, financial numbers, share information and more.`}
+/>
 
 <section class="text-white w-full">
   <div class="sm:pb-7 sm:pt-7 sm:pl-7 m-auto mt-7 sm:mt-0">
@@ -91,7 +55,7 @@
               <p
                 class="mb-4 px-0.5 text-white xs:text-[1.05rem] lg:leading-normal"
               >
-                {companyName} has {@html abbreviateNumber(
+                {companyName} has {abbreviateNumber(
                   rawData?.sharesOutStanding,
                   false,
                 )}
@@ -107,10 +71,7 @@
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
                       title="3,194,640,415"
-                      >{@html abbreviateNumber(
-                        rawData?.sharesOutStanding,
-                        false,
-                      )}</td
+                      >{abbreviateNumber(rawData?.sharesOutStanding, false)}</td
                     >
                   </tr><tr class="border-b border-gray-800 odd:bg-odd"
                     ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
@@ -118,10 +79,7 @@
                     </td>
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
-                      >{checkValue(
-                        rawData?.sharesYoYrawData?.sharesYoY,
-                        "percent",
-                      )}</td
+                      >{checkValue(rawData?.sharesYoY, "percent")}</td
                     >
                   </tr><tr class="border-b border-gray-800 odd:bg-odd"
                     ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
@@ -138,7 +96,7 @@
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
                       >{checkValue(
-                        rawData?.rawData?.institutionalOwnership,
+                        rawData?.institutionalOwnership,
                         "percent",
                       )}</td
                     >
@@ -149,7 +107,7 @@
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
                       title="2,777,647,654"
-                      >{@html abbreviateNumber(rawData?.floatShares, false)}</td
+                      >{abbreviateNumber(rawData?.floatShares, false)}</td
                     >
                   </tr>
                   <tr class="border-b border-gray-800 odd:bg-odd"
@@ -159,10 +117,7 @@
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
                       title="2,777,647,654"
-                      >{@html abbreviateNumber(
-                        rawData?.failToDeliver,
-                        false,
-                      )}</td
+                      >{abbreviateNumber(rawData?.failToDeliver, false)}</td
                     >
                   </tr><tr class="border-b border-gray-800 odd:bg-odd"
                     ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
@@ -170,10 +125,12 @@
                     </td>
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
-                      >{checkValue(
-                        abbreviateNumber(rawData?.relativeFTD),
-                        "percent",
-                      )}</td
+                      >{rawData?.relativeFTD < 0.01
+                        ? "< 0.01%"
+                        : checkValue(
+                            abbreviateNumber(rawData?.relativeFTD),
+                            "percent",
+                          )}</td
                     >
                   </tr></tbody
                 >
@@ -186,7 +143,7 @@
               <p
                 class="mb-4 px-0.5 text-white xs:text-[1.05rem] lg:leading-normal"
               >
-                The latest short interest is {@html abbreviateNumber(
+                The latest short interest is {abbreviateNumber(
                   rawData?.sharesShort,
                   false,
                 )}, so {rawData?.shortOutStandingPercent}% of the outstanding
@@ -201,7 +158,7 @@
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
                       title="74,332,630"
-                      >{@html abbreviateNumber(rawData?.sharesShort, false)}</td
+                      >{abbreviateNumber(rawData?.sharesShort, false)}</td
                     >
                   </tr><tr class="border-b border-gray-800 odd:bg-odd"
                     ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
@@ -324,7 +281,7 @@
                 class="mb-4 px-0.5 text-white xs:text-[1.05rem] lg:leading-normal"
               >
                 {#if rawData?.enterpriseValue !== null}
-                  {$displayCompanyName} has an Enterprise Value (EV) of {@html abbreviateNumber(
+                  {$displayCompanyName} has an Enterprise Value (EV) of {abbreviateNumber(
                     rawData?.enterpriseValue,
                     false,
                   )}.
@@ -420,7 +377,7 @@
                     </td>
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
-                      >{@html abbreviateNumber(
+                      >{abbreviateNumber(
                         rawData?.totalDebtToCapitalization,
                         false,
                       )}</td
@@ -487,7 +444,7 @@
                     </td>
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
-                      >{@html abbreviateNumber(
+                      >{abbreviateNumber(
                         rawData?.revenuePerEmployee,
                         false,
                       )}</td
@@ -498,10 +455,7 @@
                     </td>
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
-                      >{@html abbreviateNumber(
-                        rawData?.profitPerEmployee,
-                        false,
-                      )}</td
+                      >{abbreviateNumber(rawData?.profitPerEmployee, false)}</td
                     >
                   </tr><tr class="border-b border-gray-800 odd:bg-odd"
                     ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
@@ -510,7 +464,7 @@
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
                       title="140,473"
-                      >{@html abbreviateNumber(rawData?.employees, false)}</td
+                      >{abbreviateNumber(rawData?.employees, false)}</td
                     >
                   </tr><tr class="border-b border-gray-800 odd:bg-odd"
                     ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
@@ -526,10 +480,9 @@
                     </td>
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
-                      >{@html abbreviateNumber(
-                        rawData?.inventoryTurnover,
-                        false,
-                      )}</td
+                      >{rawData?.inventoryTurnover
+                        ? abbreviateNumber(rawData?.inventoryTurnover, false)
+                        : "n/a"}</td
                     >
                   </tr></tbody
                 >
@@ -545,10 +498,7 @@
                     </td>
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
-                      >{@html abbreviateNumber(
-                        rawData?.incomeTaxExpense,
-                        false,
-                      )}</td
+                      >{abbreviateNumber(rawData?.incomeTaxExpense, false)}</td
                     >
                   </tr><tr class="border-b border-gray-800 odd:bg-odd"
                     ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
@@ -625,7 +575,7 @@
                     </td>
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
-                      >{@html abbreviateNumber(rawData?.avgVolume, false)}</td
+                      >{abbreviateNumber(rawData?.avgVolume, false)}</td
                     >
                   </tr></tbody
                 >
@@ -640,11 +590,11 @@
                 class="mb-4 px-0.5 text-white xs:text-[1.05rem] lg:leading-normal"
               >
                 {#if rawData?.revenue !== null && rawData?.revenue !== 0}
-                  In the last 12 months, {companyName} had revenue of {@html abbreviateNumber(
+                  In the last 12 months, {companyName} had revenue of {abbreviateNumber(
                     rawData?.revenue,
                     false,
                   )}
-                  and earned {@html abbreviateNumber(rawData?.netIncome, false)}
+                  and earned {abbreviateNumber(rawData?.netIncome, false)}
                   in profits. Earnings per share was {rawData?.eps}.
                 {/if}
               </p>
@@ -656,8 +606,7 @@
                     >
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
-                      >{@html rawData?.revenue !== 0 &&
-                      rawData?.revenue !== null
+                      >{rawData?.revenue !== 0 && rawData?.revenue !== null
                         ? abbreviateNumber(rawData?.revenue, false)
                         : "n/a"}</td
                     >
@@ -667,7 +616,7 @@
                     </td>
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
-                      >{@html abbreviateNumber(rawData?.grossProfit, false)}</td
+                      >{abbreviateNumber(rawData?.grossProfit, false)}</td
                     >
                   </tr><tr class="border-b border-gray-800 odd:bg-odd"
                     ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
@@ -675,10 +624,7 @@
                     </td>
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
-                      >{@html abbreviateNumber(
-                        rawData?.operatingIncome,
-                        false,
-                      )}</td
+                      >{abbreviateNumber(rawData?.operatingIncome, false)}</td
                     >
                   </tr><tr class="border-b border-gray-800 odd:bg-odd"
                     ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
@@ -686,7 +632,7 @@
                     </td>
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
-                      >{@html abbreviateNumber(rawData?.netIncome, false)}</td
+                      >{abbreviateNumber(rawData?.netIncome, false)}</td
                     >
                   </tr><tr class="border-b border-gray-800 odd:bg-odd"
                     ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
@@ -694,7 +640,7 @@
                     </td>
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
-                      >{@html abbreviateNumber(rawData?.ebitda, false)}</td
+                      >{abbreviateNumber(rawData?.ebitda, false)}</td
                     >
                   </tr><tr class="border-b border-gray-800 odd:bg-odd"
                     ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
@@ -702,7 +648,7 @@
                     </td>
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
-                      >{@html rawData?.ebit !== 0 && rawData?.ebit !== null
+                      >{rawData?.ebit !== 0 && rawData?.ebit !== null
                         ? abbreviateNumber(rawData?.ebit, false)
                         : "n/a"}</td
                     >
@@ -731,13 +677,11 @@
               <p
                 class="mb-4 px-0.5 text-white xs:text-[1.05rem] lg:leading-normal"
               >
-                The company has {@html abbreviateNumber(
+                The company has {abbreviateNumber(
                   rawData?.cashAndCashEquivalents,
                   false,
-                )} in cash and {@html abbreviateNumber(
-                  rawData?.totalDebt,
-                  false,
-                )} in debt, giving a net cash position of {@html abbreviateNumber(
+                )} in cash and {abbreviateNumber(rawData?.totalDebt, false)} in debt,
+                giving a net cash position of {abbreviateNumber(
                   rawData?.cashAndCashEquivalents - rawData?.totalDebt,
                   false,
                 )}.
@@ -750,7 +694,7 @@
                     </td>
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
-                      >{@html abbreviateNumber(
+                      >{abbreviateNumber(
                         rawData?.cashAndCashEquivalents,
                         false,
                       )}</td
@@ -761,7 +705,7 @@
                     </td>
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
-                      >{@html abbreviateNumber(rawData?.totalDebt, false)}</td
+                      >{abbreviateNumber(rawData?.totalDebt, false)}</td
                     >
                   </tr><tr class="border-b border-gray-800 odd:bg-odd"
                     ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
@@ -770,7 +714,7 @@
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
                       title="20,865,000,000"
-                      >{@html abbreviateNumber(
+                      >{abbreviateNumber(
                         rawData?.cashAndCashEquivalents - rawData?.totalDebt,
                         false,
                       )}</td
@@ -781,10 +725,7 @@
                     </td>
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
-                      >{@html abbreviateNumber(
-                        rawData?.retainedEarnings,
-                        false,
-                      )}</td
+                      >{abbreviateNumber(rawData?.retainedEarnings, false)}</td
                     >
                   </tr><tr class="border-b border-gray-800 odd:bg-odd"
                     ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
@@ -792,7 +733,7 @@
                     </td>
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
-                      >{@html abbreviateNumber(rawData?.totalAssets, false)}</td
+                      >{abbreviateNumber(rawData?.totalAssets, false)}</td
                     >
                   </tr><tr class="border-b border-gray-800 odd:bg-odd"
                     ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
@@ -800,10 +741,7 @@
                     </td>
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
-                      >{@html abbreviateNumber(
-                        rawData?.workingCapital,
-                        false,
-                      )}</td
+                      >{abbreviateNumber(rawData?.workingCapital, false)}</td
                     >
                   </tr></tbody
                 >
@@ -822,14 +760,14 @@
               <p
                 class="mb-4 px-0.5 text-white xs:text-[1.05rem] lg:leading-normal"
               >
-                In the last 12 months, operating cash flow was {@html abbreviateNumber(
+                In the last 12 months, operating cash flow was {abbreviateNumber(
                   rawData?.operatingCashFlow,
                   false,
                 )}
-                and capital expenditures {@html abbreviateNumber(
+                and capital expenditures {abbreviateNumber(
                   rawData?.capitalExpenditure,
                   false,
-                )}, giving a free cash flow of {@html abbreviateNumber(
+                )}, giving a free cash flow of {abbreviateNumber(
                   rawData?.freeCashFlow,
                   false,
                 )}.
@@ -842,10 +780,7 @@
                     </td>
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
-                      >{@html abbreviateNumber(
-                        rawData?.operatingCashFlow,
-                        false,
-                      )}</td
+                      >{abbreviateNumber(rawData?.operatingCashFlow, false)}</td
                     >
                   </tr><tr class="border-b border-gray-800 odd:bg-odd"
                     ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
@@ -853,7 +788,7 @@
                     </td>
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
-                      >{@html abbreviateNumber(
+                      >{abbreviateNumber(
                         rawData?.capitalExpenditure,
                         false,
                       )}</td
@@ -864,10 +799,7 @@
                     </td>
                     <td
                       class="px-[5px] py-1.5 text-right font-semibold xs:px-2.5 xs:py-2"
-                      >{@html abbreviateNumber(
-                        rawData?.freeCashFlow,
-                        false,
-                      )}</td
+                      >{abbreviateNumber(rawData?.freeCashFlow, false)}</td
                     >
                   </tr><tr class="border-b border-gray-800 odd:bg-odd"
                     ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
