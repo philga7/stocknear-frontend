@@ -396,9 +396,7 @@
   description={`Historical Market Cap of ${$displayCompanyName}.`}
 />
 
-<section
-  class="bg-default w-full overflow-hidden min-h-screen text-white h-full"
->
+<section class="bg-default w-full overflow-hidden text-white h-full">
   <div class="w-full flex justify-center w-full sm-auto h-full overflow-hidden">
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"

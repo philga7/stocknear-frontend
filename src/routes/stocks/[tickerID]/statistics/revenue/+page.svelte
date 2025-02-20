@@ -396,9 +396,7 @@
   description={`Historical Market Cap of ${$displayCompanyName}.`}
 />
 
-<section
-  class="bg-default w-full overflow-hidden min-h-screen text-white h-full"
->
+<section class="bg-default w-full overflow-hidden text-white h-full">
   <div class="w-full flex justify-center w-full sm-auto h-full overflow-hidden">
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"
@@ -410,7 +408,7 @@
           </div>
 
           {#if rawData?.length !== 0}
-            <div class="grid grid-cols-1 gap-2">
+            <div class="grid grid-cols-1 gap-2 mt-3 mb-3 sm:mt-0 sm:mb-0">
               <Infobox
                 text={`${$displayCompanyName} has a market cap or net worth of ${abbreviateNumber(
                   data?.getStockQuote?.marketCap,
@@ -615,59 +613,63 @@
                 <Chart {init} options={optionsData} class="chart" />
               </div>
 
-              <h2 class="mt-10 text-xl text-white font-bold">
-                Market Cap History
-              </h2>
-
               <div
-                class="inline-flex justify-center w-full rounded-md sm:w-auto sm:ml-auto"
+                class="mt-10 flex flex-col sm:flex-row items-start sm:items-center w-full justify-between"
               >
+                <h3 class="text-xl sm:text-2xl text-white font-bold">
+                  Market Cap History
+                </h3>
+
                 <div
-                  class="bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1 mt-4"
+                  class="inline-flex justify-center w-full rounded-md sm:w-auto sm:ml-auto"
                 >
-                  {#each tabs as item, i}
-                    {#if data?.user?.tier !== "Pro" && i > 0}
-                      <button
-                        on:click={() => goto("/pricing")}
-                        class="group relative z-[1] rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
-                      >
-                        <span class="relative text-sm block font-semibold">
-                          {item.title}
-                          <svg
-                            class="inline-block ml-0.5 -mt-1 w-3.5 h-3.5"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            ><path
-                              fill="#A3A3A3"
-                              d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                            /></svg
-                          >
-                        </span>
-                      </button>
-                    {:else}
-                      <button
-                        on:click={() => changeTablePeriod(i)}
-                        class="group relative z-[1] rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
-                        i
-                          ? 'z-0'
-                          : ''} "
-                      >
-                        {#if activeIdx === i}
-                          <div
-                            class="absolute inset-0 rounded-md bg-[#fff]"
-                          ></div>
-                        {/if}
-                        <span
-                          class="relative text-sm block font-semibold {activeIdx ===
-                          i
-                            ? 'text-black'
-                            : 'text-white'}"
+                  <div
+                    class="bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1 mt-4"
+                  >
+                    {#each tabs as item, i}
+                      {#if data?.user?.tier !== "Pro" && i > 0}
+                        <button
+                          on:click={() => goto("/pricing")}
+                          class="group relative z-[1] rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
                         >
-                          {item.title}
-                        </span>
-                      </button>
-                    {/if}
-                  {/each}
+                          <span class="relative text-sm block font-semibold">
+                            {item.title}
+                            <svg
+                              class="inline-block ml-0.5 -mt-1 w-3.5 h-3.5"
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              ><path
+                                fill="#A3A3A3"
+                                d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                              /></svg
+                            >
+                          </span>
+                        </button>
+                      {:else}
+                        <button
+                          on:click={() => changeTablePeriod(i)}
+                          class="group relative z-[1] rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
+                          i
+                            ? 'z-0'
+                            : ''} "
+                        >
+                          {#if activeIdx === i}
+                            <div
+                              class="absolute inset-0 rounded-md bg-[#fff]"
+                            ></div>
+                          {/if}
+                          <span
+                            class="relative text-sm block font-semibold {activeIdx ===
+                            i
+                              ? 'text-black'
+                              : 'text-white'}"
+                          >
+                            {item.title}
+                          </span>
+                        </button>
+                      {/if}
+                    {/each}
+                  </div>
                 </div>
               </div>
 

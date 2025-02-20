@@ -3,71 +3,6 @@
 
   export let data;
   const similarStocks = data?.getSimilarStocks;
-
-  function getMarketCapCategory(marketCap) {
-    const BILLION = 1_000_000_000;
-    const MILLION = 1_000_000;
-
-    const marketCapNavigation = [
-      {
-        threshold: 200 * BILLION,
-        name: "Mega-Cap",
-        link: "/list/market-cap/mega-cap-stocks",
-      },
-      {
-        minThreshold: 10 * BILLION,
-        maxThreshold: 200 * BILLION,
-        name: "Large-Cap",
-        link: "/list/market-cap/large-cap-stocks",
-      },
-      {
-        minThreshold: 2 * BILLION,
-        maxThreshold: 10 * BILLION,
-        name: "Mid-Cap",
-        link: "/list/market-cap/mid-cap-stocks",
-      },
-      {
-        minThreshold: 300 * MILLION,
-        maxThreshold: 2 * BILLION,
-        name: "Small-Cap",
-        link: "/list/market-cap/small-cap-stocks",
-      },
-      {
-        minThreshold: 50 * MILLION,
-        maxThreshold: 300 * MILLION,
-        name: "Micro-Cap",
-        link: "/list/market-cap/micro-cap-stocks",
-      },
-      {
-        maxThreshold: 50 * MILLION,
-        name: "Nano-Cap",
-        link: "/list/market-cap/nano-cap-stocks",
-      },
-    ];
-
-    if (!marketCap) return null;
-
-    // Convert string to number if needed
-    const capValue =
-      typeof marketCap === "string" ? parseFloat(marketCap) : marketCap;
-
-    return marketCapNavigation.find((category) => {
-      if (category.threshold) {
-        return capValue >= category.threshold;
-      }
-      if (category.minThreshold && category.maxThreshold) {
-        return (
-          capValue >= category.minThreshold && capValue < category.maxThreshold
-        );
-      }
-      if (category.maxThreshold) {
-        return capValue < category.maxThreshold;
-      }
-      return false;
-    });
-  }
-
-  let capCategory = getMarketCapCategory(data?.getStockQuote?.marketCap);
 </script>
 
 <section class="w-full overflow-hidden">
@@ -113,12 +48,14 @@
               or services. Revenue does not take any expenses into account and
               is therefore different from profits.
             </div>
-            <a
-              href="/blog/article/revenue"
-              class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
-            >
-              Full Definition
-            </a>
+            <div class="px-2">
+              <a
+                href="/blog/article/revenue"
+                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
+              >
+                Full Definition
+              </a>
+            </div>
           </div>
 
           {#if similarStocks?.length > 0}
@@ -130,11 +67,11 @@
                 <thead class="text-white"
                   ><tr
                     ><th
-                      class="whitespace-nowrap border-b border-gray-600 font-semibold text-[1rem] text-left"
+                      class="whitespace-nowrap border-b border-gray-600 font-semibold text-[1rem] text-left px-2"
                       >Company</th
                     >
                     <th
-                      class="whitespace-nowrap border-b border-gray-600 font-semibold text-[1rem] text-right"
+                      class="whitespace-nowrap border-b border-gray-600 font-semibold text-[1rem] text-right px-2"
                       >Revenue</th
                     ></tr
                   ></thead
@@ -147,14 +84,14 @@
                         similarStocks?.slice(0, 8).length - 1
                           ? 'border-b'
                           : ''}"
-                        ><td class="text-left text-[1rem]"
+                        ><td class="text-left text-[1rem] px-2"
                           ><a
                             href={`/stocks/${item?.symbol}/statistics/revenue`}
                             class="sm:hover:text-white text-blue-400"
                             >{item?.name}</a
                           ></td
                         >
-                        <td class="text-right cursor-normal text-[1rem]"
+                        <td class="text-right cursor-normal text-[1rem] px-2"
                           >{abbreviateNumber(item?.revenue)}</td
                         >
                       </tr>
@@ -162,12 +99,14 @@
                   {/each}
                 </tbody>
               </table>
-              <a
-                href="/list/highest-revenue"
-                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
-              >
-                Revenue Rankings
-              </a>
+              <div class="px-2">
+                <a
+                  href="/list/highest-revenue"
+                  class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
+                >
+                  Revenue Rankings
+                </a>
+              </div>
             </div>
           {/if}
         </aside>

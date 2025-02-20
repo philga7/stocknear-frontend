@@ -117,12 +117,14 @@
               <br />
               Formula: Market Cap = Stock Price * Shares Outstanding
             </div>
-            <a
-              href="/blog/article/market-capitalization"
-              class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-2 text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
-            >
-              Full Definition
-            </a>
+            <div class="px-2">
+              <a
+                href="/blog/article/market-capitalization"
+                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-2 text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
+              >
+                Full Definition
+              </a>
+            </div>
           </div>
 
           {#if similarStocks?.length > 0}
@@ -134,11 +136,11 @@
                 <thead class="text-white"
                   ><tr
                     ><th
-                      class="whitespace-nowrap border-b border-gray-600 font-semibold text-[1rem] text-left"
+                      class="whitespace-nowrap border-b border-gray-600 font-semibold text-[1rem] text-left px-2"
                       >Company</th
                     >
                     <th
-                      class="whitespace-nowrap border-b border-gray-600 font-semibold text-[1rem] text-right"
+                      class="whitespace-nowrap border-b border-gray-600 font-semibold text-[1rem] text-right px-2"
                       >Market Cap</th
                     ></tr
                   ></thead
@@ -151,14 +153,14 @@
                         similarStocks?.slice(0, 8).length - 1
                           ? 'border-b'
                           : ''}"
-                        ><td class="text-left text-[1rem]"
+                        ><td class="text-left text-[1rem] px-2"
                           ><a
                             href={`/stocks/${item?.symbol}`}
                             class="sm:hover:text-white text-blue-400"
                             >{item?.name}</a
                           ></td
                         >
-                        <td class="text-right cursor-normal text-[1rem]"
+                        <td class="text-right cursor-normal text-[1rem] px-2"
                           >{abbreviateNumber(item?.marketCap)}</td
                         >
                       </tr>
@@ -167,12 +169,14 @@
                 </tbody>
               </table>
               {#if capCategory}
-                <a
-                  href={capCategory?.link}
-                  class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
-                >
-                  {capCategory?.name} Rankings
-                </a>
+                <div class="px-2">
+                  <a
+                    href={capCategory?.link}
+                    class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
+                  >
+                    {capCategory?.name} Rankings
+                  </a>
+                </div>
               {/if}
             </div>
           {/if}
