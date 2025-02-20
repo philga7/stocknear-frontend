@@ -3,8 +3,6 @@
   import { abbreviateNumber, monthNames } from "$lib/utils";
   import SEO from "$lib/components/SEO.svelte";
 
-  import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
-  import { Button } from "$lib/components/shadcn/button/index.js";
   //import * as XLSX from 'xlsx';
   import { goto } from "$app/navigation";
   import { Chart } from "svelte-echarts";
@@ -22,7 +20,6 @@
 
   let rawData = data?.getHistoricalRevenue || {};
   let tableList = [];
-  let timePeriod = "3Y";
 
   const tabs = [
     {
@@ -33,25 +30,49 @@
     },
   ];
   let activeIdx = 0;
+  let timeIdx = 0;
+
+  const plotTabs = [
+    {
+      title: "Annual",
+    },
+    {
+      title: "Quarterly",
+    },
+  ];
 
   function changeTablePeriod(index) {
     activeIdx = index;
+    const rawData = data?.getHistoricalRevenue;
     if (activeIdx === 0) {
-      tableList = rawData?.annual;
+      // Clone the array before sorting
+      tableList = [...rawData?.annual];
+      tableList.sort((a, b) => new Date(b?.date) - new Date(a?.date));
     } else {
-      tableList = rawData?.quarter;
+      tableList = [...rawData?.quarter];
+      tableList.sort((a, b) => new Date(b?.date) - new Date(a?.date));
     }
-    tableList?.sort((a, b) => new Date(b?.date) - new Date(a?.date));
   }
 
-  async function changeStatement(state) {
-    timePeriod = state;
-
-    optionsData = await plotData();
+  async function changeTimePeriod(state) {
+    timeIdx = state;
+    optionsData = plotData();
   }
 
   function plotData() {
-    const filteredData = filterDataByTimePeriod(rawData, timePeriod);
+    let filteredData = [];
+    const rawData = data?.getHistoricalRevenue;
+    if (timeIdx === 0) {
+      // Clone the array before sorting
+      filteredData = [...rawData?.annual];
+    } else {
+      filteredData = [...rawData?.quarter];
+    }
+    // Sort ascending for plotting
+    filteredData.sort((a, b) => new Date(a?.date) - new Date(b?.date));
+
+    const dates = filteredData.map((item) => item?.date);
+    const valueList = filteredData.map((item) => item?.revenue);
 
     const options = {
       animation: false,
@@ -65,10 +86,9 @@
       xAxis: [
         {
           type: "category",
-          data: filteredData?.dates,
+          data: dates,
           axisLabel: {
             color: "#fff",
-
             formatter: function (value) {
               // Assuming dates are in the format 'yyyy-mm-dd'
               const dateParts = value.split("-");
@@ -86,7 +106,6 @@
           splitLine: {
             show: false, // Disable x-axis grid lines
           },
-
           axisLabel: {
             show: false, // Hide y-axis labels
           },
@@ -94,14 +113,15 @@
       ],
       series: [
         {
-          name: "Mkt Cap",
-          data: filteredData?.marketCapList,
-          type: "line",
+          name: "Revenue",
+          data: valueList,
+          type: "bar",
           smooth: true,
           symbol: "none",
           itemStyle: {
-            color: "#fff",
+            color: "#f2f1f0",
           },
+          barWidth: "60%",
         },
       ],
       tooltip: {
@@ -116,10 +136,8 @@
         formatter: function (params) {
           // Get the timestamp from the first parameter
           const timestamp = params[0].axisValue;
-
           // Initialize result with timestamp
           let result = timestamp + "<br/>";
-
           // Add each series data
           params.forEach((param) => {
             const marker =
@@ -134,7 +152,6 @@
               abbreviateNumber(param.value, false, true) +
               "<br/>";
           });
-
           return result;
         },
         axisPointer: {
@@ -148,12 +165,8 @@
     return options;
   }
 
-  $: {
-    if ($stockTicker) {
-      tableList = rawData?.annual;
-      tableList?.sort((a, b) => new Date(b?.date) - new Date(a?.date));
-    }
-  }
+  changeTablePeriod(0);
+  optionsData = plotData();
 </script>
 
 <SEO
@@ -275,15 +288,45 @@
               </div>
 
               <div
-                class="flex flex-col sm:flex-row items-start sm:items-center w-full sm:mt-10 mb-8"
+                class="mt-10 flex flex-col sm:flex-row items-start sm:items-center w-full justify-between"
               >
-                <h1 class="text-2xl text-white font-bold mb-3 sm:mb-0">
+                <h2 class="text-xl sm:text-2xl text-white font-bold">
                   Revenue Chart
-                </h1>
+                </h2>
+
                 <div
-                  class="flex flex-row items-center w-fit sm:w-[50%] md:w-auto sm:ml-auto"
-                ></div>
+                  class="inline-flex justify-center w-full rounded-md sm:w-auto sm:ml-auto"
+                >
+                  <div
+                    class="bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1 mt-4"
+                  >
+                    {#each plotTabs as item, i}
+                      <button
+                        on:click={() => changeTimePeriod(i)}
+                        class="group relative z-[1] rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {timeIdx ===
+                        i
+                          ? 'z-0'
+                          : ''} "
+                      >
+                        {#if timeIdx === i}
+                          <div
+                            class="absolute inset-0 rounded-md bg-[#fff]"
+                          ></div>
+                        {/if}
+                        <span
+                          class="relative text-sm block font-semibold {timeIdx ===
+                          i
+                            ? 'text-black'
+                            : 'text-white'}"
+                        >
+                          {item.title}
+                        </span>
+                      </button>
+                    {/each}
+                  </div>
+                </div>
               </div>
+
               {#if optionsData !== null}
                 <div class="app w-full">
                   <Chart {init} options={optionsData} class="chart" />
@@ -357,7 +400,9 @@
                   <thead class="bg-default">
                     <tr>
                       <th class="text-white font-semibold text-start text-sm"
-                        >Date</th
+                        >{activeIdx === 0
+                          ? "Fiscal Year End"
+                          : "Quarter Ended"}</th
                       >
                       <th class="text-white font-semibold text-end text-sm"
                         >Revenue</th
@@ -382,7 +427,7 @@
                         <td
                           class="text-white text-sm sm:text-[1rem] text-right whitespace-nowrap"
                         >
-                          {@html abbreviateNumber(item?.revenue, false, true)}
+                          {abbreviateNumber(item?.revenue)}
                         </td>
 
                         <td

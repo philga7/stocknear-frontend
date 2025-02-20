@@ -10,7 +10,6 @@
   let companyName = $displayCompanyName
     ?.replace("Inc.", "")
     ?.replace(".com", "");
-  let quantStats = {};
 
   function checkValue(val, category) {
     if (val !== null && val !== undefined) {
