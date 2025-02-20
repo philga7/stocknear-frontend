@@ -1,6 +1,10 @@
 <script lang="ts">
   import { displayCompanyName, stockTicker } from "$lib/store";
-  import { abbreviateNumber, monthNames } from "$lib/utils";
+  import {
+    abbreviateNumber,
+    monthNames,
+    removeCompanyStrings,
+  } from "$lib/utils";
   import SEO from "$lib/components/SEO.svelte";
 
   //import * as XLSX from 'xlsx';
@@ -31,6 +35,16 @@
   ];
   let activeIdx = 0;
   let timeIdx = 0;
+
+  function formatDate(dateString) {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  }
 
   const plotTabs = [
     {
@@ -170,8 +184,8 @@
 </script>
 
 <SEO
-  title={`${$displayCompanyName} (${$stockTicker}) Market Cap & Net Worth`}
-  description={`Historical Revenue of ${$displayCompanyName}.`}
+  title={`${$displayCompanyName} (${$stockTicker}) Revenue, Sales & Growth Trends`}
+  description={`Explore the historical revenue, sales performance, and growth trends of ${$displayCompanyName} (${$stockTicker}). Get in-depth financial insights.`}
 />
 
 <section class="bg-default w-full overflow-hidden text-white h-full">
@@ -182,13 +196,15 @@
       <main class="w-full">
         <div class="sm:pl-7 sm:pb-7 sm:pt-7 m-auto mt-2 sm:mt-0">
           <div class="">
-            <h1 class="text-xl sm:text-2xl text-white font-bold">Market Cap</h1>
+            <h1 class="text-xl sm:text-2xl text-white font-bold">
+              {removeCompanyStrings($displayCompanyName)} Revenue
+            </h1>
           </div>
 
           {#if rawData?.length !== 0}
             <div class="grid grid-cols-1 gap-2 mt-3 mb-3 sm:mt-0 sm:mb-0">
               <Infobox
-                text="Apple had revenue of $124.30B in the quarter ending December 28, 2024, with 3.95% growth. This brings the company's revenue in the last twelve months to $395.76B, up 2.61% year-over-year. In the fiscal year ending September 28, 2024, Apple had annual revenue of $391.04B with 2.02% growth."
+                text={`${removeCompanyStrings($displayCompanyName)} reported an annual revenue of ${abbreviateNumber(rawData?.annual?.at(0)?.revenue, true)}, reflecting a ${rawData?.growthRevenue}% growth. For the quarter ending ${formatDate(rawData?.quarter?.at(0)?.date)}, ${removeCompanyStrings($displayCompanyName)} generated ${abbreviateNumber(rawData?.quarter?.at(0)?.revenue, true)} in revenue.`}
               />
 
               <div

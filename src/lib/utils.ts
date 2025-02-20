@@ -18,6 +18,11 @@ type FlyAndScaleParams = {
   duration?: number;
 };
 
+export function removeCompanyStrings(name) {
+  const wordsToRemove = ["Technologies", "Inc."];
+if (!name) return "";
+    return wordsToRemove?.reduce((acc, word) => acc.replace(word, "").trim(), name);
+}
 
 export function convertToSlug(title) {
     // Remove punctuation, hyphens, and special characters
