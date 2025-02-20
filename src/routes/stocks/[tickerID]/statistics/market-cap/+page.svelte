@@ -441,7 +441,7 @@
                     <span class="ml-1 text-violet-400">●</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-2xl font-bold text-white">
+                    <span class="text-xl font-bold text-white">
                       {abbreviateNumber(data?.getStockQuote?.marketCap)}</span
                     >
                   </div>
@@ -455,7 +455,7 @@
                     <span class="ml-1 text-red-400">●</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-2xl font-bold text-white"
+                    <span class="text-xl font-bold text-white"
                       >{#if capCategory}
                         <a
                           class="sm:hover:text-white text-blue-400"
@@ -478,7 +478,7 @@
                     <span class="ml-1">●</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-2xl font-bold text-white"
+                    <span class="text-xl font-bold text-white"
                       >{changePercentageYearAgo > 100
                         ? "> 100"
                         : changePercentageYearAgo?.toFixed(1)}%</span
