@@ -104,32 +104,25 @@
           {/if}
 
           <div
-            class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 bg-inherit transition ease-out duration-100"
+            class="w-full p-2 text-white border border-gray-600 bg-inherit rounded-md h-fit pb-4 mt-4"
           >
-            <div class="w-auto lg:w-full p-2 flex flex-col m-auto px-2">
-              <div>
-                <div class="p-2 w-full flex justify-between items-center mt-3">
-                  <h2 class="text-start text-xl font-semibold text-white">
-                    Market Capitalization
-                  </h2>
-                </div>
-                <div class="text-white p-2">
-                  Market capitalization, also called net worth, is the total
-                  value of all of a company's outstanding shares. It is
-                  calculated by multiplying the stock price by the number of
-                  shares outstanding.
-                  <br />
-                  <br />
-                  Formula: Market Cap = Stock Price * Shares Outstanding
-                </div>
-                <a
-                  href="/blog/article/market-capitalization"
-                  class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
-                >
-                  Full Definition
-                </a>
-              </div>
+            <h3 class="p-2 pt-4 text-xl font-semibold">
+              Market Capitalization
+            </h3>
+            <div class="text-white p-2">
+              Market capitalization, also called net worth, is the total value
+              of all of a company's outstanding shares. It is calculated by
+              multiplying the stock price by the number of shares outstanding.
+              <br />
+              <br />
+              Formula: Market Cap = Stock Price * Shares Outstanding
             </div>
+            <a
+              href="/blog/article/market-capitalization"
+              class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-2 text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
+            >
+              Full Definition
+            </a>
           </div>
 
           {#if similarStocks?.length > 0}

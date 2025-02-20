@@ -501,10 +501,14 @@
                 </div>
               </div>
 
-              <div class="flex flex-row items-center w-full mt-10 mb-8">
-                <h1 class="text-2xl text-white font-bold">Market Cap Chart</h1>
+              <div
+                class="flex flex-col sm:flex-row items-start sm:items-center w-full sm:mt-10 mb-8"
+              >
+                <h1 class="text-2xl text-white font-bold mb-3 sm:mb-0">
+                  Historical Chart
+                </h1>
                 <div
-                  class="flex flex-row items-center w-fit sm:w-[50%] md:w-auto ml-auto"
+                  class="flex flex-row items-center w-fit sm:w-[50%] md:w-auto sm:ml-auto"
                 >
                   <div class="relative inline-block text-left grow">
                     <DropdownMenu.Root>
@@ -513,7 +517,9 @@
                           builders={[builder]}
                           class="w-full border-gray-600 border bg-default sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
                         >
-                          <span class="truncate text-white">{timePeriod}</span>
+                          <span class="truncate text-white text-xs sm:text-sm"
+                            >{timePeriod}</span
+                          >
                           <svg
                             class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
                             viewBox="0 0 20 20"
@@ -587,7 +593,9 @@
                     on:click={() => exportData("csv")}
                     class="ml-2 w-full border-gray-600 border bg-default sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
                   >
-                    <span class="truncate text-white">Download</span>
+                    <span class="truncate text-white text-xs sm:text-sm"
+                      >Download</span
+                    >
                     <svg
                       class="{data?.user?.tier === 'Pro'
                         ? 'hidden'
