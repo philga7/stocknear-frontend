@@ -1,7 +1,6 @@
 <script lang="ts">
   import { screenWidth } from "$lib/store";
 
-  import HoverStockChart from "$lib/components/HoverStockChart.svelte";
   import { abbreviateNumberWithColor } from "$lib/utils";
   import InfoModal from "$lib/components/InfoModal.svelte";
 
@@ -369,7 +368,7 @@
                     <span class="ml-1 text-yellow-400">●</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-2xl font-bold text-white">
+                    <span class="text-xl font-bold text-white">
                       {@html abbreviateNumberWithColor(
                         findLastNonNull(tickerFlow, "net_volume"),
                         false,
@@ -387,7 +386,7 @@
                     <span class="ml-1 text-green-500">●</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-2xl font-bold text-white"
+                    <span class="text-xl font-bold text-white"
                       >{@html abbreviateNumberWithColor(
                         findLastNonNull(tickerFlow, "net_call_premium"),
                         false,
@@ -405,7 +404,7 @@
                     <span class="ml-1 text-red-400">●</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-2xl font-bold text-white"
+                    <span class="text-xl font-bold text-white"
                       >{@html abbreviateNumberWithColor(
                         findLastNonNull(tickerFlow, "net_put_premium"),
                         false,

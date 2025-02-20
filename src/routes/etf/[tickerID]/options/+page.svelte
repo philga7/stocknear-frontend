@@ -18,7 +18,7 @@
 
   export let data;
   let dailyStats = data?.getDailyStats;
-  let tickerFlow = data?.getTickerFlow || [];
+  let tickerFlow = data?.getTickerFlow;
 
   let filteredList = [];
 
@@ -54,6 +54,7 @@
 
     return formatter.format(date);
   }
+
   function changeVolumeOI(event) {
     displayData = event.target.value;
   }
@@ -297,33 +298,22 @@
           <Infobox text="No Options data available" />
         {/if}
 
-        {#if tickerFlow?.length > 0}
-          <div class="w-full mb-5">
-            <TickerFlow {tickerFlow} />
-          </div>
-        {/if}
         {#if Object?.keys(dailyStats)?.length > 0}
           <div class="w-full mb-10">
             <DailyStats rawData={dailyStats} />
           </div>
         {/if}
 
-        {#if rawData?.length > 0}
-          <div class="flex flex-row items-center w-full mt-10">
-            <!--
-            <select
-              class="ml-1 w-40 select select-bordered select-sm p-0 pl-5 bg-secondary"
-              on:change={changeTimePeriod}
-            >
-              <option disabled>Choose a time period</option>
-              <option value="oneWeek">1 Week</option>
-              <option value="oneMonth">1 Month</option>
-              <option value="threeMonths">3 Months</option>
-              <option value="sixMonths">6 Months</option>
-              <option value="oneYear" selected>1 Year</option>
-            </select>
-            -->
+        {#if tickerFlow?.length > 0}
+          <div class="w-full mb-10">
+            <TickerFlow {tickerFlow} />
+          </div>
+        {/if}
 
+        {#if rawData?.length > 0}
+          <!--
+          <div class="flex flex-row items-center w-full mt-10">
+  
             <select
               class=" w-40 select select-bordered select-sm p-0 pl-5 bg-secondary"
               on:change={changeVolumeOI}
@@ -358,6 +348,7 @@
               </span>
             {/if}
           </div>
+          -->
 
           {#if optionList?.length !== 0}
             <h3 class="text-xl sm:text-2xl text-white font-bold text-start">
