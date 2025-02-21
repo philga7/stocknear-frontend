@@ -1,10 +1,6 @@
 <script lang="ts">
   import { displayCompanyName, stockTicker } from "$lib/store";
-  import {
-    abbreviateNumber,
-    monthNames,
-    removeCompanyStrings,
-  } from "$lib/utils";
+  import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
   import SEO from "$lib/components/SEO.svelte";
 
   //import * as XLSX from 'xlsx';
@@ -16,6 +12,7 @@
   export let data;
 
   let config = null;
+  let chartInstance;
 
   let rawData = data?.getHistoricalRevenue || {};
   let tableList = [];
@@ -67,6 +64,13 @@
     timeIdx = state;
 
     config = plotData();
+    try {
+      config.yAxis.labels.formatter = function () {
+        return abbreviateNumber(this.value);
+      };
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   function plotData() {
@@ -96,8 +100,8 @@
       title: {
         text:
           timeIdx === 0
-            ? "Palantir Revenue - Annual"
-            : "Palantir Revenue - Quarterly",
+            ? `${removeCompanyStrings($displayCompanyName)} Revenue - Annual`
+            : `${removeCompanyStrings($displayCompanyName)} Revenue - Quarterly`,
         style: { color: "white" },
       },
       xAxis: {
@@ -106,7 +110,7 @@
         labels: {
           style: { color: "white" },
           formatter: function () {
-            return timeIdx === 0 ? this?.value?.substring(0, 4) : this?.value; // Extracts the year (YYYY) from 'YYYY-MM-DD'
+            return timeIdx === 0 ? this?.value?.substring(0, 4) : this?.value;
           },
         },
       },
