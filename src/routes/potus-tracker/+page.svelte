@@ -2,27 +2,7 @@
   import SEO from "$lib/components/SEO.svelte";
   import Map from "$lib/components/Map.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
-  import { monthNames } from "$lib/utils";
-  import { screenWidth } from "$lib/store";
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
-
-  import { init, use } from "echarts/core";
-  import { LineChart, BarChart } from "echarts/charts";
-  import {
-    GridComponent,
-    TooltipComponent,
-    LegendComponent,
-  } from "echarts/components";
-  import { CanvasRenderer } from "echarts/renderers";
-
-  use([
-    LineChart,
-    BarChart,
-    GridComponent,
-    TooltipComponent,
-    LegendComponent,
-    CanvasRenderer,
-  ]);
 
   export let data;
 
@@ -54,15 +34,6 @@
   }, {});
 
   const tabs = [
-    {
-      title: "Location Tracker",
-    },
-    {
-      title: "Egg Price Tracker",
-    },
-  ];
-
-  const subTabs = [
     {
       title: "Presidential Schedule",
     },
@@ -168,7 +139,7 @@
               <ul
                 class="flex flex-row items-center w-full text-[1rem] text-white"
               >
-                {#each subTabs as item, i}
+                {#each tabs as item, i}
                   <button
                     on:click={() => (subActiveIdx = i)}
                     class="p-2 px-5 cursor-pointer {subActiveIdx === i
