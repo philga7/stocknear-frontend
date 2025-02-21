@@ -17,7 +17,7 @@
   // White House coordinates
   const LON = -77.0365427;
   const LAT = 38.8950368;
-  const ZOOM = 5;
+  const ZOOM = 4.5;
 
   let mapElement;
   let map;
