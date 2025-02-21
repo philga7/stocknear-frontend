@@ -275,7 +275,8 @@
                     {#each data?.getTutorialPost as item}
                       <li>
                         <a
-                          href={"/blog/article/" + convertToSlug(item?.title)}
+                          href={"/learning-center/article/" +
+                            convertToSlug(item?.title)}
                           class="sm:hover:underline sm:hover:underline-offset-4"
                           title={`Visit ${item?.title} page`}>{item?.title}</a
                         >
