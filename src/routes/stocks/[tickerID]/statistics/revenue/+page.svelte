@@ -9,18 +9,13 @@
 
   //import * as XLSX from 'xlsx';
   import { goto } from "$app/navigation";
-  import { Chart } from "svelte-echarts";
+  import highcharts from "$lib/highcharts.ts";
 
-  import { init, use } from "echarts/core";
-  import { LineChart, BarChart } from "echarts/charts";
-  import { GridComponent, TooltipComponent } from "echarts/components";
-  import { CanvasRenderer } from "echarts/renderers";
   import Infobox from "$lib/components/Infobox.svelte";
-  use([LineChart, BarChart, GridComponent, TooltipComponent, CanvasRenderer]);
 
   export let data;
 
-  let optionsData = null;
+  let config = null;
 
   let rawData = data?.getHistoricalRevenue || {};
   let tableList = [];
@@ -70,7 +65,8 @@
 
   async function changeTimePeriod(state) {
     timeIdx = state;
-    optionsData = plotData();
+
+    config = plotData();
   }
 
   function plotData() {
@@ -89,98 +85,95 @@
     const valueList = filteredData.map((item) => item?.revenue);
 
     const options = {
-      animation: false,
-      grid: {
-        left: "0%",
-        right: "2%",
-        bottom: "2%",
-        top: "10%",
-        containLabel: true,
+      credits: {
+        enabled: false,
       },
-      xAxis: [
-        {
-          type: "category",
-          data: dates,
-          axisLabel: {
-            color: "#fff",
-            formatter: function (value) {
-              // Assuming dates are in the format 'yyyy-mm-dd'
-              const dateParts = value.split("-");
-              const monthIndex = parseInt(dateParts[1]) - 1; // Months are zero-indexed in JavaScript Date objects
-              const year = parseInt(dateParts[0]);
-              const day = parseInt(dateParts[2]);
-              return `${day} ${monthNames[monthIndex]} ${year}`;
+      chart: {
+        type: "column",
+        backgroundColor: "#09090B",
+        plotBackgroundColor: "#09090B",
+      },
+      title: {
+        text:
+          timeIdx === 0
+            ? "Palantir Revenue - Annual"
+            : "Palantir Revenue - Quarterly",
+        style: { color: "white" },
+      },
+      xAxis: {
+        categories: dates,
+        gridLineWidth: 0,
+        labels: {
+          style: { color: "white" },
+          formatter: function () {
+            return timeIdx === 0 ? this?.value?.substring(0, 4) : this?.value; // Extracts the year (YYYY) from 'YYYY-MM-DD'
+          },
+        },
+      },
+      yAxis: {
+        gridLineWidth: 0,
+        labels: {
+          style: { color: "white" },
+        },
+        title: { text: null },
+        opposite: true,
+      },
+      tooltip: {
+        useHTML: true,
+        backgroundColor: "#fff",
+        style: {
+          color: "black",
+          fontSize: "16px",
+          padding: "10px",
+        },
+        borderRadius: 2,
+        borderWidth: 1,
+        borderColor: "#ffffff",
+        formatter: function () {
+          return `<span class="m-auto text-black text-[1rem] font-semibold">${new Date(
+            this?.x,
+          ).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })}</span> <br> <span class="text-black font-normal">${abbreviateNumber(this.y)}</span>`;
+        },
+      },
+
+      plotOptions: {
+        series: {
+          color: "white",
+          animation: false,
+          dataLabels: {
+            enabled: timeIdx === 0 ? true : false,
+            color: "white",
+            style: {
+              fontSize: "13px",
+              fontWeight: "bold",
+            },
+            formatter: function () {
+              return abbreviateNumber(this?.y);
             },
           },
         },
-      ],
-      yAxis: [
-        {
-          type: "value",
-          splitLine: {
-            show: false, // Disable x-axis grid lines
-          },
-          axisLabel: {
-            show: false, // Hide y-axis labels
-          },
-        },
-      ],
+      },
+      legend: {
+        enabled: false,
+      },
       series: [
         {
           name: "Revenue",
           data: valueList,
-          type: "bar",
-          smooth: true,
-          symbol: "none",
-          itemStyle: {
-            color: "#f2f1f0",
-          },
-          barWidth: "60%",
+          color: "white",
         },
       ],
-      tooltip: {
-        trigger: "axis",
-        hideDelay: 100,
-        borderColor: "#969696", // Black border color
-        borderWidth: 1, // Border width of 1px
-        backgroundColor: "#313131", // Optional: Set background color for contrast
-        textStyle: {
-          color: "#fff", // Optional: Text color for better visibility
-        },
-        formatter: function (params) {
-          // Get the timestamp from the first parameter
-          const timestamp = params[0].axisValue;
-          // Initialize result with timestamp
-          let result = timestamp + "<br/>";
-          // Add each series data
-          params.forEach((param) => {
-            const marker =
-              '<span style="display:inline-block;margin-right:4px;' +
-              "border-radius:10px;width:10px;height:10px;background-color:" +
-              param.color +
-              '"></span>';
-            result +=
-              marker +
-              param.seriesName +
-              ": " +
-              abbreviateNumber(param.value, false, true) +
-              "<br/>";
-          });
-          return result;
-        },
-        axisPointer: {
-          lineStyle: {
-            color: "#fff",
-          },
-        },
-      },
     };
 
     return options;
   }
 
   changeTablePeriod(0);
-  optionsData = plotData();
+  changeTimePeriod(0);
 </script>
 
 <SEO
@@ -343,11 +336,7 @@
                 </div>
               </div>
 
-              {#if optionsData !== null}
-                <div class="app w-full">
-                  <Chart {init} options={optionsData} class="chart" />
-                </div>
-              {/if}
+              <div class="chart mt-5" use:highcharts={config}></div>
 
               <div
                 class="mt-10 flex flex-col sm:flex-row items-start sm:items-center w-full justify-between"
@@ -488,21 +477,3 @@
     </div>
   </div>
 </section>
-
-<style>
-  .app {
-    height: 400px;
-    width: 100%;
-  }
-
-  @media (max-width: 560px) {
-    .app {
-      width: 100%;
-      height: 300px;
-    }
-  }
-
-  .chart {
-    width: 100%;
-  }
-</style>
