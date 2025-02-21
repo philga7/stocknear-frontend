@@ -16,6 +16,8 @@
   import { LineChart, BarChart, GaugeChart } from "echarts/charts";
   import { GridComponent, TooltipComponent } from "echarts/components";
   import { CanvasRenderer } from "echarts/renderers";
+  import { goto } from "$app/navigation";
+
   import SEO from "$lib/components/SEO.svelte";
 
   export let data;
@@ -37,21 +39,75 @@
 
   const calculatePriceChange = (targetPrice) =>
     targetPrice && price ? ((targetPrice / price - 1) * 100)?.toFixed(2) : 0;
-  const numOfAnalyst = data?.getAnalystRating?.numOfAnalyst || 0;
-  const avgPriceTarget = data?.getAnalystRating?.avgPriceTarget || 0;
-  const medianPriceTarget = data?.getAnalystRating?.medianPriceTarget || 0;
-  const lowPriceTarget = data?.getAnalystRating?.lowPriceTarget || 0;
-  const highPriceTarget = data?.getAnalystRating?.highPriceTarget || 0;
-  const consensusRating = data?.getAnalystRating?.consensusRating;
 
-  const lowChange = calculatePriceChange(lowPriceTarget);
-  const medianChange = calculatePriceChange(medianPriceTarget);
-  const avgChange = calculatePriceChange(avgPriceTarget);
-  const highChange = calculatePriceChange(highPriceTarget);
-  const rawAnalystList = data?.getAnalystRating?.recommendationList || [];
-  const recommendationList =
+  let numOfAnalyst = data?.getAnalystSummary?.numOfAnalyst || 0;
+  let avgPriceTarget = data?.getAnalystSummary?.avgPriceTarget || 0;
+  let medianPriceTarget = data?.getAnalystSummary?.medianPriceTarget || 0;
+  let lowPriceTarget = data?.getAnalystSummary?.lowPriceTarget || 0;
+  let highPriceTarget = data?.getAnalystSummary?.highPriceTarget || 0;
+  let consensusRating = data?.getAnalystSummary?.consensusRating;
+
+  let lowChange = calculatePriceChange(lowPriceTarget);
+  let medianChange = calculatePriceChange(medianPriceTarget);
+  let avgChange = calculatePriceChange(avgPriceTarget);
+  let highChange = calculatePriceChange(highPriceTarget);
+  let rawAnalystList = data?.getAnalystSummary?.recommendationList || [];
+  let recommendationList =
     rawAnalystList?.length > 5 ? rawAnalystList?.slice(-6) : rawAnalystList;
-  const categories = ["Strong Buy", "Buy", "Hold", "Sell", "Strong Sell"];
+  let categories = ["Strong Buy", "Buy", "Hold", "Sell", "Strong Sell"];
+
+  const tabs = [
+    {
+      title: "All Analysts",
+    },
+    {
+      title: "Top Analysts",
+    },
+  ];
+  let activeIdx = 0;
+
+  function changeTab(index) {
+    activeIdx = index;
+    if (activeIdx === 0) {
+      numOfAnalyst = data?.getAnalystSummary?.numOfAnalyst || 0;
+      avgPriceTarget = data?.getAnalystSummary?.avgPriceTarget || 0;
+      medianPriceTarget = data?.getAnalystSummary?.medianPriceTarget || 0;
+      lowPriceTarget = data?.getAnalystSummary?.lowPriceTarget || 0;
+      highPriceTarget = data?.getAnalystSummary?.highPriceTarget || 0;
+      consensusRating = data?.getAnalystSummary?.consensusRating;
+
+      lowChange = calculatePriceChange(lowPriceTarget);
+      medianChange = calculatePriceChange(medianPriceTarget);
+      avgChange = calculatePriceChange(avgPriceTarget);
+      highChange = calculatePriceChange(highPriceTarget);
+      rawAnalystList = data?.getAnalystSummary?.recommendationList || [];
+      recommendationList =
+        rawAnalystList?.length > 5 ? rawAnalystList?.slice(-6) : rawAnalystList;
+      categories = ["Strong Buy", "Buy", "Hold", "Sell", "Strong Sell"];
+    } else {
+      numOfAnalyst = data?.getTopAnalystSummary?.numOfAnalyst || 0;
+      avgPriceTarget = data?.getTopAnalystSummary?.avgPriceTarget || 0;
+      medianPriceTarget = data?.getTopAnalystSummary?.medianPriceTarget || 0;
+      lowPriceTarget = data?.getTopAnalystSummary?.lowPriceTarget || 0;
+      highPriceTarget = data?.getTopAnalystSummary?.highPriceTarget || 0;
+      consensusRating = data?.getTopAnalystSummary?.consensusRating;
+
+      lowChange = calculatePriceChange(lowPriceTarget);
+      medianChange = calculatePriceChange(medianPriceTarget);
+      avgChange = calculatePriceChange(avgPriceTarget);
+      highChange = calculatePriceChange(highPriceTarget);
+      rawAnalystList = data?.getTopAnalystSummary?.recommendationList || [];
+      recommendationList =
+        rawAnalystList?.length > 5 ? rawAnalystList?.slice(-6) : rawAnalystList;
+      categories = ["Strong Buy", "Buy", "Hold", "Sell", "Strong Sell"];
+
+      console.log(recommendationList);
+    }
+
+    optionsData = getPlotOptions() || null;
+    optionsPieChart = getPieChart() || null;
+    optionsPriceForecast = getPriceForecastChart() || null;
+  }
 
   function findIndex(data) {
     let year = new Date().getFullYear() - 1;
@@ -78,8 +134,8 @@
     return -1; // Return -1 if no matching index is found
   }
 
-  function getTotalForDate(index) {
-    return categories.reduce(
+  function getTotalForDate(index, recommendationList) {
+    return categories?.reduce(
       (sum, cat) => sum + recommendationList[index][cat],
       0,
     );
@@ -291,7 +347,7 @@
   }
 
   function getPriceForecastChart() {
-    const historicalData = data?.getAnalystRating?.pastPriceList || [];
+    const historicalData = data?.getAnalystSummary?.pastPriceList || [];
     const forecastTargets = {
       low: lowPriceTarget,
       avg: avgPriceTarget,
@@ -472,28 +528,52 @@
             {removeCompanyStrings($displayCompanyName)} Forecast
           </h1>
 
-          <div
-            class="mb-2 sm:mb-0 mt-2 sm:mt-0 inline-flex w-full rounded-md shadow-sm shadow-[#1E222D] sm:w-auto ml-auto text-sm border border-gray-800"
-          >
-            <button
-              class="w-full text-sm rounded-none rounded-l-md px-2 bp:px-3 sm:w-auto sm:px-4 py-1.5 bg-secondary text-white"
-              >All Analysts</button
+          <div class="inline-flex justify-center w-full rounded-md sm:w-auto">
+            <div
+              class="bg-secondary w-full sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1 mt-4"
             >
-            <button
-              class="text-sm w-full rounded-none rounded-r-md px-2 bp:px-3 sm:w-auto sm:px-4 py-1.5 bg-table sm:hover:bg-secondary transition duration-50 ease-out"
-              >Top Analysts
-              <svg
-                class="w-4 h-4 ml-1 text-icon-faded inline-block"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                style="max-width:40px"
-                ><path
-                  fill-rule="evenodd"
-                  d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                  clip-rule="evenodd"
-                ></path></svg
-              ></button
-            >
+              {#each tabs as item, i}
+                {#if data?.user?.tier !== "Pro" && i > 0}
+                  <button
+                    on:click={() => goto("/pricing")}
+                    class="group relative z-[1] rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
+                  >
+                    <span class="relative text-sm block font-semibold">
+                      {item.title}
+                      <svg
+                        class="inline-block ml-0.5 -mt-1 w-3.5 h-3.5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        ><path
+                          fill="#A3A3A3"
+                          d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                        /></svg
+                      >
+                    </span>
+                  </button>
+                {:else}
+                  <button
+                    on:click={() => changeTab(i)}
+                    class="group relative z-[1] rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
+                    i
+                      ? 'z-0'
+                      : ''} "
+                  >
+                    {#if activeIdx === i}
+                      <div class="absolute inset-0 rounded-md bg-[#fff]"></div>
+                    {/if}
+                    <span
+                      class="relative text-sm block font-semibold whitespace-nowrap {activeIdx ===
+                      i
+                        ? 'text-black'
+                        : 'text-white'}"
+                    >
+                      {item.title}
+                    </span>
+                  </button>
+                {/if}
+              {/each}
+            </div>
           </div>
         </div>
 
@@ -714,7 +794,7 @@
                         <td
                           class="px-1 py-[3px] text-sm sm:text-[1rem] text-right"
                         >
-                          {getTotalForDate(i)}
+                          {getTotalForDate(i, recommendationList)}
                         </td>
                       {/each}
                     </tr>

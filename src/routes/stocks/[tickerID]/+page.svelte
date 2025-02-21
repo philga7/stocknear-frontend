@@ -1031,11 +1031,11 @@
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
                       ><a
-                        href={data?.getAnalystRating?.consensusRating !==
+                        href={data?.getAnalystSummary?.consensusRating !==
                         undefined
                           ? `/stocks/${$stockTicker}/forecast`
                           : ""}
-                        class={data?.getAnalystRating?.consensusRating !==
+                        class={data?.getAnalystSummary?.consensusRating !==
                         undefined
                           ? "sm:hover:text-blue-400 text-white underline underline-offset-4"
                           : "text-white cursor-text"}>Analyst</a
@@ -1043,10 +1043,10 @@
                     </td>
                     <td
                       class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                      >{data?.getAnalystRating?.consensusRating !== null &&
-                      data?.getAnalystRating?.consensusRating !== "n/a" &&
-                      data?.getAnalystRating?.consensusRating !== undefined
-                        ? data?.getAnalystRating?.consensusRating
+                      >{data?.getAnalystSummary?.consensusRating !== null &&
+                      data?.getAnalystSummary?.consensusRating !== "n/a" &&
+                      data?.getAnalystSummary?.consensusRating !== undefined
+                        ? data?.getAnalystSummary?.consensusRating
                         : "n/a"}</td
                     ></tr
                   >

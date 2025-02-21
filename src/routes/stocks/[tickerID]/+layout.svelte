@@ -941,7 +941,7 @@
                           >Metrics</a
                         >
 
-                        {#if Object?.keys(data?.getAnalystRating ?? {})?.length > 0}
+                        {#if Object?.keys(data?.getAnalystSummary ?? {})?.length > 0}
                           <a
                             href={`/stocks/${$stockTicker}/forecast`}
                             on:click={() => changeSection("forecast")}

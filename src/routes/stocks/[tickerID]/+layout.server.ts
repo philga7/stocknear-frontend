@@ -96,7 +96,7 @@ export const load = async ({ params, locals }) => {
   try {
     const [
       getStockDeck,
-      getAnalystRating,
+      getAnalystSummary,
       getStockQuote,
       getPrePostQuote,
       getWhyPriceMoved,
@@ -118,7 +118,7 @@ export const load = async ({ params, locals }) => {
 
     return {
       getStockDeck,
-      getAnalystRating,
+      getAnalystSummary,
       getStockQuote,
       getPrePostQuote,
       getWhyPriceMoved,

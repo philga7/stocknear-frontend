@@ -163,7 +163,8 @@
               <div class="absolute inset-0 rounded-md bg-[#fff]"></div>
             {/if}
             <span
-              class="relative text-sm block font-semibold {activeIdx === i
+              class="relative text-sm block font-semibold whitespace-nowrap {activeIdx ===
+              i
                 ? 'text-black'
                 : 'text-white'}"
             >

@@ -21,7 +21,6 @@
   import Infobox from "$lib/components/Infobox.svelte";
   import SEO from "$lib/components/SEO.svelte";
 
-
   use([LineChart, BarChart, GridComponent, TooltipComponent, CanvasRenderer]);
 
   export let data;
@@ -478,8 +477,6 @@
   }
 </script>
 
-
-
 <SEO
   title={`${$displayCompanyName} (${$stockTicker}) Balance Sheet · Stocknear`}
   description={`Detailed balance sheet for ${$displayCompanyName} (${$stockTicker}), including cash, debt, assets, liabilities, and book value.`}
@@ -550,7 +547,7 @@
                           ></div>
                         {/if}
                         <span
-                          class="relative text-sm block font-semibold {activeIdx ===
+                          class="relative text-sm block font-semibold whitespace-nowrap {activeIdx ===
                           i
                             ? 'text-black'
                             : 'text-white'}"

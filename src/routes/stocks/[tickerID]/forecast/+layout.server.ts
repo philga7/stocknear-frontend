@@ -50,10 +50,26 @@ export const load = async ({ locals, params }) => {
     return output;
   };
 
+
+   const getTopAnalystSummary = async () => {
+    const response = await fetch(apiURL + "/top-analyst-summary-rating", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-KEY": apiKey,
+      },
+      body: JSON.stringify(postData),
+    });
+
+    const output = await response.json();
+    return output;
+  };
+
   // Make sure to return a promise
   return {
     getAnalystEstimate: await getAnalystEstimate(),
     getAnalystInsight: await getAnalystInsight(),
     getAnalystTickerHistory: await getAnalystTickerHistory(),
+    getTopAnalystSummary: await getTopAnalystSummary(),
   };
 };

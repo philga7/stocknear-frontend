@@ -134,7 +134,7 @@
   }
 
   function getPriceForecastChart() {
-    const historicalData = data?.getAnalystRating?.pastPriceList || [];
+    const historicalData = data?.getAnalystSummary?.pastPriceList || [];
     const forecastTargets = {
       low: lowPriceTarget,
       avg: avgPriceTarget,

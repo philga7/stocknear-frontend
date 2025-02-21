@@ -2,6 +2,10 @@ import { error, fail, redirect } from "@sveltejs/kit";
 import { validateData } from "$lib/utils";
 import { loginUserSchema, registerUserSchema } from "$lib/schemas";
 
+
+
+
+
 export const actions = {
   login: async ({ url, request, locals }) => {
 

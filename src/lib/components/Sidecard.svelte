@@ -58,23 +58,23 @@
       website = info?.website;
       snippet = description?.slice(0, 450) + "...";
 
-      numOfAnalyst = data?.getAnalystRating?.numOfAnalyst;
-      buyCount = ((data?.getAnalystRating?.Buy / numOfAnalyst) * 100)?.toFixed(
+      numOfAnalyst = data?.getAnalystSummary?.numOfAnalyst;
+      buyCount = ((data?.getAnalystSummary?.Buy / numOfAnalyst) * 100)?.toFixed(
         2,
       );
       holdCount = (
-        (data?.getAnalystRating?.Hold / numOfAnalyst) *
+        (data?.getAnalystSummary?.Hold / numOfAnalyst) *
         100
       )?.toFixed(2);
       sellCount = (
-        (data?.getAnalystRating?.Sell / numOfAnalyst) *
+        (data?.getAnalystSummary?.Sell / numOfAnalyst) *
         100
       )?.toFixed(2);
       priceTarget =
-        data?.getAnalystRating?.medianPriceTarget !== ("n/a" && 0)
-          ? data?.getAnalystRating?.medianPriceTarget
+        data?.getAnalystSummary?.medianPriceTarget !== ("n/a" && 0)
+          ? data?.getAnalystSummary?.medianPriceTarget
           : "n/a";
-      consensusRating = data?.getAnalystRating?.consensusRating;
+      consensusRating = data?.getAnalystSummary?.consensusRating;
 
       try {
         changesPercentage =
@@ -165,9 +165,9 @@
   </div>
 </div>
 
-{#if Object?.keys(data?.getAnalystRating ?? {})?.length !== 0}
+{#if Object?.keys(data?.getAnalystSummary ?? {})?.length !== 0}
   <div
-    class="space-y-3 pt-10 sm:pt-5 {Object?.keys(data?.getAnalystRating ?? {})
+    class="space-y-3 pt-10 sm:pt-5 {Object?.keys(data?.getAnalystSummary ?? {})
       ?.length !== 0
       ? ''
       : 'hidden'}"

@@ -13,7 +13,7 @@
   import SEO from "$lib/components/SEO.svelte";
   export let data;
 
-  let analystRating = data?.getAnalystRating ?? {};
+  let analystRating = data?.getAnalystSummary ?? {};
 
   let rawData = data?.getAnalystTickerHistory ?? [];
   let historyList = [];
@@ -126,8 +126,8 @@
       };
 
       const totalRatingScore = recentData
-        .map((item) => ratingScores[item.rating_current] || 0)
-        .reduce((sum, score) => sum + score, 0);
+        ?.map((item) => ratingScores[item.rating_current] || 0)
+        ?.reduce((sum, score) => sum + score, 0);
 
       const averageRatingScore = filteredAnalystCount
         ? totalRatingScore / filteredAnalystCount
@@ -262,7 +262,7 @@
                           ></div>
                         {/if}
                         <span
-                          class="relative text-sm block font-semibold {activeIdx ===
+                          class="relative text-sm block font-semibold whitespace-nowrap {activeIdx ===
                           i
                             ? 'text-black'
                             : 'text-white'}"

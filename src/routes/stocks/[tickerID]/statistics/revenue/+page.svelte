@@ -398,7 +398,7 @@
                             ></div>
                           {/if}
                           <span
-                            class="relative text-sm block font-semibold {activeIdx ===
+                            class="relative text-sm block font-semibold whitespace-nowrap {activeIdx ===
                             i
                               ? 'text-black'
                               : 'text-white'}"
