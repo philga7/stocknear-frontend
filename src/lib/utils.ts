@@ -706,7 +706,11 @@ if (color) {
 }
 
 
-export function abbreviateNumber(number, addDollarSign = false) {
+export function abbreviateNumber(
+  number,
+  addDollarSign = false,
+  stripTrailingZeros = true
+) {
   // Check if number is null or undefined, return "-" if true
   if (number == null) {
     return "-";
@@ -745,10 +749,13 @@ export function abbreviateNumber(number, addDollarSign = false) {
       abbreviation = abbreviation.toFixed(2);
     }
 
-    abbreviation = parseFloat(abbreviation).toLocaleString("en-US", {
+    // When stripTrailingZeros is true, we set the minimumFractionDigits to 0
+    const localeOptions = {
       maximumFractionDigits: 2,
-      minimumFractionDigits: 2,
-    });
+      minimumFractionDigits: stripTrailingZeros ? 0 : 2,
+    };
+
+    abbreviation = parseFloat(abbreviation).toLocaleString("en-US", localeOptions);
 
     const formattedNumber = abbreviation + suffixes[index];
 
@@ -767,6 +774,7 @@ export function abbreviateNumber(number, addDollarSign = false) {
     return addDollarSign ? "$0" : "0";
   }
 }
+
 
 export function formatDate(dateStr) {
   try {

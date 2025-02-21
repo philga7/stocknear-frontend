@@ -3,7 +3,6 @@
   import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
   import SEO from "$lib/components/SEO.svelte";
 
-  //import * as XLSX from 'xlsx';
   import { goto } from "$app/navigation";
   import highcharts from "$lib/highcharts.ts";
 
@@ -12,7 +11,6 @@
   export let data;
 
   let config = null;
-  let chartInstance;
 
   let rawData = data?.getHistoricalRevenue || {};
   let tableList = [];
@@ -66,7 +64,7 @@
     config = plotData();
     try {
       config.yAxis.labels.formatter = function () {
-        return abbreviateNumber(this.value);
+        return abbreviateNumber(this?.value);
       };
     } catch (e) {
       console.log(e);
@@ -96,14 +94,21 @@
         type: "column",
         backgroundColor: "#09090B",
         plotBackgroundColor: "#09090B",
+        height: 360, // Set the maximum height for the chart
+        animation: false,
       },
       title: {
         text:
           timeIdx === 0
-            ? `${removeCompanyStrings($displayCompanyName)} Revenue - Annual`
-            : `${removeCompanyStrings($displayCompanyName)} Revenue - Quarterly`,
-        style: { color: "white" },
+            ? `<h3 class="mt-3 mb-1">${removeCompanyStrings($displayCompanyName)} Revenue - Annual</h3>`
+            : `<h3 class="mt-3 mb-1">${removeCompanyStrings($displayCompanyName)} Revenue - Quarterly</h3>`,
+        style: {
+          color: "white",
+          // Using inline CSS for margin-top and margin-bottom
+        },
+        useHTML: true, // Enable HTML to apply custom class styling
       },
+
       xAxis: {
         categories: dates,
         gridLineWidth: 0,
@@ -205,7 +210,7 @@
               />
 
               <div
-                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 mt-3"
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 mt-3"
               >
                 <div
                   class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
@@ -301,7 +306,7 @@
               </div>
 
               <div
-                class="mt-10 flex flex-col sm:flex-row items-start sm:items-center w-full justify-between"
+                class=" flex flex-col sm:flex-row items-start sm:items-center w-full justify-between"
               >
                 <h2 class="text-xl sm:text-2xl text-white font-bold">
                   Revenue Chart
@@ -340,12 +345,17 @@
                 </div>
               </div>
 
-              <div class="chart mt-5" use:highcharts={config}></div>
+              <div
+                class="chart mt-5 sm:mt-0 border border-gray-800 rounded"
+                use:highcharts={config}
+              ></div>
 
               <div
-                class="mt-10 flex flex-col sm:flex-row items-start sm:items-center w-full justify-between"
+                class="mt-5 flex flex-col sm:flex-row items-start sm:items-center w-full justify-between sm:border-y border-gray-800 sm:pt-2 sm:pb-2"
               >
-                <h3 class="text-xl sm:text-2xl text-white font-bold">
+                <h3
+                  class="text-xl sm:text-2xl text-white font-bold mb-2 sm:mb-0"
+                >
                   Revenue History
                 </h3>
 
@@ -353,7 +363,7 @@
                   class="inline-flex justify-center w-full rounded-md sm:w-auto sm:ml-auto"
                 >
                   <div
-                    class="bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1 mt-4"
+                    class="bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1"
                   >
                     {#each tabs as item, i}
                       {#if data?.user?.tier !== "Pro" && i > 0}
