@@ -26,12 +26,6 @@
   }
 </script>
 
-<!-- HEADER FOR BETTER SEO -->
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-</svelte:head>
-
 <section
   class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pb-40 pt-5 px-4 lg:px-3"
 >
@@ -48,9 +42,10 @@
         class="relative flex justify-center items-start overflow-hidden w-full"
       >
         <main class="w-full lg:w-3/4 lg:pr-10">
-          <h1 class="mb-6 text-white text-2xl sm:text-3xl font-bold">
+          <h1 class="mb-3 text-white text-2xl sm:text-3xl font-bold">
             {activeIdx === 0 ? "Market Flow" : "Sector Flow"}
           </h1>
+
           <nav class=" border-b-[2px] overflow-x-scroll whitespace-nowrap">
             <ul class="flex flex-row items-center w-full text-lg text-white">
               {#each tabs as item, i}

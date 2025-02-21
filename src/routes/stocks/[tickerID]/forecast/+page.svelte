@@ -1,12 +1,15 @@
 <script lang="ts">
   import {
-    numberOfUnreadNotification,
     displayCompanyName,
     stockTicker,
     analystEstimateComponent,
     screenWidth,
   } from "$lib/store";
-  import { abbreviateNumber, monthNames } from "$lib/utils";
+  import {
+    abbreviateNumber,
+    monthNames,
+    removeCompanyStrings,
+  } from "$lib/utils";
 
   import { Chart } from "svelte-echarts";
   import { init, use } from "echarts/core";
@@ -462,9 +465,38 @@
       class="w-full relative flex justify-center items-center overflow-hidden"
     >
       <div class="sm:pl-4 sm:pt-4 w-full m-auto mt-2 sm:mt-0">
-        <h1 class="mb-px text-xl sm:text-2xl font-bold bp:text-3xl sm:pl-1">
-          {$displayCompanyName} Forecast
-        </h1>
+        <div
+          class="flex flex-col sm:flex-row items-start sm:items-center sm:justify-between"
+        >
+          <h1 class="mb-px text-xl sm:text-2xl font-bold bp:text-3xl sm:pl-1">
+            {removeCompanyStrings($displayCompanyName)} Forecast
+          </h1>
+
+          <div
+            class="mb-2 sm:mb-0 mt-2 sm:mt-0 inline-flex w-full rounded-md shadow-sm shadow-[#1E222D] sm:w-auto ml-auto text-sm border border-gray-800"
+          >
+            <button
+              class="w-full text-sm rounded-none rounded-l-md px-2 bp:px-3 sm:w-auto sm:px-4 py-1.5 bg-secondary text-white"
+              >All Analysts</button
+            >
+            <button
+              class="text-sm w-full rounded-none rounded-r-md px-2 bp:px-3 sm:w-auto sm:px-4 py-1.5 bg-table sm:hover:bg-secondary transition duration-50 ease-out"
+              >Top Analysts
+              <svg
+                class="w-4 h-4 ml-1 text-icon-faded inline-block"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                style="max-width:40px"
+                ><path
+                  fill-rule="evenodd"
+                  d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                  clip-rule="evenodd"
+                ></path></svg
+              ></button
+            >
+          </div>
+        </div>
+
         <div class="w-full mb-6 mt-3">
           <div
             class="rounded-sm border border-gray-600 p-0.5 xs:p-1 md:flex md:flex-col md:space-y-4 md:divide-y md:p-4 lg:flex-row lg:space-x-4 lg:space-y-0 lg:divide-x lg:divide-y-0 divide-gray-600"
@@ -475,6 +507,7 @@
               <div>
                 <div class="flex items-baseline justify-between">
                   <h2 class="mb-1 text-xl font-bold">Stock Price Forecast</h2>
+
                   <span></span>
                 </div>
                 <p>
@@ -566,7 +599,7 @@
           </div>
 
           <div
-            class="w-full rounded-sm border border-gray-600 mt-8 sm:mt-0 p-3 divide-gray-600 lg:flex lg:space-x-4 lg:divide-x"
+            class="w-full rounded-sm border border-gray-600 mt-8 p-3 divide-gray-600 lg:flex lg:space-x-4 lg:divide-x"
           >
             <div
               class="flex flex-col justify-between p-1 lg:max-w-[32%] text-white"

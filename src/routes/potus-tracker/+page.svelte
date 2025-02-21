@@ -43,7 +43,6 @@
   ];
 
   let activeIdx = 0;
-  let subActiveIdx = 0;
 
   let expandedDescriptions: { [key: string]: boolean } = {};
 
@@ -141,8 +140,8 @@
               >
                 {#each tabs as item, i}
                   <button
-                    on:click={() => (subActiveIdx = i)}
-                    class="p-2 px-5 cursor-pointer {subActiveIdx === i
+                    on:click={() => (activeIdx = i)}
+                    class="p-2 px-5 cursor-pointer {activeIdx === i
                       ? 'text-white bg-primary sm:hover:bg-opacity-[0.95] font-semibold'
                       : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
                   >
@@ -152,7 +151,7 @@
               </ul>
             </nav>
 
-            {#if subActiveIdx === 0}
+            {#if activeIdx === 0}
               <h3
                 class="text-white text-lg sm:text-xl font-semibold mb-2 mt-6 border-y border-gray-800 pt-2 pb-2"
               >
