@@ -259,7 +259,9 @@
                     ? "Half-Yearly"
                     : payoutFrequency === 1
                       ? "Annually"
-                      : "n/a"}
+                      : payoutFrequency > 4
+                        ? "Weekly"
+                        : "n/a"}
               </div>
             </div>
             <div class="p-4 bp:p-5 sm:p-6 border-t border-r border-contrast">
@@ -272,7 +274,9 @@
               <div
                 class="mt-1 break-words font-semibold leading-8 text-light text-xl"
               >
-                {payoutRatio !== "0.00" ? payoutRatio : "0"}%
+                {payoutRatio !== "0.00" && payoutRatio !== null
+                  ? payoutRatio + "%"
+                  : "n/a"}
               </div>
             </div>
             <div class="p-4 bp:p-5 sm:p-6 border-t border-r border-contrast">
