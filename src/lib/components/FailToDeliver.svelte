@@ -5,21 +5,19 @@
     assetType,
     etfTicker,
   } from "$lib/store";
-  import { Chart } from "svelte-echarts";
-  import { abbreviateNumber, monthNames } from "$lib/utils";
-
-  import { init, use } from "echarts/core";
-  import { LineChart } from "echarts/charts";
-  import { GridComponent, TooltipComponent } from "echarts/components";
-  import { CanvasRenderer } from "echarts/renderers";
+  import {
+    abbreviateNumber,
+    monthNames,
+    removeCompanyStrings,
+  } from "$lib/utils";
+  import highcharts from "$lib/highcharts.ts";
 
   export let data;
   export let rawData = [];
 
-  use([LineChart, GridComponent, TooltipComponent, CanvasRenderer]);
+  let config = null;
 
   let isLoaded = false;
-  let optionsData;
   let avgFailToDeliver;
   let weightedFTD;
 
@@ -92,117 +90,130 @@
     });
 
     const totalNumber = failToDeliverList?.reduce((acc, item) => acc + item, 0);
-    avgFailToDeliver = (totalNumber / failToDeliverList?.length)?.toFixed(0);
+    avgFailToDeliver = Math?.floor(totalNumber / failToDeliverList?.length);
 
-    const option = {
-      silent: true,
-      tooltip: {
-        trigger: "axis",
-        hideDelay: 100,
-        borderColor: "#969696", // Black border color
-        borderWidth: 1, // Border width of 1px
-        backgroundColor: "#313131", // Optional: Set background color for contrast
-        textStyle: {
-          color: "#fff", // Optional: Text color for better visibility
+    const options = {
+      credits: {
+        enabled: false,
+      },
+      chart: {
+        // Removed global type so each series can define its own type.
+        backgroundColor: "#09090B",
+        plotBackgroundColor: "#09090B",
+        height: 360,
+        animation: false,
+      },
+      title: {
+        text: `<h3 class="mt-3 mb-1">${removeCompanyStrings($displayCompanyName)} FTD</h3>`,
+        style: {
+          color: "white",
         },
-        formatter: function (params) {
-          // Get the timestamp from the first parameter
-          const timestamp = params[0].axisValue;
-
-          // Initialize result with timestamp
-          let result = timestamp + "<br/>";
-
-          // Add each series data
-          params.forEach((param) => {
-            const marker =
-              '<span style="display:inline-block;margin-right:4px;' +
-              "border-radius:10px;width:10px;height:10px;background-color:" +
-              param.color +
-              '"></span>';
-            result +=
-              marker +
-              param.seriesName +
-              ": " +
-              abbreviateNumber(param.value, false, true) +
-              "<br/>";
-          });
-
-          return result;
-        },
-        axisPointer: {
-          lineStyle: {
-            color: "#fff",
+        useHTML: true,
+      },
+      plotOptions: {
+        series: {
+          color: "white",
+          animation: false,
+          dataLabels: {
+            enabled: false,
+            style: {
+              fontSize: "13px",
+              fontWeight: "bold",
+            },
+            formatter: function () {
+              return abbreviateNumber(this.y);
+            },
           },
         },
       },
-      animation: false,
-      grid: {
-        left: "3%",
-        right: "3%",
-        bottom: "2%",
-        top: "5%",
-        containLabel: true,
+      legend: {
+        enabled: false,
       },
+      tooltip: {
+        useHTML: true,
+        backgroundColor: "#fff",
+        style: {
+          color: "black",
+          fontSize: "16px",
+          padding: "10px",
+        },
+        borderRadius: 2,
+        borderWidth: 1,
+        borderColor: "#ffffff",
+        formatter: function () {
+          return `<span class="m-auto text-black text-[1rem] font-[501]">${new Date(
+            this?.x,
+          ).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })}</span> <br> <span class="text-black font-normal">${abbreviateNumber(this.y)}</span>`;
+        },
+      },
+
       xAxis: {
-        type: "category",
-        boundaryGap: false,
-        data: dates,
-        axisLabel: {
-          color: "#fff",
-          formatter: function (value) {
-            const dateParts = value.split("-");
+        categories: dates,
+        labels: {
+          style: {
+            color: "#fff",
+          },
+          formatter: function () {
+            const dateParts = this.value.split("-");
             const day = dateParts[2].substring(0);
-            const monthIndex = parseInt(dateParts[1]) - 1;
+            const monthIndex = parseInt(dateParts[1], 10) - 1;
             return `${day} ${monthNames[monthIndex]}`;
           },
         },
       },
       yAxis: [
         {
-          type: "value",
-          splitLine: {
-            show: false,
+          gridLineWidth: 0,
+          labels: {
+            enabled: false,
           },
-          axisLabel: {
-            show: false,
+          title: {
+            text: null,
           },
         },
         {
-          type: "value",
-          splitLine: {
-            show: false,
+          gridLineWidth: 0,
+          labels: {
+            enabled: false,
           },
-          position: "right",
-          axisLabel: {
-            show: false,
+          title: {
+            text: null,
           },
+          opposite: true,
         },
       ],
       series: [
         {
-          name: "Price",
-          data: priceList,
-          type: "line",
-          itemStyle: {
-            color: "#fff",
+          // FTD Shares area series drawn first (behind the line)
+          name: "FTD Shares",
+          type: "area",
+          data: failToDeliverList,
+          fillOpacity: 1,
+          yAxis: 1,
+          color: "#E11D48",
+          marker: {
+            fillColor: "transparent",
           },
-          showSymbol: false,
         },
         {
-          name: "FTD Shares",
-          data: failToDeliverList,
+          // Price line series drawn on top
+          name: "Price",
           type: "line",
-          areaStyle: { opacity: 1 },
-          yAxisIndex: 1,
-          itemStyle: {
-            color: "#E11D48",
+          data: priceList,
+          color: "#fff",
+          marker: {
+            fillColor: "transparent",
           },
-          showSymbol: false,
+          lineWidth: 2,
         },
       ],
     };
 
-    return option;
+    return options;
   }
 
   $: {
@@ -215,7 +226,7 @@
             data?.getStockQuote?.avgVolume) *
           100
         )?.toFixed(2);
-        optionsData = getPlotOptions();
+        config = getPlotOptions();
       }
       isLoaded = true;
     }
@@ -224,8 +235,8 @@
 
 <section class="overflow-hidden text-white h-full pb-8">
   <main class="overflow-hidden">
-    <div class="flex flex-row items-center w-full mt-5">
-      <h1 class="text-2xl text-white font-bold">FTD Chart</h1>
+    <div class="flex flex-row items-center w-full mt-3">
+      <h1 class="text-xl sm:text-2xl text-white font-bold">FTD Chart</h1>
     </div>
 
     {#if isLoaded}
@@ -235,55 +246,15 @@
             Over the past year, {$displayCompanyName} has seen a monthly average
             of
             <span class="font-semibold"
-              >{abbreviateNumber(avgFailToDeliver)}</span
-            > fail to deliver shares.
-          </div>
-        </div>
-
-        <div class="pb-2 rounded-md bg-default">
-          <div class="app w-full h-[300px] mt-5">
-            <Chart {init} options={optionsData} class="chart" />
+              >{avgFailToDeliver?.toLocaleString("en-US")}
+            </span> fail to deliver shares.
           </div>
         </div>
 
         <div
-          class="flex flex-row items-center justify-between mx-auto mt-5 w-full sm:w-11/12"
-        >
-          <div
-            class="mt-3.5 sm:mt-0 flex flex-col sm:flex-row items-center ml-3 sm:ml-0 w-1/2 justify-center"
-          >
-            <div
-              class="h-full transform -translate-x-1/2"
-              aria-hidden="true"
-            ></div>
-            <div
-              class="w-3 h-3 bg-[#fff] border-4 box-content border-[#27272A] rounded-full transform sm:-translate-x-1/2"
-              aria-hidden="true"
-            ></div>
-            <span
-              class="mt-2 sm:mt-0 text-white text-center sm:text-start text-xs sm:text-md inline-block"
-            >
-              Price
-            </span>
-          </div>
-          <div
-            class="flex flex-col sm:flex-row items-center ml-3 sm:ml-0 w-1/2 justify-center"
-          >
-            <div
-              class="h-full transform -translate-x-1/2"
-              aria-hidden="true"
-            ></div>
-            <div
-              class="w-3 h-3 bg-[#E11D48] border-4 box-content border-[#27272A] rounded-full transform sm:-translate-x-1/2"
-              aria-hidden="true"
-            ></div>
-            <span
-              class="mt-2 sm:mt-0 text-white text-xs sm:text-md sm:font-medium inline-block"
-            >
-              Share Quantity
-            </span>
-          </div>
-        </div>
+          class="chart mt-5 sm:mt-0 border border-gray-800 rounded"
+          use:highcharts={config}
+        ></div>
 
         <div
           class="mt-5 flex flex-col sm:flex-row items-start sm:items-center w-full justify-between sm:border-y border-gray-800 sm:pt-2 sm:pb-2"
@@ -351,6 +322,7 @@
               <tr>
                 <th class="text-white font-semibold text-start text-sm">Date</th
                 >
+                <th class="text-white font-semibold text-end text-sm">Price</th>
                 <th class="text-white font-semibold text-end text-sm"
                   >FTD Shares</th
                 >
@@ -369,6 +341,12 @@
                     class="text-white font-medium text-sm sm:text-[1rem] whitespace-nowrap"
                   >
                     {item?.date}
+                  </td>
+
+                  <td
+                    class="text-white text-sm sm:text-[1rem] text-right whitespace-nowrap"
+                  >
+                    {item?.price}
                   </td>
 
                   <td
