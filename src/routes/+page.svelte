@@ -218,6 +218,7 @@
                       <Table.Row>
                         <Table.Cell class="text-sm sm:text-[1rem]">
                           <a
+                            href={`/stocks/${item?.symbol}`}
                             class="text-blue-400 sm:hover:text-white cursor-pointer"
                             >{item?.symbol}</a
                           >
@@ -329,6 +330,7 @@
                       <Table.Row>
                         <Table.Cell class="text-sm sm:text-[1rem]">
                           <a
+                            href={`/stocks/${item?.symbol}`}
                             class="text-blue-400 sm:hover:text-white cursor-pointer"
                             >{item?.symbol}</a
                           >
@@ -589,6 +591,7 @@
                         style=" margin-left: 8px;  margin-bottom: 30px; list-style-type: disc;"
                       >
                         <strong>{item?.name}</strong> (<a
+                          href={`/stocks/${item?.symbol}`}
                           class="text-blue-400 sm:hover:text-white cursor-pointer"
                           >{item?.symbol}</a
                         >)
@@ -643,6 +646,7 @@
                         style=" margin-left: 8px;  margin-bottom: 30px; list-style-type: disc;"
                       >
                         <strong>{item?.name}</strong> (<a
+                          href={`/stocks/${item?.symbol}`}
                           class="text-blue-400 sm:hover:text-white cursor-pointer"
                           >{item?.symbol}</a
                         >)
@@ -712,6 +716,7 @@
                 <ul style="padding-left: 5px;">
                   {#each data?.getDashboard?.recentEarnings as item}
                     <strong>{item?.name}</strong> (<a
+                      href={`/stocks/${item?.symbol}`}
                       class="text-blue-400 sm:hover:text-white cursor-pointer"
                       >{item?.symbol}</a
                     >) has released its quarterly earnings at {formatTime(
