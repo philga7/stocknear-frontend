@@ -244,7 +244,9 @@
   <div class="flex min-h-screen w-full flex-col bg-default">
     <div class="w-full">
       <div
-        class="w-full navbar sticky {$screenWidth < 640 && hideHeader
+        class="w-full navbar sticky {$screenWidth &&
+        $screenWidth < 640 &&
+        hideHeader
           ? 'invisible -mt-20'
           : ''} top-0 z-40 bg-default border-b border-gray-800 flex h-14 items-center gap-4 px-4 sm:h-auto sm:px-6"
       >
