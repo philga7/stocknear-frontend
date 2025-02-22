@@ -361,14 +361,14 @@
 <svelte:window bind:scrollY={y} />
 
 <body
-  class="bg-default w-full max-w-screen sm:max-w-[1350px] min-h-screen overflow-hidden"
+  class="bg-default w-full max-w-screen sm:max-w-[1250px] min-h-screen overflow-hidden"
 >
   <!-- Page wrapper -->
   <div class="mt-5 flex flex-col w-full relative w-full">
     <main class="grow w-full">
       <section class="w-full">
         <div class="w-full">
-          <div class="sm:flex sm:justify-start w-full">
+          <div class="sm:flex sm:justify-start w-full sm:max-w-[1250px]">
             <!--Start Mobile Navbar-->
             <div class="fixed top-0 left-0 right-0 z-20 bg-default sm:hidden">
               <div class="navbar w-full px-4 py-2">
