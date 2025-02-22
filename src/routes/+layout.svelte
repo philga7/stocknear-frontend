@@ -68,7 +68,7 @@
       hideHeader = false; // Show the header for "/etf/etf-providers"
     } else if (currentPath.startsWith("/etf/")) {
       hideHeader = true; // Hide the header for other routes under "/etf/"
-    } else if (currentPath.startsWith("/crypto/")) {
+    } else if (currentPath.startsWith("/index/")) {
       hideHeader = true; // Hide the header for other routes under "/etf/"
     } else {
       // Specify conditions for other routes where you want to hide the header
