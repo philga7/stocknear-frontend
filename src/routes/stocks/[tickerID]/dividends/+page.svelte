@@ -5,7 +5,7 @@
 
   export let data;
   let dateDistance;
-  let rawData = data?.getStockDividend || [];
+  let rawData = data?.getStockDividend;
 
   let exDividendDate = rawData?.history?.at(0)?.date;
   let dividendYield = rawData?.dividendYield;
@@ -28,20 +28,11 @@
           },
         );
 
-        const payoutFrequencyText =
-          payoutFrequency === 4
-            ? "3 months"
-            : payoutFrequency === 2
-              ? "6 months"
-              : payoutFrequency === 1
-                ? "12 months"
-                : "n/a";
-
         return `
-        <span>
-          ${$displayCompanyName} has an annual dividend of $${annualDividend} per share, with a forward yield of ${dividendYield}%. 
-          The dividend is paid every ${payoutFrequencyText} and the last ex-dividend date was ${formattedExDividendDate}.
-        </span>
+       <span>
+  ${$stockTicker} has a dividend yield of ${dividendYield}% and paid $${annualDividend} per share in the past year. The dividend is paid once per ${payoutFrequency === "Annually" ? "year" : payoutFrequency === "Quarterly" ? "quarter" : payoutFrequency === "Weekly" ? "week" : ""} and the last ex-dividend date was ${formattedExDividendDate}.
+</span>
+
       `;
       } else {
         const latestDividendDate = new Date(history.at(0)?.date).toLocaleString(
@@ -69,25 +60,11 @@
     }
   }
 
-  let htmlOutput = generateDividendInfoHTML();
-
-  $: {
-    if ($stockTicker) {
-      rawData = data?.getStockDividend || [];
-      exDividendDate = rawData?.history?.at(0)?.date;
-      dividendYield = rawData?.dividendYield;
-      annualDividend = rawData?.annualDividend;
-      payoutFrequency = rawData?.payoutFrequency;
-      payoutRatio = rawData?.payoutRatio;
-      dividendGrowth = rawData?.dividendGrowth;
-
-      htmlOutput = generateDividendInfoHTML();
-    }
-  }
+  const htmlOutput = generateDividendInfoHTML();
 </script>
 
 <SEO
-  title={`${$displayCompanyName} (${$stockTicker}) Dividend History, Dates & Yield · Stocknear`}
+  title={`${$displayCompanyName} (${$stockTicker}) Dividend History, Dates & Yield`}
   description={`Get the latest dividend data for ${$displayCompanyName} (${$stockTicker}) stock price quote with breaking news, financials, statistics, charts and more.`}
 />
 
@@ -165,15 +142,7 @@
               <div
                 class="mt-1 break-words font-semibold leading-8 text-light text-xl"
               >
-                {payoutFrequency === 4
-                  ? "Quartely"
-                  : payoutFrequency === 2
-                    ? "Half-Yearly"
-                    : payoutFrequency === 1
-                      ? "Annually"
-                      : payoutFrequency > 4
-                        ? "Weekly"
-                        : "n/a"}
+                {payoutFrequency ? payoutFrequency : "n/a"}
               </div>
             </div>
             <div class="p-4 bp:p-5 sm:p-6 border-t border-r border-contrast">
@@ -201,15 +170,17 @@
               <div
                 class="mt-1 break-words font-semibold leading-8 text-light text-xl"
               >
-                {dividendGrowth !== "NaN" ? dividendGrowth + "%" : "-"}
+                {dividendGrowth ? dividendGrowth + "%" : "n/a"}
               </div>
             </div>
           </div>
 
           <div
-            class="flex flex-col sm:flex-row items-start sm:items-center w-full mt-14 mb-8"
+            class="flex flex-col sm:flex-row items-start sm:items-center w-full mt-5 mb-8"
           >
-            <h3 class="text-xl text-white font-semibold">Dividends History</h3>
+            <h2 class="text-xl sm:text-2xl text-white font-bold">
+              Dividends History
+            </h2>
           </div>
 
           {#if rawData?.history?.length !== 0}
@@ -217,28 +188,23 @@
               class="overflow-x-scroll no-scrollbar flex justify-start items-center w-full m-auto rounded-none sm:rounded-md mb-4"
             >
               <table
-                class="table table-sm table-compact flex justify-start items-center w-full m-auto"
+                class="table table-sm table-compact bg-table border border-gray-800 flex justify-start items-center w-full m-auto"
               >
-                <thead>
-                  <tr class="bg-default border-b border-gray-800">
-                    <th
-                      class="text-start bg-default text-white text-sm font-semibold"
-                    >
-                      Ex-Divid. Date
+                <thead class="bg-default">
+                  <tr class="">
+                    <th class="text-start text-white text-sm font-semibold">
+                      Ex-Dividend Date
                     </th>
-                    <th
-                      class="text-end bg-default text-white text-sm font-semibold"
-                    >
+                    <th class="text-end text-white text-sm font-semibold">
                       Cash Amount
                     </th>
-                    <th
-                      class="text-end bg-default text-white text-sm font-semibold"
-                    >
+                    <th class="text-end text-white text-sm font-semibold">
+                      Declaration Date
+                    </th>
+                    <th class="text-end text-white text-sm font-semibold">
                       Record Date
                     </th>
-                    <th
-                      class="text-end bg-default text-white text-sm font-semibold"
-                    >
+                    <th class="text-end text-white text-sm font-semibold">
                       Pay Date
                     </th>
                   </tr>
@@ -259,7 +225,22 @@
                       <td
                         class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
                       >
-                        {item?.adjDividend?.toFixed(3)}
+                        ${item?.adjDividend?.toFixed(3)}
+                      </td>
+                      <td
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                      >
+                        {item?.declarationDate?.length !== 0
+                          ? new Date(item?.declarationDate)?.toLocaleString(
+                              "en-US",
+                              {
+                                month: "short",
+                                day: "numeric",
+                                year: "numeric",
+                                daySuffix: "2-digit",
+                              },
+                            )
+                          : "n/a"}
                       </td>
                       <td
                         class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
