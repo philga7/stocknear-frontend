@@ -25,7 +25,7 @@
             "name": "How much can I earn?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "You can earn up to $18.00 commission on every referral that results in a successful sale. There's no limit to how much you can make by promoting us."
+              "text": "You can earn up to $24.00 commission on every referral that results in a successful sale. There's no limit to how much you can make by promoting us."
             }
           },
           {
@@ -184,7 +184,7 @@
             </p>
           </dt>
           <dd class="ml-16 mt-2">
-            You can earn up to <strong>$18.00</strong> commission on every referral
+            You can earn up to <strong>$24.00</strong> commission on every referral
             that results in a successful sale. There's no limit to how much you can
             make by promoting us.
           </dd>

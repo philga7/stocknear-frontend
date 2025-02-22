@@ -1,10 +1,6 @@
 <script lang="ts">
-  import {
-    numberOfUnreadNotification,
-    displayCompanyName,
-    stockTicker,
-  } from "$lib/store";
-  import { abbreviateNumber } from "$lib/utils";
+  import { displayCompanyName, stockTicker } from "$lib/store";
+  import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
   import Infobox from "$lib/components/Infobox.svelte";
   import FailToDeliver from "$lib/components/FailToDeliver.svelte";
   import SEO from "$lib/components/SEO.svelte";
@@ -75,7 +71,7 @@
         <div class="sm:pl-7 sm:pb-7 sm:pt-7 m-auto mt-2 sm:mt-0">
           <div class="mb-3">
             <h1 class="text-xl sm:text-2xl text-white font-bold">
-              Fail-to-Deliver (FTD)
+              {removeCompanyStrings($displayCompanyName)} Fail-to-Deliver
             </h1>
           </div>
 
@@ -88,10 +84,9 @@
               >
                 <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
                   <span>Total FTD Shares</span>
-                  <span class="ml-1 text-violet-400">●</span>
                 </div>
                 <div class="flex items-baseline">
-                  <span class="text-2xl font-bold text-white">
+                  <span class="text-xl font-bold text-white">
                     {abbreviateNumber(
                       rawData?.slice(-1)?.at(0)?.failToDeliver,
                       false,
@@ -112,10 +107,9 @@
               >
                 <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
                   <span>FTD / Avg. Volume</span>
-                  <span class="ml-1 text-red-400">●</span>
                 </div>
                 <div class="flex items-baseline">
-                  <span class="text-2xl font-bold text-white"
+                  <span class="text-xl font-bold text-white"
                     >{relativeFTD > 0.01
                       ? relativeFTD + "%"
                       : relativeFTD !== "n/a"
@@ -135,10 +129,9 @@
               >
                 <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
                   <span>1-Year Change</span>
-                  <span class="ml-1">●</span>
                 </div>
                 <div class="flex items-baseline">
-                  <span class="text-2xl font-bold text-white"
+                  <span class="text-xl font-bold text-white"
                     >{changePercentageYearAgo > 100
                       ? "> 100"
                       : changePercentageYearAgo?.toFixed(1)}%</span

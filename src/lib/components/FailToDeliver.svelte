@@ -5,9 +5,8 @@
     assetType,
     etfTicker,
   } from "$lib/store";
-  import InfoModal from "$lib/components/InfoModal.svelte";
   import { Chart } from "svelte-echarts";
-  import { abbreviateNumber, formatDateRange, monthNames } from "$lib/utils";
+  import { abbreviateNumber, monthNames } from "$lib/utils";
 
   import { init, use } from "echarts/core";
   import { LineChart } from "echarts/charts";
@@ -22,37 +21,75 @@
   let isLoaded = false;
   let optionsData;
   let avgFailToDeliver;
-  let lowestPrice;
-  let highestPrice;
   let weightedFTD;
 
-  function findLowestAndHighestPrice(data, lastDateStr) {
-    const lastDate = new Date(lastDateStr);
-    const firstDate = new Date(lastDate.getFullYear(), lastDate.getMonth(), 1);
+  let activeIdx = 0;
+  const tabs = [
+    {
+      title: "Annual",
+    },
+    {
+      title: "Quarterly",
+    },
+  ];
 
-    const filteredData = data?.filter((item) => {
-      const currentDate = new Date(item?.date);
-      return currentDate >= firstDate && currentDate <= lastDate;
-    });
+  let tableList = rawData?.sort(
+    (a, b) => new Date(b?.date) - new Date(a?.date),
+  );
 
-    let prices = filteredData?.map((item) => parseFloat(item.price));
+  tableList = filterByPeriod([...tableList], activeIdx);
 
-    lowestPrice = Math.min(...prices);
-    highestPrice = Math.max(...prices);
+  function changeTimePeriod(i) {
+    activeIdx = i;
+    tableList = rawData?.sort((a, b) => new Date(b?.date) - new Date(a?.date));
+
+    tableList = filterByPeriod([...tableList], i);
+  }
+
+  function filterByPeriod(data, period) {
+    if (!Array.isArray(data) || data.length === 0) return [];
+
+    if (period === 0) {
+      // Annual: one result per year.
+      const seenYears = new Set();
+      return data.filter((item) => {
+        const dt = new Date(item.date);
+        const year = dt.getFullYear();
+        if (!seenYears.has(year)) {
+          seenYears.add(year);
+          return true;
+        }
+        return false;
+      });
+    } else if (period === 1) {
+      // Quarterly: one result per year-quarter.
+      const seenPeriods = new Set();
+      return data.filter((item) => {
+        const dt = new Date(item.date);
+        const year = dt.getFullYear();
+        const quarter = Math.floor(dt.getMonth() / 3) + 1; // Quarter 1 to 4
+        const key = `${year}-Q${quarter}`;
+        if (!seenPeriods.has(key)) {
+          seenPeriods.add(key);
+          return true;
+        }
+        return false;
+      });
+    }
+
+    return [];
   }
 
   function getPlotOptions() {
     let dates = [];
     let priceList = [];
     let failToDeliverList = [];
-
+    rawData?.sort((a, b) => new Date(a?.date) - new Date(b?.date));
     rawData?.forEach((item) => {
       dates?.push(item?.date);
       priceList?.push(item?.price);
       failToDeliverList?.push(item?.failToDeliver);
     });
-
-    findLowestAndHighestPrice(rawData, rawData?.slice(-1)?.at(0)?.date);
 
     const totalNumber = failToDeliverList?.reduce((acc, item) => acc + item, 0);
     avgFailToDeliver = (totalNumber / failToDeliverList?.length)?.toFixed(0);
@@ -188,9 +225,7 @@
 <section class="overflow-hidden text-white h-full pb-8">
   <main class="overflow-hidden">
     <div class="flex flex-row items-center w-full mt-5">
-      <h1 class="text-2xl text-white font-bold">
-        Historical {$stockTicker} Chart
-      </h1>
+      <h1 class="text-2xl text-white font-bold">FTD Chart</h1>
     </div>
 
     {#if isLoaded}
@@ -250,51 +285,128 @@
           </div>
         </div>
 
-        <h2
-          class="mt-10 mr-1 flex flex-row items-center text-white text-xl sm:text-2xl font-bold mb-3"
+        <div
+          class="mt-5 flex flex-col sm:flex-row items-start sm:items-center w-full justify-between sm:border-y border-gray-800 sm:pt-2 sm:pb-2"
         >
-          Latest Information
-        </h2>
+          <h3 class="text-xl sm:text-2xl text-white font-bold mb-2 sm:mb-0">
+            FTD History
+          </h3>
 
-        <div class="flex justify-start items-center w-full m-auto">
-          <table class="w-full bg-table border border-gray-800">
+          <div
+            class="inline-flex justify-center w-full rounded-md sm:w-auto sm:ml-auto"
+          >
+            <div
+              class="bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1"
+            >
+              {#each tabs as item, i}
+                {#if data?.user?.tier !== "Pro" && i > 0}
+                  <button
+                    on:click={() => goto("/pricing")}
+                    class="group relative z-[1] rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
+                  >
+                    <span class="relative text-sm block font-semibold">
+                      {item.title}
+                      <svg
+                        class="inline-block ml-0.5 -mt-1 w-3.5 h-3.5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        ><path
+                          fill="#A3A3A3"
+                          d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                        /></svg
+                      >
+                    </span>
+                  </button>
+                {:else}
+                  <button
+                    on:click={() => changeTimePeriod(i)}
+                    class="group relative z-[1] rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
+                    i
+                      ? 'z-0'
+                      : ''} "
+                  >
+                    {#if activeIdx === i}
+                      <div class="absolute inset-0 rounded-md bg-[#fff]"></div>
+                    {/if}
+                    <span
+                      class="relative text-sm block font-semibold whitespace-nowrap {activeIdx ===
+                      i
+                        ? 'text-black'
+                        : 'text-white'}"
+                    >
+                      {item.title}
+                    </span>
+                  </button>
+                {/if}
+              {/each}
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full overflow-x-scroll">
+          <table
+            class="table table-sm table-compact bg-table border border-gray-800 rounded-none sm:rounded-md w-full m-auto mt-4"
+          >
+            <thead class="bg-default">
+              <tr>
+                <th class="text-white font-semibold text-start text-sm">Date</th
+                >
+                <th class="text-white font-semibold text-end text-sm"
+                  >FTD Shares</th
+                >
+                <th class="text-white font-semibold text-end text-sm"
+                  >% Change</th
+                >
+              </tr>
+            </thead>
             <tbody>
-              <tr class="border-y border-gray-800 odd:bg-odd">
-                <td
-                  class="px-[5px] py-1.5 xs:px-2.5 xs:py-2 text-sm sm:text-[1rem]"
+              {#each tableList as item, index}
+                <!-- row -->
+                <tr
+                  class="sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] odd:bg-odd border-b border-gray-800"
                 >
-                  <span>Date</span>
-                </td>
-                <td
-                  class="px-[5px] py-1.5 text-right whitespace-nowrap font-medium xs:px-2.5 xs:py-2 text-sm sm:text-[1rem]"
-                >
-                  {formatDateRange(rawData?.slice(-1)?.at(0)?.date)}
-                </td>
-              </tr>
-              <tr class="border-y border-gray-800 odd:bg-odd">
-                <td
-                  class="px-[5px] py-1.5 xs:px-2.5 xs:py-2 text-sm sm:text-[1rem]"
-                >
-                  <span>Price Range</span>
-                </td>
-                <td
-                  class="px-[5px] py-1.5 text-right font-medium xs:px-2.5 xs:py-2 text-sm sm:text-[1rem]"
-                >
-                  {lowestPrice + "-" + highestPrice}
-                </td>
-              </tr>
-              <tr class="border-y border-gray-800 odd:bg-odd">
-                <td
-                  class="px-[5px] py-1.5 xs:px-2.5 xs:py-2 text-sm sm:text-[1rem]"
-                >
-                  <span>Latest FTD</span>
-                </td>
-                <td
-                  class="px-[5px] py-1.5 text-right font-medium xs:px-2.5 xs:py-2 text-sm sm:text-[1rem]"
-                >
-                  {abbreviateNumber(rawData?.slice(-1)?.at(0)?.failToDeliver)}
-                </td>
-              </tr>
+                  <td
+                    class="text-white font-medium text-sm sm:text-[1rem] whitespace-nowrap"
+                  >
+                    {item?.date}
+                  </td>
+
+                  <td
+                    class="text-white text-sm sm:text-[1rem] text-right whitespace-nowrap"
+                  >
+                    {abbreviateNumber(item?.failToDeliver)}
+                  </td>
+
+                  <td
+                    class="text-white text-sm sm:text-[1rem] whitespace-nowrap font-medium text-end"
+                  >
+                    {#if index === tableList?.length - 1}
+                      n/a
+                    {:else if item?.failToDeliver > tableList[index + 1]?.failToDeliver}
+                      <span class="text-[#00FC50]">
+                        +{(
+                          ((item?.failToDeliver -
+                            tableList[index + 1]?.failToDeliver) /
+                            tableList[index + 1]?.failToDeliver) *
+                          100
+                        )?.toFixed(2)}%
+                      </span>
+                    {:else if item?.failToDeliver < tableList[index + 1]?.failToDeliver}
+                      <span class="text-[#FF2F1F]">
+                        -{(
+                          Math.abs(
+                            (item?.failToDeliver -
+                              tableList[index + 1]?.failToDeliver) /
+                              tableList[index + 1]?.failToDeliver,
+                          ) * 100
+                        )?.toFixed(2)}%
+                      </span>
+                    {:else}
+                      n/a
+                    {/if}
+                  </td>
+                </tr>
+              {/each}
             </tbody>
           </table>
         </div>
