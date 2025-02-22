@@ -32,6 +32,19 @@ const fetchData = async (apiURL, apiKey, endpoint, ticker) => {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
 
+  const endpoints = [
+        "/stockdeck",
+        "/analyst-summary-rating",
+        "/stock-quote",
+        "/pre-post-quote",
+        "/wiim",
+        "/one-day-price",
+        "/next-earnings",
+        "/earnings-surprise",
+        "/stock-news",
+    ]
+
+
   try {
     const response = await fetch(`${apiURL}${endpoint}`, {
       method: "POST",
@@ -39,7 +52,7 @@ const fetchData = async (apiURL, apiKey, endpoint, ticker) => {
         "Content-Type": "application/json",
         "X-API-KEY": apiKey,
       },
-      body: JSON.stringify({ ticker }),
+      body: JSON.stringify({ticker, endpoints}),
       signal: controller.signal
     });
 
@@ -83,7 +96,7 @@ export const load = async ({ params, locals }) => {
 
   try {
     // Fetch combined stock data from the '/stock-data' endpoint
-    const getStockData = await fetchData(apiURL, apiKey, "/stock-data", tickerID);
+    const getStockData = await fetchData(apiURL, apiKey, "/bulk-data", tickerID);
 
     // Destructure the returned object to assign friendly names
     const {
