@@ -77,44 +77,29 @@ export const load = async ({ params, locals }) => {
   const { apiURL, apiKey, pb, user } = locals;
   const { tickerID } = params;
 
-  const endpoints = [
-    "/stockdeck",
-    "/analyst-summary-rating",
-    "/stock-quote",
-    "/pre-post-quote",
-    "/wiim",
-    "/one-day-price",
-    "/next-earnings",
-    "/earnings-surprise",
-    "/stock-news",
-  ];
-
   if (!tickerID) {
     return { error: 'Invalid ticker ID' };
   }
 
   try {
-    const [
-      getStockDeck,
-      getAnalystSummary,
-      getStockQuote,
-      getPrePostQuote,
-      getWhyPriceMoved,
-      getOneDayPrice,
-      getNextEarnings,
-      getEarningsSurprise,
-      getNews,
-      getUserWatchlist,
-    ] = await Promise.all([
-      ...endpoints.map((endpoint) =>
-        fetchData(apiURL, apiKey, endpoint, tickerID).catch(error => ({ error: error.message }))
-      ),
-      fetchWatchlist(pb, user?.id).catch(() => [])
-    ]);
+    // Fetch combined stock data from the '/stock-data' endpoint
+    const getStockData = await fetchData(apiURL, apiKey, "/stock-data", tickerID);
 
-    if (!getStockDeck || getStockDeck.error) {
-      return { error: 'Failed to fetch stock data' };
-    }
+    // Destructure the returned object to assign friendly names
+    const {
+      '/stockdeck': getStockDeck,
+      '/analyst-summary-rating': getAnalystSummary,
+      '/stock-quote': getStockQuote,
+      '/pre-post-quote': getPrePostQuote,
+      '/wiim': getWhyPriceMoved,
+      '/one-day-price': getOneDayPrice,
+      '/next-earnings': getNextEarnings,
+      '/earnings-surprise': getEarningsSurprise,
+      '/stock-news': getNews,
+    } = getStockData;
+
+    // Optionally, you can still fetch additional data like the watchlist:
+    const getUserWatchlist = await fetchWatchlist(pb, user?.id).catch(() => []);
 
     return {
       getStockDeck,
@@ -128,7 +113,7 @@ export const load = async ({ params, locals }) => {
       getNews,
       getUserWatchlist,
       companyName: cleanString(getStockDeck?.companyName),
-      getParams: params.tickerID,
+      getParams: tickerID,
     };
   } catch (error) {
     return { error: 'Failed to load stock data' };
