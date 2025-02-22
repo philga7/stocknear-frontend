@@ -428,7 +428,7 @@
 
                         <a
                           href={`/stocks/${item?.ticker}`}
-                          class="inline-block badge rounded-sm ml-1 px-2 m-auto text-blue-400 sm:hover:text-white"
+                          class="inline-block badge duration-0 rounded-sm ml-1 px-2 m-auto text-blue-400 sm:hover:text-white"
                           >{item?.ticker}</a
                         >
                       </li>
@@ -441,7 +441,7 @@
 
                         <a
                           href={`/stocks/${item?.ticker}`}
-                          class="inline-block badge rounded-sm ml-1 px-2 m-auto text-blue-400 sm:hover:text-white"
+                          class="inline-block badge duration-0 rounded-sm ml-1 px-2 m-auto text-blue-400 sm:hover:text-white"
                           >{item?.ticker}</a
                         >
                       </li>
@@ -489,14 +489,16 @@
                 <div class="text-white mt-4">
                   According to {analystReport?.numOfAnalyst} analyst ratings, the
                   average rating for
-                  <a class="text-blue-400 sm:hover:text-white cursor-pointer"
+                  <a
+                    href={`/stocks/${analystReport?.symbol}`}
+                    class="text-blue-400 sm:hover:text-white cursor-pointer"
                     >{analystReport?.symbol}</a
                   >
                   stock is "{analystReport?.consensusRating}" The 12-month stock
                   price forecast is ${analystReport?.highPriceTarget}, which is
                   an {analystReport?.highPriceChange > 0
                     ? "increase"
-                    : "decreas"} of {analystReport?.highPriceChange}% from the
+                    : "decrease"} of {analystReport?.highPriceChange}% from the
                   latest price.
                 </div>
                 <table

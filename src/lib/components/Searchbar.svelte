@@ -19,6 +19,7 @@
   let searchOpen = false;
   let searchBarModalChecked = false; // Initialize it to false
   let inputElement;
+  let isNavigating = false;
 
   const popularList = [
     {
@@ -49,12 +50,14 @@
   ];
 
   async function handleSearch(symbol, assetType) {
+    if (isNavigating) return; // Prevent double calls
+    isNavigating = true;
+
     // Find the matching ticker data
     const newSearchItem = searchBarData?.find(
       (item) => item?.symbol === symbol?.toUpperCase(),
     );
     if (newSearchItem) {
-      // Ensure `upperState` matches the case of `item.symbol`
       updatedSearchHistory = [
         newSearchItem,
         ...(searchHistory?.filter(
@@ -63,28 +66,39 @@
       ].slice(0, 5);
     }
 
-    searchBarTicker(symbol);
+    // Close search modal
+    searchOpen = false;
+    if ($screenWidth < 640) {
+      const closePopup = document.getElementById("searchBarModal");
+      closePopup?.dispatchEvent(new MouseEvent("click"));
+    }
 
-    nextPage = true;
-    goto(
+    await goto(
       `/${assetType === "ETF" ? "etf" : assetType === "Index" ? "index" : "stocks"}/${symbol}`,
     );
+
+    // Reset the flag after navigation
+    setTimeout(() => {
+      isNavigating = false;
+    }, 100);
   }
 
   async function popularTicker(state) {
+    if (isNavigating) return;
+    isNavigating = true;
+
     searchOpen = false;
-    if (!state) return;
+    if (!state) {
+      isNavigating = false;
+      return;
+    }
 
-    // Convert state to uppercase once
     const upperState = state.toUpperCase();
-
-    // Find the matching ticker data
     const newSearchItem = searchBarData?.find(
       ({ symbol }) => symbol === upperState,
     );
 
     if (newSearchItem) {
-      // Ensure `upperState` matches the case of `item.symbol`
       updatedSearchHistory = [
         newSearchItem,
         ...(searchHistory?.filter(
@@ -93,14 +107,19 @@
       ].slice(0, 5);
     }
 
-    // Close search modal
     const closePopup = document.getElementById("searchBarModal");
     closePopup?.dispatchEvent(new MouseEvent("click"));
+
+    // Reset the flag after a short delay
+    setTimeout(() => {
+      isNavigating = false;
+    }, 100);
   }
 
   function searchBarTicker(state) {
+    if (isNavigating) return;
     showSuggestions = false;
-    // Early return if state is empty or ticker not found
+
     if (
       !state ||
       !searchBarData?.find((item) => item?.symbol === state?.toUpperCase())
@@ -109,29 +128,23 @@
         const closePopup = document.getElementById("searchBarModal");
         closePopup?.dispatchEvent(new MouseEvent("click"));
       }
-
       return;
     }
 
-    // Convert state to uppercase once
     const upperState = state.toUpperCase();
-
-    // Find the matching ticker data
     const newSearchItem = searchBarData?.find(
       ({ symbol }) => symbol === upperState,
     );
 
     if (newSearchItem) {
-      // Ensure `upperState` matches the case of `item.symbol`
       updatedSearchHistory = [
         newSearchItem,
         ...(searchHistory?.filter(
           (item) => item?.symbol?.toUpperCase() !== upperState,
         ) || []),
-      ]?.slice(0, 5);
+      ].slice(0, 5);
     }
 
-    // Close search modal
     searchOpen = false;
     if ($screenWidth < 640) {
       const closePopup = document.getElementById("searchBarModal");
@@ -160,6 +173,8 @@
   }
 
   function handleKeyDown(symbol) {
+    if (isNavigating) return;
+
     const list = Array.from(
       new Map(
         [...searchHistory, ...searchBarData, ...popularList].map((item) => [
@@ -172,8 +187,11 @@
     if (!list?.length) return;
 
     const newData = list.find((item) => item?.symbol === symbol);
-    handleSearch(newData?.symbol, newData?.type);
+    if (newData) {
+      handleSearch(newData?.symbol, newData?.type);
+    }
   }
+
   const handleControlK = async (event) => {
     if (event.ctrlKey && event.key === "k") {
       const keyboardSearch = document.getElementById("combobox-input");

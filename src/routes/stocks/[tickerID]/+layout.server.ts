@@ -1,5 +1,6 @@
-const cleanString = (input) => {
-  const substringsToRemove = [
+// Pre-compile regex pattern and substrings for cleaning
+const REMOVE_PATTERNS = {
+  pattern: new RegExp(`\\b(${[
     "Depositary",
     "Inc.",
     "Incorporated",
@@ -11,81 +12,126 @@ const cleanString = (input) => {
     "Oyj",
     "Company",
     "The",
-    "plc",
-  ];
-  const pattern = new RegExp(`\\b(${substringsToRemove.join("|")})\\b|,`, "gi");
-  return input?.replace(pattern, "").trim();
+    "plc"
+  ].join("|")})\\b|,`, "gi")
 };
 
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
-const REQUEST_TIMEOUT = 5000; // 5 seconds
-const cache = new Map();
+// Memoized string cleaning function
+const cleanString = (() => {
+  const cache = new Map();
+  return (input) => {
+    if (!input) return '';
+    if (cache.has(input)) return cache.get(input);
+    const cleaned = input.replace(REMOVE_PATTERNS.pattern, '').trim();
+    cache.set(input, cleaned);
+    return cleaned;
+  };
+})();
 
-const fetchData = async (apiURL, apiKey, endpoint, ticker) => {
-  const cacheKey = `${endpoint}-${ticker}`;
-  const cached = cache.get(cacheKey);
-  
-  if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
-    return cached.data;
+// Constants
+const CACHE_DURATION = 5 * 60 * 1000;
+const REQUEST_TIMEOUT = 5000;
+const ENDPOINTS = Object.freeze([
+  "/stockdeck",
+  "/analyst-summary-rating",
+  "/stock-quote",
+  "/pre-post-quote",
+  "/wiim",
+  "/one-day-price",
+  "/next-earnings",
+  "/earnings-surprise",
+  "/stock-news"
+]);
+
+// LRU Cache implementation with automatic cleanup
+class LRUCache {
+  constructor(maxSize = 100) {
+    this.cache = new Map();
+    this.maxSize = maxSize;
   }
 
+  get(key) {
+    const item = this.cache.get(key);
+    if (!item) return null;
+    if (Date.now() - item.timestamp >= CACHE_DURATION) {
+      this.cache.delete(key);
+      return null;
+    }
+    return item.data;
+  }
+
+  set(key, data) {
+    if (this.cache.size >= this.maxSize) {
+      const oldestKey = this.cache.keys().next().value;
+      this.cache.delete(oldestKey);
+    }
+    this.cache.set(key, { data, timestamp: Date.now() });
+  }
+}
+
+const dataCache = new LRUCache();
+
+// Optimized fetch function with AbortController and timeout
+const fetchWithTimeout = async (url, options, timeout) => {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
-
-  const endpoints = [
-        "/stockdeck",
-        "/analyst-summary-rating",
-        "/stock-quote",
-        "/pre-post-quote",
-        "/wiim",
-        "/one-day-price",
-        "/next-earnings",
-        "/earnings-surprise",
-        "/stock-news",
-    ]
-
-
+  const timeoutId = setTimeout(() => controller.abort(), timeout);
+  
   try {
-    const response = await fetch(`${apiURL}${endpoint}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-API-KEY": apiKey,
-      },
-      body: JSON.stringify({ticker, endpoints}),
+    const response = await fetch(url, {
+      ...options,
       signal: controller.signal
     });
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    return await response.json();
+  } finally {
+    clearTimeout(timeoutId);
+  }
+};
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+// Main data fetching function
+const fetchData = async (apiURL, apiKey, endpoint, ticker) => {
+  const cacheKey = `${endpoint}-${ticker}`;
+  const cachedData = dataCache.get(cacheKey);
+  if (cachedData) return cachedData;
 
-    const data = await response.json();
-    cache.set(cacheKey, { data, timestamp: Date.now() });
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-API-KEY": apiKey
+    },
+    body: JSON.stringify({ ticker, endpoints: ENDPOINTS })
+  };
+
+  try {
+    const data = await fetchWithTimeout(
+      `${apiURL}${endpoint}`,
+      options,
+      REQUEST_TIMEOUT
+    );
+    dataCache.set(cacheKey, data);
     return data;
   } catch (error) {
     if (error.name === 'AbortError') {
       throw new Error(`Request timeout for ${endpoint}`);
     }
     throw error;
-  } finally {
-    clearTimeout(timeoutId);
   }
 };
 
+// Optimized watchlist fetching with error boundary
 const fetchWatchlist = async (pb, userId) => {
-  let output;
+  if (!userId) return [];
   try {
-    output = await pb.collection("watchlist").getFullList({
-      filter: `user="${userId}"`,
+    return await pb.collection("watchlist").getFullList({
+      filter: `user="${userId}"`
     });
-  } catch (e) {
-    //console.log(e)
-    output = [];
+  } catch {
+    return [];
   }
-  return output;
 };
 
+// Main load function with parallel fetching
 export const load = async ({ params, locals }) => {
   const { apiURL, apiKey, pb, user } = locals;
   const { tickerID } = params;
@@ -95,24 +141,24 @@ export const load = async ({ params, locals }) => {
   }
 
   try {
-    // Fetch combined stock data from the '/stock-data' endpoint
-    const getStockData = await fetchData(apiURL, apiKey, "/bulk-data", tickerID);
+    // Fetch data in parallel
+    const [stockData, userWatchlist] = await Promise.all([
+      fetchData(apiURL, apiKey, "/bulk-data", tickerID),
+      fetchWatchlist(pb, user?.id)
+    ]);
 
-    // Destructure the returned object to assign friendly names
+    // Destructure with default empty object to prevent undefined errors
     const {
-      '/stockdeck': getStockDeck,
-      '/analyst-summary-rating': getAnalystSummary,
-      '/stock-quote': getStockQuote,
-      '/pre-post-quote': getPrePostQuote,
-      '/wiim': getWhyPriceMoved,
-      '/one-day-price': getOneDayPrice,
-      '/next-earnings': getNextEarnings,
-      '/earnings-surprise': getEarningsSurprise,
-      '/stock-news': getNews,
-    } = getStockData;
-
-    // Optionally, you can still fetch additional data like the watchlist:
-    const getUserWatchlist = await fetchWatchlist(pb, user?.id).catch(() => []);
+      '/stockdeck': getStockDeck = {},
+      '/analyst-summary-rating': getAnalystSummary = {},
+      '/stock-quote': getStockQuote = {},
+      '/pre-post-quote': getPrePostQuote = {},
+      '/wiim': getWhyPriceMoved = {},
+      '/one-day-price': getOneDayPrice = {},
+      '/next-earnings': getNextEarnings = {},
+      '/earnings-surprise': getEarningsSurprise = {},
+      '/stock-news': getNews = {}
+    } = stockData;
 
     return {
       getStockDeck,
@@ -124,9 +170,9 @@ export const load = async ({ params, locals }) => {
       getNextEarnings,
       getEarningsSurprise,
       getNews,
-      getUserWatchlist,
+      getUserWatchlist: userWatchlist,
       companyName: cleanString(getStockDeck?.companyName),
-      getParams: tickerID,
+      getParams: tickerID
     };
   } catch (error) {
     return { error: 'Failed to load stock data' };
