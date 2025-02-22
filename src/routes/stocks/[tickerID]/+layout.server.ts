@@ -32,14 +32,20 @@ const cleanString = (() => {
 const CACHE_DURATION = 5 * 60 * 1000;
 const REQUEST_TIMEOUT = 5000;
 const ENDPOINTS = Object.freeze([
-  "/stockdeck",
-  "/analyst-summary-rating",
+  "/index-profile",
+  "/etf-holdings",
+  "/etf-sector-weighting",
   "/stock-quote",
   "/pre-post-quote",
   "/wiim",
   "/one-day-price",
-  "/next-earnings",
-  "/earnings-surprise",
+  "/stock-news"
+]);
+
+const SPY_PROXY_ENDPOINTS = Object.freeze([
+  "/etf-holdings",
+  "/etf-sector-weighting",
+  "/wiim",
   "/stock-news"
 ]);
 
@@ -88,9 +94,13 @@ const fetchWithTimeout = async (url, options, timeout) => {
   }
 };
 
-// Main data fetching function
+// Main data fetching function with SPX/SPY handling
 const fetchData = async (apiURL, apiKey, endpoint, ticker) => {
-  const cacheKey = `${endpoint}-${ticker}`;
+  const useSpyTicker = ticker?.toLowerCase() === "^spx" && 
+    SPY_PROXY_ENDPOINTS.some(proxyEndpoint => ENDPOINTS.includes(proxyEndpoint));
+  const effectiveTicker = useSpyTicker ? "SPY" : ticker;
+  
+  const cacheKey = `${endpoint}-${effectiveTicker}`;
   const cachedData = dataCache.get(cacheKey);
   if (cachedData) return cachedData;
 
@@ -100,7 +110,10 @@ const fetchData = async (apiURL, apiKey, endpoint, ticker) => {
       "Content-Type": "application/json",
       "X-API-KEY": apiKey
     },
-    body: JSON.stringify({ ticker, endpoints: ENDPOINTS })
+    body: JSON.stringify({ 
+      ticker: effectiveTicker,
+      endpoints: ENDPOINTS 
+    })
   };
 
   try {
@@ -131,50 +144,64 @@ const fetchWatchlist = async (pb, userId) => {
   }
 };
 
+// Helper function to generate default response
+const getDefaultResponse = (tickerID) => ({
+  getIndexProfile: [],
+  getIndexHolding: [],
+  getIndexSectorWeighting: [],
+  getStockQuote: [],
+  getPrePostQuote: [],
+  getWhyPriceMoved: [],
+  getOneDayPrice: [],
+  getNews: [],
+  getUserWatchlist: [],
+  companyName: '',
+  getParams: tickerID
+});
+
 // Main load function with parallel fetching
 export const load = async ({ params, locals }) => {
   const { apiURL, apiKey, pb, user } = locals;
   const { tickerID } = params;
 
   if (!tickerID) {
-    return { error: 'Invalid ticker ID' };
+    return getDefaultResponse(tickerID);
   }
 
   try {
     // Fetch data in parallel
-    const [stockData, userWatchlist] = await Promise.all([
+    const [indexData, userWatchlist] = await Promise.all([
       fetchData(apiURL, apiKey, "/bulk-data", tickerID),
       fetchWatchlist(pb, user?.id)
     ]);
 
-    // Destructure with default empty object to prevent undefined errors
+    // Destructure with default empty arrays to prevent undefined errors
     const {
-      '/stockdeck': getStockDeck = {},
-      '/analyst-summary-rating': getAnalystSummary = {},
-      '/stock-quote': getStockQuote = {},
-      '/pre-post-quote': getPrePostQuote = {},
-      '/wiim': getWhyPriceMoved = {},
-      '/one-day-price': getOneDayPrice = {},
-      '/next-earnings': getNextEarnings = {},
-      '/earnings-surprise': getEarningsSurprise = {},
-      '/stock-news': getNews = {}
-    } = stockData;
+      '/index-profile': getIndexProfile = [],
+      '/etf-holdings': getIndexHolding = [],
+      '/etf-sector-weighting': getIndexSectorWeighting = [],
+      '/stock-quote': getStockQuote = [],
+      '/pre-post-quote': getPrePostQuote = [],
+      '/wiim': getWhyPriceMoved = [],
+      '/one-day-price': getOneDayPrice = [],
+      '/stock-news': getNews = []
+    } = indexData;
 
     return {
-      getStockDeck,
-      getAnalystSummary,
+      getIndexProfile,
+      getIndexHolding,
+      getIndexSectorWeighting,
       getStockQuote,
       getPrePostQuote,
       getWhyPriceMoved,
       getOneDayPrice,
-      getNextEarnings,
-      getEarningsSurprise,
       getNews,
       getUserWatchlist: userWatchlist,
-      companyName: cleanString(getStockDeck?.companyName),
+      companyName: cleanString(getIndexProfile?.at(0)?.name),
       getParams: tickerID
     };
   } catch (error) {
-    return { error: 'Failed to load stock data' };
+    console.error('Error in load function:', error);
+    return getDefaultResponse(tickerID);
   }
 };

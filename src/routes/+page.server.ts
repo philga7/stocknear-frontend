@@ -2,28 +2,103 @@ import { error, fail, redirect } from "@sveltejs/kit";
 import { validateData } from "$lib/utils";
 import { loginUserSchema, registerUserSchema } from "$lib/schemas";
 
+
+// Constants
+const CACHE_DURATION = 60 * 1000; // 1 minute in milliseconds
+const REQUEST_TIMEOUT = 5000;
+
+// LRU Cache implementation with automatic cleanup
+class LRUCache {
+  constructor(maxSize = 100) {
+    this.cache = new Map();
+    this.maxSize = maxSize;
+  }
+
+  get(key) {
+    const item = this.cache.get(key);
+    if (!item) return null;
+    if (Date.now() - item.timestamp >= CACHE_DURATION) {
+      this.cache.delete(key);
+      return null;
+    }
+    return item.data;
+  }
+
+  set(key, data) {
+    if (this.cache.size >= this.maxSize) {
+      const oldestKey = this.cache.keys().next().value;
+      this.cache.delete(oldestKey);
+    }
+    this.cache.set(key, { data, timestamp: Date.now() });
+  }
+}
+
+const dashboardCache = new LRUCache();
+
+// Optimized fetch function with AbortController and timeout
+const fetchWithTimeout = async (url, options, timeout) => {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeout);
+  
+  try {
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal
+    });
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    return await response.json();
+  } finally {
+    clearTimeout(timeoutId);
+  }
+};
+
+// Dashboard data fetching function with caching
+const getDashboard = async (apiURL, apiKey) => {
+  const cacheKey = 'dashboard-info';
+  const cachedData = dashboardCache.get(cacheKey);
+  if (cachedData) return cachedData;
+
+  const options = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "X-API-KEY": apiKey
+    }
+  };
+
+  try {
+    const data = await fetchWithTimeout(
+      `${apiURL}/dashboard-info`,
+      options,
+      REQUEST_TIMEOUT
+    );
+    dashboardCache.set(cacheKey, data);
+    return data;
+  } catch (error) {
+    if (error.name === 'AbortError') {
+      throw new Error('Dashboard request timeout');
+    }
+    console.error('Error fetching dashboard:', error);
+    return {};
+  }
+};
+
+// Main load function
 export const load = async ({ locals }) => {
   const { apiKey, apiURL } = locals;
 
-  const getDashboard = async () => {
-    const response = await fetch(apiURL + "/dashboard-info", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "X-API-KEY": apiKey,
-      },
-    });
-
-    const output = await response?.json();
-
-    return output;
-  };
-
-  // Make sure to return a promise
-  return {
-    getDashboard: await getDashboard(),
-  };
+  try {
+    return {
+      getDashboard: await getDashboard(apiURL, apiKey)
+    };
+  } catch (error) {
+    console.error('Error in dashboard load:', error);
+    return {
+      getDashboard: {}
+    };
+  }
 };
+
 
 async function checkDisposableEmail(email) {
   const url = `https://disposable.debounce.io/?email=${encodeURIComponent(email)}`;
