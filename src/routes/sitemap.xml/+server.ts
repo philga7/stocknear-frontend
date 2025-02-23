@@ -1,8 +1,8 @@
 
-const pages = [
-  { title: "/sitemaps/sitemap1.xml" },
-  { title: "/sitemaps/sitemap2.xml" }
-];
+const N = 100; // Change this value as needed
+const sitemapPages = Array?.from({ length: N }, (_, i) => ({
+  title: `/sitemaps/sitemap${i + 1}.xml`
+}));
 
 const website = "https://stocknear.com";
 
@@ -24,7 +24,7 @@ export async function GET({ locals }) {
 
   
 
-  const body = sitemap(pages);
+  const body = sitemap(sitemapPages);
   const response = new Response(body);
   response.headers.set("Content-Type", "application/xml");
   return response;
@@ -35,7 +35,7 @@ const defaultStaticPageSettings = { changefreq: "daily", priority: "1.0" };
 
 
 
-const sitemap = (pages) => `<?xml version="1.0" encoding="UTF-8" ?>
+const sitemap = (sitemapPages) => `<?xml version="1.0" encoding="UTF-8" ?>
 <urlset
   xmlns="https://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:news="https://www.google.com/schemas/sitemap-news/0.9"
@@ -44,7 +44,7 @@ const sitemap = (pages) => `<?xml version="1.0" encoding="UTF-8" ?>
   xmlns:image="https://www.google.com/schemas/sitemap-image/1.1"
   xmlns:video="https://www.google.com/schemas/sitemap-video/1.1"
 >
-  ${pages
+  ${sitemapPages
     ?.map((page) => {
       const loc = `${website}${page.title}`;
       const settings = defaultStaticPageSettings;
