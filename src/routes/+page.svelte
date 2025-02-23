@@ -406,7 +406,7 @@
                         {item?.text?.slice(0, 48) + "..."}
                         <a href="/pricing" class="inline-block text-sm">
                           <svg
-                            class="size-5 text-[#fff] inline-block"
+                            class="size-4 text-[#fff] inline-block"
                             viewBox="0 0 20 20"
                             fill="currentColor"
                             style="max-width: 40px;"

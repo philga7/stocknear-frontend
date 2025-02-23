@@ -79,12 +79,30 @@ const sitemapPages = Array.from({ length: N }, (_, i) => ({
 
 const website = "https://stocknear.com";
 
-// Helper function to create an XML URL element with optional SEO tags.
+// Helper to ensure lastmod is in "YYYY-MM-DD" format
+function formatLastmod(dateString) {
+  // Make sure dateString is valid and parseable
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) {
+    return ""; // or handle invalid date gracefully
+  }
+  // Return "YYYY-MM-DD" portion only (common for sitemaps)
+  return date.toISOString().split("T")[0];
+}
+
 const createUrlElement = (loc, { lastmod, changefreq, priority } = {}) => {
+  let lastmodTag = "";
+  if (lastmod) {
+    // Reformat the date to YYYY-MM-DD
+    const formattedDate = formatLastmod(lastmod);
+    if (formattedDate) {
+      lastmodTag = `<lastmod>${formattedDate}</lastmod>`;
+    }
+  }
   return `
   <url>
     <loc>${loc}</loc>
-    ${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}
+    ${lastmodTag}
     ${changefreq ? `<changefreq>${changefreq}</changefreq>` : ""}
     ${priority ? `<priority>${priority}</priority>` : ""}
   </url>
