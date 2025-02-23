@@ -131,7 +131,7 @@
         <div class="col-span-1 text-gray-200">
           <span class="block font-semibold">Employees</span>
           <a
-            href={`/stocks/${$stockTicker}/statistics/employees`}
+            href={`/stocks/${$stockTicker}/profile/employees`}
             class="sm:hover:text-blue-400 text-white underline underline-offset-4"
             >{new Intl.NumberFormat("en")?.format(employees)}</a
           >
