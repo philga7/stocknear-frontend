@@ -1,6 +1,7 @@
 <script lang="ts">
   import { displayCompanyName, stockTicker, screenWidth } from "$lib/store";
   import Infobox from "$lib/components/Infobox.svelte";
+  import highcharts from "$lib/highcharts.ts";
 
   import { Chart } from "svelte-echarts";
   import { init, use } from "echarts/core";
@@ -134,7 +135,7 @@
   }
 
   function getPriceForecastChart() {
-    const historicalData = data?.getAnalystSummary?.pastPriceList || [];
+    const historicalData = data?.getPriceAnalysis?.pastPriceList || [];
     const forecastTargets = {
       low: lowPriceTarget,
       avg: avgPriceTarget,
@@ -142,139 +143,171 @@
     };
 
     // Process historical data
-    const processedHistorical = historicalData?.map((point) => ({
-      date: point?.date,
-      value: point?.close,
-    }));
+    const processedHistorical = historicalData?.map((point) => [
+      new Date(point?.date).getTime(),
+      point?.close,
+    ]);
 
-    const currentDate = new Date(); // Get the current date
+    const currentDate = new Date();
     const forecastDate = new Date(
       currentDate.getFullYear() + 1,
       currentDate.getMonth(),
       currentDate.getDate(),
-    ); // Add one year
-    const forecastDateString = forecastDate.toISOString().split("T")[0]; // Format as 'YYYY-MM-DD'
+    );
+    const forecastTimestamp = forecastDate.getTime();
 
     // Get the last historical data point
-    const lastHistoricalDate = historicalData[historicalData.length - 1]?.date;
+    const lastHistoricalDate = new Date(
+      historicalData[historicalData.length - 1]?.date,
+    ).getTime();
     const lastHistoricalClose =
       historicalData[historicalData.length - 1]?.close;
 
-    // Create forecast points by appending them after the last historical date
+    // Create forecast points
     const forecastHigh = [
-      { date: lastHistoricalDate, value: lastHistoricalClose },
-      { date: forecastDateString, value: forecastTargets.high },
+      [lastHistoricalDate, lastHistoricalClose],
+      [forecastTimestamp, forecastTargets.high],
     ];
 
     const forecastAvg = [
-      { date: lastHistoricalDate, value: lastHistoricalClose },
-      { date: forecastDateString, value: forecastTargets.avg },
+      [lastHistoricalDate, lastHistoricalClose],
+      [forecastTimestamp, forecastTargets.avg],
     ];
 
     const forecastLow = [
-      { date: lastHistoricalDate, value: lastHistoricalClose },
-      { date: forecastDateString, value: forecastTargets.low },
+      [lastHistoricalDate, lastHistoricalClose],
+      [forecastTimestamp, forecastTargets.low],
     ];
 
-    const option = {
-      animation: false,
-      silent: true,
-      grid: {
-        left: "2%",
-        right: "2%",
-        bottom: "10%",
-        top: "5%",
-        containLabel: true,
+    const options = {
+      tooltip: {
+        enabled: false,
       },
-
+      plotOptions: {
+        series: {
+          enableMouseTracking: false,
+          states: {
+            hover: {
+              enabled: false,
+            },
+          },
+          marker: {
+            states: {
+              hover: {
+                enabled: false,
+              },
+            },
+          },
+        },
+      },
+      chart: {
+        backgroundColor: "#09090B",
+        plotBackgroundColor: "#09090B",
+        height: 360,
+        animation: false,
+      },
+      title: {
+        text: `<div class="grid grid-cols-2 w-[200px] sm:w-[500px] -mb-3.5 text-xs font-[501] text-gray-400">
+          <h3 class="text-left">${$screenWidth && $screenWidth < 640 ? "Past Year" : "Past 12 Months"}</h3>
+          <h3 class="text-right">${$screenWidth && $screenWidth < 640 ? "Next Year" : "12 Month Forecast"}</h3>
+         </div>`,
+        style: {
+          color: "white",
+          width: "100%",
+        },
+        verticalAlign: "top",
+        useHTML: true,
+      },
       xAxis: {
-        type: "time",
-        axisLabel: {
-          color: "#fff",
-          formatter: (value) => {
-            const date = new Date(value);
-            const isMobile = $screenWidth < 640; // Define your breakpoint for mobile
-
-            // Use a different date format for mobile screens
-            return isMobile
-              ? date.toLocaleDateString("en-US", { month: "short" }) // Show only the month for mobile
-              : date.toLocaleDateString("en-US", {
-                  month: "short",
-                  year: "numeric",
-                }); // Full format for larger screens
+        gridLineWidth: 1,
+        gridLineColor: "#111827",
+        type: "datetime",
+        endOnTick: false,
+        labels: {
+          style: {
+            color: "#fff",
           },
-        },
-        axisPointer: {
-          type: "line", // Can enhance interaction on mobile
-          lineStyle: {
-            color: "#fff", // Customize pointer color if needed
+          formatter: function () {
+            const date = new Date(this.value);
+            return date.toLocaleDateString("en-US", {
+              month: "short",
+              year: "numeric",
+            });
           },
         },
       },
-
       yAxis: {
-        type: "value",
-        axisLabel: {
-          color: "#fff",
-          formatter: (value) => `$${value.toFixed(0)}`,
+        title: {
+          text: "",
         },
-
-        splitLine: {
-          show: false,
+        labels: {
+          style: {
+            color: "#fff",
+          },
+          formatter: function () {
+            return `$${this.value.toFixed(0)}`;
+          },
         },
+        gridLineWidth: 1,
+        gridLineColor: "#111827",
+        tickInterval: 20, // Adjust this value to reduce step size
       },
+
       series: [
         {
+          animation: false,
           name: "Historical",
-          type: "line",
-          data: processedHistorical?.map((point) => [point.date, point.value]),
-          symbol: "circle",
-          symbolSize: 6,
-          itemStyle: {
-            color: "#fff",
+          data: processedHistorical,
+          color: "#fff",
+          marker: {
+            symbol: "circle",
+            radius: 4,
           },
-          lineStyle: {
-            width: 2,
-          },
+          lineWidth: 2,
         },
         {
+          animation: false,
           name: "High",
-          type: "line",
-          data: forecastHigh?.map((point) => [point.date, point.value]),
-          symbol: "none",
-          lineStyle: {
-            type: "dashed",
-            color: "#31B800",
+          data: forecastHigh,
+          color: "#31B800",
+          dashStyle: "Dash",
+          marker: {
+            enabled: false,
           },
         },
         {
+          animation: false,
           name: "Average",
-          type: "line",
-          data: forecastAvg?.map((point) => [point.date, point.value]),
-          symbol: "none",
-          lineStyle: {
-            type: "dashed",
-            color: "#fff",
+          data: forecastAvg,
+          color: "#fff",
+          dashStyle: "Dash",
+          marker: {
+            enabled: false,
           },
         },
         {
+          animation: false,
           name: "Low",
-          type: "line",
-          data: forecastLow?.map((point) => [point.date, point.value]),
-          symbol: "none",
-          lineStyle: {
-            type: "dashed",
-            color: "#D9220E",
+          data: forecastLow,
+          color: "#D9220E",
+          dashStyle: "Dash",
+          marker: {
+            enabled: false,
           },
         },
       ],
+      legend: {
+        enabled: false,
+      },
+      credits: {
+        enabled: false,
+      },
     };
-
-    return option;
+    return options;
   }
 
   let optionsPieChart = getPieChart() || null;
-  let optionsPriceForecast = getPriceForecastChart() || null;
+  let config = getPriceForecastChart() || null;
 </script>
 
 <SEO
@@ -317,58 +350,31 @@
                   </p>
                 </div>
                 <div>
-                  <div class="app h-[160px]">
-                    {#if optionsPieChart !== null}
-                      <Chart {init} options={optionsPieChart} class="chart" />
-                    {/if}
-                  </div>
-                  <div class="-mt-36 text-center text-xl font-semibold">
-                    AI Consensus: <span
-                      class="font-bold {['Strong Buy', 'Buy']?.includes(
-                        consensusRating,
-                      )
-                        ? 'text-[#00FC50]'
-                        : ['Strong Sell', 'Sell']?.includes(consensusRating)
-                          ? 'text-[#FF2F1F]'
-                          : 'text-[#fff]'}">{consensusRating}</span
-                    >
+                  <div>
+                    <div class="app h-[160px]">
+                      {#if optionsPieChart !== null}
+                        <Chart {init} options={optionsPieChart} class="chart" />
+                      {/if}
+                    </div>
+                    <div class="-mt-36 text-center text-xl font-semibold">
+                      Analyst Consensus: <span
+                        class="font-bold {['Strong Buy', 'Buy']?.includes(
+                          consensusRating,
+                        )
+                          ? 'text-[#00FC50]'
+                          : ['Strong Sell', 'Sell']?.includes(consensusRating)
+                            ? 'text-[#FF2F1F]'
+                            : 'text-[#fff]'}">{consensusRating}</span
+                      >
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="grow pt-2 md:pt-4 lg:pl-4 lg:pt-0">
-                <div class="app h-[250px] xs:h-[275px]">
-                  {#if data?.user?.tier !== "Pro"}
-                    <div
-                      class="flex flex-row items-center justify-center m-auto h-full text-center font-bold"
-                    >
-                      <a
-                        href="/pricing"
-                        class="flex flex-row items-center sm:hover:text-blue-400 text-white"
-                      >
-                        <span class="m-auto"> Chart Forecast</span>
-                        <svg
-                          class="ml-1 size-5"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          style="max-width: 40px;"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                            clip-rule="evenodd"
-                          >
-                          </path>
-                        </svg>
-                      </a>
-                    </div>
-                  {:else if optionsPriceForecast !== null}
-                    <Chart
-                      {init}
-                      options={optionsPriceForecast}
-                      class="chart"
-                    />
-                  {/if}
-                </div>
+                <div
+                  class="chart mt-5 sm:mt-0 border border-gray-800 rounded"
+                  use:highcharts={config}
+                ></div>
                 <div
                   class="hide-scroll mb-1 mt-2 overflow-x-auto px-1.5 text-center md:mb-0 md:px-0 lg:mt-2"
                 >
@@ -397,112 +403,24 @@
                       <tr class="text-sm sm:text-[1rem]"
                         ><td class="py-[3px] text-left lg:py-0.5">Change</td>
                         <td
-                          class={lowChange > 0 && data?.user?.tier === "Pro"
+                          class={lowChange > 0
                             ? "before:content-['+'] text-[#00FC50]"
-                            : "text-[#FF2F1F]"}
+                            : "text-[#FF2F1F]"}>{lowChange}%</td
                         >
-                          {#if data?.user?.tier !== "Pro"}
-                            <a
-                              href="/pricing"
-                              class="text-white sm:hover:text-blue-400"
-                            >
-                              <svg
-                                class="size-4 sm:size-5 text-end ml-auto"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                              >
-                                <path
-                                  fill-rule="evenodd"
-                                  d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                                  clip-rule="evenodd"
-                                >
-                                </path>
-                              </svg>
-                            </a>
-                          {:else}
-                            {lowChange}%
-                          {/if}
-                        </td>
                         <td
-                          class={avgChange > 0 && data?.user?.tier === "Pro"
+                          class={avgChange > 0
                             ? "before:content-['+'] text-[#00FC50]"
-                            : "text-[#FF2F1F]"}
+                            : "text-[#FF2F1F]"}>{avgChange}%</td
                         >
-                          {#if data?.user?.tier !== "Pro"}
-                            <a
-                              href="/pricing"
-                              class="text-white sm:hover:text-blue-400"
-                            >
-                              <svg
-                                class="size-4 sm:size-5 text-end ml-auto"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                              >
-                                <path
-                                  fill-rule="evenodd"
-                                  d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                                  clip-rule="evenodd"
-                                >
-                                </path>
-                              </svg>
-                            </a>
-                          {:else}
-                            {avgChange}%
-                          {/if}
-                        </td>
                         <td
-                          class={medianChange > 0 && data?.user?.tier === "Pro"
+                          class={medianChange > 0
                             ? "before:content-['+'] text-[#00FC50]"
-                            : "text-[#FF2F1F]"}
+                            : "text-[#FF2F1F]"}>{medianChange}%</td
                         >
-                          {#if data?.user?.tier !== "Pro"}
-                            <a
-                              href="/pricing"
-                              class="text-white sm:hover:text-blue-400"
-                            >
-                              <svg
-                                class="size-4 sm:size-5 text-end ml-auto"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                              >
-                                <path
-                                  fill-rule="evenodd"
-                                  d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                                  clip-rule="evenodd"
-                                >
-                                </path>
-                              </svg>
-                            </a>
-                          {:else}
-                            {medianChange}%
-                          {/if}
-                        </td>
                         <td
-                          class={highChange > 0 && data?.user?.tier === "Pro"
+                          class={highChange > 0
                             ? "before:content-['+'] text-[#00FC50]"
-                            : "text-[#FF2F1F]"}
-                        >
-                          {#if data?.user?.tier !== "Pro"}
-                            <a
-                              href="/pricing"
-                              class="text-white sm:hover:text-blue-400"
-                            >
-                              <svg
-                                class="size-4 sm:size-5 text-end ml-auto"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                              >
-                                <path
-                                  fill-rule="evenodd"
-                                  d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                                  clip-rule="evenodd"
-                                >
-                                </path>
-                              </svg>
-                            </a>
-                          {:else}
-                            {highChange}%
-                          {/if}</td
+                            : "text-[#FF2F1F]"}>{highChange}%</td
                         ></tr
                       ></tbody
                     >
