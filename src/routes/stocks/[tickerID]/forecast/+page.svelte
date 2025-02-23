@@ -473,6 +473,7 @@
           data: processedHistorical,
           color: "#fff",
           marker: {
+            enabled: true,
             symbol: "circle",
             radius: 4,
           },
