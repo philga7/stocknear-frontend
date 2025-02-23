@@ -1,12 +1,27 @@
 export const load = async ({ locals, params }) => {
   const { apiURL, apiKey, user } = locals;
+  const ticker = params.tickerID;
+
+  if (!ticker) {
+    return { error: 'Invalid ticker ID' };
+  }
+
+  // Define the endpoints you want to fetch in bulk
+  const endpoints = [
+    "/analyst-ticker-history",
+    "/analyst-estimate",
+    "/analyst-insight",
+    "/top-analyst-summary-rating"
+  ];
+
+  // Prepare the payload for the bulk request
   const postData = {
-    ticker: params.tickerID,
+    ticker,
+    endpoints
   };
 
-  const getAnalystTickerHistory = async () => {
-    // make the POST request to the endpoint
-    const response = await fetch(apiURL + "/analyst-ticker-history", {
+  try {
+    const response = await fetch(`${apiURL}/bulk-data`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -15,61 +30,25 @@ export const load = async ({ locals, params }) => {
       body: JSON.stringify(postData),
     });
 
-    let output = await response.json();
-    output = user?.tier !== "Pro" ? output?.slice(0, 6) : output;
+    if (!response.ok) {
+      throw new Error("Failed to fetch bulk data");
+    }
 
-    return output;
-  };
+    const bulkData = await response.json();
 
-  const getAnalystEstimate = async () => {
-    // make the POST request to the endpoint
-    const response = await fetch(apiURL + "/analyst-estimate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-API-KEY": apiKey,
-      },
-      body: JSON.stringify(postData),
-    });
+    // Process analyst ticker history: if user isn't Pro, limit to 6 items
+    let analystTickerHistory = bulkData["/analyst-ticker-history"];
+    if (user?.tier !== "Pro" && Array.isArray(analystTickerHistory)) {
+      analystTickerHistory = analystTickerHistory.slice(0, 6);
+    }
 
-    const output = await response.json();
-    return output;
-  };
-
-  const getAnalystInsight = async () => {
-    const response = await fetch(apiURL + "/analyst-insight", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-API-KEY": apiKey,
-      },
-      body: JSON.stringify(postData),
-    });
-
-    const output = await response.json();
-    return output;
-  };
-
-
-   const getTopAnalystSummary = async () => {
-    const response = await fetch(apiURL + "/top-analyst-summary-rating", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-API-KEY": apiKey,
-      },
-      body: JSON.stringify(postData),
-    });
-
-    const output = await response.json();
-    return output;
-  };
-
-  // Make sure to return a promise
-  return {
-    getAnalystEstimate: await getAnalystEstimate(),
-    getAnalystInsight: await getAnalystInsight(),
-    getAnalystTickerHistory: await getAnalystTickerHistory(),
-    getTopAnalystSummary: await getTopAnalystSummary(),
-  };
+    return {
+      getAnalystTickerHistory: analystTickerHistory,
+      getAnalystEstimate: bulkData["/analyst-estimate"],
+      getAnalystInsight: bulkData["/analyst-insight"],
+      getTopAnalystSummary: bulkData["/top-analyst-summary-rating"],
+    };
+  } catch (error) {
+    return { error: "Failed to load data" };
+  }
 };
