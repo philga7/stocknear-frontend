@@ -420,7 +420,7 @@
         animation: false,
       },
       title: {
-        text: `<div class="grid grid-cols-2 w-[200px] sm:w-[500px] -mb-3.5 text-xs font-[501] text-gray-300">
+        text: `<div class="grid grid-cols-2 w-[200px] sm:w-[500px] -mb-3.5 text-xs font-[501] text-gray-400">
           <h3 class="text-left">${$screenWidth && $screenWidth < 640 ? "Past Year" : "Past 12 Months"}</h3>
           <h3 class="text-right">${$screenWidth && $screenWidth < 640 ? "Next Year" : "12 Month Forecast"}</h3>
          </div>`,
@@ -435,19 +435,17 @@
         gridLineWidth: 1,
         gridLineColor: "#111827",
         type: "datetime",
+        endOnTick: false,
         labels: {
           style: {
             color: "#fff",
           },
           formatter: function () {
             const date = new Date(this.value);
-            const isMobile = $screenWidth < 640;
-            return isMobile
-              ? date.toLocaleDateString("en-US", { month: "short" })
-              : date.toLocaleDateString("en-US", {
-                  month: "short",
-                  year: "numeric",
-                });
+            return date.toLocaleDateString("en-US", {
+              month: "short",
+              year: "numeric",
+            });
           },
         },
       },
