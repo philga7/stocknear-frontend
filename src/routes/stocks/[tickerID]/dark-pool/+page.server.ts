@@ -3,57 +3,59 @@ import { validateData } from "$lib/utils";
 import { loginUserSchema, registerUserSchema } from "$lib/schemas";
 
 
-export const load = async ({ params, locals }) => {
-      const { apiURL, apiKey, user } = locals;
 
-    const postData = {
-      ticker: params.tickerID,
+
+export const load = async ({ locals, params }) => {
+  const { apiURL, apiKey, user } = locals;
+  const ticker = params.tickerID;
+
+  if (!ticker) {
+    return { error: 'Invalid ticker ID' };
+  }
+
+  // Define the endpoints you want to fetch in bulk
+  const endpoints = [
+    "/dark-pool-level",
+    "/historical-dark-pool",
+  ];
+
+  // Prepare the payload for the bulk request
+  const postData = {
+    ticker,
+    endpoints
+  };
+
+  try {
+    const response = await fetch(`${apiURL}/bulk-data`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-KEY": apiKey,
+      },
+      body: JSON.stringify(postData),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch bulk data");
+    }
+
+    const bulkData = await response.json();
+
+    // Process analyst ticker history: if user isn't Pro, limit to 6 items
+    let priceLevel = bulkData["/dark-pool-level"];
+   if (user?.tier !== "Pro") {
+      priceLevel.hottestTrades = priceLevel?.hottestTrades?.slice(0, 3);
+    }
+
+    return {
+      getPriceLevel: priceLevel,
+      getHistoricalDarkPool: bulkData["/historical-dark-pool"],
     };
-
-  const getPriceLevel = async () => {
-
-
-    const response = await fetch(apiURL + "/dark-pool-level", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-API-KEY": apiKey,
-      },
-      body: JSON.stringify(postData),
-    });
-
-    let output = await response.json();
-    output.hottestTrades = user?.tier !== "Pro" ? output?.hottestTrades?.slice(0, 3) : output.hottestTrades;
-
-
-    return output;
-  };
-
-  const getHistoricalDarkPool = async () => {
-
-
-    // make the POST request to the endpoint
-    const response = await fetch(apiURL + "/historical-dark-pool", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-API-KEY": apiKey,
-      },
-      body: JSON.stringify(postData),
-    });
-
-    const output = await response.json();
-
-    return output;
-  };
-
-  // Make sure to return a promise
-  return {
-    getPriceLevel: await getPriceLevel(),
-    getHistoricalDarkPool: await getHistoricalDarkPool(),
-
-  };
+  } catch (error) {
+    return { error: "Failed to load data" };
+  }
 };
+
 
 
 
