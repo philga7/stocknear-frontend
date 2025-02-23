@@ -54,7 +54,7 @@
     }
   });
 
-  $: charNumber = $screenWidth < 640 ? 20 : 15;
+  $: charNumber = 40;
 </script>
 
 <SEO

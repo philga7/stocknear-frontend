@@ -32,7 +32,7 @@
             {#if allBlogPosts?.length !== 0}
               {#each allBlogPosts as item}
                 <div
-                  class="flex flex-col overflow-hidden rounded-lg shadow-lg sm:hover:shadow-2xl border border-gray-600"
+                  class="flex flex-col overflow-hidden rounded border border-gray-700"
                 >
                   <div class="flex-shrink-0">
                     <a href={"/blog/article/" + convertToSlug(item?.title)}

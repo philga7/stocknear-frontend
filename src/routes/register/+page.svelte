@@ -73,7 +73,7 @@
   <div class="grid grid-cols-1 gap-4">
     <div class="relative">
       <h1
-        class="text-center text-white text-2xl sm:text-3xl pt-10 sm:pt-0 font-semibold"
+        class="text-center text-white text-2xl sm:text-3xl pt-10 sm:pt-0 font-bold"
       >
         Getting Started
       </h1>
