@@ -54,7 +54,7 @@
     }
   });
 
-  $: charNumber = 40;
+  $: charNumber = $screenWidth < 640 ? 20 : 15;
 </script>
 
 <SEO
@@ -620,9 +620,12 @@
                             during market.
                           {/if}
                         {/if}Analysts estimate ...
-                        <a href="/pricing" class="inline-block text-sm">
+                        <a
+                          href="/pricing"
+                          class="inline-block text-sm sm:hover:text-blue-400"
+                        >
                           <svg
-                            class="size-5 text-[#fff] inline-block"
+                            class="size-4 inline-block"
                             viewBox="0 0 20 20"
                             fill="currentColor"
                             style="max-width: 40px;"
@@ -635,9 +638,7 @@
                             </path>
                           </svg>
 
-                          <span
-                            class="ml-1 font-semibold text-gray-300 group-hover:text-white"
-                          >
+                          <span class="ml-1 font-semibold currentColor">
                             Upgrade
                           </span>
                         </a>
