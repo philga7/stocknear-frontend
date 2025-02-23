@@ -3,19 +3,17 @@
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
   import { goto } from "$app/navigation";
-  import { Chart } from "svelte-echarts";
-  import { init, use } from "echarts/core";
-  import { BarChart } from "echarts/charts";
-  import { GridComponent, TooltipComponent } from "echarts/components";
-  import { CanvasRenderer } from "echarts/renderers";
+
+  import highcharts from "$lib/highcharts.ts";
+
   import Infobox from "$lib/components/Infobox.svelte";
   import SEO from "$lib/components/SEO.svelte";
 
-  use([BarChart, GridComponent, TooltipComponent, CanvasRenderer]);
-
-  import { abbreviateNumber } from "$lib/utils";
+  import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
 
   export let data;
+
+  let config = null;
 
   let employeeHistory = data?.getHistoryEmployee ?? [];
   let historyList = sortByDate(employeeHistory);
@@ -24,9 +22,6 @@
   let changeRate = null;
   let growthRate = null;
 
-  let optionsTotal;
-  let optionsChange;
-  let optionsGrowth;
   let dateDistance = false;
 
   function formatWithDollarSign(value) {
@@ -47,216 +42,136 @@
     });
   }
 
-  function plotTotal() {
+  function plotData() {
     let dateList = [];
-    let employeeList = [];
+    let valueList = [];
 
-    for (let i = 0; i < employeeHistory?.length; i++) {
-      const current = employeeHistory[i]?.employeeCount;
-      dateList?.push(employeeHistory[i]?.filingDate?.slice(0, 4));
-      employeeList?.push(current);
-    }
+    // Create a sorted copy of the employee history from oldest to newest
+    const sortedHistory = [...employeeHistory].sort(
+      (a, b) => new Date(a.filingDate) - new Date(b.filingDate),
+    );
 
-    const options = {
-      animation: false,
-      grid: {
-        left: $screenWidth < 640 ? "5%" : "0%",
-        right: $screenWidth < 640 ? "3%" : "0%",
-        top: "10%",
-        bottom: "10%",
-        containLabel: true,
-      },
-      xAxis: {
-        data: dateList,
-        type: "category",
-        axisLabel: {
-          color: "#fff",
-          interval: (index, value) =>
-            dateList.length > 12 ? index % 2 === 0 : 0, // Show every second label if there are too many
-          rotate: 45, // Rotate labels for better readability
-          fontSize: 12,
-          margin: 10,
-        },
-      },
-      yAxis: [
-        {
-          type: "value",
-          splitLine: {
-            show: false,
-          },
-          axisLabel: {
-            show: false,
-          },
-        },
-      ],
-      series: [
-        {
-          name: "Total Employees",
-          data: employeeList,
-          type: "bar",
-          smooth: true,
-          itemStyle: {
-            color: "#fff",
-          },
-        },
-      ],
-      tooltip: {
-        trigger: "axis",
-        hideDelay: 100,
-        borderColor: "#969696",
-        borderWidth: 1,
-        backgroundColor: "#313131",
-        textStyle: {
-          color: "#fff",
-        },
-        formatter: function (params) {
-          const date = params[0].name;
-          return `${date}<br/> Employees: ${params[0].value?.toLocaleString("en-US")}`;
-        },
-      },
-      dataZoom: [
-        {
-          type: "slider", // Adds a horizontal slider for zooming
-          start: 0,
-          end: 100,
-        },
-      ],
-    };
+    if (sortBy === "Total") {
+      sortedHistory.forEach((record) => {
+        dateList.push(record.filingDate.slice(0, 4));
+        valueList.push(record.employeeCount);
+      });
+    } else if (sortBy === "Change") {
+      for (let i = 0; i < sortedHistory.length - 1; i++) {
+        const current = sortedHistory[i].employeeCount;
+        const next = sortedHistory[i + 1].employeeCount;
+        const change = next - current;
 
-    return options;
-  }
-
-  function plotChange() {
-    let dateList = [];
-    let changeList = [];
-
-    for (let i = 0; i < employeeHistory?.length; i++) {
-      const current = employeeHistory[i]?.employeeCount;
-      const previous = i === 0 ? 0 : employeeHistory[i - 1]?.employeeCount;
-      const change = current - previous;
-      dateList?.push(employeeHistory[i]?.filingDate?.slice(0, 4));
-      changeList?.push(change);
-    }
-
-    const options = {
-      animation: false,
-      grid: {
-        left: "0%",
-        right: "0%",
-        top: "10%",
-        bottom: "20%",
-        containLabel: true,
-      },
-      xAxis: {
-        data: dateList,
-        type: "category",
-        axisLabel: {
-          color: "#fff",
-          interval: 0, // Show all labels
-          rotate: 45, // Rotate labels for better readability
-          fontSize: 12, // Adjust font size if needed
-        },
-      },
-      yAxis: [
-        {
-          type: "value",
-          splitLine: {
-            show: false, // Disable x-axis grid lines
-          },
-          axisLabel: {
-            show: false, // Hide y-axis labels
-          },
-        },
-      ],
-      series: [
-        {
-          name: "Change of Numbers",
-          data: changeList,
-          type: "bar",
-          barWidth: "80%",
-          smooth: true,
-          itemStyle: {
-            color: function (params) {
-              return params.data >= 0 ? "#22C55E" : "#F71F4F";
-            },
-          },
-        },
-      ],
-      tooltip: {
-        trigger: "axis",
-      },
-    };
-
-    return options;
-  }
-
-  function plotGrowth() {
-    let dateList = [];
-    let growthList = [];
-
-    for (let i = 0; i < employeeHistory?.length; i++) {
-      const current = employeeHistory[i]?.employeeCount;
-      const previous = i === 0 ? 0 : employeeHistory[i - 1]?.employeeCount;
-
-      if (current !== null && previous !== null && previous !== 0) {
-        const growth = (((current - previous) / previous) * 100)?.toFixed(2);
-        growthList?.push(growth);
-      } else {
-        growthList?.push(0); // Pushing null if the growth calculation is not possible
+        // Push the later date since the change happens between current and next
+        dateList.push(sortedHistory[i + 1].filingDate.slice(0, 4));
+        valueList.push(change);
       }
+    } else if (sortBy === "Growth") {
+      for (let i = 0; i < sortedHistory.length - 1; i++) {
+        const current = sortedHistory[i].employeeCount;
+        const next = sortedHistory[i + 1].employeeCount;
 
-      dateList?.push(employeeHistory[i]?.filingDate?.slice(0, 4));
+        if (current !== null && current !== 0) {
+          const growth = ((next - current) / current) * 100;
+          valueList.push(Number(growth.toFixed(2)));
+        } else {
+          valueList.push(0);
+        }
+        dateList.push(sortedHistory[i + 1].filingDate.slice(0, 4));
+      }
     }
 
     const options = {
-      animation: false,
-      grid: {
-        left: "0%",
-        right: "0%",
-        top: "10%",
-        bottom: "20%",
-        containLabel: true,
+      credits: {
+        enabled: false,
+      },
+      chart: {
+        type: "column",
+        backgroundColor: "#09090B",
+        plotBackgroundColor: "#09090B",
+        height: 360,
+        animation: false,
+      },
+      title: {
+        text: `<h3 class="mt-3 mb-1">${removeCompanyStrings($displayCompanyName)} Employees</h3>`,
+        style: {
+          color: "white",
+        },
+        useHTML: true,
       },
       xAxis: {
-        data: dateList,
-        type: "category",
-        axisLabel: {
-          color: "#fff",
-          interval: 0, // Show all labels
-          rotate: 45, // Rotate labels for better readability
-          fontSize: 12, // Adjust font size if needed
-          margin: 10,
+        categories: dateList,
+        labels: {
+          style: {
+            color: "#fff",
+            fontSize: "12px",
+          },
+          rotation: 45,
+          step: dateList.length > 12 ? 2 : 1,
         },
       },
-      yAxis: [
-        {
-          type: "value",
-          splitLine: {
-            show: false, // Disable x-axis grid lines
-          },
-
-          axisLabel: {
-            show: false, // Hide y-axis labels
+      yAxis: {
+        gridLineWidth: 1,
+        gridLineColor: "#111827",
+        labels: {
+          style: { color: "white" },
+          formatter: function () {
+            if (sortBy === "Growth") {
+              return this.value + "%";
+            }
+            return this.value.toLocaleString();
           },
         },
-      ],
+        title: { text: null },
+        opposite: true,
+      },
+      tooltip: {
+        useHTML: true,
+        backgroundColor: "#fff",
+        style: {
+          color: "black",
+          fontSize: "16px",
+          padding: "10px",
+        },
+        borderRadius: 2,
+        borderWidth: 1,
+        borderColor: "#fff",
+        formatter: function () {
+          let value;
+          if (sortBy === "Growth") {
+            value = `${this.y >= 0 ? "+" : ""}${this.y.toFixed(2)}%`;
+          } else if (sortBy === "Change") {
+            value = (this.y >= 0 ? "+" : "") + this.y.toLocaleString();
+          } else {
+            value = this.y.toLocaleString();
+          }
+
+          return (
+            `<span class="m-auto text-black text-[1rem] font-[501]">${this.x}</span><br>` +
+            `<span class="text-black font-normal text-sm">${value}</span>`
+          );
+        },
+      },
       series: [
         {
-          name: "Growth [%]",
-          data: growthList,
-          type: "bar",
-          barWidth: "80%",
-          smooth: true,
-          itemStyle: {
-            // Define colors based on positive/negative values
-            color: function (params) {
-              return params.data >= 0 ? "#22C55E" : "#F71F4F";
-            },
-          },
+          name: sortBy,
+          data: valueList,
+          color: "#FFFFFF",
+          animation: false,
         },
       ],
-      tooltip: {
-        trigger: "axis",
+      plotOptions: {
+        column: {
+          borderRadius: 2,
+        },
+      },
+      legend: {
+        enabled: false,
+      },
+      navigation: {
+        buttonOptions: {
+          enabled: false,
+        },
       },
     };
 
@@ -394,15 +309,18 @@
           1) *
         100
       )?.toFixed(2);
-      optionsTotal = plotTotal();
-      optionsChange = plotChange();
-      optionsGrowth = plotGrowth();
 
       htmlOutput = generateEmployeeInfoHTML();
     }
   }
 
   let htmlOutput = generateEmployeeInfoHTML();
+
+  $: {
+    if (sortBy) {
+      config = plotData() || null;
+    }
+  }
 </script>
 
 <SEO
@@ -418,7 +336,7 @@
       <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
         <div class="mb-6">
           <h2 class="text-xl sm:text-2xl text-white font-bold mb-4">
-            {$stockTicker} Employees
+            {removeCompanyStrings($displayCompanyName)} Employees
           </h2>
 
           <Infobox text={htmlOutput} />
@@ -501,14 +419,16 @@
           </div>
         </div>
 
-        <div class="flex flex-col sm:flex-row items-center w-full mt-10 mb-8">
+        <div
+          class="flex flex-col sm:flex-row items-start sm:items-center w-full mt-10 mb-4"
+        >
           <h1
             class="text-xl sm:text-2xl text-white font-bold text-start mr-auto mb-4 sm:mb-0"
           >
             Employees Chart
           </h1>
           {#if historyList?.length > 0}
-            <div class="flex flex-row items-center w-fit ml-auto">
+            <div class="flex flex-row items-center w-fit sm:ml-auto">
               <div class="relative inline-block text-left grow">
                 <DropdownMenu.Root>
                   <DropdownMenu.Trigger asChild let:builder>
@@ -584,111 +504,110 @@
         </div>
 
         {#if historyList?.length !== 0}
-          {#if sortBy === "Total"}
-            <div class="app w-full">
-              <Chart {init} options={optionsTotal} class="chart" />
-            </div>
-          {:else if sortBy === "Change"}
-            <div class="app w-full">
-              <Chart {init} options={optionsChange} class="chart" />
-            </div>
-          {:else if sortBy === "Growth"}
-            <div class="app w-full">
-              <Chart {init} options={optionsGrowth} class="chart" />
-            </div>
-          {/if}
+          <div
+            class="chart mt-5 sm:mt-0 border border-gray-800 rounded"
+            use:highcharts={config}
+          ></div>
 
-          <div class="w-full overflow-x-scroll">
-            <table
-              class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto"
-            >
-              <thead class="bg-default">
-                <tr>
-                  <th
-                    class="text-start text-white text-sm whitespace-nowrap font-semibold"
-                  >
-                    Date
-                  </th>
-                  <th
-                    class="text-end text-white text-sm whitespace-nowrap font-semibold"
-                  >
-                    Employees
-                  </th>
-                  <th
-                    class="text-end text-white text-sm whitespace-nowrap font-semibold"
-                  >
-                    Change
-                  </th>
-                  <th
-                    class="text-end text-white text-sm whitespace-nowrap font-semibold"
-                  >
-                    Growth
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="">
-                {#each historyList as item, index}
-                  <tr class="text-white odd:bg-odd border-b border-gray-800">
-                    <td
-                      class="text-start text-sm sm:text-[1rem] whitespace-nowrap text-white"
+          <div class="mt-5">
+            <h3 class=" text-xl sm:text-2xl text-white font-bold mb-2 sm:mb-0">
+              Employees History
+            </h3>
+
+            <div class="mt-5 w-full overflow-x-scroll">
+              <table
+                class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto"
+              >
+                <thead class="bg-default">
+                  <tr>
+                    <th
+                      class="text-start text-white text-sm whitespace-nowrap font-semibold"
                     >
-                      {new Date(item?.filingDate)?.toLocaleString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                        daySuffix: "2-digit",
-                      })}
-                    </td>
-                    <td
-                      class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                      Date
+                    </th>
+                    <th
+                      class="text-end text-white text-sm whitespace-nowrap font-semibold"
                     >
-                      {new Intl.NumberFormat("en").format(item?.employeeCount)}
-                    </td>
-                    <td
-                      class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                      Employees
+                    </th>
+                    <th
+                      class="text-end text-white text-sm whitespace-nowrap font-semibold"
                     >
-                      {#if Number(item?.employeeCount - historyList[index + 1]?.employeeCount)}
-                        {new Intl.NumberFormat("en").format(
-                          item?.employeeCount -
-                            historyList[index + 1]?.employeeCount,
-                        )}
-                      {:else}
-                        n/a
-                      {/if}
-                    </td>
-                    <td
-                      class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white text-end"
+                      Change
+                    </th>
+                    <th
+                      class="text-end text-white text-sm whitespace-nowrap font-semibold"
                     >
-                      {#if index === historyList?.length - 1}
-                        n/a
-                      {:else if item?.employeeCount > historyList[index + 1]?.employeeCount}
-                        <span class="text-[#00FC50]">
-                          +{(
-                            ((item?.employeeCount -
-                              historyList[index + 1]?.employeeCount) /
-                              historyList[index + 1]?.employeeCount) *
-                            100
-                          ).toFixed(2)}%
-                        </span>
-                      {:else if item?.employeeCount < historyList[index + 1]?.employeeCount}
-                        <span class="text-[#FF2F1F]">
-                          -{(
-                            (Math.abs(
-                              item?.employeeCount -
-                                historyList[index + 1]?.employeeCount,
-                            ) /
-                              historyList[index + 1]?.employeeCount) *
-                            100
-                          ).toFixed(2)}%
-                        </span>
-                      {:else}
-                        n/a
-                      {/if}
-                    </td>
+                      Growth
+                    </th>
                   </tr>
-                {/each}
-              </tbody>
-            </table>
+                </thead>
+                <tbody class="">
+                  {#each historyList as item, index}
+                    <tr class="text-white odd:bg-odd border-b border-gray-800">
+                      <td
+                        class="text-start text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                      >
+                        {new Date(item?.filingDate)?.toLocaleString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                          daySuffix: "2-digit",
+                        })}
+                      </td>
+                      <td
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                      >
+                        {new Intl.NumberFormat("en").format(
+                          item?.employeeCount,
+                        )}
+                      </td>
+                      <td
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                      >
+                        {#if Number(item?.employeeCount - historyList[index + 1]?.employeeCount)}
+                          {new Intl.NumberFormat("en").format(
+                            item?.employeeCount -
+                              historyList[index + 1]?.employeeCount,
+                          )}
+                        {:else}
+                          n/a
+                        {/if}
+                      </td>
+                      <td
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white text-end"
+                      >
+                        {#if index === historyList?.length - 1}
+                          n/a
+                        {:else if item?.employeeCount > historyList[index + 1]?.employeeCount}
+                          <span class="text-[#00FC50]">
+                            +{(
+                              ((item?.employeeCount -
+                                historyList[index + 1]?.employeeCount) /
+                                historyList[index + 1]?.employeeCount) *
+                              100
+                            ).toFixed(2)}%
+                          </span>
+                        {:else if item?.employeeCount < historyList[index + 1]?.employeeCount}
+                          <span class="text-[#FF2F1F]">
+                            -{(
+                              (Math.abs(
+                                item?.employeeCount -
+                                  historyList[index + 1]?.employeeCount,
+                              ) /
+                                historyList[index + 1]?.employeeCount) *
+                              100
+                            ).toFixed(2)}%
+                          </span>
+                        {:else}
+                          n/a
+                        {/if}
+                      </td>
+                    </tr>
+                  {/each}
+                </tbody>
+              </table>
+            </div>
           </div>
         {:else}
           <h1

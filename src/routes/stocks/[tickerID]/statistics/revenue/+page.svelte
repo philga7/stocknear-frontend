@@ -120,7 +120,8 @@
         },
       },
       yAxis: {
-        gridLineWidth: 0,
+        gridLineWidth: 1,
+        gridLineColor: "#111827",
         labels: {
           style: { color: "white" },
         },
@@ -137,15 +138,15 @@
         },
         borderRadius: 2,
         borderWidth: 1,
-        borderColor: "#ffffff",
+        borderColor: "#fff",
         formatter: function () {
-          return `<span class="m-auto text-black text-[1rem] font-semibold">${new Date(
+          return `<span class="m-auto text-black text-[1rem] font-[501]">${new Date(
             this?.x,
           ).toLocaleDateString("en-US", {
             year: "numeric",
             month: "short",
             day: "numeric",
-          })}</span> <br> <span class="text-black font-normal">${abbreviateNumber(this.y)}</span>`;
+          })}</span> <br> <span class="text-black font-normal text-sm">${abbreviateNumber(this.y)}</span>`;
         },
       },
 

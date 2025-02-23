@@ -147,7 +147,7 @@
             year: "numeric",
             month: "short",
             day: "numeric",
-          })}</span> <br> <span class="text-black font-normal">${abbreviateNumber(this.y)}</span>`;
+          })}</span> <br> <span class="text-black font-normal text-sm">${abbreviateNumber(this.y)}</span>`;
         },
       },
 
@@ -167,7 +167,6 @@
       },
       yAxis: [
         {
-          gridLineWidth: 0,
           labels: {
             enabled: false,
           },
@@ -176,7 +175,8 @@
           },
         },
         {
-          gridLineWidth: 0,
+          gridLineWidth: 1,
+          gridLineColor: "#111827",
           labels: {
             enabled: false,
           },
