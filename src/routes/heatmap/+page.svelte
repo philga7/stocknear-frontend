@@ -4,11 +4,13 @@
   import SEO from "$lib/components/SEO.svelte";
   import { setCache, getCache } from "$lib/store";
   import { onDestroy } from "svelte";
+  import toast from "svelte-french-toast";
 
   export let data;
+  let isLoaded = false;
+
   let rawData = data?.getData;
   let iframe: HTMLIFrameElement;
-  let iframeLoaded = false;
   let selectedFormat: "png" | "jpeg" | "svg" = "png";
   let selectedTimePeriod = "1D";
   let iframeUrl: string;
@@ -36,47 +38,51 @@
   }
 
   async function downloadPlot(item) {
-    if (item === "PNG") {
-      selectedFormat = "png";
-    } else if (item === "JPG") {
-      selectedFormat = "jpeg";
-    } else {
-      selectedFormat = "svg";
-    }
+    return toast.promise(
+      (async () => {
+        let selectedFormat;
 
-    if (!iframe || !iframeLoaded) return;
+        if (item === "PNG") {
+          selectedFormat = "png";
+        } else if (item === "JPG") {
+          selectedFormat = "jpeg";
+        } else {
+          selectedFormat = "svg";
+        }
 
-    try {
-      const iframeWindow = iframe.contentWindow;
-      if (!iframeWindow) return;
+        if (!iframe || !isLoaded) throw new Error("Iframe not ready");
 
-      const Plotly = (iframeWindow as any).Plotly;
-      if (!Plotly) throw new Error("Plotly not found in iframe");
+        const iframeWindow = iframe.contentWindow;
+        if (!iframeWindow) throw new Error("Iframe window not available");
 
-      const plotDiv =
-        iframe.contentDocument?.querySelector(".plotly-graph-div");
-      if (!plotDiv) throw new Error("Plotly div not found");
+        const Plotly = iframeWindow.Plotly;
+        if (!Plotly) throw new Error("Plotly not found in iframe");
 
-      // Configure image options based on format
-      const options = {
-        format: selectedFormat,
-        width: 1200,
-        height: 800,
-      };
+        const plotDiv =
+          iframe.contentDocument?.querySelector(".plotly-graph-div");
+        if (!plotDiv) throw new Error("Plotly div not found");
 
-      // Get image data URL
-      const imageData = await Plotly.toImage(plotDiv, options);
+        const options = {
+          format: selectedFormat,
+          width: 1200,
+          height: 800,
+        };
 
-      // Create download link
-      const link = document.createElement("a");
-      link.href = imageData;
-      link.download = `sp500-heatmap-${selectedTimePeriod}`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (error) {
-      console.error("Download failed:", error);
-    }
+        const imageData = await Plotly.toImage(plotDiv, options);
+
+        const link = document.createElement("a");
+        link.href = imageData;
+        link.download = `sp500-heatmap-${selectedTimePeriod}`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      })(),
+      {
+        loading: "Downloading heatmap...",
+        success: "Heatmap downloaded!",
+        error: "Download failed. Try again.",
+      },
+    );
   }
 
   onDestroy(() => {
@@ -86,15 +92,13 @@
   $: {
     if (selectedTimePeriod && typeof window !== "undefined") {
       (async () => {
-        await getHeatMap();
+        isLoaded = false;
+        getHeatMap();
+        isLoaded = true;
       })();
     }
   }
 </script>
-
-<svelte:head>
-  <script src="https://cdn.plot.ly/plotly-2.18.0.min.js" defer></script>
-</svelte:head>
 
 <SEO
   title="S&P 500 Stock Market Heatmap"
@@ -212,7 +216,7 @@
                         <div class="flex items-center">
                           <button
                             on:click={() => downloadPlot(item)}
-                            disabled={!iframeLoaded}
+                            disabled={!isLoaded}
                             class="cursor-pointer text-white"
                           >
                             <span class="mr-8">Download {item}</span>
@@ -226,13 +230,26 @@
             </div>
           </div>
           <div class="w-full min-h-screen bg-[#09090B] overflow-hidden">
-            {#if rawData}
-              <iframe
-                bind:this={iframe}
-                src={iframeUrl}
-                class="w-full h-screen border-none"
-                on:load={() => (iframeLoaded = true)}
-              />
+            {#if isLoaded}
+              {#if rawData}
+                <iframe
+                  bind:this={iframe}
+                  src={iframeUrl}
+                  class="w-full h-screen border-none"
+                />
+              {/if}
+            {:else}
+              <div class="flex justify-center items-center h-80">
+                <div class="relative">
+                  <label
+                    class="bg-secondary rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                  >
+                    <span
+                      class="loading loading-spinner loading-md text-gray-400"
+                    ></span>
+                  </label>
+                </div>
+              </div>
             {/if}
           </div>
         </main>
