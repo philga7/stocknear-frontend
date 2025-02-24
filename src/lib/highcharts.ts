@@ -1,5 +1,5 @@
 import Highcharts from 'highcharts';
-//import { browser } from '$app/environment';
+import { browser } from '$app/environment';
 
 /*
 if (browser) {
@@ -12,6 +12,15 @@ if (browser) {
   });
 }
   */
+
+
+if (browser) {
+Highcharts.setOptions({
+  lang: {
+    numericSymbols: ['k', 'M', 'B', 'T', 'P', 'E']
+  }
+});
+}
 
 export default (node, config) => {
   const redraw = true;

@@ -1,17 +1,12 @@
 <script lang="ts">
+  import { displayCompanyName, stockTicker } from "$lib/store";
   import {
-    numberOfUnreadNotification,
-    displayCompanyName,
-    stockTicker,
-  } from "$lib/store";
-  import { abbreviateNumber, monthNames } from "$lib/utils";
-
-  import { Chart } from "svelte-echarts";
-  import { init, use } from "echarts/core";
-  import { BarChart } from "echarts/charts";
-  import { GridComponent, TooltipComponent } from "echarts/components";
-  import { CanvasRenderer } from "echarts/renderers";
-  use([BarChart, GridComponent, TooltipComponent, CanvasRenderer]);
+    abbreviateNumber,
+    monthNames,
+    removeCompanyStrings,
+  } from "$lib/utils";
+  import SEO from "$lib/components/SEO.svelte";
+  import highcharts from "$lib/highcharts.ts";
 
   export let data;
 
@@ -26,8 +21,7 @@
         ?.trim(),
     ) || [];
 
-  let isLoaded = false;
-  let optionsData;
+  let config = null;
 
   let rawData = data?.getBusinessMetrics?.revenue?.history;
 
@@ -43,91 +37,115 @@
   }
 
   function plotData() {
+    // First, sort and filter your dataset just like before.
     const plotDataset = [...dataset]?.sort(
-      (a, b) => new Date(a?.date) - new Date(b?.date),
+      (a, b) => new Date(a.date) - new Date(b.date),
     );
     const xData = plotDataset
-      ?.filter((item) => item?.value !== null) // Filter out items where value is null
-      .map((item) => item?.date); // Map to the date property
+      .filter((item) => item.value !== null) // Filter out null values
+      .map((item) => item.date); // Get the date strings
 
-    let valueList = [];
-    for (let i = 0; i < plotDataset?.length; i++) {
-      if (plotDataset[i]?.value !== null) {
-        valueList.push(plotDataset[i]?.value);
+    const valueList = [];
+    for (let i = 0; i < plotDataset.length; i++) {
+      if (plotDataset[i].value !== null) {
+        valueList.push(plotDataset[i].value);
       }
     }
 
+    // Build the Highcharts configuration object.
     const options = {
-      animation: false,
-      grid: {
-        left: "5%",
-        right: "5%",
-        bottom: "2%",
-        top: "10%",
-        containLabel: true,
+      credits: {
+        enabled: false,
+      },
+      chart: {
+        type: "column",
+        backgroundColor: "#09090B",
+        plotBackgroundColor: "#09090B",
+        height: 360, // Set the maximum height for the chart
+        animation: false,
+      },
+      title: {
+        text: `<h3 class="mt-3 mb-1">${removeCompanyStrings($displayCompanyName)} Revenue by ${convertToTitleCase(data?.getParams)}</h3>`,
+        style: {
+          color: "white",
+          // Using inline CSS for margin-top and margin-bottom
+        },
+        useHTML: true, // Enable HTML to apply custom class styling
       },
       xAxis: {
-        type: "category",
-        boundaryGap: false,
-        data: xData,
-        axisLabel: {
-          formatter: function (value) {
-            const dateParts = value.split("-");
-            const year = dateParts[0].substring(2); // Extracting the last two digits of the year
-            const monthIndex = parseInt(dateParts[1]) - 1; // Months are zero-indexed in JavaScript Date objects
-            return `${monthNames[monthIndex]} '${year} `;
+        categories: xData,
+        labels: {
+          formatter: function () {
+            // 'this.value' is the date string (e.g., "YYYY-MM-DD")
+            const dateParts = this.value.split("-");
+            const year = dateParts[0].substring(2); // last two digits of year
+            const monthIndex = parseInt(dateParts[1], 10) - 1;
+            return `${monthNames[monthIndex]} '${year}`;
           },
-          color: "#fff",
-          interval: 0, // Show all labels
-          rotate: 45, // Rotate labels for better readability
-          fontSize: 12, // Adjust font size if needed
+          style: {
+            color: "#fff",
+            fontSize: "12px",
+          },
+          rotation: 45, // Rotate labels for better readability
+        },
+        tickmarkPlacement: "on",
+      },
+      yAxis: {
+        gridLineWidth: 1,
+        gridLineColor: "#111827",
+        labels: {
+          style: { color: "white" },
+        },
+        title: { text: null },
+        opposite: true,
+      },
+      tooltip: {
+        useHTML: true,
+        backgroundColor: "#fff",
+        style: {
+          color: "black",
+          fontSize: "16px",
+          padding: "10px",
+        },
+        borderRadius: 2,
+        borderWidth: 1,
+        borderColor: "#fff",
+        formatter: function () {
+          return `<span class="m-auto text-black text-[1rem] font-[501]">${new Date(
+            this?.x,
+          ).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })}</span> <br> <span class="text-black font-normal text-sm">${abbreviateNumber(this.y)}</span>`;
         },
       },
-      yAxis: [
-        {
-          type: "value",
-          splitLine: {
-            show: false, // Disable x-axis grid lines
-          },
-
-          axisLabel: {
-            show: false, // Hide y-axis labels
+      plotOptions: {
+        series: {
+          color: "white",
+          animation: false,
+          dataLabels: {
+            enabled: false,
+            color: "white",
+            style: {
+              fontSize: "13px",
+              fontWeight: "bold",
+            },
+            formatter: function () {
+              return abbreviateNumber(this?.y);
+            },
           },
         },
-      ],
+      },
       series: [
         {
           name: "Revenue",
           data: valueList,
-          type: "bar",
-          smooth: true,
-          symbol: "none",
-          barWidth: "60%",
-          itemStyle: {
-            color: "#fff",
-          },
+          color: "#fff",
         },
       ],
-      tooltip: {
-        trigger: "axis",
-        hideDelay: 100,
-        borderColor: "#969696", // Black border color
-        borderWidth: 1, // Border width of 1px
-        backgroundColor: "#313131", // Optional: Set background color for contrast
-        textStyle: {
-          color: "#fff", // Optional: Text color for better visibility
-        },
-        formatter: function (params) {
-          const date = params[0].name; // Get the date from the x-axis value
-          const dateParts = date.split("-");
-          const year = dateParts[0];
-          const monthIndex = parseInt(dateParts[1]) - 1;
-          const day = dateParts[2];
-          const formattedDate = `${monthNames[monthIndex]} ${day}, ${year}`;
-
-          // Return the tooltip content
-          return `${formattedDate}<br/> Revenue: ${abbreviateNumber(params[0].value)}`;
-        },
+      legend: {
+        enabled: false,
       },
     };
 
@@ -135,12 +153,12 @@
   }
 
   $: {
-    if ($stockTicker && data?.getParams && typeof window !== "undefined") {
-      isLoaded = false;
+    if ($stockTicker && data?.getParams) {
       dataset = [];
       tableList = [];
       // Find the index of the current getParams value in the names array
-      const index = names?.indexOf(data.getParams);
+      const index = names?.indexOf(data.getParams?.toLowerCase());
+
       dataset = rawData?.map((entry) => ({
         date: entry.date,
         value: index !== -1 ? entry.value[index] : null,
@@ -153,179 +171,124 @@
         (a, b) => new Date(b?.date) - new Date(a?.date),
       );
 
-      optionsData = plotData();
-      isLoaded = true;
+      config = plotData();
     }
   }
 </script>
 
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""}
-    {$displayCompanyName} ({$stockTicker}) Revenue Breakdown · Stocknear
-  </title>
-  <meta name="description" content={`Revenue & Geographic Breakdown`} />
-  <meta
-    property="og:title"
-    content={`${$displayCompanyName} (${$stockTicker}) Revenue Breakdown · Stocknear`}
-  />
-  <meta property="og:description" content={`Revenue & Geographic Breakdown`} />
-  <meta property="og:type" content="website" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta
-    name="twitter:title"
-    content={`${$displayCompanyName} (${$stockTicker}) Revenue Breakdown · Stocknear`}
-  />
-  <meta name="twitter:description" content={`Revenue & Geographic Breakdown`} />
-</svelte:head>
+<SEO
+  title={`${removeCompanyStrings($displayCompanyName)} Business Metrics & Revenue Breakdown`}
+  description={`View unique business metrics for ${$displayCompanyName} (${$stockTicker}) stock, including revenue by segment, gross margin by type, gross profit by type.`}
+/>
 
 <section class="bg-default w-full overflow-hidden text-white h-full">
   <div class="w-full flex justify-center w-full sm-auto h-full overflow-hidden">
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"
     >
-      {#if isLoaded}
-        <main class="w-full">
-          <div class="sm:pl-7 sm:pb-7 sm:pt-7 m-auto mt-2 sm:mt-0 w-full">
-            <div class="mb-3">
-              <h1 class="text-2xl text-gray-200 font-bold">
-                {convertToTitleCase(data?.getParams)} Revenue
-              </h1>
-            </div>
+      <main class="w-full">
+        <div class="sm:pl-7 sm:pb-7 sm:pt-7 m-auto mt-2 sm:mt-0 w-full">
+          <div class="mb-3">
+            <h1 class="text-2xl text-gray-200 font-bold">
+              {convertToTitleCase(data?.getParams)} Revenue
+            </h1>
+          </div>
 
-            {#if rawData?.length !== 0}
-              <div class="app w-full">
-                <Chart {init} options={optionsData} class="chart" />
-              </div>
+          {#if rawData?.length !== 0}
+            <div
+              class="chart mt-5 sm:mt-0 border border-gray-800 rounded"
+              use:highcharts={config}
+            ></div>
 
-              <h2 class="mt-10 text-xl text-gray-200 font-bold">History</h2>
+            <h2 class="mt-5 text-xl sm:text-2xl text-white font-bold">
+              History
+            </h2>
 
-              <div class="w-full overflow-x-scroll">
-                <table
-                  class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto mt-4"
-                >
-                  <thead class="bg-default">
-                    <tr class="border-b border-gray-800">
-                      <th
-                        class="text-white font-semibold text-start text-sm sm:text-[1rem]"
-                        >Quarter</th
-                      >
-                      <th
-                        class="text-white font-semibold text-end text-sm sm:text-[1rem]"
-                        >Value</th
-                      >
-                      <th
-                        class="text-white font-semibold text-end text-sm sm:text-[1rem]"
-                      >
-                        Change
-                      </th>
-                      <th
-                        class="text-white font-semibold text-end text-sm sm:text-[1rem]"
-                        >Growth</th
-                      >
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {#each tableList as item, index}
-                      <!-- row -->
-                      <tr class=" odd:bg-odd border-b border-gray-800">
-                        <td
-                          class="text-white font-medium text-sm sm:text-[1rem] whitespace-nowrap"
-                        >
-                          {new Date(item?.date ?? null)?.toLocaleString(
-                            "en-US",
-                            {
-                              month: "short",
-                              day: "numeric",
-                              year: "numeric",
-                            },
-                          )}
-                        </td>
-
-                        <td
-                          class="text-white text-sm sm:text-[1rem] text-right whitespace-nowrap"
-                        >
-                          {@html item?.value !== null &&
-                          item?.value !== undefined
-                            ? abbreviateNumber(item?.value, false, true)
-                            : "n/a"}
-                        </td>
-
-                        <td
-                          class="text-white text-sm sm:text-[1rem] text-right whitespace-nowrap"
-                        >
-                          {#if Number(item?.value - tableList[index + 1]?.value)}
-                            {@html abbreviateNumber(
-                              item?.value - tableList[index + 1]?.value,
-                              false,
-                              true,
-                            )}
-                          {:else}
-                            n/a
-                          {/if}
-                        </td>
-
-                        <td
-                          class="text-white text-sm sm:text-[1rem] whitespace-nowrap font-medium text-end"
-                        >
-                          {#if item?.valueGrowth > 0}
-                            <span class="text-[#00FC50]">
-                              +{item?.valueGrowth?.toFixed(2)}%
-                            </span>
-                          {:else if item?.valueGrowth < 0}
-                            <span class="text-[#FF2F1F]">
-                              {item?.valueGrowth?.toFixed(2)}%
-                            </span>
-                          {:else}
-                            n/a
-                          {/if}
-                        </td>
-                      </tr>
-                    {/each}
-                  </tbody>
-                </table>
-              </div>
-            {:else}
-              <h2
-                class="mt-16 flex justify-center items-center text-2xl font-medium text-white mb-5 m-auto"
+            <div class="w-full overflow-x-scroll">
+              <table
+                class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto mt-4"
               >
-                No data available
-              </h2>
-            {/if}
-          </div>
-        </main>
-      {:else}
-        <div class="w-full flex justify-center items-center h-80">
-          <div class="relative">
-            <label
-              class="bg-odd rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                <thead class="bg-default">
+                  <tr class="border-b border-gray-800">
+                    <th class="text-white font-semibold text-start text-sm"
+                      >Quarter</th
+                    >
+                    <th class="text-white font-semibold text-end text-sm"
+                      >Value</th
+                    >
+                    <th class="text-white font-semibold text-end text-sm">
+                      Change
+                    </th>
+                    <th class="text-white font-semibold text-end text-sm"
+                      >Growth</th
+                    >
+                  </tr>
+                </thead>
+                <tbody>
+                  {#each tableList as item, index}
+                    <!-- row -->
+                    <tr class=" odd:bg-odd border-b border-gray-800">
+                      <td
+                        class="text-white font-medium text-sm sm:text-[1rem] whitespace-nowrap"
+                      >
+                        {new Date(item?.date ?? null)?.toLocaleString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })}
+                      </td>
+
+                      <td
+                        class="text-white text-sm sm:text-[1rem] text-right whitespace-nowrap"
+                      >
+                        {@html item?.value !== null && item?.value !== undefined
+                          ? abbreviateNumber(item?.value, false, true)
+                          : "n/a"}
+                      </td>
+
+                      <td
+                        class="text-white text-sm sm:text-[1rem] text-right whitespace-nowrap"
+                      >
+                        {#if Number(item?.value - tableList[index + 1]?.value)}
+                          {@html abbreviateNumber(
+                            item?.value - tableList[index + 1]?.value,
+                            false,
+                            true,
+                          )}
+                        {:else}
+                          n/a
+                        {/if}
+                      </td>
+
+                      <td
+                        class="text-white text-sm sm:text-[1rem] whitespace-nowrap font-medium text-end"
+                      >
+                        {#if item?.valueGrowth > 0}
+                          <span class="text-[#00FC50]">
+                            +{item?.valueGrowth?.toFixed(2)}%
+                          </span>
+                        {:else if item?.valueGrowth < 0}
+                          <span class="text-[#FF2F1F]">
+                            {item?.valueGrowth?.toFixed(2)}%
+                          </span>
+                        {:else}
+                          n/a
+                        {/if}
+                      </td>
+                    </tr>
+                  {/each}
+                </tbody>
+              </table>
+            </div>
+          {:else}
+            <h2
+              class="mt-16 flex justify-center items-center text-2xl font-medium text-white mb-5 m-auto"
             >
-              <span class="loading loading-spinner loading-md text-gray-400"
-              ></span>
-            </label>
-          </div>
+              No data available
+            </h2>
+          {/if}
         </div>
-      {/if}
+      </main>
     </div>
   </div>
 </section>
-
-<style>
-  .app {
-    height: 400px;
-    width: 100%;
-  }
-
-  @media (max-width: 560px) {
-    .app {
-      width: 100%;
-      height: 300px;
-    }
-  }
-
-  .chart {
-    width: 100%;
-  }
-</style>
