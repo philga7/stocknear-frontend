@@ -9,20 +9,15 @@
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
-  import { onMount } from "svelte";
-  import { init, use } from "echarts/core";
-  import { BarChart, LineChart } from "echarts/charts";
-  import { GridComponent, TooltipComponent } from "echarts/components";
-  import { CanvasRenderer } from "echarts/renderers";
-  import { Chart } from "svelte-echarts";
+  import highcharts from "$lib/highcharts.ts";
 
-  use([BarChart, LineChart, GridComponent, TooltipComponent, CanvasRenderer]);
+  import { onMount } from "svelte";
 
   export let data;
   export let ticker = null;
 
   let isLoaded = false;
-  let optionsData = null;
+  let configContract = null;
 
   let optionHistoryList = [];
   let selectGraphType = "Vol/OI";
@@ -43,7 +38,7 @@
 
   let displayList = rawData?.slice(0, 150) || [];
 
-  let options = plotData();
+  let configUnusual = plotData();
 
   function daysLeft(targetDate) {
     const targetTime = new Date(targetDate).getTime();
@@ -118,170 +113,198 @@
       (a, b) => new Date(a?.date) - new Date(b?.date),
     );
 
-    // Map to aggregate call size, put size, and premiums for each date
+    // Aggregate call size, put size, and premiums for each date
     const aggregatedData = {};
 
     history?.forEach((item) => {
       const { date, optionType, size, premium } = item;
 
-      // Initialize the date in aggregatedData if it doesn't exist
       if (!aggregatedData[date]) {
         aggregatedData[date] = { callSize: 0, putSize: 0, totalPremium: 0 };
       }
 
-      // Aggregate call size, put size, and premium
       if (optionType === "Calls") {
         aggregatedData[date].callSize += size;
       } else if (optionType === "Puts") {
         aggregatedData[date].putSize += size;
       }
 
-      // Add premium
       aggregatedData[date].totalPremium += premium;
     });
 
-    // Extract dates, call data, put data, premiums, and price list
+    // Build data arrays from the aggregated data
     dates = Object.keys(aggregatedData);
     callData = dates.map((date) => aggregatedData[date].callSize);
     putData = dates.map((date) => aggregatedData[date].putSize);
     totalPremiums = dates.map((date) => aggregatedData[date].totalPremium);
 
-    // Match historical prices for the same dates
+    // Get the historical prices for matching dates
     priceList = dates.map((date) => {
       const matchingData = data?.getHistoricalPrice?.find(
         (d) => d?.time === date,
       );
-      return matchingData?.close || null; // Use `null` if no match is found
+      return matchingData?.close || null;
     });
 
+    // Highcharts configuration options
     const options = {
-      animation: false,
-      tooltip: {
-        trigger: "axis",
-        hideDelay: 100,
-        borderColor: "#969696", // Black border color
-        borderWidth: 1, // Border width of 1px
-        backgroundColor: "#313131", // Optional: Set background color for contrast
-        textStyle: {
-          color: "#fff", // Optional: Text color for better visibility
+      credits: {
+        enabled: false,
+      },
+      chart: {
+        // Removed global type so each series can define its own type.
+        backgroundColor: "#09090B",
+        plotBackgroundColor: "#09090B",
+        height: 360,
+        animation: false,
+      },
+      title: {
+        text: `<h3 class="mt-3 mb-1 ">${ticker} Unusual Options Activity</h3>`,
+        style: {
+          color: "white",
+          // Using inline CSS for margin-top and margin-bottom
         },
-        formatter: function (params) {
-          // Get the timestamp from the first parameter
-          const timestamp = params[0].axisValue;
-
-          // Initialize result with timestamp
-          let result = timestamp + "<br/>";
-
-          // Add each series data
-          params?.forEach((param) => {
-            const marker =
-              '<span style="display:inline-block;margin-right:4px;' +
-              "border-radius:10px;width:10px;height:10px;background-color:" +
-              param.color +
-              '"></span>';
-            result +=
-              marker +
-              param.seriesName +
-              ": " +
-              abbreviateNumberWithColor(param.value, false, true) +
-              "<br/>";
-          });
-
-          return result;
+        useHTML: true, // Enable HTML to apply custom class styling
+      },
+      xAxis: {
+        type: "datetime",
+        endOnTick: false,
+        categories: dates,
+        crosshair: {
+          color: "#fff", // Set the color of the crosshair line
+          width: 1, // Adjust the line width as needed
+          dashStyle: "Solid",
         },
-        axisPointer: {
-          lineStyle: {
+        labels: {
+          style: {
             color: "#fff",
           },
-        },
-      },
-      silent: true,
-      grid: {
-        left: $screenWidth < 640 ? "5%" : "2%",
-        right: $screenWidth < 640 ? "5%" : "2%",
-        bottom: "10%",
-        containLabel: true,
-      },
-      xAxis: [
-        {
-          type: "category",
-          data: dates,
-          axisLabel: {
-            color: "#fff",
-
-            formatter: function (value) {
-              // Assuming dates are in the format 'yyyy-mm-dd'
-              const dateParts = value.split("-");
-              const monthIndex = parseInt(dateParts[1]) - 1; // Months are zero-indexed in JavaScript Date objects
-              const year = parseInt(dateParts[0]);
-              const day = parseInt(dateParts[2]);
-              return `${day} ${monthNames[monthIndex]} ${year}`;
-            },
+          distance: 20, // Increases space between label and axis
+          formatter: function () {
+            const date = new Date(this.value);
+            return date.toLocaleDateString("en-US", {
+              month: "short",
+              year: "numeric",
+            });
           },
         },
-      ],
+        tickPositioner: function () {
+          // Create custom tick positions with wider spacing
+          const positions = [];
+          const info = this.getExtremes();
+          const tickCount = 5; // Reduce number of ticks displayed
+          const interval = Math.floor((info.max - info.min) / tickCount);
+
+          for (let i = 0; i <= tickCount; i++) {
+            positions.push(info.min + i * interval);
+          }
+          return positions;
+        },
+      },
       yAxis: [
         {
-          type: "value",
-          splitLine: {
-            show: false, // Disable x-axis grid lines
+          gridLineWidth: 1,
+          gridLineColor: "#111827",
+          labels: {
+            style: { color: "white" },
           },
-          axisLabel: {
-            show: false, // Hide y-axis labels
-          },
+          title: { text: null },
+          opposite: true,
         },
         {
-          type: "value",
-          splitLine: {
-            show: false, // Disable x-axis grid lines
+          title: {
+            text: null,
           },
-          position: "right",
-          axisLabel: {
-            show: false, // Hide y-axis labels
+          gridLineWidth: 0,
+          labels: {
+            enabled: false,
           },
         },
       ],
+      tooltip: {
+        shared: true,
+        useHTML: true,
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
+        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        borderWidth: 1,
+        style: {
+          color: "#fff",
+          fontSize: "16px",
+          padding: "10px",
+        },
+        borderRadius: 4,
+        formatter: function () {
+          // Format the x value to display time in hh:mm format
+          let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]">${new Date(
+            this?.x,
+          ).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })}</span><br>`;
+
+          // Loop through each point in the shared tooltip
+          this.points.forEach((point) => {
+            tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
+          <span class="text-white font-normal text-sm" style="color:${point.color}">${abbreviateNumber(
+            point.y,
+          )}</span><br>`;
+          });
+
+          return tooltipContent;
+        },
+      },
       series: [
         {
           name: "Call",
-          type: "bar",
-          stack: "Put-Call Ratio",
-          emphasis: {
-            focus: "series",
-          },
+          type: "column",
           data: callData,
-          itemStyle: {
-            color: "#00FC50",
+          color: "#00FC50",
+          borderColor: "#00FC50", // Match border color
+          marker: {
+            enabled: false,
           },
+          animation: false,
         },
         {
           name: "Put",
-          type: "bar",
-          stack: "Put-Call Ratio",
-          emphasis: {
-            focus: "series",
-          },
+          type: "column",
           data: putData,
-          itemStyle: {
-            color: "#EE5365", //'#7A1C16'
+          color: "#EE5365",
+          borderColor: "#EE5365", // Match border color
+          marker: {
+            enabled: false,
           },
+          animation: false,
         },
         {
-          name: "Price", // Name for the line chart
-          type: "line", // Type of the chart (line)
-          yAxisIndex: 1, // Use the second y-axis on the right
-          data: priceList, // iv60Data (assumed to be passed as priceList)
-          itemStyle: {
-            color: "#fff", // Choose a color for the line (gold in this case)
+          name: "Price",
+          type: "area",
+          yAxis: 1,
+          data: priceList,
+          color: "#fff",
+          lineWidth: 1,
+          marker: {
+            enabled: false,
           },
-          lineStyle: {
-            width: 2, // Set the width of the line
+          animation: false,
+          fillColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+              [0, "rgba(255, 255, 255, 0.1)"],
+              [1, "rgba(255, 255, 255, 0.001)"],
+            ],
           },
-          smooth: true, // Optional: make the line smooth
-          showSymbol: false,
+          // If you prefer a smooth (curved) line, you can use the "spline" type:
+          // type: "spline"
         },
       ],
+
+      legend: {
+        enabled: false,
+      },
     };
+
     return options;
   }
 
@@ -302,174 +325,227 @@
   });
 
   function plotContractHistory() {
-    let data = rawDataHistory?.sort(
-      (a, b) => new Date(a?.date) - new Date(b?.date),
-    );
-    let dates = data?.map((item) => item?.date);
-    let avgPrice = data?.map((item) => item?.mark);
-    let priceList = data?.map((item) => item?.price);
+    // Ensure rawDataHistory exists and sort it by date
+    const sortedData =
+      rawDataHistory?.sort((a, b) => new Date(a?.date) - new Date(b?.date)) ||
+      [];
 
-    let volumeList = data?.map((item) => item?.volume);
-    let oiList = data?.map((item) => item?.open_interest);
-    let ivList = data?.map((item) =>
-      Math?.floor(item?.implied_volatility * 100),
-    );
+    // Filter out data points that have an undefined price so they don't appear in any series
+    const filteredData = sortedData.filter((item) => item?.price !== undefined);
 
-    const createLineSeries = (name, data, color, yAxisIndex = 1) => ({
-      name,
-      type: "line",
-      yAxisIndex,
-      data,
-      itemStyle: { color },
-      lineStyle: { width: 2 },
-      smooth: true,
-      showSymbol: false,
-    });
-
-    const createBarSeries = (name, data, color, stack = null) => ({
-      name,
-      type: "bar",
-      stack,
-      data,
-      itemStyle: { color },
-      emphasis: { focus: "series" },
-    });
-
+    // Build series based on the selected graph type, using filteredData
     let series = [];
-    if (selectGraphType === "Vol/OI") {
+    if (selectGraphType == "Vol/OI") {
       series = [
-        createBarSeries("Volume", volumeList, "#FD7E14"),
-        createBarSeries("OI", oiList, "#33B890"),
-        createLineSeries("Avg Fill", avgPrice, "#FAD776"),
-        createLineSeries("Stock Price", priceList, "#fff", 2),
+        {
+          name: "Volume",
+          type: "column",
+          data: filteredData.map((item) => [
+            new Date(item.date).getTime(),
+            item.volume,
+          ]),
+          color: "#FD7E14",
+          borderColor: "#FD7E14",
+          borderRadius: "2px",
+          yAxis: 0,
+          animation: false,
+        },
+        {
+          name: "OI",
+          type: "column",
+          data: filteredData.map((item) => [
+            new Date(item.date).getTime(),
+            item.open_interest,
+          ]),
+          color: "#33B890",
+          borderColor: "#33B890",
+          borderRadius: "2px",
+          yAxis: 0,
+          animation: false,
+        },
+        {
+          name: "Avg Fill",
+          type: "spline", // smooth line
+          data: filteredData.map((item) => [
+            new Date(item.date).getTime(),
+            item.mark,
+          ]),
+          color: "#FAD776",
+          yAxis: 2,
+          animation: false,
+          marker: { enabled: false },
+        },
+        {
+          name: "Price",
+          type: "spline",
+          yAxis: 1,
+          data: filteredData.map((item) => [
+            new Date(item.date).getTime(),
+            item.price,
+          ]),
+          color: "#fff",
+          lineWidth: 1,
+          marker: { enabled: false },
+          animation: false,
+        },
       ];
     } else {
       series = [
-        createLineSeries("IV", ivList, "#B24BF3", 0),
-        createLineSeries("Avg Fill", avgPrice, "#FAD776"),
-        createLineSeries("Stock Price", priceList, "#fff", 2),
+        {
+          name: "IV",
+          type: "spline",
+          data: filteredData.map((item) => [
+            new Date(item.date).getTime(),
+            Math.floor(item.implied_volatility * 100),
+          ]),
+          color: "#B24BF3",
+          yAxis: 0,
+          animation: false,
+          marker: { enabled: false },
+        },
+        {
+          name: "Avg Fill",
+          type: "spline",
+          data: filteredData.map((item) => [
+            new Date(item.date).getTime(),
+            item.mark,
+          ]),
+          color: "#FAD776",
+          yAxis: 2,
+          lineWidth: 1,
+          animation: false,
+          marker: { enabled: false },
+        },
+        {
+          name: "Price",
+          type: "spline",
+          yAxis: 1,
+          data: filteredData.map((item) => [
+            new Date(item.date).getTime(),
+            item.price,
+          ]),
+          color: "#fff",
+          lineWidth: 1,
+          marker: { enabled: false },
+          animation: false,
+        },
       ];
     }
 
+    // Highcharts configuration object
     const options = {
-      animation: false,
-      tooltip: {
-        trigger: "axis",
-        hideDelay: 100,
-        borderColor: "#969696", // Black border color
-        borderWidth: 1, // Border width of 1px
-        backgroundColor: "#313131", // Optional: Set background color for contrast
-        textStyle: {
-          color: "#fff", // Optional: Text color for better visibility
-        },
-        formatter: function (params) {
-          // Get the timestamp from the first parameter
-          const timestamp = params[0].axisValue;
-
-          // Find the matching data point in rawDataHistory based on the date
-          const rawDataPoint = rawDataHistory.find(
-            (item) => item.date === timestamp,
-          );
-
-          // Initialize result with timestamp
-          let result = timestamp + "<br/>";
-
-          // Sort params to ensure Vol appears last
-          params.sort((a, b) => {
-            if (a.seriesName === "Vol") return 1;
-            if (b.seriesName === "Vol") return -1;
-            return 0;
-          });
-
-          // Loop through each series data
-          params?.forEach((param) => {
-            const marker =
-              '<span style="display:inline-block;margin-right:4px;' +
-              "border-radius:10px;width:10px;height:10px;background-color:" +
-              param.color +
-              '"></span>';
-
-            // Check if the series is for IV and add a '%' sign
-            const value =
-              param.seriesName === "IV"
-                ? `${param.value}%`
-                : (param.value?.toLocaleString("en-US") ?? "n/a");
-
-            result += marker + param.seriesName + ": " + value + "<br/>";
-          });
-
-          if (rawDataPoint?.dte !== undefined) {
-            result += `Days to Expiration : ${rawDataPoint.dte}<br/>`;
-          }
-
-          return result;
-        },
-
-        axisPointer: {
-          lineStyle: {
-            color: "#fff",
-          },
-        },
+      chart: {
+        backgroundColor: "#09090B",
+        animation: false,
+        height: 360,
       },
-
-      silent: true,
-      grid: {
-        left: $screenWidth < 640 ? "5%" : "2%",
-        right: $screenWidth < 640 ? "5%" : "2%",
-        bottom: "20%",
-        containLabel: true,
+      credits: { enabled: false },
+      title: {
+        text: `<h3 class="mt-3 mb-1">Contract History</h3>`,
+        useHTML: true,
+        style: { color: "white" },
       },
-      xAxis: [
-        {
-          type: "category",
-          data: dates,
-          axisLabel: {
-            color: "#fff",
-
-            formatter: function (value) {
-              // Assuming dates are in the format 'yyyy-mm-dd'
-              const dateParts = value.split("-");
-              const monthIndex = parseInt(dateParts[1]) - 1; // Months are zero-indexed in JavaScript Date objects
-              const year = parseInt(dateParts[0]);
-              const day = parseInt(dateParts[2]);
-              return `${day} ${monthNames[monthIndex]} ${year}`;
+      // Disable markers globally on hover for all series
+      plotOptions: {
+        series: {
+          marker: {
+            enabled: false,
+            states: {
+              hover: {
+                enabled: false,
+              },
             },
           },
         },
-      ],
+      },
+      xAxis: {
+        type: "datetime",
+        endOnTick: false,
+        crosshair: {
+          color: "#fff",
+          width: 1,
+          dashStyle: "Solid",
+        },
+        labels: {
+          style: { color: "#fff" },
+          distance: 20,
+          formatter: function () {
+            return new Date(this.value).toLocaleDateString("en-US", {
+              month: "short",
+              year: "numeric",
+            });
+          },
+        },
+        tickPositioner: function () {
+          const positions = [];
+          const info = this.getExtremes();
+          const tickCount = 5; // Reduce number of ticks displayed
+          const interval = Math.floor((info.max - info.min) / tickCount);
+
+          for (let i = 0; i <= tickCount; i++) {
+            positions.push(info.min + i * interval);
+          }
+          return positions;
+        },
+      },
       yAxis: [
         {
-          type: "value",
-          splitLine: {
-            show: false, // Disable x-axis grid lines
-          },
-          axisLabel: {
-            show: false, // Hide y-axis labels
-          },
+          gridLineWidth: 1,
+          gridLineColor: "#111827",
+          labels: { style: { color: "white" } },
+          title: { text: null },
+          opposite: true,
         },
         {
-          type: "value",
-          splitLine: {
-            show: false, // Disable x-axis grid lines
-          },
-          position: "right",
-          axisLabel: {
-            show: false, // Hide y-axis labels
-          },
+          title: { text: null },
+          gridLineWidth: 0,
+          labels: { enabled: false },
         },
         {
-          type: "value",
-          splitLine: {
-            show: false, // Disable x-axis grid lines
-          },
-          position: "top",
-          axisLabel: {
-            show: false, // Hide y-axis labels
-          },
+          title: { text: null },
+          gridLineWidth: 0,
+          labels: { enabled: false },
+        },
+        {
+          title: { text: null },
+          gridLineWidth: 0,
+          labels: { enabled: false },
         },
       ],
+      tooltip: {
+        shared: true,
+        useHTML: true,
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        borderColor: "rgba(255, 255, 255, 0.2)",
+        borderWidth: 1,
+        style: {
+          color: "#fff",
+          fontSize: "16px",
+          padding: "10px",
+        },
+        borderRadius: 4,
+        formatter: function () {
+          let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]">${new Date(
+            this.x,
+          ).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })}</span><br>`;
+
+          this.points.forEach((point) => {
+            tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
+          <span class="text-white font-normal text-sm" style="color:${point.color}">${abbreviateNumber(
+            point.y,
+          )}</span><br>`;
+          });
+          return tooltipContent;
+        },
+      },
+      legend: { enabled: false },
       series: series,
     };
+
     return options;
   }
 
@@ -524,13 +600,13 @@
       });
 
       rawDataHistory = calculateDTE(rawDataHistory, dateExpiration);
-      optionsData = plotContractHistory();
+      configContract = plotContractHistory();
       rawDataHistory = rawDataHistory?.sort(
         (a, b) => new Date(b?.date) - new Date(a?.date),
       );
       optionHistoryList = rawDataHistory?.slice(0, 20);
     } else {
-      optionsData = null;
+      configContract = null;
     }
 
     isLoaded = true;
@@ -627,9 +703,9 @@
     if (typeof window !== "undefined" && selectGraphType) {
       isLoaded = false;
       if (rawDataHistory?.length > 0) {
-        optionsData = plotContractHistory();
+        configContract = plotContractHistory();
       } else {
-        optionsData = null;
+        configContract = null;
       }
 
       isLoaded = true;
@@ -654,9 +730,11 @@
           text="Unusual Options trades with a premium of at least 1 million dollar from big whales."
         />
 
-        <div class="app w-full">
-          <Chart {init} {options} class="chart" />
-        </div>
+        <div
+          class="mt-5 border border-gray-800 rounded"
+          use:highcharts={configUnusual}
+        ></div>
+
         <div class="w-full overflow-x-scroll text-white">
           <table
             class="w-full table table-sm table-compact bg-table border border-gray-800 rounded-none sm:rounded-md m-auto mt-4 overflow-x-auto"
@@ -683,7 +761,7 @@
                     class="text-sm sm:text-[1rem] text-start whitespace-nowrap flex justify-between"
                   >
                     <span
-                      class="inline-block {item?.optionType === 'Calls'
+                      class="inline-block px-2 {item?.optionType === 'Calls'
                         ? 'text-[#00FC50]'
                         : 'text-[#FF2F1F]'}"
                     >
@@ -693,7 +771,7 @@
                       on:click={() => handleViewData(item)}
                       on:mouseover={() =>
                         getContractHistory(item?.option_symbol)}
-                      class=" cursor-pointer text-[#04D9FF] sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
+                      class="cursor-pointer text-[#04D9FF] sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
                     >
                       {item?.strike}
 
@@ -701,7 +779,7 @@
 
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="inline-block w-4 h-4"
+                        class="inline-block w-4 h-4 -mt-1"
                         viewBox="0 0 512 512"
                         fill="#04D9FF"
                         ><path
@@ -774,13 +852,13 @@
 <dialog
   id="optionDetailsDesktopModal"
   class="modal {$screenWidth < 640
-    ? 'modal-bottom'
+    ? 'modal-bottom '
     : ''} bg-[#000] bg-opacity-[0.8] sm:px-5"
 >
   <div
     class="modal-box w-full {rawDataHistory?.length > 0
       ? 'max-w-7xl'
-      : 'w-full'} rounded-md bg-table border-t sm:border border-gray-600 min-h-48 h-auto"
+      : 'w-full'} rounded-md bg-default border-t sm:border border-gray-800 min-h-48 h-auto"
   >
     <form
       method="dialog"
@@ -811,7 +889,7 @@
     </form>
     {#if rawDataHistory?.length > 0}
       <div
-        class="border-b border-gray-600 w-full mt-2 mb-2 sm:mb-3 sm:mt-3"
+        class="border-b border-gray-800 w-full mt-2 mb-2 sm:mb-3 sm:mt-3"
       ></div>
 
       <div class="hidden sm:flex flex-wrap text-white pb-2">
@@ -842,40 +920,24 @@
         </div>
       </div>
 
-      {#if $screenWidth > 640}
-        <div
-          class="pb-8 sm:pb-2 rounded-md bg-table border border-gray-600 overflow-hidden"
-        >
-          <div class="flex justify-end ml-auto w-fit mr-2 mt-2">
-            {#each ["Vol/OI", "IV"] as item}
-              <label
-                on:click={() => (selectGraphType = item)}
-                class="px-3 py-1.5 mr-2 {selectGraphType === item
-                  ? 'bg-white text-black '
-                  : 'text-white bg-table text-opacity-[0.6] border border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
-              >
-                {item}
-              </label>
-            {/each}
-          </div>
-          <div class="app w-full h-[300px] mt-5">
-            {#if isLoaded}
-              <Chart {init} options={optionsData} class="chart" />
-            {:else}
-              <div class="flex justify-center items-center h-80">
-                <div class="relative">
-                  <label
-                    class="bg-secondary rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                  >
-                    <span class="loading loading-spinner loading-md text-white"
-                    ></span>
-                  </label>
-                </div>
-              </div>
-            {/if}
-          </div>
+      <div class="pb-8 sm:pb-2 rounded-md bg-default overflow-hidden">
+        <div class="flex justify-end ml-auto w-fit mr-2 mt-2">
+          {#each ["Vol/OI", "IV"] as item}
+            <label
+              on:click={() => (selectGraphType = item)}
+              class="px-3 py-1.5 mr-2 {selectGraphType === item
+                ? 'bg-white text-black '
+                : 'text-white bg-default text-opacity-[0.6] border border-gray-800'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+            >
+              {item}
+            </label>
+          {/each}
         </div>
-      {/if}
+        <div
+          class="mt-5 border border-gray-800 rounded"
+          use:highcharts={configContract}
+        ></div>
+      </div>
 
       <div
         bind:this={container}
@@ -1020,21 +1082,3 @@
     <button>close</button>
   </form>
 </dialog>
-
-<style>
-  .app {
-    height: 400px;
-    width: 100%;
-  }
-
-  @media (max-width: 560px) {
-    .app {
-      width: 100%;
-      height: 300px;
-    }
-  }
-
-  .chart {
-    width: 100%;
-  }
-</style>

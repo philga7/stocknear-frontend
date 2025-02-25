@@ -10,6 +10,7 @@
     monthNames,
     removeCompanyStrings,
   } from "$lib/utils";
+  import { goto } from "$app/navigation";
   import highcharts from "$lib/highcharts.ts";
 
   export let data;
