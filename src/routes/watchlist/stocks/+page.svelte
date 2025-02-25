@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { screenWidth, numberOfUnreadNotification, isOpen } from "$lib/store";
+  import { screenWidth, isOpen } from "$lib/store";
   import {
     groupNews,
     groupEarnings,
@@ -7,6 +7,7 @@
     formatTime,
     abbreviateNumber,
     calculateChange,
+    removeCompanyStrings,
   } from "$lib/utils";
   import toast from "svelte-french-toast";
   import { onMount, onDestroy, afterUpdate } from "svelte";
@@ -500,7 +501,7 @@
         groupedEarnings = groupEarnings(earnings);
       } else {
         groupedEarnings = [];
-        groupedEarnings = [];
+        groupedNews = [];
       }
     }
   }
@@ -1818,7 +1819,7 @@
                                 class="flex-grow px-3 py-2 lg:py-1 border-t border-gray-700"
                               >
                                 <div>
-                                  <strong>{item?.name}</strong>
+                                  {removeCompanyStrings(item?.name)}
                                   (<HoverStockChart symbol={item?.symbol} />)
                                   will report
 
