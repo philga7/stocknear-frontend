@@ -17,7 +17,7 @@ if (browser) {
 if (browser) {
 Highcharts.setOptions({
   lang: {
-    numericSymbols: ['k', 'M', 'B', 'T', 'P', 'E']
+    numericSymbols: ['K', 'M', 'B', 'T', 'P', 'E']
   }
 });
 }

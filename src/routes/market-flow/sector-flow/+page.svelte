@@ -283,6 +283,7 @@
         backgroundColor: "#09090B",
         plotBackgroundColor: "#09090B",
         height: 360, // Set the maximum height for the chart
+        width: 970,
         animation: false,
       },
 
@@ -490,14 +491,14 @@
               </p>
 
               <div
-                class="flex flex-row items-center justify-between w-full mt-2 sm:mt-0"
+                class="flex flex-col sm:flex-row items-start sm:items-center sm:justify-between w-full mt-2 sm:mt-0"
               >
-                <div class="text-white text-sm italic mt-5 mb-3">
+                <div class="text-white text-xs sm:text-sm italic mt-5 mb-5">
                   Last Updated: {formatDate(
                     findLastNonNull(marketTideData, "time"),
                   )}
                 </div>
-                <div class="relative inline-block text-left w-fit">
+                <div class="relative inline-block text-left w-fit mb-3 sm:mb-0">
                   <DropdownMenu.Root>
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
