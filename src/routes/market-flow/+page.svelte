@@ -210,21 +210,50 @@
       .sort(compareValues)
       ?.slice(0, 50);
   };
-
   function getPlotOptions() {
     isLoading = true;
-    let dates = marketTideData?.map((item) => item?.time);
-    const priceList = marketTideData?.map((item) =>
-      item?.close !== null ? item?.close : item?.close,
-    );
-    const netCallPremList = marketTideData?.map(
-      (item) => item?.net_call_premium,
-    );
-    const netPutPremList = marketTideData?.map((item) => item?.net_put_premium);
-    const volumeList = marketTideData?.map((item) => item?.net_volume);
 
-    const positiveVolume = volumeList?.map((v) => (v >= 0 ? v : "-"));
-    const negativeVolume = volumeList?.map((v) => (v < 0 ? v : "-"));
+    // Determine the base date (using the first data point, or fallback to today)
+    const baseDate =
+      marketTideData && marketTideData.length
+        ? new Date(marketTideData[0].time)
+        : new Date();
+
+    // Set the fixed start and end times (9:30 and 16:10)
+    const startTime = new Date(
+      baseDate.getFullYear(),
+      baseDate.getMonth(),
+      baseDate.getDate(),
+      9,
+      30,
+    ).getTime();
+    const endTime = new Date(
+      baseDate.getFullYear(),
+      baseDate.getMonth(),
+      baseDate.getDate(),
+      16,
+      10,
+    ).getTime();
+
+    // Create series arrays with x (timestamp) and y values.
+    // This removes the need for xAxis.categories.
+    const priceSeries =
+      marketTideData?.map((item) => ({
+        x: new Date(item.time).getTime(),
+        y: item.close,
+      })) || [];
+
+    const netCallPremSeries =
+      marketTideData?.map((item) => ({
+        x: new Date(item.time).getTime(),
+        y: item.net_call_premium,
+      })) || [];
+
+    const netPutPremSeries =
+      marketTideData?.map((item) => ({
+        x: new Date(item.time).getTime(),
+        y: item.net_put_premium,
+      })) || [];
 
     const options = {
       chart: {
@@ -260,19 +289,18 @@
         formatter: function () {
           // Format the x value to display time in hh:mm format
           let tooltipContent = `<span class="m-auto text-white text-[1rem] font-[501]">${new Date(
-            this?.x,
+            this.x,
           ).toLocaleTimeString("en-US", {
             hour: "2-digit",
             minute: "2-digit",
-            // Uncomment the next line for 12-hour format with AM/PM
-            // hour12: true,
-            // For 24-hour format, either leave it or set hour12: false
           })}</span><br>`;
 
           // Loop through each point in the shared tooltip
           this.points.forEach((point) => {
             tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
-      <span class="text-white font-normal text-sm" style="color:${point.color}">${abbreviateNumberWithColor(point.y)}</span><br>`;
+          <span class="text-white font-normal text-sm" style="color:${point.color}">${abbreviateNumberWithColor(
+            point.y,
+          )}</span><br>`;
           });
 
           return tooltipContent;
@@ -281,27 +309,22 @@
 
       xAxis: {
         type: "datetime",
+        min: startTime, // Force start at 9:30
+        max: endTime, // Force end at 16:10
         crosshair: {
           color: "#fff", // Set the color of the crosshair line
           width: 1, // Adjust the line width as needed
-          dashStyle: "Solid", // You can change the dash style if desired
+          dashStyle: "Solid",
         },
-        endOnTick: false,
-        categories: dates,
         labels: {
           style: {
             color: "#fff",
           },
           distance: 20, // Increases space between label and axis
           formatter: function () {
-            const date = new Date(this.value);
-            return date.toLocaleTimeString("en-US", {
+            return new Date(this.value).toLocaleTimeString("en-US", {
               hour: "2-digit",
               minute: "2-digit",
-              // Uncomment the line below for 12-hour format with AM/PM
-              // hour12: true,
-              // For 24-hour format, you can either leave hour12 as false (default) or set it explicitly:
-              // hour12: false
             });
           },
         },
@@ -310,7 +333,7 @@
           const positions = [];
           const info = this.getExtremes();
           const tickCount = 5; // Reduce number of ticks displayed
-          const interval = Math.floor((info.max - info.min) / tickCount);
+          const interval = (info.max - info.min) / tickCount;
 
           for (let i = 0; i <= tickCount; i++) {
             positions.push(info.min + i * interval);
@@ -345,7 +368,7 @@
         {
           name: "Price",
           type: "spline",
-          data: priceList,
+          data: priceSeries,
           yAxis: 0,
           color: "#fff",
           marker: {
@@ -362,7 +385,7 @@
         {
           name: "Net Call Prem",
           type: "spline",
-          data: netCallPremList,
+          data: netCallPremSeries,
           yAxis: 1,
           color: "#90EE90",
           marker: {
@@ -377,7 +400,7 @@
         {
           name: "Net Put Prem",
           type: "spline",
-          data: netPutPremList,
+          data: netPutPremSeries,
           yAxis: 1,
           color: "#FF6B6B",
           marker: {
@@ -398,9 +421,11 @@
         },
       },
     };
+
     isLoading = false;
     return options;
   }
+
   config = marketTideData ? getPlotOptions() : null;
 </script>
 
