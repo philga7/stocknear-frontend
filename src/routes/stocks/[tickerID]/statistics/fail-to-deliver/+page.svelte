@@ -19,19 +19,19 @@
       : "n/a";
 
   function computeYearOverYearChange(rawData) {
-    if (rawData.length < 2) {
+    if (rawData?.length < 2) {
       return null; // Not enough rawData to compute change
     }
 
     // Step 1: Get the last entry in the list
-    const lastEntry = rawData[rawData.length - 1];
-    const lastDate = new Date(lastEntry.date);
-    const lastValue = rawData?.slice(-1)?.at(0).failToDeliver;
+    const lastEntry = rawData[rawData?.length - 1];
+    const lastDate = new Date(lastEntry?.date);
+    const lastValue = rawData?.slice(-1)?.at(0)?.failToDeliver;
 
     // Step 2: Find the entry closest to one year before the last date
     let closestEntry = null;
     for (let i = rawData.length - 2; i >= 0; i--) {
-      const entryDate = new Date(rawData[i].date);
+      const entryDate = new Date(rawData[i]?.date);
       const oneYearAgo = new Date(lastDate);
       oneYearAgo.setFullYear(lastDate.getFullYear() - 1);
 
