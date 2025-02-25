@@ -1,32 +1,14 @@
 <script lang="ts">
   import {
+    removeCompanyStrings,
     abbreviateNumberWithColor,
     abbreviateNumber,
-    monthNames,
   } from "$lib/utils";
-  import { screenWidth, displayCompanyName } from "$lib/store";
+  import { displayCompanyName } from "$lib/store";
   import { onMount } from "svelte";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
-  import { Chart } from "svelte-echarts";
-
-  import { init, use } from "echarts/core";
-  import { LineChart, BarChart } from "echarts/charts";
-  import {
-    GridComponent,
-    TooltipComponent,
-    LegendComponent,
-  } from "echarts/components";
-  import { CanvasRenderer } from "echarts/renderers";
-
-  use([
-    LineChart,
-    BarChart,
-    GridComponent,
-    TooltipComponent,
-    LegendComponent,
-    CanvasRenderer,
-  ]);
+  import highcharts from "$lib/highcharts.ts";
 
   export let data;
 
@@ -45,7 +27,7 @@
   let displayList = rawData?.slice(0, 150);
   let timePeriod = "3M";
 
-  let options = null;
+  let config = null;
 
   function filterDataByPeriod(historicalData, period = "3M") {
     const currentDate = new Date();
@@ -87,8 +69,8 @@
     const impliedVolatility = filteredData?.map((item) => item?.iv);
     const realizedVolatility = filteredData?.map((item) => item?.rv);
 
-    const volatilitySpread = filteredData?.map(
-      (item) => item?.volatilitySpread,
+    const volatilitySpread = filteredData?.map((item) =>
+      item?.volatilitySpread ? Number(item?.volatilitySpread) : null,
     );
     const priceList = filteredData?.map((item) => item.price);
 
@@ -102,6 +84,7 @@
   }
 
   function plotData() {
+    // Sort and filter the raw data as before
     const data = rawData?.sort((a, b) => new Date(a?.date) - new Date(b?.date));
     const {
       dateList,
@@ -110,141 +93,167 @@
       volatilitySpread,
       priceList,
     } = filterDataByPeriod(data, timePeriod);
+
+    console.log(volatilitySpread);
     const options = {
-      animation: false,
-      tooltip: {
-        trigger: "axis",
-        hideDelay: 100,
-        borderColor: "#969696", // Black border color
-        borderWidth: 1, // Border width of 1px
-        backgroundColor: "#313131", // Optional: Set background color for contrast
-        textStyle: {
-          color: "#fff", // Optional: Text color for better visibility
+      chart: {
+        backgroundColor: "#09090B",
+        animation: false,
+        height: 360,
+      },
+      credits: { enabled: false },
+      legend: { enabled: false },
+      title: {
+        text: `<h3 class="mt-3 mb-1">Volatiltiy Exposure</h3>`,
+        useHTML: true,
+        style: { color: "white" },
+      },
+      // Disable markers globally on hover for all series
+      xAxis: {
+        type: "datetime",
+        endOnTick: false,
+        categories: dateList,
+        crosshair: {
+          color: "#fff", // Set the color of the crosshair line
+          width: 1, // Adjust the line width as needed
+          dashStyle: "Solid",
         },
-        formatter: function (params) {
-          // Get the timestamp from the first parameter
-          const timestamp = params[0].axisValue;
-
-          // Initialize result with timestamp
-          let result = timestamp + "<br/>";
-
-          // Add each series data
-          params?.forEach((param) => {
-            const marker =
-              '<span style="display:inline-block;margin-right:4px;' +
-              "border-radius:10px;width:10px;height:10px;background-color:" +
-              param.color +
-              '"></span>';
-            result +=
-              marker +
-              param.seriesName +
-              ": " +
-              abbreviateNumber(param.value) +
-              "<br/>";
-          });
-
-          return result;
-        },
-        axisPointer: {
-          lineStyle: {
+        labels: {
+          style: {
             color: "#fff",
           },
+          distance: 20, // Increases space between label and axis
+          formatter: function () {
+            const date = new Date(this.value);
+            return date.toLocaleDateString("en-US", {
+              month: "short",
+              year: "numeric",
+            });
+          },
+        },
+        tickPositioner: function () {
+          // Create custom tick positions with wider spacing
+          const positions = [];
+          const info = this.getExtremes();
+          const tickCount = 5; // Reduce number of ticks displayed
+          const interval = Math?.floor((info?.max - info?.min) / tickCount);
+
+          for (let i = 0; i <= tickCount; i++) {
+            positions?.push(info?.min + i * interval);
+          }
+          return positions;
         },
       },
-      silent: true,
-      grid: {
-        left: $screenWidth < 640 ? "5%" : "4%",
-        right: $screenWidth < 640 ? "5%" : "0%",
-        bottom: "10%",
-        containLabel: true,
-      },
-      xAxis: [
+      yAxis: [
         {
-          type: "category",
-          data: dateList,
-          axisLabel: {
-            color: "#fff",
+          gridLineWidth: 1,
+          gridLineColor: "#111827",
+          labels: {
+            style: { color: "white" },
+          },
+          title: { text: null },
+          opposite: true,
+        },
+        {
+          // Primary yAxis (left) – for volatility series
+          labels: { enabled: false },
+          title: { text: null },
+          gridLineWidth: 0,
+        },
+        {
+          // Primary yAxis (left) – for volatility series
+          labels: { enabled: false },
+          title: { text: null },
+          gridLineWidth: 0,
+        },
+      ],
+      tooltip: {
+        shared: true,
+        useHTML: true,
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
+        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        borderWidth: 1,
+        style: {
+          color: "#fff",
+          fontSize: "16px",
+          padding: "10px",
+        },
+        borderRadius: 4,
+        formatter: function () {
+          // Format the x value to display time in hh:mm format
+          let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]">${new Date(
+            this?.x,
+          ).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })}</span><br>`;
 
-            formatter: function (value) {
-              // Assuming dates are in the format 'yyyy-mm-dd'
-              const dateParts = value.split("-");
-              const monthIndex = parseInt(dateParts[1]) - 1; // Months are zero-indexed in JavaScript Date objects
-              const year = parseInt(dateParts[0]);
-              const day = parseInt(dateParts[2]);
-              return `${day} ${monthNames[monthIndex]} ${year}`;
+          // Loop through each point in the shared tooltip
+          this.points.forEach((point) => {
+            tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
+          <span class="text-white font-normal text-sm" style="color:${point.color}">${abbreviateNumber(
+            point.y,
+          )}</span><br>`;
+          });
+
+          return tooltipContent;
+        },
+      },
+      // Disable markers globally on hover for all series
+      plotOptions: {
+        series: {
+          marker: {
+            enabled: false,
+            states: {
+              hover: {
+                enabled: false,
+              },
             },
           },
         },
-      ],
-      yAxis: [
-        {
-          type: "value",
-          splitLine: {
-            show: false, // Disable x-axis grid lines
-          },
-          axisLabel: {
-            show: false, // Hide y-axis labels
-          },
-        },
-        {
-          type: "value",
-          splitLine: {
-            show: false, // Disable x-axis grid lines
-          },
-          position: "right",
-          axisLabel: {
-            show: false, // Hide y-axis labels
-          },
-        },
-      ],
+      },
       series: [
         {
-          name: "Price",
-          type: "line",
+          name: "Stock Price",
+          type: "spline", // smooth line
           data: priceList,
-          yAxisIndex: 1,
-          lineStyle: { width: 2 },
-          itemStyle: {
-            color: "#fff",
-          },
-          smooth: true,
-          showSymbol: false,
+          yAxis: 1,
+          lineWidth: 2,
+          color: "#fff",
+          animation: false,
         },
         {
           name: "Implied Volatility",
-          type: "line",
-          lineStyle: { width: 2 },
+          type: "spline",
           data: impliedVolatility,
-          itemStyle: {
-            color: "#FAD776",
-          },
-          smooth: true,
-          showSymbol: false,
+          lineWidth: 2,
+          yAxis: 0,
+          color: "#FAD776",
+          animation: false,
         },
         {
           name: "Realized Volatility",
-          type: "line",
-          lineStyle: { width: 2 },
+          type: "spline",
           data: realizedVolatility,
-          itemStyle: {
-            color: "#007BFF",
-          },
-          smooth: true,
-          showSymbol: false,
+          lineWidth: 2,
+          yAxis: 0,
+          color: "#007BFF",
+          animation: false,
         },
         {
           name: "Vol. Spread",
-          type: "bar",
-          lineStyle: { width: 2 },
+          type: "column", // Highcharts column chart for bars
+          yaxis: 2,
           data: volatilitySpread,
-          itemStyle: {
-            color: "#9B5DC4",
-          },
-          smooth: true,
-          showSymbol: false,
+          color: "#9B5DC4",
+          borderColor: "#9B5DC4",
+          borderRadius: "1px",
+          animation: false,
         },
       ],
     };
+
     return options;
   }
 
@@ -389,8 +398,8 @@
   };
 
   $: {
-    if (typeof window !== "undefined" && timePeriod) {
-      options = plotData();
+    if (timePeriod) {
+      config = plotData();
     }
   }
 </script>
@@ -402,65 +411,59 @@
     Volatility Exposure
   </h2>
   <div class="w-full mt-2">
-    {$displayCompanyName} has experienced an average implied volatility of {avgIV?.toFixed(
+    {removeCompanyStrings($displayCompanyName)} has experienced an average implied
+    volatility of {avgIV?.toFixed(2)} and an average realized volatility of {avgRV?.toFixed(
       2,
-    )} and an average realized volatility of {avgRV?.toFixed(2)}.
+    )}.
   </div>
 
-  <div class="w-full overflow-hidden m-auto mt-5">
-    {#if options !== null}
-      <div class="app w-full relative">
-        <div class="flex justify-start space-x-2 absolute right-0 top-0 z-10">
-          {#each ["3M", "6M", "1Y"] as item, index}
-            {#if data?.user?.tier === "Pro" || index === 0}
-              <label
-                on:click={() => (timePeriod = item)}
-                class="px-3 py-1 text-sm {timePeriod === item
-                  ? 'bg-white text-black '
-                  : 'text-white bg-table text-opacity-[0.6]'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+  <div class="w-full overflow-hidden m-auto">
+    {#if config !== null}
+      <div class="flex justify-end pt-5 pb-2 space-x-2 ml-auto z-10">
+        {#each ["3M", "6M", "1Y"] as item, index}
+          {#if data?.user?.tier === "Pro" || index === 0}
+            <label
+              on:click={() => (timePeriod = item)}
+              class="px-3 py-1 text-sm {timePeriod === item
+                ? 'bg-white text-black '
+                : 'text-white bg-table text-opacity-[0.6]'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+            >
+              {item}
+            </label>
+          {:else if data?.user?.tier !== "Pro"}
+            <a
+              href="/pricing"
+              class="px-3 py-1 text-sm flex flex-row items-center {timePeriod ===
+              item
+                ? 'bg-white text-black '
+                : 'text-white bg-table text-opacity-[0.6]'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+            >
+              {item}
+              <svg
+                class="ml-1 -mt-w-3.5 h-3.5 inline-block"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                ><path
+                  fill="#A3A3A3"
+                  d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                /></svg
               >
-                {item}
-              </label>
-            {:else if data?.user?.tier !== "Pro"}
-              <a
-                href="/pricing"
-                class="px-3 py-1 text-sm flex flex-row items-center {timePeriod ===
-                item
-                  ? 'bg-white text-black '
-                  : 'text-white bg-table text-opacity-[0.6]'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
-              >
-                {item}
-                <svg
-                  class="ml-1 -mt-w-3.5 h-3.5 inline-block"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  ><path
-                    fill="#A3A3A3"
-                    d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                  /></svg
-                >
-              </a>
-            {/if}
-          {/each}
-        </div>
+            </a>
+          {/if}
+        {/each}
+      </div>
 
-        <Chart {init} {options} class="chart" />
-      </div>
-    {:else}
-      <div class="flex justify-center items-center h-80">
-        <div class="relative">
-          <label
-            class="bg-primary rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-          >
-            <span
-              class="loading loading-spinner loading-md sm:loading-[1rem] text-gray-400"
-            ></span>
-          </label>
-        </div>
-      </div>
+      <div
+        class="border border-gray-800 rounded w-full"
+        use:highcharts={config}
+      ></div>
     {/if}
   </div>
-  <div class="w-full overflow-x-scroll text-white">
+
+  <h3 class="mt-5 text-xl sm:text-2xl text-white font-bold mb-2 sm:mb-0">
+    Volatility History
+  </h3>
+  <div class="w-full overflow-x-scroll text-white mt-5">
     <table
       class="w-full table table-sm table-compact bg-table border border-gray-800 rounded-none sm:rounded-md m-auto overflow-x-auto"
     >
@@ -554,21 +557,3 @@
 
   <UpgradeToPro {data} />
 </div>
-
-<style>
-  .app {
-    height: 400px;
-    width: 100%;
-  }
-
-  @media (max-width: 560px) {
-    .app {
-      width: 100%;
-      height: 300px;
-    }
-  }
-
-  .chart {
-    width: 100%;
-  }
-</style>
