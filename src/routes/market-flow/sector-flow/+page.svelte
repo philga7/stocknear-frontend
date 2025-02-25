@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { screenWidth } from "$lib/store";
   import { goto } from "$app/navigation";
 
   import HoverStockChart from "$lib/components/HoverStockChart.svelte";
@@ -11,30 +10,11 @@
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
   import SEO from "$lib/components/SEO.svelte";
-
-  import { Chart } from "svelte-echarts";
-
-  import { init, use } from "echarts/core";
-  import { LineChart, BarChart } from "echarts/charts";
-  import {
-    GridComponent,
-    TooltipComponent,
-    LegendComponent,
-  } from "echarts/components";
-  import { CanvasRenderer } from "echarts/renderers";
-
-  use([
-    LineChart,
-    BarChart,
-    GridComponent,
-    TooltipComponent,
-    LegendComponent,
-    CanvasRenderer,
-  ]);
+  import highcharts from "$lib/highcharts.ts";
 
   export let data;
   let isLoading = false;
-  let optionsData = null;
+  let config = null;
   let selectedSector = "Technology";
   const sectorDict = {
     "Basic Materials": "XLB",
@@ -256,7 +236,7 @@
     isLoading = true;
     let dates = marketTideData?.map((item) => item?.time);
     const priceList = marketTideData?.map((item) =>
-      item?.close !== null ? item?.close?.toFixed(2) : item?.close,
+      item?.close !== null ? item?.close : item?.close,
     );
     const netCallPremList = marketTideData?.map(
       (item) => item?.net_call_premium,
@@ -264,251 +244,186 @@
     const netPutPremList = marketTideData?.map((item) => item?.net_put_premium);
     const volumeList = marketTideData?.map((item) => item?.net_volume);
 
-    const positiveVolume = volumeList.map((v) => (v >= 0 ? v : "-"));
-    const negativeVolume = volumeList.map((v) => (v < 0 ? v : "-"));
+    const positiveVolume = volumeList?.map((v) => (v >= 0 ? v : "-"));
+    const negativeVolume = volumeList?.map((v) => (v < 0 ? v : "-"));
 
     const options = {
-      silent: true,
-      animation: false,
-      legend: {
-        data: ["Price", "Vol", "Net Call Premium", "Net Put Premium"],
-        textStyle: {
-          color: "#fff",
-        },
-        axisPointer: {
-          lineStyle: {
-            color: "#fff",
-          },
-        },
+      chart: {
+        type: "column",
+        backgroundColor: "#09090B",
+        plotBackgroundColor: "#09090B",
+        height: 360, // Set the maximum height for the chart
+        animation: false,
       },
 
+      title: {
+        text: null,
+      },
+
+      legend: {
+        enabled: false,
+      },
+      credits: {
+        enabled: false,
+      },
       tooltip: {
-        trigger: "axis",
-        hideDelay: 100,
-        borderColor: "#969696",
+        shared: true,
+        useHTML: true,
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
+        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
         borderWidth: 1,
-        backgroundColor: "#313131",
-        textStyle: {
+        style: {
           color: "#fff",
+          fontSize: "16px",
+          padding: "10px",
         },
-        formatter: function (params) {
-          const timestamp = params[0].axisValue;
-          let result = timestamp + "<br/>";
+        borderRadius: 4,
+        formatter: function () {
+          // Format the x value to display time in hh:mm format
+          let tooltipContent = `<span class="m-auto text-white text-[1rem] font-[501]">${new Date(
+            this?.x,
+          ).toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+            // Uncomment the next line for 12-hour format with AM/PM
+            // hour12: true,
+            // For 24-hour format, either leave it or set hour12: false
+          })}</span><br>`;
 
-          // Find volume value and determine color
-          const volParams = params.find((p) => p.seriesName.includes("Vol"));
-          const volIndex = volParams?.dataIndex ?? 0;
-          const volValue = volumeList[volIndex];
-          const volColor = volValue >= 0 ? "#90EE90" : "#FF6B6B";
-
-          // Sort and filter params
-          const filteredParams = params
-            .filter(
-              (p) =>
-                !p.seriesName.includes("Vol") ||
-                p.seriesName === "Positive Vol",
-            )
-            .map((p) => {
-              if (p.seriesName.includes("Vol")) {
-                return {
-                  ...p,
-                  seriesName: "Vol",
-                  value: volValue,
-                  color: volColor,
-                };
-              }
-              return p;
-            })
-            .sort((a, b) => {
-              if (a.seriesName === "Vol") return 1;
-              if (b.seriesName === "Vol") return -1;
-              return 0;
-            });
-
-          filteredParams.forEach((param) => {
-            const marker =
-              '<span style="display:inline-block;margin-right:4px;' +
-              "border-radius:10px;width:10px;height:10px;background-color:" +
-              param.color +
-              '"></span>';
-            result +=
-              marker +
-              param.seriesName +
-              ": " +
-              abbreviateNumberWithColor(param.value, false, true) +
-              "<br/>";
+          // Loop through each point in the shared tooltip
+          this.points.forEach((point) => {
+            tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
+      <span class="text-white font-normal text-sm" style="color:${point.color}">${abbreviateNumberWithColor(point.y)}</span><br>`;
           });
 
-          return result;
-        },
-        axisPointer: {
-          lineStyle: {
-            color: "#fff",
-          },
+          return tooltipContent;
         },
       },
-      axisPointer: {
-        link: [{ xAxisIndex: [0, 1] }],
-      },
-      grid: [
-        {
-          left: "3%",
-          right: "3%",
-          top: $screenWidth < 640 ? "15%" : "5%",
-          height: "60%",
-          containLabel: true,
-        },
-        {
-          left: "3%",
-          right: "3%",
-          bottom: "5%",
-          height: "20%",
-          containLabel: true,
-        },
-      ],
 
-      xAxis: [
-        {
-          type: "category",
-          boundaryGap: false,
-          data: dates,
-          axisLabel: {
+      xAxis: {
+        type: "datetime",
+        crosshair: {
+          color: "#fff", // Set the color of the crosshair line
+          width: 1, // Adjust the line width as needed
+          dashStyle: "Solid", // You can change the dash style if desired
+        },
+        endOnTick: false,
+        categories: dates,
+        labels: {
+          style: {
             color: "#fff",
-            formatter: (value, index) => {
-              const [datePart, timePart] = value.split(" ");
-              let [hours, minutes] = timePart.split(":").map(Number);
-
-              // Only show labels at 30-minute intervals (XX:00 and XX:30)
-              if (minutes % 30 === 0) {
-                const amPm = hours >= 12 ? "PM" : "AM";
-                hours = hours % 12 || 12;
-                return minutes === 0
-                  ? `${hours} ${amPm}`
-                  : `${hours}:30 ${amPm}`;
-              }
-              return "";
-            },
-            interval: 30,
+          },
+          distance: 20, // Increases space between label and axis
+          formatter: function () {
+            const date = new Date(this.value);
+            return date.toLocaleTimeString("en-US", {
+              hour: "2-digit",
+              minute: "2-digit",
+              // Uncomment the line below for 12-hour format with AM/PM
+              // hour12: true,
+              // For 24-hour format, you can either leave hour12 as false (default) or set it explicitly:
+              // hour12: false
+            });
           },
         },
+        tickPositioner: function () {
+          // Create custom tick positions with wider spacing
+          const positions = [];
+          const info = this.getExtremes();
+          const tickCount = 5; // Reduce number of ticks displayed
+          const interval = Math.floor((info.max - info.min) / tickCount);
 
-        {
-          type: "category",
-          gridIndex: 1,
-          data: dates,
-          splitLine: {
-            show: false,
-          },
-          axisLabel: {
-            show: false,
-          },
+          for (let i = 0; i <= tickCount; i++) {
+            positions.push(info.min + i * interval);
+          }
+          return positions;
         },
-      ],
+      },
+
       yAxis: [
         {
-          type: "value",
-          gridIndex: 0,
-          position: "left",
-          splitLine: {
-            show: false,
+          title: {
+            text: null,
           },
-          axisLabel: {
-            color: "#fff",
-            show: true,
+          labels: {
+            enabled: false,
           },
-          scale: true,
-          min: (value) => Math.floor(value.min * 0.999),
-          max: (value) => Math.ceil(value.max * 1.001),
+          gridLineWidth: 0,
+          opposite: false,
         },
         {
-          type: "value",
-          gridIndex: 0,
-          position: "right",
-          splitLine: {
-            show: false,
+          gridLineWidth: 1,
+          gridLineColor: "#111827",
+          labels: {
+            style: { color: "white" },
           },
-          axisLabel: {
-            show: false,
-          },
-        },
-        {
-          type: "value",
-          gridIndex: 1,
-          position: "right",
-          splitLine: {
-            show: false,
-          },
-          axisLabel: {
-            show: false,
-          },
+          title: { text: null },
+          opposite: true,
         },
       ],
+
       series: [
         {
           name: "Price",
-          type: "line",
+          type: "spline",
           data: priceList,
-          yAxisIndex: 0,
-          xAxisIndex: 0,
-          showSymbol: false,
-          lineStyle: { color: "#fff" },
-          itemStyle: { color: "#fff" },
-          smooth: true,
+          yAxis: 0,
+          color: "#fff",
+          marker: {
+            enabled: false,
+            states: {
+              hover: {
+                enabled: false,
+              },
+            },
+          },
+          lineWidth: 2,
+          zIndex: 10,
         },
         {
-          name: "Net Call Premium",
-          type: "line",
+          name: "Net Call Prem",
+          type: "spline",
           data: netCallPremList,
-          yAxisIndex: 1,
-          xAxisIndex: 0,
-          showSymbol: false,
-          lineStyle: { color: "#90EE90" },
-          itemStyle: { color: "#90EE90" },
-          smooth: true,
+          yAxis: 1,
+          color: "#90EE90",
+          marker: {
+            enabled: false,
+            states: {
+              hover: {
+                enabled: false,
+              },
+            },
+          },
         },
         {
-          name: "Net Put Premium",
-          type: "line",
+          name: "Net Put Prem",
+          type: "spline",
           data: netPutPremList,
-          yAxisIndex: 1,
-          xAxisIndex: 0,
-          showSymbol: false,
-          lineStyle: { color: "#FF6B6B" },
-          itemStyle: { color: "#FF6B6B" },
-          smooth: true,
-        },
-        {
-          name: "Positive Vol",
-          type: "line",
-          data: positiveVolume,
-          xAxisIndex: 1,
-          yAxisIndex: 2,
-          showSymbol: false,
-          areaStyle: {
-            opacity: 1,
-            color: "#19AA75",
+          yAxis: 1,
+          color: "#FF6B6B",
+          marker: {
+            enabled: false,
+            states: {
+              hover: {
+                enabled: false,
+              },
+            },
           },
-          itemStyle: { color: "#19AA75" },
-        },
-        {
-          name: "Negative Vol",
-          type: "line",
-          data: negativeVolume,
-          xAxisIndex: 1,
-          yAxisIndex: 2,
-          showSymbol: false,
-          areaStyle: {
-            opacity: 1,
-            color: "#F71F4F",
-          },
-          itemStyle: { color: "#F71F4F" },
         },
       ],
+
+      plotOptions: {
+        series: {
+          color: "white",
+          animation: false,
+        },
+      },
     };
     isLoading = false;
     return options;
   }
-  optionsData = marketTideData ? getPlotOptions() : null;
+
+  config = marketTideData ? getPlotOptions() : null;
 
   $: {
     if (selectedSector) {
@@ -524,7 +439,7 @@
 
       originalNegTickers = topNegNetPremium;
       displayNegTickers = topNegNetPremium;
-      optionsData = marketTideData ? getPlotOptions() : null;
+      config = marketTideData ? getPlotOptions() : null;
     }
   }
 </script>
@@ -542,7 +457,7 @@
       >
         <main class="w-full">
           <div class="w-full m-auto">
-            {#if optionsData !== null}
+            {#if config !== null}
               <p class="mt-4 text-white">
                 <strong>{selectedSector}</strong> Flow tracks sector stocks, net
                 call/put premiums, and price movements to gauge market sentiment
@@ -550,9 +465,14 @@
               </p>
 
               <div
-                class="flex flex-row items-center w-fit ml-auto mt-2 sm:mt-0"
+                class="flex flex-row items-center justify-between w-full mt-2 sm:mt-0"
               >
-                <div class="relative inline-block text-left grow">
+                <div class="text-white text-sm italic mt-5 mb-3">
+                  Last Updated: {formatDate(
+                    findLastNonNull(marketTideData, "time"),
+                  )}
+                </div>
+                <div class="relative inline-block text-left w-fit">
                   <DropdownMenu.Root>
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
@@ -620,11 +540,6 @@
                 </div>
               </div>
 
-              <div class="text-white text-sm italic mt-5 mb-3">
-                Last Updated: {formatDate(
-                  findLastNonNull(marketTideData, "time"),
-                )}
-              </div>
               <div
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6"
               >
@@ -636,7 +551,7 @@
                     <span class="ml-1 text-yellow-400">●</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-2xl font-bold text-white">
+                    <span class="text-xl font-bold text-white">
                       {@html abbreviateNumberWithColor(
                         findLastNonNull(marketTideData, "net_volume"),
                         false,
@@ -654,7 +569,7 @@
                     <span class="ml-1 text-green-500">●</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-2xl font-bold text-white"
+                    <span class="text-xl font-bold text-white"
                       >{@html abbreviateNumberWithColor(
                         findLastNonNull(marketTideData, "net_call_premium"),
                         false,
@@ -672,7 +587,7 @@
                     <span class="ml-1 text-red-400">●</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-2xl font-bold text-white"
+                    <span class="text-xl font-bold text-white"
                       >{@html abbreviateNumberWithColor(
                         findLastNonNull(marketTideData, "net_put_premium"),
                         false,
@@ -683,34 +598,19 @@
                 </div>
               </div>
 
-              <div class="pb-8 sm:pb-2 rounded border border-gray-600">
-                <div class="app w-full h-[300px] mt-5">
-                  {#if isLoading}
-                    <div class="flex justify-center items-center h-80">
-                      <div class="relative">
-                        <label
-                          class="bg-secondary z-10 rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                        >
-                          <span
-                            class="loading loading-spinner loading-md text-white"
-                          ></span>
-                        </label>
-                      </div>
-                    </div>
-                  {:else}
-                    <Chart {init} options={optionsData} class="chart" />
-                  {/if}
-                </div>
-              </div>
+              <div
+                class="chart border border-gray-800 rounded"
+                use:highcharts={config}
+              ></div>
             {/if}
-            <div class="w-full m-auto mt-10">
+            <div class="w-full m-auto mt-5">
               <div
                 class="flex flex-wrap sm:flex-row items-center sm:justify-between mb-4"
               >
                 <div class="flex flex-row items-center">
                   <label
                     for="topPosNetPrem"
-                    class="mr-1 cursor-pointer flex flex-row items-center text-white text-xl sm:text-2xl font-bold"
+                    class="mr-1 cursor-pointer flex flex-row items-center text-white text-xl font-bold"
                   >
                     Top Stocks by Positive Net Prem
                   </label>
@@ -815,7 +715,7 @@
                 <div class="flex flex-row items-center">
                   <label
                     for="topNegNetPrem"
-                    class="mr-1 cursor-pointer flex flex-row items-center text-white text-xl sm:text-2xl font-bold"
+                    class="mr-1 cursor-pointer flex flex-row items-center text-white text-xl font-bold"
                   >
                     Top Stocks by Negative Net Prem
                   </label>
