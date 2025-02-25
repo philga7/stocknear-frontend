@@ -1,24 +1,15 @@
 <script lang="ts">
   import { displayCompanyName, stockTicker } from "$lib/store";
-  import { abbreviateNumber, monthNames } from "$lib/utils";
+  import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
   import SEO from "$lib/components/SEO.svelte";
-
+  import Infobox from "$lib/components/Infobox.svelte";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
   //import * as XLSX from 'xlsx';
   import { goto } from "$app/navigation";
-  import { Chart } from "svelte-echarts";
-
-  import { init, use } from "echarts/core";
-  import { LineChart, BarChart } from "echarts/charts";
-  import { GridComponent, TooltipComponent } from "echarts/components";
-  import { CanvasRenderer } from "echarts/renderers";
-  import Infobox from "$lib/components/Infobox.svelte";
-  use([LineChart, BarChart, GridComponent, TooltipComponent, CanvasRenderer]);
+  import highcharts from "$lib/highcharts.ts";
 
   export let data;
-
-  let optionsData;
 
   let rawData = data?.getHistoricalMarketCap || [];
   let tableList = [];
@@ -197,7 +188,7 @@
     tableList?.sort((a, b) => new Date(b?.date) - new Date(a?.date));
   }
 
-  optionsData = plotData();
+  let config = plotData();
   tableList = filterEndOfYearDates(rawData);
   tableList?.sort((a, b) => new Date(b?.date) - new Date(a?.date));
   changePercentageYearAgo = computeYearOverYearChange(rawData);
@@ -205,7 +196,7 @@
   async function changeStatement(state) {
     timePeriod = state;
 
-    optionsData = await plotData();
+    config = await plotData();
   }
 
   function filterDataByTimePeriod(rawData, timePeriod) {
@@ -262,99 +253,126 @@
     const filteredData = filterDataByTimePeriod(rawData, timePeriod);
 
     const options = {
-      animation: false,
-      grid: {
-        left: "0%",
-        right: "2%",
-        bottom: "2%",
-        top: "10%",
-        containLabel: true,
+      credits: {
+        enabled: false,
       },
-      xAxis: [
-        {
-          type: "category",
-          data: filteredData?.dates,
-          axisLabel: {
+      chart: {
+        backgroundColor: "#09090B",
+        plotBackgroundColor: "#09090B",
+        height: 360, // Set the maximum height for the chart
+      },
+      title: {
+        text: `<h3 class="mt-3 mb-1 ">${$stockTicker} Market Cap</h3>`,
+        style: {
+          color: "white",
+          // Using inline CSS for margin-top and margin-bottom
+        },
+        useHTML: true, // Enable HTML to apply custom class styling
+      },
+      xAxis: {
+        type: "datetime",
+        endOnTick: false,
+        categories: filteredData?.dates,
+        labels: {
+          style: {
             color: "#fff",
+          },
+          distance: 20, // Increases space between label and axis
+          formatter: function () {
+            const date = new Date(this.value);
+            return date.toLocaleDateString("en-US", {
+              month: "short",
+              year: "numeric",
+            });
+          },
+        },
+        tickPositioner: function () {
+          // Create custom tick positions with wider spacing
+          const positions = [];
+          const info = this.getExtremes();
+          const tickCount = 5; // Reduce number of ticks displayed
+          const interval = Math.floor((info.max - info.min) / tickCount);
 
-            formatter: function (value) {
-              // Assuming dates are in the format 'yyyy-mm-dd'
-              const dateParts = value.split("-");
-              const monthIndex = parseInt(dateParts[1]) - 1; // Months are zero-indexed in JavaScript Date objects
-              const year = parseInt(dateParts[0]);
-              const day = parseInt(dateParts[2]);
-              return `${day} ${monthNames[monthIndex]} ${year}`;
+          for (let i = 0; i <= tickCount; i++) {
+            positions.push(info.min + i * interval);
+          }
+          return positions;
+        },
+      },
+      yAxis: {
+        gridLineWidth: 1,
+        gridLineColor: "#111827",
+        labels: {
+          style: { color: "white" },
+        },
+        title: { text: null },
+        opposite: true,
+      },
+      tooltip: {
+        useHTML: true,
+        backgroundColor: "#fff",
+        style: {
+          color: "black",
+          fontSize: "16px",
+          padding: "10px",
+        },
+        borderRadius: 2,
+        borderWidth: 1,
+        borderColor: "#fff",
+        formatter: function () {
+          return `<span class="m-auto text-black text-[1rem] font-[501]">${new Date(
+            this?.x,
+          ).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })}</span> <br> <span class="text-black font-normal text-sm">${abbreviateNumber(this.y)}</span>`;
+        },
+      },
+      plotOptions: {
+        series: {
+          color: "white",
+          animation: false,
+          dataLabels: {
+            enabled: false,
+            color: "white",
+            style: {
+              fontSize: "13px",
+              fontWeight: "bold",
+            },
+            formatter: function () {
+              return abbreviateNumber(this?.y);
             },
           },
         },
-      ],
-      yAxis: [
-        {
-          type: "value",
-          splitLine: {
-            show: false, // Disable x-axis grid lines
-          },
-
-          axisLabel: {
-            show: false, // Hide y-axis labels
-          },
-        },
-      ],
+      },
+      legend: {
+        enabled: false,
+      },
       series: [
         {
           name: "Mkt Cap",
+          type: "area",
           data: filteredData?.marketCapList,
-          type: "line",
-          smooth: true,
-          symbol: "none",
-          itemStyle: {
-            color: "#fff",
+          color: "#fff",
+          lineWidth: 1,
+          marker: {
+            enabled: false,
+          },
+          fillColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+              [0, "rgba(255, 255, 255, 0.1)"],
+              [1, "rgba(255, 255, 255, 0.001)"],
+            ],
           },
         },
       ],
-      tooltip: {
-        trigger: "axis",
-        hideDelay: 100,
-        borderColor: "#969696", // Black border color
-        borderWidth: 1, // Border width of 1px
-        backgroundColor: "#313131", // Optional: Set background color for contrast
-        textStyle: {
-          color: "#fff", // Optional: Text color for better visibility
-        },
-        formatter: function (params) {
-          // Get the timestamp from the first parameter
-          const timestamp = params[0].axisValue;
-
-          // Initialize result with timestamp
-          let result = timestamp + "<br/>";
-
-          // Add each series data
-          params.forEach((param) => {
-            const marker =
-              '<span style="display:inline-block;margin-right:4px;' +
-              "border-radius:10px;width:10px;height:10px;background-color:" +
-              param.color +
-              '"></span>';
-            result +=
-              marker +
-              param.seriesName +
-              ": " +
-              abbreviateNumber(param.value, false, true) +
-              "<br/>";
-          });
-
-          return result;
-        },
-        axisPointer: {
-          lineStyle: {
-            color: "#fff",
-          },
-        },
-      },
     };
 
     return options;
   }
+
   const exportData = (format = "csv") => {
     if (data?.user?.tier === "Pro") {
       // Add headers row
@@ -404,7 +422,9 @@
       <main class="w-full">
         <div class="sm:pl-7 sm:pb-7 sm:pt-7 m-auto mt-2 sm:mt-0">
           <div class="">
-            <h1 class="text-xl sm:text-2xl text-white font-bold">Market Cap</h1>
+            <h1 class="text-xl sm:text-2xl text-white font-bold">
+              {removeCompanyStrings($displayCompanyName)} Market Cap
+            </h1>
           </div>
 
           {#if rawData?.length !== 0}
@@ -500,11 +520,14 @@
               </div>
 
               <div
-                class="flex flex-col sm:flex-row items-start sm:items-center w-full sm:mt-10 mb-8"
+                class="flex flex-col sm:flex-row items-start sm:items-center w-full"
               >
-                <h1 class="text-2xl text-white font-bold mb-3 sm:mb-0">
-                  Historical Chart
-                </h1>
+                <h2
+                  class="mb-3 sm:mb-0 text-xl sm:text-2xl text-white font-bold"
+                >
+                  Market Cap Chart
+                </h2>
+
                 <div
                   class="flex flex-row items-center w-fit sm:w-[50%] md:w-auto sm:ml-auto"
                 >
@@ -609,12 +632,13 @@
                 </div>
               </div>
 
-              <div class="app w-full">
-                <Chart {init} options={optionsData} class="chart" />
-              </div>
+              <div
+                class="chart border border-gray-800 rounded"
+                use:highcharts={config}
+              ></div>
 
               <div
-                class="mt-10 flex flex-col sm:flex-row items-start sm:items-center w-full justify-between"
+                class=" flex flex-col sm:flex-row items-start sm:items-center w-full justify-between"
               >
                 <h3 class="text-xl sm:text-2xl text-white font-bold">
                   Market Cap History
@@ -750,21 +774,3 @@
     </div>
   </div>
 </section>
-
-<style>
-  .app {
-    height: 400px;
-    width: 100%;
-  }
-
-  @media (max-width: 560px) {
-    .app {
-      width: 100%;
-      height: 300px;
-    }
-  }
-
-  .chart {
-    width: 100%;
-  }
-</style>
