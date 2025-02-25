@@ -14,9 +14,7 @@
   description={`Track volatility and implied volatility trends with our interactive chart. Analyze price movements, 30-day implied volatility, and realized volatility to make data-driven trading decisions.`}
 />
 
-<section
-  class="w-full bg-default overflow-hidden text-white min-h-screen pb-40"
->
+<section class="w-full bg-default overflow-hidden text-white min-h-screen">
   <div class="w-full flex h-full overflow-hidden">
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"

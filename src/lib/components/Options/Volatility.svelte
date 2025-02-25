@@ -94,7 +94,6 @@
       priceList,
     } = filterDataByPeriod(data, timePeriod);
 
-    console.log(volatilitySpread);
     const options = {
       chart: {
         backgroundColor: "#09090B",
