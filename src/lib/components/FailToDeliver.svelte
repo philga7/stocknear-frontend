@@ -128,29 +128,47 @@
       legend: {
         enabled: false,
       },
+
       tooltip: {
+        shared: true,
         useHTML: true,
-        backgroundColor: "#fff",
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
+        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        borderWidth: 1,
         style: {
-          color: "black",
+          color: "#fff",
           fontSize: "16px",
           padding: "10px",
         },
-        borderRadius: 2,
-        borderWidth: 1,
-        borderColor: "#ffffff",
+        borderRadius: 4,
         formatter: function () {
-          return `<span class="m-auto text-black text-[1rem] font-[501]">${new Date(
+          // Format the x value to display time in hh:mm format
+          let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]">${new Date(
             this?.x,
           ).toLocaleDateString("en-US", {
             year: "numeric",
             month: "short",
             day: "numeric",
-          })}</span> <br> <span class="text-black font-normal text-sm">${abbreviateNumber(this.y)}</span>`;
+          })}</span><br>`;
+
+          // Loop through each point in the shared tooltip
+          this.points.forEach((point) => {
+            tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
+          <span class="text-white font-normal text-sm" style="color:${point.color}">${abbreviateNumber(
+            point.y,
+          )}</span><br>`;
+          });
+
+          return tooltipContent;
         },
       },
       xAxis: {
         categories: dates,
+        crosshair: {
+          color: "#fff", // Set the color of the crosshair line
+          width: 1, // Adjust the line width as needed
+          dashStyle: "Solid",
+        },
         labels: {
           style: {
             color: "#fff",
@@ -197,7 +215,12 @@
           yAxis: 1,
           color: "#E11D48",
           marker: {
-            fillColor: "transparent",
+            enabled: false,
+            states: {
+              hover: {
+                enabled: false,
+              },
+            },
           },
         },
         {
@@ -207,7 +230,12 @@
           data: priceList,
           color: "#fff",
           marker: {
-            fillColor: "transparent",
+            enabled: false,
+            states: {
+              hover: {
+                enabled: false,
+              },
+            },
           },
           lineWidth: 2,
         },

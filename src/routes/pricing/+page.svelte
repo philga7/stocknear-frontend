@@ -661,7 +661,7 @@
               /></svg
             >
             <span class="text-white text-[1rem] font-semibold"
-              >Unlimited Options Data</span
+              >Realtime Options Data</span
             >
           </li>
           <li class="flex items-center space-x-3">
@@ -689,7 +689,7 @@
               /></svg
             >
             <span class="text-white text-[1rem] font-semibold"
-              >Unlimited Dark Pool Data</span
+              >Realtime Dark Pool Data</span
             >
           </li>
         </ol>
