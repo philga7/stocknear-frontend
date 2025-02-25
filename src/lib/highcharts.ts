@@ -12,67 +12,68 @@ if (browser) {
 export default (node, config) => {
   const redraw = true;
   const oneToOne = true;
+  let chart = null;
 
-  // Merge our watermark load event with any provided chart events
-  const mergedChartOptions = {
-    ...(config.chart || {}),
-    events: {
-      ...(config.chart && config.chart.events ? config.chart.events : {}),
-     load: function () {
-  const chart = this;
-  const marginX = 10; // Adjust horizontal margin
-  const marginY = 5; // Adjust vertical margin
+  const createChart = () => {
+    chart = Highcharts.chart(node, {
+      ...config,
+      chart: {
+        ...(config.chart || {}),
+        events: {
+          ...(config.chart?.events || {}),
+          load: function () {
+            const chart = this;
+            const marginX = 10;
+            const marginY = 5;
 
-  // Destroy existing watermark if it exists
-  if (chart.watermark) {
-    chart.watermark.destroy();
-  }
+            if (chart.watermark) {
+              chart.watermark.destroy();
+            }
 
-  // Get the actual width and height of the plotting area
-  const x = chart.chartWidth - marginX;
-  const y = chart.chartHeight - marginY;
+            const x = chart.chartWidth - marginX;
+            const y = chart.chartHeight - marginY;
 
-  // Add watermark
-  chart.watermark = chart.renderer
-    .text('stocknear.com', x, y)
-    .attr({
-      align: 'right'
-    })
-    .css({
-      fontSize: '12px',
-      color: 'rgba(255, 255, 255, 0.6)',
-      fontWeight: 'medium',
-      pointerEvents: 'none'
-    })
-    .add();
+            chart.watermark = chart.renderer
+              .text('stocknear.com', x, y)
+              .attr({ align: 'right' })
+              .css({
+                fontSize: '12px',
+                color: 'rgba(255, 255, 255, 0.6)',
+                fontWeight: 'medium',
+                pointerEvents: 'none'
+              })
+              .add();
 
-  // Adjust on redraw
-  Highcharts.addEvent(chart, 'redraw', function () {
-    const newX = chart.chartWidth - marginX;
-    const newY = chart.chartHeight - marginY;
-    chart.watermark.attr({ x: newX, y: newY });
-  });
-}
-
-    }
+            Highcharts.addEvent(chart, 'redraw', function () {
+              chart.watermark.attr({ x: chart.chartWidth - marginX, y: chart.chartHeight - marginY });
+            });
+          }
+        }
+      }
+    });
   };
 
-  const chart = Highcharts.chart(node, {
-    ...config,
-    chart: mergedChartOptions,
+  createChart();
+
+  // Resize observer with optimized logic
+  const resizeObserver = new ResizeObserver(() => {
+    if (chart) {
+      const newWidth = node.clientWidth;
+      const newHeight = 360; // Let height be auto-adjusted
+
+      // **Dynamically update size without recreating the chart**
+      chart?.setSize(newWidth, newHeight, false);
+    }
   });
+  resizeObserver.observe(node);
 
   return {
     update(newConfig) {
       chart.update(newConfig, redraw, oneToOne);
     },
     destroy() {
-      chart.destroy();
-    },
-    /*
-    exportChart(options = {}, chartOptions = {}) {
-      chart.exportChart(options, chartOptions);
-    },
-    */
+      resizeObserver?.disconnect();
+      if (chart) chart?.destroy();
+    }
   };
 };

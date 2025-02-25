@@ -258,7 +258,6 @@
         backgroundColor: "#09090B",
         plotBackgroundColor: "#09090B",
         height: 360, // Set the maximum height for the chart
-        reflow: true, // Automatically resize the chart when the container resizes
         animation: false,
       },
 
@@ -431,7 +430,7 @@
   description="Get real-time insights on S&P 500 market flow sentiment through options premium analysis. Track trends and make informed trading decisions."
 />
 
-<section class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden">
+<section class="w-full overflow-hidden">
   <div class="w-full overflow-hidden m-auto">
     <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
       <div
