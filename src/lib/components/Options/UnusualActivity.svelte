@@ -156,6 +156,7 @@
         backgroundColor: "#09090B",
         plotBackgroundColor: "#09090B",
         height: 360,
+        width: 850,
         animation: false,
       },
       title: {

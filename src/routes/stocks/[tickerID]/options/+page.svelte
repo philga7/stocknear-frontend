@@ -305,7 +305,7 @@
         {/if}
 
         {#if tickerFlow?.length > 0}
-          <div class="w-full mb-10">
+          <div class="w-full">
             <TickerFlow {tickerFlow} />
           </div>
         {/if}

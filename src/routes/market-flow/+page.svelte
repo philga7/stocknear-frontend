@@ -10,7 +10,6 @@
   import highcharts from "$lib/highcharts.ts";
 
   export let data;
-  let isLoading = false;
   let config = null;
   //let sectorData = data?.getData?.sectorData || [];
   let topPosNetPremium = data?.getData?.topPosNetPremium || [];
@@ -211,8 +210,6 @@
       ?.slice(0, 50);
   };
   function getPlotOptions() {
-    isLoading = true;
-
     // Determine the base date (using the first data point, or fallback to today)
     const baseDate =
       marketTideData && marketTideData.length
@@ -261,7 +258,7 @@
         backgroundColor: "#09090B",
         plotBackgroundColor: "#09090B",
         height: 360, // Set the maximum height for the chart
-        width: 970,
+        reflow: true, // Automatically resize the chart when the container resizes
         animation: false,
       },
 
@@ -423,7 +420,6 @@
       },
     };
 
-    isLoading = false;
     return options;
   }
 
@@ -519,7 +515,7 @@
               </div>
 
               <div
-                class="chart border border-gray-800 rounded"
+                class=" border border-gray-800 rounded w-full"
                 use:highcharts={config}
               ></div>
             {/if}
@@ -742,3 +738,10 @@
     </div>
   </div>
 </section>
+
+<style lang="scss">
+  .chart {
+    width: 100%;
+    transition: none;
+  }
+</style>

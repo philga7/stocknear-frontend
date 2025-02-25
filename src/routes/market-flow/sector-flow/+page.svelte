@@ -283,7 +283,6 @@
         backgroundColor: "#09090B",
         plotBackgroundColor: "#09090B",
         height: 360, // Set the maximum height for the chart
-        width: 970,
         animation: false,
       },
 
