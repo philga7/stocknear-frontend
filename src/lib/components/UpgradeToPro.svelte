@@ -70,11 +70,11 @@
                   ></path></svg
                 >
               </div>
-              Realtime Options Data
+              Realtime Options & Dark Pool Data
             </dt>
             <dd class="mt-2 text-base leading-7 text-white">
-              Instant access to live options data to spot opportunities and
-              trade with precision before the market moves.
+              Instant access to live options & dark pool data to spot
+              opportunities and trade with precision before the market moves.
             </dd>
           </div>
 

@@ -1,9 +1,11 @@
 <script lang="ts">
-  import { numberOfUnreadNotification } from "$lib/store";
   import { formatString, sectorNavigation, abbreviateNumber } from "$lib/utils";
   import Table from "$lib/components/Table/Table.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import SEO from "$lib/components/SEO.svelte";
+  import cardBackground from "$lib/images/bg-hedge-funds.png";
+
+  import defaultAvatar from "$lib/images/hedge-fund-avatar.png";
 
   export let data;
 
@@ -71,19 +73,17 @@
               <div
                 class="flex space-x-3 border-b-[2px] border-below-title pb-3 lg:border-none lg:pb-0"
               >
-                <div class="flex-shrink-0">
-                  <svg
-                    class="h-16 w-16 sm:h-20 sm:w-20 text-gray-200"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    style="max-width:100px"
-                    ><path
-                      fill-rule="evenodd"
-                      d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
-                      clip-rule="evenodd"
-                    ></path></svg
-                  >
+                <div
+                  class=" sm:-mt-3 shadow-lg rounded-full border border-slate-600 w-14 h-14 sm:w-20 sm:h-20 relative hedge-fund-striped bg-[#20202E] flex items-center justify-center"
+                >
+                  <img
+                    style="clip-path: circle(50%);"
+                    class="rounded-full w-10 sm:w-16"
+                    src={defaultAvatar}
+                    loading="lazy"
+                  />
                 </div>
+
                 <div class="mt-0 pt-0.5 text-left">
                   <h1 class="mb-0 text-2xl font-bold text-white">
                     {formatString(companyName)}
@@ -219,3 +219,15 @@
     </div>
   </div>
 </section>
+
+<style>
+  .hedge-fund-striped {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      #a77120,
+      #a77120 10px,
+      #90621c 10px,
+      #90621c 20px
+    );
+  }
+</style>

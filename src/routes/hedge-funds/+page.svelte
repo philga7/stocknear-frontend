@@ -1,13 +1,12 @@
 <script lang="ts">
   import cardBackground from "$lib/images/bg-hedge-funds.png";
+  import defaultAvatar from "$lib/images/hedge-fund-avatar.png";
 
   import { abbreviateNumber, formatString } from "$lib/utils";
   import { onMount } from "svelte";
   import SEO from "$lib/components/SEO.svelte";
 
   export let data;
-
-  let cloudFrontUrl = import.meta.env.VITE_IMAGE_URL;
 
   let rawData = data?.getAllHedgeFunds;
   let displayList = rawData?.slice(0, 20) ?? [];
@@ -155,7 +154,7 @@
                           <img
                             style="clip-path: circle(50%);"
                             class="rounded-full w-16"
-                            src={`${cloudFrontUrl}/assets/hedge_funds/default-avatar.png`}
+                            src={defaultAvatar}
                             loading="lazy"
                           />
                         </div>
