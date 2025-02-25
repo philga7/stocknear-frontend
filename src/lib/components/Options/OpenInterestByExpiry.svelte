@@ -1,28 +1,13 @@
 <script lang="ts">
-  import { abbreviateNumberWithColor, monthNames } from "$lib/utils";
-  import { screenWidth } from "$lib/store";
+  import {
+    abbreviateNumberWithColor,
+    abbreviateNumber,
+    monthNames,
+  } from "$lib/utils";
   import { onMount } from "svelte";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
-  import { Chart } from "svelte-echarts";
-
-  import { init, use } from "echarts/core";
-  import { LineChart, BarChart } from "echarts/charts";
-  import {
-    GridComponent,
-    TooltipComponent,
-    LegendComponent,
-  } from "echarts/components";
-  import { CanvasRenderer } from "echarts/renderers";
-
-  use([
-    LineChart,
-    BarChart,
-    GridComponent,
-    TooltipComponent,
-    LegendComponent,
-    CanvasRenderer,
-  ]);
+  import highcharts from "$lib/highcharts.ts";
 
   export let data;
 
@@ -45,7 +30,6 @@
   }, []);
 
   let displayList = rawData?.slice(0, 150);
-  let options = null;
 
   function plotData() {
     const processedData = rawData?.map((d) => ({
@@ -54,82 +38,133 @@
       putValue: d?.put_oi,
     }));
 
-    const dates = processedData?.map((d) => d.expiry);
-
-    const callValues = processedData?.map((d) => d.callValue?.toFixed(2));
-    const putValues = processedData?.map((d) => d.putValue?.toFixed(2));
-    const barWidthPercentage = Math.max(100 / processedData.length, 20); // Adjust automatically, max 80%
+    const categories = processedData?.map((d) => d.expiry);
+    const callValues = processedData?.map(
+      (d) => parseFloat(d.callValue?.toFixed(2)) || 0,
+    );
+    const putValues = processedData?.map(
+      (d) => parseFloat(d.putValue?.toFixed(2)) || 0,
+    );
+    const barWidth = Math.max(100 / processedData.length, 20);
 
     const options = {
-      animation: false,
-      tooltip: {
-        trigger: "axis",
-        axisPointer: {
-          type: "shadow",
-        },
-        backgroundColor: "#313131",
-        textStyle: {
+      chart: {
+        backgroundColor: "#09090B",
+        animation: false,
+        height: 360,
+      },
+      credits: { enabled: false },
+      legend: { enabled: false },
+      title: {
+        text: `<h3 class="mt-3 mb-1">Open Interest By Expiry</h3>`,
+        useHTML: true,
+        style: { color: "white" },
+      },
+      xAxis: {
+        type: "category",
+        categories: categories,
+        crosshair: {
           color: "#fff",
+          width: 1,
+          dashStyle: "Solid",
         },
-        formatter: function (params) {
-          const strike = params[0].axisValue;
-          const call = params[1].data;
-          const put = params[0].data;
-
-          return `
-          <div style="text-align:left;">
-            <b>Strike:</b> ${strike}<br/>
-            <span style="color:#00FC50;">● Call OI:</span> ${abbreviateNumberWithColor(call, false, true)}<br/>
-            <span style="color:#FF2F1F;">● Put OI:</span> ${abbreviateNumberWithColor(put, false, true)}<br/>
-            </div>`;
-        },
-      },
-      grid: {
-        left: $screenWidth < 640 ? "5%" : "2%",
-        right: $screenWidth < 640 ? "5%" : "2%",
-        bottom: "10%",
-        containLabel: true,
-      },
-      yAxis: {
-        type: "value",
-        nameTextStyle: { color: "#fff" },
-        splitLine: { show: false },
-        axisLabel: {
-          show: false, // Hide x-axis labels
-        },
-      },
-      xAxis: [
-        {
-          type: "category",
-          data: dates,
-          axisLabel: {
+        labels: {
+          style: {
             color: "#fff",
-
-            formatter: function (value) {
-              // Assuming dates are in the format 'yyyy-mm-dd'
-              const dateParts = value.split("-");
-              const monthIndex = parseInt(dateParts[1]) - 1; // Months are zero-indexed in JavaScript Date objects
-              const year = parseInt(dateParts[0]);
-              const day = parseInt(dateParts[2]);
-              return `${day} ${monthNames[monthIndex]} ${year}`;
-            },
+          },
+          distance: 10, // Adjust space between labels and axis
+          formatter: function () {
+            const date = new Date(this.value);
+            return date.toLocaleDateString("en-US", {
+              day: "2-digit",
+              month: "short", // "Jan", "Feb", etc.
+              year: "numeric",
+            });
           },
         },
-      ],
+        tickInterval: Math.max(1, Math.floor(categories.length / 5)), // Ensures better spacing
+        tickPositioner: function () {
+          const positions = [];
+          const tickCount = 5; // Reduce number of ticks displayed
+          const totalPoints = this.categories.length;
+          const interval = Math.max(1, Math.floor(totalPoints / tickCount));
+
+          for (let i = 0; i < totalPoints; i += interval) {
+            positions.push(i);
+          }
+          return positions;
+        },
+      },
+
+      yAxis: {
+        gridLineWidth: 1,
+        gridLineColor: "#111827",
+        labels: {
+          style: { color: "white" },
+        },
+        title: { text: null },
+        opposite: true,
+      },
+      tooltip: {
+        shared: true,
+        useHTML: true,
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
+        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        borderWidth: 1,
+        style: {
+          color: "#fff",
+          fontSize: "16px",
+          padding: "10px",
+        },
+        borderRadius: 4,
+        formatter: function () {
+          // Format the x value to display time in hh:mm format
+          let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]">${new Date(
+            this?.x,
+          ).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })}</span><br>`;
+
+          // Loop through each point in the shared tooltip
+          this.points.forEach((point) => {
+            tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
+          <span class="text-white font-normal text-sm" style="color:${point.color}">${abbreviateNumber(
+            point.y,
+          )}</span><br>`;
+          });
+
+          return tooltipContent;
+        },
+      },
+      plotOptions: {
+        animation: false,
+        column: {
+          grouping: true,
+          shadow: false,
+          borderWidth: 0,
+        },
+      },
+
       series: [
         {
-          name: `Put`,
-          type: "bar",
+          name: "Put",
+          type: "column",
           data: putValues,
-          itemStyle: { color: "#FF2F1F" },
-          barWidth: `${barWidthPercentage}%`,
+          color: "#FF2F1F",
+          borderColor: "#FF2F1F",
+          borderRadius: "2px",
+          animation: false,
         },
         {
-          name: `Call `,
-          type: "bar",
+          name: "Call",
+          type: "column",
           data: callValues,
-          itemStyle: { color: "#00FC50" },
-          barWidth: `${barWidthPercentage}%`,
+          color: "#00FC50",
+          borderColor: "#00FC50",
+          borderRadius: "2px",
+          animation: false,
         },
       ],
     };
@@ -238,39 +273,29 @@
     displayList = [...originalData].sort(compareValues);
   };
 
-  $: {
-    if (typeof window !== "undefined") {
-      options = plotData();
-    }
-  }
+  let config = plotData() || null;
 </script>
 
 <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
   <h2
     class=" flex flex-row items-center text-white text-xl sm:text-2xl font-bold w-fit"
   >
-    Open Interest (OI) By Expiry
+    Open Interest Chart
   </h2>
 
-  <div class="w-full overflow-hidden m-auto">
-    {#if options !== null}
-      <div class="app w-full relative">
-        <Chart {init} {options} class="chart" />
-      </div>
-    {:else}
-      <div class="flex justify-center items-center h-80">
-        <div class="relative">
-          <label
-            class="bg-primary rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-          >
-            <span
-              class="loading loading-spinner loading-md sm:loading-[1rem] text-gray-400"
-            ></span>
-          </label>
-        </div>
-      </div>
+  <div class="w-full overflow-hidden m-auto mt-3">
+    {#if config !== null}
+      <div
+        class="border border-gray-800 rounded w-full"
+        use:highcharts={config}
+      ></div>
     {/if}
   </div>
+
+  <h3 class="mt-5 text-xl sm:text-2xl text-white font-bold mb-3">
+    Open Interest Table
+  </h3>
+
   <div class="w-full overflow-x-scroll text-white">
     <table
       class="w-full table table-sm table-compact bg-table border border-gray-800 rounded-none sm:rounded-md m-auto overflow-x-auto"
@@ -338,21 +363,3 @@
 
   <UpgradeToPro {data} />
 </div>
-
-<style>
-  .app {
-    height: 400px;
-    width: 100%;
-  }
-
-  @media (max-width: 560px) {
-    .app {
-      width: 100%;
-      height: 300px;
-    }
-  }
-
-  .chart {
-    width: 100%;
-  }
-</style>

@@ -1,6 +1,5 @@
 <script lang="ts">
   import { abbreviateNumberWithColor, abbreviateNumber } from "$lib/utils";
-  import { screenWidth } from "$lib/store";
   import { onMount } from "svelte";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
@@ -40,9 +39,6 @@
     const putValues = processedData?.map((d) =>
       parseFloat(d.putValue.toFixed(2)),
     );
-
-    // Calculate a bar width percentage (if needed for further calculations)
-    const barWidthPercentage = Math.max(100 / processedData.length, 30);
 
     const options = {
       chart: {
@@ -127,6 +123,7 @@
           type: "column",
           data: putValues,
           color: "#FF2F1F",
+          borderColor: "#FF2F1F",
           animation: false,
         },
         {
@@ -134,12 +131,10 @@
           type: "column",
           data: callValues,
           color: "#00FC50",
+          borderColor: "#00FC50",
           animation: false,
         },
       ],
-      credits: {
-        enabled: false,
-      },
     };
 
     return options;
