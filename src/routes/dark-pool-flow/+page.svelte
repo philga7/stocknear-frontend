@@ -1,11 +1,6 @@
 <script lang="ts">
   import notifySound from "$lib/audio/options-flow-reader.mp3";
-  import {
-    numberOfUnreadNotification,
-    getCache,
-    setCache,
-    isOpen,
-  } from "$lib/store";
+  import { getCache, setCache, isOpen } from "$lib/store";
 
   import { cn, sectorList } from "$lib/utils";
   import { onMount, onDestroy } from "svelte";
@@ -18,6 +13,7 @@
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
 
   import { page } from "$app/stores";
+  import SEO from "$lib/components/SEO.svelte";
 
   import DarkPoolTable from "$lib/components/Table/DarkPoolTable.svelte";
   import { writable } from "svelte/store";
@@ -694,37 +690,11 @@
   }
 </script>
 
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0" />
-
-  <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""} Dark
-    Pool Flow Feed · Stocknear
-  </title>
-  <meta
-    name="description"
-    content={`Explore unusual dark pool trades from big institutional traders and hedge funds.`}
-  />
-
-  <!-- Other meta tags -->
-  <meta property="og:title" content={`Dark Pool Flow · Stocknear`} />
-  <meta
-    property="og:description"
-    content={`Explore unusual dark pool trades from big institutional traders and hedge funds.`}
-  />
-  <meta property="og:type" content="website" />
-  <!-- Add more Open Graph meta tags as needed -->
-
-  <!-- Twitter specific meta tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={`Dark Pool Flow · Stocknear`} />
-  <meta
-    name="twitter:description"
-    content={`Explore unusual dark pool trades from big institutional traders and hedge funds.`}
-  />
-  <!-- Add more Twitter meta tags as needed -->
-</svelte:head>
+<SEO
+  title="Dark
+    Pool Flow Feed"
+  description="Explore unusual dark pool trades from big institutional traders and hedge funds."
+/>
 
 <body class="overflow-y-auto">
   <section
@@ -744,7 +714,7 @@
         <div
           class="text-white text-sm sm:text-[1rem] italic text-center sm:text-start w-full ml-2 mb-3"
         >
-          Live flow of {data?.user?.tier === "Pro" && selectedDate
+          Dark Pool Live flow of {data?.user?.tier === "Pro" && selectedDate
             ? df.format(selectedDate?.toDate())
             : nyseDate} (NYSE Time)
         </div>

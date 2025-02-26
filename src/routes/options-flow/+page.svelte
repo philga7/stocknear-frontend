@@ -229,7 +229,8 @@
   function handleAddRule() {
     if (ruleName === "") {
       toast.error("Please select a rule", {
-        style: "border-radius: 200px; background: #2A2E39; color: #fff;",
+        style:
+          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
       });
       return;
     }
@@ -468,14 +469,9 @@
     new Date().toLocaleString("en-US", { timeZone: "America/New_York" }),
   )?.getTime();
 
-  const nyseDate = new Date(
-    data?.getOptionsFlowFeed?.at(0)?.date ?? null,
-  )?.toLocaleString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    timeZone: "Europe/Berlin",
-  });
+  const dateString = data?.getOptionsFlowFeed?.at(0)?.date;
+  const nyseDate = new Date(`${dateString}T12:00:00Z`);
+  const formattedNyseDate = nyseDate.toISOString().split("T")[0];
 
   let rawData = data?.getOptionsFlowFeed?.filter((item) =>
     Object?.values(item)?.every(
@@ -520,7 +516,8 @@
       }
     } else {
       toast.error(`Market is closed`, {
-        style: "border-radius: 200px; background: #2A2E39; color: #fff;",
+        style:
+          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
       });
     }
   }
@@ -749,34 +746,46 @@
       const year = convertDate?.getFullYear();
       const month = String(convertDate?.getMonth() + 1).padStart(2, "0");
       const day = String(convertDate?.getDate()).padStart(2, "0");
+      const formattedDate = `${year}-${month}-${day}`;
 
-      const postData = { selectedDate: `${year}-${month}-${day}` };
-
-      try {
-        const response = await fetch("/api/options-historical-flow", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(postData),
-        });
-
-        rawData = await response?.json();
+      if (formattedDate === formattedNyseDate) {
+        rawData = data?.getOptionsFlowFeed;
         if (rawData?.length !== 0) {
           rawData?.forEach((item) => {
             item.dte = daysLeft(item?.date_expiration);
           });
           shouldLoadWorker.set(true);
         }
-      } catch (error) {
-        console.error("Error fetching historical flow:", error);
-        rawData = [];
-      } finally {
-        isLoaded = true;
+      } else {
+        const postData = { selectedDate: formattedDate };
+
+        try {
+          const response = await fetch("/api/options-historical-flow", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(postData),
+          });
+
+          rawData = await response?.json();
+          if (rawData?.length !== 0) {
+            rawData?.forEach((item) => {
+              item.dte = daysLeft(item?.date_expiration);
+            });
+            shouldLoadWorker.set(true);
+          }
+        } catch (error) {
+          console.error("Error fetching historical flow:", error);
+          rawData = [];
+        } finally {
+          isLoaded = true;
+        }
       }
     } else {
       toast.error("Only for Pro Members", {
-        style: "border-radius: 200px; background: #2A2E39; color: #fff;",
+        style:
+          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
       });
     }
   };
@@ -845,7 +854,7 @@
         <div
           class="text-white text-sm sm:text-[1rem] italic text-center sm:text-start w-full ml-2 mb-3"
         >
-          Live flow of {data?.user?.tier === "Pro" && selectedDate
+          Options Live flow of {data?.user?.tier === "Pro" && selectedDate
             ? df.format(selectedDate?.toDate())
             : nyseDate} (NYSE Time)
         </div>
