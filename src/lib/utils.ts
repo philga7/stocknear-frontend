@@ -163,14 +163,16 @@ export const groupEarnings = (earnings) => {
   return Object?.entries(
     earnings
       ?.reduce((acc, item) => {
-        const dateKey = new Intl.DateTimeFormat('en-US', {
+        const date = new Date(item?.date);
+        const berlinDate = new Intl.DateTimeFormat('en-US', {
           day: '2-digit',
           month: 'short',
           year: 'numeric',
-        }).format(new Date(item?.date));
+          timeZone: 'Europe/Berlin'
+        }).format(date);
 
-        if (!acc[dateKey]) acc[dateKey] = [];
-        acc[dateKey]?.push(item);
+        if (!acc[berlinDate]) acc[berlinDate] = [];
+        acc[berlinDate]?.push(item);
         return acc;
       }, {})
   )
@@ -180,9 +182,13 @@ export const groupEarnings = (earnings) => {
       date,
       // Sort earnings within the date by time
       earnings?.sort((a, b) => {
-        const timeA = new Date(`1970-01-01T${a?.time}`);
-        const timeB = new Date(`1970-01-01T${b?.time}`);
-        return timeB - timeA;
+        const berlinTimeA = new Date(
+          new Date(`${item?.date}T${a?.time}`).toLocaleString('en-US', { timeZone: 'Europe/Berlin' })
+        );
+        const berlinTimeB = new Date(
+          new Date(`${item?.date}T${b?.time}`).toLocaleString('en-US', { timeZone: 'Europe/Berlin' })
+        );
+        return berlinTimeB - berlinTimeA;
       })
     ]);
 };
