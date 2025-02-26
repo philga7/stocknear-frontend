@@ -161,32 +161,31 @@ export const groupScreenerRules = (allRows) => {
 
 export const groupEarnings = (earnings) => {
   return Object?.entries(
-    earnings
-      ?.reduce((acc, item) => {
-        const date = new Date(item?.date);
-        const berlinDate = new Intl.DateTimeFormat('en-US', {
-          day: '2-digit',
-          month: 'short',
-          year: 'numeric',
-          timeZone: 'Europe/Berlin'
-        }).format(date);
+    earnings?.reduce((acc, item) => {
+      const date = new Date(item?.date);
+      const berlinDate = new Intl.DateTimeFormat('en-US', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        timeZone: 'Europe/Berlin'
+      }).format(date);
 
-        if (!acc[berlinDate]) acc[berlinDate] = [];
-        acc[berlinDate]?.push(item);
-        return acc;
-      }, {})
+      if (!acc[berlinDate]) acc[berlinDate] = [];
+      acc[berlinDate]?.push(item);
+      return acc;
+    }, {})
   )
-    // Sort the grouped dates in descending order
-    ?.sort(([dateA], [dateB]) => new Date(dateA) - new Date(dateB))
+    // Sort the grouped dates in descending order (most recent first)
+    ?.sort(([dateA], [dateB]) => new Date(dateB) - new Date(dateA))
     ?.map(([date, earnings]) => [
       date,
-      // Sort earnings within the date by time
+      // Sort earnings within the date by time in descending order
       earnings?.sort((a, b) => {
         const berlinTimeA = new Date(
-          new Date(`${item?.date}T${a?.time}`).toLocaleString('en-US', { timeZone: 'Europe/Berlin' })
+          new Date(`${a?.date}T${a?.time}`).toLocaleString('en-US', { timeZone: 'Europe/Berlin' })
         );
         const berlinTimeB = new Date(
-          new Date(`${item?.date}T${b?.time}`).toLocaleString('en-US', { timeZone: 'Europe/Berlin' })
+          new Date(`${b?.date}T${b?.time}`).toLocaleString('en-US', { timeZone: 'Europe/Berlin' })
         );
         return berlinTimeB - berlinTimeA;
       })
