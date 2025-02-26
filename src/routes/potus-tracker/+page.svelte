@@ -34,6 +34,7 @@
       day: "2-digit",
       month: "short",
       year: "numeric",
+      timeZone: "UTC",
     }).format(new Date(item.date));
 
     if (!acc[dateKey]) acc[dateKey] = [];
@@ -46,6 +47,7 @@
       day: "2-digit",
       month: "short",
       year: "numeric",
+      timeZone: "UTC",
     }).format(new Date(item.date));
 
     if (!acc[dateKey]) acc[dateKey] = [];
@@ -337,7 +339,7 @@
                 class="max-h-[600px] overflow-y-auto border border-gray-800 rounded-md p-4 no-scrollbar"
               >
                 <div class="space-y-4">
-                  {#each Object.entries(groupedByDate) as [date, items], indexA}
+                  {#each Object?.entries(groupedByDate) as [date, items], indexA}
                     <div class="my-4">
                       <div
                         class="border-b border-gray-600 pb-2 w-full flex flex-row items-center justify-between"
