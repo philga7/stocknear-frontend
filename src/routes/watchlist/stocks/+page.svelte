@@ -666,12 +666,17 @@
       displayList = [...displayList, ...filteredItem];
     }
   }
-  /*
-  $: if ($isOpen) {
-    websocketRealtimeData();
-    console.log("WebSocket restarted");
+
+  // Helper function to safely parse JSON
+  function safeParse(value) {
+    try {
+      return JSON.parse(value);
+    } catch (error) {
+      // If JSON parsing fails, just return the original value
+      return value;
+    }
   }
-*/
+
   onMount(async () => {
     try {
       const savedRules = localStorage?.getItem("watchlist-ruleOfList");
@@ -713,23 +718,15 @@
       checkedItems = new Set(ruleOfList?.map((item) => item.name));
       allRows = sortIndicatorCheckMarks(allRows);
 
-      // Parse savedLastWatchlistId safely
+      // Safely parse savedLastWatchlistId using safeParse
+      let parsedLastWatchlistId = null;
       if (savedLastWatchlistId && savedLastWatchlistId.length > 0) {
-        let parsedLastWatchlistId;
-        try {
-          parsedLastWatchlistId = JSON.parse(savedLastWatchlistId);
-        } catch (error) {
-          console.error(
-            "Error parsing last watchlist id from localStorage. Using raw value instead.",
-            error,
-          );
-          parsedLastWatchlistId = savedLastWatchlistId;
-        }
-
-        displayWatchList = allList?.find(
-          (item) => item?.id === parsedLastWatchlistId,
-        );
+        parsedLastWatchlistId = safeParse(savedLastWatchlistId);
       }
+
+      displayWatchList = allList?.find(
+        (item) => item?.id === parsedLastWatchlistId,
+      );
 
       // If no valid watchlist is found, default to the first element of allList
       if (!displayWatchList && allList?.length > 0) {
