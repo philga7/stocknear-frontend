@@ -159,35 +159,32 @@ export const groupScreenerRules = (allRows) => {
 
 
 
+
 export const groupEarnings = (earnings) => {
   return Object?.entries(
     earnings?.reduce((acc, item) => {
-      const date = new Date(item?.date);
-      const berlinDate = new Intl.DateTimeFormat('en-US', {
+      // Force formatting in UTC to avoid local timezone conversion
+      const dateKey = new Intl.DateTimeFormat('en-US', {
         day: '2-digit',
         month: 'short',
         year: 'numeric',
-        timeZone: 'Europe/Berlin'
-      }).format(date);
+        timeZone: 'UTC'
+      })?.format(new Date(item.date));
 
-      if (!acc[berlinDate]) acc[berlinDate] = [];
-      acc[berlinDate]?.push(item);
+      if (!acc[dateKey]) acc[dateKey] = [];
+      acc[dateKey].push(item);
       return acc;
     }, {})
   )
-    // Sort the grouped dates in descending order (most recent first)
-    ?.sort(([dateA], [dateB]) => new Date(dateB) - new Date(dateA))
+    // Sort the grouped dates in descending order
+    ?.sort(([dateA], [dateB]) => new Date(dateA) - new Date(dateB))
     ?.map(([date, earnings]) => [
       date,
-      // Sort earnings within the date by time in descending order
+      // Sort earnings within the date by time (also treat times as UTC)
       earnings?.sort((a, b) => {
-        const berlinTimeA = new Date(
-          new Date(`${a?.date}T${a?.time}`).toLocaleString('en-US', { timeZone: 'Europe/Berlin' })
-        );
-        const berlinTimeB = new Date(
-          new Date(`${b?.date}T${b?.time}`).toLocaleString('en-US', { timeZone: 'Europe/Berlin' })
-        );
-        return berlinTimeB - berlinTimeA;
+        const timeA = new Date(`1970-01-01T${a?.time}Z`);
+        const timeB = new Date(`1970-01-01T${b?.time}Z`);
+        return timeB - timeA;
       })
     ]);
 };

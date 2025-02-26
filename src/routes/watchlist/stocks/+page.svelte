@@ -277,8 +277,8 @@
     if (watchList?.length > 0) {
       columns = generateColumns(watchList);
       sortOrders = generateSortOrders(watchList);
-
       groupedEarnings = groupEarnings(earnings);
+
       groupedNews = groupNews(news, watchList);
     } else {
       groupedEarnings = [];
