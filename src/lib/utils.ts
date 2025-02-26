@@ -200,37 +200,39 @@ export const groupNews = (news, watchList) => {
         return match ? { ...item, type: match.type } : { ...item };
       })
       ?.reduce((acc, item) => {
+        // Use UTC to format the published date without shifting the day
         const dateKey = new Intl.DateTimeFormat('en-US', {
           day: '2-digit',
           month: 'short',
           year: 'numeric',
+          timeZone: 'UTC'
         }).format(new Date(item?.publishedDate));
-        const titleKey = item.title;
+        
+        const titleKey = item?.title;
         if (!acc[dateKey]) acc[dateKey] = {};
         if (!acc[dateKey][titleKey]) acc[dateKey][titleKey] = [];
         acc[dateKey][titleKey]?.push(item);
         return acc;
       }, {})
   )
-    // Sort the grouped dates in descending order to have the latest date first
+    // Sort the grouped dates in descending order (latest date first)
     ?.sort(([dateA], [dateB]) => new Date(dateB) - new Date(dateA))
     ?.map(([date, titleGroup]) => [
       date,
       Object.entries(titleGroup)
         // Sort titles by the latest time of their items
-        .sort(([, itemsA], [, itemsB]) => {
-          const latestTimeA = new Date(Math.max(...itemsA.map(item => new Date(item.publishedDate))));
-          const latestTimeB = new Date(Math.max(...itemsB.map(item => new Date(item.publishedDate))));
+        ?.sort(([, itemsA], [, itemsB]) => {
+          const latestTimeA = new Date(Math.max(...itemsA?.map(item => new Date(item.publishedDate + 'Z'))));
+          const latestTimeB = new Date(Math.max(...itemsB?.map(item => new Date(item.publishedDate + 'Z'))));
           return latestTimeB - latestTimeA;
         })
-        .map(([title, items]) => {
-          // Sort items within each title group by latest time
-          items.sort((a, b) => new Date(b.publishedDate) - new Date(a.publishedDate));
+        ?.map(([title, items]) => {
+          // Sort items within each title group by the latest time (treating times as UTC)
+          items.sort((a, b) => new Date(b?.publishedDate + 'Z') - new Date(a?.publishedDate + 'Z'));
           
           // Get the unique symbols
-          const symbols = [...new Set(items.map(item => item.symbol))];
+          const symbols = [...new Set(items?.map(item => item.symbol))];
           
-          // Return the group with symbols and items
           return { title, items, symbols };
         }),
     ]);
