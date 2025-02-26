@@ -439,7 +439,12 @@
       plotOptions: {
         series: {
           color: "white",
-          animation: false,
+          animation: false, // Disable series animation
+          states: {
+            hover: {
+              enabled: false, // Disable hover effect globally
+            },
+          },
         },
       },
     };

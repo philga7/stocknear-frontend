@@ -113,15 +113,10 @@
       plotOptions: {
         series: {
           color: "white",
-          animation: false,
-          dataLabels: {
-            enabled: false,
-            style: {
-              fontSize: "13px",
-              fontWeight: "bold",
-            },
-            formatter: function () {
-              return abbreviateNumber(this.y);
+          animation: false, // Disable series animation
+          states: {
+            hover: {
+              enabled: false, // Disable hover effect globally
             },
           },
         },
@@ -129,7 +124,6 @@
       legend: {
         enabled: false,
       },
-
       tooltip: {
         shared: true,
         useHTML: true,

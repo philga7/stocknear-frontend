@@ -1,19 +1,17 @@
 <script lang="ts">
-  import { abbreviateNumber, abbreviateNumberWithColor } from "$lib/utils";
-  import { screenWidth, setCache, getCache } from "$lib/store";
+  import { abbreviateNumberWithColor, abbreviateNumber } from "$lib/utils";
+  import { setCache, getCache, screenWidth } from "$lib/store";
 
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
   import highcharts from "$lib/highcharts.ts";
 
-  import { onMount } from "svelte";
-
   export let data;
-  export let ticker = null;
+  export let ticker;
 
   let isLoaded = false;
-  let configContract = null;
+  let config = null;
 
   let optionHistoryList = [];
   let selectGraphType = "Vol/OI";
@@ -22,19 +20,71 @@
   let strikePrice;
   let optionType;
   let dateExpiration;
+  let otmPercentage;
+
+  function formatDate(dateStr) {
+    // Convert the input date string to a Date object in New York time
+    let date = new Date(dateStr + "T00:00:00Z"); // Assume input is in UTC
+
+    // Convert to New York Time Zone
+    let options = {
+      timeZone: "Europe/Berlin",
+      month: "2-digit",
+      day: "2-digit",
+      year: "2-digit",
+    };
+
+    let formatter = new Intl.DateTimeFormat("en-US", options);
+
+    return formatter.format(date);
+  }
+
+  function computeOTM(strikePrice, optionType) {
+    // Get the current stock price
+    const currentPrice = data?.getStockQuote?.price;
+
+    let otmPercentage = 0;
+
+    if (optionType === "C") {
+      // Call option: OTM is positive if strike > currentPrice, negative (ITM) otherwise
+      otmPercentage = (
+        ((strikePrice - currentPrice) / currentPrice) *
+        100
+      )?.toFixed(2);
+    } else if (optionType === "P") {
+      // Put option: OTM is positive if strike < currentPrice, negative (ITM) otherwise
+      otmPercentage = (
+        ((currentPrice - strikePrice) / currentPrice) *
+        100
+      )?.toFixed(2);
+    } else {
+      otmPercentage = "n/a";
+    }
+
+    return otmPercentage; // Return the percentage rounded to two decimal places
+  }
+
+  function getScroll() {
+    const scrollThreshold = container.scrollHeight * 0.8; // 80% of the container height
+
+    // Check if the user has scrolled to the bottom based on the threshold
+    const isBottom =
+      container.scrollTop + container.clientHeight >= scrollThreshold;
+
+    // Only load more data if at the bottom and there is still data to load
+    if (isBottom && optionHistoryList?.length !== rawDataHistory?.length) {
+      const nextIndex = optionHistoryList.length; // Ensure optionHistoryList is defined
+      const filteredNewResults = rawDataHistory.slice(
+        nextIndex,
+        nextIndex + 25,
+      ); // Ensure rawData is defined
+      optionHistoryList = [...optionHistoryList, ...filteredNewResults];
+    }
+  }
 
   const currentTime = new Date(
     new Date().toLocaleString("en-US", { timeZone: "America/New_York" }),
   )?.getTime();
-
-  let rawData = data?.getData?.map((item) => ({
-    ...item,
-    dte: daysLeft(item?.expiry),
-  }));
-
-  let displayList = rawData?.slice(0, 150) || [];
-
-  let configUnusual = plotData();
 
   function daysLeft(targetDate) {
     const targetTime = new Date(targetDate).getTime();
@@ -63,276 +113,160 @@
     });
   }
 
-  function formatDate(dateStr) {
-    // Convert the input date string to a Date object in New York time
-    let date = new Date(dateStr + "T00:00:00Z"); // Assume input is in UTC
+  let rawDataVolume = data?.getData?.volume?.map((item) => ({
+    ...item,
+    dte: daysLeft(item?.date_expiration),
+    otm: computeOTM(item?.strike_price, item?.option_type),
+  }));
 
-    // Convert to New York Time Zone
-    let options = {
-      timeZone: "Europe/Berlin",
-      month: "2-digit",
-      day: "2-digit",
-      year: "2-digit",
-    };
+  let rawDataOI = data?.getData?.openInterest?.map((item) => ({
+    ...item,
+    dte: daysLeft(item?.date_expiration),
+    otm: computeOTM(item?.strike_price, item?.option_type),
+  }));
 
-    let formatter = new Intl.DateTimeFormat("en-US", options);
+  let volumeList = rawDataVolume;
+  let openInterestList = rawDataOI;
 
-    return formatter.format(date);
-  }
-  function getScroll() {
-    const scrollThreshold = container.scrollHeight * 0.8; // 80% of the container height
+  $: columns = [
+    { key: "strike_price", label: "Chain", align: "left" },
+    { key: "dte", label: "DTE", align: "right" },
+    { key: "otm", label: "% OTM", align: "right" },
+    { key: "last", label: "Last", align: "right" },
+    { key: "high", label: "Low-High", align: "right" },
+    { key: "volume", label: "Volume", align: "right" },
+    { key: "open_interest", label: "OI", align: "right" },
+    { key: "open_interest_change", label: "OI Change", align: "right" },
+    { key: "iv", label: "IV", align: "right" },
+    { key: "total_premium", label: "Total Prem", align: "right" },
+  ];
 
-    // Check if the user has scrolled to the bottom based on the threshold
-    const isBottom =
-      container.scrollTop + container.clientHeight >= scrollThreshold;
+  $: sortOrders = {
+    strike_price: { order: "none", type: "number" },
+    dte: { order: "none", type: "number" },
+    otm: { order: "none", type: "number" },
+    last: { order: "none", type: "number" },
+    high: { order: "none", type: "number" },
+    volume: { order: "none", type: "number" },
+    open_interest: { order: "none", type: "number" },
+    open_interest_change: { order: "none", type: "number" },
+    iv: { order: "none", type: "number" },
+    total_premium: { order: "none", type: "number" },
+  };
 
-    // Only load more data if at the bottom and there is still data to load
-    if (isBottom && optionHistoryList?.length !== rawDataHistory?.length) {
-      const nextIndex = optionHistoryList.length; // Ensure optionHistoryList is defined
-      const filteredNewResults = rawDataHistory.slice(
-        nextIndex,
-        nextIndex + 25,
-      ); // Ensure rawData is defined
-      optionHistoryList = [...optionHistoryList, ...filteredNewResults];
+  const sortData = (key) => {
+    // Reset all other keys to 'none' except the current key
+    for (const k in sortOrders) {
+      if (k !== key) {
+        sortOrders[k].order = "none";
+      }
     }
-  }
 
-  function plotData() {
-    let dates = [];
-    let callData = [];
-    let putData = [];
-    let priceList = [];
-    let totalPremiums = [];
+    // Cycle through 'none', 'asc', 'desc' for the clicked key
+    const orderCycle = ["none", "asc", "desc"];
+    let originalData = rawDataVolume;
+    const currentOrderIndex = orderCycle.indexOf(sortOrders[key].order);
+    sortOrders[key].order =
+      orderCycle[(currentOrderIndex + 1) % orderCycle.length];
+    const sortOrder = sortOrders[key].order;
 
-    // Sort history by date
-    const history = rawData?.sort(
-      (a, b) => new Date(a?.date) - new Date(b?.date),
-    );
+    // Reset to original data when 'none' and stop further sorting
+    if (sortOrder === "none") {
+      originalData = [...rawDataVolume]; // Reset originalData to rawDataVolume
+      volumeList = originalData;
+      return;
+    }
 
-    // Aggregate call size, put size, and premiums for each date
-    const aggregatedData = {};
+    // Define a generic comparison function
+    const compareValues = (a, b) => {
+      const { type } = sortOrders[key];
+      let valueA, valueB;
 
-    history?.forEach((item) => {
-      const { date, optionType, size, premium } = item;
-
-      if (!aggregatedData[date]) {
-        aggregatedData[date] = { callSize: 0, putSize: 0, totalPremium: 0 };
+      switch (type) {
+        case "date":
+          valueA = new Date(a[key]);
+          valueB = new Date(b[key]);
+          break;
+        case "string":
+          valueA = a[key].toUpperCase();
+          valueB = b[key].toUpperCase();
+          return sortOrder === "asc"
+            ? valueA.localeCompare(valueB)
+            : valueB.localeCompare(valueA);
+        case "number":
+        default:
+          valueA = parseFloat(a[key]);
+          valueB = parseFloat(b[key]);
+          break;
       }
 
-      if (optionType === "Calls") {
-        aggregatedData[date].callSize += size;
-      } else if (optionType === "Puts") {
-        aggregatedData[date].putSize += size;
+      if (sortOrder === "asc") {
+        return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
+      } else {
+        return valueA > valueB ? -1 : valueA < valueB ? 1 : 0;
+      }
+    };
+
+    // Sort using the generic comparison function
+    volumeList = [...originalData].sort(compareValues);
+  };
+
+  const sortDataOI = (key) => {
+    // Reset all other keys to 'none' except the current key
+    for (const k in sortOrders) {
+      if (k !== key) {
+        sortOrders[k].order = "none";
+      }
+    }
+
+    // Cycle through 'none', 'asc', 'desc' for the clicked key
+    const orderCycle = ["none", "asc", "desc"];
+    let originalData = rawDataOI;
+    const currentOrderIndex = orderCycle.indexOf(sortOrders[key].order);
+    sortOrders[key].order =
+      orderCycle[(currentOrderIndex + 1) % orderCycle.length];
+    const sortOrder = sortOrders[key].order;
+
+    // Reset to original data when 'none' and stop further sorting
+    if (sortOrder === "none") {
+      originalData = [...rawDataOI]; // Reset originalData to rawDataOI
+      volumeList = originalData;
+      return;
+    }
+
+    // Define a generic comparison function
+    const compareValues = (a, b) => {
+      const { type } = sortOrders[key];
+      let valueA, valueB;
+
+      switch (type) {
+        case "date":
+          valueA = new Date(a[key]);
+          valueB = new Date(b[key]);
+          break;
+        case "string":
+          valueA = a[key].toUpperCase();
+          valueB = b[key].toUpperCase();
+          return sortOrder === "asc"
+            ? valueA.localeCompare(valueB)
+            : valueB.localeCompare(valueA);
+        case "number":
+        default:
+          valueA = parseFloat(a[key]);
+          valueB = parseFloat(b[key]);
+          break;
       }
 
-      aggregatedData[date].totalPremium += premium;
-    });
-
-    // Build data arrays from the aggregated data
-    dates = Object.keys(aggregatedData);
-    callData = dates?.map((date) => aggregatedData[date].callSize);
-    putData = dates?.map((date) => aggregatedData[date].putSize);
-    totalPremiums = dates?.map((date) => aggregatedData[date].totalPremium);
-
-    // Get the historical prices for matching dates
-    priceList = dates?.map((date) => {
-      const matchingData = data?.getHistoricalPrice?.find(
-        (d) => d?.time === date,
-      );
-      return matchingData?.close || null;
-    });
-
-    // Highcharts configuration options
-    const options = {
-      credits: {
-        enabled: false,
-      },
-      plotOptions: {
-        series: {
-          color: "white",
-          animation: false, // Disable series animation
-          states: {
-            hover: {
-              enabled: false, // Disable hover effect globally
-            },
-          },
-        },
-      },
-      chart: {
-        // Removed global type so each series can define its own type.
-        backgroundColor: "#09090B",
-        plotBackgroundColor: "#09090B",
-        height: 360,
-        width: 850,
-        animation: false,
-      },
-      title: {
-        text: `<h3 class="mt-3 mb-1 ">${ticker} Unusual Options Activity</h3>`,
-        style: {
-          color: "white",
-          // Using inline CSS for margin-top and margin-bottom
-        },
-        useHTML: true, // Enable HTML to apply custom class styling
-      },
-      xAxis: {
-        type: "datetime",
-        endOnTick: false,
-        categories: dates,
-        crosshair: {
-          color: "#fff", // Set the color of the crosshair line
-          width: 1, // Adjust the line width as needed
-          dashStyle: "Solid",
-        },
-        labels: {
-          style: {
-            color: "#fff",
-          },
-          distance: 20, // Increases space between label and axis
-          formatter: function () {
-            const date = new Date(this.value);
-            return date.toLocaleDateString("en-US", {
-              month: "short",
-              year: "numeric",
-            });
-          },
-        },
-        tickPositioner: function () {
-          // Create custom tick positions with wider spacing
-          const positions = [];
-          const info = this.getExtremes();
-          const tickCount = 5; // Reduce number of ticks displayed
-          const interval = Math.floor((info.max - info.min) / tickCount);
-
-          for (let i = 0; i <= tickCount; i++) {
-            positions.push(info.min + i * interval);
-          }
-          return positions;
-        },
-      },
-      yAxis: [
-        {
-          gridLineWidth: 1,
-          gridLineColor: "#111827",
-          labels: {
-            style: { color: "white" },
-          },
-          title: { text: null },
-          opposite: true,
-        },
-        {
-          title: {
-            text: null,
-          },
-          gridLineWidth: 0,
-          labels: {
-            enabled: false,
-          },
-        },
-      ],
-      tooltip: {
-        shared: true,
-        useHTML: true,
-        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
-        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
-        borderWidth: 1,
-        style: {
-          color: "#fff",
-          fontSize: "16px",
-          padding: "10px",
-        },
-        borderRadius: 4,
-        formatter: function () {
-          // Format the x value to display time in hh:mm format
-          let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]">${new Date(
-            this?.x,
-          ).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-          })}</span><br>`;
-
-          // Loop through each point in the shared tooltip
-          this.points.forEach((point) => {
-            tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
-          <span class="text-white font-normal text-sm" style="color:${point.color}">${abbreviateNumber(
-            point.y,
-          )}</span><br>`;
-          });
-
-          return tooltipContent;
-        },
-      },
-      series: [
-        {
-          name: "Call",
-          type: "column",
-          data: callData,
-          color: "#00FC50",
-          borderColor: "#00FC50", // Match border color
-          borderRadius: "2px",
-          marker: {
-            enabled: false,
-          },
-          animation: false,
-        },
-        {
-          name: "Put",
-          type: "column",
-          data: putData,
-          color: "#EE5365",
-          borderColor: "#EE5365", // Match border color
-          borderRadius: "2px",
-          marker: {
-            enabled: false,
-          },
-          animation: false,
-        },
-        {
-          name: "Stock Price",
-          type: "area",
-          yAxis: 1,
-          data: priceList,
-          color: "#fff",
-          lineWidth: 1,
-          marker: {
-            enabled: false,
-          },
-          animation: false,
-          fillColor: {
-            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-            stops: [
-              [0, "rgba(255, 255, 255, 0.1)"],
-              [1, "rgba(255, 255, 255, 0.001)"],
-            ],
-          },
-          // If you prefer a smooth (curved) line, you can use the "spline" type:
-          // type: "spline"
-        },
-      ],
-
-      legend: {
-        enabled: false,
-      },
+      if (sortOrder === "asc") {
+        return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
+      } else {
+        return valueA > valueB ? -1 : valueA < valueB ? 1 : 0;
+      }
     };
 
-    return options;
-  }
-
-  async function handleScroll() {
-    const scrollThreshold = document.body.offsetHeight * 0.8; // 80% of the website height
-    const isBottom = window.innerHeight + window.scrollY >= scrollThreshold;
-    if (isBottom && displayList?.length !== rawData?.length) {
-      const nextIndex = displayList?.length;
-      const filteredNewResults = rawData?.slice(nextIndex, nextIndex + 50);
-      displayList = [...displayList, ...filteredNewResults];
-    }
-  }
-  onMount(async () => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  });
+    // Sort using the generic comparison function
+    openInterestList = [...originalData].sort(compareValues);
+  };
 
   function plotContractHistory() {
     // Ensure rawDataHistory exists and sort it by date
@@ -591,11 +525,12 @@
     selectGraphType = "Vol/OI";
     optionDetailsDesktopModal?.showModal();
 
-    strikePrice = item?.strike;
-    optionType = item?.optionType;
-    dateExpiration = item?.expiry;
+    strikePrice = item?.strike_price;
+    optionType = item?.option_type;
+    dateExpiration = item?.date_expiration;
+    otmPercentage = item?.otm;
 
-    const output = await getContractHistory(item?.optionSymbol);
+    const output = await getContractHistory(item?.option_symbol);
     rawDataHistory = output?.history;
 
     if (rawDataHistory?.length > 0) {
@@ -609,112 +544,25 @@
       });
 
       rawDataHistory = calculateDTE(rawDataHistory, dateExpiration);
-      configContract = plotContractHistory();
+      config = plotContractHistory();
       rawDataHistory = rawDataHistory?.sort(
         (a, b) => new Date(b?.date) - new Date(a?.date),
       );
       optionHistoryList = rawDataHistory?.slice(0, 20);
     } else {
-      configContract = null;
+      config = null;
     }
 
     isLoaded = true;
   }
 
-  $: columns = [
-    { key: "date", label: "Date", align: "left" },
-    { key: "optionSymbol", label: "Option Chain", align: "left" },
-    { key: "dte", label: "DTE", align: "right" },
-    { key: "unusualType", label: "Type", align: "right" },
-    { key: "executionEst", label: "Exec", align: "right" },
-    { key: "sentiment", label: "Sent.", align: "right" },
-    { key: "size", label: "Size", align: "right" },
-    { key: "price", label: "Spot", align: "right" },
-    { key: "premium", label: "Prem", align: "right" },
-  ];
-
-  $: sortOrders = {
-    date: { order: "none", type: "date" },
-    optionSymbol: { order: "none", type: "string" },
-    unusualType: { order: "none", type: "string" },
-    executionEst: { order: "none", type: "string" },
-    dte: { order: "none", type: "number" },
-    sentiment: { order: "none", type: "sentiment" },
-    size: { order: "none", type: "number" },
-    price: { order: "none", type: "number" },
-    premium: { order: "none", type: "number" },
-  };
-
-  const sortData = (key) => {
-    // Reset all other keys to 'none' except the current key
-    for (const k in sortOrders) {
-      if (k !== key) {
-        sortOrders[k].order = "none";
-      }
-    }
-
-    // Cycle through 'none', 'asc', 'desc' for the clicked key
-    const orderCycle = ["none", "asc", "desc"];
-    let originalData = rawData;
-    const currentOrderIndex = orderCycle.indexOf(sortOrders[key].order);
-    sortOrders[key].order =
-      orderCycle[(currentOrderIndex + 1) % orderCycle.length];
-    const sortOrder = sortOrders[key].order;
-
-    // Reset to original data when 'none' and stop further sorting
-    if (sortOrder === "none") {
-      displayList = [...originalData]?.slice(0, 150); // Reset originalData to rawData
-      return;
-    }
-
-    // Define a generic comparison function
-    const compareValues = (a, b) => {
-      const { type } = sortOrders[key];
-      let valueA, valueB;
-
-      switch (type) {
-        case "date":
-          valueA = new Date(a[key]);
-          valueB = new Date(b[key]);
-          break;
-        case "string":
-          valueA = a[key].toUpperCase();
-          valueB = b[key].toUpperCase();
-          return sortOrder === "asc"
-            ? valueA.localeCompare(valueB)
-            : valueB.localeCompare(valueA);
-        case "sentiment":
-          const sentimentOrder = { BULLISH: 1, NEUTRAL: 2, BEARISH: 3 };
-          const sentimentA = sentimentOrder[a?.sentiment?.toUpperCase()] || 4;
-          const sentimentB = sentimentOrder[b?.sentiment?.toUpperCase()] || 4;
-          return sortOrder === "asc"
-            ? sentimentA - sentimentB
-            : sentimentB - sentimentA;
-
-        case "number":
-        default:
-          valueA = parseFloat(a[key]);
-          valueB = parseFloat(b[key]);
-          break;
-      }
-
-      // Default comparison for numbers and fallback case
-      if (valueA < valueB) return sortOrder === "asc" ? -1 : 1;
-      if (valueA > valueB) return sortOrder === "asc" ? 1 : -1;
-      return 0;
-    };
-
-    // Sort using the generic comparison function
-    displayList = [...originalData].sort(compareValues)?.slice(0, 150);
-  };
-
   $: {
-    if (typeof window !== "undefined" && selectGraphType) {
+    if (selectGraphType) {
       isLoaded = false;
       if (rawDataHistory?.length > 0) {
-        configContract = plotContractHistory();
+        config = plotContractHistory();
       } else {
-        configContract = null;
+        config = null;
       }
 
       isLoaded = true;
@@ -733,17 +581,8 @@
         <h2
           class=" flex flex-row items-center text-white text-xl sm:text-2xl font-bold w-fit mb-2 sm:mb-0"
         >
-          Unusual Activity
+          Hottest Contracts (Highest Volume)
         </h2>
-        <Infobox
-          text="Unusual Options trades with a premium of at least 1 million dollar from big whales."
-        />
-
-        <div
-          class="mt-5 border border-gray-800 rounded"
-          use:highcharts={configUnusual}
-        ></div>
-
         <div class="w-full overflow-x-scroll text-white">
           <table
             class="w-full table table-sm table-compact bg-table border border-gray-800 rounded-none sm:rounded-md m-auto mt-4 overflow-x-auto"
@@ -752,39 +591,34 @@
               <TableHeader {columns} {sortOrders} {sortData} />
             </thead>
             <tbody>
-              {#each data?.user?.tier !== "Pro" ? displayList?.slice(0, 3) : displayList as item, index}
+              {#each volumeList as item, index}
                 <tr
                   class="sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] odd:bg-odd border-b border-gray-800 {index +
                     1 ===
-                    rawData?.slice(0, 3)?.length && data?.user?.tier !== 'Pro'
+                    volumeList?.slice(0, 3)?.length &&
+                  data?.user?.tier !== 'Pro'
                     ? 'opacity-[0.1]'
                     : ''}"
                 >
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-start whitespace-nowrap"
-                  >
-                    {formatDate(item?.date)}
-                  </td>
-
-                  <td
-                    class="text-sm sm:text-[1rem] text-start whitespace-nowrap flex justify-between"
+                    class=" text-sm sm:text-[1rem] text-start whitespace-nowrap"
                   >
                     <span
-                      class="inline-block px-2 {item?.optionType === 'Calls'
-                        ? 'text-[#00FC50]'
-                        : 'text-[#FF2F1F]'}"
+                      class={item?.option_type === "C"
+                        ? "text-[#00FC50]"
+                        : "text-[#FF2F1F]"}
                     >
-                      {item?.optionType}
+                      {item?.option_type === "C" ? "Call" : "Put"}
                     </span>
                     <label
                       on:click={() => handleViewData(item)}
                       on:mouseover={() =>
                         getContractHistory(item?.option_symbol)}
-                      class="cursor-pointer text-[#04D9FF] sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
+                      class="px-2 sm:px-0 cursor-pointer text-[#04D9FF] sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
                     >
-                      {item?.strike}
+                      {item?.strike_price}
 
-                      {" " + item?.expiry}
+                      {" " + item?.date_expiration}
 
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -797,51 +631,183 @@
                       >
                     </label>
                   </td>
-
                   <td
                     class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
                     {item?.dte}
                   </td>
-
                   <td
                     class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
-                    {item?.unusualType}
-                  </td>
-
-                  <td
-                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
-                  >
-                    {item?.executionEst}
-                  </td>
-
-                  <td
-                    class="text-sm sm:text-[1rem] text-end whitespace-nowrap {item?.sentiment ===
-                    'Bullish'
-                      ? 'text-[#00FC50]'
-                      : item?.sentiment === 'Bearish'
-                        ? 'text-[#FF2F1F]'
-                        : 'text-[#C8A32D]'} "
-                  >
-                    {item?.sentiment}
+                    {item?.otm}%
                   </td>
                   <td
                     class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
-                    {item?.size?.toLocaleString("en-US")}
+                    {item?.last ?? "n/a"}
                   </td>
-
                   <td
                     class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
-                    {item?.price}
+                    {#if item?.low && item?.high}
+                      {item?.low}-{item?.high}
+                    {:else}
+                      n/a
+                    {/if}
+                  </td>
+                  <td
+                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                  >
+                    {item?.volume?.toLocaleString("en-US")}
+                  </td>
+                  <td
+                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                  >
+                    {item?.open_interest?.toLocaleString("en-US")}
+                  </td>
+                  <td
+                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                  >
+                    {#if item?.changeOI >= 0}
+                      <span class="text-[#00FC50]"
+                        >+{item?.changeOI?.toLocaleString("en-US")}</span
+                      >
+                    {:else if item?.changeOI < 0}
+                      <span class="text-[#FF2F1F]"
+                        >{item?.changeOI?.toLocaleString("en-US")}</span
+                      >
+                    {:else}
+                      n/a
+                    {/if}
+                  </td>
+                  <td class="text-sm sm:text-[1rem] text-end">
+                    {item?.iv ? item?.iv + "%" : "n/a"}
                   </td>
                   <td
                     class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
                     {@html abbreviateNumberWithColor(
-                      item?.premium,
+                      item?.total_premium,
+                      false,
+                      true,
+                    )}
+                  </td>
+                </tr>
+              {/each}
+            </tbody>
+          </table>
+        </div>
+
+        <h2
+          class=" flex flex-row items-center text-white text-xl sm:text-2xl font-bold w-fit mt-10"
+        >
+          Highest OI Contracts
+        </h2>
+        <div class="w-full overflow-x-scroll text-white">
+          <table
+            class="w-full table table-sm table-compact bg-table border border-gray-800 rounded-none sm:rounded-md m-auto mt-4 overflow-x-auto"
+          >
+            <thead>
+              <TableHeader {columns} {sortOrders} sortData={sortDataOI} />
+            </thead>
+            <tbody>
+              {#each openInterestList as item, index}
+                <tr
+                  class="sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] odd:bg-odd border-b border-gray-800 {index +
+                    1 ===
+                    openInterestList?.slice(0, 3)?.length &&
+                  data?.user?.tier !== 'Pro'
+                    ? 'opacity-[0.1]'
+                    : ''}"
+                >
+                  <td
+                    class=" text-sm sm:text-[1rem] text-start whitespace-nowrap"
+                  >
+                    <span
+                      class={item?.option_type === "C"
+                        ? "text-[#00FC50]"
+                        : "text-[#FF2F1F]"}
+                    >
+                      {item?.option_type === "C" ? "Call" : "Put"}
+                    </span>
+                    <label
+                      on:click={() => handleViewData(item)}
+                      on:mouseover={() =>
+                        getContractHistory(item?.option_symbol)}
+                      class="cursor-pointer text-[#04D9FF] sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
+                    >
+                      {item?.strike_price}
+
+                      {" " + item?.date_expiration}
+
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="inline-block w-4 h-4"
+                        viewBox="0 0 512 512"
+                        fill="#04D9FF"
+                        ><path
+                          d="M104 496H72a24 24 0 01-24-24V328a24 24 0 0124-24h32a24 24 0 0124 24v144a24 24 0 01-24 24zM328 496h-32a24 24 0 01-24-24V232a24 24 0 0124-24h32a24 24 0 0124 24v240a24 24 0 01-24 24zM440 496h-32a24 24 0 01-24-24V120a24 24 0 0124-24h32a24 24 0 0124 24v352a24 24 0 01-24 24zM216 496h-32a24 24 0 01-24-24V40a24 24 0 0124-24h32a24 24 0 0124 24v432a24 24 0 01-24 24z"
+                        ></path></svg
+                      >
+                    </label>
+                  </td>
+                  <td
+                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                  >
+                    {item?.dte}
+                  </td>
+                  <td
+                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                  >
+                    {item?.otm}%
+                  </td>
+                  <td
+                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                  >
+                    {item?.last ?? "n/a"}
+                  </td>
+                  <td
+                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                  >
+                    {#if item?.low && item?.high}
+                      {item?.low}-{item?.high}
+                    {:else}
+                      n/a
+                    {/if}
+                  </td>
+                  <td
+                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                  >
+                    {item?.volume?.toLocaleString("en-US")}
+                  </td>
+                  <td
+                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                  >
+                    {item?.open_interest?.toLocaleString("en-US")}
+                  </td>
+                  <td
+                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                  >
+                    {#if item?.changeOI >= 0}
+                      <span class="text-[#00FC50]"
+                        >+{item?.changeOI?.toLocaleString("en-US")}</span
+                      >
+                    {:else if item?.changeOI < 0}
+                      <span class="text-[#FF2F1F]"
+                        >{item?.changeOI?.toLocaleString("en-US")}</span
+                      >
+                    {:else}
+                      n/a
+                    {/if}
+                  </td>
+                  <td class="text-sm sm:text-[1rem] text-end">
+                    {item?.iv ? item?.iv + "%" : "n/a"}
+                  </td>
+                  <td
+                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                  >
+                    {@html abbreviateNumberWithColor(
+                      item?.total_premium,
                       false,
                       true,
                     )}
@@ -946,7 +912,7 @@
         </div>
         <div
           class="mt-2 border border-gray-800 rounded"
-          use:highcharts={configContract}
+          use:highcharts={config}
         ></div>
       </div>
 

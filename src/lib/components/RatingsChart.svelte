@@ -241,11 +241,14 @@
         },
       },
       plotOptions: {
-        animation: false,
-        column: {
-          grouping: true,
-          shadow: false,
-          borderWidth: 0,
+        series: {
+          color: "white",
+          animation: false, // Disable series animation
+          states: {
+            hover: {
+              enabled: false, // Disable hover effect globally
+            },
+          },
         },
       },
 

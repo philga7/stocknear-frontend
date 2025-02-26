@@ -349,16 +349,10 @@
       plotOptions: {
         series: {
           color: "white",
-          animation: false,
-          dataLabels: {
-            enabled: false,
-            color: "white",
-            style: {
-              fontSize: "13px",
-              fontWeight: "bold",
-            },
-            formatter: function () {
-              return abbreviateNumber(this?.y);
+          animation: false, // Disable series animation
+          states: {
+            hover: {
+              enabled: false, // Disable hover effect globally
             },
           },
         },
