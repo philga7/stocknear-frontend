@@ -109,13 +109,13 @@
 />
 
 <section
-  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pt-5 px-4 lg:px-3 mb-20"
+  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pt-5 px-4 lg:px-3"
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
       <li><a href="/" class="text-gray-300">Home</a></li>
       <li>
-        <a href="/politicians/flow-data" class="text-gray-300">Congress</a>
+        <a href="/politicians" class="text-gray-300">Congress</a>
       </li>
 
       <li class="text-gray-300">{name}</li>
@@ -163,7 +163,7 @@
                 </div>
               </div>
               <div
-                class="mt-4 grid grid-cols-2 overflow-hidden rounded border border-gray-600 py-2 text-center md:grid-cols-4 md:p-0 lg:mt-0 lg:border-none"
+                class="mt-4 grid grid-cols-2 overflow-hidden rounded border border-gray-800 py-2 text-center md:grid-cols-4 md:p-0 lg:mt-0 lg:border-none"
               >
                 <div class="flex flex-col px-4 py-2 bp:px-6 md:py-6">
                   <div
@@ -180,7 +180,7 @@
                 </div>
 
                 <div
-                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-600 md:py-6"
+                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-800 md:py-6"
                 >
                   <div
                     class="text-xl sm:text-2xl font-semibold tracking-tight text-white"
@@ -193,7 +193,7 @@
                 </div>
 
                 <div
-                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-600 md:py-6"
+                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-800 md:py-6"
                 >
                   <div
                     class="text-xl sm:text-2xl font-semibold tracking-tight text-white"
@@ -212,7 +212,7 @@
                   </div>
                 </div>
                 <div
-                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-600 md:py-6"
+                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-800 md:py-6"
                 >
                   <div
                     class="text-xl sm:text-2xl font-bold tracking-tight text-white"
@@ -229,7 +229,7 @@
             {#if mainSectors?.length !== 0}
               <div class="mb-10 mt-10 text-white">
                 <div
-                  class="relative my-3 space-y-2 rounded border border-gray-600 sm:my-6 p-4"
+                  class="relative my-3 space-y-2 rounded border border-gray-800 sm:my-6 p-4"
                 >
                   <div class="flex flex-col sm:flex-row">
                     <div class="mb-2 font-semibold sm:mb-0">Main Sectors:</div>
@@ -265,9 +265,11 @@
               </div>
             {/if}
 
-            <div class="w-full overflow-x-scroll mt-10">
+            <h3 class="text-xl text-white font-bold mt-10">Trading History</h3>
+
+            <div class="w-full overflow-x-scroll">
               <table
-                class=" table table-sm table-compact rounded-none sm:rounded-md w-full bg-default m-auto mt-5"
+                class=" table table-sm table-compact rounded-none sm:rounded-md w-full bg-default m-auto mt-5 border border-gray-800"
               >
                 <!-- head -->
                 <thead>

@@ -1,23 +1,7 @@
 <script lang="ts">
-  import { Chart } from "svelte-echarts";
   import { setCache, getCache } from "$lib/store";
-  import { init, use } from "echarts/core";
-  import { LineChart, BarChart } from "echarts/charts";
   import { monthNames } from "$lib/utils";
-  import {
-    GridComponent,
-    TooltipComponent,
-    MarkPointComponent,
-  } from "echarts/components";
-  import { CanvasRenderer } from "echarts/renderers";
-  use([
-    LineChart,
-    BarChart,
-    GridComponent,
-    TooltipComponent,
-    MarkPointComponent,
-    CanvasRenderer,
-  ]);
+  import highcharts from "$lib/highcharts.ts";
 
   export let data;
   export let symbol;
@@ -27,7 +11,7 @@
   export let addToLast = false; //if date value not found at mark point to the last value date.
 
   let isLoaded = false;
-  let optionsData = null;
+  let config = null;
   let historicalData = [];
   let timePeriod = "1Y";
 
@@ -92,7 +76,7 @@
 
       setCache(symbol, historicalData, "ratingsChart");
     }
-    optionsData = plotData();
+    config = plotData();
   }
 
   // Function to plot data based on a specified time period
@@ -102,167 +86,210 @@
       historicalData,
       timePeriod,
     );
-    // Prepare markPoints for ratings
-    const markPoints = ratingsList
-      ?.filter((rating) => {
-        // Ensure date format is correct and matches the ticker symbol
-        return rating?.ticker === symbol;
-      })
-      ?.map((rating) => {
-        let dateIndex;
 
-        if (addToLast) {
-          // If addToLast is true, use fallback logic for the last date
-          dateIndex = dates.includes(rating?.date)
-            ? dates.indexOf(rating?.date)
-            : dates.length - 1;
-        } else {
-          // If addToLast is false, use the original logic
-          dateIndex = dates.indexOf(rating?.date);
-        }
+    // Process ratings for markers
+    const markers = [];
 
-        return {
-          type: "max", // Marking the rating date
-          name: rating?.type,
-          coord: [
-            dates[dateIndex], // Use the found date or the last date
-            closeValues[dateIndex], // Close value corresponding to the date
-          ],
-          label: {
-            formatter: rating?.type
-              ?.replace("Bought", "Buy")
-              ?.replace("Sold", "Sell")
-              ?.replace("Sector Perform", "Hold")
-              ?.replace("Equal-Weight", "Hold")
-              ?.replace("Market Perform", "Hold")
-              ?.replace("Overweight", "Buy")
-              ?.replace("Market Outperform", "Buy")
-              ?.replace("Outperform", "Buy")
-              ?.replace("Market Underperform", "Sell")
-              ?.replace("Underperform", "Sell")
-              ?.replace("Underweight", "Sell"),
-            position: "top", // Position the label above the point
-            color: "white", // Set label color (can be customized)
-            fontSize: 14, // Set font size (increase for better visibility)
-          },
-          symbol: "rectangle", // Symbol type (can be customized)
-          symbolSize: 12, // Increase symbol size for better visibility
-          itemStyle: {
-            color: "red", // Set symbol color to red for better visibility
-          },
-        };
-      });
+    if (ratingsList && ratingsList.length > 0) {
+      ratingsList
+        ?.filter((rating) => rating?.ticker === symbol)
+        ?.forEach((rating) => {
+          let dateIndex;
 
-    const series = [
-      {
-        name: "Price",
-        data: closeValues,
-        type: "line",
-        smooth: true,
-        showSymbol: false,
+          if (addToLast) {
+            // If addToLast is true, use fallback logic for the last date
+            dateIndex = dates.includes(rating?.date)
+              ? dates?.indexOf(rating?.date)
+              : dates?.length - 1;
+          } else {
+            // If addToLast is false, use the original logic
+            dateIndex = dates?.indexOf(rating?.date);
+          }
 
-        lineStyle: {
-          color: "#fff",
-          width: 1,
-        },
-        markPoint: {
-          data: markPoints.map((point) => {
-            let pinColor = "#FF0000"; // Default to red (Sell, Strong Sell)
-            // Set the color based on the label
-            if (["Buy", "Strong Buy"]?.includes(point?.label?.formatter)) {
-              pinColor = "#00FF00"; // Green for Buy, Strong Buy
-            } else if (["Hold", "Neutral"]?.includes(point?.label?.formatter)) {
-              pinColor = "#FFA500"; // Orange for Hold
-            }
+          // Skip if date index is invalid
+          if (dateIndex === -1) return;
 
-            return {
-              name: point.name,
-              coord: point.coord,
-              label: {
-                ...point.label,
-                fontSize: 16, // Increase font size
-                fontWeight: "bold", // Make label bold
-                color: "#fff", // Change label color to white
+          // Format the rating type
+          const formattedType = rating?.type
+            ?.replace("Bought", "Buy")
+            ?.replace("Sold", "Sell")
+            ?.replace("Sector Perform", "Hold")
+            ?.replace("Equal-Weight", "Hold")
+            ?.replace("Market Perform", "Hold")
+            ?.replace("Overweight", "Buy")
+            ?.replace("Market Outperform", "Buy")
+            ?.replace("Outperform", "Buy")
+            ?.replace("Market Underperform", "Sell")
+            ?.replace("Underperform", "Sell")
+            ?.replace("Underweight", "Sell");
+
+          // Determine marker color based on rating type
+          let markerColor = "#FF0000"; // Default to red (Sell)
+          if (["Buy", "Strong Buy"].includes(formattedType)) {
+            markerColor = "#00FF00"; // Green for Buy ratings
+          } else if (["Hold", "Neutral"].includes(formattedType)) {
+            markerColor = "#FFA500"; // Orange for Hold ratings
+          }
+
+          // Add marker point
+          markers.push({
+            x: dateIndex,
+            y: closeValues[dateIndex],
+            marker: {
+              symbol: "triangle-down",
+              radius: 6,
+              fillColor: markerColor,
+              lineWidth: 2,
+              lineColor: "#FFFFFF",
+            },
+            dataLabels: {
+              enabled: true,
+              format: formattedType,
+              style: {
+                color: "#FFFFFF",
+                fontWeight: "bold",
+                fontSize: "14px",
               },
-              symbol: "pin", // Use pin symbol
-              symbolSize: 20, // Increase symbol size
-              itemStyle: {
-                color: pinColor, // Apply the dynamically set color
-              },
-            };
-          }),
-        },
-      },
-    ];
+              y: -10,
+            },
+          });
+        });
+    }
 
-    // Define chart options
+    // Create Highcharts options
     const options = {
-      animation: false,
-      silent: true,
-      grid: {
-        left: "2%",
-        right: "2%",
-        bottom: "10%",
-        top: "10%",
-        containLabel: true,
+      chart: {
+        backgroundColor: "#09090B",
+        height: 360,
+      },
+      credits: { enabled: false },
+      legend: { enabled: false },
+      title: {
+        text: `<h3 class="mt-3 mb-1">${symbol} - ${numOfRatings} Transaction</h3>`,
+        useHTML: true,
+        style: { color: "white" },
       },
       xAxis: {
-        type: "category",
-        data: dates, // Use the extracted dates
-        axisLabel: {
-          color: "#fff",
-          formatter: function (value) {
-            // Assuming dates are in the format 'yyyy-mm-dd'
-            const dateParts = value.split("-");
-            const year = dateParts[0].substring(2); // Extract last two digits of the year
-            const monthIndex = parseInt(dateParts[1]) - 1; // Zero-indexed months
-            return `${monthNames[monthIndex]} '${year}`;
+        type: "datetime",
+        endOnTick: false,
+        categories: dates,
+        crosshair: {
+          color: "#fff", // Set the color of the crosshair line
+          width: 1, // Adjust the line width as needed
+          dashStyle: "Solid",
+        },
+        labels: {
+          style: {
+            color: "#fff",
           },
+          distance: 20, // Increases space between label and axis
+          formatter: function () {
+            const date = new Date(this.value);
+            return date.toLocaleDateString("en-US", {
+              month: "short",
+              year: "numeric",
+            });
+          },
+        },
+        tickPositioner: function () {
+          // Create custom tick positions with wider spacing
+          const positions = [];
+          const info = this.getExtremes();
+          const tickCount = 5; // Reduce number of ticks displayed
+          const interval = Math.floor((info.max - info.min) / tickCount);
+
+          for (let i = 0; i <= tickCount; i++) {
+            positions.push(info.min + i * interval);
+          }
+          return positions;
         },
       },
       yAxis: {
-        show: false, // Completely hides the y-axis
-        type: "value",
-        splitLine: {
-          show: false, // Disable grid lines
+        gridLineWidth: 1,
+        gridLineColor: "#111827",
+        labels: {
+          style: { color: "white" },
         },
-        axisLabel: {
-          color: "#fff",
-        },
+        title: { text: null },
+        opposite: true,
       },
-
-      series: series, // Use the dynamically created series array
-
       tooltip: {
-        trigger: "axis",
-        hideDelay: 100,
-        borderColor: "#969696", // Black border color
-        borderWidth: 1, // Border width of 1px
-        backgroundColor: "#313131", // Optional: Set background color for contrast
-        textStyle: {
-          color: "#fff", // Optional: Text color for better visibility
+        shared: true,
+        useHTML: true,
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
+        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        borderWidth: 1,
+        style: {
+          color: "#fff",
+          fontSize: "16px",
+          padding: "10px",
         },
-        formatter: function (params) {
-          const date = params[0].name; // Get the date from the x-axis value
-          const dateParts = date.split("-");
-          const year = dateParts[0];
-          const monthIndex = parseInt(dateParts[1]) - 1;
-          const day = dateParts[2];
-          const formattedDate = `${monthNames[monthIndex]} ${day}, ${year}`;
+        borderRadius: 4,
+        formatter: function () {
+          // Format the x value to display time in hh:mm format
+          let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]">${this?.x}</span><br>`;
 
-          // Return the tooltip content
-          return `${formattedDate}<br/> ${params[0].value}`;
+          // Loop through each point in the shared tooltip
+          this.points.forEach((point) => {
+            tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
+          <span class="text-white font-normal text-sm" style="color:${point.color}">${
+            point.y
+          }</span><br>`;
+          });
+
+          return tooltipContent;
         },
       },
+      plotOptions: {
+        animation: false,
+        column: {
+          grouping: true,
+          shadow: false,
+          borderWidth: 0,
+        },
+      },
+
+      series: [
+        {
+          name: "Price",
+          data: closeValues.map((value, index) => {
+            return markers.some((marker) => marker.x === index)
+              ? { y: value } // Keeps the price plotted while allowing markers
+              : value;
+          }),
+          type: "area",
+          color: "#FFFFFF",
+          lineWidth: 1,
+          animation: false,
+          zIndex: 10,
+          fillColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+              [0, "rgba(255, 255, 255, 0.1)"],
+              [1, "rgba(255, 255, 255, 0.001)"],
+            ],
+          },
+        },
+        {
+          name: "Ratings",
+          type: "scatter",
+          data: markers,
+          enableMouseTracking: false,
+          animation: false,
+          marker: {
+            enabled: true,
+          },
+        },
+      ],
     };
 
     return options;
   }
 
   $: {
-    if (symbol && typeof window !== "undefined" && timePeriod) {
+    if (symbol && timePeriod) {
       isLoaded = false;
-      optionsData = null;
+      config = null;
       historicalData = [];
 
       historicalPrice(symbol);
@@ -271,16 +298,18 @@
   }
 </script>
 
-<div class="w-full overflow-hidden m-auto mt-5">
-  {#if isLoaded && optionsData !== null}
+<div class="w-full overflow-hidden m-auto">
+  {#if isLoaded && config !== null}
     {#if historicalData?.length > 0}
-      <div class="app w-full relative">
-        <div class="flex justify-start space-x-2 absolute left-16 top-0 z-10">
+      <div class="relative">
+        <div
+          class="flex justify-start space-x-2 w-full ml-2 absolute top-3.5 z-10"
+        >
           {#each ["1Y", "3Y", "5Y", "Max"] as item, index}
             {#if data?.user?.tier === "Pro" || index === 0}
               <label
                 on:click={() => (timePeriod = item)}
-                class="px-4 py-2 {timePeriod === item
+                class="px-3 py-1 {timePeriod === item
                   ? 'bg-white text-black shadow-xl'
                   : 'text-white bg-table text-opacity-[0.6]'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
               >
@@ -307,14 +336,11 @@
             {/if}
           {/each}
         </div>
-        <h2
-          class="text-white text-xl font-semibold text-center absolute left-1/2 transform -translate-x-1/2 top-5 -translate-y-1/2"
-        >
-          {symbol} - {numOfRatings}
-          {title}
-        </h2>
-        <Chart {init} options={optionsData} class="chart" />
       </div>
+      <div
+        class="border border-gray-800 rounded w-full"
+        use:highcharts={config}
+      ></div>
     {:else}
       <div class="h-[250px] sm:h-[350px]">
         <div
@@ -340,21 +366,3 @@
     </div>
   {/if}
 </div>
-
-<style>
-  .app {
-    height: 400px;
-    width: 100%;
-  }
-
-  @media (max-width: 560px) {
-    .app {
-      width: 100%;
-      height: 300px;
-    }
-  }
-
-  .chart {
-    width: 100%;
-  }
-</style>
