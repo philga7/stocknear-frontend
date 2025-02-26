@@ -199,7 +199,7 @@
           return tooltipContent;
         },
       },
-      // Disable markers globally on hover for all series
+
       plotOptions: {
         series: {
           marker: {
@@ -208,6 +208,13 @@
               hover: {
                 enabled: false,
               },
+            },
+          },
+          color: "white",
+          animation: false, // Disable series animation
+          states: {
+            hover: {
+              enabled: false, // Disable hover effect globally
             },
           },
         },
