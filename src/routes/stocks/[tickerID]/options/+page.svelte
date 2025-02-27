@@ -3,18 +3,12 @@
   import DailyStats from "$lib/components/Options/DailyStats.svelte";
   import TickerFlow from "$lib/components/Options/TickerFlow.svelte";
 
-  import { Chart } from "svelte-echarts";
   import { abbreviateNumberWithColor, monthNames } from "$lib/utils";
   import { onMount } from "svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
-  import { init, use } from "echarts/core";
-  import { BarChart, LineChart } from "echarts/charts";
-  import { GridComponent, TooltipComponent } from "echarts/components";
-  import { CanvasRenderer } from "echarts/renderers";
+
   import Infobox from "$lib/components/Infobox.svelte";
   import SEO from "$lib/components/SEO.svelte";
-
-  use([BarChart, LineChart, GridComponent, TooltipComponent, CanvasRenderer]);
 
   export let data;
   let dailyStats = data?.getDailyStats;
@@ -639,21 +633,3 @@
 </section>
 
 <!--Start Options Detail Desktop Modal-->
-
-<style>
-  .app {
-    height: 400px;
-    width: 100%;
-  }
-
-  @media (max-width: 560px) {
-    .app {
-      width: 100%;
-      height: 300px;
-    }
-  }
-
-  .chart {
-    width: 100%;
-  }
-</style>
