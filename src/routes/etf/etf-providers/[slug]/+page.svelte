@@ -141,7 +141,7 @@
 
 <section class="w-full overflow-hidden m-auto">
   {#if rawData?.length !== 0}
-    <div class="mb-5">
+    <div class="mb-5 mt-5 sm:mt-0">
       <Infobox text={htmlOutput} />
     </div>
   {/if}

@@ -67,7 +67,7 @@
 
 <SEO
   title={`Price Reaction ${$displayCompanyName} (${$stockTicker})`}
-  description={`Historical price reaction of ${$displayCompanyName} based on the earnings releases.`}
+  description={`Analyze the historical price reaction of ${$displayCompanyName} (${$stockTicker}) following earnings releases to understand market trends and investor sentiment.`}
 />
 
 <section

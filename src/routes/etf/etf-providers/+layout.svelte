@@ -21,43 +21,6 @@
   }
 </script>
 
-<svelte:head>
-  <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""} Largest
-    ETF Providers by Assets Under Management · Stocknear</title
-  >
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-
-  <meta
-    name="description"
-    content="A complete list of all the companies that provide exchange-traded funds (ETFs) that are actively traded on the U.S. stock market."
-  />
-  <!-- Other meta tags -->
-  <meta
-    property="og:title"
-    content="Largest ETF Providers by Assets Under Management · Stocknear"
-  />
-  <meta
-    property="og:description"
-    content="A complete list of all the companies that provide exchange-traded funds (ETFs) that are actively traded on the U.S. stock market."
-  />
-  <meta property="og:type" content="website" />
-  <!-- Add more Open Graph meta tags as needed -->
-
-  <!-- Twitter specific meta tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta
-    name="twitter:title"
-    content="Largest ETF Providers by Assets Under Management · Stocknear"
-  />
-  <meta
-    name="twitter:description"
-    content="A complete list of all the companies that provide exchange-traded funds (ETFs) that are actively traded on the U.S. stock market."
-  />
-  <!-- Add more Twitter meta tags as needed -->
-</svelte:head>
-
 <section
   class="w-full max-w-screen-2xl overflow-hidden min-h-screen pb-20 pt-5 px-4 lg:px-3"
 >
@@ -79,7 +42,7 @@
         class="relative flex justify-center items-start overflow-hidden w-full"
       >
         <main class="w-full lg:w-3/4 lg:pr-5">
-          <h1 class="mb-6 text-white text-2xl sm:text-3xl font-bold">
+          <h1 class=" text-white text-2xl sm:text-3xl font-bold">
             ETF Providers
           </h1>
 

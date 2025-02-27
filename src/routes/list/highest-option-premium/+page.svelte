@@ -28,8 +28,8 @@
 </script>
 
 <SEO
-  title="Top US Companies with the highest total Options Premium"
-  description="Explore the largest US companies ranked by their Options Premium."
+  title="Top US Companies with the Highest Total Options Premium"
+  description="Discover the largest US companies ranked by total options premium, highlighting top players in the options market and their financial performance."
 />
 
 <section class="w-full overflow-hidden m-auto">

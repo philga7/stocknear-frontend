@@ -135,9 +135,9 @@
           })}</span><br>`;
 
           // Loop through each point in the shared tooltip
-          this.points.forEach((point) => {
+          this.points?.forEach((point) => {
             tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
-          <span class="text-white font-normal text-sm" style="color:${point.color}">${abbreviateNumber(
+          <span class="text-white font-normal text-sm" style="color:${point?.color}">${abbreviateNumber(
             point.y,
           )}</span><br>`;
           });
