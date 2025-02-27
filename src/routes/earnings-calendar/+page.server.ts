@@ -1,4 +1,4 @@
-export const load = async ({ locals, setHeaders }) => {
+export const load = async ({ locals }) => {
   const getEarningsCalendar = async () => {
     const { apiKey, apiURL } = locals;
     // make the POST request to the endpoint
@@ -11,7 +11,6 @@ export const load = async ({ locals, setHeaders }) => {
     });
 
     const output = await response.json();
-    setHeaders({ "cache-control": "public, max-age=3000" });
 
     return output;
   };

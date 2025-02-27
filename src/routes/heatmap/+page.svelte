@@ -3,38 +3,71 @@
   import { Button } from "$lib/components/shadcn/button/index.js";
   import SEO from "$lib/components/SEO.svelte";
   import { setCache, getCache } from "$lib/store";
-  import { onDestroy } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import toast from "svelte-french-toast";
 
   export let data;
   let isLoaded = false;
+  let isLoading = true;
 
-  let rawData = data?.getData;
+  let rawData;
   let iframe: HTMLIFrameElement;
-  let selectedFormat: "png" | "jpeg" | "svg" = "png";
   let selectedTimePeriod = "1D";
-  let iframeUrl: string;
+  let iframeUrl;
 
-  async function getHeatMap() {
-    const cachedData = getCache(selectedTimePeriod, "getHeatmap");
-    if (cachedData) {
-      rawData = cachedData;
-    } else {
-      const postData = { params: selectedTimePeriod };
-      const response = await fetch("/api/heatmap", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(postData),
-      });
+  onMount(async () => {
+    await getHeatMap("1D");
+  });
 
-      rawData = await response.json();
-      setCache(selectedTimePeriod, rawData, "getHeatmap");
+  async function getHeatMap(timePeriod) {
+    selectedTimePeriod = timePeriod;
+    isLoading = true;
+
+    try {
+      const cachedData = getCache(selectedTimePeriod, "getHeatmap");
+      if (cachedData) {
+        rawData = cachedData;
+      } else {
+        const postData = { params: selectedTimePeriod };
+        const response = await fetch("/api/heatmap", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(postData),
+        });
+
+        rawData = await response.json();
+        setCache(selectedTimePeriod, rawData, "getHeatmap");
+      }
+
+      const blob = new Blob([rawData], { type: "text/html" });
+      if (iframeUrl) {
+        URL.revokeObjectURL(iframeUrl);
+      }
+      iframeUrl = URL.createObjectURL(blob);
+
+      // Wait for iframe to load before considering it ready
+      if (iframe) {
+        const loadPromise = new Promise<void>((resolve) => {
+          iframe.onload = () => resolve();
+        });
+
+        // Set a timeout to prevent hanging if iframe doesn't load properly
+        const timeoutPromise = new Promise<void>((resolve) => {
+          setTimeout(() => resolve(), 50);
+        });
+
+        await Promise.race([loadPromise, timeoutPromise]);
+      }
+
+      isLoaded = true;
+    } catch (error) {
+      console.error("Error loading heatmap:", error);
+      toast.error("Failed to load heatmap. Please try again.");
+    } finally {
+      isLoading = false;
     }
-
-    const blob = new Blob([rawData], { type: "text/html" });
-    iframeUrl = URL.createObjectURL(blob);
   }
 
   async function downloadPlot(item) {
@@ -85,19 +118,15 @@
     );
   }
 
+  function handleIframeLoad() {
+    // This will be triggered when the iframe has fully loaded
+    isLoaded = true;
+    isLoading = false;
+  }
+
   onDestroy(() => {
     if (iframeUrl) URL.revokeObjectURL(iframeUrl);
   });
-
-  $: {
-    if (selectedTimePeriod && typeof window !== "undefined") {
-      (async () => {
-        isLoaded = false;
-        getHeatMap();
-        isLoaded = true;
-      })();
-    }
-  }
 </script>
 
 <SEO
@@ -136,6 +165,7 @@
                   <Button
                     builders={[builder]}
                     class="border-gray-600 border bg-default sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
+                    disabled={isLoading}
                   >
                     <span class="truncate text-white">Time Period</span>
                     <svg
@@ -167,7 +197,7 @@
                       <DropdownMenu.Item class="sm:hover:bg-primary">
                         <div class="flex items-center">
                           <button
-                            on:click={() => (selectedTimePeriod = item)}
+                            on:click={() => getHeatMap(item)}
                             class="cursor-pointer text-white"
                           >
                             <span class="mr-8">{item}</span>
@@ -184,6 +214,7 @@
                   <Button
                     builders={[builder]}
                     class="border-gray-600 border bg-default sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
+                    disabled={isLoading || !isLoaded}
                   >
                     <span class="truncate text-white">Download</span>
                     <svg
@@ -229,26 +260,29 @@
               </DropdownMenu.Root>
             </div>
           </div>
-          <div class="w-full min-h-screen bg-[#09090B] overflow-hidden">
-            {#if isLoaded}
-              {#if rawData}
-                <iframe
-                  bind:this={iframe}
-                  src={iframeUrl}
-                  class="w-full h-screen border-none"
-                />
-              {/if}
-            {:else}
+          <div class="w-full h-full bg-[#09090B] overflow-hidden">
+            {#if isLoading}
               <div class="flex justify-center items-center h-80">
                 <div class="relative">
                   <label
-                    class="bg-secondary rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                    class=" h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                   >
-                    <span
-                      class="loading loading-spinner loading-md text-gray-400"
+                    <span class="loading loading-bars loading-md text-gray-400"
                     ></span>
                   </label>
                 </div>
+              </div>
+            {:else if rawData && iframeUrl && !isLoading}
+              <iframe
+                bind:this={iframe}
+                src={iframeUrl}
+                class="w-full h-screen border-none"
+                on:load={handleIframeLoad}
+                title="S&P 500 Heatmap"
+              />
+            {:else}
+              <div class="flex justify-center items-center h-80">
+                <p class="text-gray-400">No data available</p>
               </div>
             {/if}
           </div>
