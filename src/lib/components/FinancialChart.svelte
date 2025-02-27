@@ -45,7 +45,7 @@
         },
       },
       title: {
-        text: `<h3 class="mt-3 mb-1">${labelName}</h3>`,
+        text: `<h3 class="mt-3 mb-1 text-[1rem]">${labelName}</h3>`,
         useHTML: true,
         style: { color: "white" },
       },
