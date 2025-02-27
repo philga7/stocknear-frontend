@@ -148,7 +148,7 @@
 />
 
 <section
-  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pt-5 pb-40 px-3"
+  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pt-5 px-3"
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
@@ -159,12 +159,15 @@
 
   <body class="w-full overflow-hidden m-auto">
     {#if isLoaded}
-      <section class="w-full overflow-hidden m-auto sm:mt-10 mt-10">
+      <section class="w-full overflow-hidden m-auto mt-5">
         <div class=" flex justify-center w-full m-auto overflow-hidden">
           <div
             class="relative flex justify-center items-center overflow-hidden w-full"
           >
             <main class="w-full">
+              <h1 class="mb-3 text-white text-2xl sm:text-3xl font-bold">
+                All US Politicians
+              </h1>
               <div class="w-full pb-3">
                 <div class="relative right-0 bg-default">
                   <ul

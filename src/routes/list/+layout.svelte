@@ -327,9 +327,9 @@
       <div class="ml-2 text-start w-full text-white mb-2">
         {#each navigation as item}
           {#if item?.link === $page.url.pathname}
-            <span class="font-bold text-2xl">
+            <h1 class="font-bold text-2xl">
               {item?.title}
-            </span>
+            </h1>
           {/if}
         {/each}
       </div>
