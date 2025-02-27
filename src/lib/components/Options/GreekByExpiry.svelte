@@ -1,28 +1,9 @@
 <script lang="ts">
-  import { abbreviateNumberWithColor } from "$lib/utils";
-  import { screenWidth } from "$lib/store";
+  import { abbreviateNumberWithColor, abbreviateNumber } from "$lib/utils";
   import { onMount } from "svelte";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
-  import { Chart } from "svelte-echarts";
-
-  import { init, use } from "echarts/core";
-  import { LineChart, BarChart } from "echarts/charts";
-  import {
-    GridComponent,
-    TooltipComponent,
-    LegendComponent,
-  } from "echarts/components";
-  import { CanvasRenderer } from "echarts/renderers";
-
-  use([
-    LineChart,
-    BarChart,
-    GridComponent,
-    TooltipComponent,
-    LegendComponent,
-    CanvasRenderer,
-  ]);
+  import highcharts from "$lib/highcharts.ts";
 
   export let data;
   export let title = "Gamma";
@@ -59,7 +40,6 @@
   }, []);
 
   let displayList = rawData?.slice(0, 150);
-  let options = null;
 
   function formatDate(dateString) {
     if (!dateString) return null; // Handle null or undefined input
@@ -76,7 +56,8 @@
     // Determine if the current data is Gamma-based or not
     const isGamma = title === "Gamma";
 
-    // Process and sort data by strike or expiry
+    // Process data; note that the original sort was based on a missing "strike" field.
+    // Here we sort by expiry (assuming formatDate returns a sortable date string).
     const processedData = rawData
       ?.map((d) => ({
         expiry: formatDate(d?.expiry),
@@ -84,83 +65,137 @@
         putValue: isGamma ? d?.put_gex : d?.put_dex,
         netValue: isGamma ? d?.net_gex : d?.net_dex,
       }))
-      .sort((a, b) => a.strike - b.strike);
+      .sort((a, b) => new Date(a.expiry) - new Date(b.expiry));
 
+    // Create arrays for categories and series data.
     const expiries = processedData.map((d) => d.expiry);
-    const callValue = processedData.map((d) => d.callValue?.toFixed(2));
-    const putValue = processedData.map((d) => d.putValue?.toFixed(2));
-    const netValue = processedData.map((d) => d.netValue?.toFixed(2));
+    // Convert values to numbers (toFixed returns a string)
+    const callValues = processedData.map((d) =>
+      parseFloat(d.callValue.toFixed(2)),
+    );
+    const putValues = processedData.map((d) =>
+      parseFloat(d.putValue.toFixed(2)),
+    );
+    const netValues = processedData.map((d) =>
+      parseFloat(d.netValue.toFixed(2)),
+    );
 
     const options = {
-      animation: false,
-      tooltip: {
-        trigger: "axis",
-        axisPointer: {
-          type: "shadow",
+      credits: {
+        enabled: false,
+      },
+      chart: {
+        type: "column",
+        backgroundColor: "#09090B",
+        plotBackgroundColor: "#09090B",
+        height: 360,
+        animation: false,
+      },
+      title: {
+        text: `<h3 class="mt-3 mb-1 ">${title === "Gamma" ? "GEX" : "DEX"} Chart</h3>`,
+        style: {
+          color: "white",
+          // Using inline CSS for margin-top and margin-bottom
         },
-        backgroundColor: "#313131",
-        textStyle: {
-          color: "#fff",
-        },
-        formatter: function (params) {
-          const expiry = params[0].axisValue;
-          const put = params[0].data;
-          const net = params[1].data;
-          const call = params[2].data;
-
-          return `
-        <div style="text-align:left;">
-          <b>Expiry:</b> ${expiry}<br/>
-          <span style="color:#9B5DC4;">● Put ${isGamma ? "Gamma" : "Delta"}:</span> ${abbreviateNumberWithColor(put, false, true)}<br/>
-          <span style="color:#FF2F1F;">● Net ${isGamma ? "Gamma" : "Delta"}:</span> ${abbreviateNumberWithColor(net, false, true)}<br/>
-          <span style="color:#C4E916;">● Call ${isGamma ? "Gamma" : "Delta"}:</span> ${abbreviateNumberWithColor(call, false, true)}<br/>
-          </div>`;
+        useHTML: true, // Enable HTML to apply custom class styling
+      },
+      legend: { enabled: false },
+      plotOptions: {
+        series: {
+          animation: false,
+          stacking: "normal",
         },
       },
-      grid: {
-        left: $screenWidth < 640 ? "5%" : "1%",
-        right: $screenWidth < 640 ? "5%" : "0%",
-        bottom: "10%",
-        containLabel: true,
+      tooltip: {
+        shared: true,
+        useHTML: true,
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
+        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        borderWidth: 1,
+        style: {
+          color: "#fff",
+          fontSize: "16px",
+          padding: "10px",
+        },
+        borderRadius: 4,
+        formatter: function () {
+          // Format the x value to display time in hh:mm format
+          let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]">${new Date(
+            this?.x,
+          ).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })}</span><br>`;
+
+          // Loop through each point in the shared tooltip
+          this.points?.forEach((point) => {
+            tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
+          <span class="text-white font-normal text-sm" style="color:${point?.color}">${abbreviateNumber(
+            point.y,
+          )}</span><br>`;
+          });
+
+          return tooltipContent;
+        },
       },
       xAxis: {
-        type: "value",
-        name: isGamma ? "Gamma" : "Delta",
-        nameTextStyle: { color: "#fff" },
-        splitLine: { show: false },
-        axisLabel: {
-          show: false, // Hide y-axis labels
+        type: "datetime",
+        endOnTick: false,
+        categories: expiries,
+        crosshair: {
+          color: "#fff", // Set the color of the crosshair line
+          width: 1, // Adjust the line width as needed
+          dashStyle: "Solid",
+        },
+        labels: {
+          style: {
+            color: "#fff",
+          },
+          distance: 20, // Increases space between label and axis
+          formatter: function () {
+            const date = new Date(this.value);
+            return date.toLocaleDateString("en-US", {
+              day: "2-digit", // Include day number
+              month: "short", // Display short month name
+              year: "numeric", // Include year
+            });
+          },
         },
       },
       yAxis: {
-        type: "category",
-        data: expiries,
-        axisLine: { lineStyle: { color: "#fff" } },
-        axisLabel: { color: "#fff" },
-        splitLine: { show: false },
+        gridLineWidth: 1,
+        gridLineColor: "#111827",
+        labels: {
+          style: { color: "white" },
+          formatter: function () {
+            return abbreviateNumber(this.value);
+          },
+        },
+        title: { text: null },
+        opposite: true,
       },
       series: [
         {
           name: `Put ${isGamma ? "Gamma" : "Delta"}`,
-          type: "bar",
-          data: putValue,
-          stack: isGamma ? "gamma" : "delta",
-          itemStyle: { color: "#9B5DC4" },
-          barWidth: "40%",
+          data: putValues,
+          color: "#9B5DC4",
+          borderColor: "#9B5DC4",
+          animation: false,
         },
         {
           name: `Net ${isGamma ? "Gamma" : "Delta"}`,
-          type: "bar",
-          data: netValue,
-          stack: isGamma ? "gamma" : "delta",
-          itemStyle: { color: "#FF2F1F" },
+          data: netValues,
+          color: "#FF2F1F",
+          borderColor: "#FF2F1F",
+          animation: false,
         },
         {
           name: `Call ${isGamma ? "Gamma" : "Delta"}`,
-          type: "bar",
-          data: callValue,
-          stack: isGamma ? "gamma" : "delta",
-          itemStyle: { color: "#C4E916" },
+          data: callValues,
+          color: "#C4E916",
+          borderColor: "#C4E916",
+          animation: false,
         },
       ],
     };
@@ -275,11 +310,7 @@
     displayList = [...originalData].sort(compareValues);
   };
 
-  $: {
-    if (typeof window !== "undefined") {
-      options = plotData();
-    }
-  }
+  let config = plotData();
 </script>
 
 <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
@@ -289,26 +320,20 @@
     {title} Exposure By Expiry
   </h2>
 
-  <div class="w-full overflow-hidden m-auto">
-    {#if options !== null}
-      <div class="app w-full relative">
-        <Chart {init} {options} class="chart" />
-      </div>
-    {:else}
-      <div class="flex justify-center items-center h-80">
-        <div class="relative">
-          <label
-            class="bg-primary rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-          >
-            <span
-              class="loading loading-spinner loading-md sm:loading-[1rem] text-gray-400"
-            ></span>
-          </label>
-        </div>
-      </div>
+  <div class="w-full overflow-hidden m-auto mt-3">
+    {#if config !== null}
+      <div
+        class="chart border border-gray-800 rounded"
+        use:highcharts={config}
+      ></div>
     {/if}
   </div>
-  <div class="w-full overflow-x-scroll text-white">
+
+  <h3 class="text-xl sm:text-2xl text-white font-bold mt-5">
+    {title === "Gamma" ? "GEX" : "DEX"} Table
+  </h3>
+
+  <div class="mt-3 w-full overflow-x-scroll text-white">
     <table
       class="w-full table table-sm table-compact bg-table border border-gray-800 rounded-none sm:rounded-md m-auto overflow-x-auto"
     >
@@ -381,21 +406,3 @@
 
   <UpgradeToPro {data} />
 </div>
-
-<style>
-  .app {
-    height: 600px;
-    width: 100%;
-  }
-
-  @media (max-width: 560px) {
-    .app {
-      width: 100%;
-      height: 500px;
-    }
-  }
-
-  .chart {
-    width: 100%;
-  }
-</style>

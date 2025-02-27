@@ -14,7 +14,7 @@
 </script>
 
 <SEO
-  title="Open Interet by Strike Price"
+  title="Open Interest by Strike Price"
   description={`Discover detailed Open Interest analysis by strike price for ${$displayCompanyName} (${$stockTicker}). Explore historical volume, open interest, and save individual options contracts for in-depth insights.`}
 />
 

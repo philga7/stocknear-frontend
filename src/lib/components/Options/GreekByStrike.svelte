@@ -1,28 +1,9 @@
 <script lang="ts">
-  import { abbreviateNumberWithColor } from "$lib/utils";
-  import { screenWidth } from "$lib/store";
+  import { abbreviateNumberWithColor, abbreviateNumber } from "$lib/utils";
   import { onMount } from "svelte";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
-  import { Chart } from "svelte-echarts";
-
-  import { init, use } from "echarts/core";
-  import { LineChart, BarChart } from "echarts/charts";
-  import {
-    GridComponent,
-    TooltipComponent,
-    LegendComponent,
-  } from "echarts/components";
-  import { CanvasRenderer } from "echarts/renderers";
-
-  use([
-    LineChart,
-    BarChart,
-    GridComponent,
-    TooltipComponent,
-    LegendComponent,
-    CanvasRenderer,
-  ]);
+  import highcharts from "$lib/highcharts.ts";
 
   export let data;
   export let title = "Gamma";
@@ -54,10 +35,9 @@
   });
 
   let displayList = rawData?.slice(0, 150);
-  let options = null;
 
   function plotData() {
-    const isGamma = title === "Gamma"; // don't delete this $: isGamma is not rendered fast enough; stupid fkn javascript
+    const isGamma = title === "Gamma"; // Don't delete this; isGamma is used below.
     const processedData = rawData
       ?.map((d) => ({
         strike: d?.strike,
@@ -65,81 +45,134 @@
         putValue: isGamma ? d?.put_gex : d?.put_dex,
         netValue: isGamma ? d?.net_gex : d?.net_dex,
       }))
-      ?.sort((a, b) => a?.strike - b?.strike);
+      ?.sort((a, b) => a.strike - b.strike);
 
+    // Extract data arrays
     const strikes = processedData?.map((d) => d.strike);
-    const callValues = processedData?.map((d) => d.callValue?.toFixed(2));
-    const putValues = processedData?.map((d) => d.putValue?.toFixed(2));
-    const netValues = processedData?.map((d) => d.netValue?.toFixed(2));
-    const options = {
-      animation: false,
-      tooltip: {
-        trigger: "axis",
-        axisPointer: {
-          type: "shadow",
-        },
-        backgroundColor: "#313131",
-        textStyle: {
-          color: "#fff",
-        },
-        formatter: function (params) {
-          const strike = params[0].axisValue;
-          const put = params[0].data;
-          const net = params[1].data;
-          const call = params[2].data;
+    // Ensure numerical values instead of strings (toFixed returns a string)
+    const callValues = processedData?.map((d) =>
+      parseFloat(d.callValue.toFixed(2)),
+    );
+    const putValues = processedData?.map((d) =>
+      parseFloat(d.putValue.toFixed(2)),
+    );
+    const netValues = processedData?.map((d) =>
+      parseFloat(d.netValue.toFixed(2)),
+    );
 
-          return `
-          <div style="text-align:left;">
-            <b>Strike:</b> ${strike}<br/>
-            <span style="color:#9B5DC4;">● Put ${isGamma ? "Gamma" : "Delta"}:</span> ${abbreviateNumberWithColor(put, false, true)}<br/>
-            <span style="color:#FF2F1F;">● Net ${isGamma ? "Gamma" : "Delta"}:</span> ${abbreviateNumberWithColor(net, false, true)}<br/>
-            <span style="color:#C4E916;">● Call ${isGamma ? "Gamma" : "Delta"}:</span> ${abbreviateNumberWithColor(call, false, true)}<br/>
-            </div>`;
+    const options = {
+      credits: {
+        enabled: false,
+      },
+      chart: {
+        type: "column",
+        backgroundColor: "#09090B",
+        plotBackgroundColor: "#09090B",
+        height: 360,
+        animation: false,
+      },
+      title: {
+        text: `<h3 class="mt-3 mb-1 ">${title === "Gamma" ? "GEX" : "DEX"} Chart</h3>`,
+        style: {
+          color: "white",
+          // Using inline CSS for margin-top and margin-bottom
+        },
+        useHTML: true, // Enable HTML to apply custom class styling
+      },
+      legend: { enabled: false },
+      plotOptions: {
+        series: {
+          animation: false,
+          stacking: "normal",
         },
       },
-      grid: {
-        left: $screenWidth < 640 ? "5%" : "0%",
-        right: $screenWidth < 640 ? "5%" : "0%",
-        bottom: "5%",
-        containLabel: true,
+      tooltip: {
+        shared: true,
+        useHTML: true,
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
+        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        borderWidth: 1,
+        style: {
+          color: "#fff",
+          fontSize: "16px",
+          padding: "10px",
+        },
+        borderRadius: 4,
+        formatter: function () {
+          // Format the x value to display time in hh:mm format
+          let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]">Strike ${
+            this?.x
+          }</span><br>`;
+
+          // Loop through each point in the shared tooltip
+          this.points?.forEach((point) => {
+            tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
+          <span class="text-white font-normal text-sm" style="color:${point?.color}">${abbreviateNumber(
+            point.y,
+          )}</span><br>`;
+          });
+
+          return tooltipContent;
+        },
       },
       xAxis: {
-        type: "value",
-        nameTextStyle: { color: "#fff" },
-        splitLine: { show: false },
-        axisLabel: {
-          show: false, // Hide x-axis labels
+        categories: strikes,
+        lineColor: "#fff",
+        endOnTick: false,
+        crosshair: {
+          color: "#fff", // Set the color of the crosshair line
+          width: 1, // Adjust the line width as needed
+          dashStyle: "Solid",
+        },
+        labels: {
+          style: {
+            color: "#fff",
+          },
+          // Only display every 5th label
+          formatter: function () {
+            return this.pos % 2 === 0 ? this.value : "";
+          },
         },
       },
       yAxis: {
-        type: "category",
-        data: strikes,
-        axisLine: { lineStyle: { color: "#fff" } },
-        axisLabel: { color: "#fff" },
-        splitLine: { show: false },
+        gridLineWidth: 1,
+        gridLineColor: "#111827",
+        labels: {
+          style: { color: "white" },
+          formatter: function () {
+            return abbreviateNumber(this.value);
+          },
+        },
+        title: { text: null },
+        opposite: true,
       },
       series: [
         {
           name: `Put ${isGamma ? "Gamma" : "Delta"}`,
-          type: "bar",
           data: putValues,
           stack: "value",
-          itemStyle: { color: "#9B5DC4" },
-          barWidth: "40%",
+          color: "#9B5DC4",
+          borderColor: "#9B5DC4",
+          borderRadius: "1px",
+          animation: false,
         },
         {
           name: `Net ${isGamma ? "Gamma" : "Delta"}`,
-          type: "bar",
           data: netValues,
           stack: "value",
-          itemStyle: { color: "#FF2F1F" },
+          color: "#FF2F1F",
+          borderColor: "#FF2F1F",
+          borderRadius: "1px",
+          animation: false,
         },
         {
           name: `Call ${isGamma ? "Gamma" : "Delta"}`,
-          type: "bar",
           data: callValues,
           stack: "value",
-          itemStyle: { color: "#C4E916" },
+          color: "#C4E916",
+          borderColor: "#C4E916",
+          borderRadius: "1px",
+          animation: false,
         },
       ],
     };
@@ -254,11 +287,7 @@
     displayList = [...originalData].sort(compareValues);
   };
 
-  $: {
-    if (typeof window !== "undefined") {
-      options = plotData();
-    }
-  }
+  let config = plotData() || null;
 </script>
 
 <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
@@ -268,26 +297,19 @@
     {title} Exposure By Strike
   </h2>
 
-  <div class="w-full overflow-hidden m-auto">
-    {#if options !== null}
-      <div class="app w-full relative">
-        <Chart {init} {options} class="chart" />
-      </div>
-    {:else}
-      <div class="flex justify-center items-center h-80">
-        <div class="relative">
-          <label
-            class="bg-primary rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-          >
-            <span
-              class="loading loading-spinner loading-md sm:loading-[1rem] text-gray-400"
-            ></span>
-          </label>
-        </div>
-      </div>
+  <div class="w-full overflow-hidden m-auto mt-3">
+    {#if config !== null}
+      <div
+        class="chart border border-gray-800 rounded"
+        use:highcharts={config}
+      ></div>
     {/if}
   </div>
-  <div class="w-full overflow-x-scroll text-white">
+
+  <h3 class="text-xl sm:text-2xl text-white font-bold mt-5">
+    {title === "Gamma" ? "GEX" : "DEX"} Table
+  </h3>
+  <div class="w-full overflow-x-scroll text-white mt-3">
     <table
       class="w-full table table-sm table-compact bg-table border border-gray-800 rounded-none sm:rounded-md m-auto overflow-x-auto"
     >
@@ -360,21 +382,3 @@
 
   <UpgradeToPro {data} />
 </div>
-
-<style>
-  .app {
-    height: 1000px;
-    width: 100%;
-  }
-
-  @media (max-width: 560px) {
-    .app {
-      width: 100%;
-      height: 500px;
-    }
-  }
-
-  .chart {
-    width: 100%;
-  }
-</style>

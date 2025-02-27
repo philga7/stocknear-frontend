@@ -1,10 +1,5 @@
 <script lang="ts">
-  import {
-    abbreviateNumberWithColor,
-    abbreviateNumber,
-    monthNames,
-  } from "$lib/utils";
-  import { screenWidth } from "$lib/store";
+  import { abbreviateNumberWithColor, abbreviateNumber } from "$lib/utils";
   import { onMount } from "svelte";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
@@ -422,7 +417,7 @@
     {title === "Gamma" ? "GEX" : "DEX"} History
   </h3>
 
-  <div class="mt-5 w-full overflow-x-scroll text-white">
+  <div class="mt-3 w-full overflow-x-scroll text-white">
     <table
       class="w-full table table-sm table-compact bg-table border border-gray-800 rounded-none sm:rounded-md m-auto overflow-x-auto"
     >
