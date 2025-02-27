@@ -8,25 +8,7 @@
   import { onMount } from "svelte";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
-  import { Chart } from "svelte-echarts";
-
-  import { init, use } from "echarts/core";
-  import { LineChart, BarChart } from "echarts/charts";
-  import {
-    GridComponent,
-    TooltipComponent,
-    LegendComponent,
-  } from "echarts/components";
-  import { CanvasRenderer } from "echarts/renderers";
-
-  use([
-    LineChart,
-    BarChart,
-    GridComponent,
-    TooltipComponent,
-    LegendComponent,
-    CanvasRenderer,
-  ]);
+  import highcharts from "$lib/highcharts.ts";
 
   export let data;
   export let title;
@@ -56,7 +38,7 @@
   let displayList = rawData?.slice(0, 150);
   let timePeriod = "3M";
 
-  let options = null;
+  let config = null;
 
   function filterDataByPeriod(historicalData, period = "3M") {
     const currentDate = new Date();
@@ -111,116 +93,145 @@
       history,
       timePeriod,
     );
+
     const options = {
-      animation: false,
-      tooltip: {
-        trigger: "axis",
-        hideDelay: 100,
-        borderColor: "#969696", // Black border color
-        borderWidth: 1, // Border width of 1px
-        backgroundColor: "#313131", // Optional: Set background color for contrast
-        textStyle: {
-          color: "#fff", // Optional: Text color for better visibility
+      credits: {
+        enabled: false,
+      },
+      chart: {
+        backgroundColor: "#09090B",
+        plotBackgroundColor: "#09090B",
+        height: 360,
+        animation: false,
+      },
+      title: {
+        text: `<h3 class="mt-3 mb-1 ">${title === "Gamma" ? "GEX" : "DEX"} Chart</h3>`,
+        style: {
+          color: "white",
+          // Using inline CSS for margin-top and margin-bottom
         },
-        formatter: function (params) {
-          // Get the timestamp from the first parameter
-          const timestamp = params[0].axisValue;
+        useHTML: true, // Enable HTML to apply custom class styling
+      },
+      tooltip: {
+        shared: true,
+        useHTML: true,
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
+        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        borderWidth: 1,
+        style: {
+          color: "#fff",
+          fontSize: "16px",
+          padding: "10px",
+        },
+        borderRadius: 4,
+        formatter: function () {
+          // Format the x value to display time in hh:mm format
+          let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]">${new Date(
+            this?.x,
+          ).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })}</span><br>`;
 
-          // Initialize result with timestamp
-          let result = timestamp + "<br/>";
-
-          // Add each series data
-          params?.forEach((param) => {
-            const marker =
-              '<span style="display:inline-block;margin-right:4px;' +
-              "border-radius:10px;width:10px;height:10px;background-color:" +
-              param.color +
-              '"></span>';
-            result +=
-              marker +
-              param.seriesName +
-              ": " +
-              abbreviateNumber(param.value) +
-              "<br/>";
+          // Loop through each point in the shared tooltip
+          this.points.forEach((point) => {
+            tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
+          <span class="text-white font-normal text-sm" style="color:${point.color}">${abbreviateNumber(
+            point.y,
+          )}</span><br>`;
           });
 
-          return result;
+          return tooltipContent;
         },
-        axisPointer: {
-          lineStyle: {
+      },
+      xAxis: {
+        type: "datetime",
+        endOnTick: false,
+        categories: dateList,
+        crosshair: {
+          color: "#fff", // Set the color of the crosshair line
+          width: 1, // Adjust the line width as needed
+          dashStyle: "Solid",
+        },
+        labels: {
+          style: {
             color: "#fff",
           },
+          distance: 20, // Increases space between label and axis
+          formatter: function () {
+            const date = new Date(this.value);
+            return date.toLocaleDateString("en-US", {
+              day: "2-digit", // Include day number
+              month: "short", // Display short month name
+              year: "numeric", // Include year
+            });
+          },
         },
-      },
-      silent: true,
-      grid: {
-        left: $screenWidth < 640 ? "5%" : "0%",
-        right: $screenWidth < 640 ? "5%" : "0%",
-        bottom: "10%",
-        containLabel: true,
-      },
-      xAxis: [
-        {
-          type: "category",
-          data: dateList,
-          axisLabel: {
-            color: "#fff",
+        tickPositioner: function () {
+          // Create custom tick positions with optimized spacing
+          const positions = [];
+          const info = this.getExtremes();
+          const tickCount = 6; // Increase tick count for better readability
+          const interval = Math.floor((info.max - info.min) / (tickCount - 1));
 
-            formatter: function (value) {
-              // Assuming dates are in the format 'yyyy-mm-dd'
-              const dateParts = value.split("-");
-              const monthIndex = parseInt(dateParts[1]) - 1; // Months are zero-indexed in JavaScript Date objects
-              const year = parseInt(dateParts[0]);
-              const day = parseInt(dateParts[2]);
-              return `${day} ${monthNames[monthIndex]} ${year}`;
-            },
-          },
+          for (let i = 0; i < tickCount; i++) {
+            const tick = info.min + i * interval;
+            positions.push(Math.round(tick)); // Ensure clean tick values
+          }
+          return positions;
         },
-      ],
+      },
+
       yAxis: [
         {
-          type: "value",
-          splitLine: {
-            show: false, // Disable x-axis grid lines
+          gridLineWidth: 1,
+          gridLineColor: "#111827",
+          labels: {
+            style: { color: "white" },
+            formatter: function () {
+              return abbreviateNumber(this.value);
+            },
           },
-          axisLabel: {
-            show: false, // Hide y-axis labels
-          },
+          title: { text: null },
+          opposite: true,
         },
         {
-          type: "value",
-          splitLine: {
-            show: false, // Disable x-axis grid lines
-          },
-          position: "right",
-          axisLabel: {
-            show: false, // Hide y-axis labels
-          },
+          title: { text: "" },
+          gridLineWidth: 0,
+          labels: { enabled: false },
         },
       ],
       series: [
         {
+          name: title,
+          type: "column",
+          data: dataList,
+          color: "#9B5DC4",
+          borderColor: "#9B5DC4",
+          borderRadius: "1px",
+          animation: false,
+        },
+        {
           name: "Price",
           type: "line",
           data: priceList,
-          yAxisIndex: 1,
-          lineStyle: { width: 2 },
-          itemStyle: {
-            color: "#fff",
-          },
-          smooth: true,
-          showSymbol: false,
-        },
-        {
-          name: title,
-          type: "bar",
-          data: dataList,
-          itemStyle: {
-            color: "#9B5DC4",
-          },
+          yAxis: 1,
+          color: "#fff",
+          lineWidth: 2,
+          zIndex: 10,
+          marker: { enabled: false },
+          animation: false,
         },
       ],
+      legend: { enabled: false },
+      plotOptions: {
+        series: {
+          animation: false,
+        },
+      },
     };
+
     return options;
   }
 
@@ -351,8 +362,8 @@
   };
 
   $: {
-    if (typeof window !== "undefined" && timePeriod) {
-      options = plotData();
+    if (timePeriod) {
+      config = plotData();
     }
   }
 </script>
@@ -365,59 +376,53 @@
   </h2>
 
   <div class="w-full overflow-hidden m-auto mt-5">
-    {#if options !== null}
-      <div class="app w-full relative">
-        <div class="flex justify-start space-x-2 absolute right-0 top-0 z-10">
-          {#each ["3M", "6M", "1Y"] as item, index}
-            {#if data?.user?.tier === "Pro" || index === 0}
-              <label
-                on:click={() => (timePeriod = item)}
-                class="px-3 py-1 text-sm {timePeriod === item
-                  ? 'bg-white text-black '
-                  : 'text-white bg-table text-opacity-[0.6]'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+    {#if config !== null}
+      <div class="flex justify-end space-x-2 ml-auto mb-3">
+        {#each ["3M", "6M", "1Y"] as item, index}
+          {#if data?.user?.tier === "Pro" || index === 0}
+            <label
+              on:click={() => (timePeriod = item)}
+              class="px-3 py-1 text-sm {timePeriod === item
+                ? 'bg-white text-black '
+                : 'text-white bg-table text-opacity-[0.6]'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+            >
+              {item}
+            </label>
+          {:else if data?.user?.tier !== "Pro"}
+            <a
+              href="/pricing"
+              class="px-3 py-1 text-sm flex flex-row items-center {timePeriod ===
+              item
+                ? 'bg-white text-black '
+                : 'text-white bg-table text-opacity-[0.6]'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+            >
+              {item}
+              <svg
+                class="ml-1 -mt-w-3.5 h-3.5 inline-block"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                ><path
+                  fill="#A3A3A3"
+                  d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                /></svg
               >
-                {item}
-              </label>
-            {:else if data?.user?.tier !== "Pro"}
-              <a
-                href="/pricing"
-                class="px-3 py-1 text-sm flex flex-row items-center {timePeriod ===
-                item
-                  ? 'bg-white text-black '
-                  : 'text-white bg-table text-opacity-[0.6]'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
-              >
-                {item}
-                <svg
-                  class="ml-1 -mt-w-3.5 h-3.5 inline-block"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  ><path
-                    fill="#A3A3A3"
-                    d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                  /></svg
-                >
-              </a>
-            {/if}
-          {/each}
-        </div>
+            </a>
+          {/if}
+        {/each}
+      </div>
 
-        <Chart {init} {options} class="chart" />
-      </div>
-    {:else}
-      <div class="flex justify-center items-center h-80">
-        <div class="relative">
-          <label
-            class="bg-primary rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-          >
-            <span
-              class="loading loading-spinner loading-md sm:loading-[1rem] text-gray-400"
-            ></span>
-          </label>
-        </div>
-      </div>
+      <div
+        class="chart border border-gray-800 rounded"
+        use:highcharts={config}
+      ></div>
     {/if}
   </div>
-  <div class="w-full overflow-x-scroll text-white">
+
+  <h3 class="text-xl sm:text-2xl text-white font-bold mt-5">
+    {title === "Gamma" ? "GEX" : "DEX"} History
+  </h3>
+
+  <div class="mt-5 w-full overflow-x-scroll text-white">
     <table
       class="w-full table table-sm table-compact bg-table border border-gray-800 rounded-none sm:rounded-md m-auto overflow-x-auto"
     >
@@ -490,21 +495,3 @@
 
   <UpgradeToPro {data} />
 </div>
-
-<style>
-  .app {
-    height: 400px;
-    width: 100%;
-  }
-
-  @media (max-width: 560px) {
-    .app {
-      width: 100%;
-      height: 300px;
-    }
-  }
-
-  .chart {
-    width: 100%;
-  }
-</style>

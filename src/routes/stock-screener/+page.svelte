@@ -2482,8 +2482,8 @@ const handleKeyDown = (event) => {
         { name: "change1Y", value: "any" },
       ];
       tabRuleList = otherTabRules
-        .map((rule) => allRows.find((row) => row.rule === rule.name))
-        .filter(Boolean);
+        ?.map((rule) => allRows.find((row) => row.rule === rule.name))
+        ?.filter(Boolean);
 
       await updateStockScreenerData();
     } else if (displayTableTab === "analysts") {
@@ -2496,8 +2496,8 @@ const handleKeyDown = (event) => {
         { name: "upside", value: "any" },
       ];
       tabRuleList = otherTabRules
-        .map((rule) => allRows.find((row) => row.rule === rule.name))
-        .filter(Boolean);
+        ?.map((rule) => allRows?.find((row) => row?.rule === rule?.name))
+        ?.filter(Boolean);
 
       await updateStockScreenerData();
     }
