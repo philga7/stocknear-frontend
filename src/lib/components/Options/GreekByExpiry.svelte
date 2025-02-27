@@ -333,7 +333,7 @@
     {title === "Gamma" ? "GEX" : "DEX"} Table
   </h3>
 
-  <div class="mt-3 w-full overflow-x-scroll text-white">
+  <div class="mt-3 w-full overflow-x-auto text-white">
     <table
       class="w-full table table-sm table-compact bg-table border border-gray-800 rounded-none sm:rounded-md m-auto overflow-x-auto"
     >

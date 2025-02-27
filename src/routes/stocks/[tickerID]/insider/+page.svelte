@@ -12,7 +12,6 @@
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import SEO from "$lib/components/SEO.svelte";
 
-
   export let data;
   let isLoaded = true;
 
@@ -213,7 +212,6 @@
     }
   }
 </script>
-
 
 <SEO
   title={`${$displayCompanyName} (${$stockTicker}) US Congress & Senate Trading · Stocknear`}
@@ -547,7 +545,7 @@
             {/if}
 
             <div
-              class="flex justify-start items-center w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-scroll no-scrollbar"
+              class="flex justify-start items-center w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto no-scrollbar"
             >
               <table
                 class="table table-sm table-pin-rows table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto"

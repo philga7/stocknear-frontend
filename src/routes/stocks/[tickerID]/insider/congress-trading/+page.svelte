@@ -179,7 +179,6 @@
   };
 </script>
 
-
 <SEO
   title={`${$displayCompanyName} (${$stockTicker}) US Congress & Senate Trading · Stocknear`}
   description={`Get the latest US congress & senate trading of ${$displayCompanyName} (${$stockTicker}) from democrates and republicans.`}
@@ -331,7 +330,7 @@
             <!--End Widget-->
 
             <div
-              class="mt-6 flex justify-start items-center w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-scroll"
+              class="mt-6 flex justify-start items-center w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
             >
               <table
                 class="table table-sm sm:table-md table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto"

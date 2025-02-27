@@ -101,7 +101,7 @@
                   <main class="w-full">
                     <div class="w-full m-auto mt-4">
                       <div
-                        class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-scroll sm:overflow-hidden"
+                        class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto sm:overflow-hidden"
                       >
                         <table
                           class="table table-sm table-pin-cols table-compact rounded-none sm:rounded-md w-full bg-default border border-gray-800 m-auto"

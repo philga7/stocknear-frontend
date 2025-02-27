@@ -17,7 +17,7 @@
   {transitionConfig}
   {sideOffset}
   class={cn(
-    "z-50 min-w-[8rem] rounded-md border border-gray-500 bg-default p-1 text-white shadow-md focus:outline-none",
+    "z-50 min-w-[8rem] no-scrollbar rounded-md border border-gray-500 bg-default p-1 text-white shadow-md focus:outline-none",
     className,
   )}
   {...$$restProps}

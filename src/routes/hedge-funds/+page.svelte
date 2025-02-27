@@ -98,6 +98,9 @@
           class="relative flex justify-center items-center overflow-hidden w-full"
         >
           <main class="w-full">
+            <h1 class="mb-3 text-white text-2xl sm:text-3xl font-bold">
+              All US Hedge Funds
+            </h1>
             <div class="w-full pb-3">
               <div class="relative right-0 bg-default">
                 <ul

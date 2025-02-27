@@ -49,7 +49,7 @@
       </h1>
     </div>
 
-    <nav class="border-b-[2px] overflow-x-scroll whitespace-nowrap mb-5">
+    <nav class="border-b-[2px] overflow-x-auto whitespace-nowrap mb-5">
       <ul
         class="flex flex-row items-center w-full text-[1rem] sm:text-lg text-white"
       >

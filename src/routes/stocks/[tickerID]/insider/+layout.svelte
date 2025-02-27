@@ -79,7 +79,7 @@
       >
         <main class="w-full lg:w-3/4 lg:pr-10">
           <nav
-            class="mb-5 sm:mb-0 sm:ml-4 pt-1 overflow-x-scroll md:overflow-hidden text-sm sm:text-[1rem] whitespace-nowrap"
+            class="mb-5 sm:mb-0 sm:ml-4 pt-1 overflow-x-auto md:overflow-hidden text-sm sm:text-[1rem] whitespace-nowrap"
           >
             <ul class="flex flex-row items-center w-full text-white">
               <a

@@ -47,7 +47,7 @@
       class="relative flex justify-center items-start overflow-hidden w-full"
     >
       <main class="w-full lg:w-3/4 lg:pr-10">
-        <div class="w-full overflow-x-scroll">
+        <div class="w-full overflow-x-auto">
           <Table
             {data}
             {rawData}

@@ -507,7 +507,7 @@
                   </div>
                 {:else}
                   <div
-                    class="w-full rounded-none sm:rounded-md m-auto overflow-x-auto"
+                    class="w-full rounded-none sm:rounded-md m-auto overflow-x-auto no-scrollbar"
                   >
                     <table
                       class="table table-sm bg-table border border-gray-800 table-compact w-full"

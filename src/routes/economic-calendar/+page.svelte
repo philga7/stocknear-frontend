@@ -609,7 +609,7 @@
                         {/if}
                       </div>
 
-                      <div class="w-full overflow-x-scroll no-scrollbar">
+                      <div class="w-full overflow-x-auto no-scrollbar">
                         <table
                           class="table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto mt-4"
                         >

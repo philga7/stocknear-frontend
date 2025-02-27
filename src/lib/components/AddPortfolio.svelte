@@ -98,7 +98,7 @@
         </div>
 
         <div
-          class="text-white text-sm border bg-secondary border-gray-800 p-3 rounded-md overflow-y-scroll h-56"
+          class="text-white text-sm border bg-secondary border-gray-800 p-3 rounded-md overflow-y-auto h-56"
         >
           <ol class="text-white list-decimal ml-3 p-2">
             <li class="p-1">
@@ -277,9 +277,9 @@
     style="z-index: 9999;"
   >
     <input id="addPortfolio" type="checkbox" class="drawer-toggle" />
-    <div class="drawer-side overflow-y-scroll overflow-hidden">
+    <div class="drawer-side overflow-y-auto overflow-hidden">
       <div
-        class="bg-[#000] min-h-screen px-5 pt-16 w-screen pb-20 overflow-y-scroll overflow-hidden"
+        class="bg-[#000] min-h-screen px-5 pt-16 w-screen pb-20 overflow-y-auto overflow-hidden"
       >
         <h1 class="text-white sm:hidden font-bold text-2xl mb-5">
           Portfolio Tournament 🔥🚀
@@ -290,7 +290,7 @@
         </div>
 
         <div
-          class="text-white text-sm border bg-default border-gray-800 p-3 rounded-md overflow-y-scroll h-56"
+          class="text-white text-sm border bg-default border-gray-800 p-3 rounded-md overflow-y-auto h-56"
         >
           <ol class="text-white list-decimal ml-3 p-2">
             <li class="p-1">

@@ -49,7 +49,7 @@
       >
         <main class="w-full">
           <nav
-            class="sm:ml-4 overflow-x-scroll pt-1 text-sm sm:text-[1rem] whitespace-nowrap"
+            class="sm:ml-4 overflow-x-auto pt-1 text-sm sm:text-[1rem] whitespace-nowrap"
           >
             <ul class="flex flex-row items-center w-full text-white">
               <a

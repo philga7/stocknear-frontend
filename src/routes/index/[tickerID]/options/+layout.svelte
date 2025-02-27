@@ -58,7 +58,7 @@
       >
         <main class="w-full lg:w-3/4 lg:pr-10">
           <nav
-            class="sm:ml-4 overflow-x-scroll pt-1 text-sm sm:text-[1rem] whitespace-nowrap"
+            class="sm:ml-4 overflow-x-auto pt-1 text-sm sm:text-[1rem] whitespace-nowrap"
           >
             <ul class="flex flex-row items-center w-full text-white">
               <a

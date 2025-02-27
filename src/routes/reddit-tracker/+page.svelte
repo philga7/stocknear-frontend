@@ -257,9 +257,7 @@
   }
 </script>
 
-
-
-<SEO 
+<SEO
   title="Reddit Stock Tracker - WSB Analytics & Insights"
   description="Track WallStreetBets stock discussions and trends in real-time. Get detailed analytics, sentiment analysis, and trading insights from Reddit's largest stock community."
 />
@@ -356,7 +354,7 @@
               class="mt-10 grid gap-4 md:gap-8 grid-cols-1 text-start text-white"
             >
               <Lazy>
-                <div class="order-1 overflow-x-scroll h-full mt-5 sm:mt-0">
+                <div class="order-1 overflow-x-auto h-full mt-5 sm:mt-0">
                   <div class="flex flex-row items-center">
                     <div class="flex flex-col items-start w-full">
                       <div class="flex flex-row w-full items-center">
@@ -521,7 +519,7 @@
                   </nav>
                 </Card.Header>
                 <Card.Content class="grid gap-y-4">
-                  <Table.Root class="overflow-x-scroll w-full">
+                  <Table.Root class="overflow-x-auto w-full">
                     <Table.Header>
                       <Table.Row>
                         <Table.Head class="text-white text-sm font-semibold"

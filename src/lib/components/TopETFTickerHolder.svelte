@@ -130,7 +130,7 @@
 
     {#if topETFHolder?.length !== 0}
       <div
-        class="flex justify-start items-center w-full m-auto mt-10 overflow-x-scroll"
+        class="flex justify-start items-center w-full m-auto mt-10 overflow-x-auto"
       >
         <table
           class="table table-sm table-compact mt-3 text-start flex justify-start items-center w-full px-3 m-auto"

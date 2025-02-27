@@ -856,7 +856,7 @@
         >
           Options Live flow of {data?.user?.tier === "Pro" && selectedDate
             ? df.format(selectedDate?.toDate())
-            : nyseDate} (NYSE Time)
+            : formattedNyseDate} (NYSE Time)
         </div>
       {/if}
 

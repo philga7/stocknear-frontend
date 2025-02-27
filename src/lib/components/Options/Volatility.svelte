@@ -469,7 +469,7 @@
   <h3 class="mt-5 text-xl sm:text-2xl text-white font-bold mb-2 sm:mb-0">
     Volatility History
   </h3>
-  <div class="w-full overflow-x-scroll text-white mt-5">
+  <div class="w-full overflow-x-auto text-white mt-5">
     <table
       class="w-full table table-sm table-compact bg-table border border-gray-800 rounded-none sm:rounded-md m-auto overflow-x-auto"
     >

@@ -30,7 +30,7 @@
       <main class="w-full">
         <!--Start Top Winners/Losers-->
 
-        <nav class=" pt-1 overflow-x-scroll whitespace-nowrap">
+        <nav class=" pt-1 overflow-x-auto whitespace-nowrap">
           <ul
             class="flex flex-row items-center w-full text-sm sm:text-[1rem] text-white"
           >

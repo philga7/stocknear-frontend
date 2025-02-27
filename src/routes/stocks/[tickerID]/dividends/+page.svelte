@@ -185,7 +185,7 @@
 
           {#if rawData?.history?.length !== 0}
             <div
-              class="overflow-x-scroll no-scrollbar flex justify-start items-center w-full m-auto rounded-none sm:rounded-md mb-4"
+              class="overflow-x-auto no-scrollbar flex justify-start items-center w-full m-auto rounded-none sm:rounded-md mb-4"
             >
               <table
                 class="table table-sm table-compact bg-table border border-gray-800 flex justify-start items-center w-full m-auto"

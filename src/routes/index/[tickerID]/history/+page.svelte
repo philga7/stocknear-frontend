@@ -1,8 +1,5 @@
 <script lang="ts">
-  import {
-    indexTicker,
-    displayCompanyName,
-  } from "$lib/store";
+  import { indexTicker, displayCompanyName } from "$lib/store";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
@@ -272,10 +269,10 @@
   }
 </script>
 
-
-<SEO title={`${$displayCompanyName} (${$indexTicker}) Historical Stock Price Data`} description={`Get a complete stock price history for ${$displayCompanyName} (${$indexTicker}), starting from its first trading day. Includes open, high, low, close and volume.`} />
-
-
+<SEO
+  title={`${$displayCompanyName} (${$indexTicker}) Historical Stock Price Data`}
+  description={`Get a complete stock price history for ${$displayCompanyName} (${$indexTicker}), starting from its first trading day. Includes open, high, low, close and volume.`}
+/>
 
 <section
   class="bg-default overflow-hidden text-white h-full min-h-screen mb-20 sm:mb-0 w-full mt-2 sm:mt-0"
@@ -407,7 +404,7 @@
               {#if rawData?.length !== 0}
                 <div class="w-full m-auto mt-2">
                   <div
-                    class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-scroll"
+                    class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
                   >
                     <table
                       class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto"
@@ -488,7 +485,9 @@
                             <td
                               class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
                             >
-                              {item?.volume ? item?.volume?.toLocaleString("en-US") : 'n/a'}
+                              {item?.volume
+                                ? item?.volume?.toLocaleString("en-US")
+                                : "n/a"}
                             </td>
                           </tr>
                         {/each}

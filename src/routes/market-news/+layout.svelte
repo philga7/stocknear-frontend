@@ -31,12 +31,6 @@
   }
 </script>
 
-<!-- HEADER FOR BETTER SEO -->
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-</svelte:head>
-
 <section
   class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden pb-20 pt-5 px-4 lg:px-3"
 >
@@ -61,7 +55,7 @@
                 : "Press Releases"}
           </h1>
 
-          <nav class=" border-b-[2px] overflow-x-scroll whitespace-nowrap">
+          <nav class=" border-b-[2px] overflow-x-auto whitespace-nowrap">
             <ul class="flex flex-row items-center w-full text-lg text-white">
               {#each tabs as item, i}
                 <a

@@ -157,7 +157,7 @@
       <main class="flex flex-1 flex-col gap-4 sm:p-4 md:gap-8">
         <div class="grid gap-4 md:gap-8 grid-cols-1 lg:grid-cols-2 text-start">
           <Card.Root
-            class="order-1 sm:order-2 overflow-x-scroll overflow-hidden overflow-y-auto no-scrollbar max-h-[450px]"
+            class="order-1 sm:order-2 overflow-x-auto overflow-hidden overflow-y-auto no-scrollbar max-h-[450px]"
           >
             <Card.Header class="flex flex-row items-center">
               <div class="flex flex-col items-start w-full">
@@ -191,7 +191,7 @@
             </Card.Header>
             <Card.Content>
               {#if gainersList?.length > 0}
-                <Table.Root class="overflow-x-scroll w-full">
+                <Table.Root class="overflow-x-auto w-full">
                   <Table.Header>
                     <Table.Row>
                       <Table.Head class="text-white font-semibold"
@@ -269,7 +269,7 @@
             </Card.Content>
           </Card.Root>
           <Card.Root
-            class="order-1 sm:order-2 overflow-x-scroll overflow-hidden overflow-y-auto no-scrollbar max-h-[450px]"
+            class="order-1 sm:order-2 overflow-x-auto overflow-hidden overflow-y-auto no-scrollbar max-h-[450px]"
           >
             <Card.Header class="flex flex-row items-center">
               <div class="flex flex-col items-start w-full">
@@ -303,7 +303,7 @@
             </Card.Header>
             <Card.Content>
               {#if losersList?.length > 0}
-                <Table.Root class="overflow-x-scroll w-full">
+                <Table.Root class="overflow-x-auto w-full">
                   <Table.Header>
                     <Table.Row>
                       <Table.Head class="text-white font-semibold"
@@ -382,7 +382,7 @@
 
         <div class="grid gap-4 md:gap-8 grid-cols-1 lg:grid-cols-2 text-start">
           <Card.Root
-            class="order-1 overflow-x-scroll overflow-hidden overflow-y-auto no-scrollbar sm:max-h-[470px]"
+            class="order-1 overflow-x-auto overflow-hidden overflow-y-auto no-scrollbar sm:max-h-[470px]"
           >
             <Card.Header class="flex flex-row items-center">
               <div class="flex flex-col items-start w-full">
@@ -457,7 +457,7 @@
           </Card.Root>
 
           <Card.Root
-            class="order-3 sm:order-1 overflow-x-scroll overflow-hidden overflow-y-auto no-scrollbar sm:max-h-[470px]"
+            class="order-3 sm:order-1 overflow-x-auto overflow-hidden overflow-y-auto no-scrollbar sm:max-h-[470px]"
           >
             <Card.Header class="flex flex-row items-center">
               <div class="flex flex-col items-start w-full">
@@ -562,7 +562,7 @@
           </Card.Root>
 
           <Card.Root
-            class="order-1 sm:order-2 overflow-x-scroll overflow-hidden overflow-y-auto no-scrollbar sm:max-h-[550px]"
+            class="order-1 sm:order-2 overflow-x-auto overflow-hidden overflow-y-auto no-scrollbar sm:max-h-[550px]"
           >
             <Card.Header class="flex flex-row items-center">
               <div class="flex flex-col items-start w-full">
@@ -700,7 +700,7 @@
           </Card.Root>
 
           <Card.Root
-            class="order-2 sm:order-3 overflow-x-scroll overflow-hidden overflow-y-auto no-scrollbar sm:max-h-[550px]"
+            class="order-2 sm:order-3 overflow-x-auto overflow-hidden overflow-y-auto no-scrollbar sm:max-h-[550px]"
           >
             <Card.Header class="flex flex-row items-center">
               <div class="flex flex-col items-start w-full">

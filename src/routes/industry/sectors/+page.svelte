@@ -100,7 +100,7 @@
   <!-- Page wrapper -->
   <div class="flex justify-center w-full m-auto h-full overflow-hidden">
     <!-- Content area -->
-    <div class="w-full overflow-x-scroll">
+    <div class="w-full overflow-x-auto">
       <table
         class="table rounded-none sm:rounded-md w-full m-auto bg-table border border-gray-800 mt-4"
       >

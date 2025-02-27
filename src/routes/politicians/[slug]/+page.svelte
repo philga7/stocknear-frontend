@@ -267,7 +267,7 @@
 
             <h3 class="text-xl text-white font-bold mt-10">Trading History</h3>
 
-            <div class="w-full overflow-x-scroll">
+            <div class="w-full overflow-x-auto">
               <table
                 class=" table table-sm table-compact rounded-none sm:rounded-md w-full bg-default m-auto mt-5 border border-gray-800"
               >

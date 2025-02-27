@@ -848,7 +848,7 @@
   </DropdownMenu.Root>
 </div>
 
-<div class="w-full overflow-x-scroll text-white">
+<div class="w-full overflow-x-auto text-white">
   <table
     class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto mt-4"
   >

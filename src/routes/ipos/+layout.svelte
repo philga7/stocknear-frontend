@@ -71,7 +71,7 @@
             {activeIdx === 0 ? "Recent IPOs" : "IPO News"}
           </h1>
 
-          <nav class=" border-b-[2px] overflow-x-scroll whitespace-nowrap">
+          <nav class=" border-b-[2px] overflow-x-auto whitespace-nowrap">
             <ul class="flex flex-row items-center w-full text-lg text-white">
               {#each tabs as item, i}
                 <a
@@ -87,7 +87,7 @@
           </nav>
 
           {#if activeIdx === 0}
-            <nav class=" overflow-x-scroll whitespace-nowrap">
+            <nav class=" overflow-x-auto whitespace-nowrap">
               <ul
                 class="flex flex-row items-center w-full text-[1rem] text-white"
               >

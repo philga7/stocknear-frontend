@@ -309,7 +309,7 @@
   <h3 class="text-xl sm:text-2xl text-white font-bold mt-5">
     {title === "Gamma" ? "GEX" : "DEX"} Table
   </h3>
-  <div class="w-full overflow-x-scroll text-white mt-3">
+  <div class="w-full overflow-x-auto text-white mt-3">
     <table
       class="w-full table table-sm table-compact bg-table border border-gray-800 rounded-none sm:rounded-md m-auto overflow-x-auto"
     >

@@ -340,7 +340,7 @@
             </div>
           </div>
 
-          <div class=" w-full m-auto mb-4 overflow-x-scroll lg:overflow-hidden">
+          <div class=" w-full m-auto mb-4 overflow-x-auto lg:overflow-hidden">
             <table
               class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto"
             >

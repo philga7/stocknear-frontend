@@ -334,7 +334,7 @@
           <!-- Page wrapper -->
           <div class="flex justify-center w-full m-auto h-full overflow-hidden">
             <!-- Content area -->
-            <div class="w-full overflow-x-scroll">
+            <div class="w-full overflow-x-auto">
               <!-- Cards -->
               <div
                 class=" w-full flex flex-row justify-center m-auto items-center"
@@ -443,7 +443,7 @@
                       {formattedWeekday[index]?.split(", ")[1]} · {day?.length} Earnings
                     </h2>
 
-                    <div class="w-full overflow-x-scroll no-scrollbar">
+                    <div class="w-full overflow-x-auto no-scrollbar">
                       <table
                         class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto mt-4"
                       >

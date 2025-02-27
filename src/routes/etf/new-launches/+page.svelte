@@ -122,7 +122,7 @@
                 </span>
               </div>
 
-              <div class="w-full overflow-x-scroll">
+              <div class="w-full overflow-x-auto">
                 <table
                   class="mt-5 table table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto overflow-hidden"
                 >

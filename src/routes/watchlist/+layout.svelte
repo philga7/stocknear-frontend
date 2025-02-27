@@ -51,7 +51,7 @@
             Watchlist
           </h1>
 
-          <nav class=" border-b-[2px] overflow-x-scroll whitespace-nowrap">
+          <nav class=" border-b-[2px] overflow-x-auto whitespace-nowrap">
             <ul
               class="flex flex-row items-center w-full text-[1rem] sm:text-lg text-white"
             >

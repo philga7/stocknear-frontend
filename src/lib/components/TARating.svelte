@@ -184,7 +184,7 @@
         {/if}
 
         <!--Start Momentum Indicators-->
-        <div class="w-full overflow-x-scroll">
+        <div class="w-full overflow-x-auto">
           <table class="table table-sm table-compact w-full mb-5 mt-5">
             <!-- head -->
             <thead>

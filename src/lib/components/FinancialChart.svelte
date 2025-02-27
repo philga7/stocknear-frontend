@@ -61,6 +61,7 @@
           style: {
             color: "#fff",
           },
+          rotation: -45,
           distance: 10, // Increases space between label and axis
         },
       },

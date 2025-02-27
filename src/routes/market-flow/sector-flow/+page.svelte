@@ -653,7 +653,7 @@
               </div>
 
               <div
-                class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-scroll"
+                class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
               >
                 <table
                   class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md text-white w-full bg-table border border-gray-800 m-auto"
@@ -758,7 +758,7 @@
               </div>
 
               <div
-                class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-scroll"
+                class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
               >
                 <table
                   class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md text-white w-full bg-table border border-gray-800 m-auto"

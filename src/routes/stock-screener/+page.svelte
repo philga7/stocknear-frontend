@@ -3344,7 +3344,7 @@ const handleKeyDown = (event) => {
   {#if isLoaded}
     {#if filteredData?.length !== 0}
       {#if displayTableTab === "general"}
-        <div class="w-full rounded-md overflow-x-scroll">
+        <div class="w-full rounded-md overflow-x-auto">
           <table
             class="table table-sm table-compact w-full bg-table border border-gray-800"
           >
@@ -3411,7 +3411,7 @@ const handleKeyDown = (event) => {
           </table>
         </div>
       {:else if displayTableTab === "filters"}
-        <div class="w-full rounded-md overflow-x-scroll">
+        <div class="w-full rounded-md overflow-x-auto">
           <table
             class="table table-sm table-compact w-full bg-table border border-gray-800"
           >
@@ -3459,7 +3459,7 @@ const handleKeyDown = (event) => {
           </table>
         </div>
       {:else if displayTableTab === "performance"}
-        <div class="w-full rounded-md overflow-x-scroll">
+        <div class="w-full rounded-md overflow-x-auto">
           <table
             class="table table-sm table-compact w-full bg-table border border-gray-800"
           >
@@ -3513,7 +3513,7 @@ const handleKeyDown = (event) => {
           </table>
         </div>
       {:else if displayTableTab === "analysts"}
-        <div class="w-full rounded-md overflow-x-scroll">
+        <div class="w-full rounded-md overflow-x-auto">
           <table
             class="table table-sm table-compact w-full bg-table border border-gray-800"
           >

@@ -54,7 +54,7 @@
         <main class="w-full">
           <div class="m-auto">
             <nav
-              class="sm:ml-4 pt-1 overflow-x-scroll md:overflow-hidden text-sm sm:text-[1rem] whitespace-nowrap"
+              class="sm:ml-4 pt-1 overflow-x-auto md:overflow-hidden text-sm sm:text-[1rem] whitespace-nowrap"
             >
               <ul class="flex flex-row items-center w-full text-white">
                 <a

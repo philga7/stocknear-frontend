@@ -744,7 +744,7 @@
           use:highcharts={configUnusual}
         ></div>
 
-        <div class="w-full overflow-x-scroll text-white">
+        <div class="w-full overflow-x-auto text-white">
           <table
             class="w-full table table-sm table-compact bg-table border border-gray-800 rounded-none sm:rounded-md m-auto mt-4 overflow-x-auto"
           >
@@ -953,7 +953,7 @@
       <div
         bind:this={container}
         on:scroll={getScroll}
-        class="h-full max-h-[500px] overflow-y-scroll overflow-x-auto"
+        class="h-full max-h-[500px] overflow-y-auto overflow-x-auto"
       >
         <div class="flex justify-start items-center m-auto cursor-normal">
           {#if isLoaded}

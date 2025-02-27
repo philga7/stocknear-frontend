@@ -1,11 +1,8 @@
 <script lang="ts">
-  import {
-    numberOfUnreadNotification,
-    displayCompanyName,
-    stockTicker,
-  } from "$lib/store";
+  import { displayCompanyName, stockTicker } from "$lib/store";
   import { abbreviateNumber } from "$lib/utils";
   import Infobox from "$lib/components/Infobox.svelte";
+  import SEO from "$lib/components/SEO.svelte";
 
   export let data;
 
@@ -70,36 +67,10 @@
   }
 </script>
 
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <title>
-    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""}
-    {$displayCompanyName} ({$stockTicker}) Business Metric Overview · Stocknear
-  </title>
-  <meta
-    name="description"
-    content={`View unique business metrics for ${displayCompanyName} (${$stockTicker}) stock, including revenue breakdown, operating income, revenue by geography.`}
-  />
-  <meta
-    property="og:title"
-    content={`${$displayCompanyName} (${$stockTicker}) Business Metric Overview · Stocknear`}
-  />
-  <meta
-    property="og:description"
-    content={`View unique business metrics for ${displayCompanyName} (${$stockTicker}) stock, including revenue breakdown, operating income, revenue by geography.`}
-  />
-  <meta property="og:type" content="website" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta
-    name="twitter:title"
-    content={`${$displayCompanyName} (${$stockTicker}) Business Metric Overview · Stocknear`}
-  />
-  <meta
-    name="twitter:description"
-    content={`View unique business metrics for ${displayCompanyName} (${$stockTicker}) stock, including revenue breakdown, operating income, revenue by geography.`}
-  />
-</svelte:head>
+<SEO
+  title={`${$displayCompanyName} (${$stockTicker}) Business Metric Overview`}
+  description={`View unique business metrics for ${displayCompanyName} (${$stockTicker}) stock, including revenue breakdown, operating income, revenue by geography.`}
+/>
 
 <section class="bg-default overflow-hidden text-white min-h-screen w-full">
   <div class="flex justify-center m-auto h-full overflow-hidden w-full">
@@ -113,7 +84,7 @@
           </h2>
 
           <div
-            class="no-scrollbar flex justify-start items-center w-screen sm:w-full mt-6 m-auto overflow-x-scroll pr-5 sm:pr-0"
+            class="no-scrollbar flex justify-start items-center w-screen sm:w-full mt-6 m-auto overflow-x-auto pr-5 sm:pr-0"
           >
             <table
               class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800"
@@ -191,7 +162,7 @@
             </h2>
 
             <div
-              class="no-scrollbar flex justify-start items-center w-screen sm:w-full mt-6 m-auto overflow-x-scroll pr-5 sm:pr-0"
+              class="no-scrollbar flex justify-start items-center w-screen sm:w-full mt-6 m-auto overflow-x-auto pr-5 sm:pr-0"
             >
               <table
                 class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800"
@@ -268,7 +239,7 @@
             </h2>
 
             <div
-              class="no-scrollbar flex justify-start items-center w-screen sm:w-full mt-6 m-auto overflow-x-scroll pr-5 sm:pr-0"
+              class="no-scrollbar flex justify-start items-center w-screen sm:w-full mt-6 m-auto overflow-x-auto pr-5 sm:pr-0"
             >
               <table
                 class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800"

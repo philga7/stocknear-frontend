@@ -61,7 +61,7 @@
       <div class="m-auto">
         {#if names?.length > 0}
           <nav
-            class="sm:ml-4 pt-1 overflow-x-scroll text-sm sm:text-[1rem] whitespace-nowrap"
+            class="sm:ml-4 pt-1 overflow-x-auto text-sm sm:text-[1rem] whitespace-nowrap"
           >
             <ul class="flex flex-row items-center w-full text-white">
               {#each subsectionTitles as title}

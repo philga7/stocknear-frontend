@@ -408,7 +408,7 @@
               {#if rawData?.length !== 0}
                 <div class="w-full m-auto mt-2">
                   <div
-                    class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-scroll"
+                    class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
                   >
                     <table
                       class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto"
