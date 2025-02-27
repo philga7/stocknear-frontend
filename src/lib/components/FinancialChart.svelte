@@ -1,61 +1,27 @@
 <script lang="ts">
   import highcharts from "$lib/highcharts.ts";
   import { abbreviateNumber } from "$lib/utils";
+  import Lazy from "svelte-lazy";
+  import { onMount } from "svelte";
 
   export let data;
   export let displayStatement;
   export let filterRule = "annual";
-  export let tableList = [];
   export let statementConfig;
+  export let processedData = null; // Accept pre-processed data
 
   let config = null;
+  let isLoaded = false;
+  let chartElement;
 
-  function plotData() {
-    let labelName = "-";
-    let xList = [];
-    let valueList = [];
-    tableList = []; // Assuming tableList is a global variable
-
-    const index = statementConfig?.findIndex(
-      (item) => item?.propertyName === displayStatement,
-    );
-
-    // Loop through the income array in reverse order
-    for (let i = data?.length - 1; i >= 0; i--) {
-      const statement = data[i];
-      const year = statement?.calendarYear?.slice(-2);
-      const quarter = statement?.period;
-
-      // Determine label based on filterRule
-      if (filterRule === "annual") {
-        xList.push("FY" + year);
-      } else {
-        xList.push("FY" + year + " " + quarter);
-      }
-
-      // Calculate the value, converting to a number
-      const rawValue = Number(statement[statementConfig[index]?.propertyName]);
-      const value = parseFloat(rawValue.toFixed(2));
-      valueList.push(value);
-
-      // Populate tableList
-      tableList.push({
-        date: statement?.date,
-        value: value,
-      });
-    }
-
-    // Sort tableList by date (newest first)
-    tableList?.sort((a, b) => new Date(b?.date) - new Date(a?.date));
-
-    labelName = statementConfig[index]?.label;
-
-    const options = {
+  // Memoize chart options to prevent unnecessary recalculations
+  function getChartOptions(xList, valueList, labelName) {
+    return {
       chart: {
         type: "column",
         backgroundColor: "#09090B",
         plotBackgroundColor: "#09090B",
-        height: 360, // Set the maximum height for the chart
+        height: 360,
         animation: false,
       },
       credits: { enabled: false },
@@ -83,12 +49,19 @@
         style: { color: "white" },
       },
       xAxis: {
+        endOnTick: false,
         categories: xList,
-        labels: {
-          style: { color: "#fff" },
+        crosshair: {
+          color: "#fff", // Set the color of the crosshair line
+          width: 1, // Adjust the line width as needed
+          dashStyle: "Solid",
         },
-        lineColor: "#fff",
-        tickColor: "#fff",
+        labels: {
+          style: {
+            color: "#fff",
+          },
+          distance: 10, // Increases space between label and axis
+        },
       },
       yAxis: {
         gridLineWidth: 1,
@@ -105,8 +78,8 @@
       tooltip: {
         shared: true,
         useHTML: true,
-        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
-        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        borderColor: "rgba(255, 255, 255, 0.2)",
         borderWidth: 1,
         style: {
           color: "#fff",
@@ -115,17 +88,13 @@
         },
         borderRadius: 4,
         formatter: function () {
-          // Format the x value to display time in hh:mm format
           let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]">${this?.x}</span><br>`;
-
-          // Loop through each point in the shared tooltip
           this.points.forEach((point) => {
-            tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
+            tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span>
           <span class="text-white font-normal text-sm" style="color:${point.color}">${abbreviateNumber(
             point.y,
           )}</span><br>`;
           });
-
           return tooltipContent;
         },
       },
@@ -134,21 +103,67 @@
           name: labelName,
           data: valueList,
           color: "#fff",
+          borderRadius: "1px",
         },
       ],
     };
-
-    return options;
   }
 
-  $: {
-    if (filterRule || displayStatement || data) {
-      config = plotData() || null;
+  async function plotData() {
+    isLoaded = false;
+
+    // Simulate some processing time to ensure loading state is visible
+    // This can be removed in production if the actual data processing takes enough time
+    if (!processedData) {
+      // If no processed data, just show loading
+      return null;
     }
+
+    try {
+      // Add a small delay to ensure the loading state is visible
+      await new Promise((resolve) => setTimeout(resolve, 300));
+
+      const { xList, valueList, labelName } = processedData[displayStatement];
+      return getChartOptions(xList, valueList, labelName);
+    } catch (error) {
+      console.error("Error processing chart data:", error);
+      return null;
+    } finally {
+      // Don't set isLoaded here - we'll set it after the chart is rendered
+    }
+  }
+
+  // This function will be called whenever the relevant props change
+  async function updateChart() {
+    config = await plotData();
+    // Only set isLoaded to true after a small delay to ensure the chart is fully rendered
+    setTimeout(() => {
+      isLoaded = true;
+    }, 100);
+  }
+
+  onMount(() => {
+    updateChart();
+  });
+
+  // Watch for changes in props and update chart accordingly
+  $: if (filterRule || displayStatement || data || processedData) {
+    updateChart();
   }
 </script>
 
-<div
-  class="border border-gray-800 rounded w-full"
-  use:highcharts={config}
-></div>
+{#if !isLoaded}
+  <div
+    class="w-full h-[360px] flex justify-center items-center m-auto border border-gray-800 rounded"
+  >
+    <span class="loading loading-bars loading-sm"></span>
+  </div>
+{:else}
+  <Lazy fadeOption={{ delay: 50, duration: 100 }} keep={true}>
+    <div
+      class="border border-gray-800 rounded w-full"
+      use:highcharts={config}
+      bind:this={chartElement}
+    ></div>
+  </Lazy>
+{/if}

@@ -17,6 +17,9 @@ export default (node, config) => {
   const createChart = () => {
     chart = Highcharts.chart(node, {
       ...config,
+      accessibility: {
+        enabled: false,
+      },
       chart: {
         ...(config.chart || {}),
         events: {

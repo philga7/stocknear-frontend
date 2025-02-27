@@ -5,21 +5,20 @@
     coolMode,
     timeFrame,
   } from "$lib/store";
-  import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
+  import { removeCompanyStrings } from "$lib/utils";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
   //import * as XLSX from 'xlsx';
   import FinancialTable from "$lib/components/FinancialTable.svelte";
   import FinancialChart from "$lib/components/FinancialChart.svelte";
-
   import { goto } from "$app/navigation";
   import SEO from "$lib/components/SEO.svelte";
-  import Lazy from "svelte-lazy";
 
   export let data;
 
   let isLoaded = true;
   let tableList = [];
+  let processedData = {};
 
   let income = [];
   let fullStatement = [];
@@ -250,6 +249,61 @@
     }
   };
 
+  // Pre-process all data once instead of in each component
+  function preprocessFinancialData() {
+    processedData = {};
+
+    // Precompute mapping from propertyName to config for quick lookup
+    const configMap = {};
+    statementConfig.forEach((item) => {
+      if (item && item.propertyName) {
+        configMap[item.propertyName] = item;
+      }
+    });
+
+    // Precompute xList from income (reverse order)
+    const xList = [];
+    for (let i = income.length - 1; i >= 0; i--) {
+      const statement = income[i];
+      const year = statement.calendarYear.slice(-2);
+      const quarter = statement.period;
+      xList.push(
+        filterRule === "annual" ? "FY" + year : "FY" + year + " " + quarter,
+      );
+    }
+
+    // Process each field using precomputed config and xList
+    fields.forEach((field) => {
+      const statementKey = field.key;
+      const config = configMap[statementKey];
+      if (!config) return;
+
+      const valueList = [];
+      // Loop through income in reverse to match xList order
+      for (let i = income.length - 1; i >= 0; i--) {
+        const statement = income[i];
+        const rawValue = Number(statement[config.propertyName]);
+        // Round to two decimals
+        const value = parseFloat(rawValue.toFixed(2));
+        valueList.push(value);
+      }
+
+      processedData[statementKey] = {
+        xList, // re-use the precomputed labels
+        valueList,
+        labelName: config.label,
+      };
+    });
+
+    // Build tableList once for all charts and sort by date (newest first)
+    tableList = income.map((statement) => ({
+      date: statement.date,
+      // Add more properties if needed
+    }));
+
+    tableList.sort((a, b) => new Date(b.date) - new Date(a.date));
+  }
+
   $: {
     if ($timeFrame || activeIdx) {
       if (activeIdx === 0) {
@@ -260,6 +314,7 @@
         fullStatement = data?.getIncomeStatement?.quarter;
       }
       income = filterStatement(fullStatement, $timeFrame);
+      preprocessFinancialData();
     }
   }
 </script>
@@ -279,66 +334,63 @@
       {#if isLoaded}
         <main class="w-full">
           <div class="sm:pl-7 sm:pb-7 sm:pt-7 m-auto mt-2 sm:mt-0">
-            <div class="mb-3">
+            <div
+              class="mb-3 flex flex-col sm:flex-row items-center justify-between"
+            >
               <h1 class="text-xl sm:text-2xl text-white font-bold">
                 {removeCompanyStrings($displayCompanyName)} Income Statement
               </h1>
+              <div
+                class="mt-3 sm:mt-0 mb-2 sm:mb-0 bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1"
+              >
+                {#each tabs as item, i}
+                  {#if data?.user?.tier !== "Pro" && i > 0}
+                    <button
+                      on:click={() => goto("/pricing")}
+                      class="group relative z-[1] rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
+                    >
+                      <span class="relative text-sm block font-semibold">
+                        {item.title}
+                        <svg
+                          class="inline-block ml-0.5 -mt-1 w-3.5 h-3.5"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          ><path
+                            fill="#A3A3A3"
+                            d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                          /></svg
+                        >
+                      </span>
+                    </button>
+                  {:else}
+                    <button
+                      on:click={() => (activeIdx = i)}
+                      class="group relative z-[1] rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
+                      i
+                        ? 'z-0'
+                        : ''} "
+                    >
+                      {#if activeIdx === i}
+                        <div
+                          class="absolute inset-0 rounded-md bg-[#fff]"
+                        ></div>
+                      {/if}
+                      <span
+                        class="relative text-sm block font-semibold whitespace-nowrap {activeIdx ===
+                        i
+                          ? 'text-black'
+                          : 'text-white'}"
+                      >
+                        {item.title}
+                      </span>
+                    </button>
+                  {/if}
+                {/each}
+              </div>
             </div>
 
             <div class="grid grid-cols-1 gap-2">
               {#if income?.length > 0}
-                <div
-                  class="inline-flex justify-center w-full rounded-md sm:w-auto sm:ml-auto mt-3 mb-6"
-                >
-                  <div
-                    class="bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1 mt-4"
-                  >
-                    {#each tabs as item, i}
-                      {#if data?.user?.tier !== "Pro" && i > 0}
-                        <button
-                          on:click={() => goto("/pricing")}
-                          class="group relative z-[1] rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
-                        >
-                          <span class="relative text-sm block font-semibold">
-                            {item.title}
-                            <svg
-                              class="inline-block ml-0.5 -mt-1 w-3.5 h-3.5"
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 24 24"
-                              ><path
-                                fill="#A3A3A3"
-                                d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                              /></svg
-                            >
-                          </span>
-                        </button>
-                      {:else}
-                        <button
-                          on:click={() => (activeIdx = i)}
-                          class="group relative z-[1] rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
-                          i
-                            ? 'z-0'
-                            : ''} "
-                        >
-                          {#if activeIdx === i}
-                            <div
-                              class="absolute inset-0 rounded-md bg-[#fff]"
-                            ></div>
-                          {/if}
-                          <span
-                            class="relative text-sm block font-semibold whitespace-nowrap {activeIdx ===
-                            i
-                              ? 'text-black'
-                              : 'text-white'}"
-                          >
-                            {item.title}
-                          </span>
-                        </button>
-                      {/if}
-                    {/each}
-                  </div>
-                </div>
-
                 <div
                   class="mb-2 flex flex-row items-center w-full justify-end sm:justify-center"
                 >
@@ -443,19 +495,14 @@
 
                 {#if $coolMode}
                   <div class="grid gap-5 xs:gap-6 lg:grid-cols-3 lg:gap-3">
-                    {#each fields as item}
-                      <Lazy
-                        fadeOption={{ delay: 100, duration: 100 }}
-                        keep={true}
-                      >
-                        <FinancialChart
-                          data={income}
-                          {tableList}
-                          {statementConfig}
-                          displayStatement={item?.key}
-                          {filterRule}
-                        />
-                      </Lazy>
+                    {#each fields as item, i}
+                      <FinancialChart
+                        data={income}
+                        {statementConfig}
+                        displayStatement={item?.key}
+                        {filterRule}
+                        {processedData}
+                      />
                     {/each}
                   </div>
                 {:else}
