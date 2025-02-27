@@ -537,7 +537,7 @@
                         displayStatement={item?.key}
                         {filterRule}
                         {processedData}
-                        color={["#e5009d", "#9203e8", "#ff0831", "#6100ff"][
+                        color={["#e5009d", "#9203e8", "#ff0831", "#07c8f9"][
                           i % 4
                         ]}
                       />
