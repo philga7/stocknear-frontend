@@ -1,15 +1,13 @@
 <script lang="ts">
   import { displayCompanyName, stockTicker } from "$lib/store";
-  import { abbreviateNumber } from "$lib/utils";
+  import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
   import ScrollToTop from "$lib/components/ScrollToTop.svelte";
   import SEO from "$lib/components/SEO.svelte";
 
   export let data;
   let rawData = data?.getStatistics ?? {};
 
-  let companyName = $displayCompanyName
-    ?.replace("Inc.", "")
-    ?.replace(".com", "");
+  let companyName = removeCompanyStrings($displayCompanyName);
 
   function checkValue(val, category) {
     if (val !== null && val !== undefined) {
@@ -267,7 +265,7 @@
               </table>
               <a
                 href={`/stocks/${$stockTicker}/financials/ratios`}
-                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-lg text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
+                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
               >
                 Financial Ratio History
               </a>
@@ -664,7 +662,7 @@
               </table>
               <a
                 href={`/stocks/${$stockTicker}/financials`}
-                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-lg text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
+                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
               >
                 Full Income Statement
               </a>
@@ -747,7 +745,7 @@
               </table>
               <a
                 href={`/stocks/${$stockTicker}/financials/balance-sheet`}
-                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-lg text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
+                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
               >
                 Full Balance Sheet
               </a>
@@ -813,7 +811,7 @@
               </table>
               <a
                 href={`/stocks/${$stockTicker}/financials/cash-flow`}
-                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-lg text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
+                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
               >
                 Full Cash Flow Statement
               </a>
@@ -1003,7 +1001,7 @@
               </table>
               <a
                 href={`/stocks/${$stockTicker}/dividends`}
-                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-lg text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
+                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
               >
                 Dividend Details
               </a>
@@ -1070,7 +1068,7 @@
               </table>
               <a
                 href={`/stocks/${$stockTicker}/forecast/analyst`}
-                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-lg text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
+                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
               >
                 Stock Forecasts
               </a>
