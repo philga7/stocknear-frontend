@@ -1,16 +1,12 @@
 <script lang="ts">
-  import {
-    numberOfUnreadNotification,
-    displayCompanyName,
-    screenWidth,
-    stockTicker,
-  } from "$lib/store";
+  import { displayCompanyName, screenWidth, stockTicker } from "$lib/store";
   import InfoModal from "$lib/components/InfoModal.svelte";
   import { onMount } from "svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import { goto } from "$app/navigation";
   import Infobox from "$lib/components/Infobox.svelte";
   import SEO from "$lib/components/SEO.svelte";
+  import { removeCompanyStrings } from "$lib/utils";
   export let data;
 
   let analystRating = data?.getAnalystSummary ?? {};
@@ -197,7 +193,7 @@
 
 <SEO
   title={`${$displayCompanyName} (${$stockTicker}) Analyst Ratings · Stocknear`}
-  description={`A list of analyst ratings for Advanced Micro Devices (AMD) stock. See upgrades, downgrades, price targets and more from top Wall Street stock analysts.`}
+  description={`A list of analyst ratings for ${$displayCompanyName} (${$stockTicker})} stock. See upgrades, downgrades, price targets and more from top Wall Street stock analysts.`}
 />
 
 <section
@@ -213,7 +209,7 @@
             class="mb-5 flex flex-col justify-between gap-y-2.5 sm:mb-2 sm:flex-row sm:items-end"
           >
             <h1 class="mb-px text-xl font-bold sm:text-2xl sm:pl-1">
-              {$displayCompanyName} Analyst Ratings
+              {removeCompanyStrings($displayCompanyName)} Analyst Ratings
             </h1>
             <div>
               <div class="pr-4 hidden justify-end md:flex">
@@ -335,12 +331,12 @@
           {/if}
 
           <div
-            class="mt-10 mb-5 items-center justify-between py-0 md:mt-8 md:flex md:py-2"
+            class="mt-10 mb-2 items-center justify-between py-0 md:mt-8 md:flex md:py-2"
           >
             <div class="flex justify-between md:block">
-              <h2 class="text-xl font-semibold bp:mb-2 bp:text-2xl">
+              <h3 class="text-xl sm:text-2xl text-white font-bold">
                 Ratings History
-              </h2>
+              </h3>
             </div>
           </div>
 

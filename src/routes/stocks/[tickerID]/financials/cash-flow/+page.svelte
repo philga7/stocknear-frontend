@@ -1,12 +1,11 @@
 <script lang="ts">
   import {
-    numberOfUnreadNotification,
     displayCompanyName,
     coolMode,
     timeFrame,
     stockTicker,
   } from "$lib/store";
-  import { abbreviateNumber } from "$lib/utils";
+  import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
   //import * as XLSX from 'xlsx';
@@ -439,13 +438,7 @@
         <div class="sm:pl-7 sm:pb-7 sm:pt-7 m-auto mt-2 sm:mt-0 w-full">
           <div class="mb-3">
             <h1 class="text-xl sm:text-2xl text-white font-bold">
-              {#if $coolMode}
-                {statementConfig?.find(
-                  (item) => item?.propertyName === displayStatement,
-                )?.label}
-              {:else}
-                Cashflow {filterRule === "annual" ? "(Annual)" : "(Quarter)"}
-              {/if}
+              {removeCompanyStrings($displayCompanyName)} Cash Flow
             </h1>
           </div>
 

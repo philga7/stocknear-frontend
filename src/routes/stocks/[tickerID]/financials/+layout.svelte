@@ -51,7 +51,7 @@
       <div
         class="relative flex justify-center items-start overflow-hidden w-full"
       >
-        <main class="w-full {$coolMode ? 'lg:w-3/4 pr-10' : 'w-full'} ">
+        <main class="w-full">
           <div class="m-auto">
             <nav
               class="sm:ml-4 pt-1 overflow-x-scroll md:overflow-hidden text-sm sm:text-[1rem] whitespace-nowrap"
@@ -101,73 +101,6 @@
           </div>
           <slot />
         </main>
-
-        {#if $coolMode}
-          <aside class="hidden lg:block relative fixed w-1/4 mt-3">
-            {#if data?.user?.tier !== "Pro" || data?.user?.freeTrial}
-              <div
-                class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
-              >
-                <a
-                  href="/pricing"
-                  class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
-                >
-                  <div
-                    class="w-full flex justify-between items-center p-3 mt-3"
-                  >
-                    <h2
-                      class="text-start text-xl font-semibold text-white ml-3"
-                    >
-                      Pro Subscription
-                    </h2>
-                    <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
-                  </div>
-                  <span class="text-white p-3 ml-3 mr-3">
-                    Upgrade now for unlimited access to all data and tools.
-                  </span>
-                </a>
-              </div>
-            {/if}
-
-            <div
-              class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
-            >
-              <a
-                href={"/watchlist/stocks"}
-                class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
-              >
-                <div class="w-full flex justify-between items-center p-3 mt-3">
-                  <h2 class="text-start text-xl font-semibold text-white ml-3">
-                    Watchlist
-                  </h2>
-                  <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
-                </div>
-                <span class="text-white p-3 ml-3 mr-3">
-                  Build your watchlist to keep track of your favorite stocks.
-                </span>
-              </a>
-            </div>
-
-            <div
-              class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
-            >
-              <a
-                href={"/analysts/top-stocks"}
-                class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
-              >
-                <div class="w-full flex justify-between items-center p-3 mt-3">
-                  <h2 class="text-start text-xl font-semibold text-white ml-3">
-                    Top Stocks
-                  </h2>
-                  <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
-                </div>
-                <span class="text-white p-3 ml-3 mr-3">
-                  Get the latest top Wall Street Analyst Ratings
-                </span>
-              </a>
-            </div>
-          </aside>
-        {/if}
       </div>
     </div>
   </div>

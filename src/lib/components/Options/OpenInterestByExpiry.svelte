@@ -1,9 +1,5 @@
 <script lang="ts">
-  import {
-    abbreviateNumberWithColor,
-    abbreviateNumber,
-    monthNames,
-  } from "$lib/utils";
+  import { abbreviateNumberWithColor, abbreviateNumber } from "$lib/utils";
   import { onMount } from "svelte";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
@@ -45,7 +41,6 @@
     const putValues = processedData?.map(
       (d) => parseFloat(d.putValue?.toFixed(2)) || 0,
     );
-    const barWidth = Math.max(100 / processedData.length, 20);
 
     const options = {
       chart: {

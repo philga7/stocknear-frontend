@@ -1,31 +1,24 @@
 <script lang="ts">
   import {
-    numberOfUnreadNotification,
     displayCompanyName,
     stockTicker,
     coolMode,
     timeFrame,
   } from "$lib/store";
-  import { abbreviateNumber } from "$lib/utils";
+  import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
   //import * as XLSX from 'xlsx';
   import FinancialTable from "$lib/components/FinancialTable.svelte";
-  import { Chart } from "svelte-echarts";
-  import { goto } from "$app/navigation";
-  import { init, use } from "echarts/core";
-  import { LineChart, BarChart } from "echarts/charts";
-  import { GridComponent, TooltipComponent } from "echarts/components";
-  import { CanvasRenderer } from "echarts/renderers";
-  import Infobox from "$lib/components/Infobox.svelte";
-  import SEO from "$lib/components/SEO.svelte";
+  import FinancialChart from "$lib/components/FinancialChart.svelte";
 
-  use([LineChart, BarChart, GridComponent, TooltipComponent, CanvasRenderer]);
+  import { goto } from "$app/navigation";
+  import SEO from "$lib/components/SEO.svelte";
+  import Lazy from "svelte-lazy";
 
   export let data;
 
   let isLoaded = true;
-  let optionsData;
   let tableList = [];
 
   let income = [];
@@ -181,114 +174,6 @@
     $coolMode = !$coolMode;
   }
 
-  function changeStatement(event) {
-    displayStatement = event.target.value;
-  }
-
-  function plotData() {
-    let labelName = "-";
-    let xList = [];
-    let valueList = [];
-    tableList = [];
-
-    const index = statementConfig?.findIndex(
-      (item) => item?.propertyName === displayStatement,
-    );
-
-    for (let i = income?.length - 1; i >= 0; i--) {
-      const statement = income[i];
-      const year = statement?.calendarYear?.slice(-2);
-      const quarter = statement?.period;
-
-      // Determine the label based on filterRule
-      if (filterRule === "annual") {
-        xList.push("FY" + year);
-      } else {
-        xList.push("FY" + year + " " + quarter);
-      }
-
-      // Calculate the value and growth
-      const value = Number(
-        statement[statementConfig[index]?.propertyName],
-      )?.toFixed(2);
-
-      valueList.push(value);
-
-      // Add the entry to tableList
-      tableList.push({
-        date: statement?.date,
-        value: value,
-      });
-    }
-
-    //sort tableList by date
-    tableList?.sort((a, b) => new Date(b?.date) - new Date(a?.date));
-
-    labelName = statementConfig[index]?.label;
-
-    const options = {
-      animation: false,
-      grid: {
-        left: "0%",
-        right: "0%",
-        bottom: "2%",
-        top: "10%",
-        containLabel: true,
-      },
-      xAxis: {
-        axisLabel: {
-          color: "#fff",
-        },
-        data: xList,
-        type: "category",
-      },
-      yAxis: [
-        {
-          type: "value",
-          splitLine: {
-            show: false, // Disable x-axis grid lines
-          },
-
-          axisLabel: {
-            show: false, // Hide y-axis labels
-          },
-        },
-      ],
-      series: [
-        {
-          name: labelName,
-          data: valueList,
-          type: "bar",
-          smooth: true,
-          itemStyle: {
-            color: "#fff",
-          },
-        },
-      ],
-      tooltip: {
-        trigger: "axis",
-        hideDelay: 100,
-        borderColor: "#969696", // Black border color
-        borderWidth: 1, // Border width of 1px
-        backgroundColor: "#313131", // Optional: Set background color for contrast
-        textStyle: {
-          color: "#fff", // Optional: Text color for better visibility
-        },
-        formatter: function (params) {
-          const date = params[0].name; // Get the date from the x-axis value
-          // Return the tooltip content
-          return `${date}<br/> ${
-            statementConfig?.find(
-              (item) => item?.propertyName === displayStatement,
-            )?.label
-          }: ${abbreviateNumber(params[0].value)}`;
-        },
-      },
-    };
-
-    return options;
-  }
-
   const getCurrentYear = () => new Date()?.getFullYear();
 
   const filterStatement = (fullStatement, timeFrame) => {
@@ -359,24 +244,14 @@
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-      } /*else if (format.toLowerCase() === "excel") {
-      const worksheet = XLSX.utils.aoa_to_sheet(rows);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Ratios Statement");
-      XLSX.writeFile(
-        workbook,
-        `${$stockTicker.toLowerCase()}-ratios-statement.xlsx`,
-      );
-      
-    }
-      */
+      }
     } else {
       goto("/pricing");
     }
   };
 
   $: {
-    if ($timeFrame || displayStatement || activeIdx) {
+    if ($timeFrame || activeIdx) {
       if (activeIdx === 0) {
         filterRule = "annual";
         fullStatement = data?.getIncomeStatement?.annual;
@@ -385,39 +260,6 @@
         fullStatement = data?.getIncomeStatement?.quarter;
       }
       income = filterStatement(fullStatement, $timeFrame);
-
-      if ($coolMode === true) {
-        optionsData = plotData();
-      }
-    }
-  }
-
-  function generateStatementInfoHTML() {
-    if ($coolMode) {
-      const statementText = statementConfig?.find(
-        (item) => item?.propertyName === displayStatement,
-      )?.text;
-
-      return `<span>${statementText || ""}</span>`;
-    } else if (income?.length > 0) {
-      return `
-      <span>
-        Get detailed income statement breakdowns, uncovering revenue, expenses, and much more.
-      </span>
-    `;
-    } else {
-      return `
-      <span>
-        No financial data available for ${$displayCompanyName}.
-      </span>
-    `;
-    }
-  }
-
-  let htmlOutput = null;
-  $: {
-    if ($coolMode || displayStatement) {
-      htmlOutput = generateStatementInfoHTML();
     }
   }
 </script>
@@ -439,18 +281,11 @@
           <div class="sm:pl-7 sm:pb-7 sm:pt-7 m-auto mt-2 sm:mt-0">
             <div class="mb-3">
               <h1 class="text-xl sm:text-2xl text-white font-bold">
-                {#if $coolMode}
-                  {statementConfig?.find(
-                    (item) => item?.propertyName === displayStatement,
-                  )?.label}
-                {:else}
-                  {$displayCompanyName?.replace("Inc.", "")} Income Statement
-                {/if}
+                {removeCompanyStrings($displayCompanyName)} Income Statement
               </h1>
             </div>
 
             <div class="grid grid-cols-1 gap-2">
-              <Infobox text={htmlOutput} />
               {#if income?.length > 0}
                 <div
                   class="inline-flex justify-center w-full rounded-md sm:w-auto sm:ml-auto mt-3 mb-6"
@@ -522,11 +357,11 @@
                     ></div>
                     {#if $coolMode}
                       <span class="ml-2 text-sm font-medium text-white">
-                        Cool Mode
+                        Chart Mode
                       </span>
                     {:else}
                       <span class="ml-2 text-sm font-medium text-white">
-                        Boring Mode
+                        Table Mode
                       </span>
                     {/if}
                   </label>
@@ -607,153 +442,21 @@
                 </div>
 
                 {#if $coolMode}
-                  <div class="sm:w-full">
-                    <div class="relative">
-                      <select
-                        class="w-36 select select-bordered select-sm p-0 pl-5 overflow-y-auto bg-secondary"
-                        on:change={changeStatement}
+                  <div class="grid gap-5 xs:gap-6 lg:grid-cols-3 lg:gap-3">
+                    {#each fields as item}
+                      <Lazy
+                        fadeOption={{ delay: 100, duration: 100 }}
+                        keep={true}
                       >
-                        <option disabled>Choose an Cash Flow Variable</option>
-                        <option value="revenue" selected>Revenue</option>
-                        <option value="costOfRevenue">Cost of Revenue</option>
-                        <option value="grossProfit">Gross Profit</option>
-                        <option value="sellingGeneralAndAdministrativeExpenses"
-                          >Selling, General & Admin</option
-                        >
-                        <option value="researchAndDevelopmentExpenses"
-                          >Research & Development</option
-                        >
-                        <option value="otherExpenses">Other Expenses</option>
-                        <option value="operatingExpenses"
-                          >Operating Expenses</option
-                        >
-                        <option value="interestExpense">Interest Expense</option
-                        >
-                        <option value="incomeBeforeTax">Pretax Income</option>
-                        <option value="incomeTaxExpense">Income Tax</option>
-                        <option value="netIncome">Net Income</option>
-                        <option value="weightedAverageShsOut"
-                          >Shares Outstanding (Basic)</option
-                        >
-                        <option value="weightedAverageShsOutDil"
-                          >Shares Outstanding (Diluted)</option
-                        >
-                        <option value="eps">EPS (Basic)</option>
-                        <option value="epsdiluted">EPS (Diluted)</option>
-                        <option value="ebitda">EBITDA</option>
-                        <option value="depreciationAndAmortization"
-                          >Depreciation & Amortization</option
-                        >
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="app w-full">
-                    <Chart {init} options={optionsData} class="chart" />
-                  </div>
-
-                  <h2 class="mt-5 text-2xl text-gray-200 font-semibold">
-                    {statementConfig?.find(
-                      (item) => item?.propertyName === displayStatement,
-                    )?.label} History
-                  </h2>
-
-                  <div class="w-full overflow-x-scroll">
-                    <table
-                      class="table table-sm table-compact bg-table border border-gray-800 rounded-md w-full m-auto mt-4"
-                    >
-                      <thead class="bg-default">
-                        <tr>
-                          <th
-                            class="text-white font-semibold text-start text-sm sm:text-[1rem]"
-                            >{filterRule === "annual"
-                              ? "Fiscal Year End"
-                              : "Quarter Ends"}</th
-                          >
-                          <th
-                            class="text-white font-semibold text-end text-sm sm:text-[1rem]"
-                            >{statementConfig?.find(
-                              (item) => item?.propertyName === displayStatement,
-                            )?.label}</th
-                          >
-                          <th
-                            class="text-white font-semibold text-end text-sm sm:text-[1rem]"
-                            >Change</th
-                          >
-                          <th
-                            class="text-white font-semibold text-end text-sm sm:text-[1rem]"
-                            >Growth</th
-                          >
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {#each tableList as item, index}
-                          <!-- row -->
-                          <tr class="odd:bg-odd border-b border-gray-800">
-                            <td
-                              class="text-white font-medium text-sm sm:text-[1rem] whitespace-nowrap"
-                            >
-                              {item?.date}
-                            </td>
-
-                            <td
-                              class="text-white text-sm sm:text-[1rem] text-right whitespace-nowrap"
-                            >
-                              {@html abbreviateNumber(item?.value, false, true)}
-                            </td>
-
-                            <td
-                              class="text-white text-sm sm:text-[1rem] whitespace-nowrap font-medium text-end"
-                            >
-                              {@html item?.value -
-                                tableList[index + 1]?.value !==
-                              0
-                                ? abbreviateNumber(
-                                    (
-                                      item?.value - tableList[index + 1]?.value
-                                    )?.toFixed(2),
-                                    false,
-                                    true,
-                                  )
-                                : "n/a"}
-                            </td>
-
-                            <td
-                              class="text-white text-sm sm:text-[1rem] whitespace-nowrap font-medium text-end"
-                            >
-                              {#if index + 1 - tableList?.length === 0}
-                                n/a
-                              {:else if item?.value === 0 && tableList[index + 1]?.value < 0}
-                                <span class="text-[#FF2F1F]">-100.00%</span>
-                              {:else if item?.value === 0 && tableList[index + 1]?.value > 0}
-                                <span class="text-[#00FC50]">100.00%</span>
-                              {:else if item?.value - tableList[index + 1]?.value > 0}
-                                <span class="text-[#00FC50]">
-                                  {(
-                                    ((item?.value -
-                                      tableList[index + 1]?.value) /
-                                      Math.abs(item?.value)) *
-                                    100
-                                  )?.toFixed(2)}%
-                                </span>
-                              {:else if item?.value - tableList[index + 1]?.value < 0}
-                                <span class="text-[#FF2F1F]">
-                                  -{(
-                                    Math?.abs(
-                                      (tableList[index + 1]?.value -
-                                        item?.value) /
-                                        Math.abs(item?.value),
-                                    ) * 100
-                                  )?.toFixed(2)}%
-                                </span>
-                              {:else}
-                                n/a
-                              {/if}
-                            </td>
-                          </tr>
-                        {/each}
-                      </tbody>
-                    </table>
+                        <FinancialChart
+                          data={income}
+                          {tableList}
+                          {statementConfig}
+                          displayStatement={item?.key}
+                          {filterRule}
+                        />
+                      </Lazy>
+                    {/each}
                   </div>
                 {:else}
                   <div
@@ -814,21 +517,3 @@
     </div>
   </div>
 </section>
-
-<style>
-  .app {
-    height: 400px;
-    width: 100%;
-  }
-
-  @media (max-width: 560px) {
-    .app {
-      width: 100%;
-      height: 300px;
-    }
-  }
-
-  .chart {
-    width: 100%;
-  }
-</style>

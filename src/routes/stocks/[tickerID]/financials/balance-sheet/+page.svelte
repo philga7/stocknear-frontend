@@ -1,7 +1,6 @@
 <script lang="ts">
   import { Chart } from "svelte-echarts";
   import {
-    numberOfUnreadNotification,
     coolMode,
     timeFrame,
     displayCompanyName,
@@ -9,7 +8,7 @@
   } from "$lib/store";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
-  import { abbreviateNumber } from "$lib/utils";
+  import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
   import { goto } from "$app/navigation";
   //import * as XLSX from 'xlsx';
   import FinancialTable from "$lib/components/FinancialTable.svelte";
@@ -493,20 +492,11 @@
         <div class="sm:pl-7 sm:pb-7 sm:pt-7 m-auto mt-2 sm:mt-0">
           <div class="mb-3">
             <h1 class="text-xl sm:text-2xl text-white font-bold">
-              {#if $coolMode}
-                {statementConfig?.find(
-                  (item) => item?.propertyName === displayStatement,
-                )?.label}
-              {:else}
-                Balance Sheet {filterRule === "annual"
-                  ? "(Annual)"
-                  : "(Quarter)"}
-              {/if}
+              {removeCompanyStrings($displayCompanyName)} Balance Sheet
             </h1>
           </div>
 
           <div class="grid grid-cols-1 gap-2">
-            <Infobox text={htmlOutput} />
             {#if balanceSheet?.length > 0}
               <div
                 class="inline-flex justify-center w-full rounded-md sm:w-auto sm:ml-auto mt-3 mb-6"
