@@ -9,6 +9,7 @@
   export let filterRule = "annual";
   export let statementConfig;
   export let processedData = null; // Accept pre-processed data
+  export let color = "#fff";
 
   let config = null;
   let isLoaded = false;
@@ -102,8 +103,10 @@
         {
           name: labelName,
           data: valueList,
-          color: "#fff",
+          color: color,
+          borderColor: color,
           borderRadius: "1px",
+          animation: false,
         },
       ],
     };
@@ -121,7 +124,7 @@
 
     try {
       // Add a small delay to ensure the loading state is visible
-      await new Promise((resolve) => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const { xList, valueList, labelName } = processedData[displayStatement];
       return getChartOptions(xList, valueList, labelName);
@@ -159,7 +162,7 @@
     <span class="loading loading-bars loading-sm"></span>
   </div>
 {:else}
-  <Lazy fadeOption={{ delay: 50, duration: 100 }} keep={true}>
+  <Lazy fadeOption={{ delay: 50, duration: 50 }} keep={true}>
     <div
       class="border border-gray-800 rounded w-full"
       use:highcharts={config}

@@ -1,7 +1,7 @@
 import { getCache, setCache } from "$lib/store";
 
 export const load = async ({ locals, params }) => {
-  const getBalanceSheetStatement = async () => {
+  const getData = async () => {
     const { apiKey, apiURL } = locals;
     const postData = {
       ticker: params.tickerID,
@@ -24,6 +24,6 @@ export const load = async ({ locals, params }) => {
 
   // Make sure to return a promise
   return {
-    getBalanceSheetStatement: await getBalanceSheetStatement(),
+    getData: await getData(),
   };
 };

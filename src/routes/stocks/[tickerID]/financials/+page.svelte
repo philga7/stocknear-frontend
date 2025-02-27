@@ -20,7 +20,7 @@
   let tableList = [];
   let processedData = {};
 
-  let income = [];
+  let financialData = [];
   let fullStatement = [];
   let filterRule = "annual";
   let displayStatement = "revenue";
@@ -192,7 +192,7 @@
     }
   };
 
-  fullStatement = data?.getIncomeStatement;
+  fullStatement = data?.getData;
   displayStatement = "revenue";
 
   const exportFundamentalData = (format = "csv") => {
@@ -263,8 +263,8 @@
 
     // Precompute xList from income (reverse order)
     const xList = [];
-    for (let i = income.length - 1; i >= 0; i--) {
-      const statement = income[i];
+    for (let i = financialData.length - 1; i >= 0; i--) {
+      const statement = financialData[i];
       const year = statement.calendarYear.slice(-2);
       const quarter = statement.period;
       xList.push(
@@ -279,9 +279,9 @@
       if (!config) return;
 
       const valueList = [];
-      // Loop through income in reverse to match xList order
-      for (let i = income.length - 1; i >= 0; i--) {
-        const statement = income[i];
+      // Loop through financialData in reverse to match xList order
+      for (let i = financialData.length - 1; i >= 0; i--) {
+        const statement = financialData[i];
         const rawValue = Number(statement[config.propertyName]);
         // Round to two decimals
         const value = parseFloat(rawValue.toFixed(2));
@@ -296,7 +296,7 @@
     });
 
     // Build tableList once for all charts and sort by date (newest first)
-    tableList = income.map((statement) => ({
+    tableList = financialData.map((statement) => ({
       date: statement.date,
       // Add more properties if needed
     }));
@@ -308,19 +308,19 @@
     if ($timeFrame || activeIdx) {
       if (activeIdx === 0) {
         filterRule = "annual";
-        fullStatement = data?.getIncomeStatement?.annual;
+        fullStatement = data?.getData?.annual;
       } else {
         filterRule = "quarterly";
-        fullStatement = data?.getIncomeStatement?.quarter;
+        fullStatement = data?.getData?.quarter;
       }
-      income = filterStatement(fullStatement, $timeFrame);
+      financialData = filterStatement(fullStatement, $timeFrame);
       preprocessFinancialData();
     }
   }
 </script>
 
 <SEO
-  title={`${$displayCompanyName} (${$stockTicker}) Financials - Income Statement · Stocknear`}
+  title={`${$displayCompanyName} (${$stockTicker}) Financials - Income Statement`}
   description={`Detailed annual and timeFramely income statement for ${$displayCompanyName} (${$stockTicker}). See many years of revenue, expenses and profits or losses.`}
 />
 
@@ -390,7 +390,7 @@
             </div>
 
             <div class="grid grid-cols-1 gap-2">
-              {#if income?.length > 0}
+              {#if financialData?.length > 0}
                 <div
                   class="mb-2 flex flex-row items-center w-full justify-end sm:justify-center"
                 >
@@ -497,11 +497,14 @@
                   <div class="grid gap-5 xs:gap-6 lg:grid-cols-3 lg:gap-3">
                     {#each fields as item, i}
                       <FinancialChart
-                        data={income}
+                        data={financialData}
                         {statementConfig}
                         displayStatement={item?.key}
                         {filterRule}
                         {processedData}
+                        color={["#e5009d", "#9203e8", "#ff0831", "#6100ff"][
+                          i % 4
+                        ]}
                       />
                     {/each}
                   </div>
@@ -518,7 +521,7 @@
                             class="text-start bg-default text-white text-sm font-semibold pr-10"
                             >Year</td
                           >
-                          {#each income as cash}
+                          {#each financialData as cash}
                             {#if filterRule === "annual"}
                               <td
                                 class="bg-default font-semibold text-sm text-end"
@@ -540,7 +543,7 @@
                       </thead>
                       <tbody>
                         <!-- row -->
-                        <FinancialTable data={income} {fields} />
+                        <FinancialTable data={financialData} {fields} />
                       </tbody>
                     </table>
                   </div>

@@ -1,5 +1,5 @@
 export const load = async ({ locals, params }) => {
-  const getRatiosStatement = async () => {
+  const getData = async () => {
     const { apiKey, apiURL } = locals;
 
     const postData = {
@@ -23,6 +23,6 @@ export const load = async ({ locals, params }) => {
 
   // Make sure to return a promise
   return {
-    getRatiosStatement: await getRatiosStatement(),
+    getData: await getData(),
   };
 };

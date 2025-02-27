@@ -5,7 +5,7 @@ import { loginUserSchema, registerUserSchema } from "$lib/schemas";
 
 
 export const load = async ({ locals, params }) => {
-  const getIncomeStatement = async () => {
+  const getData = async () => {
     const { apiKey, apiURL } = locals;
     const postData = {
       ticker: params.tickerID,
@@ -28,7 +28,7 @@ export const load = async ({ locals, params }) => {
 
   // Make sure to return a promise
   return {
-    getIncomeStatement: await getIncomeStatement(),
+    getData: await getData(),
   };
 };
 

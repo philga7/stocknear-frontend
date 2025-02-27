@@ -45,7 +45,7 @@
   }
 </script>
 
-<section class="w-full overflow-hidden min-h-screen">
+<section class="w-full overflow-hidden">
   <div class="w-full overflow-hidden m-auto">
     <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
       <div
