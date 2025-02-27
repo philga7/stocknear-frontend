@@ -335,7 +335,7 @@
               class="mb-3 flex flex-col sm:flex-row items-center justify-between"
             >
               <h1 class="text-xl sm:text-2xl text-white font-bold">
-                {removeCompanyStrings($displayCompanyName)} Income Statement
+                {removeCompanyStrings($displayCompanyName)} Cash Flow Statement
               </h1>
               <div
                 class="mt-3 sm:mt-0 mb-2 sm:mb-0 bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1"
