@@ -126,29 +126,30 @@
         opposite: true,
       },
       tooltip: {
+        shared: true,
         useHTML: true,
-        backgroundColor: "#fff",
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
+        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        borderWidth: 1,
         style: {
-          color: "black",
+          color: "#fff",
           fontSize: "16px",
           padding: "10px",
         },
-        borderRadius: 2,
-        borderWidth: 1,
-        borderColor: "#fff",
+        borderRadius: 4,
         formatter: function () {
           let value;
           if (sortBy === "Growth") {
             value = `${this.y >= 0 ? "+" : ""}${this.y.toFixed(2)}%`;
           } else if (sortBy === "Change") {
-            value = (this.y >= 0 ? "+" : "") + this.y.toLocaleString();
+            value = (this.y >= 0 ? "+" : "") + this.y.toLocaleString("en-US");
           } else {
-            value = this.y.toLocaleString();
+            value = this.y.toLocaleString("en-US");
           }
 
           return (
-            `<span class="m-auto text-black text-[1rem] font-[501]">${this.x}</span><br>` +
-            `<span class="text-black font-normal text-sm">${value}</span>`
+            `<span class="m-auto text-white text-[1rem] font-[501]">${this.x}</span><br>` +
+            `<span class="text-white font-normal text-sm">Employees ${value}</span>`
           );
         },
       },
