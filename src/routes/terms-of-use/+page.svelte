@@ -162,7 +162,7 @@
                 If you are a copyright owner, or authorized to act on their behalf,
                 and believe that a copyrighted work has been copied in a way that
                 constitutes copyright infringement, please submit your claim via
-                email to dcma@stockunlock.com, with the subject line: "Copyright
+                email to contact@stocknear.com, with the subject line: "Copyright
                 Infringement," and include in your claim a detailed description of
                 the alleged Infringement as detailed below, under "DMCA Notice and
                 Procedure for Copyright Infringement Claims."
