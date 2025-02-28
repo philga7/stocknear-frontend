@@ -158,7 +158,7 @@
 
     // Define categories in the exact order you specified
     const categories = ["Strong Sell", "Sell", "Hold", "Buy", "Strong Buy"];
-    const colors = ["#9E190A", "#D9220E", "#FF9E21", "#31B800", "#008A00"];
+    const colors = ["#9E190A", "#D9220E", "#f5b700", "#31B800", "#008A00"];
 
     // Create a consistent mapping for data
     const formattedData = rawAnalystList?.map((item) =>
@@ -240,26 +240,26 @@
     // Determine the value based on the consensus rating
     switch (consensusRating) {
       case "Strong Sell":
-        value = 0;
-        break;
-      case "Sell":
-        value = 0.25;
-        break;
-      case "Hold":
         value = 0.5;
         break;
+      case "Sell":
+        value = 1.5;
+        break;
+      case "Hold":
+        value = 2.5;
+        break;
       case "Buy":
-        value = 0.75;
+        value = 3.5;
         break;
       case "Strong Buy":
-        value = 1;
+        value = 4.5;
         break;
       default:
         value = 0.5;
         break;
     }
 
-    return {
+    const options = {
       legend: {
         enabled: false,
       },
@@ -267,7 +267,7 @@
         enabled: false,
       },
       chart: {
-        type: "pie",
+        type: "gauge",
         backgroundColor: "#09090B",
         plotBackgroundColor: "#09090B",
         height: 360,
@@ -276,49 +276,123 @@
       title: {
         text: null,
       },
-
-      plotOptions: {
-        pie: {
-          dataLabels: {
-            enabled: false,
-          },
-          enableMouseTracking: false,
-          states: {
-            hover: {
-              enabled: false,
-            },
-          },
-          startAngle: -90,
-          endAngle: 90,
-          center: ["50%", "65%"],
-          size: "75%", // Smaller chart
+      yAxis: {
+        min: 0,
+        max: 5,
+        tickPosition: "inside",
+        tickLength: 20,
+        tickWidth: 0,
+        minorTickInterval: null,
+        lineWidth: 0,
+        // Remove numeric tick labels
+        labels: {
+          enabled: false,
         },
+        plotBands: [
+          {
+            from: 0,
+            to: 1,
+            color: "#9E190A",
+            thickness: 40,
+            borderRadius: "0px",
+          },
+          {
+            from: 1,
+            to: 2,
+            color: "#D9220E",
+            thickness: 40,
+            borderRadius: "0px",
+          },
+          {
+            from: 2,
+            to: 3,
+            color: "#f5b700",
+            thickness: 40,
+            borderRadius: "0px",
+          },
+          {
+            from: 3,
+            to: 4,
+            color: "#31B800",
+            thickness: 40,
+            borderRadius: "0px",
+          },
+          {
+            from: 4,
+            to: 5,
+            color: "#008A00",
+            thickness: 40,
+            borderRadius: "0px",
+          },
+        ],
+      },
+      pane: {
+        startAngle: -90,
+        endAngle: 89.9,
+        background: null,
+        center: ["50%", "50%"],
+        size: "70%",
       },
       series: [
         {
-          type: "pie",
-          innerSize: "70%",
+          name: "Rating",
+          data: [value],
           animation: false,
-          data: [
-            {
-              name: "Strong Sell",
-              y: 0.2,
-              color: "#9E190A",
-              borderColor: "#9E190A",
+          dataLabels: {
+            enabled: true,
+            useHTML: true,
+            borderWidth: 0,
+            backgroundColor: "transparent",
+            style: {
+              textOutline: "none",
+              fontSize: "16px",
+              fontWeight: "bold",
             },
-            { name: "Sell", y: 0.2, color: "#D9220E", borderColor: "#D9220E" },
-            { name: "Hold", y: 0.2, color: "#FF9E21", borderColor: "#FF9E21" },
-            { name: "Buy", y: 0.2, color: "#31B800", borderColor: "#31B800" },
-            {
-              name: "Strong Buy",
-              y: 0.2,
-              color: "#008A00",
-              borderColor: "#008A00",
+            formatter: function () {
+              const rating = this.y;
+              let ratingText = "";
+              let textColor = "";
+
+              if (rating < 1) {
+                ratingText = "Strong Sell";
+                textColor = "#D9220E";
+              } else if (rating < 2) {
+                ratingText = "Sell";
+                textColor = "#D9220E";
+              } else if (rating < 3) {
+                ratingText = "Hold";
+                textColor = "#f5b700";
+              } else if (rating < 4) {
+                ratingText = "Buy";
+                textColor = "#31B800";
+              } else {
+                ratingText = "Strong Buy";
+                textColor = "#31B800";
+              }
+
+              // "Analyst Consensus:" in white, rating in color
+              return `
+          <span class="text-lg" style="color: #fff;">Analyst Consensus: </span>
+          <span class="text-lg" style="color:${textColor};">${ratingText}</span>
+        `;
             },
-          ],
+          },
+          dial: {
+            radius: "80%",
+            backgroundColor: "#2A2E39",
+            baseWidth: 12,
+            baseLength: "0%",
+            rearLength: "0%",
+          },
+          pivot: {
+            backgroundColor: "#2A2E39",
+            radius: 8,
+          },
         },
       ],
     };
+
+    return options;
   }
 
   if (data?.getAnalystEstimate?.length !== 0) {
@@ -721,23 +795,7 @@
                   from the current stock price of {price}.
                 </p>
               </div>
-              <div class="relative">
-                <div use:highcharts={optionsPieChart}></div>
-                <div
-                  class="absolute left-1/2 -translate-x-1/2 -mt-20 text-center text-xl font-semibold"
-                >
-                  Analyst Consensus: <span
-                    class="font-bold inline-block {[
-                      'Strong Buy',
-                      'Buy',
-                    ]?.includes(consensusRating)
-                      ? 'text-[#00FC50]'
-                      : ['Strong Sell', 'Sell']?.includes(consensusRating)
-                        ? 'text-[#FF2F1F]'
-                        : 'text-[#fff]'}">{consensusRating}</span
-                  >
-                </div>
-              </div>
+              <div use:highcharts={optionsPieChart}></div>
             </div>
             <div class="grow pt-2 md:pt-4 lg:pl-4 lg:pt-0">
               <div
