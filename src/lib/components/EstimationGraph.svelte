@@ -1,21 +1,9 @@
 <script lang="ts">
-  import { Chart } from "svelte-echarts";
-  import { init, use } from "echarts/core";
-  import { LineChart, CustomChart } from "echarts/charts";
-  import { GridComponent, TooltipComponent } from "echarts/components";
-  import { CanvasRenderer } from "echarts/renderers";
+  import highcharts from "$lib/highcharts.ts";
   import { abbreviateNumber, computeGrowthSingleList } from "$lib/utils";
-  use([
-    LineChart,
-    CustomChart,
-    GridComponent,
-    TooltipComponent,
-    CanvasRenderer,
-  ]);
-
   export let userTier;
   export let title;
-  export let options;
+  export let config;
   export let tableDataList;
   export let highDataList;
   export let avgDataList;
@@ -29,9 +17,9 @@
   <div>
     <h2 class="mb-2 text-xl font-bold">{title} Forecast</h2>
     <div class="rounded-sm border p-2 border-gray-600">
-      <div class="app h-[275px] w-full">
-        {#if options !== null}
-          <Chart {init} {options} class="chart" />
+      <div class="h-[360px] w-full">
+        {#if config !== null}
+          <div use:highcharts={config}></div>
         {/if}
       </div>
       <div class="mt-3 overflow-x-auto p-0 text-center sm:p-0.5 lg:mt-3.5">
@@ -129,9 +117,9 @@
   <div>
     <h2 class="mb-2 text-xl font-bold">{title}</h2>
     <div class="rounded-sm border p-2 border-gray-600">
-      <div class="app h-[275px] w-full">
-        {#if options !== null}
-          <Chart {init} {options} class="chart" />
+      <div class="h-[360px] w-full">
+        {#if config !== null}
+          <div use:highcharts={config}></div>
         {/if}
       </div>
       <div class="mt-3 overflow-x-auto p-0 text-center sm:p-0.5 lg:mt-3.5">
@@ -256,20 +244,3 @@
     </div>
   </div>
 {/if}
-
-<style>
-  .app {
-    height: 300px;
-    max-width: 100%; /* Ensure chart width doesn't exceed the container */
-  }
-
-  @media (max-width: 640px) {
-    .app {
-      height: 210px;
-    }
-  }
-
-  .chart {
-    width: 100%;
-  }
-</style>

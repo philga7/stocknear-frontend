@@ -1,7 +1,9 @@
 import Highcharts from 'highcharts';
+import HighchartsMore from 'highcharts/highcharts-more'; // Add this import
 import { browser } from '$app/environment';
 
 if (browser) {
+  HighchartsMore(Highcharts); // Initialize the extension
   Highcharts.setOptions({
     lang: {
       numericSymbols: ['K', 'M', 'B', 'T', 'P', 'E']
@@ -58,13 +60,11 @@ export default (node, config) => {
 
   createChart();
 
-  // Resize observer with optimized logic
+  // Resize observer remains the same
   const resizeObserver = new ResizeObserver(() => {
     if (chart) {
       const newWidth = node.clientWidth;
-      const newHeight = 360; // Let height be auto-adjusted
-
-      // **Dynamically update size without recreating the chart**
+      const newHeight = 360;
       chart?.setSize(newWidth, newHeight, false);
     }
   });

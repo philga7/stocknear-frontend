@@ -652,7 +652,7 @@
             </div>
             <div class="grow pt-2 md:pt-4 lg:pl-4 lg:pt-0">
               <div
-                class="chart mt-5 sm:mt-0 border border-gray-800 rounded"
+                class="chart mt-5 sm:mt-0 border-l border-r sm:border border-gray-800 rounded"
                 use:highcharts={config}
               ></div>
               <div

@@ -303,119 +303,115 @@
     });
 
     const option = {
-      silent: true,
-      tooltip: {
-        trigger: "axis",
-        hideDelay: 100, // Set the delay in milliseconds
+      credits: {
+        enabled: false,
       },
-      animation: false,
-      grid: {
-        left: "5%",
-        right: "5%",
-        bottom: "2%",
-        top: "5%",
-        containLabel: true,
+      legend: {
+        enabled: false,
+      },
+      plotOptions: {
+        series: {
+          animation: false,
+        },
+      },
+      chart: {
+        type: "line",
+        backgroundColor: "#09090B",
+        plotBackgroundColor: "#09090B",
+        height: 360,
+        animation: false,
+      },
+      title: {
+        text: null,
+      },
+      tooltip: {
+        shared: true,
+        useHTML: true,
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
+        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        borderWidth: 1,
+        style: {
+          color: "#fff",
+          fontSize: "16px",
+          padding: "10px",
+        },
+        borderRadius: 4,
+        formatter: function () {
+          // Format the x value to display time in hh:mm format
+          let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]">${
+            this?.x
+          }</span><br>`;
+
+          // Loop through each point in the shared tooltip
+          this.points?.forEach((point) => {
+            tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
+          <span class="text-white font-normal text-sm" >${abbreviateNumber(
+            point.y,
+          )}</span><br>`;
+          });
+
+          return tooltipContent;
+        },
       },
       xAxis: {
-        type: "category",
-        boundaryGap: false,
-        data: dates,
-        axisLabel: {
-          color: "#fff",
-        },
-      },
-      tooltip: {
-        trigger: "axis",
-        hideDelay: 100,
-        borderColor: "#969696", // Black border color
-        borderWidth: 1, // Border width of 1px
-        backgroundColor: "#313131", // Optional: Set background color for contrast
-        textStyle: {
-          color: "#fff", // Optional: Text color for better visibility
-        },
-        formatter: function (params) {
-          // Get the timestamp from the first parameter
-          const timestamp = params[0].axisValue;
-
-          // Sort the params array to arrange High, Avg, Low
-          const sortedParams = params.sort((a, b) => {
-            const order = { High: 0, Avg: 1, Low: 2 };
-            return order[a.seriesName] - order[b.seriesName];
-          });
-
-          // Initialize result with timestamp
-          let result = timestamp + "<br/>";
-
-          // Loop through each sorted series data
-          sortedParams.forEach((param) => {
-            result +=
-              param.seriesName + ": " + abbreviateNumber(param.value) + "<br/>";
-          });
-
-          return result;
-        },
-      },
-
-      yAxis: [
-        {
-          type: "value",
-          splitLine: {
-            show: false, // Disable x-axis grid lines
-          },
-
-          axisLabel: {
-            show: false, // Hide y-axis labels
+        categories: dates,
+        type: "datetime",
+        labels: {
+          style: {
+            color: "#fff",
+            fontSize: "12px",
           },
         },
-      ],
+      },
+      yAxis: {
+        gridLineWidth: 1,
+        gridLineColor: "#111827",
+        labels: {
+          style: { color: "white" },
+        },
+        title: { text: null },
+        opposite: true,
+      },
       series: [
         {
           name: "Actual",
           data: valueList,
-          type: "line",
-          itemStyle: {
-            color: "#fff", // Change line plot color to white
+          color: "#fff",
+          animation: false,
+          marker: {
+            enabled: false, // Hide point symbols
           },
-          showSymbol: false, // Show symbols for line plot points
         },
         {
           name: "Avg",
           data: avgList,
-          type: "line",
-          itemStyle: {
-            color: "#fff", // Change line plot color to green
+          color: "#fff",
+          dashStyle: "Dash", // Dashed line style
+          animation: false,
+          marker: {
+            enabled: false,
           },
-          lineStyle: {
-            type: "dashed", // Set the line type to dashed
-          },
-          showSymbol: false, // Show symbols for line plot points
         },
         {
           name: "Low",
           data: lowList,
-          type: "line",
-          itemStyle: {
-            color: "#3CB2EF", // Change line plot color to green
+          // If you want a dashed line with a different color, set the series color to that color.
+          color: "#c2c7cf",
+          dashStyle: "Dash",
+          animation: false,
+          marker: {
+            enabled: false,
           },
-          lineStyle: {
-            type: "dashed", // Set the line type to dashed
-            color: "#c2c7cf",
-          },
-
-          showSymbol: false, // Show symbols for line plot points
         },
         {
           name: "High",
           data: highList,
-          type: "line",
-          itemStyle: {
-            color: "#3CB2EF", // Change line plot color to green
+          color: "#c2c7cf",
+          dashStyle: "Dash",
+          animation: false,
+          marker: {
+            enabled: false,
           },
-          lineStyle: {
-            type: "dashed", // Set the line type to dashed
-            color: "#c2c7cf",
-          },
-          showSymbol: false, // Show symbols for line plot points
         },
       ],
     };
@@ -451,35 +447,87 @@
     );
 
     const optionsGrowth = {
-      animation: false,
-      grid: {
-        left: "5%",
-        right: "5%",
-        bottom: "2%",
-        top: "5%",
-        containLabel: true,
+      credits: {
+        enabled: false,
       },
-      xAxis: {
-        type: "category",
-        boundaryGap: false,
-        data: dates,
-        axisLabel: {
+      legend: {
+        enabled: false,
+      },
+      plotOptions: {
+        series: {
+          animation: false,
+        },
+      },
+      chart: {
+        type: "column",
+        backgroundColor: "#09090B",
+        plotBackgroundColor: "#09090B",
+        height: 360,
+        animation: false,
+      },
+      title: {
+        text: null,
+      },
+      tooltip: {
+        shared: true,
+        useHTML: true,
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
+        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        borderWidth: 1,
+        style: {
           color: "#fff",
+          fontSize: "14px",
+          padding: "10px",
+        },
+        borderRadius: 4,
+        formatter: function () {
+          // Find the main series point (exclude error bar points)
+          const mainPoint = this.points.find(
+            (p) => p.series.type !== "errorbar",
+          );
+          const idx = mainPoint.point.index;
+          const mainValue = mainPoint.y;
+          let tooltipContent = `<b style="font-weight:501;">${dates[idx]}</b><br>`;
+
+          // Use highGrowthList and lowGrowthList from outer scope
+          const high = highGrowthList[idx];
+          const low = lowGrowthList[idx];
+
+          if (high && high !== "N/A") {
+            tooltipContent += `<span style="font-weight:501;">High:</span> ${high.toFixed(2)}<br>`;
+          }
+          if (mainValue && mainValue !== "N/A") {
+            tooltipContent += `<span style="font-weight:501;">Avg:</span> ${mainValue.toFixed(2)}<br>`;
+          }
+          if (low && low !== "N/A") {
+            tooltipContent += `<span style="font-weight:501;">Low:</span> ${low.toFixed(2)}<br>`;
+          }
+          return tooltipContent;
         },
       },
-      yAxis: [
-        {
-          type: "value",
-          splitLine: {
-            show: false, // Disable x-axis grid lines
-          },
-          axisLabel: {
-            show: false, // Hide y-axis labels
+
+      xAxis: {
+        categories: dates,
+        type: "datetime",
+        labels: {
+          style: {
+            color: "#fff",
+            fontSize: "12px",
           },
         },
-      ],
+      },
+      yAxis: {
+        gridLineWidth: 1,
+        gridLineColor: "#111827",
+        labels: {
+          style: { color: "white" },
+        },
+        title: { text: null },
+        opposite: true,
+      },
       series: [
         {
+          // Dynamically set the series name based on dataType
           name:
             dataType === "Revenue"
               ? "Revenue Growth"
@@ -489,129 +537,37 @@
                   ? "Net Income Growth"
                   : "EBITDA Growth",
           data: growthList?.map((value) => ({
-            value,
-            itemStyle: {
-              color: value >= 0 ? "#00FC50" : "#D9220E", // Green for >= 0, Red for < 0
-            },
+            y: value,
+            // Set color based on the sign of the value
+            color: value >= 0 ? "#338D73" : "#ED3333",
+            borderColor: value >= 0 ? "#338D73" : "#ED3333",
+            borderRadius: "1px",
           })),
-          type: "bar",
-          smooth: true,
-          z: 5, // Ensure the bar chart has a lower z-index than the error bars
+          zIndex: 5,
+          // 'smooth' is not applicable for column charts
         },
         {
           name: "Error Bars",
-          type: "custom",
-          renderItem: (params, api) => {
-            const xValue = api.value(0);
-            const yValue = api.value(1);
-
-            // Select high and low lists based on dataType
-            const highList = highGrowthList;
-            const lowList = lowGrowthList;
-
-            // Retrieve the corresponding high and low values
-            const high = highList[params.dataIndex];
-            const low = lowList[params.dataIndex];
-
-            // Skip rendering error bars if high or low values are null or undefined
-            if (high == null || low == null) return; // Null or undefined values are skipped
-
-            const x = api.coord([xValue, yValue])[0];
-            const highCoord = api.coord([xValue, high])[1];
-            const lowCoord = api.coord([xValue, low])[1];
-
-            return {
-              type: "group",
-              children: [
-                {
-                  type: "line",
-                  shape: {
-                    x1: x,
-                    y1: highCoord,
-                    x2: x,
-                    y2: lowCoord,
-                  },
-                  style: {
-                    stroke: "#fff",
-                    lineWidth: 2, // Set thicker line width
-                  },
-                },
-                {
-                  type: "line",
-                  shape: {
-                    x1: x - 5,
-                    y1: highCoord,
-                    x2: x + 5,
-                    y2: highCoord,
-                  },
-                  style: {
-                    stroke: "#fff",
-                    lineWidth: 2, // Set thicker line width
-                  },
-                },
-                {
-                  type: "line",
-                  shape: {
-                    x1: x - 5,
-                    y1: lowCoord,
-                    x2: x + 5,
-                    y2: lowCoord,
-                  },
-                  style: {
-                    stroke: "#fff",
-                    lineWidth: 2, // Set thicker line width
-                  },
-                },
-              ],
-            };
+          type: "errorbar",
+          // Prepare data as [low, high] pairs for each index.
+          data: growthList?.map((value, index) => {
+            const high = highGrowthList[index];
+            const low = lowGrowthList[index];
+            // If either high or low is null/undefined, return nulls.
+            return high != null && low != null ? [low, high] : [null, null];
+          }),
+          color: "#fff",
+          lineWidth: 2, // Thicker lines for error bars
+          whiskerLength: 10, // Adjust whisker length as needed
+          zIndex: 10,
+          // Disable tooltip for error bar points
+          tooltip: {
+            pointFormatter: function () {
+              return "";
+            },
           },
-          encode: {
-            x: 0, // Map x-axis values
-            y: 1, // Map y-axis values
-          },
-          data: growthList?.map((value, index) => [index, value]), // Prepare data for error bars
-          z: 10, // Bring the error bars to the front
         },
       ],
-      tooltip: {
-        trigger: "axis",
-        hideDelay: 100,
-        borderColor: "#969696", // Black border color
-        borderWidth: 1, // Border width of 1px
-        backgroundColor: "#313131", // Optional: Set background color for contrast
-        textStyle: {
-          color: "#fff", // Optional: Text color for better visibility
-        },
-        formatter: (params) => {
-          const dataIndex = params[0].dataIndex;
-          const mainValue = params[0].value;
-
-          // Select high and low lists based on dataType
-          const highList = highGrowthList;
-          const lowList = lowGrowthList;
-
-          // Retrieve the corresponding high and low values
-          const high = highList[dataIndex];
-          const low = lowList[dataIndex];
-
-          // Only show High and Low if they are not "N/A"
-          let tooltipContent = `<b>${dates[dataIndex]}</b><br>`;
-
-          if (high && high !== "N/A") {
-            tooltipContent += `High: ${high.toFixed(2)}<br>`;
-          }
-
-          if (mainValue && mainValue !== "N/A") {
-            tooltipContent += `Avg: ${mainValue.toFixed(2)}<br>`;
-          }
-
-          if (low && low !== "N/A") {
-            tooltipContent += `Low: ${low.toFixed(2)}<br>`;
-          }
-
-          return tooltipContent;
-        },
-      },
     };
 
     if (dataType === "Revenue") {
@@ -1096,7 +1052,7 @@
           <EstimationGraph
             userTier={data?.user?.tier}
             title="Revenue"
-            options={optionsRevenue}
+            config={optionsRevenue}
             tableDataList={revenueDateList}
             highDataList={highRevenueList}
             avgDataList={avgRevenueList}
@@ -1108,7 +1064,7 @@
           <EstimationGraph
             userTier={data?.user?.tier}
             title="Revenue Growth"
-            options={optionsRevenueGrowth}
+            config={optionsRevenueGrowth}
             tableDataList={revenueDateList}
             highDataList={highRevenueList}
             avgDataList={avgRevenueList}
@@ -1122,7 +1078,7 @@
           <EstimationGraph
             userTier={data?.user?.tier}
             title="EPS"
-            options={optionsEPS}
+            config={optionsEPS}
             tableDataList={epsDateList}
             highDataList={highEPSList}
             avgDataList={avgEPSList}
@@ -1134,7 +1090,7 @@
           <EstimationGraph
             userTier={data?.user?.tier}
             title="EPS Growth"
-            options={optionsEPSGrowth}
+            config={optionsEPSGrowth}
             tableDataList={epsDateList}
             highDataList={highEPSList}
             avgDataList={avgEPSList}
@@ -1148,7 +1104,7 @@
           <EstimationGraph
             userTier={data?.user?.tier}
             title="Net Income"
-            options={optionsNetIncome}
+            config={optionsNetIncome}
             tableDataList={netIncomeDateList}
             highDataList={highNetIncomeList}
             avgDataList={avgNetIncomeList}
@@ -1160,7 +1116,7 @@
           <EstimationGraph
             userTier={data?.user?.tier}
             title="Net Income Growth"
-            options={optionsNetIncomeGrowth}
+            config={optionsNetIncomeGrowth}
             tableDataList={netIncomeDateList}
             highDataList={highNetIncomeList}
             avgDataList={avgNetIncomeList}
@@ -1174,7 +1130,7 @@
           <EstimationGraph
             userTier={data?.user?.tier}
             title="EBITDA"
-            options={optionsEbitda}
+            config={optionsEbitda}
             tableDataList={ebitdaDateList}
             highDataList={highEbitdaList}
             avgDataList={avgEbitdaList}
@@ -1186,7 +1142,7 @@
           <EstimationGraph
             userTier={data?.user?.tier}
             title="EBITDA Growth"
-            options={optionsEbitdaGrowth}
+            config={optionsEbitdaGrowth}
             tableDataList={ebitdaDateList}
             highDataList={highEbitdaList}
             avgDataList={avgEbitdaList}
