@@ -7,63 +7,62 @@
 <svelte:head>
   <!-- Structured Data for FAQ -->
   <script type="application/ld+json">
-    {`
+  {JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
       {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "Why promote us?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Affiliate partnerships are one of the simplest yet most profitable ways to make money online. You send customers our way, and we'll pay you for it."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "How much can I earn?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "You can earn up to $24.00 commission on every referral that results in a successful sale. There's no limit to how much you can make by promoting us."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "When do I get paid?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "We payout on NET30 terms to account for refunds and chargebacks. For example, commissions generated in January would be paid out on March 15th (NET30)."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "How do I make money as an affiliate?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "All you have to do is recommend us using your affiliate link on your website, blog, and social media. We track your clicks and transactions so you can get paid."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "What are the payout minimums?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "We require a minimum balance of $50.00 before processing an affiliate payout. We set this to avoid any fraudulent issues with our affiliate program."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "How do I sign up?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "The Lemon Squeezy affiliate hub hosts our affiliate program. Click the 'Become an affiliate' button below to create a Lemon Squeezy account and join our program."
-            }
-          }
-        ]
+        "@type": "Question",
+        "name": "Why promote us?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Affiliate partnerships are one of the simplest yet most profitable ways to make money online. You send customers our way, and we'll pay you for it."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much can I earn?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You can earn up to $24.00 commission on every referral that results in a successful sale. There's no limit to how much you can make by promoting us."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "When do I get paid?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We payout on NET30 terms to account for refunds and chargebacks. For example, commissions generated in January would be paid out on March 15th (NET30)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I make money as an affiliate?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "All you have to do is recommend us using your affiliate link on your website, blog, and social media. We track your clicks and transactions so you can get paid."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are the payout minimums?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We require a minimum balance of $50.00 before processing an affiliate payout. We set this to avoid any fraudulent issues with our affiliate program."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I sign up?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The Lemon Squeezy affiliate hub hosts our affiliate program. Click the 'Become an affiliate' button below to create a Lemon Squeezy account and join our program."
+        }
       }
-    `}
+    ]
+  })}
   </script>
+
   <!-- Canonical URL -->
   <link rel="canonical" href="https://stocknear.com/affiliate-program" />
 </svelte:head>

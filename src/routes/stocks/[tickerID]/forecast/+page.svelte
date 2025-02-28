@@ -101,8 +101,6 @@
       recommendationList =
         rawAnalystList?.length > 5 ? rawAnalystList?.slice(-6) : rawAnalystList;
       categories = ["Strong Buy", "Buy", "Hold", "Sell", "Strong Sell"];
-
-      console.log(recommendationList);
     }
 
     optionsData = getPlotOptions() || null;
