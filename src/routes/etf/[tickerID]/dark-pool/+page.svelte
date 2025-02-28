@@ -58,11 +58,10 @@
         {#if hottestTrades?.length > 0}
           <HottestTrades {data} rawData={hottestTrades} />
         {/if}
+        {#if historicalDarkPool?.length > 10}
+          <HistoricalVolume {data} rawData={historicalDarkPool} />
+        {/if}
         {#if data?.user?.tier === "Pro"}
-          {#if historicalDarkPool?.length > 10}
-            <HistoricalVolume rawData={historicalDarkPool} />
-          {/if}
-        {:else}
           <UpgradeToPro {data} />
         {/if}
       </div>

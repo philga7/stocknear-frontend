@@ -5,11 +5,7 @@
     assetType,
     etfTicker,
   } from "$lib/store";
-  import {
-    abbreviateNumber,
-    monthNames,
-    removeCompanyStrings,
-  } from "$lib/utils";
+  import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
   import { goto } from "$app/navigation";
   import highcharts from "$lib/highcharts.ts";
 
@@ -158,21 +154,25 @@
         },
       },
       xAxis: {
+        endOnTick: false,
         categories: dates,
         crosshair: {
           color: "#fff", // Set the color of the crosshair line
           width: 1, // Adjust the line width as needed
           dashStyle: "Solid",
         },
+
         labels: {
           style: {
             color: "#fff",
           },
+          distance: 20, // Increases space between label and axis
           formatter: function () {
-            const dateParts = this.value.split("-");
-            const day = dateParts[2].substring(0);
-            const monthIndex = parseInt(dateParts[1], 10) - 1;
-            return `${day} ${monthNames[monthIndex]}`;
+            return new Date(this.value).toLocaleDateString("en-US", {
+              day: "2-digit", // Include day number
+              month: "short", // Display short month name
+              year: "numeric", // Include year
+            });
           },
         },
       },
@@ -409,20 +409,3 @@
     {/if}
   </main>
 </section>
-
-<style>
-  .app {
-    height: 300px;
-    max-width: 100%; /* Ensure chart width doesn't exceed the container */
-  }
-
-  @media (max-width: 640px) {
-    .app {
-      height: 210px;
-    }
-  }
-
-  .chart {
-    width: 100%;
-  }
-</style>
