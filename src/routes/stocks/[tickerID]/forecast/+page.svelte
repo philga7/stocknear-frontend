@@ -258,64 +258,67 @@
         value = 0.5;
         break;
     }
-    const option = {
-      silent: true,
-      animation: false,
+
+    return {
+      legend: {
+        enabled: false,
+      },
+      credits: {
+        enabled: false,
+      },
+      chart: {
+        type: "pie",
+        backgroundColor: "#09090B",
+        plotBackgroundColor: "#09090B",
+        height: 360,
+        animation: false,
+      },
+      title: {
+        text: null,
+      },
+
+      plotOptions: {
+        pie: {
+          dataLabels: {
+            enabled: false,
+          },
+          enableMouseTracking: false,
+          states: {
+            hover: {
+              enabled: false,
+            },
+          },
+          startAngle: -90,
+          endAngle: 90,
+          center: ["50%", "65%"],
+          size: "75%", // Smaller chart
+        },
+      },
       series: [
         {
-          type: "gauge",
-          startAngle: 180,
-          endAngle: 0,
-          center: ["50%", "45%"],
-          radius: "70%",
-          min: 0,
-          max: 1,
-          splitNumber: 4,
-          axisLine: {
-            lineStyle: {
-              width: 25,
-              color: [
-                [0.2, "#9E190A"],
-                [0.4, "#D9220E"],
-                [0.6, "#FF9E21"],
-                [0.8, "#31B800"],
-                [1, "#008A00"],
-              ],
-            },
-          },
-          pointer: {
-            icon: "path://M12.8,0.7l12,40.1H0.7L12.8,0.7z",
-            length: "25%",
-            width: 20,
-            offsetCenter: [0, "-30%"],
-            itemStyle: {
-              color: "#fff",
-            },
-          },
-          axisTick: {
-            length: 0,
-          },
-          splitLine: {
-            length: 0,
-          },
-          axisLabel: {
-            show: false,
-          },
-          detail: {
-            show: false, // Hide the numerical value display
-          },
+          type: "pie",
+          innerSize: "70%",
+          animation: false,
           data: [
             {
-              value: value,
-              label: {
-                show: false, // Hide the data label
-              },
+              name: "Strong Sell",
+              y: 0.2,
+              color: "#9E190A",
+              borderColor: "#9E190A",
+            },
+            { name: "Sell", y: 0.2, color: "#D9220E", borderColor: "#D9220E" },
+            { name: "Hold", y: 0.2, color: "#FF9E21", borderColor: "#FF9E21" },
+            { name: "Buy", y: 0.2, color: "#31B800", borderColor: "#31B800" },
+            {
+              name: "Strong Buy",
+              y: 0.2,
+              color: "#008A00",
+              borderColor: "#008A00",
             },
           ],
         },
       ],
     };
-    return option;
   }
 
   if (data?.getAnalystEstimate?.length !== 0) {
@@ -508,6 +511,93 @@
           },
         },
       ],
+      /*
+      annotations: [
+        {
+          labels: [
+            {
+              point: {
+                x: forecastHigh[forecastHigh.length - 1][0], // Last X (timestamp)
+                y: forecastHigh[forecastHigh.length - 1][1], // Last Y (Average value)
+                xAxis: 0,
+                yAxis: 0,
+              },
+              text: `<b>High</b><br><span class="text-sm">$${forecastHigh[forecastHigh.length - 1][1]}</span>`,
+              useHTML: true,
+              style: {
+                backgroundColor: "rgba(0, 0, 0, 0.8)",
+                borderColor: "rgba(255, 255, 255, 0.2)",
+                borderWidth: 1,
+                fontSize: "12px",
+                fontWeight: "bold",
+              },
+              align: "left",
+              verticalAlign: "middles",
+              x: -10,
+              y: 0,
+              backgroundColor: "rgba(0, 0, 0, 0.8)",
+              borderColor: "rgba(255, 255, 255, 0.2)",
+              borderWidth: 1,
+              padding: 8,
+              shape: "",
+            },
+            {
+              point: {
+                x: forecastAvg[forecastAvg.length - 1][0], // Last X (timestamp)
+                y: forecastAvg[forecastAvg.length - 1][1], // Last Y (Average value)
+                xAxis: 0,
+                yAxis: 0,
+              },
+              text: `<b>Average</b><br><span>$${forecastAvg[forecastAvg.length - 1][1]}</span>`,
+              useHTML: true,
+              style: {
+                backgroundColor: "rgba(0, 0, 0, 0.8)",
+                borderColor: "rgba(255, 255, 255, 0.2)",
+                borderWidth: 1,
+                fontSize: "12px",
+                fontWeight: "bold",
+              },
+              align: "right",
+              verticalAlign: "middle",
+              x: -10,
+              y: 30,
+              backgroundColor: "rgba(0, 0, 0, 0.8)",
+              borderColor: "rgba(255, 255, 255, 0.2)",
+              borderWidth: 1,
+              padding: 5,
+              shape: "",
+            },
+            {
+              point: {
+                x: forecastLow[forecastLow.length - 1][0], // Last X (timestamp)
+                y: forecastLow[forecastLow.length - 1][1], // Last Y (Average value)
+                xAxis: 0,
+                yAxis: 0,
+              },
+              text: `<b>Low</b><br><span>$${forecastLow[forecastLow.length - 1][1]}</span>`,
+              useHTML: true,
+              style: {
+                backgroundColor: "rgba(0, 0, 0, 0.8)",
+                borderColor: "rgba(255, 255, 255, 0.2)",
+                borderWidth: 1,
+                fontSize: "12px",
+                fontWeight: "bold",
+              },
+              align: "top",
+              verticalAlign: "middle",
+              x: -10,
+              y: -40,
+              backgroundColor: "rgba(0, 0, 0, 0.8)",
+              borderColor: "rgba(255, 255, 255, 0.2)",
+              borderWidth: 1,
+              padding: 5,
+              shape: "",
+            },
+          ],
+        },
+      ],
+      */
+
       legend: {
         enabled: false,
       },
@@ -631,17 +721,16 @@
                   from the current stock price of {price}.
                 </p>
               </div>
-              <div>
-                <div class="app h-[160px]">
-                  {#if optionsPieChart !== null}
-                    <Chart {init} options={optionsPieChart} class="chart" />
-                  {/if}
-                </div>
-                <div class="-mt-36 text-center text-xl font-semibold">
+              <div class="relative">
+                <div use:highcharts={optionsPieChart}></div>
+                <div
+                  class="absolute left-1/2 -translate-x-1/2 -mt-20 text-center text-xl font-semibold"
+                >
                   Analyst Consensus: <span
-                    class="font-bold {['Strong Buy', 'Buy']?.includes(
-                      consensusRating,
-                    )
+                    class="font-bold inline-block {[
+                      'Strong Buy',
+                      'Buy',
+                    ]?.includes(consensusRating)
                       ? 'text-[#00FC50]'
                       : ['Strong Sell', 'Sell']?.includes(consensusRating)
                         ? 'text-[#FF2F1F]'

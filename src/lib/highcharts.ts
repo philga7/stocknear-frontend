@@ -1,9 +1,11 @@
 import Highcharts from 'highcharts';
 import HighchartsMore from 'highcharts/highcharts-more'; // Add this import
+//import HighchartsAnnotations from 'highcharts/modules/annotations';
 import { browser } from '$app/environment';
 
 if (browser) {
   HighchartsMore(Highcharts); // Initialize the extension
+  //HighchartsAnnotations(Highcharts); // Initialize annotations module
   Highcharts.setOptions({
     lang: {
       numericSymbols: ['K', 'M', 'B', 'T', 'P', 'E']
