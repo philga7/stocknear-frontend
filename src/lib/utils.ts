@@ -1281,6 +1281,7 @@ export function getPartyForPoliticians(name) {
     "Tim Moore": "Republican",
     "Jefferson Shreve": "Republican",
      "Ashley Moody": "Republican",
+     "Brad Knott": "Republican",
   };
 
   // Combine first and last name to form the key
