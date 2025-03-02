@@ -6,7 +6,7 @@
   let article = data?.getArticle;
 
   $: {
-    if (data?.getParams && typeof window !== "undefined") {
+    if (data?.getParams) {
       article = data?.getArticle;
     }
   }
@@ -20,57 +20,64 @@
     : ""}
 />
 
-<div>
-  <main id="main" class="mt-2 text-white min-h-screen pb-40">
-    <div class="mx-auto max-w-screen-xl">
-      {#if article?.cover}
-        <img
-          src={getImageURL(article?.collectionId, article?.id, article?.cover)}
-          class="h-[200px] w-full object-cover lg:h-[350px]"
-          loading="lazy"
-          alt="Wallpaper"
-        />
-      {/if}
-      <div class="lg:flex">
-        <article
-          class="z-5 relative mx-1 {article?.cover
-            ? '-mt-10 lg:-mt-16'
-            : 'mt-5'} rounded-t-md bg-default p-3 xs:p-4 lg:ml-3 lg:p-5 xl:mx-4"
-        >
-          <header
-            class="pb-3 border-b-[2px] border-white w-full sm:min-w-[850px] sm:max-w-[850px]"
+<section
+  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pb-20 pt-5 px-4 lg:px-3 text-white"
+>
+  <div class="w-full overflow-hidden m-auto mt-5">
+    <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
+      <main id="main" class="mt-2 w-full">
+        {#if article?.cover}
+          <img
+            src={getImageURL(
+              article?.collectionId,
+              article?.id,
+              article?.cover,
+            )}
+            class="h-[200px] w-full object-cover lg:h-[350px] rounded-lg border border-gray-800"
+            loading="lazy"
+            alt="Wallpaper"
+          />
+        {/if}
+        <div class="lg:flex">
+          <article
+            class="z-5 relative mx-1 {article?.cover
+              ? '-mt-10 lg:-mt-16'
+              : 'mt-5'} rounded-t-md bg-default p-3 xs:p-4 lg:ml-3 lg:p-5 xl:mx-4"
           >
-            <h1
-              class="mb-3 text-2xl sm:text-3xl font-bold text-white md:text-4xl"
+            <header
+              class="pb-3 border-b-[2px] border-white w-full sm:min-w-[850px] sm:max-w-[850px]"
             >
-              {article?.title}
-            </h1>
-            <div class="text-white">
-              <div>
-                Last Updated: {new Date(article?.updated)?.toLocaleString(
-                  "en-US",
-                  {
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                    daySuffix: "2-digit",
-                  },
-                )}
+              <h1
+                class="mb-3 text-2xl sm:text-3xl font-bold text-white md:text-4xl"
+              >
+                {article?.title}
+              </h1>
+              <div class="text-white">
+                <div>
+                  Last Updated: {new Date(article?.updated)?.toLocaleString(
+                    "en-US",
+                    {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                      daySuffix: "2-digit",
+                    },
+                  )}
+                </div>
+              </div>
+            </header>
+
+            <div class="text-lg mt-4">
+              <div class="content max-w-4xl">
+                {@html article?.description}
               </div>
             </div>
-          </header>
-
-          <div class="text-lg mt-4">
-            <div class="content">
-              {@html article?.description}
-            </div>
-          </div>
-        </article>
-
+          </article>
+        </div>
+      </main>
+      <aside class="hidden lg:block relative fixed w-1/4">
         <div class="mt-5 lg:w-full">
-          <div
-            class="flex flex-wrap gap-y-5 justify-center px-5 lg:sticky lg:top-20 lg:px-0"
-          >
+          <div class="flex flex-wrap gap-y-5 justify-center px-5">
             {#if !data?.user}
               <div
                 class="w-full text-white border border-gray-600 rounded-md h-fit bg-inherit lg:mx-0 lg:w-[300px] xl:w-[360px]"
@@ -118,7 +125,7 @@
             </a>
           </div>
         </div>
-      </div>
+      </aside>
     </div>
-  </main>
-</div>
+  </div>
+</section>
