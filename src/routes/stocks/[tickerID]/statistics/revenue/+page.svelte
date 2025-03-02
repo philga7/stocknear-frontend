@@ -194,8 +194,12 @@
     return options;
   }
 
-  changeTablePeriod(0);
-  changeTimePeriod(0);
+  $: {
+    if ($stockTicker) {
+      changeTablePeriod(0);
+      changeTimePeriod(0);
+    }
+  }
 </script>
 
 <SEO
