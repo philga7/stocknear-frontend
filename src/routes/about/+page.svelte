@@ -1,9 +1,7 @@
 <script lang="ts">
   import SEO from "$lib/components/SEO.svelte";
-
+  import profile from "$lib/images/profile.webp";
   export let data;
-
-  let cloudFrontUrl = import.meta.env.VITE_IMAGE_URL;
 </script>
 
 <SEO
@@ -233,8 +231,8 @@
               >
                 <div>
                   <img
-                    class="rounded-lg object-cover shadow-lg w-24 h-24 sm:w-28 sm:h-28 m-auto mb-10 sm:mb-0"
-                    src={cloudFrontUrl + "/assets/mrahimi.webp"}
+                    class="rounded-full object-cover shadow-lg w-24 h-24 sm:w-28 sm:h-28 m-auto mb-10 sm:mb-0"
+                    src={profile}
                     alt="Muslem Rahimi profile picture"
                     loading="lazy"
                   />

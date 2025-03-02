@@ -312,6 +312,13 @@
       plotOptions: {
         series: {
           animation: false,
+          marker: {
+            enabled: false,
+            states: {
+              hover: { enabled: false }, // Disable marker on hover
+              select: { enabled: false }, // Disable marker on selection
+            },
+          },
         },
       },
       chart: {
@@ -356,6 +363,14 @@
       xAxis: {
         categories: dates,
         type: "datetime",
+        endOnTick: false,
+        categories: dates,
+        crosshair: {
+          color: "#fff", // Set the color of the crosshair line
+          width: 1, // Adjust the line width as needed
+          dashStyle: "Solid",
+        },
+
         labels: {
           style: {
             color: "#fff",
@@ -378,9 +393,6 @@
           data: valueList,
           color: "#fff",
           animation: false,
-          marker: {
-            enabled: false, // Hide point symbols
-          },
         },
         {
           name: "Avg",
@@ -399,9 +411,6 @@
           color: "#c2c7cf",
           dashStyle: "Dash",
           animation: false,
-          marker: {
-            enabled: false,
-          },
         },
         {
           name: "High",
@@ -409,9 +418,6 @@
           color: "#c2c7cf",
           dashStyle: "Dash",
           animation: false,
-          marker: {
-            enabled: false,
-          },
         },
       ],
     };
