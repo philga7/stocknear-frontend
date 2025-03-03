@@ -333,7 +333,7 @@
                   {#if data?.user?.tier !== "Pro" && i > 0}
                     <button
                       on:click={() => goto("/pricing")}
-                      class="group relative z-[1] rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
+                      class="group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
                     >
                       <span class="relative text-sm block font-semibold">
                         {item.title}
@@ -351,7 +351,7 @@
                   {:else}
                     <button
                       on:click={() => (activeIdx = i)}
-                      class="group relative z-[1] rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
+                      class="group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
                       i
                         ? 'z-0'
                         : ''} "

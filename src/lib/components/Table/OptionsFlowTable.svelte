@@ -256,7 +256,7 @@
         >
           Time
           <svg
-            class="flex-shrink-0 w-4 h-4 inline-block {sortOrders['time'] ===
+            class="shrink-0 w-4 h-4 inline-block {sortOrders['time'] ===
             'asc'
               ? 'rotate-180'
               : ''} "
@@ -276,7 +276,7 @@
         >
           Symbol
           <svg
-            class="flex-shrink-0 w-4 h-4 inline-block {sortOrders['ticker'] ===
+            class="shrink-0 w-4 h-4 inline-block {sortOrders['ticker'] ===
             'asc'
               ? 'rotate-180'
               : sortOrders['ticker'] === 'desc'
@@ -303,7 +303,7 @@
         >
           Expiry
           <svg
-            class="flex-shrink-0 w-4 h-4 inline-block {sortOrders['expiry'] ===
+            class="shrink-0 w-4 h-4 inline-block {sortOrders['expiry'] ===
             'asc'
               ? 'rotate-180'
               : sortOrders['expiry'] === 'desc'
@@ -325,7 +325,7 @@
         >
           DTE
           <svg
-            class="flex-shrink-0 w-4 h-4 inline-block {sortOrders['dte'] ===
+            class="shrink-0 w-4 h-4 inline-block {sortOrders['dte'] ===
             'asc'
               ? 'rotate-180'
               : sortOrders['dte'] === 'desc'
@@ -347,7 +347,7 @@
         >
           Strike
           <svg
-            class="flex-shrink-0 w-4 h-4 inline-block {sortOrders['strike'] ===
+            class="shrink-0 w-4 h-4 inline-block {sortOrders['strike'] ===
             'asc'
               ? 'rotate-180'
               : sortOrders['strike'] === 'desc'
@@ -369,7 +369,7 @@
         >
           C/P
           <svg
-            class="flex-shrink-0 w-4 h-4 inline-block {sortOrders['callPut'] ===
+            class="shrink-0 w-4 h-4 inline-block {sortOrders['callPut'] ===
             'asc'
               ? 'rotate-180'
               : sortOrders['callPut'] === 'desc'
@@ -391,7 +391,7 @@
         >
           Sent.
           <svg
-            class="flex-shrink-0 w-4 h-4 inline-block {sortOrders[
+            class="shrink-0 w-4 h-4 inline-block {sortOrders[
               'sentiment'
             ] === 'asc'
               ? 'rotate-180'
@@ -414,7 +414,7 @@
         >
           Spot
           <svg
-            class="flex-shrink-0 w-4 h-4 inline-block {sortOrders['spot'] ===
+            class="shrink-0 w-4 h-4 inline-block {sortOrders['spot'] ===
             'asc'
               ? 'rotate-180'
               : sortOrders['spot'] === 'desc'
@@ -436,7 +436,7 @@
         >
           Price
           <svg
-            class="flex-shrink-0 w-4 h-4 inline-block {sortOrders['price'] ===
+            class="shrink-0 w-4 h-4 inline-block {sortOrders['price'] ===
             'asc'
               ? 'rotate-180'
               : sortOrders['price'] === 'desc'
@@ -458,7 +458,7 @@
         >
           Prem
           <svg
-            class="flex-shrink-0 w-4 h-4 inline-block {sortOrders['premium'] ===
+            class="shrink-0 w-4 h-4 inline-block {sortOrders['premium'] ===
             'asc'
               ? 'rotate-180'
               : sortOrders['premium'] === 'desc'
@@ -480,7 +480,7 @@
         >
           Type
           <svg
-            class="flex-shrink-0 w-4 h-4 inline-block {sortOrders['type'] ===
+            class="shrink-0 w-4 h-4 inline-block {sortOrders['type'] ===
             'asc'
               ? 'rotate-180'
               : sortOrders['type'] === 'desc'
@@ -502,7 +502,7 @@
         >
           Exec
           <svg
-            class="flex-shrink-0 w-4 h-4 inline-block {sortOrders['exec'] ===
+            class="shrink-0 w-4 h-4 inline-block {sortOrders['exec'] ===
             'asc'
               ? 'rotate-180'
               : sortOrders['exec'] === 'desc'
@@ -524,7 +524,7 @@
         >
           Size
           <svg
-            class="flex-shrink-0 w-4 h-4 inline-block {sortOrders['size'] ===
+            class="shrink-0 w-4 h-4 inline-block {sortOrders['size'] ===
             'asc'
               ? 'rotate-180'
               : sortOrders['size'] === 'desc'
@@ -546,7 +546,7 @@
         >
           Vol
           <svg
-            class="flex-shrink-0 w-4 h-4 inline-block {sortOrders['vol'] ===
+            class="shrink-0 w-4 h-4 inline-block {sortOrders['vol'] ===
             'asc'
               ? 'rotate-180'
               : sortOrders['vol'] === 'desc'
@@ -568,7 +568,7 @@
         >
           OI
           <svg
-            class="flex-shrink-0 w-4 h-4 inline-block {sortOrders['oi'] ===
+            class="shrink-0 w-4 h-4 inline-block {sortOrders['oi'] ===
             'asc'
               ? 'rotate-180'
               : sortOrders['oi'] === 'desc'
@@ -630,7 +630,7 @@
           <svg
             class="{displayedData[index]?.id === animationId
               ? animationClass
-              : ''} w-4 sm:w-5 sm:h-5 inline-block cursor-pointer flex-shrink-0"
+              : ''} w-4 sm:w-5 sm:h-5 inline-block cursor-pointer shrink-0"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
             ><path
@@ -827,7 +827,7 @@
   .td {
     display: flex;
     flex-flow: row nowrap;
-    flex-grow: 1;
+    grow: 1;
     flex-basis: 0;
     padding: 0.5em;
     word-break: break-word;

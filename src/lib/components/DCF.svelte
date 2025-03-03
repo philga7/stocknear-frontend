@@ -343,7 +343,7 @@
                 class=" mb-5 text-gray-100 text-sm sm:text-[1rem] sm:rounded-md h-auto border border-gray-600 p-4"
               >
                 <svg
-                  class="w-5 h-5 inline-block mr-0.5 flex-shrink-0"
+                  class="w-5 h-5 inline-block mr-0.5 shrink-0"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 256 256"
                   ><path
@@ -385,7 +385,7 @@
         >
         Unlock content with
         <a
-          class="inline-block ml-2 text-blue-400 hover:sm:text-white"
+          class="inline-block ml-2 text-blue-400 sm:hover:text-white"
           href="/pricing">Pro Subscription</a
         >
       </div>

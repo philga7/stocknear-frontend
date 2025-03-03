@@ -26,16 +26,13 @@
 <input type="checkbox" {id} class="modal-toggle" />
 
 <dialog {id} class="modal p-3 sm:p-0">
-  <label
-    for={id}
-    class="cursor-pointer modal-backdrop bg-[#000] bg-opacity-[0.8]"
-  ></label>
+  <label for={id} class="cursor-pointer modal-backdrop bg-[#000]/30"></label>
 
   <!-- Desktop modal content -->
   <div
     class="modal-box rounded-md border border-gray-600 w-full bg-secondary flex flex-col items-center"
   >
-    <div class="mx-auto h-1.5 w-20 flex-shrink-0 rounded-full" />
+    <div class="mx-auto h-1.5 w-20 shrink-0 rounded-full" />
     <div class="text-white mb-5 text-center">
       <h3 class="font-bold text-xl sm:text-2xl mb-5">{title}</h3>
       <span class="text-white text-[1rem] font-normal">{@html content}</span>

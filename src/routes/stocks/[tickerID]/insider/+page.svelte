@@ -233,7 +233,7 @@
               class="w-fit text-white p-3 sm:p-5 mb-5 rounded-md sm:flex sm:flex-row sm:items-center border border-gray-600 text-sm sm:text-[1rem]"
             >
               <svg
-                class="w-6 h-6 flex-shrink-0 inline-block sm:mr-2"
+                class="w-6 h-6 shrink-0 inline-block sm:mr-2"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 256 256"
                 ><path

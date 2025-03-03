@@ -1135,7 +1135,7 @@
                           <Button
                             on:click={handleWatchlistModal}
                             builders={[builder]}
-                            class="p-0 -mb-2 -mt-2 text-sm inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap text-base text-white bg-[#0909B] focus:outline-none sm:text-smaller"
+                            class="p-0 -mb-2 -mt-2 text-sm inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap text-base text-white bg-[#0909B] focus:outline-hidden sm:text-smaller"
                           >
                             <svg
                               class="h-4 w-4"
@@ -1277,19 +1277,19 @@
                       </div>
                       <Combobox.Input
                         on:input={search}
-                        class="text-sm sm:text-[1rem] controls-input text-white bg-default focus:outline-none border border-gray-600 rounded-md placeholder:text-white/80 px-3 py-2 pl-8 xs:pl-10 flex-grow w-full sm:min-w-56 max-w-xs"
+                        class="text-sm sm:text-[1rem] controls-input text-white bg-default focus:outline-hidden border border-gray-600 rounded-md placeholder:text-white/80 px-3 py-2 pl-8 xs:pl-10 grow w-full sm:min-w-56 max-w-xs"
                         placeholder="Add new stock"
                         aria-label="Add new stock"
                       />
                     </div>
                     {#if inputValue?.length !== 0}
                       <Combobox.Content
-                        class="w-auto z-10 rounded-md border border-gray-700 bg-default px-1 py-3 shadow-popover outline-none"
+                        class="w-auto z-10 rounded-md border border-gray-700 bg-default px-1 py-3 shadow-popover outline-hidden"
                         sideOffset={8}
                       >
                         {#each searchBarData as item}
                           <Combobox.Item
-                            class="cursor-pointer text-white border-b border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-5 pr-1.5 text-sm capitalize outline-none transition-all duration-75 data-[highlighted]:bg-primary"
+                            class="cursor-pointer text-white border-b border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-5 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-primary"
                             value={item?.symbol}
                             label={item?.name}
                             on:click={(e) => handleAddTicker(e, item?.symbol)}
@@ -1683,7 +1683,7 @@
                           {#if data?.user?.tier !== "Pro" && i > 0}
                             <button
                               on:click={() => goto("/pricing")}
-                              class="group relative z-[1] rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
+                              class="group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
                             >
                               <span
                                 class="relative text-sm sm:text-[1rem] block font-semibold"
@@ -1703,7 +1703,7 @@
                           {:else}
                             <button
                               on:click={() => changeTab(i)}
-                              class="group relative z-[1] rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
+                              class="group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
                               i
                                 ? 'z-0'
                                 : ''} "
@@ -1747,7 +1747,7 @@
                                   })}
                                 </div>
                                 <div
-                                  class="flex-grow px-3 py-2 lg:py-1 border-t border-gray-700"
+                                  class="grow px-3 py-2 lg:py-1 border-t border-gray-700"
                                 >
                                   <a
                                     href={items[0].url}
@@ -1813,7 +1813,7 @@
                                 {formatTime(item?.time)}
                               </div>
                               <div
-                                class="flex-grow px-3 py-2 lg:py-1 border-t border-gray-700"
+                                class="grow px-3 py-2 lg:py-1 border-t border-gray-700"
                               >
                                 <div>
                                   {removeCompanyStrings(item?.name)}

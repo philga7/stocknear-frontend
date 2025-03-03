@@ -39,10 +39,10 @@
 </script>
 
 <div
-  class="lg:max-w-xl w-full bg-gradient-to-r from-orange-400 to-purple-900 p-4 rounded-none sm:rounded-md shadow-md m-auto"
+  class="lg:max-w-xl w-full bg-linear-to-r from-orange-400 to-purple-900 p-4 rounded-none sm:rounded-md shadow-md m-auto"
 >
   <div
-    class="container bg-gradient-to-r from-orange-400 to-purple-900 p-4 mt-4"
+    class="container bg-linear-to-r from-orange-400 to-purple-900 p-4 mt-4"
   >
     <h2 class="text-2xl font-bold text-white text-center">
       50% OFF Your Subscription!

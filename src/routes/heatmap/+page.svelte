@@ -187,7 +187,7 @@
                   class="w-auto h-fit max-h-72 overflow-y-auto scroller"
                 >
                   <div
-                    class="relative sticky z-40 focus:outline-none -top-1"
+                    class="relative sticky z-40 focus:outline-hidden -top-1"
                     tabindex="0"
                     role="menu"
                     style=""
@@ -236,7 +236,7 @@
                   class="w-auto h-fit max-h-72 overflow-y-auto scroller"
                 >
                   <div
-                    class="relative sticky z-40 focus:outline-none -top-1"
+                    class="relative sticky z-40 focus:outline-hidden -top-1"
                     tabindex="0"
                     role="menu"
                     style=""

@@ -53,7 +53,7 @@
     <label
       for="cookieConsent"
       on:click={() => cookieConsent("false")}
-      class="cursor-pointer w-auto text-sm text-gray-800 underline transition-colors duration-300 md:w-auto text-white hover:text-gray-400 focus:outline-none"
+      class="cursor-pointer w-auto text-sm text-gray-800 underline transition-colors duration-300 md:w-auto text-white hover:text-gray-400 focus:outline-hidden"
     >
       Reject All
     </label>
@@ -61,7 +61,7 @@
     <label
       for="cookieConsent"
       on:click={() => cookieConsent("true")}
-      class="text-xs cursor-pointer w-auto md:w-auto font-medium bg-gray-800 rounded-md hover:bg-gray-700 text-white px-4 py-2.5 duration-300 transition-colors focus:outline-none"
+      class="text-xs cursor-pointer w-auto md:w-auto font-medium bg-gray-800 rounded-md hover:bg-gray-700 text-white px-4 py-2.5 duration-300 transition-colors focus:outline-hidden"
     >
       Accept All Cookies
     </label>

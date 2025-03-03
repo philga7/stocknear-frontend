@@ -198,7 +198,7 @@
               <div
                 class="flex space-x-3 border-b-[2px] border-below-title pb-3 lg:border-none lg:pb-0"
               >
-                <div class="flex-shrink-0">
+                <div class="shrink-0">
                   <svg
                     class="h-16 w-16 sm:h-20 sm:w-20 text-gray-200"
                     fill="currentColor"
@@ -410,13 +410,13 @@
                             {#if index >= 5 && data?.user?.tier !== "Pro"}
                               <a class="block relative" href="/pricing">
                                 <span
-                                  class="text-base font-semibold text-blue-link blur group-hover:blur-[6px]"
+                                  class="text-base font-semibold text-blue-link blur-sm group-hover:blur-[6px]"
                                 >
                                   XXXX
                                 </span>
 
                                 <div
-                                  class="ml-px max-w-[130px] truncate text-sm text-white blur group-hover:blur-[6px] lg:max-w-[150px]"
+                                  class="ml-px max-w-[130px] truncate text-sm text-white blur-sm group-hover:blur-[6px] lg:max-w-[150px]"
                                 >
                                   XXXXXXXXXXXXXXXX
                                 </div>

@@ -133,7 +133,7 @@
               <div
                 class="flex space-x-3 border-b-[2px] border-below-title pb-3 lg:border-none lg:pb-0"
               >
-                <div class="flex-shrink-0">
+                <div class="shrink-0">
                   <div
                     class="h-16 w-16 sm:h-20 sm:w-20 relative rounded-full {politicianParty ===
                     'Republican'

@@ -538,7 +538,6 @@
         },
         gridLineWidth: 1,
         gridLineColor: "#111827",
-        tickInterval: 20, // Adjust this value to reduce step size
       },
 
       series: [
@@ -732,7 +731,7 @@
                 {#if data?.user?.tier !== "Pro" && i > 0}
                   <button
                     on:click={() => goto("/pricing")}
-                    class="group relative z-[1] rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
+                    class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
                   >
                     <span class="relative text-sm block font-semibold">
                       {item.title}
@@ -750,7 +749,7 @@
                 {:else}
                   <button
                     on:click={() => changeTab(i)}
-                    class="group relative z-[1] rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
+                    class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
                     i
                       ? 'z-0'
                       : ''} "
@@ -1029,7 +1028,7 @@
                         : 'bg-[#FF2F1F]'} text-black"
                     >
                       <svg
-                        class="-ml-1 mr-0.5 h-5 w-5 flex-shrink-0 self-center text-black {changeRevenue >
+                        class="-ml-1 mr-0.5 h-5 w-5 shrink-0 self-center text-black {changeRevenue >
                         0
                           ? ''
                           : 'rotate-180 '}"
@@ -1099,7 +1098,7 @@
                       : 'bg-[#FF2F1F]'} text-black"
                   >
                     <svg
-                      class="-ml-1 mr-0.5 h-5 w-5 flex-shrink-0 self-center text-black {changeRevenueNextYear >
+                      class="-ml-1 mr-0.5 h-5 w-5 shrink-0 self-center text-black {changeRevenueNextYear >
                       0
                         ? ''
                         : 'rotate-180 '}"
@@ -1157,7 +1156,7 @@
                       : 'bg-[#FF2F1F]'} text-black"
                   >
                     <svg
-                      class="-ml-1 mr-0.5 h-5 w-5 flex-shrink-0 self-center text-black {changeEPS >
+                      class="-ml-1 mr-0.5 h-5 w-5 shrink-0 self-center text-black {changeEPS >
                       0
                         ? ''
                         : 'rotate-180 '}"
@@ -1183,7 +1182,7 @@
                 </div>
               </div>
               <div
-                class="border-b px-3 py-5 last:border-b-0 xs:px-4 sm:p-6 md:border-l"
+                class="border-b px-3 py-5 last:border-b-0 xs:px-4 sm:p-6 md:border-l border-gray-600"
               >
                 <div class="text-base font-normal text-white">
                   EPS Next Year
@@ -1212,7 +1211,7 @@
                       : 'bg-[#FF2F1F] '} text-black"
                   >
                     <svg
-                      class="-ml-1 mr-0.5 h-5 w-5 flex-shrink-0 self-center text-black {changeEPSNextYear >
+                      class="-ml-1 mr-0.5 h-5 w-5 shrink-0 self-center text-black {changeEPSNextYear >
                       0
                         ? ''
                         : 'rotate-180 '}"
@@ -1253,7 +1252,7 @@
               class="text-white p-3 sm:p-5 mb-10 rounded-md sm:flex sm:flex-row sm:items-center border border-gray-600 text-sm sm:text-[1rem]"
             >
               <svg
-                class="w-6 h-6 flex-shrink-0 inline-block sm:mr-2"
+                class="w-6 h-6 shrink-0 inline-block sm:mr-2"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 256 256"
                 ><path

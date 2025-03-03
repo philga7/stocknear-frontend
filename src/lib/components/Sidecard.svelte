@@ -149,7 +149,7 @@
             <span class="block font-semibold">Website</span>
             <a
               href={website}
-              class="hover:sm:text-white truncate text-blue-400"
+              class="sm:hover:text-white truncate text-blue-400"
               target="_blank">{website}</a
             >
           </div>

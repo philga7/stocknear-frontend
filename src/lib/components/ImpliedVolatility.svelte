@@ -173,7 +173,7 @@
         >
         Unlock content with
         <a
-          class="inline-block ml-2 text-blue-400 hover:sm:text-white"
+          class="inline-block ml-2 text-blue-400 sm:hover:text-white"
           href="/pricing">Pro Subscription</a
         >
       </div>

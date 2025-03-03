@@ -908,7 +908,7 @@
             </span>
 
             <label
-              class="inline-flex items-center cursor-pointer focus-none focus:outline-none"
+              class="inline-flex items-center cursor-pointer focus-none focus:outline-hidden"
             >
               <input
                 on:click={toggleMode}
@@ -920,7 +920,7 @@
               />
 
               <div
-                class="relative w-11 h-6 bg-gray-600 focus:outline-none peer-focus:outline-none peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#00A96E]"
+                class="relative w-11 h-6 bg-gray-600 focus:outline-hidden peer-focus:outline-hidden peer-focus:outline-hidden rounded-full peer peer-checked:after:translate-x-full peer-checked:rtl:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#00A96E]"
               ></div>
             </label>
 
@@ -1047,7 +1047,7 @@
           >
             <label
               for="ruleModal"
-              class="inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 text-base font-semibold text-white shadow-sm bg-[#000] sm:hover:bg-default/60 ease-out focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-smaller"
+              class="inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 text-base font-semibold text-white shadow-xs bg-[#000] sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500 sm:text-smaller"
             >
               <svg
                 class="h-5 w-5"
@@ -1068,7 +1068,7 @@
             {#if ruleOfList?.length !== 0}
               <label
                 on:click={handleResetAll}
-                class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 text-base font-semibold text-white shadow-sm bg-[#000] sm:hover:text-red-500 ease-out focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-smaller"
+                class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 text-base font-semibold text-white shadow-xs bg-[#000] sm:hover:text-red-500 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500 sm:text-smaller"
               >
                 <svg
                   class="h-4 w-4"
@@ -1130,7 +1130,7 @@
                 <div class="flex items-center">
                   <button
                     on:click={() => handleDeleteRule(row?.rule)}
-                    class="mr-1.5 cursor-pointer text-gray-300 sm:hover:text-red-500 focus:outline-none"
+                    class="mr-1.5 cursor-pointer text-gray-300 sm:hover:text-red-500 focus:outline-hidden"
                     title="Remove filter"
                   >
                     <svg
@@ -1216,7 +1216,7 @@
                                             ?.replace("exactly", "Exactly")}
                                         </span>
                                         <svg
-                                          class="mt-1 -mr-1 ml-1 h-5 w-5 xs:ml-2 !ml-0 sm:ml-0 inline-block"
+                                          class="mt-1 -mr-1 ml-1 h-5 w-5 xs:ml-2 ml-0! sm:ml-0 inline-block"
                                           viewBox="0 0 20 20"
                                           fill="currentColor"
                                           style="max-width:40px"
@@ -1259,7 +1259,7 @@
                                         : ""}
                                       on:input={(e) =>
                                         handleValueInput(e, row?.rule, 0)}
-                                      class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder:text-gray-200 font-normal p-1 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-primary"
+                                      class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder:text-gray-200 font-normal p-1 text-sm shadow-xs focus:border-blue-500 focus:ring-blue-500 bg-primary"
                                     />
                                     <span
                                       class="text-white text-[1rem] font-normal mt-1"
@@ -1276,7 +1276,7 @@
                                         : ""}
                                       on:input={(e) =>
                                         handleValueInput(e, row?.rule, 1)}
-                                      class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder:text-gray-200 font-normal p-1 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-primary"
+                                      class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder:text-gray-200 font-normal p-1 text-sm shadow-xs focus:border-blue-500 focus:ring-blue-500 bg-primary"
                                     />
                                   </div>
                                 {:else}
@@ -1288,7 +1288,7 @@
                                       : valueMappings[row?.rule]}
                                     on:input={(e) =>
                                       handleValueInput(e, row?.rule)}
-                                    class="ios-zoom-fix block max-w-[4.8rem] rounded-sm placeholder:text-gray-200 font-normal p-1 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-primary"
+                                    class="ios-zoom-fix block max-w-[4.8rem] rounded-sm placeholder:text-gray-200 font-normal p-1 text-sm shadow-xs focus:border-blue-500 focus:ring-blue-500 bg-primary"
                                   />
                                 {/if}
 
@@ -1343,7 +1343,7 @@
                             </DropdownMenu.Label>
                           {:else}
                             <div
-                              class="relative sticky z-40 focus:outline-none -top-1"
+                              class="relative sticky z-40 focus:outline-hidden -top-1"
                               tabindex="0"
                               role="menu"
                               style=""
@@ -1364,7 +1364,7 @@
                                             row?.step[index + 1],
                                           ]);
                                         }}
-                                        class="block w-full border-b border-gray-600 px-4 py-1.5 text-left text-sm sm:text-[1rem] rounded text-white last:border-0 sm:hover:bg-primary focus:bg-blue-100 focus:text-gray-900 focus:outline-none"
+                                        class="block w-full border-b border-gray-600 px-4 py-1.5 text-left text-sm sm:text-[1rem] rounded text-white last:border-0 sm:hover:bg-primary focus:bg-blue-100 focus:text-gray-900 focus:outline-hidden"
                                       >
                                         {ruleCondition[row?.rule]?.replace(
                                           "between",
@@ -1384,7 +1384,7 @@
                                       on:click={() => {
                                         handleChangeValue(newValue);
                                       }}
-                                      class="block w-full border-b border-gray-600 px-4 py-1.5 text-left text-sm sm:text-[1rem] rounded text-white last:border-0 sm:hover:bg-primary focus:bg-blue-100 focus:text-gray-900 focus:outline-none"
+                                      class="block w-full border-b border-gray-600 px-4 py-1.5 text-left text-sm sm:text-[1rem] rounded text-white last:border-0 sm:hover:bg-primary focus:bg-blue-100 focus:text-gray-900 focus:outline-hidden"
                                     >
                                       {ruleCondition[row?.rule]
                                         ?.replace("under", "Under")
@@ -1650,7 +1650,7 @@
               class="text-white text-center p-3 sm:p-5 mb-10 mt-5 rounded-md sm:flex sm:flex-row sm:items-center border border-gray-600 text-sm sm:text-[1rem]"
             >
               <svg
-                class="w-6 h-6 flex-shrink-0 inline-block sm:mr-2"
+                class="w-6 h-6 shrink-0 inline-block sm:mr-2"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 256 256"
                 ><path
@@ -1696,7 +1696,7 @@
       <!-- Sticky Header -->
 
       <div
-        class="fixed w-full h-fit sticky -top-6 z-40 bg-primary shadow-sm opacity-100 pb-6 pt-5 border-gray-600 border-b"
+        class="fixed w-full h-fit sticky -top-6 z-40 bg-primary shadow-xs opacity-100 pb-6 pt-5 border-gray-600 border-b"
       >
         <div class="flex flex-row items-center justify-between mb-2">
           <h1 class="text-white text-[1rem] sm:text-xl font-semibold">

@@ -158,7 +158,7 @@
                 target="_blank"
                 class="cursor-pointer mb-10 w-full"
               >
-                <div class="flex-shrink-0 float-left">
+                <div class="shrink-0 float-left">
                   <img
                     src={item?.image}
                     class="float-left w-36 sm:w-40 rounded-xl ml-2 mr-4 mb-2"
@@ -173,7 +173,7 @@
                     </p>
                   </div>
                 </div>
-                <div class="flex-grow">
+                <div class="grow">
                   <div class="text-sm text-white flex flex-row">
                     <div
                       class="rounded-full w-6 h-6 relative bg-gray-800 mr-1.5 mb-0.5"
@@ -188,7 +188,7 @@
                     ago
                   </div>
                   <h2
-                    class="text-start text-sm sm:text-md font-medium mb-2 flex-shrink text-white"
+                    class="text-start text-sm sm:text-md font-medium mb-2 shrink text-white"
                   >
                     {item.title}
                   </h2>

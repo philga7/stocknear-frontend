@@ -32,9 +32,7 @@ const config = {
     brotliSize: true, // Enable Brotli compression
   },
 
-  optimizeDeps: {
-    exclude: ["pocketbase"],
-  },
+  
 };
 
 export default config;

@@ -527,7 +527,7 @@
                 <h2 class="text-start text-xl font-semibold text-white ml-3">
                   Stock Screener
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
               </div>
               <span class="text-white p-3 ml-3 mr-3">
                 Filter, sort and analyze all stocks to find your next
@@ -547,7 +547,7 @@
                 <h2 class="text-start text-xl font-semibold text-white ml-3">
                   Watchlist
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
               </div>
               <span class="text-white p-3 ml-3 mr-3">
                 Keep track of your favorite stocks in real-time.

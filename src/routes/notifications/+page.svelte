@@ -98,15 +98,15 @@
                   <!-- svelte-ignore a11y-click-events-have-key-events -->
                   <div
                     class=" pb-3 sm:p-3 mb-6 sm:mb-3 text-white w-full {!item?.readed
-                      ? 'bg-[#F9AB00] bg-opacity-[0.1]'
+                      ? 'bg-[#F9AB00]/10'
                       : ''} "
                   >
                     <div class="flex flex-row items-center w-full">
                       <!-- svelte-ignore a11y-label-has-associated-control -->
-                      <a class="avatar w-8 h-8 flex-shrink-0 mr-4">
+                      <a class="avatar w-8 h-8 shrink-0 mr-4">
                         <img
                           style="clip-path: circle(50%);"
-                          class="flex-shrink-0 w-8 h-8 rounded-full inline-block"
+                          class="shrink-0 w-8 h-8 rounded-full inline-block"
                           src={`https://financialmodelingprep.com/image-stock/${item?.liveResults?.symbol}.png`}
                           alt="Company Logo"
                         />
@@ -146,15 +146,15 @@
                   <!-- svelte-ignore a11y-click-events-have-key-events -->
                   <div
                     class=" pb-3 sm:p-3 mb-6 sm:mb-3 text-white w-full {!item?.readed
-                      ? 'bg-[#F9AB00] bg-opacity-[0.1]'
+                      ? 'bg-[#F9AB00]/10'
                       : ''} "
                   >
                     <div class="flex flex-row items-center w-full">
                       <!-- svelte-ignore a11y-label-has-associated-control -->
-                      <a class="avatar w-8 h-8 flex-shrink-0 mr-4">
+                      <a class="avatar w-8 h-8 shrink-0 mr-4">
                         <img
                           style="clip-path: circle(50%);"
-                          class="flex-shrink-0 w-8 h-8 rounded-full inline-block"
+                          class="shrink-0 w-8 h-8 rounded-full inline-block"
                           src={`https://financialmodelingprep.com/image-stock/${item?.liveResults?.symbol}.png`}
                           alt="Company Logo"
                         />
@@ -190,15 +190,15 @@
                 {:else if item?.notifyType === "topAnalyst"}
                   <div
                     class=" pb-3 sm:p-3 mb-6 sm:mb-3 text-white w-full {!item?.readed
-                      ? 'bg-[#F9AB00] bg-opacity-[0.1]'
+                      ? 'bg-[#F9AB00]/10'
                       : ''} "
                   >
                     <div class="flex flex-row items-center w-full">
                       <!-- svelte-ignore a11y-label-has-associated-control -->
-                      <a class="avatar w-8 h-8 flex-shrink-0 mr-4">
+                      <a class="avatar w-8 h-8 shrink-0 mr-4">
                         <img
                           style="clip-path: circle(50%);"
-                          class="flex-shrink-0 w-8 h-8 rounded-full inline-block"
+                          class="shrink-0 w-8 h-8 rounded-full inline-block"
                           src={`https://financialmodelingprep.com/image-stock/${item?.liveResults?.symbol}.png`}
                           alt="Company Logo"
                         />
@@ -239,15 +239,15 @@
                 {:else if item?.notifyType === "earningsSurprise"}
                   <div
                     class=" pb-3 sm:p-3 mb-6 sm:mb-3 text-white w-full {!item?.readed
-                      ? 'bg-[#F9AB00] bg-opacity-[0.1]'
+                      ? 'bg-[#F9AB00]/10'
                       : ''} "
                   >
                     <div class="flex flex-row items-center w-full">
                       <!-- svelte-ignore a11y-label-has-associated-control -->
-                      <a class="avatar w-8 h-8 flex-shrink-0 mr-4">
+                      <a class="avatar w-8 h-8 shrink-0 mr-4">
                         <img
                           style="clip-path: circle(50%);"
-                          class="flex-shrink-0 w-8 h-8 rounded-full inline-block"
+                          class="shrink-0 w-8 h-8 rounded-full inline-block"
                           src={`https://financialmodelingprep.com/image-stock/${item?.liveResults?.symbol}.png`}
                           alt="Company Logo"
                         />
@@ -313,7 +313,7 @@
                 <h2 class="text-start text-xl font-semibold text-white ml-3">
                   Watchlist
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
               </div>
               <span class="text-white p-3 ml-3 mr-3">
                 Get realtime updates of your favorite stocks
@@ -332,7 +332,7 @@
                 <h2 class="text-start text-xl font-semibold text-white ml-3">
                   Reddit Tracker
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
               </div>
               <span class="text-white p-3 ml-3 mr-3">
                 Get the latest trends of r/Wallstreetbets

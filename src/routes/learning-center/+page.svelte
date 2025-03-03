@@ -33,7 +33,7 @@
                 <div
                   class="flex flex-col overflow-hidden rounded border border-gray-700"
                 >
-                  <div class="flex-shrink-0">
+                  <div class="shrink-0">
                     <a
                       href={"/learning-center/article/" +
                         convertToSlug(item?.title)}

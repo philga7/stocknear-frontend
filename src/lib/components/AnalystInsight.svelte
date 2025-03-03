@@ -75,7 +75,7 @@
                   class="w-full rounded-md {latestInfoDate(
                     data?.getAnalystInsight?.date,
                   )
-                    ? 'bg-[#F9AB00] bg-opacity-[0.1]'
+                    ? 'bg-[#F9AB00]/10'
                     : 'bg-primary'} shadow-lg h-full pl-3 pt-2 pb-4"
                 >
                   <div class="flex flex-col items-start">
@@ -119,7 +119,7 @@
         >
         Unlock content with
         <a
-          class="inline-block ml-2 text-blue-400 hover:sm:text-white"
+          class="inline-block ml-2 text-blue-400 sm:hover:text-white"
           href="/pricing">Pro Subscription</a
         >
       </div>

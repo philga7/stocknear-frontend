@@ -461,7 +461,7 @@
                         >
                           <div class="flex items-start space-x-3">
                             <img
-                              class="w-10 h-10 rounded-full flex-shrink-0"
+                              class="w-10 h-10 rounded-full shrink-0"
                               src={avatar}
                               alt="Avatar"
                               loading="lazy"
@@ -631,7 +631,7 @@
                             rel="noopener noreferrer"
                             target="_blank"
                             href="https://truthsocial.com/@realDonaldTrump"
-                            class="avatar w-10 h-10 rounded-full flex-shrink-0"
+                            class="avatar w-10 h-10 rounded-full shrink-0"
                           >
                             <img
                               class="rounded-full"
@@ -759,7 +759,7 @@
             {/if}
           </div>
 
-          <div class="order-4 flex-shrink-0 lg:float-right lg:w-[336px]">
+          <div class="order-4 shrink-0 lg:float-right lg:w-[336px]">
             <div
               class="w-full text-white border border-gray-800 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
             >

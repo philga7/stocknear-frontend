@@ -229,7 +229,7 @@
                     {#if data?.user?.tier !== "Pro" && i > 0}
                       <button
                         on:click={() => goto("/pricing")}
-                        class="group relative z-[1] rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
+                        class="group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
                       >
                         <span class="relative text-sm block font-semibold">
                           {item.title}
@@ -247,7 +247,7 @@
                     {:else}
                       <button
                         on:click={() => changeTab(i)}
-                        class="group relative z-[1] rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
+                        class="group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
                         i
                           ? 'z-0'
                           : ''} "
@@ -369,9 +369,9 @@
               <tbody>
                 {#each data?.user?.tier === "Pro" ? historyList : historyList?.slice(0, 3) as item, index}
                   <tr
-                    class="{latestInfoDate(item?.date)
-                      ? 'bg-[#F9AB00] bg-opacity-[0.1]'
-                      : 'odd:bg-odd'} border-b border-gray-800 {index + 1 ===
+                    class=" {latestInfoDate(item?.date)
+                      ? 'bg-[#F9AB00]/10'
+                      : 'odd:bg-odd '}  {index + 1 ===
                       historyList?.slice(0, 3)?.length &&
                     data?.user?.tier !== 'Pro'
                       ? 'opacity-[0.1]'
@@ -530,7 +530,7 @@
               class="text-center w-fit text-gray-100 text-sm sm:text-[1rem] rounded-md h-auto border border-gray-600 p-4"
             >
               <svg
-                class="w-5 h-5 inline-block sm:mr-1 flex-shrink-0"
+                class="w-5 h-5 inline-block sm:mr-1 shrink-0"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 256 256"
                 ><path

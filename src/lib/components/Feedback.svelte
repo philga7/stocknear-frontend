@@ -94,7 +94,7 @@
   />
 </svelte:head>
 
-<div class="fixed z-[100] bottom-8 sm:bottom-10 right-8 sm:right-16">
+<div class="fixed z-100 bottom-8 sm:bottom-10 right-8 sm:right-16">
   <label
     for="feedbackInfo"
     class="inline-flex items-center justify-center w-12 h-12 sm:w-full sm:h-10 font-semibold bg-gray-700 sm:bg-[#fff] ml-1 mr-0 sm:mr-2 rounded-full cursor-pointer"
@@ -121,9 +121,7 @@
 <input type="checkbox" id="feedbackInfo" class="modal-toggle" />
 
 <dialog id="feedbackInfo" class="modal overflow-hidden p-3 sm:p-0">
-  <label
-    for="feedbackInfo"
-    class="cursor-pointer modal-backdrop bg-[#000] bg-opacity-[0.8]"
+  <label for="feedbackInfo" class="cursor-pointer modal-backdrop bg-[#000]/30"
   ></label>
 
   <div class="modal-box rounded w-full bg-primary border border-gray-600">
@@ -154,7 +152,7 @@
         {#each tabs as item, i}
           <button
             on:click={() => handleMode(i)}
-            class="group relative z-[1] rounded-full w-1/3 min-w-20 py-1 {activeIdx ===
+            class="cursor-pointer group relative z-1 rounded-full w-1/3 min-w-20 py-1 {activeIdx ===
             i
               ? 'z-0'
               : ''} "
@@ -177,7 +175,7 @@
 
     <div class="p-2 w-full h-[200px] max-h-[1000px]">
       <textarea
-        class="max-h-[1000px] h-[200px] textarea textarea-bordered placeholder-gray-300 w-full bg-primary ring-1 text-white border border-gray-600"
+        class="max-h-[1000px] h-[200px] textarea textarea-bordered placeholder-gray-300 w-full bg-primary ring-1 ring-gray-600 focus:outline-gray-600 text-white"
         placeholder="Your feedback..."
         value={inputValue}
         on:input={handleInput}

@@ -2545,7 +2545,7 @@ const handleKeyDown = (event) => {
 <svelte:window on:scroll={handleScroll} />
 
 <section
-  class="w-full max-w-3xl sm:max-w-screen-xl overflow-hidden min-h-screen pt-5 pb-40 px-5"
+  class="w-full max-w-3xl sm:max-w-(--breakpoint-xl) overflow-hidden min-h-screen pt-5 pb-40 px-5"
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
@@ -2694,7 +2694,7 @@ const handleKeyDown = (event) => {
                     <Button
                       on:click={handleCreateStrategy}
                       builders={[builder]}
-                      class="p-0 -mb-2 -mt-2 text-sm inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap text-base text-white bg-[#0909B] focus:outline-none sm:text-smaller"
+                      class="p-0 -mb-2 -mt-2 text-sm inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap text-base text-white bg-[#0909B] focus:outline-hidden sm:text-smaller"
                     >
                       <svg
                         class="h-4 w-4"
@@ -2763,7 +2763,7 @@ const handleKeyDown = (event) => {
         <div class="mt-3 flex flex-col gap-y-2.5 sm:flex-row lg:gap-y-2">
           <label
             for="ruleModal"
-            class="inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 text-base font-semibold text-white shadow-sm bg-[#000] sm:hover:bg-default/60 ease-out focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-smaller"
+            class="inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 text-base font-semibold text-white shadow-xs bg-[#000] sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500 sm:text-smaller"
           >
             <svg
               class="h-5 w-5"
@@ -2785,7 +2785,7 @@ const handleKeyDown = (event) => {
             <label
               for={!data?.user ? "userLogin" : ""}
               on:click={() => handleSave(true)}
-              class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 text-base font-semibold text-white shadow-sm bg-[#000] sm:hover:bg-default/60 ease-out focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-smaller"
+              class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 text-base font-semibold text-white shadow-xs bg-[#000] sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500 sm:text-smaller"
             >
               <svg
                 class="h-5 w-5"
@@ -2801,7 +2801,7 @@ const handleKeyDown = (event) => {
 
             <label
               for="deleteStrategy"
-              class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 text-base font-semibold text-white shadow-sm bg-[#000] sm:hover:bg-default/60 ease-out sm:hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-smaller"
+              class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 text-base font-semibold text-white shadow-xs bg-[#000] sm:hover:bg-default/60 ease-out sm:hover:text-red-500 focus:outline-hidden focus:ring-2 focus:ring-blue-500 sm:text-smaller"
             >
               <svg
                 class="h-5 w-5"
@@ -2819,7 +2819,7 @@ const handleKeyDown = (event) => {
           {#if ruleOfList?.length !== 0}
             <label
               on:click={handleResetAll}
-              class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 text-base font-semibold text-white shadow-sm bg-[#000] sm:hover:text-red-500 ease-out focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-smaller"
+              class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 text-base font-semibold text-white shadow-xs bg-[#000] sm:hover:text-red-500 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500 sm:text-smaller"
             >
               <svg
                 class="h-4 w-4"
@@ -2895,7 +2895,7 @@ const handleKeyDown = (event) => {
               <div class="flex items-center">
                 <button
                   on:click={() => handleDeleteRule(row?.rule)}
-                  class="mr-1.5 cursor-pointer text-gray-300 sm:hover:text-red-500 focus:outline-none"
+                  class="mr-1.5 cursor-pointer text-gray-300 sm:hover:text-red-500 focus:outline-hidden"
                   title="Remove filter"
                   >{#if ruleOfList?.find((item) => item.name === row?.rule)?.value !== "any"}
                     <svg
@@ -2995,7 +2995,7 @@ const handleKeyDown = (event) => {
                                           ?.replace("exactly", "Exactly")}
                                       </span>
                                       <svg
-                                        class="mt-1 -mr-1 ml-1 h-5 w-5 xs:ml-2 !ml-0 sm:ml-0 inline-block"
+                                        class="mt-1 -mr-1 ml-1 h-5 w-5 xs:ml-2 ml-0! sm:ml-0 inline-block"
                                         viewBox="0 0 20 20"
                                         fill="currentColor"
                                         style="max-width:40px"
@@ -3038,7 +3038,7 @@ const handleKeyDown = (event) => {
                                       : ""}
                                     on:input={(e) =>
                                       handleValueInput(e, row?.rule, 0)}
-                                    class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder:text-gray-200 font-normal p-1 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-secondary"
+                                    class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder:text-gray-200 font-normal p-1 text-sm shadow-xs focus:border-blue-500 focus:ring-blue-500 bg-secondary"
                                   />
                                   <span
                                     class="text-white text-[1rem] font-normal mt-1"
@@ -3055,7 +3055,7 @@ const handleKeyDown = (event) => {
                                       : ""}
                                     on:input={(e) =>
                                       handleValueInput(e, row?.rule, 1)}
-                                    class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder:text-gray-200 font-normal p-1 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-secondary"
+                                    class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder:text-gray-200 font-normal p-1 text-sm shadow-xs focus:border-blue-500 focus:ring-blue-500 bg-secondary"
                                   />
                                 </div>
                               {:else}
@@ -3067,7 +3067,7 @@ const handleKeyDown = (event) => {
                                     : ""}
                                   on:input={(e) =>
                                     handleValueInput(e, row?.rule)}
-                                  class="ios-zoom-fix block max-w-[4.8rem] rounded-sm placeholder:text-gray-200 font-normal p-1 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-secondary"
+                                  class="ios-zoom-fix block max-w-[4.8rem] rounded-sm placeholder:text-gray-200 font-normal p-1 text-sm shadow-xs focus:border-blue-500 focus:ring-blue-500 bg-secondary"
                                 />
                               {/if}
 
@@ -3122,7 +3122,7 @@ const handleKeyDown = (event) => {
                           </DropdownMenu.Label>
                         {:else}
                           <div
-                            class="relative sticky z-40 focus:outline-none -top-1"
+                            class="relative sticky z-40 focus:outline-hidden -top-1"
                             tabindex="0"
                             role="menu"
                             style=""
@@ -3163,7 +3163,7 @@ const handleKeyDown = (event) => {
                                           row?.step[index + 1],
                                         ]);
                                       }}
-                                      class="block w-full border-b border-gray-600 px-4 py-1.5 text-left text-sm sm:text-[1rem] rounded text-white last:border-0 sm:hover:bg-primary focus:bg-blue-100 focus:text-gray-900 focus:outline-none"
+                                      class="block w-full border-b border-gray-600 px-4 py-1.5 text-left text-sm sm:text-[1rem] rounded text-white last:border-0 sm:hover:bg-primary focus:bg-blue-100 focus:text-gray-900 focus:outline-hidden"
                                     >
                                       {ruleCondition[row?.rule]?.replace(
                                         "between",
@@ -3181,7 +3181,7 @@ const handleKeyDown = (event) => {
                                     on:click={() => {
                                       handleChangeValue(newValue);
                                     }}
-                                    class="block w-full border-b border-gray-600 px-4 py-1.5 text-left text-sm sm:text-[1rem] rounded text-white last:border-0 sm:hover:bg-primary focus:bg-blue-100 focus:text-gray-900 focus:outline-none"
+                                    class="block w-full border-b border-gray-600 px-4 py-1.5 text-left text-sm sm:text-[1rem] rounded text-white last:border-0 sm:hover:bg-primary focus:bg-blue-100 focus:text-gray-900 focus:outline-hidden"
                                   >
                                     {ruleCondition[row?.rule]
                                       ?.replace("under", "Under")
@@ -3278,7 +3278,7 @@ const handleKeyDown = (event) => {
           <li>
             <button
               on:click={() => (displayTableTab = "general")}
-              class="text-[1rem] sm:text-lg block text-white rounded-md px-2 py-1 focus:outline-none sm:hover:bg-primary {displayTableTab ===
+              class="text-[1rem] sm:text-lg block text-white rounded-md px-2 py-1 focus:outline-hidden sm:hover:bg-primary {displayTableTab ===
               'general'
                 ? 'font-semibold bg-primary'
                 : ''}"
@@ -3292,11 +3292,11 @@ const handleKeyDown = (event) => {
               class="text-[1rem] sm:text-lg flex flex-row items-center relative block rounded-md px-2 py-1 sm:hover:bg-primary {displayTableTab ===
               'filters'
                 ? 'font-semibold bg-primary'
-                : ''} focus:outline-none"
+                : ''} focus:outline-hidden"
             >
               <span class="text-white">Filters</span>
               <span
-                class="ml-2 rounded-full avatar w-5 h-5 text-xs font-semibold text-white text-center flex-shrink-0
+                class="ml-2 rounded-full avatar w-5 h-5 text-xs font-semibold text-white text-center shrink-0
                                                   flex items-center justify-center {ruleOfList?.length !==
                 0
                   ? 'bg-red-500'
@@ -3309,7 +3309,7 @@ const handleKeyDown = (event) => {
           <li>
             <button
               on:click={() => changeTab("performance")}
-              class="text-[1rem] sm:text-lg block text-white rounded-md px-2 py-1 focus:outline-none sm:hover:bg-primary {displayTableTab ===
+              class="text-[1rem] sm:text-lg block text-white rounded-md px-2 py-1 focus:outline-hidden sm:hover:bg-primary {displayTableTab ===
               'performance'
                 ? 'font-semibold bg-primary'
                 : ''}"
@@ -3320,7 +3320,7 @@ const handleKeyDown = (event) => {
           <li>
             <button
               on:click={() => changeTab("analysts")}
-              class="text-[1rem] sm:text-lg block text-white rounded-md px-2 py-1 focus:outline-none sm:hover:bg-primary {displayTableTab ===
+              class="text-[1rem] sm:text-lg block text-white rounded-md px-2 py-1 focus:outline-hidden sm:hover:bg-primary {displayTableTab ===
               'analysts'
                 ? 'font-semibold bg-primary'
                 : ''}"
@@ -3630,7 +3630,7 @@ const handleKeyDown = (event) => {
       <!-- Sticky Header -->
 
       <div
-        class="fixed w-full h-fit sticky -top-6 z-40 bg-primary shadow-sm opacity-100 pb-6 pt-5 border-gray-600 border-b"
+        class="fixed w-full h-fit sticky -top-6 z-40 bg-primary shadow-xs opacity-100 pb-6 pt-5 border-gray-600 border-b"
       >
         <div class="flex flex-row items-center justify-between mb-2">
           <h2 class="text-white text-[1rem] sm:text-xl font-semibold">

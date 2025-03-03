@@ -21,13 +21,13 @@
 		"h-9 w-9 p-0 font-normal ",
 		"[&[data-today]:not([data-selected])]:bg-accent [&[data-today]:not([data-selected])]:text-accent-foreground",
 		// Selected
-		"data-[selected]:bg-[#262626] data-[selected]:text-white data-[selected]:hover:bg-[#262626] data-[selected]:hover:text-white data-[selected]:focus:bg-[#262626] data-[selected]:focus:text-white data-[selected]:opacity-100",
+		"data-selected:bg-[#262626] data-selected:text-white data-selected:hover:bg-[#262626] data-selected:hover:text-white data-selected:focus:bg-[#262626] data-selected:focus:text-white data-selected:opacity-100",
 		// Disabled
-		"data-[disabled]:text-muted-foreground data-[disabled]:opacity-50",
+		"data-disabled:text-muted-foreground data-disabled:opacity-50",
 		// Unavailable
-		"data-[unavailable]:text-destructive-foreground data-[unavailable]:line-through",
+		"data-unavailable:text-destructive-foreground data-unavailable:line-through",
 		// Outside months
-		"data-[outside-month]:text-muted-foreground [&[data-outside-month][data-selected]]:bg-accent/50 [&[data-outside-month][data-selected]]:text-muted-foreground data-[outside-month]:pointer-events-none data-[outside-month]:opacity-50 [&[data-outside-month][data-selected]]:opacity-30",
+		"data-outside-month:text-muted-foreground [&[data-outside-month][data-selected]]:bg-accent/50 [&[data-outside-month][data-selected]]:text-muted-foreground data-outside-month:pointer-events-none data-outside-month:opacity-50 [&[data-outside-month][data-selected]]:opacity-30",
 		className
 	)}
 	{...$$restProps}

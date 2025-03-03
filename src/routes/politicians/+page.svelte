@@ -252,7 +252,7 @@
                           <svg
                             class="{item?.id === animationId
                               ? animationClass
-                              : ''} w-[22px] h-[22px] inline-block cursor-pointer flex-shrink-0"
+                              : ''} w-[22px] h-[22px] inline-block cursor-pointer shrink-0"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 16 16"
                             ><path

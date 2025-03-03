@@ -454,7 +454,7 @@
                       class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                     >
                       <div
-                        class="relative sticky z-40 focus:outline-none -top-1"
+                        class="relative sticky z-40 focus:outline-hidden -top-1"
                         tabindex="0"
                         role="menu"
                       >
@@ -517,7 +517,7 @@
                       class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                     >
                       <div
-                        class="relative sticky z-40 focus:outline-none -top-1"
+                        class="relative sticky z-40 focus:outline-hidden -top-1"
                         tabindex="0"
                         role="menu"
                       ></div>
@@ -597,11 +597,11 @@
                         </h2>
                         {#if filterList.length !== 0}
                           <div
-                            class="ml-auto text-[1rem] sm:text-lg flex flex-row items-center relative block rounded-md px-2 py-1 focus:outline-none"
+                            class="ml-auto text-[1rem] sm:text-lg flex flex-row items-center relative block rounded-md px-2 py-1 focus:outline-hidden"
                           >
                             <span class="text-white">Filters</span>
                             <span
-                              class="ml-2 rounded-full avatar w-5 h-5 text-xs font-semibold text-white text-center flex-shrink-0 flex items-center justify-center bg-red-500"
+                              class="ml-2 rounded-full avatar w-5 h-5 text-xs font-semibold text-white text-center shrink-0 flex items-center justify-center bg-red-500"
                             >
                               {filterList.length}
                             </span>
@@ -795,7 +795,7 @@
                 <h2 class="text-start text-xl font-semibold text-white ml-3">
                   Earnings Calendar
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
               </div>
               <span class="text-white p-3 ml-3 mr-3"
                 >Get the latest Earnings of companies</span
@@ -814,7 +814,7 @@
                 <h2 class="text-start text-xl font-semibold text-white ml-3">
                   Dividend Calendar
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
               </div>
               <span class="text-white p-3 ml-3 mr-3"
                 >Get the latest dividend announcement</span

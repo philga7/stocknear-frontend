@@ -225,7 +225,7 @@
             {#each tabs as item, i}
               <button
                 on:click={() => changeTab(i)}
-                class="group relative z-[1] rounded-full px-3 py-1 {activeIdx ===
+                class="group relative z-1 rounded-full px-3 py-1 {activeIdx ===
                 i
                   ? 'z-0'
                   : ''} "

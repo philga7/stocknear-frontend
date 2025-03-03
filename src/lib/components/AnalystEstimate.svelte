@@ -545,8 +545,8 @@
           data: growthList?.map((value) => ({
             y: value,
             // Set color based on the sign of the value
-            color: value >= 0 ? "#338D73" : "#ED3333",
-            borderColor: value >= 0 ? "#338D73" : "#ED3333",
+            color: value >= 0 ? "#00FC50" : "#ED3333",
+            borderColor: value >= 0 ? "#00FC50" : "#ED3333",
             borderRadius: "1px",
           })),
           zIndex: 5,
@@ -786,16 +786,16 @@
                   {/each}
                 </tr>
               </thead>
-              <tbody class="shadow-md">
-                <tr class="bg-primary border-b-[#27272A]">
+              <tbody>
+                <tr class="bg-primary border-b border-gray-600">
                   <th
-                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start font-medium bg-primary border-b border-[#27272A]"
+                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start font-medium bg-primary border-b border-gray-800"
                   >
                     Revenue
                   </th>
                   {#each tableCombinedRevenue as item}
                     <td
-                      class="text-white text-sm sm:text-[1rem] text-end font-medium border-b border-[#27272A] bg-default"
+                      class="text-white text-sm sm:text-[1rem] text-end font-medium border-b border-gray-800 bg-default"
                     >
                       {item?.val === "0.00" ||
                       item?.val === null ||
@@ -806,15 +806,15 @@
                   {/each}
                 </tr>
 
-                <tr class="bg-primary border-b-[#27272A]">
+                <tr class="bg-primary">
                   <th
-                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start font-medium border-b border-[#27272A]"
+                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start font-medium border-b border-gray-800"
                   >
                     Revenue Growth
                   </th>
                   {#each computeGrowthList(tableActualRevenue, tableCombinedRevenue) as item, index}
                     <td
-                      class="text-white text-sm sm:text-[1rem] text-end font-medium bg-default"
+                      class="text-white text-sm sm:text-[1rem] text-end font-medium bg-default border-b border-gray-800"
                     >
                       {#if index === 0 || item?.growth === null}
                         n/a
@@ -843,13 +843,13 @@
 
                 <tr class="bg-primary border-b-[#09090B]">
                   <th
-                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start font-medium bg-primary border-b border-[#27272A]"
+                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start font-medium bg-primary border-b border-gray-800"
                   >
                     EPS
                   </th>
                   {#each tableCombinedEPS as item}
                     <td
-                      class="text-white text-sm sm:text-[1rem] text-end font-medium border-b border-[#27272A] bg-default"
+                      class="text-white text-sm sm:text-[1rem] text-end font-medium border-b border-gray-800 bg-default"
                     >
                       {item?.val === "0.00" ||
                       item?.val === null ||
@@ -860,15 +860,15 @@
                   {/each}
                 </tr>
 
-                <tr class="bg-primary border-b-[#27272A]">
+                <tr class="bg-primary">
                   <th
-                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start font-medium border-b border-[#27272A]"
+                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start font-medium border-b border-gray-800"
                   >
                     EPS Growth
                   </th>
                   {#each computeGrowthList(tableActualEPS, tableCombinedEPS) as item, index}
                     <td
-                      class="text-white text-sm sm:text-[1rem] text-end font-medium bg-default"
+                      class="text-white text-sm sm:text-[1rem] text-end font-medium bg-default border-b border-gray-800"
                     >
                       {#if index === 0 || item?.growth === null}
                         n/a
@@ -894,15 +894,15 @@
                     </td>
                   {/each}
                 </tr>
-                <tr class="bg-primary border-b-[#27272A]">
+                <tr class="bg-primary border-b border-gray-600">
                   <th
-                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start font-medium bg-primary border-b border-[#27272A]"
+                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start font-medium bg-primary border-b border-gray-800"
                   >
                     Net Income
                   </th>
                   {#each tableCombinedNetIncome as item}
                     <td
-                      class="text-white text-sm sm:text-[1rem] text-end font-medium border-b border-[#27272A] bg-default"
+                      class="text-white text-sm sm:text-[1rem] text-end font-medium border-b border-gray-800 bg-default"
                     >
                       {item?.val === "0.00" ||
                       item?.val === null ||
@@ -913,15 +913,15 @@
                   {/each}
                 </tr>
 
-                <tr class="bg-primary border-b-[#27272A]">
+                <tr class="bg-primary">
                   <th
-                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start font-medium border-b border-[#27272A]"
+                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start font-medium border-b border-gray-800"
                   >
                     Net Income Growth
                   </th>
                   {#each computeGrowthList(tableActualNetIncome, tableCombinedNetIncome) as item, index}
                     <td
-                      class="text-white text-sm sm:text-[1rem] text-end font-medium bg-default"
+                      class="text-white text-sm sm:text-[1rem] text-end font-medium bg-default border-b border-gray-800"
                     >
                       {#if index === 0 || item?.growth === null}
                         n/a
@@ -948,15 +948,15 @@
                   {/each}
                 </tr>
 
-                <tr class="bg-primary border-b-[#27272A]">
+                <tr class="bg-primary border-b border-gray-600">
                   <th
-                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start font-medium bg-primary border-b border-[#27272A]"
+                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start font-medium bg-primary border-b border-gray-800"
                   >
                     EBITDA
                   </th>
                   {#each tableCombinedEbitda as item}
                     <td
-                      class="text-white text-sm sm:text-[1rem] text-end font-medium border-b border-[#27272A] bg-default"
+                      class="text-white text-sm sm:text-[1rem] text-end font-medium border-b border-gray-800 bg-default"
                     >
                       {item?.val === "0.00" ||
                       item?.val === null ||
@@ -967,15 +967,15 @@
                   {/each}
                 </tr>
 
-                <tr class="bg-primary border-b-[#27272A]">
+                <tr class="bg-primary">
                   <th
-                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start font-medium border-b border-[#27272A]"
+                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start font-medium border-b border-gray-800"
                   >
                     EBITDA Growth
                   </th>
                   {#each computeGrowthList(tableActualEbitda, tableCombinedEbitda) as item, index}
                     <td
-                      class="text-white text-sm sm:text-[1rem] text-end font-medium bg-default"
+                      class="text-white text-sm sm:text-[1rem] text-end font-medium bg-default border-b border-gray-800"
                     >
                       {#if index === 0 || item?.growth === null}
                         n/a
@@ -1002,14 +1002,14 @@
                   {/each}
                 </tr>
 
-                <tr class="bg-primary border-b-[#27272A]">
+                <tr class="bg-primary border-b border-gray-600">
                   <th
-                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start font-medium bg-primary border-b border-[#27272A]"
+                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start font-medium bg-primary border-b border-gray-800"
                     >No. Analysts</th
                   >
                   {#each tableCombinedRevenue as item}
                     <td
-                      class="text-white text-sm sm:text-[1rem] text-end font-medium border-b border-[#27272A] bg-default"
+                      class="text-white text-sm sm:text-[1rem] text-end font-medium border-b border-gray-800 bg-default"
                     >
                       {#if item?.FY > 24}
                         {item?.numOfAnalysts === (null || 0)
@@ -1033,7 +1033,7 @@
           </div>
           <!--
             <div class="mt-5 text-gray-100 text-sm sm:text-[1rem] sm:rounded-md h-auto border border-gray-600 p-4">
-              <svg class="w-5 h-5 inline-block mr-0.5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"
+              <svg class="w-5 h-5 inline-block mr-0.5 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"
                 ><path fill="#fff" d="M128 24a104 104 0 1 0 104 104A104.11 104.11 0 0 0 128 24m-4 48a12 12 0 1 1-12 12a12 12 0 0 1 12-12m12 112a16 16 0 0 1-16-16v-40a8 8 0 0 1 0-16a16 16 0 0 1 16 16v40a8 8 0 0 1 0 16" /></svg
               >
               For the current Fiscal Year we use available quarterly data. Complete annual data, used to compare against analyst estimates, is only finalized after the year ends.

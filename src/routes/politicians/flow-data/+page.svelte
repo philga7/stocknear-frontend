@@ -151,7 +151,7 @@
                                 >
                                   <div class="flex flex-row items-center">
                                     <div
-                                      class="flex-shrink-0 rounded-full border border-slate-700 w-9 h-9 relative {item?.party ===
+                                      class="shrink-0 rounded-full border border-slate-700 w-9 h-9 relative {item?.party ===
                                       'Republican'
                                         ? 'bg-[#98272B]'
                                         : item?.party === 'Democratic'
@@ -268,7 +268,7 @@
                   <h2 class="text-start text-xl font-semibold text-white ml-3">
                     Pro Subscription
                   </h2>
-                  <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                  <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
                 </div>
                 <span class="text-white p-3 ml-3 mr-3">
                   Upgrade now for unlimited access to all data and tools.
@@ -288,7 +288,7 @@
                 <h2 class="text-start text-xl font-semibold text-white ml-3">
                   Top Analyst
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
               </div>
               <span class="text-white p-3 ml-3 mr-3">
                 Get the latest top Wall Street analyst ratings
@@ -307,7 +307,7 @@
                 <h2 class="text-start text-xl font-semibold text-white ml-3">
                   Congress Trading
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
               </div>
               <span class="text-white p-3 ml-3 mr-3">
                 Get the latest top Congress trading insights.

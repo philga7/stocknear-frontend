@@ -55,7 +55,7 @@
 
       <div
         class="text-white text-[1rem] {latestInfoDate(rawData?.date)
-          ? 'bg-[#F9AB00] bg-opacity-[0.1] p-3 rounded-md'
+          ? 'bg-[#F9AB00]/10 p-3 rounded-md'
           : 'bg-default pl-1'}"
       >
         <div class="mt-1">

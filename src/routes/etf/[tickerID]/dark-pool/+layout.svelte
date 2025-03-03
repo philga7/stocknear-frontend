@@ -26,7 +26,7 @@
                 <h2 class="text-start text-xl font-semibold text-white ml-3">
                   Dark Pool Flow
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
               </div>
               <span class="text-white p-3 ml-3 mr-3">
                 Follow the dark pool feed in realtime

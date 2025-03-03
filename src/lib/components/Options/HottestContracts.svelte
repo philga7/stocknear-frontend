@@ -849,7 +849,7 @@
         </span>
       </p>
       <button
-        class="cursor-pointer text-[1.8rem] text-white focus:outline-none"
+        class="cursor-pointer text-[1.8rem] text-white focus:outline-hidden"
       >
         <svg
           class="w-8 h-8"

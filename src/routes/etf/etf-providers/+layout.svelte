@@ -22,7 +22,7 @@
 </script>
 
 <section
-  class="w-full max-w-screen-2xl overflow-hidden min-h-screen pb-20 pt-5 px-4 lg:px-3"
+  class="w-full max-w-(--breakpoint-2xl) overflow-hidden min-h-screen pb-20 pt-5 px-4 lg:px-3"
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
@@ -65,7 +65,7 @@
                 <h2 class="text-start text-xl font-semibold text-white ml-3">
                   Top Analyst
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
               </div>
               <span class="text-white p-3 ml-3 mr-3">
                 Get the latest top Wall Street analyst ratings
@@ -84,7 +84,7 @@
                 <h2 class="text-start text-xl font-semibold text-white ml-3">
                   Congress Trading
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
               </div>
               <span class="text-white p-3 ml-3 mr-3">
                 Get the latest top Congress trading insights.

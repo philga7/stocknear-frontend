@@ -108,7 +108,7 @@
                       target="_blank"
                       class="w-full sm:max-w-56 h-fit max-h-96 sm:mr-3"
                     >
-                      <div class="flex-shrink-0 m-auto">
+                      <div class="shrink-0 m-auto">
                         <img
                           src={item?.image}
                           class="h-full w-full object-cover rounded"

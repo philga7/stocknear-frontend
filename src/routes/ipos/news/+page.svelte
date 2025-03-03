@@ -107,7 +107,7 @@
                       <div class="w-full aspect-video">
                         <div class="mb-3 sm:order-3 lg:pr-2">
                           <div
-                            class="group relative block cursor-pointer bg-black bg-cover bg-[center_50%] object-contain after:block after:pb-[56.25%] after:content-[''] rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-brand_light focus:ring-offset-2"
+                            class="group relative block cursor-pointer bg-black bg-cover bg-[center_50%] object-contain after:block after:pb-[56.25%] after:content-[''] rounded-sm focus:outline-hidden focus:ring-2 focus:ring-blue-brand_light focus:ring-offset-2"
                             style="background-image: url({item?.img});"
                             tabindex="0"
                             on:click={() => handlePlayClick(index)}
@@ -146,7 +146,7 @@
                         target="_blank"
                         class="w-full sm:max-w-56 h-fit max-h-96 sm:mr-3 border border-gray-800 rounded-md"
                       >
-                        <div class="flex-shrink-0 m-auto">
+                        <div class="shrink-0 m-auto">
                           <img
                             src={item?.img}
                             class="h-auto w-full rounded-md"

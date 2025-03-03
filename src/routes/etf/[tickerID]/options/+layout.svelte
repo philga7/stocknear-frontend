@@ -149,7 +149,7 @@
                 <h2 class="text-start text-xl font-semibold text-white ml-3">
                   Options Flow
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
               </div>
               <span class="text-white p-3 ml-3 mr-3">
                 Get realtime options flow and customize your screener
@@ -168,7 +168,7 @@
                 <h2 class="text-start text-xl font-semibold text-white ml-3">
                   Stock Screener
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
               </div>
               <span class="text-white p-3 ml-3 mr-3">
                 Build your Stock Screener to find profitable etf.

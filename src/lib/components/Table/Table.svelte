@@ -858,7 +858,7 @@
     <tbody>
       {#each stockList as item, index}
         <tr
-          class="sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] odd:bg-odd border-b border-gray-800 {index +
+          class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800 {index +
             1 ===
             rawData?.length &&
           data?.user?.tier !== 'Pro' &&
@@ -868,7 +868,7 @@
         >
           {#each columns as column}
             <td
-              class="text-sm sm:text-[1rem] whitespace-nowrap"
+              class="text-sm sm:text-[1rem] whitespace-nowrap border-b border-gray-800"
               class:text-left={column.align === "left"}
               class:text-right={column.align === "right"}
             >

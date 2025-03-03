@@ -624,7 +624,7 @@
     class="modal-box w-full bg-secondary flex flex-col items-center"
   >
     <div
-      class="mx-auto mb-8 h-1.5 w-20 flex-shrink-0 rounded-full bg-gray-500"
+      class="mx-auto mb-8 h-1.5 w-20 shrink-0 rounded-full bg-gray-500"
     />
     <div class="text-white mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">Are you sure?</h3>
@@ -681,7 +681,7 @@
     class="modal-box w-full bg-secondary flex flex-col items-center"
   >
     <div
-      class="mx-auto mb-8 h-1.5 w-20 flex-shrink-0 rounded-full bg-gray-500"
+      class="mx-auto mb-8 h-1.5 w-20 shrink-0 rounded-full bg-gray-500"
     />
     <div class="text-white mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">Reactivate Subscription</h3>
@@ -735,7 +735,7 @@
     class="modal-box w-full bg-secondary flex flex-col items-center"
   >
     <div
-      class="mx-auto mb-8 h-1.5 w-20 flex-shrink-0 rounded-full bg-gray-500"
+      class="mx-auto mb-8 h-1.5 w-20 shrink-0 rounded-full bg-gray-500"
     />
     <div class="text-white mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">Are you sure?</h3>
@@ -783,7 +783,7 @@
   <!-- Desktop modal content -->
   <div class="modal-box w-full bg-secondary flex flex-col items-center">
     <div
-      class="mx-auto mb-8 h-1.5 w-20 flex-shrink-0 rounded-full bg-gray-500"
+      class="mx-auto mb-8 h-1.5 w-20 shrink-0 rounded-full bg-gray-500"
     />
     <div class="text-white mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">Paypal not supported</h3>

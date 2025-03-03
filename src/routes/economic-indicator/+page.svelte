@@ -623,7 +623,7 @@
 />
 
 <section
-  class="w-full max-w-screen-2xl overflow-hidden min-h-screen pb-20 pt-5 px-4 lg:px-3"
+  class="w-full max-w-(--breakpoint-2xl) overflow-hidden min-h-screen pb-20 pt-5 px-4 lg:px-3"
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
@@ -774,7 +774,7 @@
                 {#each tabs as item, i}
                   <button
                     on:click={() => changeTablePeriod(i)}
-                    class="group relative z-[1] rounded-full px-6 py-1 {activeIdx ===
+                    class="group relative z-1 rounded-full px-6 py-1 {activeIdx ===
                     i
                       ? 'z-0'
                       : ''} "
@@ -967,7 +967,7 @@
                 <h2 class="text-start text-xl font-semibold text-white ml-3">
                   Economic Events
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
               </div>
               <span class="text-white p-3 ml-3 mr-3">
                 Stay updated on upcoming Economic Events worldwide.
@@ -986,7 +986,7 @@
                 <h2 class="text-start text-xl font-semibold text-white ml-3">
                   Earnings Calendar
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
               </div>
               <span class="text-white p-3 ml-3 mr-3">
                 Get the latest Earnings of companies.

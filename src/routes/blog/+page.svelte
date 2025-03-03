@@ -34,7 +34,7 @@
                 <div
                   class="flex flex-col overflow-hidden rounded border border-gray-700"
                 >
-                  <div class="flex-shrink-0">
+                  <div class="shrink-0">
                     <a href={"/blog/article/" + convertToSlug(item?.title)}
                       ><img
                         class="h-48 w-full object-cover"

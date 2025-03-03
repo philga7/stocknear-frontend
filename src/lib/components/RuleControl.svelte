@@ -52,7 +52,7 @@
   </div>
   <div class="flex items-center">
     <button
-      class="mr-1.5 cursor-pointer text-gray-300 sm:hover:text-red-500 focus:outline-none"
+      class="mr-1.5 cursor-pointer text-gray-300 sm:hover:text-red-500 focus:outline-hidden"
       title="Remove filter"
     >
       <svg
@@ -99,7 +99,7 @@
         </button>
 
         <div
-          class="dropdown-content absolute z-40 mt-2 rounded-md bg-[#181C1F] py-1 shadow-lg border border-gray-600 focus:outline-none"
+          class="dropdown-content absolute z-40 mt-2 rounded-md bg-[#181C1F] py-1 shadow-lg border border-gray-600 focus:outline-hidden"
           tabindex="0"
           role="menu"
         >
@@ -144,7 +144,7 @@
               <button
                 on:click={() => changeValue(newValue)}
                 class="block w-full border-b border-gray-600 px-4 py-2 text-left text-sm text-white last:border-0 sm:hover:bg-gray-100 sm:hover:text-gray-900
-                                  focus:bg-blue-100 focus:text-gray-900 focus:outline-none"
+                                  focus:bg-blue-100 focus:text-gray-900 focus:outline-hidden"
               >
                 {condition}
                 {newValue}{unit}

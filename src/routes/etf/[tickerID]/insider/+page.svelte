@@ -354,7 +354,7 @@
                         >
                           <div class="flex flex-row items-center">
                             <div
-                              class="flex-shrink-0 rounded-full border border-slate-700 w-9 h-9 relative {item?.party ===
+                              class="shrink-0 rounded-full border border-slate-700 w-9 h-9 relative {item?.party ===
                               'Republican'
                                 ? 'bg-[#98272B]'
                                 : item?.party === 'Democratic'

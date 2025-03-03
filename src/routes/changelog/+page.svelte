@@ -40,10 +40,10 @@
             aria-hidden="true"
           >
             <div
-              class="absolute inset-0 translate-z-0 bg-gradient-to-r from-[#E8BB28] to-purple-600 rounded-full blur-[120px] opacity-20"
+              class="absolute inset-0 translate-z-0 bg-linear-to-r from-[#E8BB28] to-purple-600 rounded-full blur-[120px] opacity-20"
             ></div>
             <div
-              class="absolute w-32 h-32 translate-z-0 bg-gradient-to-r from-[#E8BB28] to-purple-700 rounded-full blur-[80px] opacity-40"
+              class="absolute w-32 h-32 translate-z-0 bg-linear-to-r from-[#E8BB28] to-purple-700 rounded-full blur-[80px] opacity-40"
             ></div>
           </div>
 
@@ -57,7 +57,7 @@
               <!-- Page header -->
               <div class="text-center pb-12 md:pb-20">
                 <h1
-                  class="text-4xl sm:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#E8BB28] to-purple-500 via-slate-200 to-slate-200/60 pb-4"
+                  class="text-4xl sm:text-6xl font-bold bg-clip-text text-transparent bg-linear-to-r from-[#E8BB28] to-purple-500 via-slate-200 to-slate-200/60 pb-4"
                 >
                   What's New
                 </h1>
@@ -72,7 +72,7 @@
               <div class="max-w-3xl mx-auto">
                 <div class="relative">
                   <div
-                    class="absolute h-full top-4 left-[2px] w-0.5 bg-slate-800 [mask-image:_linear-gradient(0deg,transparent,theme(colors.white)_150px,theme(colors.white))] -z-10 overflow-hidden after:absolute after:h-4 after:top-0 after:-translate-y-full after:left-0 after:w-0.5 after:bg-[linear-gradient(180deg,_transparent,_theme(colors.purple.500/.65)_25%,_theme(colors.purple.200)_50%,_theme(colors.purple.500/.65)_75%,_transparent)] after:animate-shine"
+                    class="absolute h-full top-4 left-[2px] w-0.5 bg-slate-800 [mask-image:linear-gradient(0deg,transparent,var(--color-white)_150px,var(--color-white))] -z-10 overflow-hidden after:absolute after:h-4 after:top-0 after:-translate-y-full after:left-0 after:w-0.5 after:bg-[linear-gradient(180deg,transparent,--theme(--color-purple-500/.65)_25%,--theme(--color-purple-200)_50%,--theme(--color-purple-500/.65)_75%,transparent)] after:animate-shine"
                     aria-hidden="true"
                   ></div>
                   <!-- Post -->
@@ -89,7 +89,7 @@
                         </time>
                       </div>
                       <div
-                        class="grow ml-8 md:ml-0 pb-12 group-last-of-type:pb-0 border-b [border-image:linear-gradient(to_right,theme(colors.slate.700/.3),theme(colors.slate.700),theme(colors.slate.700/.3))1] group-last-of-type:border-none"
+                        class="grow ml-8 md:ml-0 pb-12 group-last-of-type:pb-0 border-b [border-image:linear-gradient(to_right,--theme(--color-slate-700/.3),--theme(--color-slate-700),--theme(--color-slate-700/.3))1] group-last-of-type:border-none"
                       >
                         <header>
                           <h2
@@ -124,7 +124,7 @@
                         </time>
                       </div>
                       <div
-                        class="grow ml-8 md:ml-0 pb-12 group-last-of-type:pb-0 border-b [border-image:linear-gradient(to_right,theme(colors.slate.700/.3),theme(colors.slate.700),theme(colors.slate.700/.3))1] group-last-of-type:border-none"
+                        class="grow ml-8 md:ml-0 pb-12 group-last-of-type:pb-0 border-b [border-image:linear-gradient(to_right,--theme(--color-slate-700/.3),--theme(--color-slate-700),--theme(--color-slate-700/.3))1] group-last-of-type:border-none"
                       >
                         <header>
                           <h2
@@ -160,7 +160,7 @@
                         </time>
                       </div>
                       <div
-                        class="grow ml-8 md:ml-0 pb-12 group-last-of-type:pb-0 border-b [border-image:linear-gradient(to_right,theme(colors.slate.700/.3),theme(colors.slate.700),theme(colors.slate.700/.3))1] group-last-of-type:border-none"
+                        class="grow ml-8 md:ml-0 pb-12 group-last-of-type:pb-0 border-b [border-image:linear-gradient(to_right,--theme(--color-slate-700/.3),--theme(--color-slate-700),--theme(--color-slate-700/.3))1] group-last-of-type:border-none"
                       >
                         <header>
                           <h2
@@ -211,7 +211,7 @@
                         </time>
                       </div>
                       <div
-                        class="grow ml-8 md:ml-0 pb-12 group-last-of-type:pb-0 border-b [border-image:linear-gradient(to_right,theme(colors.slate.700/.3),theme(colors.slate.700),theme(colors.slate.700/.3))1] group-last-of-type:border-none"
+                        class="grow ml-8 md:ml-0 pb-12 group-last-of-type:pb-0 border-b [border-image:linear-gradient(to_right,--theme(--color-slate-700/.3),--theme(--color-slate-700),--theme(--color-slate-700/.3))1] group-last-of-type:border-none"
                       >
                         <header>
                           <h2
@@ -252,7 +252,7 @@
                         </time>
                       </div>
                       <div
-                        class="grow ml-8 md:ml-0 pb-12 group-last-of-type:pb-0 border-b [border-image:linear-gradient(to_right,theme(colors.slate.700/.3),theme(colors.slate.700),theme(colors.slate.700/.3))1] group-last-of-type:border-none"
+                        class="grow ml-8 md:ml-0 pb-12 group-last-of-type:pb-0 border-b [border-image:linear-gradient(to_right,--theme(--color-slate-700/.3),--theme(--color-slate-700),--theme(--color-slate-700/.3))1] group-last-of-type:border-none"
                       >
                         <header>
                           <h2
@@ -285,7 +285,7 @@
                         </time>
                       </div>
                       <div
-                        class="grow ml-8 md:ml-0 pb-12 group-last-of-type:pb-0 border-b [border-image:linear-gradient(to_right,theme(colors.slate.700/.3),theme(colors.slate.700),theme(colors.slate.700/.3))1] group-last-of-type:border-none"
+                        class="grow ml-8 md:ml-0 pb-12 group-last-of-type:pb-0 border-b [border-image:linear-gradient(to_right,--theme(--color-slate-700/.3),--theme(--color-slate-700),--theme(--color-slate-700/.3))1] group-last-of-type:border-none"
                       >
                         <header>
                           <h2
@@ -310,14 +310,14 @@
                             <div class="max-w-3xl mx-auto">
                                 <ul class="flex items-center justify-between mt-12 pl-8 md:pl-48">
                                     <li>
-                                        <span class="btn-sm text-slate-700 transition duration-150 ease-in-out group [background:linear-gradient(theme(colors.slate.900),_theme(colors.slate.900))_padding-box,_conic-gradient(theme(colors.slate.400),_theme(colors.slate.700)_25%,_theme(colors.slate.700)_75%,_theme(colors.slate.400)_100%)_border-box] relative before:absolute before:inset-0 before:bg-slate-800/30 before:rounded-full before:pointer-events-none cursor-not-allowed">
+                                        <span class="btn-sm text-slate-700 transition duration-150 ease-in-out group [background:linear-gradient(var(--color-slate-900),var(--color-slate-900))_padding-box,conic-gradient(var(--color-slate-400),var(--color-slate-700)_25%,var(--color-slate-700)_75%,var(--color-slate-400)_100%)_border-box] relative before:absolute before:inset-0 before:bg-slate-800/30 before:rounded-full before:pointer-events-none cursor-not-allowed">
                                             <span class="relative inline-flex items-center">
                                                 <span class="tracking-normal text-slate-700 mr-1">&lt;-</span> Previous Page
                                             </span>
                                         </span>
                                     </li>
                                     <li>
-                                        <a class="btn-sm text-slate-300 hover:text-white transition duration-150 ease-in-out group [background:linear-gradient(theme(colors.slate.900),_theme(colors.slate.900))_padding-box,_conic-gradient(theme(colors.slate.400),_theme(colors.slate.700)_25%,_theme(colors.slate.700)_75%,_theme(colors.slate.400)_100%)_border-box] relative before:absolute before:inset-0 before:bg-slate-800/30 before:rounded-full before:pointer-events-none" href="#0">
+                                        <a class="btn-sm text-slate-300 hover:text-white transition duration-150 ease-in-out group [background:linear-gradient(var(--color-slate-900),var(--color-slate-900))_padding-box,conic-gradient(var(--color-slate-400),var(--color-slate-700)_25%,var(--color-slate-700)_75%,var(--color-slate-400)_100%)_border-box] relative before:absolute before:inset-0 before:bg-slate-800/30 before:rounded-full before:pointer-events-none" href="#0">
                                             <span class="relative inline-flex items-center">
                                                 Next Page <span class="tracking-normal text-purple-500 group-hover:translate-x-0.5 transition-transform duration-150 ease-in-out ml-1">-&gt;</span>
                                             </span>

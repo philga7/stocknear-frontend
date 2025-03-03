@@ -132,7 +132,7 @@
                 <h2 class="text-start text-xl font-semibold text-white ml-3">
                   About Us
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
               </div>
               <span class="text-white p-3 ml-3 mr-3">
                 Learn more about why we're doing this here
@@ -151,7 +151,7 @@
                 <h2 class="text-start text-xl font-semibold text-white ml-3">
                   Contact Us
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
               </div>
               <span class="text-white p-3 ml-3 mr-3">
                 Let me know if you need something

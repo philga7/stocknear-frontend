@@ -378,7 +378,7 @@
                     : 'ease-out'} m-auto w-full"
                 >
                   <div
-                    class="flex-1 flex-shrink-0 flex flex-row items-center justify-between -mt-2"
+                    class="flex-1 shrink-0 flex flex-row items-center justify-between -mt-2"
                   >
                     <a
                       href={/^\/(stocks|etf|index)/.test($previousPage || "")
@@ -468,7 +468,7 @@
                         {#if userWatchList?.length !== 0}
                           <label
                             for="addWatchListModal"
-                            class="cursor-pointer flex-shrink-0"
+                            class="cursor-pointer shrink-0"
                           >
                             {#if isTickerIncluded}
                               <svg
@@ -495,7 +495,7 @@
                         {:else if userWatchList?.length === 0}
                           <label
                             on:click={() => toggleUserWatchlist("firstList")}
-                            class="cursor-pointer flex-shrink-0"
+                            class="cursor-pointer shrink-0"
                           >
                             {#if isTickerIncluded}
                               <svg
@@ -524,7 +524,7 @@
                     {:else}
                       <label
                         for="userLogin"
-                        class="cursor-pointer flex-shrink-0 text-white mr-4"
+                        class="cursor-pointer shrink-0 text-white mr-4"
                       >
                         <svg
                           class="w-6 h-6 inline-block"
@@ -589,11 +589,11 @@
                           <div class="flex flex-col ml-auto mr-2">
                             {#if userWatchList?.length !== 0}
                               <div
-                                class="flex-shrink-0 rounded-full sm:hover:bg-white sm:hover:bg-opacity-[0.02] transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
+                                class="shrink-0 rounded-full sm:hover:bg-white sm:hover:bg-opacity-[0.02] transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
                               >
                                 <label
                                   for="addWatchListModal"
-                                  class="cursor-pointer flex-shrink-0"
+                                  class="cursor-pointer shrink-0"
                                 >
                                   {#if isTickerIncluded}
                                     <svg
@@ -620,12 +620,12 @@
                               </div>
                             {:else if userWatchList?.length === 0}
                               <div
-                                class="flex-shrink-0 rounded-full hover:bg-white hover:bg-opacity-[0.02] transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
+                                class="shrink-0 rounded-full hover:bg-white hover:bg-opacity-[0.02] transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
                               >
                                 <label
                                   on:click={() =>
                                     toggleUserWatchlist("firstList")}
-                                  class="cursor-pointer flex-shrink-0"
+                                  class="cursor-pointer shrink-0"
                                 >
                                   {#if isTickerIncluded}
                                     <svg
@@ -654,11 +654,11 @@
                           </div>
                         {:else}
                           <div
-                            class="flex-shrink-0 ml-auto mr-2 rounded-full hover:bg-white hover:bg-opacity-[0.02] transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
+                            class="shrink-0 ml-auto mr-2 rounded-full hover:bg-white hover:bg-opacity-[0.02] transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
                           >
                             <label
                               for="userLogin"
-                              class="cursor-pointer flex-shrink-0 text-white"
+                              class="cursor-pointer shrink-0 text-white"
                             >
                               <svg
                                 class="w-7 h-7 inline-block"
@@ -677,12 +677,12 @@
                         <!--Start Price Alert -->
 
                         <div
-                          class="flex-shrink-0 rounded-full hover:bg-white hover:bg-opacity-[0.02] transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
+                          class="shrink-0 rounded-full hover:bg-white hover:bg-opacity-[0.02] transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
                         >
                           <label
                             on:click={() => ($openPriceAlert = true)}
                             for={data?.user ? "priceAlertModal" : "userLogin"}
-                            class="cursor-pointer flex-shrink-0 text-white"
+                            class="cursor-pointer shrink-0 text-white"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"

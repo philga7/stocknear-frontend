@@ -77,7 +77,7 @@
                 <h2 class="text-start text-xl font-semibold text-white ml-3">
                   Highest OI Change
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
               </div>
               <span class="text-white p-3 ml-3 mr-3">
                 Stocks with the highest changes in open interest (OI).
@@ -96,7 +96,7 @@
                 <h2 class="text-start text-xl font-semibold text-white ml-3">
                   Highest Option Premium
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
               </div>
               <span class="text-white p-3 ml-3 mr-3">
                 Stocks with the highest option premium.

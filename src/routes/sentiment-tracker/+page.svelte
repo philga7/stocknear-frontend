@@ -88,7 +88,7 @@
             class="mb-8 w-full text-start sm:flex sm:flex-row sm:items-center m-auto text-gray-100 border border-gray-800 sm:rounded-md h-auto p-5"
           >
             <svg
-              class="w-5 h-5 inline-block sm:mr-2 flex-shrink-0"
+              class="w-5 h-5 inline-block sm:mr-2 shrink-0"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 256 256"
               ><path
@@ -126,7 +126,7 @@
                 <h2 class="text-start text-xl font-semibold text-white ml-3">
                   Cramer Tracker
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
               </div>
               <span class="text-white p-3 ml-3 mr-3">
                 Follow Jim Cramer latest stock picks
@@ -145,7 +145,7 @@
                 <h2 class="text-start text-xl font-semibold text-white ml-3">
                   Reddit Tracker
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
               </div>
               <span class="text-white p-3 ml-3 mr-3">
                 Get the latest trends of r/Wallstreetbets

@@ -157,7 +157,7 @@
                 {#if editMode}
                   <label
                     on:click={handleDelete}
-                    class="border text-sm border-gray-600 ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2 pl-3 pr-4 font-semibold text-white shadow-sm bg-default sm:hover:bg-default/60 ease-out"
+                    class="border text-sm border-gray-600 ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2 pl-3 pr-4 font-semibold text-white shadow-xs bg-default sm:hover:bg-default/60 ease-out"
                   >
                     <svg
                       class="inline-block w-5 h-5"
@@ -176,7 +176,7 @@
 
                 <label
                   on:click={() => (editMode = !editMode)}
-                  class="border text-sm border-gray-600 ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2 pl-3 pr-4 font-semibold text-white shadow-sm bg-default sm:hover:bg-default/60 ease-out"
+                  class="border text-sm border-gray-600 ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2 pl-3 pr-4 font-semibold text-white shadow-xs bg-default sm:hover:bg-default/60 ease-out"
                 >
                   <svg
                     class="inline-block w-5 h-5"

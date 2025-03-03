@@ -60,7 +60,7 @@ ${paragraphs.join("\n")}
             </h1>
             {@html formattedText}
           </div>
-          <div class="lg:-mr-6 flex-shrink-0 lg:float-right lg:w-[336px]">
+          <div class="lg:-mr-6 shrink-0 lg:float-right lg:w-[336px]">
             <div
               class="mt-7 rounded border border-gray-600 bg-primary px-3 pb-2 pt-3 xs:px-4 xs:pt-4 lg:mt-1"
             >
@@ -192,7 +192,7 @@ ${paragraphs.join("\n")}
                     <td class="px-0.5 py-2 text-right">
                       <a
                         href={rawData?.website}
-                        class="hover:sm:text-white truncate text-blue-400"
+                        class="sm:hover:text-white truncate text-blue-400"
                         target="_blank">{rawData?.website ?? "n/a"}</a
                       ></td
                     ></tr

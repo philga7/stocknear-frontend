@@ -58,7 +58,7 @@
                   <h2 class="text-start text-xl font-semibold text-white ml-3">
                     Pro Subscription
                   </h2>
-                  <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                  <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
                 </div>
                 <span class="text-white p-3 ml-3 mr-3">
                   Upgrade now for unlimited access to all data and tools
@@ -78,7 +78,7 @@
                 <h2 class="text-start text-xl font-semibold text-white ml-3">
                   Top Analyst
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
               </div>
               <span class="text-white p-3 ml-3 mr-3">
                 Get the latest top Wall Street analyst ratings
@@ -97,7 +97,7 @@
                 <h2 class="text-start text-xl font-semibold text-white ml-3">
                   Top Stocks Picks
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 flex-shrink-0" />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
               </div>
               <span class="text-white p-3 ml-3 mr-3">
                 Get the latest top Wall Street analyst ratings.

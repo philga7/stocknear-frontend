@@ -87,7 +87,7 @@
 </svelte:head>
 
 <section
-  class="bg-default min-h-screen mb-40 w-full max-w-3xl sm:max-w-screen-xl pt-10 m-auto"
+  class="bg-default min-h-screen mb-40 w-full max-w-3xl sm:max-w-(--breakpoint-xl) pt-10 m-auto"
 >
   <!--
   {#if data?.user?.tier !== "Pro" || data?.user?.freeTrial === true}
@@ -99,7 +99,7 @@
         aria-hidden="true"
       >
         <div
-          class="aspect-[577/310] w-[36.0625rem] bg-gradient-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
+          class="aspect-577/310 w-[36.0625rem] bg-linear-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
           style="clip-path: polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)"
         ></div>
       </div>
@@ -108,7 +108,7 @@
         aria-hidden="true"
       >
         <div
-          class="aspect-[577/310] w-[36.0625rem] bg-gradient-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
+          class="aspect-577/310 w-[36.0625rem] bg-linear-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
           style="clip-path: polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)"
         ></div>
       </div>
@@ -209,7 +209,7 @@
           <li class="flex items-center space-x-3">
             <!-- Icon -->
             <svg
-              class="flex-shrink-0 w-5 h-5"
+              class="shrink-0 w-5 h-5"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               ><path
@@ -224,7 +224,7 @@
           <li class="flex items-center space-x-3">
             <!-- Icon -->
             <svg
-              class="flex-shrink-0 w-5 h-5"
+              class="shrink-0 w-5 h-5"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               ><path
@@ -239,7 +239,7 @@
           <li class="flex items-center space-x-3">
             <!-- Icon -->
             <svg
-              class="flex-shrink-0 w-5 h-5"
+              class="shrink-0 w-5 h-5"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               ><path
@@ -254,7 +254,7 @@
           <li class="flex items-center space-x-3">
             <!-- Icon -->
             <svg
-              class="flex-shrink-0 w-5 h-5"
+              class="shrink-0 w-5 h-5"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               ><path
@@ -269,7 +269,7 @@
           <li class="flex items-center space-x-3">
             <!-- Icon -->
             <svg
-              class="flex-shrink-0 w-5 h-5"
+              class="shrink-0 w-5 h-5"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               ><path
@@ -284,7 +284,7 @@
           <li class="flex items-center space-x-3">
             <!-- Icon -->
             <svg
-              class="flex-shrink-0 w-5 h-5"
+              class="shrink-0 w-5 h-5"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               ><path
@@ -299,7 +299,7 @@
           <li class="flex items-center space-x-3">
             <!-- Icon -->
             <svg
-              class="flex-shrink-0 w-5 h-5"
+              class="shrink-0 w-5 h-5"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               ><path
@@ -314,7 +314,7 @@
           <li class="flex items-center space-x-3">
             <!-- Icon -->
             <svg
-              class="flex-shrink-0 w-5 h-5"
+              class="shrink-0 w-5 h-5"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               ><path
@@ -329,7 +329,7 @@
           <li class="flex items-center space-x-3">
             <!-- Icon -->
             <svg
-              class="flex-shrink-0 w-5 h-5"
+              class="shrink-0 w-5 h-5"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               ><path
@@ -471,7 +471,7 @@
           <li class="flex items-center space-x-3">
             <!-- Icon -->
             <svg
-              class="flex-shrink-0 w-5 h-5"
+              class="shrink-0 w-5 h-5"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 48 48"
               ><mask id="ipSSuccess0"
@@ -499,7 +499,7 @@
           <li class="flex items-center space-x-3">
             <!-- Icon -->
             <svg
-              class="flex-shrink-0 w-5 h-5"
+              class="shrink-0 w-5 h-5"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 48 48"
               ><mask id="ipSSuccess0"
@@ -527,7 +527,7 @@
           <li class="flex items-center space-x-3">
             <!-- Icon -->
             <svg
-              class="flex-shrink-0 w-5 h-5"
+              class="shrink-0 w-5 h-5"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 48 48"
               ><mask id="ipSSuccess0"
@@ -555,7 +555,7 @@
           <li class="flex items-center space-x-3">
             <!-- Icon -->
             <svg
-              class="flex-shrink-0 w-5 h-5"
+              class="shrink-0 w-5 h-5"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 48 48"
               ><mask id="ipSSuccess0"
@@ -583,7 +583,7 @@
           <li class="flex items-center space-x-3">
             <!-- Icon -->
             <svg
-              class="flex-shrink-0 w-5 h-5"
+              class="shrink-0 w-5 h-5"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 48 48"
               ><mask id="ipSSuccess0"
@@ -611,7 +611,7 @@
           <li class="flex items-center space-x-3">
             <!-- Icon -->
             <svg
-              class="flex-shrink-0 w-5 h-5"
+              class="shrink-0 w-5 h-5"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 48 48"
               ><mask id="ipSSuccess0"
@@ -639,7 +639,7 @@
           <li class="flex items-center space-x-3">
             <!-- Icon -->
             <svg
-              class="flex-shrink-0 w-5 h-5"
+              class="shrink-0 w-5 h-5"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 48 48"
               ><mask id="ipSSuccess0"
@@ -667,7 +667,7 @@
           <li class="flex items-center space-x-3">
             <!-- Icon -->
             <svg
-              class="flex-shrink-0 w-5 h-5"
+              class="shrink-0 w-5 h-5"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 48 48"
               ><mask id="ipSSuccess0"
@@ -798,7 +798,7 @@
         <ol class="mb-8 space-y-4 text-left mt-6">
           <li class="flex items-center space-x-3">
             <svg
-              class="flex-shrink-0 w-5 h-5"
+              class="shrink-0 w-5 h-5"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 48 48"
               ><mask id="ipSSuccess0"
@@ -825,7 +825,7 @@
           </li>
           <li class="flex items-center space-x-3">
             <svg
-              class="flex-shrink-0 w-5 h-5"
+              class="shrink-0 w-5 h-5"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 48 48"
               ><mask id="ipSSuccess0"
@@ -852,7 +852,7 @@
           </li>
           <li class="flex items-center space-x-3">
             <svg
-              class="flex-shrink-0 w-5 h-5"
+              class="shrink-0 w-5 h-5"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 48 48"
               ><mask id="ipSSuccess0"
@@ -923,7 +923,7 @@
           <!-- Section header -->
           <div class="mx-auto text-center pb-12 md:pb-20">
             <h2
-              class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-200/60 via-slate-200 to-slate-200/60"
+              class="text-4xl font-bold bg-clip-text text-transparent bg-linear-to-r from-slate-200/60 via-slate-200 to-slate-200/60"
             >
               Compare plans by features
             </h2>
@@ -961,7 +961,7 @@
                     </td>
                     <td class="text-sm px-2 py-4 text-center font-medium">
                       <svg
-                        class="flex-shrink-0 w-4 h-4 inline-flex"
+                        class="shrink-0 w-4 h-4 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 36 36"
                         ><path
@@ -972,7 +972,7 @@
                     </td>
                     <td class="text-sm px-2 py-4 text-center font-medium">
                       <svg
-                        class="flex-shrink-0 w-5 h-5 inline-flex"
+                        class="shrink-0 w-5 h-5 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 48 48"
                         ><mask id="ipSSuccess0"
@@ -1006,7 +1006,7 @@
                     </td>
                     <td class="text-sm px-2 py-4 text-center font-medium">
                       <svg
-                        class="flex-shrink-0 w-4 h-4 inline-flex"
+                        class="shrink-0 w-4 h-4 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 36 36"
                         ><path
@@ -1017,7 +1017,7 @@
                     </td>
                     <td class="text-sm px-2 py-4 text-center font-medium">
                       <svg
-                        class="flex-shrink-0 w-5 h-5 inline-flex"
+                        class="shrink-0 w-5 h-5 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 48 48"
                         ><mask id="ipSSuccess0"
@@ -1052,7 +1052,7 @@
                     </td>
                     <td class="text-sm px-2 py-4 text-center font-medium">
                       <svg
-                        class="flex-shrink-0 w-4 h-4 inline-flex"
+                        class="shrink-0 w-4 h-4 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 36 36"
                         ><path
@@ -1063,7 +1063,7 @@
                     </td>
                     <td class="text-sm px-2 py-4 text-center font-medium">
                       <svg
-                        class="flex-shrink-0 w-5 h-5 inline-flex"
+                        class="shrink-0 w-5 h-5 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 48 48"
                         ><mask id="ipSSuccess0"
@@ -1098,7 +1098,7 @@
                     </td>
                     <td class="text-sm px-2 py-4 text-center font-medium">
                       <svg
-                        class="flex-shrink-0 w-4 h-4 inline-flex"
+                        class="shrink-0 w-4 h-4 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 36 36"
                         ><path
@@ -1109,7 +1109,7 @@
                     </td>
                     <td class="text-sm px-2 py-4 text-center font-medium">
                       <svg
-                        class="flex-shrink-0 w-5 h-5 inline-flex"
+                        class="shrink-0 w-5 h-5 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 48 48"
                         ><mask id="ipSSuccess0"
@@ -1143,7 +1143,7 @@
                     </td>
                     <td class="text-sm px-2 py-4 text-center font-medium">
                       <svg
-                        class="flex-shrink-0 w-4 h-4 inline-flex"
+                        class="shrink-0 w-4 h-4 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 36 36"
                         ><path
@@ -1154,7 +1154,7 @@
                     </td>
                     <td class="text-sm px-2 py-4 text-center font-medium">
                       <svg
-                        class="flex-shrink-0 w-5 h-5 inline-flex"
+                        class="shrink-0 w-5 h-5 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 48 48"
                         ><mask id="ipSSuccess0"
@@ -1188,7 +1188,7 @@
                     </td>
                     <td class="text-sm px-2 py-4 text-center font-medium">
                       <svg
-                        class="flex-shrink-0 w-4 h-4 inline-flex"
+                        class="shrink-0 w-4 h-4 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 36 36"
                         ><path
@@ -1199,7 +1199,7 @@
                     </td>
                     <td class="text-sm px-2 py-4 text-center font-medium">
                       <svg
-                        class="flex-shrink-0 w-5 h-5 inline-flex"
+                        class="shrink-0 w-5 h-5 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 48 48"
                         ><mask id="ipSSuccess0"
@@ -1233,7 +1233,7 @@
                     </td>
                     <td class="text-sm px-2 py-4 text-center font-medium">
                       <svg
-                        class="flex-shrink-0 w-4 h-4 inline-flex"
+                        class="shrink-0 w-4 h-4 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 36 36"
                         ><path
@@ -1244,7 +1244,7 @@
                     </td>
                     <td class="text-sm px-2 py-4 text-center font-medium">
                       <svg
-                        class="flex-shrink-0 w-5 h-5 inline-flex"
+                        class="shrink-0 w-5 h-5 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 48 48"
                         ><mask id="ipSSuccess0"
@@ -1278,7 +1278,7 @@
                     </td>
                     <td class="text-sm px-2 py-4 text-center font-medium">
                       <svg
-                        class="flex-shrink-0 w-4 h-4 inline-flex"
+                        class="shrink-0 w-4 h-4 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 36 36"
                         ><path
@@ -1289,7 +1289,7 @@
                     </td>
                     <td class="text-sm px-2 py-4 text-center font-medium">
                       <svg
-                        class="flex-shrink-0 w-5 h-5 inline-flex"
+                        class="shrink-0 w-5 h-5 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 48 48"
                         ><mask id="ipSSuccess0"
@@ -1323,7 +1323,7 @@
                     </td>
                     <td class="text-sm px-2 py-4 text-center font-medium">
                       <svg
-                        class="flex-shrink-0 w-4 h-4 inline-flex"
+                        class="shrink-0 w-4 h-4 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 36 36"
                         ><path
@@ -1334,7 +1334,7 @@
                     </td>
                     <td class="text-sm px-2 py-4 text-center font-medium">
                       <svg
-                        class="flex-shrink-0 w-5 h-5 inline-flex"
+                        class="shrink-0 w-5 h-5 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 48 48"
                         ><mask id="ipSSuccess0"
@@ -1370,7 +1370,7 @@
                     </td>
                     <td class="text-sm px-2 py-4 text-center font-medium">
                       <svg
-                        class="flex-shrink-0 w-4 h-4 inline-flex"
+                        class="shrink-0 w-4 h-4 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 36 36"
                         ><path
@@ -1381,7 +1381,7 @@
                     </td>
                     <td class="text-sm px-2 py-4 text-center font-medium">
                       <svg
-                        class="flex-shrink-0 w-5 h-5 inline-flex"
+                        class="shrink-0 w-5 h-5 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 48 48"
                         ><mask id="ipSSuccess0"
@@ -1452,7 +1452,7 @@
           <!-- Section header -->
           <div class="max-w-3xl mx-auto text-center pb-12 md:pb-20">
             <h2
-              class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-200/60 via-slate-200 to-slate-200/60"
+              class="text-4xl font-bold bg-clip-text text-transparent bg-linear-to-r from-slate-200/60 via-slate-200 to-slate-200/60"
             >
               Frequently Asked Questions
             </h2>
