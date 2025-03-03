@@ -57,7 +57,7 @@
       {#if !data?.user}
         <a
           href="/register"
-          class="mt-10 btn bg-[#fff] border border-gray-600 sm:hover:bg-gray-300 transition duration-100 btn-md w-full rounded-md m-auto text-black font-semibold text-[1rem]"
+          class="mt-10 btn btn-lg w-full text-center bg-[#fff] border border-gray-600 sm:hover:bg-gray-300 transition duration-100 w-full rounded-md m-auto text-black font-semibold text-[1rem]"
         >
           <span class="text-[1rem] sm:text-lg">Sign Up for Free</span>
         </a>

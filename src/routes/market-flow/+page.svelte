@@ -558,7 +558,7 @@
                   <tbody>
                     {#each displayPosTickers as item, index}
                       <tr
-                        class="sm:hover:bg-[#245073] border-b border-gray-800 sm:hover:bg-opacity-[0.2] odd:bg-odd {index +
+                        class="sm:hover:bg-[#245073]/10 border-b border-gray-800 odd:bg-odd {index +
                           1 ===
                           originalPosTickers?.length &&
                         data?.user?.tier !== 'Pro'
@@ -662,7 +662,7 @@
                   <tbody>
                     {#each displayNegTickers as item, index}
                       <tr
-                        class="sm:hover:bg-[#245073] border-b border-gray-800 sm:hover:bg-opacity-[0.2] odd:bg-odd {index +
+                        class="sm:hover:bg-[#245073]/10 border-b border-gray-800 odd:bg-odd {index +
                           1 ===
                           originalNegTickers?.length &&
                         data?.user?.tier !== 'Pro'

@@ -1909,9 +1909,7 @@
 
 <dialog id="addWatchlist" class="modal modal-bottom sm:modal-middle">
   <!-- Modal backdrop for desktop -->
-  <label
-    for="addWatchlist"
-    class="cursor-pointer modal-backdrop bg-[#000] bg-opacity-[0.5]"
+  <label for="addWatchlist" class="cursor-pointer modal-backdrop bg-[#000]/40"
   ></label>
 
   <!-- Desktop modal content -->
@@ -1951,7 +1949,7 @@
 <dialog id="deleteWatchlist" class="modal modal-bottom sm:modal-middle">
   <label
     for="deleteWatchlist"
-    class="cursor-pointer modal-backdrop bg-[#000] bg-opacity-[0.5]"
+    class="cursor-pointer modal-backdrop bg-[#000]/40"
   ></label>
 
   <div

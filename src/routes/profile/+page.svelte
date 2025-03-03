@@ -611,7 +611,7 @@
 <dialog id="cancelSubscriptionModal" class="modal modal-bottom sm:modal-middle">
   <label
     for="cancelSubscriptionModal"
-    class="cursor-pointer modal-backdrop bg-[#000] bg-opacity-[0.5]"
+    class="cursor-pointer modal-backdrop bg-[#000]/40"
   ></label>
 
   <!-- Desktop modal content -->
@@ -666,7 +666,7 @@
 >
   <label
     for="reactivateSubscriptionModal"
-    class="cursor-pointer modal-backdrop bg-[#000] bg-opacity-[0.5]"
+    class="cursor-pointer modal-backdrop bg-[#000]/40"
   ></label>
 
   <!-- Desktop modal content -->
@@ -718,7 +718,7 @@
 <dialog id="changeSubscriptionModal" class="modal modal-bottom sm:modal-middle">
   <label
     for="changeSubscriptionModal"
-    class="cursor-pointer modal-backdrop bg-[#000] bg-opacity-[0.5]"
+    class="cursor-pointer modal-backdrop bg-[#000]/40"
   ></label>
 
   <!-- Desktop modal content -->
@@ -769,7 +769,7 @@
 <dialog id="errorSubscriptionModal" class="modal modal-bottom sm:modal-middle">
   <label
     for="errorSubscriptionModal"
-    class="cursor-pointer modal-backdrop bg-[#000] bg-opacity-[0.5]"
+    class="cursor-pointer modal-backdrop bg-[#000]/40"
   ></label>
 
   <!-- Desktop modal content -->

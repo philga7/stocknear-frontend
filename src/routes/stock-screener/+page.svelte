@@ -2545,7 +2545,7 @@ const handleKeyDown = (event) => {
 <svelte:window on:scroll={handleScroll} />
 
 <section
-  class="w-full max-w-3xl sm:max-w-(--breakpoint-xl) overflow-hidden min-h-screen pt-5 pb-40 px-5"
+  class="w-full max-w-3xl sm:max-w-(--breakpoint-xl) overflow-hidden min-h-screen pb-40 px-5"
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
@@ -2555,7 +2555,7 @@ const handleKeyDown = (event) => {
   </div>
 
   <!--Start Build Strategy-->
-  <div class="mt-5 sm:rounded-md">
+  <div class="sm:rounded-md">
     <div class="flex flex-col md:flex-row items-start md:items-center mb-5">
       <div class="w-full flex flex-row items-center sm:mt-4">
         <h1 class="text-white text-3xl font-semibold">Stock Screener</h1>
@@ -3278,7 +3278,7 @@ const handleKeyDown = (event) => {
           <li>
             <button
               on:click={() => (displayTableTab = "general")}
-              class="text-[1rem] sm:text-lg block text-white rounded-md px-2 py-1 focus:outline-hidden sm:hover:bg-primary {displayTableTab ===
+              class="cursor-pointer text-[1rem] sm:text-lg block text-white rounded-md px-2 py-1 focus:outline-hidden sm:hover:bg-primary {displayTableTab ===
               'general'
                 ? 'font-semibold bg-primary'
                 : ''}"
@@ -3309,7 +3309,7 @@ const handleKeyDown = (event) => {
           <li>
             <button
               on:click={() => changeTab("performance")}
-              class="text-[1rem] sm:text-lg block text-white rounded-md px-2 py-1 focus:outline-hidden sm:hover:bg-primary {displayTableTab ===
+              class="cursor-pointer text-[1rem] sm:text-lg block text-white rounded-md px-2 py-1 focus:outline-hidden sm:hover:bg-primary {displayTableTab ===
               'performance'
                 ? 'font-semibold bg-primary'
                 : ''}"
@@ -3320,7 +3320,7 @@ const handleKeyDown = (event) => {
           <li>
             <button
               on:click={() => changeTab("analysts")}
-              class="text-[1rem] sm:text-lg block text-white rounded-md px-2 py-1 focus:outline-hidden sm:hover:bg-primary {displayTableTab ===
+              class="cursor-pointer text-[1rem] sm:text-lg block text-white rounded-md px-2 py-1 focus:outline-hidden sm:hover:bg-primary {displayTableTab ===
               'analysts'
                 ? 'font-semibold bg-primary'
                 : ''}"
@@ -3775,12 +3775,10 @@ const handleKeyDown = (event) => {
 <input type="checkbox" id="addStrategy" class="modal-toggle" />
 
 <dialog id="addStrategy" class="modal modal-bottom sm:modal-middle">
-  <label
-    for="addStrategy"
-    class="cursor-pointer modal-backdrop bg-[#000] bg-opacity-[0.5]"
+  <label for="addStrategy" class="cursor-pointer modal-backdrop bg-[#000]/40"
   ></label>
 
-  <div class="modal-box w-full bg-primary border border-gray-600">
+  <div class="modal-box w-full bg-secondary border border-gray-600">
     <h1 class="text-white text-2xl font-bold">New Strategy</h1>
 
     <form
@@ -3798,7 +3796,7 @@ const handleKeyDown = (event) => {
 
       <button
         type="submit"
-        class="mt-10 btn bg-[#fff] sm:hover:bg-gray-300 duration-100 btn-md w-full rounded-md m-auto text-black font-semibold text-md"
+        class="cursor-pointer mt-2 py-2.5 bg-[#fff] sm:hover:bg-gray-300 duration-100 w-full rounded-md m-auto text-black font-semibold text-md"
       >
         Create Strategy
       </button>
@@ -3812,13 +3810,11 @@ const handleKeyDown = (event) => {
 <input type="checkbox" id="deleteStrategy" class="modal-toggle" />
 
 <dialog id="deleteStrategy" class="modal modal-bottom sm:modal-middle">
-  <label
-    for="deleteStrategy"
-    class="cursor-pointer modal-backdrop bg-[#000] bg-opacity-[0.5]"
+  <label for="deleteStrategy" class="cursor-pointer modal-backdrop bg-[#000]/40"
   ></label>
 
   <div
-    class="modal-box w-full bg-primary border border-gray-600 overflow-hidden"
+    class="modal-box w-full bg-secondary border border-gray-600 overflow-hidden"
   >
     <h3
       class="font-bold text-md sm:text-lg flex justify-center items-center mt-10 text-white"
@@ -3832,7 +3828,7 @@ const handleKeyDown = (event) => {
       <label
         for="deleteStrategy"
         on:click={handleDeleteStrategy}
-        class="mt-5 btn bg-[#fff] sm:hover:bg-gray-300 btn-md w-full rounded-md m-auto text-black font-semibold text-md"
+        class="cursor-pointer py-2.5 text-center bg-[#fff] sm:hover:bg-gray-300 w-full rounded-md m-auto text-black font-semibold text-md"
       >
         Proceed
       </label>

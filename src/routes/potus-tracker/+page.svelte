@@ -761,7 +761,7 @@
 
           <div class="order-4 shrink-0 lg:float-right lg:w-[336px]">
             <div
-              class="w-full text-white border border-gray-800 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
+              class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
             >
               <a
                 href={`/newsletter`}
@@ -780,7 +780,7 @@
             </div>
 
             <div
-              class="w-full text-white border border-gray-800 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
+              class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
             >
               <a
                 href={"/stock-screener"}
@@ -797,7 +797,7 @@
               </a>
             </div>
             <div
-              class="w-full text-white border border-gray-800 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
+              class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
             >
               <a
                 href={"/watchlist/stocks"}
