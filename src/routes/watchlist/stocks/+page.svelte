@@ -1095,16 +1095,14 @@
                 My Watchlist
               </div>
               <div
-                class="{$screenWidth < 640
-                  ? 'grid grid-cols-2'
-                  : ''} gap-x-3 gap-y-3 sm:gap-x-0 sm:gap-y-0 relative inline-block text-left w-full flex flex-col sm:flex-row items-center"
+                class="grid grid-cols-2 gap-3 sm:gap-0 sm:flex sm:flex-row sm:items-center"
               >
                 <div class="order-0 w-full sm:w-fit">
                   <DropdownMenu.Root>
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="min-w-[110px] w-full sm:w-fit border-gray-600 border bg-default sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5 text-white rounded-md truncate"
+                        class="min-w-[110px] w-full sm:w-fit border-gray-600 border bg-default sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5 text-white rounded truncate"
                       >
                         <span
                           class="truncate font-semibold text-white text-sm sm:text-[1rem]"
@@ -1201,7 +1199,7 @@
                     {#if editMode}
                       <label
                         on:click={handleDeleteTickers}
-                        class="border text-sm border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2.5 pl-3 pr-4 font-semibold text-white bg-default sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
+                        class="border text-sm border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 pl-3 pr-4 font-semibold text-white bg-default sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
                       >
                         <svg
                           class="inline-block w-5 h-5"
@@ -1219,7 +1217,7 @@
                     {/if}
                     <label
                       on:click={handleEditMode}
-                      class="border text-sm border-gray-600 sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2.5 px-3 text-white bg-default sm:hover:bg-primary ease-out sm:hover:text-red-500"
+                      class="border text-sm border-gray-600 sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 px-3 text-white bg-default sm:hover:bg-primary ease-out sm:hover:text-red-500"
                     >
                       <svg
                         class="inline-block w-5 h-5"
@@ -1245,6 +1243,7 @@
                     </label>
                   </div>
                 </div>
+
                 <div
                   class="order-2 sm:order-1 w-full sm:w-fit {displayWatchList?.title ===
                   undefined
@@ -1277,14 +1276,14 @@
                       </div>
                       <Combobox.Input
                         on:input={search}
-                        class="text-sm sm:text-[1rem] controls-input text-white bg-default focus:outline-hidden border border-gray-600 rounded-md placeholder:text-white/80 px-3 py-2 pl-8 xs:pl-10 grow w-full sm:min-w-56 max-w-xs"
+                        class="text-sm sm:text-[1rem] controls-input text-white bg-default focus:outline-hidden border border-gray-600 rounded placeholder:text-white/80 px-3 py-2 pl-8 xs:pl-10 grow w-full sm:min-w-56 max-w-xs"
                         placeholder="Add new stock"
                         aria-label="Add new stock"
                       />
                     </div>
                     {#if inputValue?.length !== 0}
                       <Combobox.Content
-                        class="w-auto z-10 rounded-md border border-gray-700 bg-default px-1 py-3 shadow-popover outline-hidden"
+                        class="w-auto z-10 rounded border border-gray-700 bg-default px-1 py-3 shadow-popover outline-hidden"
                         sideOffset={8}
                       >
                         {#each searchBarData as item}
@@ -1323,7 +1322,7 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="sm:ml-auto min-w-[110px] w-full sm:w-fit border-gray-600 border bg-default sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5 text-white rounded-md truncate"
+                        class="sm:ml-auto min-w-[110px] w-full sm:w-fit border-gray-600 border bg-default sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5 text-white rounded truncate"
                       >
                         <span class="truncate text-white text-sm sm:text-[1rem]"
                           >Indicators</span
@@ -1538,7 +1537,7 @@
 
                   <div class="w-full overflow-x-auto">
                     <table
-                      class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto mt-4"
+                      class="table table-sm table-compact rounded-none sm:rounded w-full bg-table border border-gray-800 m-auto mt-4"
                     >
                       <!-- head -->
                       <thead>
@@ -1674,10 +1673,10 @@
 
                   <div class=" text-white">
                     <div
-                      class="inline-flex justify-center w-full rounded-md sm:w-auto mb-3"
+                      class="inline-flex justify-center w-full rounded sm:w-auto mb-3"
                     >
                       <div
-                        class="bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1 mt-4"
+                        class="bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded p-1 mt-4"
                       >
                         {#each tabs as item, i}
                           {#if data?.user?.tier !== "Pro" && i > 0}
@@ -1710,7 +1709,7 @@
                             >
                               {#if activeIdx === i}
                                 <div
-                                  class="absolute inset-0 rounded-md bg-[#fff]"
+                                  class="absolute inset-0 rounded bg-[#fff]"
                                 ></div>
                               {/if}
                               <span
@@ -1888,7 +1887,7 @@
             <div class="flex justify-center items-center h-80">
               <div class="relative">
                 <label
-                  class="bg-secondary rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                  class="bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                 >
                   <span class="loading loading-spinner loading-md text-gray-400"
                   ></span>
@@ -1913,7 +1912,7 @@
   ></label>
 
   <!-- Desktop modal content -->
-  <div class="modal-box w-full bg-secondary">
+  <div class="modal-box w-full bg-secondary rounded">
     <div class="text-white mb-5">
       <h3 class="font-bold text-2xl mb-5">New Watchlist</h3>
 
@@ -1931,7 +1930,7 @@
 
         <button
           type="submit"
-          class="mt-10 btn bg-[#fff] sm:hover:bg-gray-300 btn-md w-full rounded-md m-auto text-black font-semibold text-md"
+          class="cursor-pointer mt-2 py-2.5 bg-[#fff] sm:hover:bg-gray-300 btn-md w-full rounded m-auto text-black font-semibold text-md"
         >
           Create Watchlist
         </button>
@@ -1953,7 +1952,7 @@
   ></label>
 
   <div
-    class="modal-box w-full bg-primary border border-gray-600 overflow-hidden"
+    class="modal-box w-full bg-secondary border border-gray-600 overflow-hidden"
   >
     <h3
       class="font-bold text-[1rem] text-center sm:text-lg flex justify-center items-center mt-10 text-white"
@@ -1967,7 +1966,7 @@
       <label
         for="deleteWatchlist"
         on:click={deleteWatchlist}
-        class="mt-5 btn bg-[#fff] sm:hover:bg-gray-300 btn-md w-full rounded-md m-auto text-black font-semibold text-md"
+        class="cursor-pointer mt-2 py-2.5 text-center bg-[#fff] sm:hover:bg-gray-300 btn-md w-full rounded m-auto text-black font-semibold text-md"
       >
         Proceed
       </label>

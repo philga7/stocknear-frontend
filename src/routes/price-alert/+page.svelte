@@ -6,7 +6,6 @@
     compareTimes,
     formatTime,
     abbreviateNumber,
-    calculateChange,
   } from "$lib/utils";
   //import { enhance } from '$app/forms';
   import toast from "svelte-french-toast";
@@ -272,7 +271,7 @@
 />
 
 <section
-  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pb-20 pt-5 px-4 lg:px-3"
+  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pb-20 pt-5 px-3"
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
@@ -295,16 +294,14 @@
 
           {#if data?.user}
             <div
-              class="w-full {$screenWidth < 640
-                ? 'grid grid-cols-2'
-                : ''} gap-x-3 gap-y-3 sm:gap-x-0 sm:gap-y-0 relative inline-block text-left w-full flex flex-col sm:flex-row items-center"
+              class="w-full grid grid-cols-2 gap-3 sm:gap-0 sm:flex sm:flex-row sm:items-center"
             >
               <div class="order-4 w-fit flex justify-end sm:ml-3">
                 <div class="flex flex-row items-center justify-end">
                   {#if editMode}
                     <label
                       on:click={handleDeleteTickers}
-                      class="border text-sm border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2.5 pl-3 pr-4 font-semibold text-white bg-default sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
+                      class="border text-sm border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2 pl-3 pr-4 font-semibold text-white bg-default sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
                     >
                       <svg
                         class="inline-block w-5 h-5"
@@ -322,7 +319,7 @@
                   {/if}
                   <label
                     on:click={handleEditMode}
-                    class="border text-sm border-gray-600 sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2.5 px-3 text-white bg-default sm:hover:bg-primary ease-out sm:hover:text-red-500"
+                    class="border text-sm border-gray-600 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2 px-3 text-white bg-default sm:hover:bg-primary ease-out sm:hover:text-red-500"
                   >
                     <svg
                       class="inline-block w-5 h-5"
