@@ -55,27 +55,36 @@
     }
 
     // Filter the data based on the calculated start date
-    let filteredData = historicalData?.filter((item) => {
-      if (!item?.date) return false;
-      const itemDate = new Date(item.date);
-      return itemDate >= startDate && itemDate <= currentDate;
-    });
+    let filteredData =
+      historicalData?.filter((item) => {
+        if (!item || !item.date) return false; // Ensure item and date are valid
+        const itemDate = new Date(item.date);
+        return (
+          !isNaN(itemDate) && itemDate >= startDate && itemDate <= currentDate
+        );
+      }) || [];
 
-    filteredData?.forEach((entry) => {
+    filteredData.forEach((entry) => {
       const matchingData = data?.getHistoricalPrice?.find(
         (d) => d?.time === entry?.date,
       );
       if (matchingData) {
-        entry.price = matchingData?.close;
+        entry.price = matchingData?.close ?? null; // Ensure price is valid
       }
     });
 
     // Extract the dates and gamma values from the filtered data
-    const dateList = filteredData?.map((item) => item.date);
-    const dataList = filteredData?.map((item) =>
-      title === "Gamma" ? item.netGex : item.netDex,
-    );
-    const priceList = filteredData?.map((item) => item.price);
+    const dateList = filteredData
+      .map((item) => item.date)
+      .filter((date) => date != null); // Filter out null/undefined
+
+    const dataList = filteredData
+      .map((item) => (title === "Gamma" ? item.netGex : item.netDex))
+      .filter((value) => value != null); // Filter out null/undefined
+
+    const priceList = filteredData
+      .map((item) => item.price)
+      .filter((price) => price != null); // Filter out null/undefined
 
     return { dateList, dataList, priceList };
   }

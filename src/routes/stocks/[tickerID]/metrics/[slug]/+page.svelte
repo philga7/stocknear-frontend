@@ -37,18 +37,18 @@
   }
 
   function plotData() {
-    // First, sort and filter your dataset just like before.
+    console.log(dataset);
     const plotDataset = [...dataset]?.sort(
-      (a, b) => new Date(a.date) - new Date(b.date),
+      (a, b) => new Date(a?.date) - new Date(b?.date),
     );
     const xData = plotDataset
-      .filter((item) => item.value !== null) // Filter out null values
-      .map((item) => item.date); // Get the date strings
+      ?.filter((item) => item?.value !== null && item?.value !== undefined) // Filter out null values
+      ?.map((item) => item?.date); // Get the date strings
 
     const valueList = [];
-    for (let i = 0; i < plotDataset.length; i++) {
-      if (plotDataset[i].value !== null) {
-        valueList.push(plotDataset[i].value);
+    for (let i = 0; i < plotDataset?.length; i++) {
+      if (plotDataset[i]?.value) {
+        valueList?.push(plotDataset[i]?.value);
       }
     }
 

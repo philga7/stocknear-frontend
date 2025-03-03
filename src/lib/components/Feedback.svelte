@@ -68,10 +68,7 @@
       body: JSON.stringify(postData),
     });
 
-    toast.success("Thank you for your feedback", {
-      style:
-        "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-    });
+    toast.success("Thank you for your feedback");
 
     rating = "";
     inputValue = "";
