@@ -1204,7 +1204,7 @@
               -->
 
               <slot />
-              <Toaster position="top-center" />
+              <Toaster position="bottom-center" />
 
               {#if Cookie && $showCookieConsent === true}
                 <Cookie />
