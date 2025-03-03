@@ -187,7 +187,6 @@
           style: {
             color: "#fff",
           },
-          distance: 20, // Increases space between label and axis
           formatter: function () {
             const date = new Date(this.value);
             return date.toLocaleDateString("en-US", {
@@ -860,9 +859,7 @@
 
 <dialog
   id="optionDetailsDesktopModal"
-  class="modal {$screenWidth < 640
-    ? 'modal-bottom '
-    : ''} bg-[#000] bg-opacity-[0.8] sm:px-5"
+  class="modal {$screenWidth < 640 ? 'modal-bottom ' : ''} bg-[#000]/40 sm:px-5"
 >
   <div
     class="modal-box w-full {rawDataHistory?.length > 0

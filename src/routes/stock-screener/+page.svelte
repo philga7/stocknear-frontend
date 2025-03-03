@@ -3618,7 +3618,7 @@ const handleKeyDown = (event) => {
     id="ruleModal"
     for="ruleModal"
     on:click={() => (searchTerm = "")}
-    class="cursor-pointer modal-backdrop bg-[#000] bg-opacity-[0.8]"
+    class="cursor-pointer modal-backdrop bg-[#000]/40"
   ></label>
 
   <div
@@ -3845,9 +3845,7 @@ const handleKeyDown = (event) => {
 <input type="checkbox" id="mobileTooltip" class="modal-toggle" />
 
 <dialog id="mobileTooltip" class="modal p-3">
-  <label
-    for="mobileTooltip"
-    class="cursor-pointer modal-backdrop bg-[#000] bg-opacity-[0.8]"
+  <label for="mobileTooltip" class="cursor-pointer modal-backdrop bg-[#000]/40"
   ></label>
 
   <!-- Desktop modal content -->

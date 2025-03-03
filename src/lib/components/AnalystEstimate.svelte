@@ -789,7 +789,7 @@
               <tbody>
                 <tr class="bg-primary border-b border-gray-600">
                   <th
-                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start bg-primary border-b border-gray-800"
+                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start font-normal bg-primary border-b border-gray-800"
                   >
                     Revenue
                   </th>
@@ -808,7 +808,7 @@
 
                 <tr class="bg-primary">
                   <th
-                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start border-b border-gray-800"
+                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start font-normal border-b border-gray-800"
                   >
                     Revenue Growth
                   </th>
@@ -843,7 +843,7 @@
 
                 <tr class="bg-primary border-b-[#09090B]">
                   <th
-                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start bg-primary border-b border-gray-800"
+                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start font-normal bg-primary border-b border-gray-800"
                   >
                     EPS
                   </th>
@@ -862,7 +862,7 @@
 
                 <tr class="bg-primary">
                   <th
-                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start border-b border-gray-800"
+                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white font-normal text-start border-b border-gray-800"
                   >
                     EPS Growth
                   </th>
@@ -896,7 +896,7 @@
                 </tr>
                 <tr class="bg-primary border-b border-gray-600">
                   <th
-                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start bg-primary border-b border-gray-800"
+                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start font-normal bg-primary border-b border-gray-800"
                   >
                     Net Income
                   </th>
@@ -915,7 +915,7 @@
 
                 <tr class="bg-primary">
                   <th
-                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start border-b border-gray-800"
+                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white font-normal text-start border-b border-gray-800"
                   >
                     Net Income Growth
                   </th>
@@ -950,7 +950,7 @@
 
                 <tr class="bg-primary border-b border-gray-600">
                   <th
-                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start bg-primary border-b border-gray-800"
+                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start font-normal bg-primary border-b border-gray-800"
                   >
                     EBITDA
                   </th>
@@ -969,7 +969,7 @@
 
                 <tr class="bg-primary">
                   <th
-                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start border-b border-gray-800"
+                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white font-normal text-start border-b border-gray-800"
                   >
                     EBITDA Growth
                   </th>
@@ -1004,7 +1004,7 @@
 
                 <tr class="bg-primary border-b border-gray-600">
                   <th
-                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start bg-primary border-b border-gray-800"
+                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start font-normal bg-primary border-b border-gray-800"
                     >No. Analysts</th
                   >
                   {#each tableCombinedRevenue as item}
