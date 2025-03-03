@@ -3,6 +3,7 @@
   import InfoModal from "$lib/components/InfoModal.svelte";
   import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
   import highcharts from "$lib/highcharts.ts";
+  import { goto } from "$app/navigation";
 
   export let data;
   export let rawData = [];
@@ -293,7 +294,7 @@
               {#if data?.user?.tier !== "Pro" && i > 0}
                 <button
                   on:click={() => goto("/pricing")}
-                  class="group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
+                  class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
                 >
                   <span class="relative text-sm block font-semibold">
                     {item.title}
@@ -311,7 +312,7 @@
               {:else}
                 <button
                   on:click={() => changeTimePeriod(i)}
-                  class="group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
+                  class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
                   i
                     ? 'z-0'
                     : ''} "
@@ -371,7 +372,7 @@
                 <td
                   class="text-white text-sm sm:text-[1rem] text-right whitespace-nowrap"
                 >
-                  {item?.totalVolume}
+                  {abbreviateNumber(item?.totalVolume)}
                 </td>
 
                 <td

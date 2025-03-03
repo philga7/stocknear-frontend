@@ -20,7 +20,7 @@
   let activeIdx = 0;
   const tabs = [
     {
-      title: "Annual",
+      title: "Daily",
     },
     {
       title: "Quarterly",
@@ -31,47 +31,31 @@
     (a, b) => new Date(b?.date) - new Date(a?.date),
   );
 
-  tableList = filterByPeriod([...tableList], activeIdx);
-
   function changeTimePeriod(i) {
     activeIdx = i;
     tableList = rawData?.sort((a, b) => new Date(b?.date) - new Date(a?.date));
 
-    tableList = filterByPeriod([...tableList], i);
+    if (activeIdx === 1) {
+      tableList = filterByPeriod([...tableList]);
+    }
   }
 
-  function filterByPeriod(data, period) {
+  function filterByPeriod(data) {
     if (!Array.isArray(data) || data.length === 0) return [];
 
-    if (period === 0) {
-      // Annual: one result per year.
-      const seenYears = new Set();
-      return data.filter((item) => {
-        const dt = new Date(item.date);
-        const year = dt.getFullYear();
-        if (!seenYears.has(year)) {
-          seenYears.add(year);
-          return true;
-        }
-        return false;
-      });
-    } else if (period === 1) {
-      // Quarterly: one result per year-quarter.
-      const seenPeriods = new Set();
-      return data.filter((item) => {
-        const dt = new Date(item.date);
-        const year = dt.getFullYear();
-        const quarter = Math.floor(dt.getMonth() / 3) + 1; // Quarter 1 to 4
-        const key = `${year}-Q${quarter}`;
-        if (!seenPeriods.has(key)) {
-          seenPeriods.add(key);
-          return true;
-        }
-        return false;
-      });
-    }
-
-    return [];
+    // Quarterly: one result per year-quarter.
+    const seenPeriods = new Set();
+    return data.filter((item) => {
+      const dt = new Date(item.date);
+      const year = dt.getFullYear();
+      const quarter = Math.floor(dt.getMonth() / 3) + 1; // Quarter 1 to 4
+      const key = `${year}-Q${quarter}`;
+      if (!seenPeriods.has(key)) {
+        seenPeriods.add(key);
+        return true;
+      }
+      return false;
+    });
   }
 
   function getPlotOptions() {
@@ -293,7 +277,7 @@
               {#if data?.user?.tier !== "Pro" && i > 0}
                 <button
                   on:click={() => goto("/pricing")}
-                  class="group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
+                  class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
                 >
                   <span class="relative text-sm block font-semibold">
                     {item.title}
@@ -311,7 +295,7 @@
               {:else}
                 <button
                   on:click={() => changeTimePeriod(i)}
-                  class="group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
+                  class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
                   i
                     ? 'z-0'
                     : ''} "
@@ -352,9 +336,7 @@
           <tbody>
             {#each tableList as item, index}
               <!-- row -->
-              <tr
-                class="sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] odd:bg-odd border-b border-gray-800"
-              >
+              <tr class="odd:bg-odd">
                 <td
                   class="text-white font-medium text-sm sm:text-[1rem] whitespace-nowrap"
                 >
