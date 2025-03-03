@@ -65,8 +65,8 @@
                 href={`/index/${$indexTicker}/options`}
                 on:click={() => changeSubSection("overview")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'overview'
-                  ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
-                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
+                  ? 'text-white bg-primary/90'
+                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
               >
                 Overview
               </a>
@@ -75,8 +75,8 @@
                 on:click={() => changeSubSection("hottest-contracts")}
                 class="p-2 px-5 cursor-pointer {displaySubSection ===
                 'hottest-contracts'
-                  ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
-                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
+                  ? 'text-white bg-primary/90'
+                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
               >
                 Hottest Contracts
               </a>
@@ -85,8 +85,8 @@
                 on:click={() => changeSubSection("volatility")}
                 class="p-2 px-5 cursor-pointer {displaySubSection ===
                 'volatility'
-                  ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
-                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
+                  ? 'text-white bg-primary/90'
+                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
               >
                 Volatility
               </a>
@@ -94,8 +94,8 @@
                 href={`/index/${$indexTicker}/options/oi`}
                 on:click={() => changeSubSection("oi")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'oi'
-                  ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
-                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
+                  ? 'text-white bg-primary/90'
+                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
               >
                 OI
               </a>
@@ -104,8 +104,8 @@
                 href={`/index/${$indexTicker}/options/gex`}
                 on:click={() => changeSubSection("gex")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'gex'
-                  ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
-                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
+                  ? 'text-white bg-primary/90'
+                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
               >
                 GEX
               </a>
@@ -113,8 +113,8 @@
                 href={`/index/${$indexTicker}/options/dex`}
                 on:click={() => changeSubSection("dex")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'dex'
-                  ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
-                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
+                  ? 'text-white bg-primary/90'
+                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
               >
                 DEX
               </a>

@@ -620,7 +620,7 @@
                               </div>
                             {:else if userWatchList?.length === 0}
                               <div
-                                class="shrink-0 rounded-full hover:bg-white hover:bg-opacity-[0.02] transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
+                                class="shrink-0 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
                               >
                                 <label
                                   on:click={() =>
@@ -654,7 +654,7 @@
                           </div>
                         {:else}
                           <div
-                            class="shrink-0 ml-auto mr-2 rounded-full hover:bg-white hover:bg-opacity-[0.02] transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
+                            class="shrink-0 ml-auto mr-2 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
                           >
                             <label
                               for="userLogin"
@@ -677,7 +677,7 @@
                         <!--Start Price Alert -->
 
                         <div
-                          class="shrink-0 rounded-full hover:bg-white hover:bg-opacity-[0.02] transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
+                          class="shrink-0 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
                         >
                           <label
                             on:click={() => ($openPriceAlert = true)}
@@ -867,8 +867,8 @@
                           on:click={() => changeSection("overview")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'overview'
-                            ? 'text-white bg-secondary sm:hover:bg-opacity-[0.95] font-semibold'
-                            : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary sm:hover:bg-opacity-[0.95]'}"
+                            ? 'text-white bg-secondary font-semibold'
+                            : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary'}"
                         >
                           Overview
                         </a>
@@ -878,8 +878,8 @@
                           on:click={() => changeSection("holdings")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'holdings'
-                            ? 'text-white bg-secondary sm:hover:bg-opacity-[0.95] font-semibold'
-                            : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary sm:hover:bg-opacity-[0.95]'}"
+                            ? 'text-white bg-secondary font-semibold'
+                            : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary'}"
                         >
                           Holdings
                         </a>
@@ -888,8 +888,8 @@
                           on:click={() => changeSection("options")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'options'
-                            ? 'text-white bg-secondary sm:hover:bg-opacity-[0.95] font-semibold'
-                            : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary sm:hover:bg-opacity-[0.95]'}"
+                            ? 'text-white bg-secondary font-semibold'
+                            : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary'}"
                         >
                           Options
                         </a>
@@ -899,8 +899,8 @@
                           on:click={() => changeSection("history")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'history'
-                            ? 'text-white bg-secondary sm:hover:bg-opacity-[0.95] font-semibold'
-                            : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary sm:hover:bg-opacity-[0.95]'}"
+                            ? 'text-white bg-secondary font-semibold'
+                            : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary'}"
                         >
                           History
                         </a>

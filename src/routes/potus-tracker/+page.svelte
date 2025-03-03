@@ -324,8 +324,8 @@
                   <button
                     on:click={() => (activeIdx = i)}
                     class="p-2 px-5 cursor-pointer {activeIdx === i
-                      ? 'text-white bg-primary sm:hover:bg-opacity-[0.95] font-semibold'
-                      : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
+                      ? 'text-white bg-primary/90 font-semibold'
+                      : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
                   >
                     {item.title}
                   </button>

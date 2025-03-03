@@ -47,8 +47,8 @@
               href={`/stocks/${$stockTicker}/profile`}
               on:click={() => changeSubSection("overview")}
               class="p-2 px-5 cursor-pointer {displaySubSection === 'overview'
-                ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
-                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
+                ? 'text-white bg-primary/90'
+                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
             >
               Overview
             </a>
@@ -57,8 +57,8 @@
               href={`/stocks/${$stockTicker}/profile/employees`}
               on:click={() => changeSubSection("employees")}
               class="p-2 px-5 cursor-pointer {displaySubSection === 'employees'
-                ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
-                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
+                ? 'text-white bg-primary/90'
+                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
             >
               Employees
             </a>

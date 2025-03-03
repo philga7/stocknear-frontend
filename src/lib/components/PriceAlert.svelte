@@ -123,7 +123,7 @@
 <dialog id="priceAlertModal" class="modal modal-middle p-2 sm:p-0">
   <label
     for="priceAlertModal"
-    class="cursor-pointer modal-backdrop bg-[#000] bg-opacity-[0.3]"
+    class="cursor-pointer modal-backdrop bg-[#000]/40"
   ></label>
 
   <div

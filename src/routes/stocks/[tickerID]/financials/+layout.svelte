@@ -61,8 +61,8 @@
                   href={`/stocks/${$stockTicker}/financials`}
                   on:click={() => changeSubSection("income")}
                   class="p-2 px-5 cursor-pointer {displaySubSection === 'income'
-                    ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
-                    : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
+                    ? 'text-white bg-primary/90'
+                    : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
                 >
                   Income
                 </a>
@@ -72,8 +72,8 @@
                   on:click={() => changeSubSection("balance-sheet")}
                   class="p-2 px-5 cursor-pointer {displaySubSection ===
                   'balance-sheet'
-                    ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
-                    : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
+                    ? 'text-white bg-primary/90'
+                    : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
                 >
                   Balance Sheet
                 </a>
@@ -82,8 +82,8 @@
                   on:click={() => changeSubSection("cash-flow")}
                   class="p-2 px-5 cursor-pointer {displaySubSection ===
                   'cash-flow'
-                    ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
-                    : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
+                    ? 'text-white bg-primary/90'
+                    : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
                 >
                   Cashflow
                 </a>
@@ -91,8 +91,8 @@
                   href={`/stocks/${$stockTicker}/financials/ratios`}
                   on:click={() => changeSubSection("ratios")}
                   class="p-2 px-5 cursor-pointer {displaySubSection === 'ratios'
-                    ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
-                    : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
+                    ? 'text-white bg-primary/90'
+                    : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
                 >
                   Ratios
                 </a>

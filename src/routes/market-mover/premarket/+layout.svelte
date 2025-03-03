@@ -37,16 +37,16 @@
             <a
               href="/market-mover/premarket/gainers"
               class="p-2 px-5 cursor-pointer {categoryType === 'gainers'
-                ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
-                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
+                ? 'text-white bg-primary/90'
+                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
             >
               Gainers
             </a>
             <a
               href="/market-mover/premarket/losers"
               class="p-2 px-5 cursor-pointer {categoryType === 'losers'
-                ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
-                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
+                ? 'text-white bg-primary/90'
+                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
             >
               Losers
             </a>

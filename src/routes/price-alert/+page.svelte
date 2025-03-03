@@ -301,7 +301,7 @@
                   {#if editMode}
                     <label
                       on:click={handleDeleteTickers}
-                      class="border text-sm border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2 pl-3 pr-4 font-semibold text-white bg-default sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
+                      class="border text-sm border-gray-600 mr-2 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2.5 pl-3 pr-4 font-semibold text-white bg-default sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
                     >
                       <svg
                         class="inline-block w-5 h-5"

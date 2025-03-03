@@ -77,8 +77,8 @@
                   on:click={() => changeSubSection(sectionKey)}
                   class="p-2 px-5 cursor-pointer {displaySubSection ===
                   sectionKey
-                    ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
-                    : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
+                    ? 'text-white bg-primary/90'
+                    : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
                 >
                   {title}
                 </a>

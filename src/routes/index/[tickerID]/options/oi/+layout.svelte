@@ -54,8 +54,8 @@
                 href={`/index/${$indexTicker}/options/oi`}
                 on:click={() => changeSubSection("strike")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'strike'
-                  ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
-                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
+                  ? 'text-white bg-primary/90'
+                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
               >
                 By Strike
               </a>
@@ -64,8 +64,8 @@
                 href={`/index/${$indexTicker}/options/oi/expiry`}
                 on:click={() => changeSubSection("expiry")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'expiry'
-                  ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
-                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
+                  ? 'text-white bg-primary/90'
+                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
               >
                 By Expiry
               </a>

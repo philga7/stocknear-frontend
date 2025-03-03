@@ -55,48 +55,48 @@
             <a
               href="/market-mover/active"
               class="p-2 px-5 cursor-pointer {timePeriod === 'active'
-                ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
-                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
+                ? 'text-white bg-primary/90'
+                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
             >
               Today
             </a>
             <a
               href="/market-mover/active/week"
               class="p-2 px-5 cursor-pointer {timePeriod === 'week'
-                ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
-                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
+                ? 'text-white bg-primary/90'
+                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
             >
               Week
             </a>
             <a
               href="/market-mover/active/month"
               class="p-2 px-5 cursor-pointer {timePeriod === 'month'
-                ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
-                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
+                ? 'text-white bg-primary/90'
+                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
             >
               Month
             </a>
             <a
               href="/market-mover/active/year"
               class="p-2 px-5 cursor-pointer {timePeriod === 'year'
-                ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
-                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
+                ? 'text-white bg-primary/90'
+                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
             >
               Year
             </a>
             <a
               href="/market-mover/active/3Y"
               class="p-2 px-5 cursor-pointer {timePeriod === '3Y'
-                ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
-                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
+                ? 'text-white bg-primary/90'
+                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
             >
               3 Years
             </a>
             <a
               href="/market-mover/active/5Y"
               class="p-2 px-5 cursor-pointer {timePeriod === '5Y'
-                ? 'text-white bg-primary sm:hover:bg-opacity-[0.95]'
-                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary sm:hover:bg-opacity-[0.95]'}"
+                ? 'text-white bg-primary/90'
+                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
             >
               5 Years
             </a>
