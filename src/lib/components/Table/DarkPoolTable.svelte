@@ -132,13 +132,13 @@
     >
       <div
         on:click={() => sortData("date")}
-        class="cursor-pointer p-2 text-center"
+        class="cursor-pointer p-2 text-center select-none whitespace-nowrap"
       >
         Date
       </div>
       <div
         on:click={() => sortData("ticker")}
-        class="cursor-pointer p-2 text-center select-none"
+        class="cursor-pointer p-2 text-center select-none whitespace-nowrap"
       >
         Symbol
         <svg
@@ -160,7 +160,7 @@
 
       <div
         on:click={() => sortData("price")}
-        class="cursor-pointer p-2 text-center select-none"
+        class="cursor-pointer p-2 text-center select-none whitespace-nowrap"
       >
         Price
         <svg
@@ -181,7 +181,7 @@
       </div>
       <div
         on:click={() => sortData("premium")}
-        class="cursor-pointer p-2 text-center select-none"
+        class="cursor-pointer p-2 text-center select-none whitespace-nowrap"
       >
         Premium
         <svg
@@ -202,7 +202,7 @@
       </div>
       <div
         on:click={() => sortData("size")}
-        class="cursor-pointer p-2 text-center select-none"
+        class="cursor-pointer p-2 text-center select-none whitespace-nowrap"
       >
         Size
         <svg
@@ -223,7 +223,7 @@
       </div>
       <div
         on:click={() => sortData("volume")}
-        class="cursor-pointer p-2 text-center select-none"
+        class="cursor-pointer p-2 text-center select-none whitespace-nowrap"
       >
         Volume
         <svg
@@ -245,7 +245,7 @@
 
       <div
         on:click={() => sortData("sizeVolRatio")}
-        class="cursor-pointer p-2 text-center select-none"
+        class="cursor-pointer p-2 text-center select-none whitespace-nowrap"
       >
         % Size / Vol
         <svg

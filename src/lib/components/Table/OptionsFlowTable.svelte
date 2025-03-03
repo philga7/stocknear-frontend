@@ -243,7 +243,7 @@
     >
       <div
         on:click={() => sortData("time")}
-        class="cursor-pointer p-2 text-center whitespace-nowrap"
+        class="cursor-pointer p-2 text-center select-none whitespace-nowrap"
       >
         Time
         <svg
@@ -264,7 +264,7 @@
       </div>
       <div
         on:click={() => sortData("ticker")}
-        class="cursor-pointer p-2 text-center select-none"
+        class="cursor-pointer p-2 text-center select-none whitespace-nowrap"
       >
         Symbol
         <svg
@@ -420,7 +420,7 @@
 
       <div
         on:click={() => sortData("price")}
-        class="cursor-pointer p-2 text-center select-none"
+        class="cursor-pointer p-2 text-center select-none whitespace-nowrap"
       >
         Price
         <svg
@@ -441,7 +441,7 @@
       </div>
       <div
         on:click={() => sortData("premium")}
-        class="cursor-pointer p-2 text-center select-none"
+        class="cursor-pointer p-2 text-center select-none whitespace-nowrap"
       >
         Premium
         <svg
@@ -463,7 +463,7 @@
 
       <div
         on:click={() => sortData("type")}
-        class="cursor-pointer p-2 text-center whitespace-nowrap"
+        class="cursor-pointer p-2 text-center select-none whitespace-nowrap"
       >
         Type
         <svg
@@ -485,7 +485,7 @@
 
       <div
         on:click={() => sortData("exec")}
-        class="cursor-pointer p-2 text-center whitespace-nowrap"
+        class="cursor-pointer p-2 text-center select-none whitespace-nowrap"
       >
         Exec.
         <svg
@@ -507,7 +507,7 @@
 
       <div
         on:click={() => sortData("size")}
-        class="cursor-pointer p-2 text-center select-none"
+        class="cursor-pointer p-2 text-center select-none whitespace-nowrap"
       >
         Size
         <svg
@@ -528,7 +528,7 @@
       </div>
       <div
         on:click={() => sortData("vol")}
-        class="cursor-pointer p-2 text-center select-none"
+        class="cursor-pointer p-2 text-center select-none whitespace-nowrap"
       >
         Vol
         <svg
@@ -550,7 +550,7 @@
 
       <div
         on:click={() => sortData("oi")}
-        class="cursor-pointer p-2 text-center select-none"
+        class="cursor-pointer p-2 text-center select-none whitespace-nowrap"
       >
         OI
         <svg
@@ -595,13 +595,13 @@
           data?.user?.tier !== "Pro"}
       >
         <div
-          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap"
+          class="p-2 text-center text-white text-sm sm:text-[1rem] whitespace-nowrap"
         >
           {formatTime(displayedData[index]?.time)}
         </div>
         <div
           on:click|stopPropagation
-          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap"
+          class="p-2 text-center text-white text-sm sm:text-[1rem] whitespace-nowrap"
         >
           <HoverStockChart
             symbol={displayedData[index]?.ticker}
@@ -613,7 +613,7 @@
           id={displayedData[index]?.id}
           on:click|stopPropagation={() =>
             addToWatchlist(displayedData[index]?.id)}
-          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap {optionsWatchlist.optionsId?.includes(
+          class="p-2 text-center text-white text-sm sm:text-[1rem] whitespace-nowrap {optionsWatchlist.optionsId?.includes(
             displayedData[index]?.id,
           )
             ? 'text-[#FBCE3C]'
@@ -633,13 +633,13 @@
         </div>
 
         <div
-          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap"
+          class="p-2 text-center text-white text-sm sm:text-[1rem] whitespace-nowrap"
         >
           {reformatDate(displayedData[index]?.date_expiration)}
         </div>
 
         <div
-          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap"
+          class="p-2 text-center text-white text-sm sm:text-[1rem] whitespace-nowrap"
         >
           {displayedData[index]?.dte < 0
             ? "expired"
@@ -647,13 +647,13 @@
         </div>
 
         <div
-          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap"
+          class="p-2 text-center text-white text-sm sm:text-[1rem] whitespace-nowrap"
         >
           {displayedData[index]?.strike_price}
         </div>
 
         <div
-          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap {displayedData[
+          class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap {displayedData[
             index
           ]?.put_call === 'Calls'
             ? 'text-[#00FC50]'
@@ -663,7 +663,7 @@
         </div>
 
         <div
-          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap {displayedData[
+          class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap {displayedData[
             index
           ]?.sentiment === 'Bullish'
             ? 'text-[#00FC50]'
@@ -675,19 +675,19 @@
         </div>
 
         <div
-          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap"
+          class="p-2 text-center text-white text-sm sm:text-[1rem] whitespace-nowrap"
         >
           {displayedData[index]?.underlying_price}
         </div>
 
         <div
-          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap"
+          class="p-2 text-center text-white text-sm sm:text-[1rem] whitespace-nowrap"
         >
           {displayedData[index]?.price}
         </div>
 
         <div
-          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap"
+          class="p-2 text-center text-white text-sm sm:text-[1rem] whitespace-nowrap"
         >
           {@html abbreviateNumberWithColor(
             displayedData[index]?.cost_basis,
@@ -697,7 +697,7 @@
         </div>
 
         <div
-          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap uppercase {displayedData[
+          class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap uppercase {displayedData[
             index
           ]?.option_activity_type === 'Sweep'
             ? 'text-[#C6A755]'
@@ -707,7 +707,7 @@
         </div>
 
         <div
-          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap uppercase {[
+          class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap uppercase {[
             'At Ask',
             'Above Ask',
           ]?.includes(displayedData[index]?.execution_estimate)
@@ -726,7 +726,7 @@
         </div>
 
         <div
-          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap"
+          class="p-2 text-center text-white text-sm sm:text-[1rem] whitespace-nowrap"
         >
           {new Intl.NumberFormat("en", {
             minimumFractionDigits: 0,
@@ -735,7 +735,7 @@
         </div>
 
         <div
-          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap"
+          class="p-2 text-center text-white text-sm sm:text-[1rem] whitespace-nowrap"
         >
           {new Intl.NumberFormat("en", {
             minimumFractionDigits: 0,
@@ -744,7 +744,7 @@
         </div>
 
         <div
-          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap"
+          class="p-2 text-center text-white text-sm sm:text-[1rem] whitespace-nowrap"
         >
           {new Intl.NumberFormat("en", {
             minimumFractionDigits: 0,
