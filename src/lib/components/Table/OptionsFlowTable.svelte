@@ -234,8 +234,343 @@
   }
 </script>
 
-<div class="table-container">
-  <div class="table">
+<div class="w-full overflow-x-auto">
+  <!-- Set a min-width on smaller screens so the grid can show all columns -->
+  <div class="min-w-[1000px]">
+    <!-- Header row using grid -->
+    <div
+      class="grid grid-cols-16 sticky top-0 z-40 border border-gray-800 bg-default text-white font-bold text-xs uppercase"
+    >
+      <div
+        on:click={() => sortData("time")}
+        class="cursor-pointer p-2 text-center whitespace-nowrap"
+      >
+        Time
+        <svg
+          class="shrink-0 w-4 h-4 -mt-1 {sortOrders['time'] === 'asc'
+            ? 'rotate-180 inline-block'
+            : sortOrders['time'] === 'desc'
+              ? 'inline-block'
+              : 'hidden'} "
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          style="max-width:50px"
+          ><path
+            fill-rule="evenodd"
+            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path></svg
+        >
+      </div>
+      <div
+        on:click={() => sortData("ticker")}
+        class="cursor-pointer p-2 text-center select-none"
+      >
+        Symbol
+        <svg
+          class="shrink-0 w-4 h-4 -mt-1 {sortOrders['ticker'] === 'asc'
+            ? 'rotate-180 inline-block'
+            : sortOrders['ticker'] === 'desc'
+              ? 'inline-block'
+              : 'hidden'} "
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          style="max-width:50px"
+          ><path
+            fill-rule="evenodd"
+            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path></svg
+        >
+      </div>
+
+      <div class="cursor-pointer p-2 text-center whitespace-nowrap">Save</div>
+
+      <div
+        on:click={() => sortData("expiry")}
+        class="cursor-pointer p-2 text-center whitespace-nowrap"
+      >
+        Expiry
+        <svg
+          class="shrink-0 w-4 h-4 -mt-1 {sortOrders['expiry'] === 'asc'
+            ? 'rotate-180 inline-block'
+            : sortOrders['expiry'] === 'desc'
+              ? 'inline-block'
+              : 'hidden'} "
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          style="max-width:50px"
+          ><path
+            fill-rule="evenodd"
+            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path></svg
+        >
+      </div>
+
+      <div
+        on:click={() => sortData("dte")}
+        class="cursor-pointer p-2 text-center whitespace-nowrap"
+      >
+        dte
+        <svg
+          class="shrink-0 w-4 h-4 -mt-1 {sortOrders['dte'] === 'asc'
+            ? 'rotate-180 inline-block'
+            : sortOrders['dte'] === 'desc'
+              ? 'inline-block'
+              : 'hidden'} "
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          style="max-width:50px"
+          ><path
+            fill-rule="evenodd"
+            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path></svg
+        >
+      </div>
+
+      <div
+        on:click={() => sortData("strike")}
+        class="cursor-pointer p-2 text-center whitespace-nowrap"
+      >
+        strike
+        <svg
+          class="shrink-0 w-4 h-4 -mt-1 {sortOrders['strike'] === 'asc'
+            ? 'rotate-180 inline-block'
+            : sortOrders['strike'] === 'desc'
+              ? 'inline-block'
+              : 'hidden'} "
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          style="max-width:50px"
+          ><path
+            fill-rule="evenodd"
+            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path></svg
+        >
+      </div>
+
+      <div
+        on:click={() => sortData("callPut")}
+        class="cursor-pointer p-2 text-center whitespace-nowrap"
+      >
+        C/P
+        <svg
+          class="shrink-0 w-4 h-4 -mt-1 {sortOrders['callPut'] === 'asc'
+            ? 'rotate-180 inline-block'
+            : sortOrders['callPut'] === 'desc'
+              ? 'inline-block'
+              : 'hidden'} "
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          style="max-width:50px"
+          ><path
+            fill-rule="evenodd"
+            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path></svg
+        >
+      </div>
+
+      <div
+        on:click={() => sortData("sentiment")}
+        class="cursor-pointer p-2 text-center whitespace-nowrap"
+      >
+        Sent.
+        <svg
+          class="shrink-0 w-4 h-4 -mt-1 {sortOrders['sentiment'] === 'asc'
+            ? 'rotate-180 inline-block'
+            : sortOrders['sentiment'] === 'desc'
+              ? 'inline-block'
+              : 'hidden'} "
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          style="max-width:50px"
+          ><path
+            fill-rule="evenodd"
+            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path></svg
+        >
+      </div>
+
+      <div
+        on:click={() => sortData("spot")}
+        class="cursor-pointer p-2 text-center whitespace-nowrap"
+      >
+        Spot
+        <svg
+          class="shrink-0 w-4 h-4 -mt-1 {sortOrders['spot'] === 'asc'
+            ? 'rotate-180 inline-block'
+            : sortOrders['spot'] === 'desc'
+              ? 'inline-block'
+              : 'hidden'} "
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          style="max-width:50px"
+          ><path
+            fill-rule="evenodd"
+            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path></svg
+        >
+      </div>
+
+      <div
+        on:click={() => sortData("price")}
+        class="cursor-pointer p-2 text-center select-none"
+      >
+        Price
+        <svg
+          class="shrink-0 w-4 h-4 -mt-1 {sortOrders['price'] === 'asc'
+            ? 'rotate-180 inline-block'
+            : sortOrders['price'] === 'desc'
+              ? 'inline-block'
+              : 'hidden'} "
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          style="max-width:50px"
+          ><path
+            fill-rule="evenodd"
+            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path></svg
+        >
+      </div>
+      <div
+        on:click={() => sortData("premium")}
+        class="cursor-pointer p-2 text-center select-none"
+      >
+        Premium
+        <svg
+          class="shrink-0 w-4 h-4 -mt-1 {sortOrders['premium'] === 'asc'
+            ? 'rotate-180 inline-block'
+            : sortOrders['premium'] === 'desc'
+              ? 'inline-block'
+              : 'hidden'} "
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          style="max-width:50px"
+          ><path
+            fill-rule="evenodd"
+            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path></svg
+        >
+      </div>
+
+      <div
+        on:click={() => sortData("type")}
+        class="cursor-pointer p-2 text-center whitespace-nowrap"
+      >
+        Type
+        <svg
+          class="shrink-0 w-4 h-4 -mt-1 {sortOrders['type'] === 'asc'
+            ? 'rotate-180 inline-block'
+            : sortOrders['type'] === 'desc'
+              ? 'inline-block'
+              : 'hidden'} "
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          style="max-width:50px"
+          ><path
+            fill-rule="evenodd"
+            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path></svg
+        >
+      </div>
+
+      <div
+        on:click={() => sortData("exec")}
+        class="cursor-pointer p-2 text-center whitespace-nowrap"
+      >
+        Exec.
+        <svg
+          class="shrink-0 w-4 h-4 -mt-1 {sortOrders['exec'] === 'asc'
+            ? 'rotate-180 inline-block'
+            : sortOrders['exec'] === 'desc'
+              ? 'inline-block'
+              : 'hidden'} "
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          style="max-width:50px"
+          ><path
+            fill-rule="evenodd"
+            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path></svg
+        >
+      </div>
+
+      <div
+        on:click={() => sortData("size")}
+        class="cursor-pointer p-2 text-center select-none"
+      >
+        Size
+        <svg
+          class="shrink-0 w-4 h-4 -mt-1 {sortOrders['size'] === 'asc'
+            ? 'rotate-180 inline-block'
+            : sortOrders['size'] === 'desc'
+              ? 'inline-block'
+              : 'hidden'} "
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          style="max-width:50px"
+          ><path
+            fill-rule="evenodd"
+            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path></svg
+        >
+      </div>
+      <div
+        on:click={() => sortData("vol")}
+        class="cursor-pointer p-2 text-center select-none"
+      >
+        Vol
+        <svg
+          class="shrink-0 w-4 h-4 -mt-1 {sortOrders['vol'] === 'asc'
+            ? 'rotate-180 inline-block'
+            : sortOrders['vol'] === 'desc'
+              ? 'inline-block'
+              : 'hidden'} "
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          style="max-width:50px"
+          ><path
+            fill-rule="evenodd"
+            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path></svg
+        >
+      </div>
+
+      <div
+        on:click={() => sortData("oi")}
+        class="cursor-pointer p-2 text-center select-none"
+      >
+        OI
+        <svg
+          class="shrink-0 w-4 h-4 -mt-1 {sortOrders['oi'] === 'asc'
+            ? 'rotate-180 inline-block'
+            : sortOrders['oi'] === 'desc'
+              ? 'inline-block'
+              : 'hidden'} "
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          style="max-width:50px"
+          ><path
+            fill-rule="evenodd"
+            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path></svg
+        >
+      </div>
+    </div>
+
     <VirtualList
       width="100%"
       height={$screenWidth < 640
@@ -248,367 +583,25 @@
       itemCount={displayedData.length}
       itemSize={40}
     >
-      <div slot="header" class="tr th sticky z-40 top-0 border border-gray-800">
-        <!-- Table headers -->
-        <div
-          on:click={() => sortData("time")}
-          class="td cursor-pointer select-none bg-default text-white font-bold text-xs text-start uppercase"
-        >
-          Time
-          <svg
-            class="shrink-0 w-4 h-4 inline-block {sortOrders['time'] ===
-            'asc'
-              ? 'rotate-180'
-              : ''} "
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            style="max-width:50px"
-            ><path
-              fill-rule="evenodd"
-              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-              clip-rule="evenodd"
-            ></path></svg
-          >
-        </div>
-        <div
-          on:click={() => sortData("ticker")}
-          class="td cursor-pointer select-none bg-default font-bold text-white text-xs text-start uppercase"
-        >
-          Symbol
-          <svg
-            class="shrink-0 w-4 h-4 inline-block {sortOrders['ticker'] ===
-            'asc'
-              ? 'rotate-180'
-              : sortOrders['ticker'] === 'desc'
-                ? ''
-                : 'hidden'} "
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            style="max-width:50px"
-            ><path
-              fill-rule="evenodd"
-              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-              clip-rule="evenodd"
-            ></path></svg
-          >
-        </div>
-        <div
-          class="td select-none bg-default text-white font-bold text-xs text-start uppercase"
-        >
-          Save
-        </div>
-        <div
-          on:click={() => sortData("expiry")}
-          class="td cursor-pointer select-none bg-default text-white font-bold text-xs text-start uppercase"
-        >
-          Expiry
-          <svg
-            class="shrink-0 w-4 h-4 inline-block {sortOrders['expiry'] ===
-            'asc'
-              ? 'rotate-180'
-              : sortOrders['expiry'] === 'desc'
-                ? ''
-                : 'hidden'} "
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            style="max-width:50px"
-            ><path
-              fill-rule="evenodd"
-              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-              clip-rule="evenodd"
-            ></path></svg
-          >
-        </div>
-        <div
-          on:click={() => sortData("dte")}
-          class="td cursor-pointer select-none bg-default text-white font-bold text-xs text-start uppercase"
-        >
-          DTE
-          <svg
-            class="shrink-0 w-4 h-4 inline-block {sortOrders['dte'] ===
-            'asc'
-              ? 'rotate-180'
-              : sortOrders['dte'] === 'desc'
-                ? ''
-                : 'hidden'} "
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            style="max-width:50px"
-            ><path
-              fill-rule="evenodd"
-              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-              clip-rule="evenodd"
-            ></path></svg
-          >
-        </div>
-        <div
-          on:click={() => sortData("strike")}
-          class="td cursor-pointer select-none bg-default text-white font-bold text-xs text-start uppercase"
-        >
-          Strike
-          <svg
-            class="shrink-0 w-4 h-4 inline-block {sortOrders['strike'] ===
-            'asc'
-              ? 'rotate-180'
-              : sortOrders['strike'] === 'desc'
-                ? ''
-                : 'hidden'} "
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            style="max-width:50px"
-            ><path
-              fill-rule="evenodd"
-              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-              clip-rule="evenodd"
-            ></path></svg
-          >
-        </div>
-        <div
-          on:click={() => sortData("callPut")}
-          class="td cursor-pointer select-none bg-default text-white font-bold text-xs text-start uppercase"
-        >
-          C/P
-          <svg
-            class="shrink-0 w-4 h-4 inline-block {sortOrders['callPut'] ===
-            'asc'
-              ? 'rotate-180'
-              : sortOrders['callPut'] === 'desc'
-                ? ''
-                : 'hidden'} "
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            style="max-width:50px"
-            ><path
-              fill-rule="evenodd"
-              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-              clip-rule="evenodd"
-            ></path></svg
-          >
-        </div>
-        <div
-          on:click={() => sortData("sentiment")}
-          class="td cursor-pointer select-none bg-default text-white font-bold text-xs text-start uppercase"
-        >
-          Sent.
-          <svg
-            class="shrink-0 w-4 h-4 inline-block {sortOrders[
-              'sentiment'
-            ] === 'asc'
-              ? 'rotate-180'
-              : sortOrders['sentiment'] === 'desc'
-                ? ''
-                : 'hidden'} "
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            style="max-width:50px"
-            ><path
-              fill-rule="evenodd"
-              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-              clip-rule="evenodd"
-            ></path></svg
-          >
-        </div>
-        <div
-          on:click={() => sortData("spot")}
-          class="td cursor-pointer select-none bg-default text-white font-bold text-xs text-start uppercase"
-        >
-          Spot
-          <svg
-            class="shrink-0 w-4 h-4 inline-block {sortOrders['spot'] ===
-            'asc'
-              ? 'rotate-180'
-              : sortOrders['spot'] === 'desc'
-                ? ''
-                : 'hidden'} "
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            style="max-width:50px"
-            ><path
-              fill-rule="evenodd"
-              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-              clip-rule="evenodd"
-            ></path></svg
-          >
-        </div>
-        <div
-          on:click={() => sortData("price")}
-          class="td cursor-pointer select-none bg-default text-white font-bold text-xs text-start uppercase"
-        >
-          Price
-          <svg
-            class="shrink-0 w-4 h-4 inline-block {sortOrders['price'] ===
-            'asc'
-              ? 'rotate-180'
-              : sortOrders['price'] === 'desc'
-                ? ''
-                : 'hidden'} "
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            style="max-width:50px"
-            ><path
-              fill-rule="evenodd"
-              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-              clip-rule="evenodd"
-            ></path></svg
-          >
-        </div>
-        <div
-          on:click={() => sortData("premium")}
-          class="td cursor-pointer select-none bg-default text-white font-bold text-xs text-start uppercase"
-        >
-          Prem
-          <svg
-            class="shrink-0 w-4 h-4 inline-block {sortOrders['premium'] ===
-            'asc'
-              ? 'rotate-180'
-              : sortOrders['premium'] === 'desc'
-                ? ''
-                : 'hidden'} "
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            style="max-width:50px"
-            ><path
-              fill-rule="evenodd"
-              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-              clip-rule="evenodd"
-            ></path></svg
-          >
-        </div>
-        <div
-          on:click={() => sortData("type")}
-          class="td cursor-pointer select-none bg-default text-white font-bold text-xs text-start uppercase"
-        >
-          Type
-          <svg
-            class="shrink-0 w-4 h-4 inline-block {sortOrders['type'] ===
-            'asc'
-              ? 'rotate-180'
-              : sortOrders['type'] === 'desc'
-                ? ''
-                : 'hidden'} "
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            style="max-width:50px"
-            ><path
-              fill-rule="evenodd"
-              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-              clip-rule="evenodd"
-            ></path></svg
-          >
-        </div>
-        <div
-          on:click={() => sortData("exec")}
-          class="td cursor-pointer select-none bg-default text-white font-bold text-xs text-start uppercase"
-        >
-          Exec
-          <svg
-            class="shrink-0 w-4 h-4 inline-block {sortOrders['exec'] ===
-            'asc'
-              ? 'rotate-180'
-              : sortOrders['exec'] === 'desc'
-                ? ''
-                : 'hidden'} "
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            style="max-width:50px"
-            ><path
-              fill-rule="evenodd"
-              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-              clip-rule="evenodd"
-            ></path></svg
-          >
-        </div>
-        <div
-          on:click={() => sortData("size")}
-          class="td cursor-pointer select-none bg-default text-white font-bold text-xs text-start uppercase"
-        >
-          Size
-          <svg
-            class="shrink-0 w-4 h-4 inline-block {sortOrders['size'] ===
-            'asc'
-              ? 'rotate-180'
-              : sortOrders['size'] === 'desc'
-                ? ''
-                : 'hidden'} "
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            style="max-width:50px"
-            ><path
-              fill-rule="evenodd"
-              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-              clip-rule="evenodd"
-            ></path></svg
-          >
-        </div>
-        <div
-          on:click={() => sortData("vol")}
-          class="td cursor-pointer select-none bg-default text-white font-bold text-xs text-start uppercase"
-        >
-          Vol
-          <svg
-            class="shrink-0 w-4 h-4 inline-block {sortOrders['vol'] ===
-            'asc'
-              ? 'rotate-180'
-              : sortOrders['vol'] === 'desc'
-                ? ''
-                : 'hidden'} "
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            style="max-width:50px"
-            ><path
-              fill-rule="evenodd"
-              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-              clip-rule="evenodd"
-            ></path></svg
-          >
-        </div>
-        <div
-          on:click={() => sortData("oi")}
-          class="td cursor-pointer select-none bg-default text-white font-bold text-xs text-start uppercase"
-        >
-          OI
-          <svg
-            class="shrink-0 w-4 h-4 inline-block {sortOrders['oi'] ===
-            'asc'
-              ? 'rotate-180'
-              : sortOrders['oi'] === 'desc'
-                ? ''
-                : 'hidden'} "
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            style="max-width:50px"
-            ><path
-              fill-rule="evenodd"
-              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-              clip-rule="evenodd"
-            ></path></svg
-          >
-        </div>
-      </div>
-
       <div
         slot="item"
         let:index
         let:style
         {style}
-        class="tr {index % 2 === 0 ? 'bg-[#19191F]' : 'bg-[#121217]'} {index +
-          1 ===
-          rawData?.length && data?.user?.tier !== 'Pro'
-          ? 'opacity-[0.3]'
-          : ''}"
+        class="grid grid-cols-16 gap-0"
+        class:bg-[#19191F]={index % 2 === 0}
+        class:bg-[#121217]={index % 2 !== 0}
+        class:opacity-30={index + 1 === rawData?.length &&
+          data?.user?.tier !== "Pro"}
       >
-        <!-- Row data -->
-
         <div
-          style="justify-content: center;"
-          class="td text-white text-xs sm:text-sm text-start m-auto whitespace-nowrap"
+          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap"
         >
           {formatTime(displayedData[index]?.time)}
         </div>
         <div
           on:click|stopPropagation
-          style="justify-content: center;"
-          class="td text-sm sm:hover:text-white sm:text-[1rem] text-blue-400 font-normal"
+          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap"
         >
           <HoverStockChart
             symbol={displayedData[index]?.ticker}
@@ -620,8 +613,7 @@
           id={displayedData[index]?.id}
           on:click|stopPropagation={() =>
             addToWatchlist(displayedData[index]?.id)}
-          style="justify-content: center;"
-          class="td {optionsWatchlist.optionsId?.includes(
+          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap {optionsWatchlist.optionsId?.includes(
             displayedData[index]?.id,
           )
             ? 'text-[#FBCE3C]'
@@ -641,15 +633,13 @@
         </div>
 
         <div
-          style="justify-content: center;"
-          class="td text-sm sm:text-[1rem] text-white text-start"
+          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap"
         >
           {reformatDate(displayedData[index]?.date_expiration)}
         </div>
 
         <div
-          style="justify-content: center;"
-          class="td text-sm sm:text-[1rem] text-white text-start"
+          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap"
         >
           {displayedData[index]?.dte < 0
             ? "expired"
@@ -657,51 +647,47 @@
         </div>
 
         <div
-          style="justify-content: center;"
-          class="td text-sm sm:text-[1rem] text-white text-start"
+          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap"
         >
           {displayedData[index]?.strike_price}
         </div>
 
         <div
-          style="justify-content: center;"
-          class="td text-sm sm:text-[1rem] {displayedData[index]?.put_call ===
-          'Calls'
+          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap {displayedData[
+            index
+          ]?.put_call === 'Calls'
             ? 'text-[#00FC50]'
-            : 'text-[#c44536]'} text-start"
+            : 'text-[#c44536]'} "
         >
           {displayedData[index]?.put_call}
         </div>
 
         <div
-          style="justify-content: center;"
-          class="td text-sm sm:text-[1rem] {displayedData[index]?.sentiment ===
-          'Bullish'
+          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap {displayedData[
+            index
+          ]?.sentiment === 'Bullish'
             ? 'text-[#00FC50]'
             : displayedData[index]?.sentiment === 'Bearish'
               ? 'text-[#FF2F1F]'
-              : 'text-[#C6A755]'} text-start"
+              : 'text-[#C6A755]'} "
         >
           {displayedData[index]?.sentiment}
         </div>
 
         <div
-          style="justify-content: center;"
-          class="td text-sm sm:text-[1rem] text-start text-white"
+          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap"
         >
           {displayedData[index]?.underlying_price}
         </div>
 
         <div
-          style="justify-content: center;"
-          class="td text-sm sm:text-[1rem] text-start text-white"
+          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap"
         >
           {displayedData[index]?.price}
         </div>
 
         <div
-          style="justify-content: center;"
-          class="td text-sm sm:text-[1rem] text-start text-white"
+          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap"
         >
           {@html abbreviateNumberWithColor(
             displayedData[index]?.cost_basis,
@@ -711,8 +697,7 @@
         </div>
 
         <div
-          style="justify-content: center;"
-          class="td text-sm sm:text-[1rem] uppercase text-start {displayedData[
+          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap uppercase {displayedData[
             index
           ]?.option_activity_type === 'Sweep'
             ? 'text-[#C6A755]'
@@ -722,8 +707,7 @@
         </div>
 
         <div
-          style="justify-content: center;"
-          class="td text-sm sm:text-[1rem] uppercase text-start {[
+          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap uppercase {[
             'At Ask',
             'Above Ask',
           ]?.includes(displayedData[index]?.execution_estimate)
@@ -742,8 +726,7 @@
         </div>
 
         <div
-          style="justify-content: center;"
-          class="td text-sm sm:text-[1rem] text-white text-end"
+          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap"
         >
           {new Intl.NumberFormat("en", {
             minimumFractionDigits: 0,
@@ -752,8 +735,7 @@
         </div>
 
         <div
-          style="justify-content: center;"
-          class="td text-sm sm:text-[1rem] text-white text-end"
+          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap"
         >
           {new Intl.NumberFormat("en", {
             minimumFractionDigits: 0,
@@ -762,8 +744,7 @@
         </div>
 
         <div
-          style="justify-content: center;"
-          class="td text-sm sm:text-[1rem] text-white text-end"
+          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap"
         >
           {new Intl.NumberFormat("en", {
             minimumFractionDigits: 0,
@@ -774,89 +755,3 @@
     </VirtualList>
   </div>
 </div>
-
-<style>
-  .table-container {
-    width: 100%;
-    overflow-x: auto;
-  }
-
-  .table :global(.virtual-list-inner) {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-
-  @media (max-width: 768px) {
-    .table {
-      width: 1000px;
-    }
-  }
-
-  .table .virtual-list-inner {
-    flex-flow: column nowrap;
-    font-size: 0.8rem;
-    line-height: 1.5;
-    flex: 1 1 auto;
-  }
-
-  .th {
-    display: none;
-    font-weight: 700;
-  }
-
-  .th > .td {
-    white-space: nowrap;
-    justify-content: center;
-  }
-
-  .tr {
-    width: 100%;
-    display: flex;
-    flex-flow: row nowrap;
-  }
-
-  .tr.even {
-    background-color: #2a2e39;
-  }
-
-  .tr.odd {
-    background-color: #09090b;
-  }
-
-  .td {
-    display: flex;
-    flex-flow: row nowrap;
-    grow: 1;
-    flex-basis: 0;
-    padding: 0.5em;
-    word-break: break-word;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    min-width: 0px;
-    white-space: nowrap;
-  }
-
-  .heartbeat {
-    animation: heartbeat-animation 0.3s;
-    animation-timing-function: ease-in-out;
-  }
-
-  @keyframes heartbeat-animation {
-    0% {
-      transform: rotate(0deg) scale(0.95);
-    }
-    25% {
-      transform: rotate(10deg) scale(1.05);
-    }
-    50% {
-      transform: rotate(0deg) scale(1.2);
-    }
-    75% {
-      transform: rotate(-10deg) scale(1.05);
-    }
-    100% {
-      transform: rotate(0deg) scale(0.95);
-    }
-  }
-</style>
