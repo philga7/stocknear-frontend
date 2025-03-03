@@ -1,7 +1,7 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import Input from "$lib/components/Input.svelte";
-  import toast from "svelte-french-toast";
+  import { toast } from "svelte-sonner";
   import SEO from "$lib/components/SEO.svelte";
 
   export let form;
@@ -24,33 +24,21 @@
             break;
           } else form?.notVerified === false;
           {
-            toast.success("Login successfully!", {
-              style:
-                "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-            });
+            toast.success("Login successfully!");
             await update();
             break;
           }
         case "redirect":
           isClicked = true;
-          toast.success("Login successfully!", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
+          toast.success("Login successfully!");
           await update();
           break;
         case "failure":
-          toast.error("Invalid credentials", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
+          toast.error("Invalid credentials");
           await update();
           break;
         case "error":
-          toast.error(result.error.message, {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
+          toast.error(result.error.message);
           break;
         default:
           await update();
@@ -129,7 +117,7 @@
           {#if !loading && !isClicked}
             <button
               type="submit"
-              class="btn bg-[#fff] border border-gray-600 sm:hover:bg-gray-300 transition duration-100 btn-md w-full rounded-md m-auto text-black font-semibold text-[1rem]"
+              class="cursor-pointer py-2.5 bg-[#fff] border-none sm:hover:bg-gray-300 transition duration-100 btn-md w-full rounded-md m-auto text-black font-semibold text-[1rem]"
             >
               <span>Login</span>
             </button>

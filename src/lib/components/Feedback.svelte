@@ -1,5 +1,6 @@
 <script lang="ts">
-  import toast from "svelte-french-toast";
+  import { toast } from "svelte-sonner";
+
   import veryGoodEmoji from "$lib/assets/veryGoodEmoji.svg";
   import goodEmoji from "$lib/assets/goodEmoji.svg";
   import badEmoji from "$lib/assets/badEmoji.svg";
@@ -38,18 +39,12 @@
 
   async function sendFeedback() {
     if (inputValue?.length === 0) {
-      toast.error("Please enter your feedback", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.error("Please enter your feedback");
       return;
     }
 
     if (rating?.length === 0 && category === "general") {
-      toast.error("Please select an emoji", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.error("Please select an emoji");
       return;
     }
 

@@ -12,7 +12,7 @@
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import DownloadData from "$lib/components/DownloadData.svelte";
   import { page } from "$app/stores";
-  import toast from "svelte-french-toast";
+  import { toast } from "svelte-sonner";
 
   export let data;
   export let rawData;

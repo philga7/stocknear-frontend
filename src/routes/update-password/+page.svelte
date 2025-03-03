@@ -1,6 +1,7 @@
 <script ts="lang">
   import { pb } from "$lib/pocketbase";
-  import toast from "svelte-french-toast";
+  import { toast } from "svelte-sonner";
+
   import Input from "$lib/components/Input.svelte";
   import { updatePasswordSchema } from "$lib/schemas";
   import { goto } from "$app/navigation";

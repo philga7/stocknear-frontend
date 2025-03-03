@@ -3,7 +3,7 @@
   import { abbreviateNumber } from "$lib/utils";
   import SEO from "$lib/components/SEO.svelte";
   import { onMount } from "svelte";
-  import toast from "svelte-french-toast";
+  import { toast } from "svelte-sonner";
 
   export let data;
   let editMode = false;
@@ -88,15 +88,9 @@
 
   async function handleDelete() {
     if (numberOfChecked === 0) {
-      toast.error(`You need to select symbols before you can delete them`, {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.error(`You need to select symbols before you can delete them`);
     } else if (data?.getOptionsWatchlist?.id?.length === 0) {
-      toast.error(`You need to select symbols before you can delete them`, {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.error(`You need to select symbols before you can delete them`);
     } else {
       optionsWatchlist = optionsWatchlist?.filter(
         (item) => !deleteOptionsId?.includes(item?.id),

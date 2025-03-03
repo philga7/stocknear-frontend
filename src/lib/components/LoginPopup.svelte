@@ -1,6 +1,7 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
-  import toast from "svelte-french-toast";
+  import { toast } from "svelte-sonner";
+
   import Input from "$lib/components/Input.svelte";
   import { screenWidth } from "$lib/store";
   import { page } from "$app/stores";
@@ -18,24 +19,15 @@
         case "success":
         case "redirect":
           isClicked = true;
-          toast.success("Login successfully!", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
+          toast.success("Login successfully!");
           await update();
           break;
         case "failure":
-          toast.error("Invalid credentials", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
+          toast.error("Invalid credentials");
           await update();
           break;
         case "error":
-          toast.error(result.error.message, {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
+          toast.error(result.error.message);
           break;
         default:
           await update();
@@ -65,24 +57,15 @@
         case "success":
         case "redirect":
           isClicked = true;
-          toast.success("Registration successfully!", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
+          toast.success("Registration successfully!");
           await update();
           break;
         case "failure":
-          toast.error("Invalid credentials", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
+          toast.error("Invalid credentials");
           await update();
           break;
         case "error":
-          toast.error(result.error.message, {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
+          toast.error(result.error.message);
           break;
         default:
           await update();

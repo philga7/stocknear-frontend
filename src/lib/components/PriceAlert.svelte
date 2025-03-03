@@ -1,5 +1,6 @@
 <script lang="ts">
-  import toast from "svelte-french-toast";
+  import { toast } from "svelte-sonner";
+
   import { openPriceAlert, newPriceAlertData } from "$lib/store";
 
   export let data;
@@ -17,10 +18,7 @@
   async function handleCreateAlert() {
     // Validate input locally.
     if (targetPrice < 0) {
-      toast.error("Target Price must be above zero", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.error("Target Price must be above zero");
       return;
     }
 

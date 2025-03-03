@@ -4,7 +4,7 @@
   import SEO from "$lib/components/SEO.svelte";
   import { setCache, getCache } from "$lib/store";
   import { onDestroy, onMount } from "svelte";
-  import toast from "svelte-french-toast";
+  import { toast } from "svelte-sonner";
 
   export let data;
   let isLoaded = false;

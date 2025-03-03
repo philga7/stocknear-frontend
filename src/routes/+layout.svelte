@@ -2,8 +2,8 @@
   import "../app.css";
   import "../app.pcss";
 
-  import { Toaster } from "svelte-french-toast";
-
+  //import { Toaster } from "svelte-french-toast";
+  import { Toaster } from "svelte-sonner";
   import NProgress from "nprogress";
   import "nprogress/nprogress.css";
 
@@ -1205,6 +1205,7 @@
 
               <slot />
               <Toaster />
+
               {#if Cookie && $showCookieConsent === true}
                 <Cookie />
               {/if}

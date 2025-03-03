@@ -1,5 +1,6 @@
 <script lang="ts">
-  import toast from "svelte-french-toast";
+  import { toast } from "svelte-sonner";
+
   import { pb } from "$lib/pocketbase";
   import { goto } from "$app/navigation";
   import SEO from "$lib/components/SEO.svelte";
@@ -11,10 +12,7 @@
     event.preventDefault();
     try {
       await pb.collection("users").requestPasswordReset(email);
-      toast.success("Password resetted. Check your emails!", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.success("Password resetted. Check your emails!");
       goto("/login");
     } catch (err) {
       toast.error(

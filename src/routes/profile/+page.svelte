@@ -1,6 +1,7 @@
 <script lang="ts">
   import SEO from "$lib/components/SEO.svelte";
-  import toast from "svelte-french-toast";
+  import { toast } from "svelte-sonner";
+
   import { enhance } from "$app/forms";
   import { isPWAInstalled } from "$lib/utils";
   import {
@@ -37,31 +38,19 @@
     return async ({ result, update }) => {
       switch (result.type) {
         case "success":
-          toast.success("Subscription Cancelled successfully!", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
+          toast.success("Subscription Cancelled successfully!");
           await update();
           break;
         case "redirect":
-          toast.success("Subscription Cancelled successfully!", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
+          toast.success("Subscription Cancelled successfully!");
           await update();
           break;
         case "failure":
-          toast.error("Something went wrong.", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
+          toast.error("Something went wrong.");
           await update();
           break;
         case "error":
-          toast.error(result.error.message, {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
+          toast.error(result.error.message);
           break;
         default:
           await update();
@@ -83,31 +72,19 @@
     return async ({ result, update }) => {
       switch (result.type) {
         case "success":
-          toast.success("Subscription Reactivate successfully!", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
+          toast.success("Subscription Reactivate successfully!");
           await update();
           break;
         case "redirect":
-          toast.success("Subscription Reactivate successfully!", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
+          toast.success("Subscription Reactivate successfully!");
           await update();
           break;
         case "failure":
-          toast.error("Something went wrong.", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
+          toast.error("Something went wrong.");
           await update();
           break;
         case "error":
-          toast.error(result.error.message, {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
+          toast.error(result.error.message);
           break;
         default:
           await update();
@@ -129,31 +106,19 @@
     return async ({ result, update }) => {
       switch (result.type) {
         case "success":
-          toast.success("Changing to Annual Plan successfully!", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
+          toast.success("Changing to Annual Plan successfully!");
           await update();
           break;
         case "redirect":
-          toast.success("Changing to Annual Plan successfully!", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
+          toast.success("Changing to Annual Plan successfully!");
           await update();
           break;
         case "failure":
-          toast.error("Something went wrong.", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
+          toast.error("Something went wrong.");
           await update();
           break;
         case "error":
-          toast.error(result.error.message, {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
+          toast.error(result.error.message);
           break;
         default:
           await update();
@@ -196,15 +161,9 @@
     const output = await subscribeUser();
     if (output?.success === true) {
       isPushSubscribed = true;
-      toast.success("Push notification activated successfully!", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.success("Push notification activated successfully!");
     } else {
-      toast.error("Your browser does not support push notifications...", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.error("Your browser does not support push notifications...");
     }
     loading = false;
   }

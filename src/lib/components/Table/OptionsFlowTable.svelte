@@ -4,7 +4,7 @@
 
   import VirtualList from "svelte-tiny-virtual-list";
   import HoverStockChart from "$lib/components/HoverStockChart.svelte";
-  import toast from "svelte-french-toast";
+  import { toast } from "svelte-sonner";
 
   export let data;
   export let optionsWatchlist;
@@ -93,10 +93,7 @@
         // Handle the error appropriately (e.g., show an error message to the user)
       }
     } else {
-      toast.error("Only for Pro Members", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.error("Only for Pro Members");
     }
   }
 
@@ -613,7 +610,7 @@
           id={displayedData[index]?.id}
           on:click|stopPropagation={() =>
             addToWatchlist(displayedData[index]?.id)}
-          class="p-2 text-center text-white text-sm sm:text-[1rem] whitespace-nowrap {optionsWatchlist.optionsId?.includes(
+          class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap {optionsWatchlist.optionsId?.includes(
             displayedData[index]?.id,
           )
             ? 'text-[#FBCE3C]'
@@ -755,3 +752,28 @@
     </VirtualList>
   </div>
 </div>
+
+<style>
+  .heartbeat {
+    animation: heartbeat-animation 0.3s;
+    animation-timing-function: ease-in-out;
+  }
+
+  @keyframes heartbeat-animation {
+    0% {
+      transform: rotate(0deg) scale(0.95);
+    }
+    25% {
+      transform: rotate(10deg) scale(1.05);
+    }
+    50% {
+      transform: rotate(0deg) scale(1.2);
+    }
+    75% {
+      transform: rotate(-10deg) scale(1.05);
+    }
+    100% {
+      transform: rotate(0deg) scale(0.95);
+    }
+  }
+</style>

@@ -2,7 +2,7 @@
   import { enhance } from "$app/forms";
   import Input from "$lib/components/Input.svelte";
   import SEO from "$lib/components/SEO.svelte";
-  import toast from "svelte-french-toast";
+  import { toast } from "svelte-sonner";
 
   export let form;
 
@@ -17,24 +17,15 @@
         case "success":
         case "redirect":
           isClicked = true;
-          toast.success("Registration successfully!", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
+          toast.success("Registration successfully!");
           await update();
           break;
         case "failure":
-          toast.error("Invalid credentials", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
+          toast.error("Invalid credentials");
           await update();
           break;
         case "error":
-          toast.error(result.error.message, {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
+          toast.error(result.error.message);
           break;
         default:
           await update();
@@ -120,7 +111,7 @@
         {#if !loading && !isClicked}
           <button
             type="submit"
-            class="btn bg-[#fff] border border-gray-600 sm:hover:bg-gray-300 transition duration-100 text-black btn-md w-full rounded-md m-auto font-semibold text-[1rem]"
+            class="py-2.5 cursor-pointer bg-[#fff] border border-gray-600 sm:hover:bg-gray-300 transition duration-100 text-black btn-md w-full rounded-md m-auto font-semibold text-[1rem]"
           >
             <span>Register</span>
           </button>

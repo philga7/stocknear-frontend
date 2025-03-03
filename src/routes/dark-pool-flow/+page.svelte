@@ -4,7 +4,8 @@
 
   import { cn, sectorList } from "$lib/utils";
   import { onMount, onDestroy } from "svelte";
-  import toast from "svelte-french-toast";
+  import { toast } from "svelte-sonner";
+
   import { DateFormatter, type DateValue } from "@internationalized/date";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import * as Popover from "$lib/components/shadcn/popover/index.js";

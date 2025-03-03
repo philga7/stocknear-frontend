@@ -8,7 +8,8 @@
     abbreviateNumber,
   } from "$lib/utils";
   //import { enhance } from '$app/forms';
-  import toast from "svelte-french-toast";
+  import { toast } from "svelte-sonner";
+
   import { goto } from "$app/navigation";
   import { screenWidth, newPriceAlertData } from "$lib/store";
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
@@ -82,15 +83,9 @@
 
   async function handleDeleteTickers() {
     if (numberOfChecked === 0) {
-      toast.error(`You need to select symbols before you can delete them`, {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.error(`You need to select symbols before you can delete them`);
     } else {
-      toast.success(`Price alerts deleted successfully`, {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.success(`Price alerts deleted successfully`);
 
       const symbolsToDelete = priceAlertList
         ?.filter((item) => deletePriceAlertList.includes(item.id))

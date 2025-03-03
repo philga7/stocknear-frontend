@@ -21,7 +21,8 @@
 
   import { onMount, onDestroy, afterUpdate } from "svelte";
   import { page } from "$app/stores";
-  import toast from "svelte-french-toast";
+  import { toast } from "svelte-sonner";
+
   import { convertTimestamp } from "$lib/utils";
   import PriceAlert from "$lib/components/PriceAlert.svelte";
 

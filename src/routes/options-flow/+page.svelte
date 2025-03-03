@@ -4,7 +4,8 @@
 
   import { cn } from "$lib/utils";
   import { onMount, onDestroy } from "svelte";
-  import toast from "svelte-french-toast";
+  import { toast } from "svelte-sonner";
+
   import { DateFormatter, type DateValue } from "@internationalized/date";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import * as Popover from "$lib/components/shadcn/popover/index.js";
@@ -228,10 +229,7 @@
 
   function handleAddRule() {
     if (ruleName === "") {
-      toast.error("Please select a rule", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.error("Please select a rule");
       return;
     }
 
@@ -287,11 +285,6 @@
       }
     } else {
       ruleOfList = [...ruleOfList, newRule];
-      /*
-    toast.success('Rule added', {
-      style: 'border-radius: 200px; background: #2A2E39; color: #fff;'
-    });
-    */
 
       shouldLoadWorker.set(true);
     }
@@ -515,10 +508,7 @@
         shouldLoadWorker.set(true);
       }
     } else {
-      toast.error(`Market is closed`, {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.error(`Market is closed`);
     }
   }
 
@@ -783,10 +773,7 @@
         }
       }
     } else {
-      toast.error("Only for Pro Members", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.error("Only for Pro Members");
     }
   };
 

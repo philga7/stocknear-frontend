@@ -2,7 +2,8 @@
   import { onMount, onDestroy } from "svelte";
   import { goto } from "$app/navigation";
   import { clearCache, screenWidth, getCache, setCache } from "$lib/store";
-  import toast from "svelte-french-toast";
+  import { toast } from "svelte-sonner";
+
   import {
     abbreviateNumber,
     sectorList,
@@ -1492,10 +1493,7 @@
     const output = await response.json();
 
     if (output === "success") {
-      toast.success("Strategy deleted successfully!", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.success("Strategy deleted successfully!");
 
       strategyList =
         strategyList?.filter((item) => item?.id !== selectedStrategy) ?? [];
@@ -1530,10 +1528,7 @@
           ?.map((rule) => [rule.name, new Set(rule.value)]), // Create Map from filtered rules
       );
     } else if (output === "failure") {
-      toast.error("Something went wrong. Please try again", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.error("Something went wrong. Please try again");
     }
   }
 
@@ -1547,18 +1542,12 @@
     const title = formData.get("title");
 
     if (!title || title.length === 0) {
-      toast.error("Title cannot be empty!", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.error("Title cannot be empty!");
       return;
     }
 
     if (title?.length > 100) {
-      toast.error("Title is too long. Keep it simple and concise bruv!", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.error("Title is too long. Keep it simple and concise bruv!");
       return;
     }
 
@@ -1579,10 +1568,7 @@
 
     const output = await response?.json();
     if (output?.id && output?.id?.length !== 0) {
-      toast.success("Strategy created successfully!", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.success("Strategy created successfully!");
 
       const closePopup = document.getElementById("addStrategy");
       closePopup?.dispatchEvent(new MouseEvent("click"));
@@ -1593,10 +1579,7 @@
       strategyList?.unshift(output);
       selectedPopularStrategy = "";
     } else {
-      toast.error("Something went wrong. Please try again later!", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.error("Something went wrong. Please try again later!");
     }
 
     return output;
@@ -1709,10 +1692,7 @@
 
   function handleAddRule() {
     if (ruleName === "") {
-      toast.error("Please select a rule", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.error("Please select a rule");
       return;
     }
 
@@ -1770,11 +1750,6 @@
       }
     } else {
       ruleOfList = [...ruleOfList, newRule];
-      /*
-    toast.success('Rule added', {
-      style: 'border-radius: 200px; background: #2A2E39; color: #fff;'
-    });
-    */
 
       await updateStockScreenerData();
     }
@@ -1929,10 +1904,7 @@ const handleKeyDown = (event) => {
         });
 
         if (printToast === true) {
-          toast.success("Strategy saved!", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
+          toast.success("Strategy saved!");
         }
 
         //isSaved = true;
@@ -3289,7 +3261,7 @@ const handleKeyDown = (event) => {
           <li>
             <button
               on:click={() => (displayTableTab = "filters")}
-              class="text-[1rem] sm:text-lg flex flex-row items-center relative block rounded-md px-2 py-1 sm:hover:bg-primary {displayTableTab ===
+              class="cursor-pointer text-[1rem] sm:text-lg flex flex-row items-center relative block rounded-md px-2 py-1 sm:hover:bg-primary {displayTableTab ===
               'filters'
                 ? 'font-semibold bg-primary'
                 : ''} focus:outline-hidden"

@@ -9,7 +9,8 @@
     calculateChange,
     removeCompanyStrings,
   } from "$lib/utils";
-  import toast from "svelte-french-toast";
+  import { toast } from "svelte-sonner";
+
   import { onMount, onDestroy, afterUpdate } from "svelte";
   import Input from "$lib/components/Input.svelte";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
@@ -19,6 +20,7 @@
   import { goto } from "$app/navigation";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import SEO from "$lib/components/SEO.svelte";
+  import Infobox from "$lib/components/Infobox.svelte";
 
   export let data;
   let timeoutId;
@@ -295,18 +297,12 @@
 
     // Validate the title input
     if (!title || title.toString().trim().length === 0) {
-      toast.error("Title cannot be empty!", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.error("Title cannot be empty!");
       return;
     }
 
     if (title.toString().length > 100) {
-      toast.error("Title is too long. Keep it simple and concise bruv!", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.error("Title is too long. Keep it simple and concise bruv!");
       return;
     }
 
@@ -336,19 +332,11 @@
     });
 
     // Use toast.promise to display a loading toast, then a success or error message
-    toast.promise(
-      promise,
-      {
-        loading: "Creating watchlist...",
-        success: "Watchlist created successfully!",
-        error: (err) =>
-          err.message || "Something went wrong. Please try again!",
-      },
-      {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      },
-    );
+    toast.promise(promise, {
+      loading: "Creating watchlist...",
+      success: "Watchlist created successfully!",
+      error: (err) => err.message || "Something went wrong. Please try again!",
+    });
 
     try {
       const output = await promise;
@@ -420,10 +408,7 @@
       }
     } catch (error) {
       console.error("Error:", error);
-      toast.error("An error occurred. Please try again later.", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.error("An error occurred. Please try again later.");
     }
   }
 
@@ -452,10 +437,7 @@
 
   async function handleDeleteTickers() {
     if (numberOfChecked === 0) {
-      toast.error(`You need to select symbols before you can delete them`, {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.error(`You need to select symbols before you can delete them`);
     } else {
       watchList = watchList?.filter(
         (item) => !deleteTickerList?.includes(item?.symbol),
@@ -521,10 +503,7 @@
 
     // Check if the ticker is already in the watchlist.
     if (watchList?.some((item) => item?.symbol === ticker)) {
-      toast.error("This symbol is already in your watchlist", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.error("This symbol is already in your watchlist");
       inputValue = "";
       return;
     }
@@ -555,18 +534,11 @@
     });
 
     // Use toast.promise to display notifications based on the promise's state.
-    toast.promise(
-      promise,
-      {
-        loading: "Updating watchlist...",
-        success: "Watchlist updated successfully!",
-        error: (err) => err.message || "Failed to update watchlist",
-      },
-      {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      },
-    );
+    toast.promise(promise, {
+      loading: "Updating watchlist...",
+      success: "Watchlist updated successfully!",
+      error: (err) => err.message || "Failed to update watchlist",
+    });
 
     try {
       // Await the promise, which returns the updated watchlist data.
@@ -624,10 +596,7 @@
 
       saveRules();
     } else {
-      toast.error("Only for Pro Members", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      });
+      toast.error("Only for Pro Members");
     }
   }
 
@@ -1077,7 +1046,7 @@
 <section
   class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pt-5 pb-40"
 >
-  <div class="w-full overflow-hidden m-auto mt-5">
+  <div class="w-full overflow-hidden m-auto">
     <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
       <div
         class="relative flex justify-center items-start overflow-hidden w-full"
@@ -1105,7 +1074,7 @@
                         class="min-w-[110px] w-full sm:w-fit border-gray-600 border bg-default sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5 text-white rounded truncate"
                       >
                         <span
-                          class="truncate font-semibold text-white text-sm sm:text-[1rem]"
+                          class="truncate font-medium text-white text-sm sm:text-[1rem]"
                           >{displayWatchList?.title !== undefined
                             ? displayWatchList?.title
                             : "Create Watchlist"}</span
@@ -1265,7 +1234,7 @@
                           stroke-linecap="round"
                           stroke-linejoin="round"
                           stroke-width="3"
-                          stroke="currentColor"
+                          stroke="#fff"
                           viewBox="0 0 24 24"
                           style="max-width: 40px"
                           aria-hidden="true"
@@ -1856,10 +1825,13 @@
                         </div>
                       {/each}
                     {:else}
-                      <span class="text-sm sm:text-[1rem]">
-                        No earnings yet. Add some stocks to the watchlist to see
-                        the latest earnings data.
-                      </span>
+                      <br />
+                      <div class="mt-3 sm:mt-0">
+                        <Infobox
+                          text="No earnings data available. Add some stocks to the watchlist to see
+                        the latest earnings data."
+                        />
+                      </div>
                     {/if}
                   </div>
                 </div>
