@@ -147,7 +147,7 @@
   //==========================//
 
   $: {
-    if ($stockTicker && typeof window !== "undefined") {
+    if ($stockTicker) {
       // add a check to see if running on client-side
       if ($realtimePrice !== null && $realtimePrice !== 0) {
         $currentPortfolioPrice = $realtimePrice;

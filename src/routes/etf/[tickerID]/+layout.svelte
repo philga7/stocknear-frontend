@@ -587,7 +587,7 @@
                           <div class="flex flex-col ml-auto mr-2">
                             {#if userWatchList?.length !== 0}
                               <div
-                                class="shrink-0 rounded-full sm:hover:bg-white sm:hover:bg-opacity-[0.02] transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
+                                class="shrink-0 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
                               >
                                 <label
                                   for="addWatchListModal"

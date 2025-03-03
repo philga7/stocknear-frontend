@@ -499,8 +499,6 @@
   }
 
   async function handleAddTicker(event, ticker) {
-    event.preventDefault(); // Prevent the default form submission behavior
-
     // Check if the ticker is already in the watchlist.
     if (watchList?.some((item) => item?.symbol === ticker)) {
       toast.error("This symbol is already in your watchlist");
@@ -534,7 +532,7 @@
     });
 
     // Use toast.promise to display notifications based on the promise's state.
-    toast.promise(promise, {
+    toast?.promise(promise, {
       loading: "Updating watchlist...",
       success: "Watchlist updated successfully!",
       error: (err) => err.message || "Failed to update watchlist",
