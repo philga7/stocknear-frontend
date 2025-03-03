@@ -112,9 +112,9 @@
           {#each displayList as item}
             <!-- row -->
             <tr
-              class="sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] odd:bg-odd border-b border-gray-800"
+              class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800"
             >
-              <td class="font-medium text-sm sm:text-[1rem] whitespace-nowrap">
+              <td class=" text-sm sm:text-[1rem] whitespace-nowrap">
                 <a
                   href={`/list/industry/${item?.industry?.replace(/ /g, "-")?.replace(/&/g, "and")?.replace(/-{2,}/g, "-")?.toLowerCase()}`}
                   class="sm:hover:underline sm:hover:underline-offset-4 text-white"
@@ -132,19 +132,19 @@
               </td>
 
               <td
-                class="text-white text-end font-medium text-sm sm:text-[1rem] whitespace-nowrap"
+                class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
               >
                 {abbreviateNumber(item?.totalMarketCap) ?? "n/a"}
               </td>
 
               <td
-                class="text-white text-end font-medium text-sm sm:text-[1rem] whitespace-nowrap"
+                class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
               >
                 {item?.avgDividendYield?.toFixed(2) ?? "n/a"}%
               </td>
 
               <td
-                class="text-white text-end font-medium text-sm sm:text-[1rem] whitespace-nowrap"
+                class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
               >
                 {item?.pe?.toFixed(2) ?? "n/a"}
               </td>
@@ -152,7 +152,7 @@
               <td
                 class=" {item?.profitMargin >= 0
                   ? "before:content-['+'] text-[#00FC50]"
-                  : 'text-[#FF2F1F]'}  font-medium text-sm sm:text-[1rem] whitespace-nowrap text-end"
+                  : 'text-[#FF2F1F]'}   text-sm sm:text-[1rem] whitespace-nowrap text-end"
               >
                 {abbreviateNumber(item?.profitMargin)}%
               </td>
@@ -160,7 +160,7 @@
               <td
                 class="{item?.avgChange1D >= 0
                   ? "before:content-['+']  text-[#00FC50]"
-                  : 'text-[#FF2F1F]'} text-end font-medium text-sm sm:text-[1rem] whitespace-nowrap"
+                  : 'text-[#FF2F1F]'} text-end text-sm sm:text-[1rem] whitespace-nowrap"
               >
                 {item?.avgChange1D?.toFixed(2) ?? "n/a"}%
               </td>
@@ -168,7 +168,7 @@
               <td
                 class="{item?.avgChange1Y >= 0
                   ? "before:content-['+']  text-[#00FC50]"
-                  : 'text-[#FF2F1F]'} text-end font-medium text-sm sm:text-[1rem] whitespace-nowrap"
+                  : 'text-[#FF2F1F]'} text-end text-sm sm:text-[1rem] whitespace-nowrap"
               >
                 {item?.avgChange1Y?.toFixed(2) ?? "n/a"}%
               </td>

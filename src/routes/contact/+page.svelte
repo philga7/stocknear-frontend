@@ -43,7 +43,7 @@
                 </div>
 
                 <span
-                  class="text-white text-md font-medium text-center flex justify-center items-center"
+                  class="text-white text-md text-center flex justify-center items-center"
                 >
                   unless it's family
                 </span>

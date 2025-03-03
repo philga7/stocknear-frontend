@@ -1723,7 +1723,7 @@
           class="w-full h-8"
           on:keydown={(e) => (e?.key === "Enter" ? e.preventDefault() : "")}
         >
-          <label for="search" class="text-sm font-medium text-gray-200 sr-only"
+          <label for="search" class="text-sm text-gray-200 sr-only"
             >Search</label
           >
           <div class="relative w-full max-w-sm">

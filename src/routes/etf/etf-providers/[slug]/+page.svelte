@@ -197,15 +197,13 @@
               {#each etfProviderData as item, index}
                 <!-- row -->
                 <tr
-                  class="sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] odd:bg-odd border-b border-gray-800 {index +
+                  class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800 {index +
                     1 ===
                     etfProviderData?.length && data?.user?.tier !== 'Pro'
                     ? 'opacity-[0.1]'
                     : ''}"
                 >
-                  <td
-                    class="font-medium text-sm sm:text-[1rem] whitespace-nowrap"
-                  >
+                  <td class=" text-sm sm:text-[1rem] whitespace-nowrap">
                     <HoverStockChart symbol={item?.symbol} assetType={"etf"} />
                   </td>
 
@@ -244,19 +242,19 @@
                   </td>
 
                   <td
-                    class="text-white font-medium text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                    class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
                   >
                     {abbreviateNumber(item?.totalAssets)}
                   </td>
 
                   <td
-                    class="text-white font-medium text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                    class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
                   >
                     {item?.numberOfHoldings}
                   </td>
 
                   <td
-                    class="text-white font-medium text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                    class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
                   >
                     {item?.expenseRatio}%
                   </td>

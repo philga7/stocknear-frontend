@@ -57,7 +57,7 @@
               {#each similarstock as item, index}
                 <tr
                   on:click={() => stockSelector(item?.symbol)}
-                  class="shake-ticker sm:hover:text-white text-blue-400 cursor-pointer sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] bg-[#000] sm:bg-default border-b border-[#000] sm:border-[#27272A]"
+                  class="shake-ticker sm:hover:text-white text-blue-400 cursor-pointer sm:hover:bg-[#245073]/10 bg-[#000] sm:bg-default border-b border-[#000] sm:border-[#27272A]"
                 >
                   {#if index <= 6}
                     <td class="whitespace-nowrap">
@@ -73,7 +73,7 @@
                           />
                         </div>
                         <div class="flex flex-col ml-3 w-full">
-                          <span class="text-sm sm:text-[1rem] font-medium"
+                          <span class="text-sm sm:text-[1rem]"
                             >{item?.symbol}</span
                           >
                           <span class="text-white text-sm">
@@ -165,8 +165,7 @@
                   <td class="text-white whitespace-nowrap">
                     <div class="flex flex-row items-center">
                       <div class="flex flex-col w-full">
-                        <span class="text-blue-400 text-sm font-medium"
-                          >{item?.symbol}</span
+                        <span class="text-blue-400 text-sm">{item?.symbol}</span
                         >
                         <span class="text-white text-sm">
                           {#if typeof item?.name !== "undefined"}

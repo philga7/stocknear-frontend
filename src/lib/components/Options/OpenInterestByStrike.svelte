@@ -274,7 +274,7 @@
       <tbody>
         {#each data?.user?.tier === "Pro" ? displayList : displayList?.slice(0, 3) as item, index}
           <tr
-            class="sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] odd:bg-odd border-b border-gray-800 {index +
+            class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800 {index +
               1 ===
               displayList?.slice(0, 3)?.length && data?.user?.tier !== 'Pro'
               ? 'opacity-[0.1]'

@@ -473,7 +473,7 @@
                               </h3>
 
                               <div
-                                class={`mt-1 px-3 py-1 rounded text-xs sm:text-sm font-medium w-fit
+                                class={`mt-1 px-3 py-1 rounded text-xs sm:text-sm  w-fit
         ${
           item?.sentiment === "Bullish"
             ? "bg-emerald-500 text-white"
@@ -496,7 +496,7 @@
                                 on:click={() =>
                                   (expandedDescriptions[item.title] =
                                     !expandedDescriptions[item.title])}
-                                class="text-blue-400 hover:text-blue-300 ml-1 font-medium"
+                                class="text-blue-400 hover:text-blue-300 ml-1"
                               >
                                 {expandedDescriptions[item.title]
                                   ? "Read less"

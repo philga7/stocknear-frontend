@@ -29,14 +29,12 @@
         /></svg
       >
     </div>
-    <span
-      class="text-slate-300 font-medium text-md sm:text-lg mt-3 w-3/4 text-center"
-    >
+    <span class="text-slate-300 text-md sm:text-lg mt-3 w-3/4 text-center">
       Get full access for a more in-depth Stock Analysis
     </span>
 
     <label
-      class="mt-4 w-5/6 sm:w-56 bg-[#fff] cursor-pointer py-2.5 px-4 normal-case font-medium text-center text-black rounded-full"
+      class="mt-4 w-5/6 sm:w-56 bg-[#fff] cursor-pointer py-2.5 px-4 normal-case text-center text-black rounded-full"
     >
       <div class="flex flex-row items-center justify-center">
         <svg

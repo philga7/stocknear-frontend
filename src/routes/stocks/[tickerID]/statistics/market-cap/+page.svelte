@@ -665,7 +665,7 @@
                       {#if data?.user?.tier !== "Pro" && i > 0}
                         <button
                           on:click={() => goto("/pricing")}
-                          class="group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
+                          class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
                         >
                           <span class="relative text-sm block font-semibold">
                             {item.title}
@@ -683,7 +683,7 @@
                       {:else}
                         <button
                           on:click={() => changeTablePeriod(i)}
-                          class="group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
+                          class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
                           i
                             ? 'z-0'
                             : ''} "
@@ -729,12 +729,16 @@
                     {#each tableList as item, index}
                       <!-- row -->
                       <tr
-                        class="sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] odd:bg-odd border-b border-gray-800"
+                        class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800"
                       >
                         <td
-                          class="text-white font-medium text-sm sm:text-[1rem] whitespace-nowrap"
+                          class="text-white text-sm sm:text-[1rem] whitespace-nowrap"
                         >
-                          {item?.date}
+                          {new Date(item?.date)?.toLocaleDateString("en-US", {
+                            day: "2-digit", // Include day number
+                            month: "short", // Display short month name
+                            year: "numeric", // Include year
+                          })}
                         </td>
 
                         <td
@@ -744,7 +748,7 @@
                         </td>
 
                         <td
-                          class="text-white text-sm sm:text-[1rem] whitespace-nowrap font-medium text-end"
+                          class="text-white text-sm sm:text-[1rem] whitespace-nowrap text-end"
                         >
                           {#if index === tableList?.length - 1}
                             n/a

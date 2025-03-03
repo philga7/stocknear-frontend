@@ -237,7 +237,7 @@
                         <td class="hidden lg:table-cell"
                           ><button
                             on:click={() => openGraph(item?.symbol)}
-                            class="h-full pl-2 pr-2 align-middle lg:pl-3"
+                            class="cursor-pointer h-full pl-2 pr-2 align-middle lg:pl-3"
                             ><svg
                               class="w-5 h-5 text-icon {checkedSymbol ===
                               item?.symbol
@@ -275,13 +275,13 @@
                         </td>
 
                         <td
-                          class="text-end text-sm sm:text-[1rem] font-medium text-white whitespace-nowrap"
+                          class="text-end text-sm sm:text-[1rem] text-white whitespace-nowrap"
                         >
                           {abbreviateNumber(item?.marketCap)}
                         </td>
 
                         <td
-                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap font-medium text-white"
+                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
                         >
                           {item?.price}
                         </td>
@@ -298,13 +298,13 @@
                         </td>
 
                         <td
-                          class="text-end text-sm sm:text-[1rem] font-medium text-white whitespace-nowrap"
+                          class="text-end text-sm sm:text-[1rem] text-white whitespace-nowrap"
                         >
                           {abbreviateNumber(item?.totalShares)}
                         </td>
 
                         <td
-                          class="text-end text-sm sm:text-[1rem] font-medium whitespace-nowrap {item?.transactionType ===
+                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap {item?.transactionType ===
                           'Buy'
                             ? 'text-[#00FC50]'
                             : item?.transactionType === 'Sell'

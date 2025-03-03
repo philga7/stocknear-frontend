@@ -265,7 +265,7 @@
             side="left"
             class="max-w-screen w-full sm:max-w-xs bg-[#141417] overflow-y-auto text-white"
           >
-            <nav class=" grid gap-6 text-lg font-medium bg-[#141417]">
+            <nav class=" grid gap-6 text-lg bg-[#141417]">
               <Sheet.Close asChild let:builder>
                 <Button
                   builders={[builder]}
@@ -801,7 +801,7 @@
         <div
           class="relative w-full flex flex-row justify-end sm:justify-between items-center"
         >
-          <div class="sm:w-full sm:ml-2 3xl:ml-[75px]">
+          <div class="sm:w-full sm:ml-2 2xl:ml-[75px]">
             <Searchbar />
           </div>
           <NotificationBell {data} {hasUnreadElement} />

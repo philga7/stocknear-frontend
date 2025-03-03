@@ -78,7 +78,7 @@
                 aria-hidden="true"
               ></div>
               <span
-                class="mt-2 sm:mt-0 text-white text-xs sm:text-md sm:font-medium inline-block"
+                class="mt-2 sm:mt-0 text-white text-xs sm:text-md sm: inline-block"
               >
                 Implied Volatility
               </span>
@@ -96,7 +96,7 @@
                 aria-hidden="true"
               ></div>
               <span
-                class="mt-2 sm:mt-0 text-white text-xs sm:text-md sm:font-medium inline-block"
+                class="mt-2 sm:mt-0 text-white text-xs sm:text-md sm: inline-block"
               >
                 Realized Volatility
               </span>
@@ -117,7 +117,7 @@
                     <span>Date</span>
                   </td>
                   <td
-                    class="px-[5px] py-1.5 text-right text-sm sm:text-[1rem] font-medium xs:px-2.5 xs:py-2"
+                    class="px-[5px] py-1.5 text-right text-sm sm:text-[1rem]  xs:px-2.5 xs:py-2"
                   >
                     {formatDateRange(rawData?.slice(-1)?.at(0)?.date)}
                   </td>
@@ -127,7 +127,7 @@
                     <span>IV Range</span>
                   </td>
                   <td
-                    class="px-[5px] py-1.5 text-right font-medium xs:px-2.5 xs:py-2"
+                    class="px-[5px] py-1.5 text-right  xs:px-2.5 xs:py-2"
                   >
                     {lowestIV + "%" + "-" + highestIV + "%"}
                   </td>
@@ -137,7 +137,7 @@
                     <span>RV Range</span>
                   </td>
                   <td
-                    class="px-[5px] py-1.5 text-right font-medium xs:px-2.5 xs:py-2"
+                    class="px-[5px] py-1.5 text-right  xs:px-2.5 xs:py-2"
                   >
                     {lowestRV + "%" + "-" + highestRV + "%"}
                   </td>

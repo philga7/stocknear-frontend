@@ -35,7 +35,7 @@
               class="flex flex-row items-center flex-wrap w-full px-3 sm:px-5 bg-primary shadow-lg rounded-md h-20"
             >
               <div class="flex flex-col items-start">
-                <span class="font-medium text-gray-200 text-sm"
+                <span class=" text-gray-200 text-sm"
                   >Trend Sentiment</span
                 >
                 <span
@@ -53,9 +53,9 @@
               class="flex flex-row items-center flex-wrap w-full px-3 sm:px-5 bg-primary shadow-lg rounded-md h-20"
             >
               <div class="flex flex-col items-start">
-                <span class="font-medium text-gray-200 text-sm">Accuracy</span>
+                <span class=" text-gray-200 text-sm">Accuracy</span>
                 <span
-                  class="text-start text-sm sm:text-[1rem] font-medium text-white"
+                  class="text-start text-sm sm:text-[1rem]  text-white"
                 >
                   {accuracy >= 65
                     ? "Good"
@@ -115,9 +115,9 @@
               class="flex flex-row items-center flex-wrap w-full px-3 sm:px-5 bg-primary shadow-lg rounded-md h-20"
             >
               <div class="flex flex-col items-start">
-                <span class="font-medium text-gray-200 text-sm">Precision</span>
+                <span class=" text-gray-200 text-sm">Precision</span>
                 <span
-                  class="text-start text-sm sm:text-[1rem] font-medium text-white"
+                  class="text-start text-sm sm:text-[1rem]  text-white"
                 >
                   {precision >= 65
                     ? "Good"
@@ -204,7 +204,7 @@
           "Bullish"
             ? "exceed"
             : "to be less than"} the previous price of
-          <span class="font-medium">${lastPrice ?? "n/a"}</span>.
+          <span class="">${lastPrice ?? "n/a"}</span>.
         </div>
       {:else}
         <div class="flex justify-center items-center h-80">

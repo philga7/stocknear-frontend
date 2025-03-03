@@ -393,7 +393,7 @@
                     </div>
                   </div>
                   <h2
-                    class="text-center m-auto text-[1rem] sm:text-lg text-white font-medium pb-4"
+                    class="text-center m-auto text-[1rem] sm:text-lg text-white pb-4"
                   >
                     Try Stocknear Platform for 30 days. No credit card required.
                   </h2>

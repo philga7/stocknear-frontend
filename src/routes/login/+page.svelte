@@ -120,7 +120,7 @@
         <div class="w-full max-w-lg">
           <a
             href="/reset-password"
-            class="text-sm font-medium text-blue-400 sm:hover:text-white sm:hover:underline"
+            class="text-sm text-blue-400 sm:hover:text-white sm:hover:underline"
             >Forgot Password?</a
           >
         </div>
@@ -763,9 +763,8 @@
           class="pb-1 text-sm w-full max-w-lg text-white flex justify-center items-center"
         >
           You don't have an account?
-          <a
-            href="/register"
-            class="text-blue-400 font-medium hover:underline ml-1">Sign up</a
+          <a href="/register" class="text-blue-400 hover:underline ml-1"
+            >Sign up</a
           >
         </p>
       </form>

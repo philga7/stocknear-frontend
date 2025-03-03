@@ -358,12 +358,11 @@
                     class="flex flex-row items-center flex-wrap w-full px-3 sm:px-4 border border-gray-600 bg-primary rounded-md h-20"
                   >
                     <div class="flex flex-col items-start">
-                      <span
-                        class="font-medium text-white text-sm sm:text-[1rem]"
+                      <span class=" text-white text-sm sm:text-[1rem]"
                         >Buy/Sell</span
                       >
                       <span
-                        class="text-start text-sm sm:text-[1rem] font-medium text-white"
+                        class="text-start text-sm sm:text-[1rem] text-white"
                       >
                         {buySellRatio > 0
                           ? buySellRatio?.toFixed(1)
@@ -420,12 +419,11 @@
                     class="flex flex-row items-center flex-wrap w-full px-3 sm:px-4 border border-gray-600 bg-primary rounded-md h-20"
                   >
                     <div class="flex flex-col items-start">
-                      <span
-                        class="font-medium text-white text-sm sm:text-[1rem]"
+                      <span class=" text-white text-sm sm:text-[1rem]"
                         >Bought Shares</span
                       >
                       <span
-                        class="text-start text-sm sm:text-[1rem] font-medium text-white"
+                        class="text-start text-sm sm:text-[1rem] text-white"
                       >
                         {new Intl.NumberFormat("en", {
                           minimumFractionDigits: 0,
@@ -482,12 +480,11 @@
                     class="flex flex-row items-center flex-wrap w-full px-3 sm:px-4 border border-gray-600 rounded-md bg-primary h-20"
                   >
                     <div class="flex flex-col items-start">
-                      <span
-                        class="font-medium text-white text-sm sm:text-[1rem]"
+                      <span class=" text-white text-sm sm:text-[1rem]"
                         >Sold Shares</span
                       >
                       <span
-                        class="text-start text-sm sm:text-[1rem] font-medium text-white"
+                        class="text-start text-sm sm:text-[1rem] text-white"
                       >
                         {new Intl.NumberFormat("en", {
                           minimumFractionDigits: 0,
@@ -609,7 +606,7 @@
                           ${item?.price?.toFixed(2)}
                         </td>
                         <td
-                          class="font-medium text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                          class=" text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
                         >
                           {@html abbreviateNumber(item?.value, false, true)}
                         </td>

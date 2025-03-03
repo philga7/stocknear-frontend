@@ -61,7 +61,7 @@
     <label
       for="cookieConsent"
       on:click={() => cookieConsent("true")}
-      class="text-xs cursor-pointer w-auto md:w-auto font-medium bg-gray-800 rounded-md hover:bg-gray-700 text-white px-4 py-2.5 duration-300 transition-colors focus:outline-hidden"
+      class="text-xs cursor-pointer w-auto md:w-auto bg-gray-800 rounded-md hover:bg-gray-700 text-white px-4 py-2.5 duration-300 transition-colors focus:outline-hidden"
     >
       Accept All Cookies
     </label>

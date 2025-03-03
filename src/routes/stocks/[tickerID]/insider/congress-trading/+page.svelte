@@ -212,9 +212,7 @@
                       class="font-semibold text-white text-sm sm:text-[1rem]"
                       >Buy/Sell</span
                     >
-                    <span
-                      class="text-start text-sm sm:text-[1rem] font-medium text-white"
-                    >
+                    <span class="text-start text-sm sm:text-[1rem] text-white">
                       {buySellRatio?.toFixed(3)}
                     </span>
                   </div>
@@ -274,9 +272,7 @@
                       class="font-semibold text-white text-sm sm:text-[1rem]"
                       >Dem/Rep</span
                     >
-                    <span
-                      class="text-start text-sm sm:text-[1rem] font-medium text-white"
-                    >
+                    <span class="text-start text-sm sm:text-[1rem] text-white">
                       {partyRatio?.toFixed(3)}
                     </span>
                   </div>
@@ -341,7 +337,7 @@
                 <tbody>
                   {#each senateTradingList as item, index}
                     <tr
-                      class="odd:bg-odd sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] border-b border-gray-800 {index +
+                      class="odd:bg-odd sm:hover:bg-[#245073]/10 border-b border-gray-800 {index +
                         1 ===
                         rawData?.slice(0, 3)?.length &&
                       data?.user?.tier !== 'Pro'

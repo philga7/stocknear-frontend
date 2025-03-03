@@ -64,13 +64,11 @@
                       <div class="flex flex-row items-center">
                         <div class="flex flex-col">
                           <span
-                            class="text-slate-400 font-medium text-sm sm:text-md mb-2 mr-auto"
+                            class="text-slate-400 text-sm sm:text-md mb-2 mr-auto"
                           >
                             Date
                           </span>
-                          <span
-                            class="text-white text-sm sm:text-md font-medium"
-                          >
+                          <span class="text-white text-sm sm:text-md">
                             {new Date(item?.date)?.toLocaleString("en-US", {
                               month: "short",
                               day: "numeric",
@@ -82,13 +80,13 @@
 
                         <div class="flex flex-col ml-auto pr-3">
                           <div
-                            class="text-slate-400 font-medium text-sm sm:text-md mb-2 ml-auto"
+                            class="text-slate-400 text-sm sm:text-md mb-2 ml-auto"
                           >
                             From
                             <span class="text-white">{item?.denominator}</span>
                           </div>
                           <div
-                            class="text-slate-400 font-medium text-sm sm:text-md ml-auto"
+                            class="text-slate-400 text-sm sm:text-md ml-auto"
                           >
                             To
                             <span class="text-white">{item?.numerator}</span>

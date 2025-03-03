@@ -619,7 +619,7 @@
                           <tbody>
                             {#each day as item}
                               <tr
-                                class="sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] odd:bg-odd border border-gray-800"
+                                class="sm:hover:bg-[#245073]/10 odd:bg-odd border border-gray-800"
                               >
                                 <td class="text-white text-sm sm:text-[1rem]">
                                   <label class="p-1.5 rounded-md"

@@ -64,7 +64,7 @@
                 <tr
                   class="text-white bg-[#000] lg:bg-default border-b border-[#000] lg:border-[#27272A]"
                 >
-                  <td class="text-start text-sm text-white font-medium">
+                  <td class="text-start text-sm text-white">
                     {new Date(item?.date)?.toLocaleString("en-US", {
                       month: "short",
                       day: "numeric",
@@ -73,7 +73,7 @@
                     })}
                   </td>
 
-                  <td class="text-end text-sm text-white font-medium">
+                  <td class="text-end text-sm text-white">
                     {item?.paymentDate?.length !== 0
                       ? new Date(item?.paymentDate)?.toLocaleString("en-US", {
                           month: "short",
@@ -84,7 +84,7 @@
                       : "n/a"}
                   </td>
 
-                  <td class="text-end text-sm text-white font-medium">
+                  <td class="text-end text-sm text-white">
                     ${item?.adjDividend?.toFixed(2)}
                   </td>
                 </tr>
@@ -102,7 +102,7 @@
         </label>
       {:else}
         <h2
-          class="mt-20 justify-center items-center text-3xl font-medium text-slate-700 mb-20 m-auto"
+          class="mt-20 justify-center items-center text-3xl text-slate-700 mb-20 m-auto"
         >
           No data available
           <svg

@@ -333,7 +333,7 @@
                   {#if data?.user?.tier !== "Pro" && i > 0}
                     <button
                       on:click={() => goto("/pricing")}
-                      class="group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
+                      class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
                     >
                       <span class="relative text-sm block font-semibold">
                         {item.title}
@@ -351,7 +351,7 @@
                   {:else}
                     <button
                       on:click={() => (activeIdx = i)}
-                      class="group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
+                      class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
                       i
                         ? 'z-0'
                         : ''} "
@@ -394,13 +394,9 @@
                       class="w-11 h-6 bg-gray-400 rounded-full peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1563F9]"
                     ></div>
                     {#if $coolMode}
-                      <span class="ml-2 text-sm font-medium text-white">
-                        Chart Mode
-                      </span>
+                      <span class="ml-2 text-sm text-white"> Chart Mode </span>
                     {:else}
-                      <span class="ml-2 text-sm font-medium text-white">
-                        Table Mode
-                      </span>
+                      <span class="ml-2 text-sm text-white"> Table Mode </span>
                     {/if}
                   </label>
 

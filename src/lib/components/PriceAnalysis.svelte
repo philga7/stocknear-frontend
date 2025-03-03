@@ -165,9 +165,7 @@
               class="flex flex-row items-center flex-wrap w-full px-3 sm:px-5 bg-primary shadow-lg rounded-md h-20"
             >
               <div class="flex flex-col items-start">
-                <span class="font-medium text-gray-200 text-sm"
-                  >Price Sentiment</span
-                >
+                <span class=" text-gray-200 text-sm">Price Sentiment</span>
                 <span
                   class="text-start text-[1rem] sm:text-lg font-semibold {priceSentiment ===
                   'Bullish'
@@ -183,12 +181,10 @@
               class="flex flex-row items-center flex-wrap w-full px-3 sm:px-5 bg-primary shadow-lg rounded-md h-20"
             >
               <div class="flex flex-col items-start">
-                <span class="font-medium text-gray-200 text-sm"
+                <span class=" text-gray-200 text-sm"
                   ><span class="italic">R</span><sup>2</sup> Score</span
                 >
-                <span
-                  class="text-start text-sm sm:text-[1rem] font-medium text-white"
-                >
+                <span class="text-start text-sm sm:text-[1rem] text-white">
                   {r2Score >= 65 ? "Good" : r2Score >= 50 ? "Moderate" : "Bad"}
                 </span>
               </div>
@@ -242,10 +238,8 @@
               class="flex flex-row items-center flex-wrap w-full px-3 sm:px-5 bg-primary shadow-lg rounded-md h-20"
             >
               <div class="flex flex-col items-start">
-                <span class="font-medium text-gray-200 text-sm">MAPE</span>
-                <span
-                  class="text-start text-sm sm:text-[1rem] font-medium text-white"
-                >
+                <span class=" text-gray-200 text-sm">MAPE</span>
+                <span class="text-start text-sm sm:text-[1rem] text-white">
                   {mape <= 15 ? "Good" : mape <= 35 ? "Moderate" : "Bad"}
                 </span>
               </div>

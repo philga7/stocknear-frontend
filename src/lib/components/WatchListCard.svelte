@@ -73,7 +73,7 @@
               {#each watchList as item}
                 <!-- row -->
                 <tr
-                  class="sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] odd:bg-odd border-b-[#09090B]"
+                  class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b-[#09090B]"
                 >
                   <td
                     class="text-sm sm:text-[1rem] text-start border-b-[#09090B]"
@@ -188,7 +188,7 @@
                     ago
                   </div>
                   <h2
-                    class="text-start text-sm sm:text-md font-medium mb-2 shrink text-white"
+                    class="text-start text-sm sm:text-md mb-2 shrink text-white"
                   >
                     {item.title}
                   </h2>

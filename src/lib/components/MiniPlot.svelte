@@ -151,7 +151,7 @@
             ></g
           ></svg
         >
-        <span class="text-[#00FC50] text-xs font-medium"
+        <span class="text-[#00FC50] text-xs"
           >+{changesPercentage?.toFixed(2)}%</span
         >
       {:else}
@@ -169,7 +169,7 @@
             ></g
           ></svg
         >
-        <span class="text-[#FF2F1F] text-xs font-medium"
+        <span class="text-[#FF2F1F] text-xs"
           >{changesPercentage?.toFixed(2)}%
         </span>
       {/if}

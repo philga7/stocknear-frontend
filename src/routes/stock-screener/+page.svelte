@@ -3354,7 +3354,7 @@ const handleKeyDown = (event) => {
             <tbody>
               {#each displayResults as item}
                 <tr
-                  class="sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] border-b border-gray-800 odd:bg-odd"
+                  class="sm:hover:bg-[#245073]/10 border-b border-gray-800 odd:bg-odd"
                 >
                   <td class=" whitespace-nowrap">
                     <a
@@ -3380,9 +3380,7 @@ const handleKeyDown = (event) => {
                     {item?.price < 0.01 ? "< 0.01" : item?.price?.toFixed(2)}
                   </td>
 
-                  <td
-                    class="text-white text-end text-sm sm:text-[1rem] font-medium"
-                  >
+                  <td class="text-white text-end text-sm sm:text-[1rem]">
                     {#if item?.changesPercentage >= 0}
                       <span class="text-[#00FC50]"
                         >+{item?.changesPercentage >= 1000
@@ -3421,7 +3419,7 @@ const handleKeyDown = (event) => {
             <tbody>
               {#each displayResults as item (item?.symbol)}
                 <tr
-                  class="sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] border-b border-gray-800 odd:bg-odd"
+                  class="sm:hover:bg-[#245073]/10 border-b border-gray-800 odd:bg-odd"
                 >
                   <td class=" whitespace-nowrap">
                     <a
@@ -3469,7 +3467,7 @@ const handleKeyDown = (event) => {
             <tbody>
               {#each displayResults as item (item?.symbol)}
                 <tr
-                  class="sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] border-b border-gray-800 odd:bg-odd"
+                  class="sm:hover:bg-[#245073]/10 border-b border-gray-800 odd:bg-odd"
                 >
                   <td class=" whitespace-nowrap">
                     <a
@@ -3523,7 +3521,7 @@ const handleKeyDown = (event) => {
             <tbody>
               {#each displayResults as item (item?.symbol)}
                 <tr
-                  class="sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] border-b border-gray-800 odd:bg-odd"
+                  class="sm:hover:bg-[#245073]/10 border-b border-gray-800 odd:bg-odd"
                 >
                   <td class=" whitespace-nowrap">
                     <a
@@ -3601,13 +3599,13 @@ const handleKeyDown = (event) => {
 
 <!--
   <div class="tabs w-screen mb-5 ">
-    <label on:click={() => handleRuleTab('all')} class="tab mr-2 text-white font-medium transition duration-150 ease-out hover:ease-out rounded-md hover:bg-[#333333] {displayTab === 'all' ? 'bg-[#333333]' : ''}">
+    <label on:click={() => handleRuleTab('all')} class="tab mr-2 text-white  transition duration-150 ease-out hover:ease-out rounded-md hover:bg-[#333333] {displayTab === 'all' ? 'bg-[#333333]' : ''}">
       All
     </label> 
-    <label on:click={() => handleRuleTab('ta')} class="tab mr-2 text-white font-medium transition duration-150 ease-out hover:ease-out rounded-md hover:bg-[#333333] {displayTab === 'ta' ? 'bg-[#333333]' : ''}">
+    <label on:click={() => handleRuleTab('ta')} class="tab mr-2 text-white  transition duration-150 ease-out hover:ease-out rounded-md hover:bg-[#333333] {displayTab === 'ta' ? 'bg-[#333333]' : ''}">
       Technical Indicators
     </label> 
-    <label on:click={() => handleRuleTab('fund')} class="tab mr-2 text-white font-medium transition duration-150 ease-out hover:ease-out rounded-md hover:bg-[#333333] {displayTab === 'fund' ? 'bg-[#333333]' : ''}">
+    <label on:click={() => handleRuleTab('fund')} class="tab mr-2 text-white  transition duration-150 ease-out hover:ease-out rounded-md hover:bg-[#333333] {displayTab === 'fund' ? 'bg-[#333333]' : ''}">
       Fundamental Data
     </label> 
   </div>
@@ -3657,7 +3655,7 @@ const handleKeyDown = (event) => {
           class="w-full h-8"
           on:keydown={(e) => (e?.key === "Enter" ? e.preventDefault() : "")}
         >
-          <label for="search" class="text-sm font-medium text-gray-200 sr-only"
+          <label for="search" class="text-sm text-gray-200 sr-only"
             >Search</label
           >
           <div class="relative w-full max-w-sm">

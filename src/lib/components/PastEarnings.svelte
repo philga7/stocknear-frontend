@@ -122,13 +122,13 @@
             <tbody class="shadow-md">
               <tr class="bg-primary border-b-[#27272A]">
                 <th
-                  class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start font-medium border-b border-[#27272A]"
+                  class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start border-b border-[#27272A]"
                 >
                   Reported Revenue
                 </th>
                 {#each tableRevenue as item, index}
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-end font-medium bg-default"
+                    class="text-white text-sm sm:text-[1rem] text-end bg-default"
                   >
                     {#if index !== 0}
                       {#if userTier !== "Pro"}
@@ -162,13 +162,13 @@
 
               <tr class="bg-primary border-b-[#27272A]">
                 <th
-                  class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start font-medium border-b border-[#27272A]"
+                  class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start border-b border-[#27272A]"
                 >
                   Est. Revenue
                 </th>
                 {#each tableRevenueEst as item, index}
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-end font-medium bg-default"
+                    class="text-white text-sm sm:text-[1rem] text-end bg-default"
                   >
                     {#if index !== 0}
                       {#if userTier !== "Pro"}
@@ -202,7 +202,7 @@
 
               <tr class="bg-primary border-b-[#27272A]">
                 <th
-                  class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start font-medium border-b border-[#27272A]"
+                  class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start border-b border-[#27272A]"
                 >
                   Revenue Surprise
                 </th>
@@ -258,13 +258,13 @@
 
               <tr class="bg-primary border-b-[#27272A]">
                 <th
-                  class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start font-medium border-b border-[#27272A]"
+                  class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start border-b border-[#27272A]"
                 >
                   Reported EPS
                 </th>
                 {#each tableEPS as item, index}
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-end font-medium bg-default"
+                    class="text-white text-sm sm:text-[1rem] text-end bg-default"
                   >
                     {#if index !== 0}
                       {#if userTier !== "Pro"}
@@ -298,13 +298,13 @@
 
               <tr class="bg-primary border-b-[#27272A]">
                 <th
-                  class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start font-medium border-b border-[#27272A]"
+                  class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start border-b border-[#27272A]"
                 >
                   Est. EPS
                 </th>
                 {#each tableEPSEst as item, index}
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-end font-medium bg-default"
+                    class="text-white text-sm sm:text-[1rem] text-end bg-default"
                   >
                     {#if index !== 0}
                       {#if userTier !== "Pro"}
@@ -338,7 +338,7 @@
 
               <tr class="bg-primary border-b-[#27272A]">
                 <th
-                  class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start font-medium border-b border-[#27272A]"
+                  class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start border-b border-[#27272A]"
                 >
                   EPS Surprise
                 </th>
@@ -394,7 +394,7 @@
 
               <tr class="bg-primary border-b-[#27272A]">
                 <th
-                  class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start font-medium border-b border-[#27272A]"
+                  class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start border-b border-[#27272A]"
                 >
                   Volatility
                 </th>

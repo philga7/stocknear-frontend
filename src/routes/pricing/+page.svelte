@@ -139,7 +139,7 @@
         class="w-full flex justify-center items-center h-16 bg-default rounded-md"
       >
         <p
-          class="font-medium font-serif text-center w-3/4 sm:w-full text-white text-[1rem] sm:text-xl italic"
+          class=" font-serif text-center w-3/4 sm:w-full text-white text-[1rem] sm:text-xl italic"
         >
           Simple pricing. No hidden fees. Cancel anytime.
         </p>
@@ -217,7 +217,7 @@
                 d="M12 17q.425 0 .713-.288T13 16q0-.425-.288-.713T12 15q-.425 0-.713.288T11 16q0 .425.288.713T12 17Zm-1-4h2V7h-2v6Zm1 9q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Z"
               /></svg
             >
-            <span class="text-white text-sm font-medium"
+            <span class="text-white text-sm"
               >Limited Stock Screener Strategy</span
             >
           </li>
@@ -232,9 +232,7 @@
                 d="M12 17q.425 0 .713-.288T13 16q0-.425-.288-.713T12 15q-.425 0-.713.288T11 16q0 .425.288.713T12 17Zm-1-4h2V7h-2v6Zm1 9q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Z"
               /></svg
             >
-            <span class="text-white text-sm font-medium"
-              >Limited Financial history.</span
-            >
+            <span class="text-white text-sm">Limited Financial history.</span>
           </li>
           <li class="flex items-center space-x-3">
             <!-- Icon -->
@@ -247,7 +245,7 @@
                 d="M12 17q.425 0 .713-.288T13 16q0-.425-.288-.713T12 15q-.425 0-.713.288T11 16q0 .425.288.713T12 17Zm-1-4h2V7h-2v6Zm1 9q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Z"
               /></svg
             >
-            <span class="text-white text-sm font-medium"
+            <span class="text-white text-sm"
               >Limited Hedge Funds Portfolio.</span
             >
           </li>
@@ -262,7 +260,7 @@
                 d="M12 17q.425 0 .713-.288T13 16q0-.425-.288-.713T12 15q-.425 0-.713.288T11 16q0 .425.288.713T12 17Zm-1-4h2V7h-2v6Zm1 9q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Z"
               /></svg
             >
-            <span class="text-white text-sm font-medium"
+            <span class="text-white text-sm"
               >Limited Wall Street Analysts Ratings</span
             >
           </li>
@@ -277,9 +275,7 @@
                 d="M12 17q.425 0 .713-.288T13 16q0-.425-.288-.713T12 15q-.425 0-.713.288T11 16q0 .425.288.713T12 17Zm-1-4h2V7h-2v6Zm1 9q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Z"
               /></svg
             >
-            <span class="text-white text-sm font-medium"
-              >Limited Watchlist Strategy</span
-            >
+            <span class="text-white text-sm">Limited Watchlist Strategy</span>
           </li>
           <li class="flex items-center space-x-3">
             <!-- Icon -->
@@ -292,9 +288,7 @@
                 d="M12 17q.425 0 .713-.288T13 16q0-.425-.288-.713T12 15q-.425 0-.713.288T11 16q0 .425.288.713T12 17Zm-1-4h2V7h-2v6Zm1 9q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Z"
               /></svg
             >
-            <span class="text-white text-sm font-medium"
-              >Limited Price Alerts</span
-            >
+            <span class="text-white text-sm">Limited Price Alerts</span>
           </li>
           <li class="flex items-center space-x-3">
             <!-- Icon -->
@@ -307,9 +301,7 @@
                 d="M12 17q.425 0 .713-.288T13 16q0-.425-.288-.713T12 15q-.425 0-.713.288T11 16q0 .425.288.713T12 17Zm-1-4h2V7h-2v6Zm1 9q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Z"
               /></svg
             >
-            <span class="text-white text-sm font-medium"
-              >Limited Options Data</span
-            >
+            <span class="text-white text-sm">Limited Options Data</span>
           </li>
           <li class="flex items-center space-x-3">
             <!-- Icon -->
@@ -322,9 +314,7 @@
                 d="M12 17q.425 0 .713-.288T13 16q0-.425-.288-.713T12 15q-.425 0-.713.288T11 16q0 .425.288.713T12 17Zm-1-4h2V7h-2v6Zm1 9q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Z"
               /></svg
             >
-            <span class="text-white text-sm font-medium"
-              >Limited Price Alerts</span
-            >
+            <span class="text-white text-sm">Limited Price Alerts</span>
           </li>
           <li class="flex items-center space-x-3">
             <!-- Icon -->
@@ -337,14 +327,12 @@
                 d="M12 17q.425 0 .713-.288T13 16q0-.425-.288-.713T12 15q-.425 0-.713.288T11 16q0 .425.288.713T12 17Zm-1-4h2V7h-2v6Zm1 9q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Z"
               /></svg
             >
-            <span class="text-white text-sm font-medium"
-              >Limited Dark Pool Data</span
-            >
+            <span class="text-white text-sm">Limited Dark Pool Data</span>
           </li>
         </ol>
 
         <div class="divider"></div>
-        <div class="m-auto w-full text-white font-medium text-sm mb-6">
+        <div class="m-auto w-full text-white text-sm mb-6">
           + Limited feature updates
         </div>
 
@@ -694,7 +682,7 @@
           </li>
         </ol>
         <div class="divider"></div>
-        <div class="m-auto w-full text-white font-medium text-sm mb-6">
+        <div class="m-auto w-full text-white text-sm mb-6">
           + Unlimited feature updates
         </div>
         {#if data?.user?.tier === "Pro" && !data?.user?.freeTrial}
@@ -760,7 +748,7 @@
           </label>
         {/if}
 
-        <div class="m-auto w-full text-white font-medium text-[¹rem] mt-4">
+        <div class="m-auto w-full text-white text-[¹rem] mt-4">
           30 Day Money Back Guarantee
         </div>
       </div>
@@ -881,7 +869,7 @@
         </ol>
 
         <div class="divider"></div>
-        <div class="m-auto w-full text-white font-medium text-sm mb-6">
+        <div class="m-auto w-full text-white text-sm mb-6">
           + Unlimited feature updates
         </div>
 
@@ -952,14 +940,12 @@
                 <tbody>
                   <!-- Row -->
                   <tr class="border-t first:border-t-2 border-gray-800">
-                    <td
-                      class="text-sm sm:text-base font-medium text-white pr-2 py-4"
-                    >
+                    <td class="text-sm sm:text-base text-white pr-2 py-4">
                       <div class="flex items-center justify-between max-w-xs">
                         <div>Unusual Options Activity</div>
                       </div>
                     </td>
-                    <td class="text-sm px-2 py-4 text-center font-medium">
+                    <td class="text-sm px-2 py-4 text-center">
                       <svg
                         class="shrink-0 w-4 h-4 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
@@ -970,7 +956,7 @@
                         /></svg
                       >
                     </td>
-                    <td class="text-sm px-2 py-4 text-center font-medium">
+                    <td class="text-sm px-2 py-4 text-center">
                       <svg
                         class="shrink-0 w-5 h-5 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
@@ -997,14 +983,12 @@
                   </tr>
 
                   <tr class="border-t first:border-t-2 border-gray-800">
-                    <td
-                      class="text-sm sm:text-base font-medium text-white pr-2 py-4"
-                    >
+                    <td class="text-sm sm:text-base text-white pr-2 py-4">
                       <div class="flex items-center justify-between max-w-xs">
                         <div>Unusual Dark Pool Activity</div>
                       </div>
                     </td>
-                    <td class="text-sm px-2 py-4 text-center font-medium">
+                    <td class="text-sm px-2 py-4 text-center">
                       <svg
                         class="shrink-0 w-4 h-4 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
@@ -1015,7 +999,7 @@
                         /></svg
                       >
                     </td>
-                    <td class="text-sm px-2 py-4 text-center font-medium">
+                    <td class="text-sm px-2 py-4 text-center">
                       <svg
                         class="shrink-0 w-5 h-5 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
@@ -1043,14 +1027,12 @@
 
                   <!-- Row -->
                   <tr class="border-t first:border-t-2 border-gray-800">
-                    <td
-                      class="text-sm sm:text-base font-medium text-white pr-2 py-4"
-                    >
+                    <td class="text-sm sm:text-base text-white pr-2 py-4">
                       <div class="flex items-center justify-between max-w-xs">
                         <div>Unusual Insider Activity</div>
                       </div>
                     </td>
-                    <td class="text-sm px-2 py-4 text-center font-medium">
+                    <td class="text-sm px-2 py-4 text-center">
                       <svg
                         class="shrink-0 w-4 h-4 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
@@ -1061,7 +1043,7 @@
                         /></svg
                       >
                     </td>
-                    <td class="text-sm px-2 py-4 text-center font-medium">
+                    <td class="text-sm px-2 py-4 text-center">
                       <svg
                         class="shrink-0 w-5 h-5 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
@@ -1089,14 +1071,12 @@
 
                   <!-- Row -->
                   <tr class="border-t first:border-t-2 border-gray-800">
-                    <td
-                      class="text-sm sm:text-base font-medium text-white pr-2 py-4"
-                    >
+                    <td class="text-sm sm:text-base text-white pr-2 py-4">
                       <div class="flex items-center justify-between max-w-xs">
                         <div>AI Predictions</div>
                       </div>
                     </td>
-                    <td class="text-sm px-2 py-4 text-center font-medium">
+                    <td class="text-sm px-2 py-4 text-center">
                       <svg
                         class="shrink-0 w-4 h-4 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
@@ -1107,7 +1087,7 @@
                         /></svg
                       >
                     </td>
-                    <td class="text-sm px-2 py-4 text-center font-medium">
+                    <td class="text-sm px-2 py-4 text-center">
                       <svg
                         class="shrink-0 w-5 h-5 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
@@ -1134,14 +1114,12 @@
                   </tr>
                   <!-- Row -->
                   <tr class="border-t first:border-t-2 border-gray-800">
-                    <td
-                      class="text-sm sm:text-base font-medium text-white pr-2 py-4"
-                    >
+                    <td class="text-sm sm:text-base text-white pr-2 py-4">
                       <div class="flex items-center justify-between max-w-xs">
                         <div>Wallstreet Analyst Database</div>
                       </div>
                     </td>
-                    <td class="text-sm px-2 py-4 text-center font-medium">
+                    <td class="text-sm px-2 py-4 text-center">
                       <svg
                         class="shrink-0 w-4 h-4 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
@@ -1152,7 +1130,7 @@
                         /></svg
                       >
                     </td>
-                    <td class="text-sm px-2 py-4 text-center font-medium">
+                    <td class="text-sm px-2 py-4 text-center">
                       <svg
                         class="shrink-0 w-5 h-5 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
@@ -1179,14 +1157,12 @@
                   </tr>
                   <!-- Row -->
                   <tr class="border-t first:border-t-2 border-gray-800">
-                    <td
-                      class="text-sm sm:text-base font-medium text-white pr-2 py-4"
-                    >
+                    <td class="text-sm sm:text-base text-white pr-2 py-4">
                       <div class="flex items-center justify-between max-w-xs">
                         <div>Hedge Fund Database</div>
                       </div>
                     </td>
-                    <td class="text-sm px-2 py-4 text-center font-medium">
+                    <td class="text-sm px-2 py-4 text-center">
                       <svg
                         class="shrink-0 w-4 h-4 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
@@ -1197,7 +1173,7 @@
                         /></svg
                       >
                     </td>
-                    <td class="text-sm px-2 py-4 text-center font-medium">
+                    <td class="text-sm px-2 py-4 text-center">
                       <svg
                         class="shrink-0 w-5 h-5 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
@@ -1224,14 +1200,12 @@
                   </tr>
                   <!-- Row -->
                   <tr class="border-t first:border-t-2 border-gray-800">
-                    <td
-                      class="text-sm sm:text-base font-medium text-white pr-2 py-4"
-                    >
+                    <td class="text-sm sm:text-base text-white pr-2 py-4">
                       <div class="flex items-center justify-between max-w-xs">
                         <div>Congress Database</div>
                       </div>
                     </td>
-                    <td class="text-sm px-2 py-4 text-center font-medium">
+                    <td class="text-sm px-2 py-4 text-center">
                       <svg
                         class="shrink-0 w-4 h-4 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
@@ -1242,7 +1216,7 @@
                         /></svg
                       >
                     </td>
-                    <td class="text-sm px-2 py-4 text-center font-medium">
+                    <td class="text-sm px-2 py-4 text-center">
                       <svg
                         class="shrink-0 w-5 h-5 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
@@ -1269,14 +1243,12 @@
                   </tr>
                   <!-- Row -->
                   <tr class="border-t first:border-t-2 border-gray-800">
-                    <td
-                      class="text-sm sm:text-base font-medium text-white pr-2 py-4"
-                    >
+                    <td class="text-sm sm:text-base text-white pr-2 py-4">
                       <div class="flex items-center justify-between max-w-xs">
                         <div>Financial History</div>
                       </div>
                     </td>
-                    <td class="text-sm px-2 py-4 text-center font-medium">
+                    <td class="text-sm px-2 py-4 text-center">
                       <svg
                         class="shrink-0 w-4 h-4 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
@@ -1287,7 +1259,7 @@
                         /></svg
                       >
                     </td>
-                    <td class="text-sm px-2 py-4 text-center font-medium">
+                    <td class="text-sm px-2 py-4 text-center">
                       <svg
                         class="shrink-0 w-5 h-5 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
@@ -1314,14 +1286,12 @@
                   </tr>
                   <!-- Row -->
                   <tr class="border-t first:border-t-2 border-gray-800">
-                    <td
-                      class="text-sm sm:text-base font-medium text-white pr-2 py-4"
-                    >
+                    <td class="text-sm sm:text-base text-white pr-2 py-4">
                       <div class="flex items-center justify-between max-w-xs">
                         <div>Watchlist</div>
                       </div>
                     </td>
-                    <td class="text-sm px-2 py-4 text-center font-medium">
+                    <td class="text-sm px-2 py-4 text-center">
                       <svg
                         class="shrink-0 w-4 h-4 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
@@ -1332,7 +1302,7 @@
                         /></svg
                       >
                     </td>
-                    <td class="text-sm px-2 py-4 text-center font-medium">
+                    <td class="text-sm px-2 py-4 text-center">
                       <svg
                         class="shrink-0 w-5 h-5 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
@@ -1359,16 +1329,14 @@
                   </tr>
                   <!-- Row -->
                   <tr class="border-t first:border-t-2 border-gray-800">
-                    <td
-                      class="text-sm sm:text-base font-medium text-white pr-2 py-4"
-                    >
+                    <td class="text-sm sm:text-base text-white pr-2 py-4">
                       <div class="flex items-center justify-between max-w-xs">
                         <div class="flex items-center space-x-2">
                           <div>Future feature updates</div>
                         </div>
                       </div>
                     </td>
-                    <td class="text-sm px-2 py-4 text-center font-medium">
+                    <td class="text-sm px-2 py-4 text-center">
                       <svg
                         class="shrink-0 w-4 h-4 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"
@@ -1379,7 +1347,7 @@
                         /></svg
                       >
                     </td>
-                    <td class="text-sm px-2 py-4 text-center font-medium">
+                    <td class="text-sm px-2 py-4 text-center">
                       <svg
                         class="shrink-0 w-5 h-5 inline-flex"
                         xmlns="http://www.w3.org/2000/svg"

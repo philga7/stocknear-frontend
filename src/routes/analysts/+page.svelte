@@ -175,7 +175,7 @@
                   <tbody>
                     {#each analystList as item, index}
                       <tr
-                        class="border-b border-[#27272A] sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] odd:bg-odd {index +
+                        class="sm:hover:bg-[#245073]/10 odd:bg-odd {index +
                           1 ===
                           rawData?.length && data?.user?.tier !== 'Pro'
                           ? 'opacity-[0.1]'
@@ -193,7 +193,7 @@
                           <div class="flex flex-col items-start">
                             <a
                               href={"/analysts/" + item?.analystId}
-                              class="sm:hover:text-white text-blue-400 font-medium"
+                              class="sm:hover:text-white text-blue-400"
                               >{item?.analystName}
                             </a>
                             <!--<span class="text-white">{item?.companyName} </span>-->

@@ -85,7 +85,7 @@
                       >
                       {#if latestInfoDate(data?.getAnalystInsight?.date)}
                         <label
-                          class="bg-[#2D4F8A] text-white font-medium text-xs rounded-md px-2 py-0.5 ml-3"
+                          class="bg-[#2D4F8A] text-white text-xs rounded-md px-2 py-0.5 ml-3"
                           >New</label
                         >
                       {/if}

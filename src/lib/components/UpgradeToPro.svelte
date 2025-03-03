@@ -146,7 +146,7 @@
       <div class="mt-10 text-center">
         <a
           href="/pricing"
-          class="mt-10 flex justify-center text-[1rem] items-center px-5 w-fit m-auto rounded-md btn font-semibold text-black bg-[#fff] sm:hover:bg-gray-300 transition duration-150 ease-in-out group"
+          class="mt-10 flex justify-center text-[1rem] items-center px-5 w-fit m-auto border-none rounded-md btn btn-lg font-semibold text-black bg-[#fff] sm:hover:bg-gray-300 transition duration-150 ease-in-out group"
         >
           Get Pro Membership
           <span

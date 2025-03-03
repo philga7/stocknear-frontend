@@ -169,7 +169,7 @@
           {#each displayList as item}
             <!-- row -->
             <tr
-              class="sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] odd:bg-odd border-b border-gray-800"
+              class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800"
             >
               <td
                 class="text-white font-semibold sm:font-normal text-center text-sm sm:text-[1rem]"
@@ -208,7 +208,7 @@
               </td>
 
               <td
-                class="text-white font-medium text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
               >
                 {abbreviateNumber(item?.totalAssets)}
               </td>

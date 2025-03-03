@@ -295,9 +295,7 @@
                               loading="lazy"
                             />
                           </div>
-                          <span
-                            class="text-white text-lg font-medium mt-2 mb-2"
-                          >
+                          <span class="text-white text-lg mt-2 mb-2">
                             {item?.representative}
                           </span>
                           <span class="text-white text-md mb-8">
@@ -319,7 +317,7 @@
                                 "en-US",
                               )}</span
                             >
-                            <span class="text-slate-300 font-medium text-sm"
+                            <span class="text-slate-300 text-sm"
                               >Total Trades</span
                             >
                           </label>
@@ -338,7 +336,7 @@
                                   )
                                 : "n/a"}
                             </span>
-                            <span class="text-slate-300 font-medium text-sm"
+                            <span class="text-slate-300 text-sm"
                               >Last Traded</span
                             >
                           </div>

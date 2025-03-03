@@ -76,13 +76,11 @@
                   <div class="flex flex-col -mt-2 w-full">
                     <div class="flex flex-row items-center w-full">
                       <span
-                        class="text-white text-sm sm:text-md font-medium text-start mb-2 mr-auto mt-2"
+                        class="text-white text-sm sm:text-md text-start mb-2 mr-auto mt-2"
                       >
                         {formatString(item?.industry)}
                       </span>
-                      <span
-                        class="text-white text-sm sm:text-md font-medium ml-auto"
-                      >
+                      <span class="text-white text-sm sm:text-md ml-auto">
                         {item?.exposure <= 0.01
                           ? "< 0.01%"
                           : item?.exposure?.toFixed(2) + "%"}

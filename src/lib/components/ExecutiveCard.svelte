@@ -58,7 +58,7 @@
   <div class="bg-[#000] h-auto w-screen">
     <!--Start Header-->
     <div class="w-full p-1 flex flex-col items-center pb-5 h-auto">
-      <h2 class="text-center m-auto text-[1.1rem] font-medium text-white mt-5">
+      <h2 class="text-center m-auto text-[1.1rem] text-white mt-5">
         Executives
       </h2>
 
@@ -79,14 +79,12 @@
               class="w-3 h-3 bg-[#0FC008] border-4 box-content border-gray-900 rounded-full transform -translate-x-1/2"
               aria-hidden="true"
             ></div>
-            <span class="text-white text-sm font-medium inline-block">
-              Female <span class="font-medium text-[0.95rem]"
-                >({numberOfFemales})</span
-              >
+            <span class="text-white text-sm inline-block">
+              Female <span class=" text-[0.95rem]">({numberOfFemales})</span>
             </span>
           </div>
 
-          <span class="text-white font-medium text-3xl m-auto">
+          <span class="text-white text-3xl m-auto">
             {numberOfFemales === 0
               ? 0
               : (
@@ -104,10 +102,8 @@
               class="w-3 h-3 bg-[#FF2F1F] border-4 box-content border-gray-900 rounded-full transform -translate-x-1/2"
               aria-hidden="true"
             ></div>
-            <span class="text-white text-sm font-medium inline-block">
-              Male <span class="font-medium text-[0.95rem]"
-                >({numberOfMales})</span
-              >
+            <span class="text-white text-sm inline-block">
+              Male <span class=" text-[0.95rem]">({numberOfMales})</span>
             </span>
           </div>
         </div>
@@ -124,7 +120,7 @@
                 <div class="flex flex-row items-center relative">
                   <div class="flex flex-col">
                     <div
-                      class="flex flex-row items-center mr-auto mb-2 text-white font-medium text-sm w-56"
+                      class="flex flex-row items-center mr-auto mb-2 text-white text-sm w-56"
                     >
                       <span>
                         {item?.name}

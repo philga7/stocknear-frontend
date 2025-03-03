@@ -764,9 +764,7 @@
         class="pt-2 pb-1 text-sm w-full max-w-lg text-white flex justify-center items-center"
       >
         You already have an account?
-        <a href="/login" class="text-blue-400 font-medium hover:underline ml-1"
-          >Sign in</a
-        >
+        <a href="/login" class="text-blue-400 hover:underline ml-1">Sign in</a>
       </p>
     </form>
   </div>

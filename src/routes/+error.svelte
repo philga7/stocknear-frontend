@@ -24,7 +24,7 @@
                 -->
 
         <div
-          class="mt-4 text-white font-medium text-md w-11/12 sm:w-full m-auto text-center"
+          class="mt-4 text-white text-md w-11/12 sm:w-full m-auto text-center"
         >
           The page was not found. If this error occurs persistenly please report
           it to us via

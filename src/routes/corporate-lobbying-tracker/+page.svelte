@@ -220,13 +220,13 @@
                       </td>
 
                       <td
-                        class="text-end text-sm sm:text-[1rem] font-medium text-white whitespace-nowrap"
+                        class="text-end text-sm sm:text-[1rem] text-white whitespace-nowrap"
                       >
                         {item?.price}
                       </td>
 
                       <td
-                        class="text-white text-end text-sm sm:text-[1rem] font-medium border-b-[#09090B]"
+                        class="text-white text-end text-sm sm:text-[1rem] border-b-[#09090B]"
                       >
                         {#if item?.changesPercentage >= 0}
                           <span class="text-[#00FC50]"

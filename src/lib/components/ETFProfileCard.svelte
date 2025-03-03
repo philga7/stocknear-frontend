@@ -85,9 +85,7 @@
       style="background-image: url('{defaultImage}');"
     >
       <div class="flex flex-row pt-1 pb-2">
-        <div
-          class="badge badge-error gap-2 mt-2 font-medium text-sm text-white"
-        >
+        <div class="badge badge-error gap-2 mt-2 text-sm text-white">
           Asset Class - {assetClass}
         </div>
       </div>
@@ -275,7 +273,7 @@
         <div class="flex flex-row w-full items-center mt-4 pb-2 mb-2">
           <label
             on:click={() => (showFullText = !showFullText)}
-            class="hidden lg:block ml-3 w-full text-md mt-1 cursor-pointer font-medium text-white sm:hover:text-blue-400 sm:hover:underline"
+            class="hidden lg:block ml-3 w-full text-md mt-1 cursor-pointer text-white sm:hover:text-blue-400 sm:hover:underline"
           >
             {#if showFullText}
               Show less
@@ -288,7 +286,7 @@
             <a
               target="_blank"
               href={website}
-              class="inline-flex text-sm font-medium text-white sm:hover:text-blue-400 sm:hover:underline"
+              class="inline-flex text-sm text-white sm:hover:text-blue-400 sm:hover:underline"
             >
               Go to website
               <svg

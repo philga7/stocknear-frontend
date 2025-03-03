@@ -103,9 +103,8 @@
           </ul>
         </nav>
       </div>
+      <slot />
     </main>
-
-    <slot />
   </div>
 </section>
 

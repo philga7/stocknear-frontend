@@ -116,7 +116,7 @@
                     <span>Short Interest</span>
                   </td>
                   <td
-                    class="whitespace-nowrap px-[5px] py-1.5 text-right font-medium xs:px-2.5 xs:py-2"
+                    class="whitespace-nowrap px-[5px] py-1.5 text-right  xs:px-2.5 xs:py-2"
                   >
                     {abbreviateNumber(rawData?.sharesShort)}
                   </td>
@@ -126,7 +126,7 @@
                     <span>Short Previous Month</span>
                   </td>
                   <td
-                    class="whitespace-nowrap px-[5px] py-1.5 text-right font-medium xs:px-2.5 xs:py-2"
+                    class="whitespace-nowrap px-[5px] py-1.5 text-right  xs:px-2.5 xs:py-2"
                   >
                     {abbreviateNumber(rawData?.sharesShortPriorMonth)}
                   </td>
@@ -136,7 +136,7 @@
                     <span>Short % of Shares Out</span>
                   </td>
                   <td
-                    class="whitespace-nowrap px-[5px] py-1.5 text-right font-medium xs:px-2.5 xs:py-2"
+                    class="whitespace-nowrap px-[5px] py-1.5 text-right  xs:px-2.5 xs:py-2"
                   >
                     {rawData?.shortOutStandingPercent}%
                   </td>
@@ -146,7 +146,7 @@
                     <span>Short % of Float</span>
                   </td>
                   <td
-                    class="whitespace-nowrap px-[5px] py-1.5 text-right font-medium xs:px-2.5 xs:py-2"
+                    class="whitespace-nowrap px-[5px] py-1.5 text-right  xs:px-2.5 xs:py-2"
                   >
                     {rawData?.shortFloatPercent}%
                   </td>
@@ -156,7 +156,7 @@
                     <span>Short Ratio (days to cover)</span>
                   </td>
                   <td
-                    class="whitespace-nowrap px-[5px] py-1.5 text-right font-medium xs:px-2.5 xs:py-2"
+                    class="whitespace-nowrap px-[5px] py-1.5 text-right  xs:px-2.5 xs:py-2"
                   >
                     {rawData?.shortRatio}
                   </td>

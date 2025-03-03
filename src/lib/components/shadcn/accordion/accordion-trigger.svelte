@@ -14,7 +14,7 @@
 <AccordionPrimitive.Header {level} class="flex">
   <AccordionPrimitive.Trigger
     class={cn(
-      "cursor-pointer flex flex-1 items-center justify-between font-medium transition-all [&[data-state=open]>svg1]:rotate-180",
+      "cursor-pointer flex flex-1 items-center justify-between  transition-all [&[data-state=open]>svg1]:rotate-180",
       className,
     )}
     {...$$restProps}

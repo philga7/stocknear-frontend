@@ -467,7 +467,7 @@
                   ></span>
                 </span>
 
-                <span class="ml-2 text-[1rem] text-slate-200 font-medium">
+                <span class="ml-2 text-[1rem] text-slate-200">
                   {#if data?.user?.freeTrial === true}
                     Active
                   {:else}
@@ -478,7 +478,7 @@
               </div>
             </div>
             {#if subscriptionData?.status_formatted === "Active"}
-              <span class="text-white text-sm font-medium pr-5">
+              <span class="text-white text-sm pr-5">
                 Your subscription will automatically renew on {new Date(
                   subscriptionData?.renews_at,
                 )?.toLocaleDateString("en-GB", {
@@ -488,7 +488,7 @@
                 })}
               </span>
             {:else if subscriptionData?.status_formatted === "Cancelled"}
-              <span class="text-white text-sm font-medium">
+              <span class="text-white text-sm">
                 Your subscription will remain active until {new Date(
                   subscriptionData?.ends_at,
                 )?.toLocaleDateString("en-GB", {
@@ -499,9 +499,7 @@
               </span>
             {/if}
             <div class="flex flex-col justify-start items-start mt-4 mb-4">
-              <span class="text-white font-medium mr-2 text-lg">
-                Current Plan:
-              </span>
+              <span class="text-white mr-2 text-lg"> Current Plan: </span>
               <span class="text-[1rem]">
                 {#if subscriptionData?.first_order_item?.product_name === "Pro Subscription (Life Time Access)"}
                   Lifetime Access
@@ -623,9 +621,7 @@
     use:enhance={submitCancellation}
     class="modal-box w-full bg-secondary flex flex-col items-center"
   >
-    <div
-      class="mx-auto mb-8 h-1.5 w-20 shrink-0 rounded-full bg-gray-500"
-    />
+    <div class="mx-auto mb-8 h-1.5 w-20 shrink-0 rounded-full bg-gray-500" />
     <div class="text-white mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">Are you sure?</h3>
       <span class="text-white text-[1rem] font-normal">
@@ -680,9 +676,7 @@
     use:enhance={submitReactivate}
     class="modal-box w-full bg-secondary flex flex-col items-center"
   >
-    <div
-      class="mx-auto mb-8 h-1.5 w-20 shrink-0 rounded-full bg-gray-500"
-    />
+    <div class="mx-auto mb-8 h-1.5 w-20 shrink-0 rounded-full bg-gray-500" />
     <div class="text-white mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">Reactivate Subscription</h3>
       <span class="text-white text-[1rem] font-normal">
@@ -734,9 +728,7 @@
     use:enhance={submitChangePlan}
     class="modal-box w-full bg-secondary flex flex-col items-center"
   >
-    <div
-      class="mx-auto mb-8 h-1.5 w-20 shrink-0 rounded-full bg-gray-500"
-    />
+    <div class="mx-auto mb-8 h-1.5 w-20 shrink-0 rounded-full bg-gray-500" />
     <div class="text-white mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">Are you sure?</h3>
       <span class="text-white text-[1rem] font-normal">
@@ -782,9 +774,7 @@
 
   <!-- Desktop modal content -->
   <div class="modal-box w-full bg-secondary flex flex-col items-center">
-    <div
-      class="mx-auto mb-8 h-1.5 w-20 shrink-0 rounded-full bg-gray-500"
-    />
+    <div class="mx-auto mb-8 h-1.5 w-20 shrink-0 rounded-full bg-gray-500" />
     <div class="text-white mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">Paypal not supported</h3>
       <span class="text-white text-[1rem] font-normal">

@@ -241,7 +241,7 @@
                     <!-- row -->
                     <tr class=" odd:bg-odd border-b border-gray-800">
                       <td
-                        class="text-white font-medium text-sm sm:text-[1rem] whitespace-nowrap"
+                        class="text-white text-sm sm:text-[1rem] whitespace-nowrap"
                       >
                         {new Date(item?.date ?? null)?.toLocaleString("en-US", {
                           month: "short",
@@ -273,7 +273,7 @@
                       </td>
 
                       <td
-                        class="text-white text-sm sm:text-[1rem] whitespace-nowrap font-medium text-end"
+                        class="text-white text-sm sm:text-[1rem] whitespace-nowrap text-end"
                       >
                         {#if item?.valueGrowth > 0}
                           <span class="text-[#00FC50]">
@@ -294,7 +294,7 @@
             </div>
           {:else}
             <h2
-              class="mt-16 flex justify-center items-center text-2xl font-medium text-white mb-5 m-auto"
+              class="mt-16 flex justify-center items-center text-2xl text-white mb-5 m-auto"
             >
               No data available
             </h2>

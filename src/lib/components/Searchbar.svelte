@@ -532,7 +532,7 @@
                       >
                     </div>
 
-                    <div class="text-white font-medium ml-auto">
+                    <div class="text-white ml-auto">
                       {item?.type}
                     </div>
                   </div>
@@ -564,7 +564,7 @@
                       >
                     </div>
 
-                    <div class="text-white font-medium ml-auto">
+                    <div class="text-white ml-auto">
                       {item?.type}
                     </div>
                   </div>

@@ -184,8 +184,7 @@
                                 maximumFractionDigits: 0,
                               }).format(item?.numberOfStocks)}
                             </span>
-                            <span class="text-white font-medium text-sm"
-                              ># of Holdings</span
+                            <span class="text-white text-sm"># of Holdings</span
                             >
                           </label>
 
@@ -193,9 +192,7 @@
                             <span class="text-white text-[1rem] font-semibold">
                               {item?.turnover?.toFixed(2)}
                             </span>
-                            <span class="text-white font-medium text-sm"
-                              >Turnover</span
-                            >
+                            <span class="text-white text-sm">Turnover</span>
                           </div>
                         </div>
 
@@ -226,7 +223,7 @@
                                 </span>
                               {/if}
                             </div>
-                            <span class="text-white font-medium text-sm"
+                            <span class="text-white text-sm"
                               >3-Year Performance</span
                             >
                           </label>
@@ -249,9 +246,7 @@
                                 </span>
                               {/if}
                             </div>
-                            <span class="text-white font-medium text-sm"
-                              >Win Rate</span
-                            >
+                            <span class="text-white text-sm">Win Rate</span>
                           </div>
                         </div>
                       </div>

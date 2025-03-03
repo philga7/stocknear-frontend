@@ -110,15 +110,13 @@
             {#each etfProviderList as item, index}
               <!-- row -->
               <tr
-                class="sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] odd:bg-odd border-b border-gray-800 {index +
+                class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800 {index +
                   1 ===
                   etfProviderList?.length && data?.user?.tier !== 'Pro'
                   ? 'opacity-[0.1]'
                   : ''}"
               >
-                <td
-                  class="text-sm sm:text-[1rem] whitespace-nowrap font-medium"
-                >
+                <td class="text-sm sm:text-[1rem] whitespace-nowrap">
                   <a
                     href={"/etf/etf-providers/" + item?.etfProvider}
                     class="sm:hover:underline sm:hover:underline-offset-4 text-white"
@@ -128,25 +126,25 @@
                 </td>
 
                 <td
-                  class="text-white font-medium text-sm sm:text-[1rem] whitespace-nowrap text-end"
+                  class="text-white text-sm sm:text-[1rem] whitespace-nowrap text-end"
                 >
                   {abbreviateNumber(item?.totalAssets)}
                 </td>
 
                 <td
-                  class="text-white font-medium text-sm sm:text-[1rem] whitespace-nowrap text-end"
+                  class="text-white text-sm sm:text-[1rem] whitespace-nowrap text-end"
                 >
                   {item?.funds}
                 </td>
 
                 <td
-                  class="text-white font-medium text-sm sm:text-[1rem] whitespace-nowrap text-end"
+                  class="text-white text-sm sm:text-[1rem] whitespace-nowrap text-end"
                 >
                   {item?.avgExpenseRatio}%
                 </td>
 
                 <td
-                  class="text-white font-medium text-sm sm:text-[1rem] whitespace-nowrap text-end"
+                  class="text-white text-sm sm:text-[1rem] whitespace-nowrap text-end"
                 >
                   {item?.avgHoldings}
                 </td>

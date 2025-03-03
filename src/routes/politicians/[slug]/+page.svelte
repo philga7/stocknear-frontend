@@ -239,7 +239,7 @@
                           href={sectorNavigation?.find(
                             (listItem) => listItem?.title === item,
                           )?.link}
-                          class="px-3 text-sm py-1 sm:text-[1rem] rounded-md bg-white bg-opacity-[0.1] sm:hover:bg-opacity-[0.2] ml-0"
+                          class="px-3 text-sm py-1 sm:text-[1rem] rounded-md bg-white/10 sm:hover:bg-white/20 ml-0"
                         >
                           {item}
                         </a>
@@ -254,7 +254,7 @@
                       {#each mainIndustries as item}
                         <a
                           href={`/list/industry/${item?.replace(/ /g, "-")?.replace(/&/g, "and")?.replace(/-{2,}/g, "-")?.toLowerCase()}`}
-                          class="px-3 text-sm py-1 sm:text-[1rem] rounded-md bg-white bg-opacity-[0.1] sm:hover:bg-opacity-[0.2] ml-0"
+                          class="px-3 text-sm py-1 sm:text-[1rem] rounded-md bg-white/10 sm:hover:bg-white/20 ml-0"
                         >
                           {item}
                         </a>
@@ -318,12 +318,12 @@
                 <tbody class="p-0">
                   {#each tableData as item}
                     <tr
-                      class="sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] odd:bg-odd border-b-[#27272A] text-white"
+                      class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b-[#27272A] text-white"
                     >
                       <td class="hidden lg:table-cell"
                         ><button
                           on:click={() => openGraph(item?.ticker)}
-                          class="h-full pl-2 pr-2 align-middle lg:pl-3"
+                          class="cursor-pointer h-full pl-2 pr-2 align-middle lg:pl-3"
                           ><svg
                             class="w-5 h-5 text-icon {(checkedSymbol ===
                               item?.ticker ?? item?.symbol)

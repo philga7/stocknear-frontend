@@ -199,7 +199,7 @@
               />
             </div>
 
-            <div class="w-full overflow-x-auto">
+            <div class="w-full overflow-x-auto no-scrollbar">
               <table
                 class="table-fixed leading-3 border-separate border-spacing-0 font-sans tabular-nums text-white w-full"
               >
@@ -255,7 +255,7 @@
                       ><td
                         class="whitespace-nowrap border-l border-t border-primary py-0.5 rounded-tl-md px-1"
                         ><div
-                          class="flex flex-col items-start text-white font-medium w-full"
+                          class="flex flex-col items-start text-white w-full"
                         >
                           <div
                             class="pr-0.5 mt-2 flex flex-row items-center w-full text-sm"
@@ -383,7 +383,7 @@
                           <div class="flex items-center">
                             <div class="mr-1 text-purple-400">IV:</div>
                             <div
-                              class="leading-3 w-full whitespace-nowrap text-purple-400 font-medium text-white"
+                              class="leading-3 w-full whitespace-nowrap text-purple-400 text-white"
                             >
                               {item?.iv ?? "-"}
                             </div>
@@ -392,7 +392,7 @@
                           <div class="flex items-center">
                             <div class="mr-1 text-purple-400">RSI:</div>
                             <div
-                              class="leading-3 w-full whitespace-nowrap text-purple-400 font-medium text-white"
+                              class="leading-3 w-full whitespace-nowrap text-purple-400 text-white"
                             >
                               {item?.rsi ?? "n/a"}
                             </div>
@@ -438,40 +438,40 @@
                       ></td><td
                         class="px-4 last:pr-11 w-17 last:w-24.5 border-primary px-3.5 py-0.5 border-l border-l-violet-500 px-1 text-right"
                         ><div
-                          class="w-full whitespace-nowrap rounded-sm border-gray-800 badge text-white text-sm sm:text-[1rem] font-medium {item?.open_change_percent >=
+                          class="w-full whitespace-nowrap rounded border-gray-800 badge-lg text-white text-sm sm:text-[1rem] {item?.open_change_percent >=
                           0
-                            ? "bg-positive bg-opacity-[0.5] before:content-['+'] "
-                            : 'bg-negative bg-opacity-[0.6]'}"
+                            ? "bg-positive/60 before:content-['+'] "
+                            : 'bg-negative/70'}"
                         >
                           {item?.open_change_percent?.toFixed(2)}%
                         </div></td
                       ><td
                         class="px-4 last:pr-11 w-17 last:w-24.5 border-primary px-3.5 py-0.5 px-1 text-right"
                         ><div
-                          class="w-full whitespace-nowrap rounded-sm border-gray-800 badge text-white text-sm sm:text-[1rem] font-medium {item?.high_change_percent >=
+                          class="w-full whitespace-nowrap rounded border-gray-800 badge-lg text-white text-sm sm:text-[1rem] {item?.high_change_percent >=
                           0
-                            ? "bg-positive bg-opacity-[0.5] before:content-['+'] "
-                            : 'bg-negative bg-opacity-[0.6]'}"
+                            ? "bg-positive/60 before:content-['+'] "
+                            : 'bg-negative/70'}"
                         >
                           {item?.high_change_percent?.toFixed(2)}%
                         </div></td
                       ><td
                         class="px-4 last:pr-11 w-17 last:w-24.5 border-primary px-3.5 py-0.5 px-1 text-right"
                         ><div
-                          class="w-full whitespace-nowrap rounded-sm border-gray-800 badge text-white text-sm sm:text-[1rem] font-medium {item?.low_change_percent >=
+                          class="w-full whitespace-nowrap rounded border-gray-800 badge-lg text-white text-sm sm:text-[1rem] {item?.low_change_percent >=
                           0
-                            ? "bg-positive bg-opacity-[0.5] before:content-['+'] "
-                            : 'bg-negative bg-opacity-[0.6]'}"
+                            ? "bg-positive/60 before:content-['+'] "
+                            : 'bg-negative/70'}"
                         >
                           {item?.low_change_percent?.toFixed(2)}%
                         </div></td
                       ><td
                         class="px-4 last:pr-11 w-17 last:w-24.5 border-primary px-3.5 py-0.5 border-r border-r-violet-500 px-1 text-right"
                         ><div
-                          class="w-full whitespace-nowrap rounded-sm border-gray-800 badge text-white text-sm sm:text-[1rem] font-medium {item?.close_change_percent >=
+                          class="w-full whitespace-nowrap rounded border-gray-800 badge-lg text-white text-sm sm:text-[1rem] {item?.close_change_percent >=
                           0
-                            ? "bg-positive bg-opacity-[0.5] before:content-['+'] "
-                            : 'bg-negative bg-opacity-[0.6]'}"
+                            ? "bg-positive/60 before:content-['+'] "
+                            : 'bg-negative/70'}"
                         >
                           {item?.close_change_percent?.toFixed(2)}%
                         </div></td

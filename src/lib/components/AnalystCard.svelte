@@ -64,12 +64,10 @@
 
       <div class="flex flex-col mt-5 w-full">
         <div class="flex flex-row m-auto w-full">
-          <span class="text-start mr-auto ml-5 text-white font-medium text-xl">
+          <span class="text-start mr-auto ml-5 text-white text-xl">
             Signal
           </span>
-          <span class="mr-5 text-white font-medium text-xl">
-            Price Target
-          </span>
+          <span class="mr-5 text-white text-xl"> Price Target </span>
         </div>
         <div class="flex flex-row m-auto w-full">
           {#if consensusRating === "Buy" || consensusRating === "Strong Buy"}
@@ -122,10 +120,8 @@
 
           <div class="flex flex-col items-center w-full">
             <div class="flex flex-row items-center w-11/12 mt-5 mb-2">
-              <span class="text-white font-medium text-start mr-auto">
-                Buy
-              </span>
-              <span class="text-white text-md font-medium ml-auto">
+              <span class="text-white text-start mr-auto"> Buy </span>
+              <span class="text-white text-md ml-auto">
                 {buyCount}%
               </span>
             </div>
@@ -138,10 +134,8 @@
 
           <div class="flex flex-col items-center w-full">
             <div class="flex flex-row items-center w-11/12 mt-5 mb-2">
-              <span class="text-white font-medium text-start mr-auto">
-                Hold
-              </span>
-              <span class="text-white text-md font-medium ml-auto">
+              <span class="text-white text-start mr-auto"> Hold </span>
+              <span class="text-white text-md ml-auto">
                 {holdCount}%
               </span>
             </div>
@@ -154,10 +148,8 @@
 
           <div class="flex flex-col items-center w-full">
             <div class="flex flex-row items-center w-11/12 mt-5 mb-2">
-              <span class="text-white font-medium text-start mr-auto">
-                Sell
-              </span>
-              <span class="text-white text-md font-medium ml-auto">
+              <span class="text-white text-start mr-auto"> Sell </span>
+              <span class="text-white text-md ml-auto">
                 {sellCount}%
               </span>
             </div>

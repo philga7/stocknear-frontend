@@ -406,7 +406,7 @@
                       <span class="text-white text-xs font-semibold">
                         {$indexTicker}
                       </span>
-                      <span class="text-white font-medium text-sm">
+                      <span class="text-white text-sm">
                         {#if $currentPortfolioPrice !== null && $currentPortfolioPrice !== 0}
                           {$currentPortfolioPrice}
                         {:else}
@@ -969,10 +969,10 @@
                 : 'border-gray-600'}"
             >
               <div class="flex flex-col items-center w-full">
-                <span class="ml-1 text-white font-medium mr-auto">
+                <span class="ml-1 text-white mr-auto">
                   {item?.title}
                 </span>
-                <span class="ml-1 text-white text-sm font-medium mr-auto">
+                <span class="ml-1 text-white text-sm mr-auto">
                   {item?.ticker?.length}
                   {item?.ticker?.length !== 1 ? "Companies" : "Company"}
                 </span>

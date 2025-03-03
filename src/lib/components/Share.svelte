@@ -31,7 +31,7 @@
     /></svg
   >
   <!--
-  <span class="font-medium text-[#D6D6DC] text-sm">
+  <span class=" text-[#D6D6DC] text-sm">
     Share
 </span>
 -->

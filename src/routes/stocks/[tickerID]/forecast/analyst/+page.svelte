@@ -229,7 +229,7 @@
                     {#if data?.user?.tier !== "Pro" && i > 0}
                       <button
                         on:click={() => goto("/pricing")}
-                        class="group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
+                        class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
                       >
                         <span class="relative text-sm block font-semibold">
                           {item.title}
@@ -247,7 +247,7 @@
                     {:else}
                       <button
                         on:click={() => changeTab(i)}
-                        class="group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
+                        class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
                         i
                           ? 'z-0'
                           : ''} "
@@ -436,7 +436,7 @@
                     </td>
 
                     <td
-                      class="text-sm sm:text-[1rem] whitespace-nowrap font-medium text-end text-white"
+                      class="text-sm sm:text-[1rem] whitespace-nowrap text-end text-white"
                     >
                       <span
                         class=" {['Strong Buy', 'Buy']?.includes(
@@ -501,7 +501,7 @@
                     </td>
 
                     <td
-                      class="text-white text-end font-medium text-sm sm:text-[1rem] whitespace-nowrap"
+                      class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
                     >
                       <div class="flex flex-col items-end">
                         {#if latestInfoDate(item?.date)}

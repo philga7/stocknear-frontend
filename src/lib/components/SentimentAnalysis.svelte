@@ -51,9 +51,7 @@
         <div
           class="w-auto p-4 sm:p-6 bg-default sm:bg-default rounded-md relative"
         >
-          <h3 class="text-gray-300 font-medium text-sm uppercase mb-3">
-            Average Score
-          </h3>
+          <h3 class="text-gray-300 text-sm uppercase mb-3">Average Score</h3>
           <div class="flex flex-row items-center justify-between">
             <!--Start Big Circle-->
             <div class="relative size-24 sm:size-28">
@@ -180,13 +178,13 @@
         <div
           class="w-auto p-4 sm:p-6 bg-default sm:bg-default rounded-md relative"
         >
-          <h3 class="text-gray-300 font-medium text-sm uppercase mb-3">
+          <h3 class="text-gray-300 text-sm uppercase mb-3">
             Average Score Trend
           </h3>
           <div class="grid grid-cols-8 sm:grid-cols-9 -ml-2 sm:-ml-5 mt-7">
             {#each sentimentList as item}
               <div class="flex flex-col items-center">
-                <span class="text-white font-medium text-[1rem] mb-4">
+                <span class="text-white text-[1rem] mb-4">
                   {#if data?.user?.tier === "Pro"}
                     {item?.value !== 0 ? item?.value : "-"}
                   {:else if ["1M", "1Y"]?.includes(item?.label)}
@@ -228,7 +226,7 @@
                     ></div>
                   {/if}
                 </div>
-                <span class="text-white font-medium text-sm mt-4">
+                <span class="text-white text-sm mt-4">
                   {item?.label}
                 </span>
               </div>

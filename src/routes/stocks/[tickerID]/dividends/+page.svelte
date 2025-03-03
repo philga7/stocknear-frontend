@@ -98,7 +98,7 @@
                 {dividendYield !== "0.00" ? dividendYield : "0"}%
               </div>
             </div>
-            <div class="p-4 bp:p-5 sm:p-6 border-l border-b border-contrast">
+            <div class="p-4 bp:p-5 sm:p-6 border-b border-gray-600">
               <label
                 class="mr-1 cursor-pointer flex flex-row items-center text-white text-[1rem]"
               >
@@ -111,9 +111,7 @@
                 {annualDividend !== "0.00" ? annualDividend : "0"}
               </div>
             </div>
-            <div
-              class="p-4 bp:p-5 sm:p-6 border-t border-r border-contrast border-contrast"
-            >
+            <div class="p-4 bp:p-5 sm:p-6 border-none">
               <label
                 class="mr-1 cursor-pointer flex flex-row items-center text-white text-[1rem]"
               >
@@ -132,7 +130,7 @@
               </div>
             </div>
 
-            <div class="p-4 bp:p-5 sm:p-6 border-t border-r border-contrast">
+            <div class="p-4 bp:p-5 sm:p-6 border-t">
               <label
                 class="mr-1 cursor-pointer flex flex-row items-center text-white text-[1rem]"
               >
@@ -145,7 +143,7 @@
                 {payoutFrequency ? payoutFrequency : "n/a"}
               </div>
             </div>
-            <div class="p-4 bp:p-5 sm:p-6 border-t border-r border-contrast">
+            <div class="p-4 bp:p-5 sm:p-6">
               <label
                 class="mr-1 cursor-pointer flex flex-row items-center text-white text-[1rem]"
               >
@@ -160,7 +158,7 @@
                   : "n/a"}
               </div>
             </div>
-            <div class="p-4 bp:p-5 sm:p-6 border-t border-r border-contrast">
+            <div class="p-4 bp:p-5 sm:p-6 border-t border-gray-600">
               <label
                 class="mr-1 cursor-pointer flex flex-row items-center text-white text-[1rem]"
               >
@@ -211,9 +209,9 @@
                 </thead>
                 <tbody class="">
                   {#each rawData?.history as item}
-                    <tr class="text-white odd:bg-odd border-b border-gray-800">
+                    <tr class="text-white odd:bg-odd">
                       <td
-                        class="text-start text-sm sm:text-[1rem] whitespace-nowrap text-white font-medium"
+                        class="text-start text-sm sm:text-[1rem] whitespace-nowrap text-white"
                       >
                         {new Date(item?.date)?.toLocaleString("en-US", {
                           month: "short",
@@ -281,11 +279,7 @@
               * Dividend amounts are adjusted for stock splits when applicable.
             </span>
           {:else}
-            <h1
-              class="text-xl m-auto flex justify-center text-gray-200 mb-4 mt-10"
-            >
-              No history found
-            </h1>
+            <Infobox text="No dividend data found" />
           {/if}
         {/if}
       </div>

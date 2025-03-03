@@ -1547,11 +1547,11 @@
                       <tbody class="p-0">
                         {#each watchList as item}
                           <tr
-                            class="sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] odd:bg-odd border-b border-gray-800"
+                            class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800"
                           >
                             <td
                               on:click={() => handleFilter(item?.symbol)}
-                              class="text-blue-400 font-medium text-sm sm:text-[1rem] whitespace-nowrap text-start flex flex-row items-center"
+                              class="text-blue-400 text-sm sm:text-[1rem] whitespace-nowrap text-start flex flex-row items-center"
                             >
                               <input
                                 type="checkbox"
@@ -1683,7 +1683,7 @@
                           {#if data?.user?.tier !== "Pro" && i > 0}
                             <button
                               on:click={() => goto("/pricing")}
-                              class="group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
+                              class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
                             >
                               <span
                                 class="relative text-sm sm:text-[1rem] block font-semibold"
@@ -1703,7 +1703,7 @@
                           {:else}
                             <button
                               on:click={() => changeTab(i)}
-                              class="group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
+                              class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
                               i
                                 ? 'z-0'
                                 : ''} "

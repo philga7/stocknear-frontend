@@ -337,7 +337,7 @@
                           href={sectorNavigation?.find(
                             (listItem) => listItem?.title === item,
                           )?.link}
-                          class="px-3 text-sm py-1 sm:text-[1rem] rounded-md bg-white bg-opacity-[0.1] sm:hover:bg-opacity-[0.2] ml-0"
+                          class="px-3 text-sm py-1 sm:text-[1rem] rounded-md bg-white/10 sm:hover:bg-white/20 ml-0"
                         >
                           {item}
                         </a>
@@ -352,7 +352,7 @@
                       {#each data?.getAnalystStats?.mainIndustries as item}
                         <a
                           href={`/list/industry/${item?.replace(/ /g, "-")?.replace(/&/g, "and")?.replace(/-{2,}/g, "-")?.toLowerCase()}`}
-                          class="px-3 text-sm py-1 sm:text-[1rem] rounded-md bg-white bg-opacity-[0.1] sm:hover:bg-opacity-[0.2] ml-0"
+                          class="px-3 text-sm py-1 sm:text-[1rem] rounded-md bg-white/10 sm:hover:bg-white/20 ml-0"
                         >
                           {item}
                         </a>
@@ -381,12 +381,12 @@
                     <tbody>
                       {#each stockList as item, index}
                         <tr
-                          class="sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] odd:bg-odd border-b-[#09090B]"
+                          class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b-[#09090B]"
                         >
                           <td class="hidden lg:table-cell"
                             ><button
                               on:click={() => openGraph(item?.ticker)}
-                              class="h-full pl-2 pr-2 align-middle lg:pl-3"
+                              class="cursor-pointer h-full pl-2 pr-2 align-middle lg:pl-3"
                               ><svg
                                 class="w-5 h-5 text-icon {checkedSymbol ===
                                 item?.ticker
@@ -460,11 +460,11 @@
                             class="text-sm sm:text-[1rem] text-start whitespace-nowrap"
                           >
                             <div class="flex flex-col sm:flex-row items-start">
-                              <span class="font-medium text-white mr-1"
+                              <span class=" text-white mr-1"
                                 >{item?.action_company}:</span
                               >
                               <span
-                                class="font-medium {[
+                                class=" {[
                                   'Strong Buy',
                                   'Buy',
                                   'Outperform',
@@ -520,7 +520,7 @@
                           </td>
 
                           <td
-                            class="text-white text-end font-medium text-sm sm:text-[1rem] whitespace-nowrap"
+                            class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
                           >
                             {item?.price !== null ? item?.price : "n/a"}
                           </td>
@@ -530,19 +530,19 @@
                               ? "before:content-['+'] text-[#00FC50]"
                               : item?.upside < 0 && item?.upside !== null
                                 ? 'text-[#FF2F1F]'
-                                : 'text-white'} text-end font-medium text-sm sm:text-[1rem] whitespace-nowrap"
+                                : 'text-white'} text-end text-sm sm:text-[1rem] whitespace-nowrap"
                           >
                             {item?.upside !== null ? item?.upside + "%" : "n/a"}
                           </td>
 
                           <td
-                            class="text-white text-end font-medium text-sm sm:text-[1rem] whitespace-nowrap"
+                            class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
                           >
                             {item?.ratings !== null ? item?.ratings : "n/a"}
                           </td>
 
                           <td
-                            class="text-white text-end font-medium text-sm sm:text-[1rem] whitespace-nowrap"
+                            class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
                           >
                             {new Date(item?.date).toLocaleString("en-US", {
                               month: "short",

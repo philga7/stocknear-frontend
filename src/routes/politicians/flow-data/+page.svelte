@@ -109,28 +109,28 @@
                           <thead class="bg-default">
                             <tr class="">
                               <th
-                                class=" text-start bg-default text-white text-sm font-medium sm:font-semibold"
+                                class=" text-start bg-default text-white text-sm sm:font-semibold"
                               >
                                 Person
                               </th>
                               <td
-                                class="text-start bg-default text-white text-sm font-medium sm:font-semibold"
+                                class="text-start bg-default text-white text-sm sm:font-semibold"
                               >
                                 Company
                               </td>
 
                               <td
-                                class="text-end bg-default text-white text-sm font-medium sm:font-semibold"
+                                class="text-end bg-default text-white text-sm sm:font-semibold"
                               >
                                 Date
                               </td>
                               <td
-                                class="text-center bg-default text-white text-sm font-medium sm:font-semibold"
+                                class="text-center bg-default text-white text-sm sm:font-semibold"
                               >
                                 Amount
                               </td>
                               <td
-                                class="text-white text-end text-sm font-medium sm:font-semibold"
+                                class="text-white text-end text-sm sm:font-semibold"
                                 >Type</td
                               >
                             </tr>

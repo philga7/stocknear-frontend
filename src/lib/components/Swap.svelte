@@ -233,9 +233,7 @@
                 {#if activeIdx === i}
                   <div class="absolute inset-0 rounded-md bg-[#fff]"></div>
                 {/if}
-                <span
-                  class="relative text-sm block font-medium duration-200 text-white"
-                >
+                <span class="relative text-sm block duration-200 text-white">
                   {item.title}
                 </span>
               </button>
@@ -280,7 +278,7 @@
               aria-hidden="true"
             ></div>
             <span
-              class="mt-2 sm:mt-0 text-white text-xs sm:text-md sm:font-medium inline-block"
+              class="mt-2 sm:mt-0 text-white text-xs sm:text-md sm: inline-block"
             >
               Notional Quantity
             </span>

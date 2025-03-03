@@ -100,9 +100,7 @@
                           />
                         </div>
                         <div class="flex flex-col ml-3 w-full">
-                          <span class="text-sm font-medium"
-                            >{item?.asset ?? "-"}</span
-                          >
+                          <span class="text-sm">{item?.asset ?? "-"}</span>
                           <span class="text-white text-sm">
                             {#if typeof item?.name !== "undefined"}
                               {item?.name?.length > 20

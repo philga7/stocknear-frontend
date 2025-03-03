@@ -351,7 +351,7 @@
                         </td>
 
                         <td
-                          class="text-sm sm:text-[1rem] text-end font-medium {item?.put_call ===
+                          class="text-sm sm:text-[1rem] text-end {item?.put_call ===
                           'Puts'
                             ? 'text-[#CB281C]'
                             : 'text-[#0FB307]'} "
@@ -369,7 +369,7 @@
                         </td>
 
                         <td
-                          class="text-white text-end text-sm sm:text-[1rem] text-end font-medium"
+                          class="text-white text-end text-sm sm:text-[1rem] text-end"
                         >
                           {new Intl.NumberFormat("en", {
                             minimumFractionDigits: 0,
@@ -378,7 +378,7 @@
                         </td>
 
                         <td
-                          class="text-white text-end text-sm sm:text-[1rem] text-end font-medium"
+                          class="text-white text-end text-sm sm:text-[1rem] text-end"
                         >
                           {new Intl.NumberFormat("en", {
                             minimumFractionDigits: 0,
@@ -395,7 +395,7 @@
                 class="flex flex-col justify-center items-center m-auto pt-8"
               >
                 <span
-                  class="text-white text-[1rem] sm:text-lg font-medium m-auto p-4 text-center"
+                  class="text-white text-[1rem] sm:text-lg m-auto p-4 text-center"
                 >
                   Add your unusual options contracts and start tracking them
                   now!
@@ -420,7 +420,7 @@
                 </span>
 
                 <span
-                  class="text-white text-sm sm:text-lg font-medium m-auto p-4 text-center"
+                  class="text-white text-sm sm:text-lg m-auto p-4 text-center"
                 >
                   Add your unusual options contracts and start tracking them
                   now!

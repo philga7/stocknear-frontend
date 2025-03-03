@@ -100,7 +100,7 @@
       <div class="inline-block">
         <a
           href={`/stocks/${$stockTicker}/profile`}
-          class="w-full text-md mt-1 cursor-pointer font-medium sm:hover:text-white text-blue-400 sm:hover:underline"
+          class="w-full text-md mt-1 cursor-pointer sm:hover:text-white text-blue-400 sm:hover:underline"
         >
           [Show more]
         </a>
@@ -189,10 +189,8 @@
 
             <div class="flex flex-col items-center w-full">
               <div class="flex flex-row items-center w-full mt-5 mb-2">
-                <span class="text-white font-medium text-start mr-auto">
-                  Buy
-                </span>
-                <span class="text-white text-md font-medium ml-auto">
+                <span class="text-white text-start mr-auto"> Buy </span>
+                <span class="text-white text-md ml-auto">
                   {buyCount}%
                 </span>
               </div>
@@ -205,10 +203,8 @@
 
             <div class="flex flex-col items-center w-full">
               <div class="flex flex-row items-center w-full mt-5 mb-2">
-                <span class="text-white font-medium text-start mr-auto">
-                  Hold
-                </span>
-                <span class="text-white text-md font-medium ml-auto">
+                <span class="text-white text-start mr-auto"> Hold </span>
+                <span class="text-white text-md ml-auto">
                   {holdCount}%
                 </span>
               </div>
@@ -221,10 +217,8 @@
 
             <div class="flex flex-col items-center w-full">
               <div class="flex flex-row items-center w-full mt-5 mb-2">
-                <span class="text-white font-medium text-start mr-auto">
-                  Sell
-                </span>
-                <span class="text-white text-md font-medium ml-auto">
+                <span class="text-white text-start mr-auto"> Sell </span>
+                <span class="text-white text-md ml-auto">
                   {sellCount}%
                 </span>
               </div>

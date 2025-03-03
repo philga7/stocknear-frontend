@@ -55,7 +55,7 @@
               {#each similarTicker as item, index}
                 <tr
                   on:click={() => etfSelector(item?.symbol)}
-                  class="shake-ticker sm:hover:text-white text-blue-400 cursor-pointer sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] bg-[#000] sm:bg-default border-b border-[#000] sm:border-[#27272A]"
+                  class="shake-ticker sm:hover:text-white text-blue-400 cursor-pointer sm:hover:bg-[#245073]/10 bg-[#000] sm:bg-default border-b border-[#000] sm:border-[#27272A]"
                 >
                   {#if index <= 6}
                     <td class="">
@@ -71,8 +71,7 @@
                           />
                         </div>
                         <div class="flex flex-col ml-3 w-full">
-                          <span class="text-sm font-medium">{item?.symbol}</span
-                          >
+                          <span class="text-sm">{item?.symbol}</span>
                           <span class="text-white text-sm">
                             {#if typeof item?.name !== "undefined"}
                               {item?.name?.length > 20
@@ -129,7 +128,7 @@
     <div
       class="bg-default w-full p-1 flex flex-col items-center pb-5 h-auto rounded-b-[30px]"
     >
-      <h2 class="text-center m-auto text-[1.1rem] font-medium text-white mt-5">
+      <h2 class="text-center m-auto text-[1.1rem] text-white mt-5">
         Similar Ticker
       </h2>
       <div class="flex flex-col items-center mt-10 w-full">
@@ -190,8 +189,7 @@
                         />
                       </div>
                       <div class="flex flex-col ml-3 w-full">
-                        <span class="text-blue-400 text-sm font-medium"
-                          >{item?.symbol}</span
+                        <span class="text-blue-400 text-sm">{item?.symbol}</span
                         >
                         <span class="text-white text-sm">
                           {#if typeof item?.name !== "undefined"}

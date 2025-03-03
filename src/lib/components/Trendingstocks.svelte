@@ -45,13 +45,11 @@
             class="h-18 w-[90px] sm:w-28 mt-5 rounded-xl flex flex-col justify-center items-center"
           >
             <img class="relative mb-2 rounded w-5 h-5" src={item?.image} />
-            <p
-              class="text-center text-white font-medium text-sm whitespace-normal mb-0.5"
-            >
+            <p class="text-center text-white text-sm whitespace-normal mb-0.5">
               {item?.symbol}
             </p>
             <div
-              class="flex justify-center items-center m-auto font-medium text-xs sm:text-sm relative bottom-0"
+              class="flex justify-center items-center m-auto text-xs sm:text-sm relative bottom-0"
             >
               {#if item?.changesPercentage >= 0}
                 <svg

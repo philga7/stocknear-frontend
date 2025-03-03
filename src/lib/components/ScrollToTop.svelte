@@ -29,7 +29,7 @@
 >
   <label
     on:click={handleScrollUp}
-    class="inline-flex items-center justify-center w-12 h-12 sm:w-full sm:h-10 font-medium bg-gray-700 sm:bg-[#FFEDE5] ml-1 mr-0 sm:mr-2 rounded-full cursor-pointer"
+    class="inline-flex items-center justify-center w-12 h-12 sm:w-full sm:h-10 bg-gray-700 sm:bg-[#FFEDE5] ml-1 mr-0 sm:mr-2 rounded-full cursor-pointer"
   >
     <svg
       class="sm:hidden sm:ml-4 w-6 h-6 text-white inline-block"

@@ -454,7 +454,7 @@
                           {#each data?.user?.tier === "Pro" ? day : day?.slice(0, 6) as item, index}
                             <!-- row -->
                             <tr
-                              class="sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] odd:bg-odd border-b border-gray-800 {index +
+                              class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800 {index +
                                 1 ===
                                 day?.slice(0, 6)?.length &&
                               data?.user?.tier !== 'Pro'

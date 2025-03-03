@@ -23,7 +23,7 @@
 </script>
 
 <!--
-<div class="w-full max-w-xl text-white font-medium text-sm sm:text-[1rem] flex flex-row justify-center items-center">
+<div class="w-full max-w-xl text-white  text-sm sm:text-[1rem] flex flex-row justify-center items-center">
   {title?.replace('[%]','')} {condition} {value} {unit}
 
   <label on:click={() => changeRuleCondition('under')} class="ml-5 cursor-pointer flex flex-row mr-2 justify-center items-center">

@@ -337,10 +337,12 @@
             {#each tableList as item, index}
               <!-- row -->
               <tr class="odd:bg-odd">
-                <td
-                  class="text-white font-medium text-sm sm:text-[1rem] whitespace-nowrap"
-                >
-                  {item?.date}
+                <td class="text-white text-sm sm:text-[1rem] whitespace-nowrap">
+                  {new Date(item?.date)?.toLocaleDateString("en-US", {
+                    day: "2-digit", // Include day number
+                    month: "short", // Display short month name
+                    year: "numeric", // Include year
+                  })}
                 </td>
 
                 <td
@@ -356,7 +358,7 @@
                 </td>
 
                 <td
-                  class="text-white text-sm sm:text-[1rem] whitespace-nowrap font-medium text-end"
+                  class="text-white text-sm sm:text-[1rem] whitespace-nowrap text-end"
                 >
                   {#if index === tableList?.length - 1}
                     n/a

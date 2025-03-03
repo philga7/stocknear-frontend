@@ -789,13 +789,13 @@
               <tbody>
                 <tr class="bg-primary border-b border-gray-600">
                   <th
-                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start font-medium bg-primary border-b border-gray-800"
+                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start bg-primary border-b border-gray-800"
                   >
                     Revenue
                   </th>
                   {#each tableCombinedRevenue as item}
                     <td
-                      class="text-white text-sm sm:text-[1rem] text-end font-medium border-b border-gray-800 bg-default"
+                      class="text-white text-sm sm:text-[1rem] text-end border-b border-gray-800 bg-default"
                     >
                       {item?.val === "0.00" ||
                       item?.val === null ||
@@ -808,13 +808,13 @@
 
                 <tr class="bg-primary">
                   <th
-                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start font-medium border-b border-gray-800"
+                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start border-b border-gray-800"
                   >
                     Revenue Growth
                   </th>
                   {#each computeGrowthList(tableActualRevenue, tableCombinedRevenue) as item, index}
                     <td
-                      class="text-white text-sm sm:text-[1rem] text-end font-medium bg-default border-b border-gray-800"
+                      class="text-white text-sm sm:text-[1rem] text-end bg-default border-b border-gray-800"
                     >
                       {#if index === 0 || item?.growth === null}
                         n/a
@@ -843,13 +843,13 @@
 
                 <tr class="bg-primary border-b-[#09090B]">
                   <th
-                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start font-medium bg-primary border-b border-gray-800"
+                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start bg-primary border-b border-gray-800"
                   >
                     EPS
                   </th>
                   {#each tableCombinedEPS as item}
                     <td
-                      class="text-white text-sm sm:text-[1rem] text-end font-medium border-b border-gray-800 bg-default"
+                      class="text-white text-sm sm:text-[1rem] text-end border-b border-gray-800 bg-default"
                     >
                       {item?.val === "0.00" ||
                       item?.val === null ||
@@ -862,13 +862,13 @@
 
                 <tr class="bg-primary">
                   <th
-                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start font-medium border-b border-gray-800"
+                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start border-b border-gray-800"
                   >
                     EPS Growth
                   </th>
                   {#each computeGrowthList(tableActualEPS, tableCombinedEPS) as item, index}
                     <td
-                      class="text-white text-sm sm:text-[1rem] text-end font-medium bg-default border-b border-gray-800"
+                      class="text-white text-sm sm:text-[1rem] text-end bg-default border-b border-gray-800"
                     >
                       {#if index === 0 || item?.growth === null}
                         n/a
@@ -896,13 +896,13 @@
                 </tr>
                 <tr class="bg-primary border-b border-gray-600">
                   <th
-                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start font-medium bg-primary border-b border-gray-800"
+                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start bg-primary border-b border-gray-800"
                   >
                     Net Income
                   </th>
                   {#each tableCombinedNetIncome as item}
                     <td
-                      class="text-white text-sm sm:text-[1rem] text-end font-medium border-b border-gray-800 bg-default"
+                      class="text-white text-sm sm:text-[1rem] text-end border-b border-gray-800 bg-default"
                     >
                       {item?.val === "0.00" ||
                       item?.val === null ||
@@ -915,13 +915,13 @@
 
                 <tr class="bg-primary">
                   <th
-                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start font-medium border-b border-gray-800"
+                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start border-b border-gray-800"
                   >
                     Net Income Growth
                   </th>
                   {#each computeGrowthList(tableActualNetIncome, tableCombinedNetIncome) as item, index}
                     <td
-                      class="text-white text-sm sm:text-[1rem] text-end font-medium bg-default border-b border-gray-800"
+                      class="text-white text-sm sm:text-[1rem] text-end bg-default border-b border-gray-800"
                     >
                       {#if index === 0 || item?.growth === null}
                         n/a
@@ -950,13 +950,13 @@
 
                 <tr class="bg-primary border-b border-gray-600">
                   <th
-                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start font-medium bg-primary border-b border-gray-800"
+                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start bg-primary border-b border-gray-800"
                   >
                     EBITDA
                   </th>
                   {#each tableCombinedEbitda as item}
                     <td
-                      class="text-white text-sm sm:text-[1rem] text-end font-medium border-b border-gray-800 bg-default"
+                      class="text-white text-sm sm:text-[1rem] text-end border-b border-gray-800 bg-default"
                     >
                       {item?.val === "0.00" ||
                       item?.val === null ||
@@ -969,13 +969,13 @@
 
                 <tr class="bg-primary">
                   <th
-                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start font-medium border-b border-gray-800"
+                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start border-b border-gray-800"
                   >
                     EBITDA Growth
                   </th>
                   {#each computeGrowthList(tableActualEbitda, tableCombinedEbitda) as item, index}
                     <td
-                      class="text-white text-sm sm:text-[1rem] text-end font-medium bg-default border-b border-gray-800"
+                      class="text-white text-sm sm:text-[1rem] text-end bg-default border-b border-gray-800"
                     >
                       {#if index === 0 || item?.growth === null}
                         n/a
@@ -1004,12 +1004,12 @@
 
                 <tr class="bg-primary border-b border-gray-600">
                   <th
-                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start font-medium bg-primary border-b border-gray-800"
+                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start bg-primary border-b border-gray-800"
                     >No. Analysts</th
                   >
                   {#each tableCombinedRevenue as item}
                     <td
-                      class="text-white text-sm sm:text-[1rem] text-end font-medium border-b border-gray-800 bg-default"
+                      class="text-white text-sm sm:text-[1rem] text-end border-b border-gray-800 bg-default"
                     >
                       {#if item?.FY > 24}
                         {item?.numOfAnalysts === (null || 0)

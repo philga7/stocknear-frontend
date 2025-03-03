@@ -575,7 +575,7 @@
               <tbody>
                 {#each volumeList as item, index}
                   <tr
-                    class="sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] odd:bg-odd border-b border-gray-800 {index +
+                    class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800 {index +
                       1 ===
                       volumeList?.slice(0, 3)?.length &&
                     data?.user?.tier !== 'Pro'
@@ -689,7 +689,7 @@
               <tbody>
                 {#each openInterestList as item, index}
                   <tr
-                    class="sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] odd:bg-odd border-b border-gray-800 {index +
+                    class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800 {index +
                       1 ===
                       openInterestList?.slice(0, 3)?.length &&
                     data?.user?.tier !== 'Pro'

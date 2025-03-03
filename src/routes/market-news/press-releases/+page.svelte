@@ -141,7 +141,7 @@
 
                         <a
                           href={"/stocks/" + item?.symbol}
-                          class="px-2.5 text-sm py-0.5 rounded-md bg-white bg-opacity-[0.1] sm:hover:bg-opacity-[0.2] ml-1"
+                          class="px-2.5 text-sm py-0.5 rounded-md bg-white/10 sm:hover:bg-white/20 ml-1"
                         >
                           {item?.symbol}
                         </a>

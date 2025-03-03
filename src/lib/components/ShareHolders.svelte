@@ -276,9 +276,7 @@
                   class="w-4 h-4 bg-[#fff] border-4 box-content border-[#27272A] rounded-full transform -translate-x-1/2"
                   aria-hidden="true"
                 ></div>
-                <span
-                  class="text-white text-sm sm:text-[1rem] font-medium inline-block"
-                >
+                <span class="text-white text-sm sm:text-[1rem] inline-block">
                   Others: {otherOwner >= 99.99
                     ? 99.99
                     : otherOwner?.toFixed(2)}%
@@ -294,9 +292,7 @@
                   class="w-4 h-4 bg-blue-500 border-4 box-content border-[#27272A] rounded-full transform -translate-x-1/2"
                   aria-hidden="true"
                 ></div>
-                <span
-                  class="text-white text-sm sm:text-[1rem] font-medium inline-block"
-                >
+                <span class="text-white text-sm sm:text-[1rem] inline-block">
                   Institutions: {institutionalOwner <= 0.01
                     ? "< 0.01%"
                     : institutionalOwner?.toFixed(2) + "%"}
@@ -331,12 +327,8 @@
               class="flex flex-row items-center flex-wrap w-full px-3 sm:px-5 border border-gray-600 bg-primary rounded-md h-20"
             >
               <div class="flex flex-col items-start">
-                <span class="font-medium text-white text-sm sm:text-[1rem]"
-                  >Put/Call</span
-                >
-                <span
-                  class="text-start text-sm sm:text-[1rem] font-medium text-white"
-                >
+                <span class=" text-white text-sm sm:text-[1rem]">Put/Call</span>
+                <span class="text-start text-sm sm:text-[1rem] text-white">
                   {putCallRatio?.toFixed(3)}
                 </span>
               </div>
@@ -389,12 +381,9 @@
               class="flex flex-row items-center flex-wrap w-full px-3 sm:px-5 border border-gray-600 bg-primary rounded-md h-20"
             >
               <div class="flex flex-col items-start">
-                <span class="font-medium text-white text-sm sm:text-[1rem]"
-                  >Call Flow</span
+                <span class=" text-white text-sm sm:text-[1rem]">Call Flow</span
                 >
-                <span
-                  class="text-start text-sm sm:text-[1rem] font-medium text-white"
-                >
+                <span class="text-start text-sm sm:text-[1rem] text-white">
                   {new Intl.NumberFormat("en", {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
@@ -449,12 +438,8 @@
               class="flex flex-row items-center flex-wrap w-full px-3 sm:px-5 border border-gray-600 bg-primary rounded-md h-20"
             >
               <div class="flex flex-col items-start">
-                <span class="font-medium text-white text-sm sm:text-[1rem]"
-                  >Put Flow</span
-                >
-                <span
-                  class="text-start text-sm sm:text-[1rem] font-medium text-white"
-                >
+                <span class=" text-white text-sm sm:text-[1rem]">Put Flow</span>
+                <span class="text-start text-sm sm:text-[1rem] text-white">
                   {new Intl.NumberFormat("en", {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
@@ -542,15 +527,13 @@
             {#each displayList as item, index}
               {#if item?.investorName?.length > 0}
                 <tr
-                  class="border-b border-gray-800 odd:bg-odd sm:hover:bg-[#245073] sm:hover:bg-opacity-[0.2] {index +
+                  class="border-b border-gray-800 odd:bg-odd sm:hover:bg-[#245073]/10 {index +
                     1 ===
                     shareholderList?.length && data?.user?.tier !== 'Pro'
                     ? 'opacity-[0.1]'
                     : ''}"
                 >
-                  <td
-                    class="font-medium text-sm sm:text-[1rem] whitespace-nowrap"
-                  >
+                  <td class=" text-sm sm:text-[1rem] whitespace-nowrap">
                     <a
                       href={"/hedge-funds/" + item?.cik}
                       class="sm:hover:underline sm:hover:underline-offset-4 text-white"
@@ -564,7 +547,7 @@
                   </td>
 
                   <td
-                    class="text-white text-end font-medium text-sm sm:text-[1rem] whitespace-nowrap"
+                    class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
                   >
                     {item?.ownership <= 0.01
                       ? "< 0.01%"
@@ -572,7 +555,7 @@
                   </td>
 
                   <td
-                    class="text-white text-end font-medium text-sm sm:text-[1rem] whitespace-nowrap"
+                    class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
                   >
                     {@html item?.sharesNumber !== null
                       ? abbreviateNumber(item?.sharesNumber, false, true)
@@ -580,7 +563,7 @@
                   </td>
 
                   <td
-                    class="text-white text-end font-medium text-sm sm:text-[1rem] whitespace-nowrap"
+                    class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
                   >
                     {#if item?.changeInSharesNumberPercentage >= 0}
                       <span class="text-[#00FC50]"
@@ -600,7 +583,7 @@
                   </td>
 
                   <td
-                    class="text-white text-end font-medium text-sm sm:text-[1rem] whitespace-nowrap"
+                    class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
                   >
                     {item?.marketValue !== null
                       ? abbreviateNumber(item?.marketValue)
@@ -608,7 +591,7 @@
                   </td>
 
                   <td
-                    class="text-white text-end font-medium text-sm sm:text-[1rem] whitespace-nowrap"
+                    class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
                   >
                     {item?.weight <= 0.01
                       ? "< 0.01%"

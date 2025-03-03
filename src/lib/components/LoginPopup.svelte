@@ -154,7 +154,7 @@ const output = await response.json();
     on:click={() => (form = [])}
     id="userLogin"
     for="userLogin"
-    class="cursor-pointer modal-backdrop bg-[#000] bg-opacity-[0.08]"
+    class="cursor-pointer modal-backdrop bg-[#000]/40"
   ></label>
 
   <div
@@ -1583,30 +1583,3 @@ const output = await response.json();
     {/if}
   </div>
 </dialog>
-
-<style>
-  .shake-logo {
-    animation-name: shake;
-    animation-duration: 0.5s;
-    animation-iteration-count: infinite;
-    animation-timing-function: ease-in-out;
-  }
-
-  @keyframes shake {
-    0% {
-      transform: rotate(0deg);
-    }
-    25% {
-      transform: rotate(10deg);
-    }
-    50% {
-      transform: rotate(0deg);
-    }
-    75% {
-      transform: rotate(-10deg);
-    }
-    100% {
-      transform: rotate(0deg);
-    }
-  }
-</style>

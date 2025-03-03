@@ -263,7 +263,7 @@
 <label
   on:click={loadSearchData}
   for="tagSearchBarModal"
-  class="border border-slate-500 mb-2 flex flex-wrap pl-4 pr-4 py-2 m-1 mr-3 justify-between items-center text-sm font-medium rounded-xl cursor-pointer text-gray-200 hover:text-gray-100"
+  class="border border-slate-500 mb-2 flex flex-wrap pl-4 pr-4 py-2 m-1 mr-3 justify-between items-center text-sm rounded-xl cursor-pointer text-gray-200 hover:text-gray-100"
 >
   <svg
     class="w-4 h-4 mr-2"
@@ -381,7 +381,7 @@
                           >
                         </div>
 
-                        <div class="text-white font-medium ml-auto">
+                        <div class="text-white ml-auto">
                           {item?.type}
                         </div>
                       </div>
@@ -413,7 +413,7 @@
                           >
                         </div>
 
-                        <div class="text-white font-medium ml-auto">
+                        <div class="text-white ml-auto">
                           {item?.type}
                         </div>
                       </div>
@@ -459,7 +459,7 @@
             d="M9.125 21.1L.7 12.7q-.15-.15-.213-.325T.425 12q0-.2.063-.375T.7 11.3l8.425-8.425q.35-.35.875-.35t.9.375q.375.375.375.875t-.375.875L3.55 12l7.35 7.35q.35.35.35.863t-.375.887q-.375.375-.875.375t-.875-.375Z"
           /></svg
         >
-        <span class="text-white text-md font-medium"> Return </span>
+        <span class="text-white text-md"> Return </span>
       </label>
     </div>
   </dialog>
@@ -563,7 +563,7 @@
                             >
                           </div>
 
-                          <div class="text-white font-medium ml-auto mr-2">
+                          <div class="text-white ml-auto mr-2">
                             {item?.type}
                           </div>
                         </div>
@@ -598,7 +598,7 @@
                             >
                           </div>
 
-                          <div class="text-white font-medium ml-auto mr-2">
+                          <div class="text-white ml-auto mr-2">
                             {item?.type}
                           </div>
                         </div>

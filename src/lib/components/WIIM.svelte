@@ -104,7 +104,7 @@
                             >
                           {/if}
                           <div
-                            class="text-white text-sm sm:text-[1rem] ml-auto font-medium"
+                            class="text-white text-sm sm:text-[1rem] ml-auto"
                           >
                             {#if item?.changesPercentage >= 0}
                               <span class="text-[#00FC50] inline-block"

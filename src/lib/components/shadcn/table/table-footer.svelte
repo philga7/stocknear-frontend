@@ -8,9 +8,6 @@
   export { className as class };
 </script>
 
-<tfoot
-  class={cn("font-medium text-primary-foreground", className)}
-  {...$$restProps}
->
+<tfoot class={cn(" text-primary-foreground", className)} {...$$restProps}>
   <slot />
 </tfoot>
