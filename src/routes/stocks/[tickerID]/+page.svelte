@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { AreaSeries, Chart, PriceLine } from "svelte-lightweight-charts";
-  import { TrackingModeExitMode, ColorType } from "lightweight-charts";
+  import highcharts from "$lib/highcharts.ts";
+
   import {
     getCache,
     setCache,
@@ -14,8 +14,7 @@
     shouldUpdatePriceChart,
     priceChartData,
   } from "$lib/store";
-  import { onDestroy, onMount } from "svelte";
-  //import BullBearSay from "$lib/components/BullBearSay.svelte";
+  import { onDestroy } from "svelte";
   import WIIM from "$lib/components/WIIM.svelte";
   import SEO from "$lib/components/SEO.svelte";
 
@@ -35,12 +34,173 @@
   //============================================//
   const intervals = ["1D", "1W", "1M", "6M", "1Y", "MAX"];
 
-  let chart = null;
-  async function checkChart() {
-    if (chart) {
-      clearInterval(intervalId);
-      fitContentChart();
-    }
+  let config = null;
+  let output = null;
+  let displayData = "1D";
+  let lastValue;
+
+  function plotData(priceData) {
+    const rawData = priceData || [];
+
+    const priceList = rawData?.map((item) => item?.close);
+    const dateList = rawData?.map((item) => {
+      const parsedDate = new Date(item?.time);
+      if (isNaN(parsedDate)) {
+        console.error("Invalid date:", item?.time);
+        return null;
+      }
+      return parsedDate.getTime(); // Use timestamp directly
+    });
+
+    const seriesData = rawData?.map((item) => [
+      Date.UTC(
+        new Date(item?.time).getUTCFullYear(),
+        new Date(item?.time).getUTCMonth(),
+        new Date(item?.time).getUTCDate(),
+        new Date(item?.time).getUTCHours(),
+        new Date(item?.time).getUTCMinutes(),
+        new Date(item?.time).getUTCSeconds(),
+      ),
+      item?.close,
+    ]);
+
+    // Find the lowest & highest close values
+    const minValue = Math.min(...rawData?.map((item) => item?.close));
+    const maxValue = Math.max(...rawData?.map((item) => item?.close));
+
+    const padding = 0.015; // 1.5%
+    const yMin = minValue * (1 - padding);
+    const yMax = maxValue * (1 + padding);
+
+    const baseDate =
+      rawData && rawData?.length ? new Date(rawData?.at(0)?.time) : new Date();
+
+    // Set the fixed start and end times (9:30 and 16:10)
+    const startTime = new Date(
+      baseDate.getFullYear(),
+      baseDate.getMonth(),
+      baseDate.getDate(),
+      9,
+      30,
+    ).getTime();
+    const endTime = new Date(
+      baseDate.getFullYear(),
+      baseDate.getMonth(),
+      baseDate.getDate(),
+      16,
+      0,
+    ).getTime();
+
+    const options = {
+      chart: {
+        backgroundColor: "#09090B",
+        height: 360,
+      },
+      credits: { enabled: false },
+      title: { text: null },
+      xAxis: {
+        type: "datetime",
+        min: displayData === "1D" ? startTime : null,
+        max: displayData === "1D" ? endTime : null,
+        tickLength: 0,
+        data: displayData === "1D" ? null : dateList,
+        crosshair: {
+          color: "#fff",
+          width: 1,
+          dashStyle: "Solid",
+        },
+        labels: {
+          style: { color: "#fff" },
+          distance: 20,
+          formatter: function () {
+            const date = new Date(this?.value);
+            if (displayData === "1D") {
+              return date?.toLocaleTimeString("en-US", {
+                hour: "2-digit",
+                minute: "2-digit",
+              });
+            } else {
+              return date?.toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+                timeZone: "UTC",
+              });
+            }
+          },
+        },
+      },
+
+      yAxis: {
+        // Force y‑axis to stay near the actual data range
+        min: yMin,
+        max: yMax,
+        startOnTick: false,
+        endOnTick: false,
+        gridLineWidth: 1,
+        gridLineColor: "#111827",
+        title: { text: null },
+        labels: {
+          style: { color: "white" },
+        },
+        opposite: true,
+        // Add a dashed plot line at the previous close value
+        plotLines: [
+          {
+            value:
+              displayData === "1D"
+                ? data?.getStockQuote?.previousClose
+                : priceData?.at(0)?.close,
+            dashStyle: "Dash",
+            color: "#fff", // Choose a contrasting color if needed
+            width: 0.8,
+          },
+        ],
+      },
+      tooltip: {
+        shared: true,
+        useHTML: true,
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        borderColor: "rgba(255, 255, 255, 0.2)",
+        borderWidth: 1,
+        style: {
+          color: "#fff",
+          fontSize: "16px",
+          padding: "10px",
+        },
+        borderRadius: 4,
+      },
+      plotOptions: {
+        series: {
+          animation: false,
+          marker: { enabled: false },
+          states: { hover: { enabled: false } },
+        },
+      },
+      legend: { enabled: false },
+      series: [
+        {
+          name: "Price",
+          type: "area",
+          data: displayData === "1D" ? seriesData : priceList,
+          animation: false,
+          color: "#fff",
+          lineWidth: 1,
+          marker: {
+            enabled: false,
+          },
+          fillColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+              [0, "rgba(255, 255, 255, 0.03)"],
+              [1, "rgba(255, 255, 255, 0.001)"],
+            ],
+          },
+        },
+      ],
+    };
+
+    return options;
   }
 
   //const startTimeTracking = performance.now();
@@ -56,43 +216,43 @@
       let baseClose = previousClose;
       let graphBaseClose;
 
-      const length = oneDayPrice?.length;
-      for (let i = length - 1; i >= 0; i--) {
-        if (!isNaN(oneDayPrice[i]?.close)) {
-          currentDataRowOneDay = oneDayPrice[i];
-          break;
-        }
-      }
+      currentDataRowOneDay = oneDayPrice?.at(-1);
 
-      // Determine current data row and base close price based on displayData
       switch (displayData) {
+        case "1D":
+          config = plotData(oneDayPrice) || null;
+          break;
         case "1W":
-          currentDataRow = oneWeekPrice?.at(-1); // Latest entry for 1 week
+          currentDataRow = oneWeekPrice?.at(-1);
           graphBaseClose = oneWeekPrice?.at(0)?.close;
+          config = plotData(oneWeekPrice) || null;
           break;
 
         case "1M":
-          currentDataRow = oneMonthPrice?.at(-1); // Latest entry for 1 month
+          currentDataRow = oneMonthPrice?.at(-1);
           graphBaseClose = oneMonthPrice?.at(0)?.close;
+          config = plotData(oneMonthPrice) || null;
           break;
 
         case "6M":
-          currentDataRow = sixMonthPrice?.at(-1); // Latest entry for 6 months
+          currentDataRow = sixMonthPrice?.at(-1);
           graphBaseClose = sixMonthPrice?.at(0)?.close;
+          config = plotData(sixMonthPrice) || null;
           break;
 
         case "1Y":
-          currentDataRow = oneYearPrice?.at(-1); // Latest entry for 1 year
+          currentDataRow = oneYearPrice?.at(-1);
           graphBaseClose = oneYearPrice?.at(0)?.close;
+          config = plotData(oneYearPrice) || null;
           break;
 
         case "MAX":
-          currentDataRow = maxPrice?.at(-1); // Latest entry for MAX range
+          currentDataRow = maxPrice?.at(-1);
           graphBaseClose = maxPrice?.at(0)?.close;
+          config = plotData(maxPrice) || null;
           break;
       }
 
-      // Calculate percentage change if baseClose and currentDataRow are valid
       const closeValue =
         $realtimePrice !== null && $realtimePrice !== undefined
           ? $realtimePrice
@@ -155,36 +315,18 @@
         $realtimePrice = data?.getStockQuote?.price;
         $currentPortfolioPrice = $realtimePrice;
       } else if (oneDayPrice?.length !== 0) {
-        const length = oneDayPrice?.length;
-        for (let i = length - 1; i >= 0; i--) {
-          if (!isNaN(oneDayPrice[i]?.close)) {
-            $currentPortfolioPrice = oneDayPrice[i]?.close;
-            break;
-          }
-        }
+        $currentPortfolioPrice = oneDayPrice?.at(-1)?.close;
       }
     }
   }
 
-  let displayData = "1D";
-  let colorChange;
-  let topColorChange;
-  let bottomColorChange;
-
-  let lastValue;
   async function changeData(state) {
     switch (state) {
       case "1D":
         displayData = "1D";
         if (oneDayPrice?.length !== 0) {
           displayLastLogicalRangeValue = oneDayPrice?.at(0)?.close; //previousClose
-          const length = oneDayPrice?.length;
-          for (let i = length - 1; i >= 0; i--) {
-            if (!isNaN(oneDayPrice[i]?.close)) {
-              lastValue = oneDayPrice[i]?.close;
-              break;
-            }
-          }
+          lastValue = oneDayPrice?.at(-1)?.close;
         } else {
           displayLastLogicalRangeValue = null;
           lastValue = null;
@@ -253,27 +395,8 @@
       default:
         return;
     }
-    colorChange =
-      lastValue < displayLastLogicalRangeValue ? "#FF2F1F" : "#00FC50";
-    topColorChange =
-      lastValue < displayLastLogicalRangeValue
-        ? "rgb(255, 47, 31, 0.2)"
-        : "rgb(16, 219, 6, 0.2)";
-    bottomColorChange =
-      lastValue < displayLastLogicalRangeValue
-        ? "rgb(255, 47, 31, 0.001)"
-        : "rgb(16, 219, 6, 0.001)";
-
-    fitContentChart();
-
-    //trackButtonClick('Time Period: '+ state)
   }
 
-  let output = null;
-
-  //====================================//
-
-  let intervalId = null;
   let oneDayPrice = [];
   let oneWeekPrice = [];
   let oneMonthPrice = [];
@@ -306,6 +429,7 @@
       }
     } else {
       output = null;
+      config = null;
 
       const postData = {
         ticker: $stockTicker,
@@ -322,39 +446,28 @@
 
       output = (await response?.json()) ?? [];
 
-      const mapData = (data) =>
-        data?.map(({ time, open, high, low, close }) => ({
-          time: ["1D", "1W", "1M"]?.includes(displayData)
-            ? Date?.parse(time + "Z") / 1000
-            : time,
-          open,
-          high,
-          low,
-          close,
-        }));
-
-      const mappedData = mapData(output);
       try {
         switch (timePeriod) {
           case "one-week":
-            oneWeekPrice = mappedData;
+            oneWeekPrice = output;
             break;
           case "one-month":
-            oneMonthPrice = mappedData;
+            oneMonthPrice = output;
             break;
           case "six-months":
-            sixMonthPrice = mappedData;
+            sixMonthPrice = output;
             break;
           case "one-year":
-            oneYearPrice = mappedData;
+            oneYearPrice = output;
             break;
           case "max":
-            maxPrice = mappedData;
+            maxPrice = output;
             break;
           default:
             console.log(`Unsupported time period: ${timePeriod}`);
         }
-        setCache($stockTicker, mappedData, "historicalPrice" + timePeriod);
+
+        setCache($stockTicker, output, "historicalPrice" + timePeriod);
       } catch (e) {
         console.log(e);
       }
@@ -363,48 +476,26 @@
 
   async function initializePrice() {
     output = null;
-    if (intervalId) {
-      clearInterval(intervalId);
-    }
-    intervalId = setInterval(checkChart, 0);
+    config = null;
+
     try {
-      output = [...data?.getOneDayPrice] ?? [];
-      oneDayPrice = output?.map((item) => ({
-        time: Date?.parse(item?.time + "Z") / 1000,
-        open: item?.open !== null ? item?.open : NaN,
-        high: item?.high !== null ? item?.high : NaN,
-        low: item?.low !== null ? item?.low : NaN,
-        close: item?.close !== null ? item?.close : NaN,
-      }));
+      oneDayPrice = [...data?.getOneDayPrice] ?? [];
+      config = plotData(oneDayPrice) || null;
+
+      output = [...oneDayPrice];
+
       displayData =
         oneDayPrice?.length === 0 && sixMonthPrice?.length !== 0 ? "6M" : "1D";
       if (displayData === "1D") {
-        const length = oneDayPrice?.length;
-        for (let i = length - 1; i >= 0; i--) {
-          if (!isNaN(oneDayPrice[i]?.close)) {
-            lastValue = oneDayPrice[i]?.close;
-            break;
-          }
-        }
+        lastValue = oneDayPrice?.at(-0)?.close;
       } else if (displayData === "6M") {
-        lastValue = sixMonthPrice?.slice(-1)?.at(0)?.close;
+        lastValue = sixMonthPrice?.at(-1)?.close;
       }
 
       displayLastLogicalRangeValue =
         oneDayPrice?.length === 0 && sixMonthPrice?.length !== 0
           ? sixMonthPrice?.at(0)?.close
-          : oneDayPrice?.at(0)?.close; //previousClose;
-
-      colorChange =
-        lastValue < displayLastLogicalRangeValue ? "#FF2F1F" : "#00FC50";
-      topColorChange =
-        lastValue < displayLastLogicalRangeValue
-          ? "rgb(255, 47, 31, 0.2)"
-          : "rgb(16, 219, 6, 0.2)";
-      bottomColorChange =
-        lastValue < displayLastLogicalRangeValue
-          ? "rgb(255, 47, 31, 0.001)"
-          : "rgb(16, 219, 6, 0.001)";
+          : oneDayPrice?.at(0)?.close;
     } catch (e) {
       console.log(e);
     }
@@ -421,161 +512,6 @@
   };
 
   let displayLastLogicalRangeValue;
-
-  const fitContentChart = async () => {
-    if (displayData === "1Y" && oneYearPrice?.length === 0) {
-    } else if (chart !== null && typeof window !== "undefined") {
-      chart?.timeScale().fitContent();
-
-      chart?.applyOptions({
-        trackingMode: {
-          exitMode: TrackingModeExitMode.OnTouchEnd,
-        },
-      });
-    }
-  };
-
-  let width = 580;
-  //Initial height of graph
-  let height = 350;
-
-  let observer;
-  let ref;
-
-  ref = (element) => {
-    if (observer) {
-      observer?.disconnect();
-    }
-    if (!element) {
-      return;
-    }
-
-    observer = new ResizeObserver(([entry]) => {
-      width = entry.contentRect.width;
-      height = entry.contentRect.height;
-    });
-    observer.observe(element);
-  };
-
-  //===============================================//
-  function defaultTickMarkFormatter(timePoint, tickMarkType, locale) {
-    const formatOptions = {
-      timeZone: "UTC",
-    };
-
-    switch (tickMarkType) {
-      case 0: // TickMarkType.Year:
-        formatOptions.year = "numeric";
-        break;
-      case 1: // TickMarkType.Month:
-        formatOptions.month = "short";
-        break;
-      case 2: // TickMarkType.DayOfMonth:
-        formatOptions.day = "numeric";
-        break;
-      case 3: // TickMarkType.Time:
-        formatOptions.hour12 = true; // Use 12-hour clock
-        formatOptions.hour = "numeric"; // Use numeric hour without leading zero
-        break;
-      case 4: // TickMarkType.TimeWithSeconds:
-        formatOptions.hour12 = true; // Use 12-hour clock
-        formatOptions.hour = "numeric"; // Use numeric hour without leading zero
-        formatOptions.minute = "2-digit"; // Always show minutes with leading zero
-        formatOptions.second = "2-digit"; // Always show seconds with leading zero
-        break;
-      default:
-      // Ensure this default case handles unexpected tickMarkType values
-    }
-    if ([3, 4]?.includes(tickMarkType)) {
-      const date = new Date(timePoint?.timestamp * 1000);
-      return new Intl.DateTimeFormat(locale, formatOptions)?.format(date);
-    } else {
-      const date = new Date(timePoint?.timestamp);
-      return new Intl.DateTimeFormat(locale, formatOptions)?.format(date);
-    }
-  }
-
-  $: options = {
-    width: width,
-    height: height,
-    layout: {
-      background: {
-        type: ColorType.Solid,
-        color: "#09090B",
-      },
-      textColor: "#d1d4dc",
-    },
-    grid: {
-      vertLines: {
-        color: "#09090B",
-        visible: false,
-      },
-      horzLines: {
-        color: "#09090B",
-        visible: false,
-      },
-    },
-    crosshair: {
-      horzLine: {
-        visible: true,
-        labelBackgroundColor: "#fff",
-      },
-      vertLine: {
-        labelVisible: true,
-        labelBackgroundColor: "#fff",
-        style: 0,
-      },
-    },
-    priceScale: {
-      autoScale: true,
-      scaleMargins: {
-        top: 0.3,
-        bottom: 0.25,
-      },
-    },
-    rightPriceScale: {
-      scaleMargins: {
-        top: 0.3,
-        bottom: 0.25,
-        borderVisible: false,
-      },
-      visible: true,
-      borderVisible: false,
-      mode: 1, // Keeps price scale fixed
-    },
-    leftPriceScale: {
-      visible: false,
-      borderColor: "rgba(197, 203, 206, 0.8)",
-    },
-    handleScale: {
-      mouseWheel: false,
-      pinch: false, // Disables scaling via pinch gestures
-      axisPressedMouseMove: false, // Disables scaling by dragging the axis with the mouse
-    },
-    handleScroll: {
-      mouseWheel: false,
-      horzTouchDrag: false,
-      vertTouchDrag: false,
-      pressedMouseMove: false,
-    },
-    timeScale: {
-      borderColor: "#fff",
-      textColor: "#fff",
-      borderVisible: false,
-      visible: true,
-      fixLeftEdge: true,
-      fixRightEdge: true,
-      timeVisible: ["1D", "1W", "1M"].includes(displayData),
-      secondsVisible: false,
-      tickMarkFormatter: (time, tickMarkType, locale) => {
-        return defaultTickMarkFormatter(
-          { timestamp: time },
-          tickMarkType,
-          locale,
-        );
-      },
-    },
-  };
 
   onDestroy(async () => {
     $priceIncrease = null;
@@ -632,32 +568,8 @@
     return data; // Return updated data
   }
 
-  onMount(() => {
-    shouldUpdatePriceChart.subscribe(async (value) => {
-      if (
-        value &&
-        chart !== null &&
-        $realtimePrice !== null &&
-        oneDayPrice?.length > 0 &&
-        $priceChartData?.time !== null &&
-        $priceChartData?.price !== null
-      ) {
-        // Create a new array and update oneDayPrice to trigger reactivity
-        const updatedPrice = updateClosePrice(oneDayPrice, $priceChartData);
-        oneDayPrice = [...updatedPrice]; // Reassign the updated array to trigger reactivity
-        try {
-          chart?.update(oneDayPrice); // Update the chart with the new prices
-        } catch (e) {
-          // Handle error if chart update fails
-          //console.error("Chart update error:", e);
-        }
-        shouldUpdatePriceChart.set(false); // Reset the update flag
-      }
-    });
-  });
-
   $: {
-    if ($stockTicker && typeof window !== "undefined") {
+    if ($stockTicker) {
       // add a check to see if running on client-side
       shouldUpdatePriceChart.set(false);
       oneDayPrice = [];
@@ -666,6 +578,7 @@
       oneYearPrice = [];
       maxPrice = [];
       output = null;
+      config = null;
 
       stockDeck = data?.getStockDeck; // Essential otherwise chart will not be updated since we wait until #layout.server.ts server response is finished
 
@@ -713,7 +626,7 @@
                             >
                             <div
                               class="{displayData === interval
-                                ? `bg-[${colorChange}] `
+                                ? `bg-[${lastValue < displayLastLogicalRangeValue ? '#FF2F1F' : '#00FC50'}] `
                                 : 'bg-default'} mt-1 h-[3px] w-[1.5rem] m-auto rounded-full"
                             />
                           </button>
@@ -756,7 +669,7 @@
                             >
                             <div
                               class="{displayData === interval
-                                ? `bg-[${colorChange}] `
+                                ? `bg-[${lastValue < displayLastLogicalRangeValue ? '#FF2F1F' : '#00FC50'}] `
                                 : 'bg-default'} mt-1 h-[3px] w-[1.5rem] m-auto rounded-full"
                             />
                           </button>
@@ -781,129 +694,11 @@
                   </div>
                 </div>
 
-                {#if output !== null && dataMapping[displayData]?.length !== 0}
-                  <Chart
-                    {...options}
-                    autoSize={true}
-                    ref={(api) => (chart = api)}
-                  >
-                    {#if displayData === "1D"}
-                      <AreaSeries
-                        reactive={true}
-                        data={oneDayPrice?.map(({ time, close }) => ({
-                          time,
-                          value: close,
-                        }))}
-                        lineWidth={1.5}
-                        priceScaleId="right"
-                        lineColor={colorChange}
-                        topColor={topColorChange}
-                        bottomColor={bottomColorChange}
-                        priceLineVisible={false}
-                      >
-                        <PriceLine
-                          price={oneDayPrice?.at(0)?.close}
-                          lineWidth={1}
-                          color="#fff"
-                        />
-                      </AreaSeries>
-                    {:else if displayData === "1W"}
-                      <AreaSeries
-                        data={oneWeekPrice?.map(({ time, close }) => ({
-                          time,
-                          value: close,
-                        }))}
-                        lineWidth={1.5}
-                        priceScaleId="right"
-                        lineColor={colorChange}
-                        topColor={topColorChange}
-                        bottomColor={bottomColorChange}
-                        priceLineVisible={false}
-                      >
-                        <PriceLine
-                          price={oneWeekPrice?.at(0)?.close}
-                          lineWidth={1}
-                          color="#fff"
-                        />
-                      </AreaSeries>
-                    {:else if displayData === "1M"}
-                      <AreaSeries
-                        data={oneMonthPrice?.map(({ time, close }) => ({
-                          time: time,
-                          value: close,
-                        }))}
-                        lineWidth={1.5}
-                        priceScaleId="right"
-                        lineColor={colorChange}
-                        topColor={topColorChange}
-                        bottomColor={bottomColorChange}
-                        priceLineVisible={false}
-                      >
-                        <PriceLine
-                          price={oneMonthPrice?.at(0)?.close}
-                          lineWidth={1}
-                          color="#fff"
-                        />
-                      </AreaSeries>
-                    {:else if displayData === "6M"}
-                      <AreaSeries
-                        data={sixMonthPrice?.map(({ time, close }) => ({
-                          time,
-                          value: close,
-                        }))}
-                        lineWidth={1.5}
-                        priceScaleId="right"
-                        lineColor={colorChange}
-                        topColor={topColorChange}
-                        bottomColor={bottomColorChange}
-                        priceLineVisible={false}
-                      >
-                        <PriceLine
-                          price={sixMonthPrice?.at(0)?.close}
-                          lineWidth={1}
-                          color="#fff"
-                        />
-                      </AreaSeries>
-                    {:else if displayData === "1Y"}
-                      <AreaSeries
-                        data={oneYearPrice?.map(({ time, close }) => ({
-                          time,
-                          value: close,
-                        }))}
-                        lineWidth={1.5}
-                        priceScaleId="right"
-                        lineColor={colorChange}
-                        topColor={topColorChange}
-                        bottomColor={bottomColorChange}
-                        priceLineVisible={false}
-                      >
-                        <PriceLine
-                          price={oneYearPrice?.at(0)?.close}
-                          lineWidth={1}
-                          color="#fff"
-                        />
-                      </AreaSeries>
-                    {:else if displayData === "MAX"}
-                      <AreaSeries
-                        data={maxPrice?.map(({ time, close }) => ({
-                          time,
-                          value: close,
-                        }))}
-                        lineWidth={1.5}
-                        priceScaleId="right"
-                        lineColor={colorChange}
-                        topColor={topColorChange}
-                        bottomColor={bottomColorChange}
-                        priceLineVisible={false}
-                      >
-                        <PriceLine
-                          price={maxPrice?.at(0)?.close}
-                          lineWidth={1}
-                          color="#fff"
-                        />
-                      </AreaSeries>
-                    {/if}
-                  </Chart>
+                {#if output !== null && config !== null && dataMapping[displayData]?.length !== 0}
+                  <div
+                    class="border border-gray-800 rounded"
+                    use:highcharts={config}
+                  ></div>
                 {:else}
                   <div
                     class="flex justify-center w-full sm:w-[650px] h-[350px] items-center"
@@ -1210,35 +1005,3 @@
     </div>
   </div>
 </section>
-
-<!--End-Indicator-Modal-->
-
-<style lang="scss">
-  canvas {
-    width: 100%;
-    height: 100%;
-    max-width: 800px;
-    max-height: 450px;
-  }
-
-  .pulse {
-    position: relative;
-    animation: pulse-animation 1s forwards cubic-bezier(0.5, 0, 0.5, 1);
-  }
-
-  @keyframes pulse-animation {
-    0% {
-      transform: scale(0.9);
-      opacity: 1;
-    }
-    100% {
-      transform: scale(0.9);
-      opacity: 0;
-    }
-  }
-
-  :root {
-    --date-picker-background: #09090b;
-    --date-picker-foreground: #f7f7f7;
-  }
-</style>
