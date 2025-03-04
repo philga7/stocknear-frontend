@@ -1208,7 +1208,7 @@
   </div>
 </div>
 
-<style global lang="scss">
+<style lang="scss">
   :root {
     --bprogress-color: #fff;
     --bprogress-height: 1px;
