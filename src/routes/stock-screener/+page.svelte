@@ -1493,7 +1493,10 @@
     const output = await response.json();
 
     if (output === "success") {
-      toast.success("Strategy deleted successfully!");
+      toast.success("Strategy deleted successfully!", {
+        style:
+          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+      });
 
       strategyList =
         strategyList?.filter((item) => item?.id !== selectedStrategy) ?? [];
@@ -1528,7 +1531,10 @@
           ?.map((rule) => [rule.name, new Set(rule.value)]), // Create Map from filtered rules
       );
     } else if (output === "failure") {
-      toast.error("Something went wrong. Please try again");
+      toast.error("Something went wrong. Please try again", {
+        style:
+          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+      });
     }
   }
 
@@ -1542,12 +1548,18 @@
     const title = formData.get("title");
 
     if (!title || title.length === 0) {
-      toast.error("Title cannot be empty!");
+      toast.error("Title cannot be empty!", {
+        style:
+          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+      });
       return;
     }
 
     if (title?.length > 100) {
-      toast.error("Title is too long. Keep it simple and concise bruv!");
+      toast.error("Title is too long. Keep it simple and concise bruv!", {
+        style:
+          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+      });
       return;
     }
 
@@ -1568,7 +1580,10 @@
 
     const output = await response?.json();
     if (output?.id && output?.id?.length !== 0) {
-      toast.success("Strategy created successfully!");
+      toast.success("Strategy created successfully!", {
+        style:
+          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+      });
 
       const closePopup = document.getElementById("addStrategy");
       closePopup?.dispatchEvent(new MouseEvent("click"));
@@ -1579,7 +1594,10 @@
       strategyList?.unshift(output);
       selectedPopularStrategy = "";
     } else {
-      toast.error("Something went wrong. Please try again later!");
+      toast.error("Something went wrong. Please try again later!", {
+        style:
+          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+      });
     }
 
     return output;
@@ -1692,7 +1710,10 @@
 
   function handleAddRule() {
     if (ruleName === "") {
-      toast.error("Please select a rule");
+      toast.error("Please select a rule", {
+        style:
+          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+      });
       return;
     }
 
@@ -1904,7 +1925,10 @@ const handleKeyDown = (event) => {
         });
 
         if (printToast === true) {
-          toast.success("Strategy saved!");
+          toast.success("Strategy saved!", {
+            style:
+              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+          });
         }
 
         //isSaved = true;

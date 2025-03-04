@@ -12,16 +12,16 @@
     event.preventDefault();
     try {
       await pb.collection("users").requestPasswordReset(email);
-      toast.success("Password resetted. Check your emails!");
+      toast.success("Password resetted. Check your emails!", {
+        style:
+          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+      });
       goto("/login");
     } catch (err) {
-      toast.error(
-        { err },
-        {
-          style:
-            "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-        },
-      );
+      toast.error(err, {
+        style:
+          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+      });
     }
   }
 </script>

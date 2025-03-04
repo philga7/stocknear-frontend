@@ -229,7 +229,10 @@
 
   function handleAddRule() {
     if (ruleName === "") {
-      toast.error("Please select a rule");
+      toast.error("Please select a rule", {
+        style:
+          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+      });
       return;
     }
 
@@ -508,7 +511,10 @@
         shouldLoadWorker.set(true);
       }
     } else {
-      toast.error(`Market is closed`);
+      toast.error(`Market is closed`, {
+        style:
+          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+      });
     }
   }
 
@@ -773,7 +779,10 @@
         }
       }
     } else {
-      toast.error("Only for Pro Members");
+      toast.error("Only for Pro Members", {
+        style:
+          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+      });
     }
   };
 

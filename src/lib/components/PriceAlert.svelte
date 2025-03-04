@@ -18,7 +18,10 @@
   async function handleCreateAlert() {
     // Validate input locally.
     if (targetPrice < 0) {
-      toast.error("Target Price must be above zero");
+      toast.error("Target Price must be above zero", {
+        style:
+          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+      });
       return;
     }
 
@@ -54,18 +57,13 @@
     });
 
     // Use toast.promise to handle pending, success, and error states.
-    toast.promise(
-      promise,
-      {
-        loading: "Creating price alert...",
-        success: "Successfully created price alert",
-        error: (err) => err.message || "Failed to create price alert",
-      },
-      {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-      },
-    );
+    toast.promise(promise, {
+      loading: "Creating price alert...",
+      success: "Successfully created price alert",
+      error: (err) => err.message || "Failed to create price alert",
+      style:
+        "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+    });
 
     // Await the promise and handle the result.
     try {

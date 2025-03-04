@@ -83,9 +83,15 @@
 
   async function handleDeleteTickers() {
     if (numberOfChecked === 0) {
-      toast.error(`You need to select symbols before you can delete them`);
+      toast.error(`You need to select symbols before you can delete them`, {
+        style:
+          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+      });
     } else {
-      toast.success(`Price alerts deleted successfully`);
+      toast.success(`Price alerts deleted successfully`, {
+        style:
+          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+      });
 
       const symbolsToDelete = priceAlertList
         ?.filter((item) => deletePriceAlertList.includes(item.id))

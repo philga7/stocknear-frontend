@@ -39,12 +39,18 @@
 
   async function sendFeedback() {
     if (inputValue?.length === 0) {
-      toast.error("Please enter your feedback");
+      toast.error("Please enter your feedback", {
+        style:
+          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+      });
       return;
     }
 
     if (rating?.length === 0 && category === "general") {
-      toast.error("Please select an emoji");
+      toast.error("Please select an emoji", {
+        style:
+          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+      });
       return;
     }
 
@@ -68,7 +74,10 @@
       body: JSON.stringify(postData),
     });
 
-    toast.success("Thank you for your feedback");
+    toast.success("Thank you for your feedback", {
+      style:
+        "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+    });
 
     rating = "";
     inputValue = "";

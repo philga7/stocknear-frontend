@@ -163,7 +163,8 @@
   function handleAddRule() {
     if (ruleName === "") {
       toast.error("Please select a rule", {
-        style: "border-radius: 200px; background: #2A2E39; color: #fff;",
+        style:
+          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
       });
       return;
     }
@@ -220,11 +221,6 @@
       }
     } else {
       ruleOfList = [...ruleOfList, newRule];
-      /*
-    toast.success('Rule added', {
-      style: 'border-radius: 200px; background: #2A2E39; color: #fff;'
-    });
-    */
 
       shouldLoadWorker.set(true);
     }
@@ -444,7 +440,8 @@
       }
     } else {
       toast.error(`Market is closed`, {
-        style: "border-radius: 200px; background: #2A2E39; color: #fff;",
+        style:
+          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
       });
     }
   }
