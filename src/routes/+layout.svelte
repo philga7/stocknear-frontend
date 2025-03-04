@@ -4,10 +4,11 @@
 
   //import { Toaster } from "svelte-french-toast";
   import { Toaster } from "svelte-sonner";
-  import NProgress from "nprogress";
-  import "nprogress/nprogress.css";
+  import "@bprogress/core/css";
+  import { BProgress } from "@bprogress/core";
 
   import { page } from "$app/stores";
+
   import Footer from "$lib/components/Footer.svelte";
   import Searchbar from "$lib/components/Searchbar.svelte";
   import NotificationBell from "$lib/components/NotificationBell.svelte";
@@ -55,8 +56,9 @@
   export let data;
 
   let hideHeader = false;
-
-  NProgress.configure({ showSpinner: false });
+  BProgress.configure({
+    showSpinner: false,
+  });
 
   $: {
     const currentPath = $page.url.pathname;
@@ -165,12 +167,12 @@
   });
 
   beforeNavigate(async () => {
-    NProgress.start();
+    BProgress?.start();
   });
 
   afterNavigate(async ({ from }) => {
     $previousPage = from?.url.pathname || $previousPage;
-    NProgress.done();
+    BProgress?.done();
   });
 
   $: {
@@ -481,19 +483,6 @@
                               >Earnings Calendar</a
                             >
                           </Button>
-                          <!--
-                          <Button
-                            builders={[builder]}
-                            type="submit"
-                            class="w-full bg-[#141417] hover:bg-[#141417]"
-                          >
-                            <a
-                              href="/fda-calendar"
-                              class="text-start w-full text-[1rem] text-white ml-4 mt-4"
-                              >FDA Calendar</a
-                            >
-                          </Button>
-                          -->
 
                           <Button
                             builders={[builder]}
@@ -883,7 +872,7 @@
         <div class="flex w-full">
           <div class="hidden 3xl:block 3xl:w-[300px]">
             <aside
-              class="fixed overflow-y-auto scroller overflow-hidden inset-y-0 left-0 z-50 3xl:flex w-64 flex-col 3xl:border-r 3xl:border-gray-800 bg-[#141417]"
+              class="fixed overflow-y-auto no-scrollbar overflow-hidden inset-y-0 left-0 z-50 3xl:flex w-64 flex-col 3xl:border-r 3xl:border-gray-800 bg-[#141417]"
             >
               <nav
                 class="flex flex-col items-center mr-auto gap-y-4 3xl:py-5 w-full"
@@ -1205,7 +1194,6 @@
 
               <slot />
               <Toaster position="bottom-center" />
-
               {#if Cookie && $showCookieConsent === true}
                 <Cookie />
               {/if}
@@ -1221,7 +1209,8 @@
 </div>
 
 <style global lang="scss">
-  .scroller {
-    scrollbar-width: thin;
+  :root {
+    --bprogress-color: #fff;
+    --bprogress-height: 1px;
   }
 </style>
