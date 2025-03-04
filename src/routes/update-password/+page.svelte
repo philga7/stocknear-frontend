@@ -1,74 +1,36 @@
-<script ts="lang">
-  import { pb } from "$lib/pocketbase";
+<script lang="ts">
+  import { enhance } from "$app/forms";
   import { toast } from "svelte-sonner";
-
   import Input from "$lib/components/Input.svelte";
-  import { updatePasswordSchema } from "$lib/schemas";
-  import { goto } from "$app/navigation";
-  import { z } from "zod";
+  import SEO from "$lib/components/SEO.svelte";
 
-  let zodErrors = [];
   export let data;
-
-  let errorOldPassword = "";
-  let errorPassword = "";
-  let errorPasswordConfirm = "";
+  export let form;
   let loading = false;
-  async function updatePassword(event) {
+
+  const submitUpdatePassword = () => {
     loading = true;
-    event.preventDefault(); // prevent the default form submission behavior
-    errorOldPassword = "";
-    errorPassword = "";
-    errorPasswordConfirm = "";
-
-    const formData = new FormData(event.target); // create a FormData object from the form
-    const postData = {};
-
-    for (const [key, value] of formData.entries()) {
-      postData[key] = value;
-    }
-
-    try {
-      // Use Zod validation
-      const cleanedData = updatePasswordSchema.parse(postData);
-      await pb.collection("users").update(data?.user?.id, cleanedData);
-      toast.success("Password updated!", {
-        style: "border-radius: 200px; background: #2A2E39; color: #fff;",
-      });
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        // Handle Zod validation errors
-        zodErrors = error.errors;
-
-        errorOldPassword =
-          zodErrors?.find((err) => err.path[0] === "oldPassword")?.message ??
-          "";
-        errorPassword =
-          zodErrors?.find((err) => err.path[0] === "password")?.message ?? "";
-        errorPasswordConfirm =
-          zodErrors?.find((err) => err.path[0] === "passwordConfirm")
-            ?.message ?? "";
-
+    return async ({ result, update }) => {
+      if (result.success) {
+        toast.success("Password updated!", {
+          style: "border-radius: 200px; background: #2A2E39; color: #fff;",
+        });
+      } else if (result.error || result.errors) {
         toast.error("Invalid credentials", {
           style:
             "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
         });
-      } else {
-        // Handle other errors
-        console.error("Unexpected error during registration:", error);
-
-        toast.error("An unexpected error occurred", {
-          style:
-            "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-        });
       }
-    }
-    loading = false;
-  }
+      await update();
+      loading = false;
+    };
+  };
 </script>
 
+<SEO title="Update Password" description="Update your account password" />
+
 <section
-  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pb-20 pt-5 px-4 lg:px-3"
+  class="flex flex-col items-center min-h-screen w-full max-w-3xl m-auto"
 >
   <div class="w-full overflow-hidden m-auto mt-5">
     <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
@@ -77,43 +39,49 @@
       >
         <main class="w-full">
           <form
-            on:submit={updatePassword}
+            action="?/updatePassword"
+            method="POST"
+            use:enhance={submitUpdatePassword}
             class="flex flex-col space-y-2 w-full max-w-lg m-auto"
           >
             <h1
               class="mb-1 text-white text-2xl sm:text-3xl font-bold mb-6 text-center"
             >
-              Set a new password
+              Reset Your Password
             </h1>
 
             <Input
               id="oldPassword"
+              name="oldPassword"
               label="Old Password"
               type="password"
               required
-              errors={errorOldPassword}
+              errors={form?.errors?.errorOldPassword}
             />
             <Input
               id="password"
+              name="password"
               label="New Password"
               type="password"
               required
-              errors={errorPassword}
+              errors={form?.errors?.errorPassword}
             />
             <Input
               id="passwordConfirm"
+              name="passwordConfirm"
               label="Confirm New Password"
               type="password"
               required
-              errors={errorPasswordConfirm}
+              errors={form?.errors?.errorPasswordConfirm}
             />
 
             <div class="w-full max-w-lg pt-3">
               <button
                 type="submit"
-                class="btn bg-[#fff] text-black font-semibold sm:hover:bg-gray-300 w-full max-w-lg normal-case text-md"
-                >Update Password</button
+                class="py-2.5 cursor-pointer rounded bg-[#fff] text-black font-semibold sm:hover:bg-gray-300 w-full max-w-lg normal-case text-md"
               >
+                {loading ? "Updating..." : "Update Password"}
+              </button>
             </div>
           </form>
         </main>
