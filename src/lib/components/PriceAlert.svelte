@@ -185,7 +185,7 @@
           <label class="text-sm w-[20%] mb-1 sm:mb-0">Crossing</label>
           <select
             on:change={changeStatement}
-            class="w-full sm:w-[80%] bg-[#2A2E39] border border-gray-600 text-sm rounded-md py-2 px-3 text-white"
+            class="cursor-pointer w-full sm:w-[80%] bg-[#2A2E39] border border-gray-600 text-sm rounded-md py-2 px-3 text-white"
           >
             <option value="above" selected>Above</option>
             <option value="below">Below</option>
@@ -262,7 +262,7 @@
           </label>
           <button
             on:click={handleCreateAlert}
-            class="bg-white text-black py-2 px-4 rounded-md text-sm"
+            class="cursor-pointer bg-white text-black py-2 px-4 rounded-md text-sm"
           >
             Save
           </button>
