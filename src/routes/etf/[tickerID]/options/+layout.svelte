@@ -20,10 +20,8 @@
 
     if (state !== "overview" && subSectionMap[state]) {
       displaySubSection = state;
-      //goto(`/etf/${$etfTicker}${subSectionMap[state]}`);
     } else {
       displaySubSection = state;
-      //goto(`/etf/${$etfTicker}/statistics`);
     }
   }
 
@@ -58,13 +56,17 @@
       <div
         class="relative flex justify-center items-start overflow-hidden w-full"
       >
-        <main class="w-full lg:w-3/4 lg:pr-10">
+        <main
+          class="w-full {displaySubSection === 'overview'
+            ? ''
+            : 'lg:w-3/4 lg:pr-10'}"
+        >
           <nav
             class="sm:ml-4 overflow-x-auto pt-1 text-sm sm:text-[1rem] whitespace-nowrap"
           >
             <ul class="flex flex-row items-center w-full text-white">
               <a
-                href={`/etf/${$etfTicker}/options`}
+                href={`/stocks/${$etfTicker}/options`}
                 on:click={() => changeSubSection("overview")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'overview'
                   ? 'text-white bg-primary/90'
@@ -73,7 +75,7 @@
                 Overview
               </a>
               <a
-                href={`/etf/${$etfTicker}/options/unusual-activity`}
+                href={`/stocks/${$etfTicker}/options/unusual-activity`}
                 on:click={() => changeSubSection("unusual-activity")}
                 class="p-2 px-5 cursor-pointer {displaySubSection ===
                 'unusual-activity'
@@ -83,7 +85,7 @@
                 Unusual Activity
               </a>
               <a
-                href={`/etf/${$etfTicker}/options/hottest-contracts`}
+                href={`/stocks/${$etfTicker}/options/hottest-contracts`}
                 on:click={() => changeSubSection("hottest-contracts")}
                 class="p-2 px-5 cursor-pointer {displaySubSection ===
                 'hottest-contracts'
@@ -93,7 +95,7 @@
                 Hottest Contracts
               </a>
               <a
-                href={`/etf/${$etfTicker}/options/volatility`}
+                href={`/stocks/${$etfTicker}/options/volatility`}
                 on:click={() => changeSubSection("volatility")}
                 class="p-2 px-5 cursor-pointer {displaySubSection ===
                 'volatility'
@@ -103,7 +105,7 @@
                 Volatility
               </a>
               <a
-                href={`/etf/${$etfTicker}/options/oi`}
+                href={`/stocks/${$etfTicker}/options/oi`}
                 on:click={() => changeSubSection("oi")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'oi'
                   ? 'text-white bg-primary/90'
@@ -113,7 +115,7 @@
               </a>
 
               <a
-                href={`/etf/${$etfTicker}/options/gex`}
+                href={`/stocks/${$etfTicker}/options/gex`}
                 on:click={() => changeSubSection("gex")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'gex'
                   ? 'text-white bg-primary/90'
@@ -122,7 +124,7 @@
                 GEX
               </a>
               <a
-                href={`/etf/${$etfTicker}/options/dex`}
+                href={`/stocks/${$etfTicker}/options/dex`}
                 on:click={() => changeSubSection("dex")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'dex'
                   ? 'text-white bg-primary/90'
@@ -137,7 +139,11 @@
           </div>
         </main>
 
-        <aside class="hidden lg:block relative fixed w-1/4 ml-4">
+        <aside
+          class="{displaySubSection === 'overview'
+            ? 'hidden'
+            : 'hidden lg:block'} relative fixed w-1/4 ml-4"
+        >
           <div
             class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
           >
@@ -171,7 +177,7 @@
                 <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
               </div>
               <span class="text-white p-3 ml-3 mr-3">
-                Build your Stock Screener to find profitable etf.
+                Build your Stock Screener to find profitable stocks.
               </span>
             </a>
           </div>
