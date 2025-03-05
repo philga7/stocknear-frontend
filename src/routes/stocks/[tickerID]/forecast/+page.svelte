@@ -270,7 +270,6 @@
         type: "gauge",
         backgroundColor: "#09090B",
         plotBackgroundColor: "#09090B",
-        height: 360,
         animation: false,
       },
       title: {
@@ -794,7 +793,10 @@
                   from the current stock price of {price}.
                 </p>
               </div>
-              <div use:highcharts={optionsPieChart}></div>
+              <div
+                class=" max-h-[225px]"
+                use:highcharts={optionsPieChart}
+              ></div>
             </div>
             <div class="grow pt-2 md:pt-4 lg:pl-4 lg:pt-0">
               <div
