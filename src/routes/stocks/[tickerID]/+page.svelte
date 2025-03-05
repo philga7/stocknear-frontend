@@ -42,6 +42,8 @@
   function plotData(priceData) {
     const rawData = priceData || [];
 
+    const change = (rawData?.at(-1)?.close / rawData?.at(0)?.close - 1) * 100;
+
     const priceList = rawData?.map((item) => item?.close);
     const dateList = rawData?.map((item) =>
       Date.UTC(
@@ -69,14 +71,14 @@
     let minValue = Math?.min(...rawData?.map((item) => item?.close));
     let maxValue = Math?.max(...rawData?.map((item) => item?.close));
 
-    if (minValue - 0 < 1) {
+    if (minValue - 0 < 1 && displayData === "1D") {
       //don't delete this sometimes 1D can't find minValue
       minValue = data?.getStockQuote?.dayLow;
     }
 
     let padding = 0.015;
-    let yMin = minValue * (1 - padding);
-    let yMax = maxValue * (1 + padding);
+    let yMin = minValue * (1 - padding) === 0 ? null : minValue * (1 - padding);
+    let yMax = maxValue * (1 + padding) === 0 ? null : maxValue * (1 + padding);
 
     const baseDate =
       rawData && rawData?.length ? new Date(rawData?.at(0)?.time) : new Date();
@@ -169,7 +171,7 @@
 
           // Loop through each point in the shared tooltip
           this.points?.forEach((point) => {
-            tooltipContent += `<span class="text-white  text-[1rem] font-[501]" style="color:${point.color}">${point.series.name}: ${point.y}</span><br>`;
+            tooltipContent += `<span class="text-white text-[1rem] font-[501]">${point.series.name}: ${point.y}</span><br>`;
           });
 
           // Append the formatted date at the end
@@ -231,8 +233,8 @@
 
       yAxis: {
         // Force y‑axis to stay near the actual data range
-        min: yMin,
-        max: yMax,
+        min: yMin ?? null,
+        max: yMax ?? null,
         startOnTick: false,
         endOnTick: false,
         gridLineWidth: 1,
@@ -269,16 +271,21 @@
           type: "area",
           data: displayData === "1D" ? seriesData : priceList,
           animation: false,
-          color: "#fff",
-          lineWidth: 1,
+          color: change < 0 ? "#CC261A" : "#00FC50",
+          lineWidth: 1.3,
           marker: {
             enabled: false,
           },
           fillColor: {
             linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
             stops: [
-              [0, "rgba(255, 255, 255, 0.03)"],
-              [1, "rgba(255, 255, 255, 0.001)"],
+              [0, change < 0 ? "rgba(204,38,26, 0.3)" : "rgb(0, 252, 80, 0.3)"],
+              [
+                1,
+                change < 0
+                  ? "rgba(204,38,26, 0.004)"
+                  : "rgb(0, 252, 80, 0.004)",
+              ],
             ],
           },
         },
@@ -620,40 +627,6 @@
     }
   }
 
-  function updateClosePrice(data, extendPriceChart) {
-    const newDateParsedUTC = Date?.parse(extendPriceChart?.time + "Z") / 1000; // Parse the incoming time
-    const closePrice = extendPriceChart?.price; // Store the close price for easier reference
-    let foundMatch = false;
-    let lastNonNullCloseIndex = null;
-
-    // Iterate through data to find the right time slot
-    for (let i = 0; i < data.length; i++) {
-      // Check if the timestamp matches
-      if (data[i].time === newDateParsedUTC) {
-        data[i].close = closePrice; // Update the existing close price
-        foundMatch = true;
-        break; // Exit loop once matched
-      }
-      // Keep track of the last non-null close price
-      if (data[i].close !== null) {
-        lastNonNullCloseIndex = i;
-      }
-    }
-
-    // If no matching timestamp was found, add new data
-    if (!foundMatch) {
-      // Only update the last non-null close if it exists
-      if (lastNonNullCloseIndex !== null) {
-        data[lastNonNullCloseIndex].close = closePrice; // Update with the latest close price
-      } else {
-        // If there's no previous close data, add a new entry
-        data.push({ time: newDateParsedUTC, close: closePrice }); // Add new data
-      }
-    }
-
-    return data; // Return updated data
-  }
-
   $: {
     if ($stockTicker) {
       // add a check to see if running on client-side
@@ -712,7 +685,7 @@
                             >
                             <div
                               class="{displayData === interval
-                                ? `bg-[${lastValue < displayLastLogicalRangeValue ? '#FF2F1F' : '#00FC50'}] `
+                                ? `bg-[${displayLegend?.graphChange < 0 ? '#FF2F1F' : '#00FC50'}] `
                                 : 'bg-default'} mt-1 h-[3px] w-[1.5rem] m-auto rounded-full"
                             />
                           </button>
@@ -755,7 +728,7 @@
                             >
                             <div
                               class="{displayData === interval
-                                ? `bg-[${lastValue < displayLastLogicalRangeValue ? '#FF2F1F' : '#00FC50'}] `
+                                ? `bg-[${displayLegend?.graphChange < 0 ? '#FF2F1F' : '#00FC50'}] `
                                 : 'bg-default'} mt-1 h-[3px] w-[1.5rem] m-auto rounded-full"
                             />
                           </button>
