@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { AreaSeries, Chart, PriceLine } from "svelte-lightweight-charts";
-  import { TrackingModeExitMode, ColorType } from "lightweight-charts";
+  import highcharts from "$lib/highcharts.ts";
+
   import {
     getCache,
     setCache,
@@ -12,9 +12,9 @@
     currentPortfolioPrice,
     etfTicker,
     shouldUpdatePriceChart,
-    priceChartData,
+    screenWidth,
   } from "$lib/store";
-  import { onDestroy, onMount } from "svelte";
+  import { onDestroy } from "svelte";
   import WIIM from "$lib/components/WIIM.svelte";
   import SEO from "$lib/components/SEO.svelte";
 
@@ -26,18 +26,271 @@
   export let data;
   export let form;
 
-  let stockDeck = data?.getETFProfile?.at(0);
+  let stockDeck = data?.getStockDeck;
 
   $: previousClose = data?.getStockQuote?.previousClose;
   //============================================//
   const intervals = ["1D", "1W", "1M", "6M", "1Y", "MAX"];
 
-  let chart = null;
-  async function checkChart() {
-    if (chart) {
-      clearInterval(intervalId);
-      fitContentChart();
+  let config = null;
+  let output = null;
+  let displayData = "1D";
+  let lastValue;
+
+  function plotData(priceData) {
+    const rawData = priceData || [];
+
+    const change = (rawData?.at(-1)?.close / rawData?.at(0)?.close - 1) * 100;
+
+    const priceList = rawData?.map((item) => item?.close);
+    const dateList = rawData?.map((item) =>
+      Date.UTC(
+        new Date(item?.time).getUTCFullYear(),
+        new Date(item?.time).getUTCMonth(),
+        new Date(item?.time).getUTCDate(),
+        new Date(item?.time).getUTCHours(),
+        new Date(item?.time).getUTCMinutes(),
+      ),
+    );
+
+    const seriesData = rawData?.map((item) => [
+      Date.UTC(
+        new Date(item?.time).getUTCFullYear(),
+        new Date(item?.time).getUTCMonth(),
+        new Date(item?.time).getUTCDate(),
+        new Date(item?.time).getUTCHours(),
+        new Date(item?.time).getUTCMinutes(),
+        new Date(item?.time).getUTCSeconds(),
+      ),
+      item?.close,
+    ]);
+
+    // Find the lowest & highest close values
+    let minValue = Math?.min(...rawData?.map((item) => item?.close));
+    let maxValue = Math?.max(...rawData?.map((item) => item?.close));
+
+    if (minValue - 0 < 1 && displayData === "1D") {
+      //don't delete this sometimes 1D can't find minValue
+      minValue = data?.getStockQuote?.dayLow;
     }
+
+    let padding = 0.015;
+    let yMin = minValue * (1 - padding) === 0 ? null : minValue * (1 - padding);
+    let yMax = maxValue * (1 + padding) === 0 ? null : maxValue * (1 + padding);
+
+    const baseDate =
+      rawData && rawData?.length ? new Date(rawData?.at(0)?.time) : new Date();
+
+    // Set the fixed start and end times (9:30 and 16:10)
+    const startTime = new Date(
+      baseDate.getFullYear(),
+      baseDate.getMonth(),
+      baseDate.getDate(),
+      9,
+      30,
+    ).getTime();
+    const endTime = new Date(
+      baseDate.getFullYear(),
+      baseDate.getMonth(),
+      baseDate.getDate(),
+      16,
+      0,
+    ).getTime();
+
+    const options = {
+      chart: {
+        backgroundColor: "#09090B",
+        height: 360,
+        events: {
+          // Add touch event handling to hide tooltip on mobile
+          load: function () {
+            const chart = this;
+            let isTouching = false;
+
+            // Track touch start
+            chart.container.addEventListener("touchstart", () => {
+              isTouching = true;
+            });
+
+            // Track touch end
+            chart.container.addEventListener("touchend", () => {
+              isTouching = false;
+              chart.tooltip.hide();
+            });
+
+            // Track touch cancel
+            chart.container.addEventListener("touchcancel", () => {
+              isTouching = false;
+              chart.tooltip.hide();
+            });
+          },
+        },
+      },
+      credits: { enabled: false },
+      title: { text: null },
+      tooltip: {
+        shared: true,
+        useHTML: true,
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
+        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        borderWidth: 1,
+        style: {
+          color: "#fff",
+          fontSize: "16px",
+          padding: "10px",
+        },
+        borderRadius: 4,
+        formatter: function () {
+          const date = new Date(this?.x);
+          let formattedDate;
+          if (displayData === "1D") {
+            formattedDate = date?.toLocaleTimeString("en-US", {
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+          } else if (["1W", "1M"].includes(displayData)) {
+            formattedDate = date?.toLocaleTimeString("en-US", {
+              hour: "2-digit",
+              minute: "2-digit",
+              month: "short",
+              day: "numeric",
+              timeZone: "UTC",
+            });
+          } else {
+            formattedDate = date?.toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+              timeZone: "UTC",
+            });
+          }
+
+          let tooltipContent = "";
+
+          // Loop through each point in the shared tooltip
+          this.points?.forEach((point) => {
+            tooltipContent += `<span class="text-white text-[1rem] font-[501]">${point.series.name}: ${point.y}</span><br>`;
+          });
+
+          // Append the formatted date at the end
+          tooltipContent += `<span class="text-white m-auto text-black text-sm font-normal">${formattedDate}</span><br>`;
+
+          return tooltipContent;
+        },
+      },
+
+      xAxis: {
+        type: "datetime",
+        min: displayData === "1D" ? startTime : null,
+        max: displayData === "1D" ? endTime : null,
+        tickLength: 0,
+        categories: displayData === "1D" ? null : dateList,
+        crosshair: {
+          color: "#fff",
+          width: 1,
+          dashStyle: "Solid",
+        },
+        labels: {
+          style: { color: "#fff" },
+          distance: 20,
+          formatter: function () {
+            const date = new Date(this?.value);
+            if (displayData === "1D") {
+              return date?.toLocaleTimeString("en-US", {
+                hour: "2-digit",
+                minute: "2-digit",
+              });
+            } else if (["1W", "1M"].includes(displayData)) {
+              return date?.toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                timeZone: "UTC",
+              });
+            } else {
+              return date?.toLocaleDateString("en-US", {
+                year: "2-digit",
+                month: "short",
+                timeZone: "UTC",
+              });
+            }
+          },
+        },
+        tickPositioner: function () {
+          // Create custom tick positions with wider spacing
+          const positions = [];
+          const info = this.getExtremes();
+          const tickCount = $screenWidth < 640 ? 2 : 5; // Reduce number of ticks displayed
+          const interval = Math.floor((info.max - info.min) / tickCount);
+
+          for (let i = 0; i <= tickCount; i++) {
+            positions.push(info.min + i * interval);
+          }
+          return positions;
+        },
+      },
+
+      yAxis: {
+        // Force y‑axis to stay near the actual data range
+        min: yMin ?? null,
+        max: yMax ?? null,
+        startOnTick: false,
+        endOnTick: false,
+        gridLineWidth: 1,
+        gridLineColor: "#111827",
+        title: { text: null },
+        labels: {
+          style: { color: "white" },
+        },
+        opposite: true,
+        // Add a dashed plot line at the previous close value
+        plotLines: [
+          {
+            value:
+              displayData === "1D"
+                ? data?.getStockQuote?.previousClose
+                : priceData?.at(0)?.close,
+            dashStyle: "Dash",
+            color: "#fff", // Choose a contrasting color if needed
+            width: 0.8,
+          },
+        ],
+      },
+      plotOptions: {
+        series: {
+          animation: false,
+          marker: { enabled: false },
+          states: { hover: { enabled: false } },
+        },
+      },
+      legend: { enabled: false },
+      series: [
+        {
+          name: "Price",
+          type: "area",
+          data: displayData === "1D" ? seriesData : priceList,
+          animation: false,
+          color: change < 0 ? "#CC261A" : "#00FC50",
+          lineWidth: 1.3,
+          marker: {
+            enabled: false,
+          },
+          fillColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+              [0, change < 0 ? "rgba(204,38,26, 0.3)" : "rgb(0, 252, 80, 0.3)"],
+              [
+                1,
+                change < 0
+                  ? "rgba(204,38,26, 0.004)"
+                  : "rgb(0, 252, 80, 0.004)",
+              ],
+            ],
+          },
+        },
+      ],
+    };
+
+    return options;
   }
 
   //const startTimeTracking = performance.now();
@@ -53,43 +306,40 @@
       let baseClose = previousClose;
       let graphBaseClose;
 
-      const length = oneDayPrice?.length;
-      for (let i = length - 1; i >= 0; i--) {
-        if (!isNaN(oneDayPrice[i]?.close)) {
-          currentDataRowOneDay = oneDayPrice[i];
-          break;
-        }
-      }
+      currentDataRowOneDay = oneDayPrice?.at(-1);
 
-      // Determine current data row and base close price based on displayData
       switch (displayData) {
         case "1W":
-          currentDataRow = oneWeekPrice?.at(-1); // Latest entry for 1 week
+          currentDataRow = oneWeekPrice?.at(-1);
           graphBaseClose = oneWeekPrice?.at(0)?.close;
+          config = plotData(oneWeekPrice) || null;
           break;
 
         case "1M":
-          currentDataRow = oneMonthPrice?.at(-1); // Latest entry for 1 month
+          currentDataRow = oneMonthPrice?.at(-1);
           graphBaseClose = oneMonthPrice?.at(0)?.close;
+          config = plotData(oneMonthPrice) || null;
           break;
 
         case "6M":
-          currentDataRow = sixMonthPrice?.at(-1); // Latest entry for 6 months
+          currentDataRow = sixMonthPrice?.at(-1);
           graphBaseClose = sixMonthPrice?.at(0)?.close;
+          config = plotData(sixMonthPrice) || null;
           break;
 
         case "1Y":
-          currentDataRow = oneYearPrice?.at(-1); // Latest entry for 1 year
+          currentDataRow = oneYearPrice?.at(-1);
           graphBaseClose = oneYearPrice?.at(0)?.close;
+          config = plotData(oneYearPrice) || null;
           break;
 
         case "MAX":
-          currentDataRow = maxPrice?.at(-1); // Latest entry for MAX range
+          currentDataRow = maxPrice?.at(-1);
           graphBaseClose = maxPrice?.at(0)?.close;
+          config = plotData(maxPrice) || null;
           break;
       }
 
-      // Calculate percentage change if baseClose and currentDataRow are valid
       const closeValue =
         $realtimePrice !== null && $realtimePrice !== undefined
           ? $realtimePrice
@@ -144,48 +394,31 @@
   //==========================//
 
   $: {
-    if ($etfTicker && typeof window !== "undefined") {
+    if ($etfTicker) {
       // add a check to see if running on client-side
       if ($realtimePrice !== null && $realtimePrice !== 0) {
         $currentPortfolioPrice = $realtimePrice;
       } else if ($realtimePrice === null || $realtimePrice === 0) {
-        $realtimePrice = data?.getStockQuote?.price?.toFixed(2);
+        $realtimePrice = data?.getStockQuote?.price;
         $currentPortfolioPrice = $realtimePrice;
       } else if (oneDayPrice?.length !== 0) {
-        const length = oneDayPrice?.length;
-        for (let i = length - 1; i >= 0; i--) {
-          if (!isNaN(oneDayPrice[i]?.close)) {
-            $currentPortfolioPrice = oneDayPrice[i]?.close;
-            break;
-          }
-        }
+        $currentPortfolioPrice = oneDayPrice?.at(-1)?.close;
       }
     }
   }
 
-  let displayData = "1D";
-  let colorChange;
-  let topColorChange;
-  let bottomColorChange;
-
-  let lastValue;
   async function changeData(state) {
     switch (state) {
       case "1D":
         displayData = "1D";
         if (oneDayPrice?.length !== 0) {
           displayLastLogicalRangeValue = oneDayPrice?.at(0)?.close; //previousClose
-          const length = oneDayPrice?.length;
-          for (let i = length - 1; i >= 0; i--) {
-            if (!isNaN(oneDayPrice[i]?.close)) {
-              lastValue = oneDayPrice[i]?.close;
-              break;
-            }
-          }
+          lastValue = oneDayPrice?.at(-1)?.close;
         } else {
           displayLastLogicalRangeValue = null;
           lastValue = null;
         }
+        config = plotData(oneDayPrice) || null;
         break;
       case "1W":
         displayData = "1W";
@@ -250,27 +483,8 @@
       default:
         return;
     }
-    colorChange =
-      lastValue < displayLastLogicalRangeValue ? "#FF2F1F" : "#00FC50";
-    topColorChange =
-      lastValue < displayLastLogicalRangeValue
-        ? "rgb(255, 47, 31, 0.2)"
-        : "rgb(16, 219, 6, 0.2)";
-    bottomColorChange =
-      lastValue < displayLastLogicalRangeValue
-        ? "rgb(255, 47, 31, 0.001)"
-        : "rgb(16, 219, 6, 0.001)";
-
-    fitContentChart();
-
-    //trackButtonClick('Time Period: '+ state)
   }
 
-  let output = null;
-
-  //====================================//
-
-  let intervalId = null;
   let oneDayPrice = [];
   let oneWeekPrice = [];
   let oneMonthPrice = [];
@@ -303,6 +517,7 @@
       }
     } else {
       output = null;
+      config = null;
 
       const postData = {
         ticker: $etfTicker,
@@ -319,39 +534,28 @@
 
       output = (await response?.json()) ?? [];
 
-      const mapData = (data) =>
-        data?.map(({ time, open, high, low, close }) => ({
-          time: ["1D", "1W", "1M"]?.includes(displayData)
-            ? Date?.parse(time + "Z") / 1000
-            : time,
-          open,
-          high,
-          low,
-          close,
-        }));
-
-      const mappedData = mapData(output);
       try {
         switch (timePeriod) {
           case "one-week":
-            oneWeekPrice = mappedData;
+            oneWeekPrice = output;
             break;
           case "one-month":
-            oneMonthPrice = mappedData;
+            oneMonthPrice = output;
             break;
           case "six-months":
-            sixMonthPrice = mappedData;
+            sixMonthPrice = output;
             break;
           case "one-year":
-            oneYearPrice = mappedData;
+            oneYearPrice = output;
             break;
           case "max":
-            maxPrice = mappedData;
+            maxPrice = output;
             break;
           default:
             console.log(`Unsupported time period: ${timePeriod}`);
         }
-        setCache($etfTicker, mappedData, "historicalPrice" + timePeriod);
+
+        setCache($etfTicker, output, "historicalPrice" + timePeriod);
       } catch (e) {
         console.log(e);
       }
@@ -360,51 +564,29 @@
 
   async function initializePrice() {
     output = null;
-    if (intervalId) {
-      clearInterval(intervalId);
-    }
-    intervalId = setInterval(checkChart, 0);
+    config = null;
+
     try {
-      output = [...data?.getOneDayPrice] ?? [];
-      oneDayPrice = output?.map((item) => ({
-        time: Date?.parse(item?.time + "Z") / 1000,
-        open: item?.open !== null ? item?.open : NaN,
-        high: item?.high !== null ? item?.high : NaN,
-        low: item?.low !== null ? item?.low : NaN,
-        close: item?.close !== null ? item?.close : NaN,
-      }));
+      oneDayPrice = [...data?.getOneDayPrice] ?? [];
+
+      output = [...oneDayPrice];
+
+      if (oneDayPrice?.length > 0) {
+        config = plotData(oneDayPrice) || null;
+      }
+
       displayData =
         oneDayPrice?.length === 0 && sixMonthPrice?.length !== 0 ? "6M" : "1D";
-      //lastValue = oneDayPrice[oneDayPrice?.length - 1]?.value;
       if (displayData === "1D") {
-        const length = oneDayPrice?.length;
-        for (let i = length - 1; i >= 0; i--) {
-          if (!isNaN(oneDayPrice[i]?.close)) {
-            lastValue = oneDayPrice[i]?.close;
-            break;
-          }
-        }
+        lastValue = oneDayPrice?.at(-0)?.close;
       } else if (displayData === "6M") {
-        lastValue = sixMonthPrice?.slice(-1)?.at(0)?.close;
+        lastValue = sixMonthPrice?.at(-1)?.close;
       }
 
       displayLastLogicalRangeValue =
         oneDayPrice?.length === 0 && sixMonthPrice?.length !== 0
           ? sixMonthPrice?.at(0)?.close
-          : oneDayPrice?.at(0)?.close; //previousClose;
-
-      //colorChange = lastValue < displayLastLogicalRangeValue ? "#CC3636" : "#367E18";
-
-      colorChange =
-        lastValue < displayLastLogicalRangeValue ? "#FF2F1F" : "#00FC50";
-      topColorChange =
-        lastValue < displayLastLogicalRangeValue
-          ? "rgb(255, 47, 31, 0.2)"
-          : "rgb(16, 219, 6, 0.2)";
-      bottomColorChange =
-        lastValue < displayLastLogicalRangeValue
-          ? "rgb(255, 47, 31, 0.001)"
-          : "rgb(16, 219, 6, 0.001)";
+          : oneDayPrice?.at(0)?.close;
     } catch (e) {
       console.log(e);
     }
@@ -421,161 +603,6 @@
   };
 
   let displayLastLogicalRangeValue;
-
-  const fitContentChart = async () => {
-    if (displayData === "1Y" && oneYearPrice?.length === 0) {
-    } else if (chart !== null && typeof window !== "undefined") {
-      chart?.timeScale().fitContent();
-
-      chart?.applyOptions({
-        trackingMode: {
-          exitMode: TrackingModeExitMode.OnTouchEnd,
-        },
-      });
-    }
-  };
-
-  let width = 580;
-  //Initial height of graph
-  let height = 350;
-
-  let observer;
-  let ref;
-
-  ref = (element) => {
-    if (observer) {
-      observer?.disconnect();
-    }
-    if (!element) {
-      return;
-    }
-
-    observer = new ResizeObserver(([entry]) => {
-      width = entry.contentRect.width;
-      height = entry.contentRect.height;
-    });
-    observer.observe(element);
-  };
-
-  //===============================================//
-  function defaultTickMarkFormatter(timePoint, tickMarkType, locale) {
-    const formatOptions = {
-      timeZone: "UTC",
-    };
-
-    switch (tickMarkType) {
-      case 0: // TickMarkType.Year:
-        formatOptions.year = "numeric";
-        break;
-      case 1: // TickMarkType.Month:
-        formatOptions.month = "short";
-        break;
-      case 2: // TickMarkType.DayOfMonth:
-        formatOptions.day = "numeric";
-        break;
-      case 3: // TickMarkType.Time:
-        formatOptions.hour12 = true; // Use 12-hour clock
-        formatOptions.hour = "numeric"; // Use numeric hour without leading zero
-        break;
-      case 4: // TickMarkType.TimeWithSeconds:
-        formatOptions.hour12 = true; // Use 12-hour clock
-        formatOptions.hour = "numeric"; // Use numeric hour without leading zero
-        formatOptions.minute = "2-digit"; // Always show minutes with leading zero
-        formatOptions.second = "2-digit"; // Always show seconds with leading zero
-        break;
-      default:
-      // Ensure this default case handles unexpected tickMarkType values
-    }
-    if ([3, 4]?.includes(tickMarkType)) {
-      const date = new Date(timePoint?.timestamp * 1000);
-      return new Intl.DateTimeFormat(locale, formatOptions)?.format(date);
-    } else {
-      const date = new Date(timePoint?.timestamp);
-      return new Intl.DateTimeFormat(locale, formatOptions)?.format(date);
-    }
-  }
-
-  $: options = {
-    width: width,
-    height: height,
-    layout: {
-      background: {
-        type: ColorType.Solid,
-        color: "#09090B",
-      },
-      textColor: "#d1d4dc",
-    },
-    grid: {
-      vertLines: {
-        color: "#09090B",
-        visible: false,
-      },
-      horzLines: {
-        color: "#09090B",
-        visible: false,
-      },
-    },
-    crosshair: {
-      horzLine: {
-        visible: true,
-        labelBackgroundColor: "#fff",
-      },
-      vertLine: {
-        labelVisible: true,
-        labelBackgroundColor: "#fff",
-        style: 0,
-      },
-    },
-    priceScale: {
-      autoScale: true,
-      scaleMargins: {
-        top: 0.3,
-        bottom: 0.25,
-      },
-    },
-    rightPriceScale: {
-      scaleMargins: {
-        top: 0.3,
-        bottom: 0.25,
-        borderVisible: false,
-      },
-      visible: true,
-      borderVisible: false,
-      mode: 1, // Keeps price scale fixed
-    },
-    leftPriceScale: {
-      visible: false,
-      borderColor: "rgba(197, 203, 206, 0.8)",
-    },
-    handleScale: {
-      mouseWheel: false,
-      pinch: false, // Disables scaling via pinch gestures
-      axisPressedMouseMove: false, // Disables scaling by dragging the axis with the mouse
-    },
-    handleScroll: {
-      mouseWheel: false,
-      horzTouchDrag: false,
-      vertTouchDrag: false,
-      pressedMouseMove: false,
-    },
-    timeScale: {
-      borderColor: "#fff",
-      textColor: "#fff",
-      borderVisible: false,
-      visible: true,
-      fixLeftEdge: true,
-      fixRightEdge: true,
-      timeVisible: ["1D", "1W", "1M"].includes(displayData),
-      secondsVisible: false,
-      tickMarkFormatter: (time, tickMarkType, locale) => {
-        return defaultTickMarkFormatter(
-          { timestamp: time },
-          tickMarkType,
-          locale,
-        );
-      },
-    },
-  };
 
   onDestroy(async () => {
     $priceIncrease = null;
@@ -598,66 +625,8 @@
     }
   }
 
-  function updateClosePrice(data, extendPriceChart) {
-    const newDateParsedUTC = Date?.parse(extendPriceChart?.time + "Z") / 1000; // Parse the incoming time
-    const closePrice = extendPriceChart?.price; // Store the close price for easier reference
-    let foundMatch = false;
-    let lastNonNullCloseIndex = null;
-
-    // Iterate through data to find the right time slot
-    for (let i = 0; i < data.length; i++) {
-      // Check if the timestamp matches
-      if (data[i].time === newDateParsedUTC) {
-        data[i].close = closePrice; // Update the existing close price
-        foundMatch = true;
-        break; // Exit loop once matched
-      }
-      // Keep track of the last non-null close price
-      if (data[i].close !== null) {
-        lastNonNullCloseIndex = i;
-      }
-    }
-
-    // If no matching timestamp was found, add new data
-    if (!foundMatch) {
-      // Only update the last non-null close if it exists
-      if (lastNonNullCloseIndex !== null) {
-        data[lastNonNullCloseIndex].close = closePrice; // Update with the latest close price
-      } else {
-        // If there's no previous close data, add a new entry
-        data.push({ time: newDateParsedUTC, close: closePrice }); // Add new data
-      }
-    }
-
-    return data; // Return updated data
-  }
-
-  onMount(() => {
-    shouldUpdatePriceChart.subscribe(async (value) => {
-      if (
-        value &&
-        chart !== null &&
-        $realtimePrice !== null &&
-        oneDayPrice?.length > 0 &&
-        $priceChartData?.time !== null &&
-        $priceChartData?.price !== null
-      ) {
-        // Create a new array and update oneDayPrice to trigger reactivity
-        const updatedPrice = updateClosePrice(oneDayPrice, $priceChartData);
-        oneDayPrice = [...updatedPrice]; // Reassign the updated array to trigger reactivity
-        try {
-          chart?.update(oneDayPrice); // Update the chart with the new prices
-        } catch (e) {
-          // Handle error if chart update fails
-          //console.error("Chart update error:", e);
-        }
-        shouldUpdatePriceChart.set(false); // Reset the update flag
-      }
-    });
-  });
-
   $: {
-    if ($etfTicker && typeof window !== "undefined") {
+    if ($etfTicker) {
       // add a check to see if running on client-side
       shouldUpdatePriceChart.set(false);
       oneDayPrice = [];
@@ -666,9 +635,9 @@
       oneYearPrice = [];
       maxPrice = [];
       output = null;
+      config = null;
 
-      stockDeck = data?.getETFProfile?.at(0); // Essential otherwise chart will not be updated since we wait until #layout.server.ts server response is finished
-
+      stockDeck = data?.getETFProfile?.at(0);
       initializePrice();
     }
   }
@@ -704,7 +673,7 @@
                         <li>
                           <button
                             on:click={() => changeData(interval)}
-                            class="px-1 py-1 text-sm sm:text-[1rem] xs:px-[3px] bp:px-1.5 sm:px-2 xxxl:px-3"
+                            class="cursor-pointer px-1 py-1 text-sm sm:text-[1rem] xs:px-[3px] bp:px-1.5 sm:px-2 xxxl:px-3"
                           >
                             <span
                               class="block {displayData === interval
@@ -713,7 +682,7 @@
                             >
                             <div
                               class="{displayData === interval
-                                ? `bg-[${colorChange}] `
+                                ? `bg-[${displayLegend?.graphChange < 0 ? '#FF2F1F' : '#00FC50'}] `
                                 : 'bg-default'} mt-1 h-[3px] w-[1.5rem] m-auto rounded-full"
                             />
                           </button>
@@ -756,7 +725,7 @@
                             >
                             <div
                               class="{displayData === interval
-                                ? `bg-[${colorChange}] `
+                                ? `bg-[${displayLegend?.graphChange < 0 ? '#FF2F1F' : '#00FC50'}] `
                                 : 'bg-default'} mt-1 h-[3px] w-[1.5rem] m-auto rounded-full"
                             />
                           </button>
@@ -781,132 +750,11 @@
                   </div>
                 </div>
 
-                {#if output !== null && dataMapping[displayData]?.length !== 0}
-                  <Chart
-                    {...options}
-                    autoSize={true}
-                    ref={(api) => (chart = api)}
-                  >
-                    {#if displayData === "1D"}
-                      <AreaSeries
-                        reactive={true}
-                        data={oneDayPrice?.map(({ time, close }) => ({
-                          time,
-                          value: close,
-                        }))}
-                        lineWidth={1.5}
-                        priceScaleId="right"
-                        lineColor={colorChange}
-                        topColor={topColorChange}
-                        bottomColor={bottomColorChange}
-                        priceLineVisible={false}
-                      >
-                        <PriceLine
-                          price={oneDayPrice?.at(0)?.close}
-                          lineWidth={1}
-                          color="#fff"
-                        />
-                      </AreaSeries>
-                    {:else if displayData === "1W"}
-                      <AreaSeries
-                        data={oneWeekPrice?.map(({ time, close }) => ({
-                          time,
-                          value: close,
-                        }))}
-                        lineWidth={1.5}
-                        priceScaleId="right"
-                        lineColor={colorChange}
-                        topColor={topColorChange}
-                        bottomColor={bottomColorChange}
-                        priceLineVisible={false}
-                      >
-                        <PriceLine
-                          price={oneWeekPrice?.at(0)?.close}
-                          lineWidth={1}
-                          color="#fff"
-                        />
-                      </AreaSeries>
-                    {:else if displayData === "1M"}
-                      <AreaSeries
-                        data={oneMonthPrice?.map(({ time, close }) => ({
-                          time: time,
-                          value: close,
-                        }))}
-                        lineWidth={1.5}
-                        priceScaleId="right"
-                        lineColor={colorChange}
-                        topColor={topColorChange}
-                        bottomColor={bottomColorChange}
-                        priceLineVisible={false}
-                      >
-                        <PriceLine
-                          price={oneMonthPrice?.at(0)?.close}
-                          lineWidth={1}
-                          color="#fff"
-                        />
-                      </AreaSeries>
-                    {:else if displayData === "6M"}
-                      <AreaSeries
-                        data={sixMonthPrice?.map(({ time, close }) => ({
-                          time,
-                          value: close,
-                        }))}
-                        lineWidth={1.5}
-                        priceScaleId="right"
-                        lineColor={colorChange}
-                        topColor={topColorChange}
-                        bottomColor={bottomColorChange}
-                        priceLineVisible={false}
-                      >
-                        <PriceLine
-                          price={sixMonthPrice?.at(0)?.close}
-                          lineWidth={1}
-                          color="#fff"
-                        />
-                      </AreaSeries>
-                    {:else if displayData === "1Y"}
-                      <AreaSeries
-                        data={oneYearPrice?.map(({ time, close }) => ({
-                          time,
-                          value: close,
-                        }))}
-                        lineWidth={1.5}
-                        priceScaleId="right"
-                        lineColor={colorChange}
-                        topColor={topColorChange}
-                        bottomColor={bottomColorChange}
-                        priceLineVisible={false}
-                      >
-                        <PriceLine
-                          price={oneYearPrice?.at(0)?.close}
-                          lineWidth={1}
-                          color="#fff"
-                        />
-                      </AreaSeries>
-                    {:else if displayData === "MAX"}
-                      <AreaSeries
-                        data={maxPrice?.map(({ time, close }) => ({
-                          time,
-                          value: close,
-                        }))}
-                        lineWidth={1.5}
-                        priceScaleId="right"
-                        lineColor={colorChange}
-                        topColor={topColorChange}
-                        bottomColor={bottomColorChange}
-                        priceLineVisible={false}
-                      >
-                        <PriceLine
-                          price={maxPrice?.at(0)?.close}
-                          lineWidth={1}
-                          color="#fff"
-                        />
-                      </AreaSeries>
-                    {/if}
-                  </Chart>
+                {#if output !== null && config !== null && dataMapping[displayData]?.length !== 0}
+                  <div use:highcharts={config}></div>
                 {:else}
                   <div
-                    class="flex justify-center w-full sm:w-[650px] h-[350px] items-center"
+                    class="flex justify-center w-full sm:w-[650px] h-[360px] items-center"
                   >
                     <div class="relative">
                       <label

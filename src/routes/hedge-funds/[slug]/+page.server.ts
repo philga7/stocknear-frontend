@@ -1,7 +1,6 @@
 
-export const load = async ({ params, locals, setHeaders }) => {
+export const load = async ({ params, locals }) => {
 
-      setHeaders({ "cache-control": "public, max-age=60*5" });
 
       
   const getCIKNumber = async () => {
