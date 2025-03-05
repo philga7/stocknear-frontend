@@ -1,9 +1,5 @@
 <script lang="ts">
-  import {
-    displayCompanyName,
-    numberOfUnreadNotification,
-    stockTicker,
-  } from "$lib/store";
+  import { displayCompanyName, stockTicker } from "$lib/store";
 
   import ShareHolders from "$lib/components/ShareHolders.svelte";
   import SEO from "$lib/components/SEO.svelte";
@@ -12,7 +8,7 @@
 </script>
 
 <SEO
-  title={`${$displayCompanyName} (${$stockTicker}) 13F Institute Ownership · Stocknear`}
+  title={`${$displayCompanyName} (${$stockTicker}) 13F Institute Ownership`}
   description={`Get the latest 13F Institute Ownership of ${$displayCompanyName} (${$stockTicker}).`}
 />
 

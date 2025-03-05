@@ -36,7 +36,7 @@
 
     const options = {
       chart: {
-        type: "column",
+        type: "bar",
         backgroundColor: "#09090B",
         plotBackgroundColor: "#09090B",
         height: 360, // Set the maximum height for the chart
@@ -49,7 +49,7 @@
         itemStyle: { color: "#fff" },
       },
       title: {
-        text: `<h3 class="mt-3 mb-1">${removeCompanyStrings($displayCompanyName)} Ownership Distribution</h3>`,
+        text: `<h3 class="mt-3 mb-1 text-center">${removeCompanyStrings($displayCompanyName)} Ownership Distribution</h3>`,
         useHTML: true,
         style: { color: "white" },
       },
@@ -64,9 +64,21 @@
         gridLineColor: "#111827",
         labels: {
           formatter: function () {
-            return this.value + "%";
+            return this?.value + "%";
           },
           style: { color: "#fff" },
+        },
+        tickPositioner: function () {
+          // Create custom tick positions with wider spacing
+          const positions = [];
+          const info = this.getExtremes();
+          const tickCount = 3; // Reduce number of ticks displayed
+          const interval = Math.floor((info.max - info.min) / tickCount);
+
+          for (let i = 0; i <= tickCount; i++) {
+            positions.push(info.min + i * interval);
+          }
+          return positions;
         },
       },
       tooltip: {
@@ -93,6 +105,7 @@
           animation: false,
           color: "#1E40AF",
           borderColor: "#1E40AF",
+          borderRadius: "1px",
         },
         {
           name: "Other Owner",
@@ -100,6 +113,7 @@
           animation: false,
           color: "#D97706",
           borderColor: "#D97706",
+          borderRadius: "1px",
         },
       ],
     };
