@@ -160,7 +160,7 @@
             });
           } else {
             formattedDate = date?.toLocaleDateString("en-US", {
-              year: "2-digit",
+              year: "numeric",
               month: "short",
               day: "numeric",
               timeZone: "UTC",
