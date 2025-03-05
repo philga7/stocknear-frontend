@@ -12,7 +12,7 @@
     currentPortfolioPrice,
     stockTicker,
     shouldUpdatePriceChart,
-    priceChartData,
+    screenWidth,
   } from "$lib/store";
   import { onDestroy } from "svelte";
   import WIIM from "$lib/components/WIIM.svelte";
@@ -43,14 +43,15 @@
     const rawData = priceData || [];
 
     const priceList = rawData?.map((item) => item?.close);
-    const dateList = rawData?.map((item) => {
-      const parsedDate = new Date(item?.time);
-      if (isNaN(parsedDate)) {
-        console.error("Invalid date:", item?.time);
-        return null;
-      }
-      return parsedDate.getTime(); // Use timestamp directly
-    });
+    const dateList = rawData?.map((item) =>
+      Date.UTC(
+        new Date(item?.time).getUTCFullYear(),
+        new Date(item?.time).getUTCMonth(),
+        new Date(item?.time).getUTCDate(),
+        new Date(item?.time).getUTCHours(),
+        new Date(item?.time).getUTCMinutes(),
+      ),
+    );
 
     const seriesData = rawData?.map((item) => [
       Date.UTC(
@@ -98,12 +99,63 @@
       },
       credits: { enabled: false },
       title: { text: null },
+      tooltip: {
+        shared: true,
+        useHTML: true,
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
+        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        borderWidth: 1,
+        style: {
+          color: "#fff",
+          fontSize: "16px",
+          padding: "10px",
+        },
+        borderRadius: 4,
+        formatter: function () {
+          const date = new Date(this?.x);
+          let formattedDate;
+          if (displayData === "1D") {
+            formattedDate = date?.toLocaleTimeString("en-US", {
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+          } else if (["1W", "1M"].includes(displayData)) {
+            formattedDate = date?.toLocaleTimeString("en-US", {
+              hour: "2-digit",
+              minute: "2-digit",
+              month: "short",
+              day: "numeric",
+              timeZone: "UTC",
+            });
+          } else {
+            formattedDate = date?.toLocaleDateString("en-US", {
+              year: "2-digit",
+              month: "short",
+              day: "numeric",
+              timeZone: "UTC",
+            });
+          }
+
+          let tooltipContent = "";
+
+          // Loop through each point in the shared tooltip
+          this.points?.forEach((point) => {
+            tooltipContent += `<span class="text-white  text-[1rem] font-[501]" style="color:${point.color}">${point.series.name}: ${point.y}</span><br>`;
+          });
+
+          // Append the formatted date at the end
+          tooltipContent += `<span class="text-white m-auto text-black text-sm font-normal">${formattedDate}</span><br>`;
+
+          return tooltipContent;
+        },
+      },
+
       xAxis: {
         type: "datetime",
         min: displayData === "1D" ? startTime : null,
         max: displayData === "1D" ? endTime : null,
         tickLength: 0,
-        data: displayData === "1D" ? null : dateList,
+        categories: displayData === "1D" ? null : dateList,
         crosshair: {
           color: "#fff",
           width: 1,
@@ -119,15 +171,32 @@
                 hour: "2-digit",
                 minute: "2-digit",
               });
-            } else {
+            } else if (["1W", "1M"].includes(displayData)) {
               return date?.toLocaleDateString("en-US", {
                 month: "short",
                 day: "numeric",
-                year: "numeric",
+                timeZone: "UTC",
+              });
+            } else {
+              return date?.toLocaleDateString("en-US", {
+                year: "2-digit",
+                month: "short",
                 timeZone: "UTC",
               });
             }
           },
+        },
+        tickPositioner: function () {
+          // Create custom tick positions with wider spacing
+          const positions = [];
+          const info = this.getExtremes();
+          const tickCount = $screenWidth < 640 ? 2 : 5; // Reduce number of ticks displayed
+          const interval = Math.floor((info.max - info.min) / tickCount);
+
+          for (let i = 0; i <= tickCount; i++) {
+            positions.push(info.min + i * interval);
+          }
+          return positions;
         },
       },
 
@@ -156,19 +225,6 @@
             width: 0.8,
           },
         ],
-      },
-      tooltip: {
-        shared: true,
-        useHTML: true,
-        backgroundColor: "rgba(0, 0, 0, 0.8)",
-        borderColor: "rgba(255, 255, 255, 0.2)",
-        borderWidth: 1,
-        style: {
-          color: "#fff",
-          fontSize: "16px",
-          padding: "10px",
-        },
-        borderRadius: 4,
       },
       plotOptions: {
         series: {
@@ -635,7 +691,7 @@
                     </ul>
                   </div>
                 </div>
-                <div class="h-[250px] sm:h-[350px]">
+                <div class="h-[360px]">
                   <div
                     class="flex h-full w-full flex-col items-center justify-center rounded-sm border border-gray-800 p-6 text-center md:p-12"
                   >
@@ -701,7 +757,7 @@
                   ></div>
                 {:else}
                   <div
-                    class="flex justify-center w-full sm:w-[650px] h-[350px] items-center"
+                    class="flex justify-center w-full sm:w-[650px] h-[360px] items-center"
                   >
                     <div class="relative">
                       <label
