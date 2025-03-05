@@ -65,13 +65,17 @@
       item?.close,
     ]);
 
-    const padding = 0.015;
-    const minValue = Math.min(...priceList);
-    const maxValue = Math.max(...priceList);
-    const yMin = minValue * (1 - padding);
-    const yMax = maxValue * (1 + padding);
-    console.log(yMin, yMax);
-    console.log(priceData);
+    // Find the lowest & highest close values
+    let minValue = Math?.min(...rawData?.map((item) => item?.close));
+    let maxValue = Math?.max(...rawData?.map((item) => item?.close));
+
+    if (minValue - 0 < 1) {
+      minValue = data?.getStockQuote?.dayLow;
+    }
+
+    let padding = 0.015;
+    let yMin = minValue * (1 - padding);
+    let yMax = maxValue * (1 + padding);
 
     const baseDate =
       rawData && rawData?.length ? new Date(rawData?.at(0)?.time) : new Date();
@@ -534,9 +538,12 @@
 
     try {
       oneDayPrice = [...data?.getOneDayPrice] ?? [];
-      config = plotData(oneDayPrice) || null;
 
       output = [...oneDayPrice];
+
+      if (oneDayPrice?.length > 0) {
+        config = plotData(oneDayPrice) || null;
+      }
 
       displayData =
         oneDayPrice?.length === 0 && sixMonthPrice?.length !== 0 ? "6M" : "1D";
