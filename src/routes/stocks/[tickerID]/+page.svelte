@@ -218,7 +218,7 @@
           {
             value:
               displayData === "1D"
-                ? data?.getStockQuote?.previousClose
+                ? priceData?.at(0)?.close
                 : priceData?.at(0)?.close,
             dashStyle: "Dash",
             color: "#fff", // Choose a contrasting color if needed
