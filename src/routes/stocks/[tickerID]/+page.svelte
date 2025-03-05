@@ -65,21 +65,13 @@
       item?.close,
     ]);
 
-    // Convert close values to numbers and filter out any non-numeric entries
-    const validPrices = rawData
-      ?.map((item) => Number(item?.close))
-      ?.filter((price) => !isNaN(price));
-
-    // If there are no valid prices, set some default values (or handle this case appropriately)
-    if (validPrices.length === 0) {
-      return {}; // or set default yAxis values
-    }
     const padding = 0.015;
-    const minValue = Math.min(...validPrices);
-    const maxValue = Math.max(...validPrices);
+    const minValue = Math.min(...priceList);
+    const maxValue = Math.max(...priceList);
     const yMin = minValue * (1 - padding);
     const yMax = maxValue * (1 + padding);
     console.log(yMin, yMax);
+    console.log(priceData);
 
     const baseDate =
       rawData && rawData?.length ? new Date(rawData?.at(0)?.time) : new Date();
@@ -283,9 +275,6 @@
       currentDataRowOneDay = oneDayPrice?.at(-1);
 
       switch (displayData) {
-        case "1D":
-          config = plotData(oneDayPrice) || null;
-          break;
         case "1W":
           currentDataRow = oneWeekPrice?.at(-1);
           graphBaseClose = oneWeekPrice?.at(0)?.close;
@@ -395,6 +384,7 @@
           displayLastLogicalRangeValue = null;
           lastValue = null;
         }
+        config = plotData(oneDayPrice) || null;
         break;
       case "1W":
         displayData = "1W";
