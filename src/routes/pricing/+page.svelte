@@ -171,7 +171,7 @@
               ? 'text-white'
               : 'text-gray-500'} text-sm font-semibold uppercase"
           >
-            Get 4 Months Free
+            Get 3 Months Free
           </span>
         </div>
       </div>
