@@ -65,13 +65,21 @@
       item?.close,
     ]);
 
-    // Find the lowest & highest close values
-    const minValue = Math.min(...rawData?.map((item) => item?.close));
-    const maxValue = Math.max(...rawData?.map((item) => item?.close));
+    // Convert close values to numbers and filter out any non-numeric entries
+    const validPrices = rawData
+      ?.map((item) => Number(item?.close))
+      ?.filter((price) => !isNaN(price));
 
+    // If there are no valid prices, set some default values (or handle this case appropriately)
+    if (validPrices.length === 0) {
+      return {}; // or set default yAxis values
+    }
     const padding = 0.015;
+    const minValue = Math.min(...validPrices);
+    const maxValue = Math.max(...validPrices);
     const yMin = minValue * (1 - padding);
     const yMax = maxValue * (1 + padding);
+    console.log(yMin, yMax);
 
     const baseDate =
       rawData && rawData?.length ? new Date(rawData?.at(0)?.time) : new Date();
@@ -218,7 +226,7 @@
           {
             value:
               displayData === "1D"
-                ? priceData?.at(0)?.close
+                ? data?.getStockQuote?.previousClose
                 : priceData?.at(0)?.close,
             dashStyle: "Dash",
             color: "#fff", // Choose a contrasting color if needed
