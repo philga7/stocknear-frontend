@@ -42,13 +42,7 @@
   function plotData(priceData) {
     const rawData = priceData || [];
 
-    const change =
-      (rawData?.at(-1)?.close /
-        (displayData === "1D"
-          ? data?.getStockQuote?.previousClose
-          : rawData?.at(0)?.close) -
-        1) *
-      100;
+    const change = (rawData?.at(-1)?.close / rawData?.at(0)?.close - 1) * 100;
 
     const priceList = rawData?.map((item) => item?.close);
     const dateList = rawData?.map((item) =>
@@ -85,6 +79,19 @@
     let padding = 0.015;
     let yMin = minValue * (1 - padding) === 0 ? null : minValue * (1 - padding);
     let yMax = maxValue * (1 + padding) === 0 ? null : maxValue * (1 + padding);
+
+    const isNegative =
+      displayData === "1D"
+        ? data?.getStockQuote?.changesPercentage < 0
+        : change < 0;
+
+    const lineColor = isNegative ? "#CC261A" : "#00FC50";
+    const fillColorStart = isNegative
+      ? "rgba(204, 38, 26, 0.3)"
+      : "rgba(0, 252, 80, 0.3)";
+    const fillColorEnd = isNegative
+      ? "rgba(204, 38, 26, 0.004)"
+      : "rgba(0, 252, 80, 0.004)";
 
     const baseDate =
       rawData && rawData?.length ? new Date(rawData?.at(0)?.time) : new Date();
@@ -277,7 +284,7 @@
           type: "area",
           data: displayData === "1D" ? seriesData : priceList,
           animation: false,
-          color: change < 0 ? "#CC261A" : "#00FC50",
+          color: lineColor,
           lineWidth: 1.3,
           marker: {
             enabled: false,
@@ -285,13 +292,8 @@
           fillColor: {
             linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
             stops: [
-              [0, change < 0 ? "rgba(204,38,26, 0.3)" : "rgb(0, 252, 80, 0.3)"],
-              [
-                1,
-                change < 0
-                  ? "rgba(204,38,26, 0.004)"
-                  : "rgb(0, 252, 80, 0.004)",
-              ],
+              [0, fillColorStart],
+              [1, fillColorEnd],
             ],
           },
         },
