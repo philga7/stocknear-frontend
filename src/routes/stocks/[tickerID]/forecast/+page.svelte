@@ -148,7 +148,7 @@
 
     // Step 1: Store original values
     const formattedData = rawAnalystList.map((item) =>
-      categories.map((cat) => item[cat] || 0),
+      categories?.map((cat) => item[cat] || 0),
     );
 
     // Step 2: Create normalized data for visualization
@@ -170,10 +170,11 @@
     }));
 
     const xCategories = rawAnalystList.map((item) => {
-      const dateParts = item?.date?.split("-");
-      const year = dateParts[0];
+      const dateParts = item.date.split("-");
       const monthIndex = parseInt(dateParts[1], 10) - 1;
-      return `${monthNames[monthIndex]} ${year}`;
+      // Extract the last two digits of the year and prepend an apostrophe
+      const yearTwoDigits = "'" + dateParts[0].slice(-2);
+      return `${monthNames[monthIndex]} ${yearTwoDigits}`;
     });
 
     // Define and return the Highcharts options object
@@ -184,7 +185,7 @@
         plotBackgroundColor: "#09090B",
         animation: false,
         height: 360, // Add fixed height
-        marginTop: 40, // Reduce top margin
+        marginTop: 30, // Reduce top margin
         marginBottom: 60, // Increase bottom margin for x-axis labels
       },
       legend: {
@@ -230,9 +231,6 @@
       plotOptions: {
         column: {
           stacking: "normal", // stacks the columns so that each column adds up to 100%
-          pointWidth: 40, // adjust this value as needed to mimic your desired "barWidth"
-          pointPadding: 0.1, // More spacing between bars
-          groupPadding: 0.1, // More spacing between groups
         },
         series: {
           animation: false,
@@ -877,7 +875,9 @@
             >
               <div>
                 <div class="flex flex-row items-center">
-                  <h2 class="mb-1 text-xl font-bold">AI Analyst Report</h2>
+                  <h2 class="mb-1 text-xl font-bold">
+                    Latest Analyst Insight Report
+                  </h2>
                   {#if latestInfoDate(data?.getAnalystInsight?.date)}
                     <label
                       class="bg-[#fff] rounded text-black font-semibold text-xs px-2 py-0.5 ml-3"
@@ -887,7 +887,9 @@
                 </div>
                 {#if Object?.keys(data?.getAnalystInsight)?.length > 0}
                   {#if data?.user?.tier === "Pro"}
-                    <p>{data?.getAnalystInsight?.insight}</p>
+                    <p class="pr-2 sm:pr-4">
+                      {data?.getAnalystInsight?.insight}
+                    </p>
                     <p class="mt-5 italic text-white text-sm">
                       Updated {data?.getAnalystInsight?.date}
                     </p>
