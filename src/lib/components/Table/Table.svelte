@@ -934,11 +934,11 @@
               {:else if column.type === "percentSign"}
                 {#if item[column.key] > 0}
                   <span class="text-[#00FC50]"
-                    >+{item[column.key]?.toFixed(2)}%</span
+                    >+{abbreviateNumber(item[column.key]?.toFixed(2))}%</span
                   >
                 {:else if item[column.key] < 0}
                   <span class="text-[#FF2F1F]"
-                    >{item[column.key]?.toFixed(2)}%</span
+                    >{abbreviateNumber(item[column.key]?.toFixed(2))}%</span
                   >
                 {:else}
                   <span class="text-[#fff]"

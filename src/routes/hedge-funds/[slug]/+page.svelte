@@ -3,7 +3,6 @@
   import Table from "$lib/components/Table/Table.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import SEO from "$lib/components/SEO.svelte";
-  import cardBackground from "$lib/images/bg-hedge-funds.png";
 
   import defaultAvatar from "$lib/images/hedge-fund-avatar.png";
 

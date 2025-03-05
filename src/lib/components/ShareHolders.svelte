@@ -1,19 +1,15 @@
 <script lang="ts">
-  import { Chart } from "svelte-echarts";
   import { displayCompanyName, stockTicker } from "$lib/store";
-  import { formatString } from "$lib/utils";
-  import { abbreviateNumber } from "$lib/utils";
+  import {
+    abbreviateNumber,
+    removeCompanyStrings,
+    formatString,
+  } from "$lib/utils";
   import { onMount } from "svelte";
-  import { init, use } from "echarts/core";
-  import { PieChart } from "echarts/charts";
-  import { GridComponent } from "echarts/components";
-  import { CanvasRenderer } from "echarts/renderers";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import DownloadData from "$lib/components/DownloadData.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
-  import Infobox from "$lib/components/Infobox.svelte";
-
-  use([PieChart, GridComponent, CanvasRenderer]);
+  import highcharts from "$lib/highcharts.ts";
 
   export let data;
 
@@ -27,68 +23,89 @@
 
   let shareholderList = rawData?.shareholders;
   let displayList = shareholderList?.slice(0, 50);
-  let optionsPieChart;
-  let institutionalOwner = 0;
-  let otherOwner = 0;
+  let config;
+
   let topHolders = 0;
 
-  const plotPieChart = () => {
-    if (rawData?.ownershipPercent !== undefined) {
-      shareholderList = shareholderList?.filter(
-        (item) => item?.ownership <= 100,
-      );
-      topHolders = 0;
-      otherOwner = 0;
-      institutionalOwner =
-        rawData?.ownershipPercent > 100 ? 99.99 : rawData?.ownershipPercent;
+  function plotData() {
+    shareholderList = shareholderList?.filter((item) => item?.ownership <= 100);
 
-      otherOwner = institutionalOwner === 0 ? 0 : 100 - institutionalOwner;
-      topHolders = shareholderList
-        ?.slice(0, 10)
-        ?.reduce((total, shareholder) => total + shareholder?.ownership, 0);
+    let institutionalOwner =
+      rawData?.ownershipPercent > 100 ? 99.99 : rawData?.ownershipPercent || 0;
+    let otherOwner = institutionalOwner === 0 ? 0 : 100 - institutionalOwner;
 
-      const options = {
+    const options = {
+      chart: {
+        type: "column",
+        backgroundColor: "#09090B",
+        plotBackgroundColor: "#09090B",
+        height: 360, // Set the maximum height for the chart
         animation: false,
-        grid: {
-          left: "0%",
-          right: "0%",
-          top: "0%",
-          bottom: "10%",
-          containLabel: true,
-        },
-        series: [
-          {
-            name: "Shareholders",
-            type: "pie",
-            radius: ["40%", "50%"],
-            padAngle: 5,
-            itemStyle: {
-              borderRadius: 3,
-            },
-            label: {
-              show: false,
-              position: "center",
-            },
-            silent: true, // Disable interactivity
-            data: [
-              {
-                value: institutionalOwner,
-                name: "Institutions",
-                itemStyle: { color: "#3F83F8" },
-              }, // Set color for 'Institutions'
-              {
-                value: otherOwner,
-                name: "Others",
-                itemStyle: { color: "#fff" },
-              },
-            ],
+      },
+      credits: { enabled: false },
+      legend: {
+        enabled: true,
+        animation: false,
+        itemStyle: { color: "#fff" },
+      },
+      title: {
+        text: `<h3 class="mt-3 mb-1">${removeCompanyStrings($displayCompanyName)} Ownership Distribution</h3>`,
+        useHTML: true,
+        style: { color: "white" },
+      },
+      xAxis: {
+        categories: [""],
+        animation: false,
+      },
+      yAxis: {
+        title: { text: null, style: { color: "#fff" } },
+        opposite: true,
+        gridLineWidth: 1,
+        gridLineColor: "#111827",
+        labels: {
+          formatter: function () {
+            return this.value + "%";
           },
-        ],
-      };
+          style: { color: "#fff" },
+        },
+      },
+      tooltip: {
+        enabled: false,
+      },
+      plotOptions: {
+        series: {
+          color: "white",
+          animation: false,
+          dataLabels: {
+            enabled: false,
+            color: "white",
+            style: {
+              fontSize: "13px",
+              fontWeight: "bold",
+            },
+          },
+        },
+      },
+      series: [
+        {
+          name: "Institutional Owner",
+          data: [institutionalOwner],
+          animation: false,
+          color: "#1E40AF",
+          borderColor: "#1E40AF",
+        },
+        {
+          name: "Other Owner",
+          data: [otherOwner],
+          animation: false,
+          color: "#D97706",
+          borderColor: "#D97706",
+        },
+      ],
+    };
 
-      return options;
-    } else return null;
-  };
+    return options;
+  }
 
   totalCalls = rawData?.totalCalls ?? 0;
   totalPuts = rawData?.totalPuts ?? 0;
@@ -102,7 +119,7 @@
     putCallRatio = 0;
   }
 
-  optionsPieChart = plotPieChart();
+  config = plotData();
 
   let charNumber = 30;
 
@@ -229,8 +246,6 @@
 
 <section class="overflow-hidden text-white h-full pb-8">
   <main class="overflow-hidden">
-    <Infobox text={htmlOutput} />
-
     {#if shareholderList?.length !== 0}
       <div class="pb-2 rounded-md bg-default sm:bg-default">
         <div class="text-white text-[1rem] mt-3">
@@ -260,53 +275,14 @@
           >.
         </div>
 
-        {#if optionsPieChart !== null}
-          <div class="flex flex-row items-center sm:-mt-5">
-            <div class="app w-56">
-              <Chart {init} options={optionsPieChart} class="chart w-full" />
-            </div>
-
-            <div class="flex flex-col items-center sm:pt-0 m-auto">
-              <div class="flex flex-row items-center mr-auto mb-5">
-                <div
-                  class="h-full transform -translate-x-1/2"
-                  aria-hidden="true"
-                ></div>
-                <div
-                  class="w-4 h-4 bg-[#fff] border-4 box-content border-[#27272A] rounded-full transform -translate-x-1/2"
-                  aria-hidden="true"
-                ></div>
-                <span class="text-white text-sm sm:text-[1rem] inline-block">
-                  Others: {otherOwner >= 99.99
-                    ? 99.99
-                    : otherOwner?.toFixed(2)}%
-                </span>
-              </div>
-
-              <div class="flex flex-row items-center mr-auto">
-                <div
-                  class="h-full transform -translate-x-1/2"
-                  aria-hidden="true"
-                ></div>
-                <div
-                  class="w-4 h-4 bg-blue-500 border-4 box-content border-[#27272A] rounded-full transform -translate-x-1/2"
-                  aria-hidden="true"
-                ></div>
-                <span class="text-white text-sm sm:text-[1rem] inline-block">
-                  Institutions: {institutionalOwner <= 0.01
-                    ? "< 0.01%"
-                    : institutionalOwner?.toFixed(2) + "%"}
-                </span>
-              </div>
-            </div>
-          </div>
-        {/if}
+        <div
+          class="border border-gray-800 rounded w-full mt-3"
+          use:highcharts={config}
+        ></div>
       </div>
 
       {#if putCallRatio !== 0}
-        <h1
-          class="text-white font-semibold text-xl sm:text-2xl mb-3 mt-5 sm:-mt-5"
-        >
+        <h1 class="text-white font-semibold text-xl sm:text-2xl mb-3 mt-5">
           Options Activity
         </h1>
 
@@ -492,30 +468,33 @@
         </div>
       {/if}
 
-      <h3 class="text-white font-semibold text-xl sm:text-2xl mb-3 mt-5">
-        Top Shareholders
-      </h3>
+      <div class="flex flex-row items-center justify-between mb-3">
+        <h3 class="text-white font-semibold text-xl sm:text-2xl">
+          Top Shareholders
+        </h3>
 
-      {#if topHolders !== 0}
-        <span class="text-white text-[1rem">
-          The Top 10 shareholders collectively own <span class="font-semibold"
-            >{topHolders <= 0.01
-              ? "< 0.01%"
-              : topHolders?.toFixed(2) + "%"}</span
-          >
-          of the {$displayCompanyName}
-        </span>
-      {/if}
+        {#if topHolders !== 0}
+          <span class="text-white text-[1rem">
+            The Top 10 shareholders collectively own <span class="font-semibold"
+              >{topHolders <= 0.01
+                ? "< 0.01%"
+                : topHolders?.toFixed(2) + "%"}</span
+            >
+            of the {$displayCompanyName}
+          </span>
+        {/if}
 
-      <div class="flex justify-end items-end ml-auto w-fit mt-5">
-        <DownloadData
-          {data}
-          rawData={shareholderList}
-          title={`13-institute-${$stockTicker}`}
-        />
+        <div class="flex justify-end items-end ml-auto w-fit">
+          <DownloadData
+            {data}
+            rawData={shareholderList}
+            title={`13-institute-${$stockTicker}`}
+          />
+        </div>
       </div>
+
       <div
-        class="flex justify-start items-center w-full m-auto mt-6 overflow-x-auto"
+        class="flex justify-start items-center w-full m-auto mt-3 overflow-x-auto"
       >
         <table
           class="table table-sm table-compact bg-table border border-gray-800 w-full"
@@ -608,21 +587,3 @@
     {/if}
   </main>
 </section>
-
-<style>
-  .app {
-    height: 300px;
-    max-width: 100%; /* Ensure chart width doesn't exceed the container */
-  }
-
-  @media (max-width: 640px) {
-    .app {
-      height: 150px;
-      width: 150px;
-    }
-  }
-
-  .chart {
-    width: 100%;
-  }
-</style>
