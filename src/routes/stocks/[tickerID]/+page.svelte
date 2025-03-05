@@ -42,7 +42,13 @@
   function plotData(priceData) {
     const rawData = priceData || [];
 
-    const change = (rawData?.at(-1)?.close / rawData?.at(0)?.close - 1) * 100;
+    const change =
+      (rawData?.at(-1)?.close /
+        (displayData === "1D"
+          ? data?.getStockQuote?.previousClose
+          : rawData?.at(0)?.close) -
+        1) *
+      100;
 
     const priceList = rawData?.map((item) => item?.close);
     const dateList = rawData?.map((item) =>
