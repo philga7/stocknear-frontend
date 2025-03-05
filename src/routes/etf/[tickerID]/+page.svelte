@@ -716,7 +716,7 @@
                         <li>
                           <button
                             on:click={() => changeData(interval)}
-                            class="px-1 py-1 text-sm sm:text-[1rem] xs:px-[3px] bp:px-1.5 sm:px-2 xxxl:px-3"
+                            class="cursor-pointer px-1 py-1 text-sm sm:text-[1rem] xs:px-[3px] bp:px-1.5 sm:px-2 xxxl:px-3"
                           >
                             <span
                               class="block {displayData === interval
