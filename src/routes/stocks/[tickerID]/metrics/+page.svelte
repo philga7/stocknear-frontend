@@ -111,7 +111,7 @@
                 {#each revenueNames as name, index}
                   <tr class="bg-table odd:bg-odd">
                     <th
-                      class="whitespace-nowrap odd:bg-odd text-sm sm:text-[1rem] text-start border-b border-gray-800"
+                      class="whitespace-nowrap odd:bg-odd text-sm sm:text-[1rem] font-normal text-start border-b border-gray-800"
                     >
                       <a
                         href={getHref(name)}
@@ -189,11 +189,11 @@
                   {#each geographicNames as name, index}
                     <tr class="bg-table border-b-[#09090B] odd:bg-odd">
                       <th
-                        class="text-white whitespace-nowrap odd:bg-odd text-sm sm:text-[1rem] text-start border-b border-gray-800"
+                        class="text-white whitespace-nowrap odd:bg-odd text-sm sm:text-[1rem] font-normal text-start border-b border-gray-800"
                         >{name} Revenue</th
                       >
                       {#each geographiCategoryValues[index] as value}
-                        <th
+                        <td
                           class="text-white text-sm sm:text-[1rem] text-center border-b border-gray-800"
                         >
                           {@html value !== null &&
@@ -201,7 +201,7 @@
                           value !== undefined
                             ? abbreviateNumber(value, false, true)
                             : "n/a"}
-                        </th>
+                        </td>
                       {/each}
                     </tr>
                     <tr class="bg-table border-b-[#09090B]">
@@ -266,11 +266,11 @@
                   {#each operatingExpensesNames as name, index}
                     <tr class="bg-table border-b-[#09090B] odd:bg-odd">
                       <th
-                        class="text-white whitespace-nowrap odd:bg-odd text-sm sm:text-[1rem] text-start border-b border-gray-800"
+                        class="text-white whitespace-nowrap odd:bg-odd text-sm sm:text-[1rem] font-normal text-start border-b border-gray-800"
                         >{name} Revenue</th
                       >
                       {#each operatingExpensesCategoryValues[index] as value}
-                        <th
+                        <td
                           class="text-white text-sm sm:text-[1rem] text-center border-b border-gray-800"
                         >
                           {@html value !== null &&
@@ -278,7 +278,7 @@
                           value !== undefined
                             ? abbreviateNumber(value, false, true)
                             : "n/a"}
-                        </th>
+                        </td>
                       {/each}
                     </tr>
                     <tr class="bg-table border-b-[#09090B]">
