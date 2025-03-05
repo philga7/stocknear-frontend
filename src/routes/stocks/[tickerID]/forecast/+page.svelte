@@ -12,24 +12,11 @@
   } from "$lib/utils";
   import highcharts from "$lib/highcharts.ts";
 
-  import { Chart } from "svelte-echarts";
-  import { init, use } from "echarts/core";
-  import { LineChart, BarChart, GaugeChart } from "echarts/charts";
-  import { GridComponent, TooltipComponent } from "echarts/components";
-  import { CanvasRenderer } from "echarts/renderers";
   import { goto } from "$app/navigation";
 
   import SEO from "$lib/components/SEO.svelte";
 
   export let data;
-  use([
-    LineChart,
-    GaugeChart,
-    BarChart,
-    GridComponent,
-    TooltipComponent,
-    CanvasRenderer,
-  ]);
 
   let index = 0;
   let changeRevenue = 0;
@@ -103,7 +90,7 @@
       categories = ["Strong Buy", "Buy", "Hold", "Sell", "Strong Sell"];
     }
 
-    optionsData = getPlotOptions() || null;
+    optionsBarChart = getPlotOptions() || null;
     optionsPieChart = getPieChart() || null;
     config = getPriceForecastChart() || null;
   }
@@ -151,88 +138,113 @@
     }
   };
 
-  function getPlotOptions() {
+  function getBarChart() {
     if (!rawAnalystList || rawAnalystList.length === 0) {
       return null;
     }
 
-    // Define categories in the exact order you specified
-    const categories = ["Strong Sell", "Sell", "Hold", "Buy", "Strong Buy"];
-    const colors = ["#9E190A", "#D9220E", "#f5b700", "#31B800", "#008A00"];
+    const categories = ["Strong Buy", "Buy", "Hold", "Sell", "Strong Sell"];
+    const colors = ["#008A00", "#31B800", "#F5B700", "#D9220E", "#9E190A"];
 
-    // Create a consistent mapping for data
-    const formattedData = rawAnalystList?.map((item) =>
+    // Step 1: Store original values
+    const formattedData = rawAnalystList.map((item) =>
       categories.map((cat) => item[cat] || 0),
     );
 
-    // Normalize data to percentages
+    // Step 2: Create normalized data for visualization
     const normalizedData = formattedData.map((row) => {
       const total = row.reduce((sum, val) => sum + val, 0);
       return row.map((val) => (total > 0 ? (val / total) * 100 : 0));
     });
 
-    // Calculate total percentage for each category across all dates
-    const totalData = [];
-    for (let i = 0; i < categories.length; ++i) {
-      let sum = 0;
-      for (let j = 0; j < normalizedData.length; ++j) {
-        sum += normalizedData[j][i];
-      }
-      totalData.push(sum / normalizedData.length);
-    }
-
-    // Define series based on categories with color mapping
+    // Step 3: Include original values in data points
     const series = categories.map((name, idx) => ({
-      name,
-      type: "bar",
-      stack: "total",
-      barWidth: "60%",
-      data: normalizedData.map((row) => row[idx]),
-      itemStyle: {
-        color: colors[idx],
-      },
+      name: name,
+      data: normalizedData?.map((row, dataIndex) => ({
+        y: formattedData[dataIndex][idx], // Normalized percentage for chart
+        originalValue: formattedData[dataIndex][idx], // Original value for tooltip
+      })),
+      color: colors[idx],
+      borderColor: colors[idx],
+      borderRadius: "1px",
     }));
 
-    // Define chart option
-    const option = {
-      grid: {
-        left: "2%",
-        right: "2%",
-        bottom: "10%",
-        top: "5%",
-        containLabel: true,
-      },
+    const xCategories = rawAnalystList.map((item) => {
+      const dateParts = item?.date?.split("-");
+      const year = dateParts[0];
+      const monthIndex = parseInt(dateParts[1], 10) - 1;
+      return `${monthNames[monthIndex]} ${year}`;
+    });
 
+    // Define and return the Highcharts options object
+    const options = {
+      chart: {
+        type: "column",
+        backgroundColor: "#09090B",
+        plotBackgroundColor: "#09090B",
+        animation: false,
+        height: 360, // Add fixed height
+        marginTop: 40, // Reduce top margin
+        marginBottom: 60, // Increase bottom margin for x-axis labels
+      },
+      legend: {
+        enabled: false,
+      },
+      title: {
+        text: null,
+      },
       xAxis: {
-        type: "category",
-        data: rawAnalystList.map((item) => item.date),
-        axisLabel: {
-          color: "#fff",
-          formatter: function (value) {
-            const dateParts = value.split("-");
-            const year = dateParts[0].substring(0);
-            const monthIndex = parseInt(dateParts[1]) - 1;
-            return `${monthNames[monthIndex]} ${year}`;
+        categories: xCategories,
+        labels: {
+          style: {
+            color: "#fff",
           },
         },
       },
-      yAxis: {
-        type: "value",
-        max: 100,
-
-        axisLabel: {
-          show: false, // Hide y-axis labels
+      tooltip: {
+        shared: true,
+        useHTML: true,
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        borderColor: "rgba(255, 255, 255, 0.2)",
+        borderWidth: 1,
+        style: {
+          color: "#fff",
+          fontSize: "16px",
+          padding: "10px",
         },
-        splitLine: {
-          show: false,
+        borderRadius: 4,
+        headerFormat:
+          '<span class="font-semibold text-[1rem]">{point.key}</span><br/>',
+        pointFormat:
+          '<span style="color:{point.color}">\u25CF</span> ' +
+          "<span class='text-sm'>{series.name}: <b>{point.originalValue}</b><br/></span>",
+      },
+      yAxis: {
+        gridLineWidth: 1,
+        gridLineColor: "#111827",
+        labels: {
+          style: { color: "white" },
+        },
+        title: { text: null },
+      },
+      plotOptions: {
+        column: {
+          stacking: "normal", // stacks the columns so that each column adds up to 100%
+          pointWidth: 40, // adjust this value as needed to mimic your desired "barWidth"
+          pointPadding: 0.1, // More spacing between bars
+          groupPadding: 0.1, // More spacing between groups
+        },
+        series: {
+          animation: false,
         },
       },
-      series,
-      animation: false,
-      silent: true,
+      credits: {
+        enabled: false,
+      },
+      series: series,
     };
 
-    return option;
+    return options;
   }
 
   function getPieChart() {
@@ -680,7 +692,7 @@
     return options;
   }
 
-  let optionsData = getPlotOptions() || null;
+  let optionsBarChart = getBarChart() || null;
   let optionsPieChart = getPieChart() || null;
   let config = getPriceForecastChart() || null;
 
@@ -921,11 +933,12 @@
               </div>
             </div>
             <div class="grow pt-2 md:pt-4 lg:pl-4 lg:pt-0">
-              <div class="app h-[250px] xs:h-[275px]">
-                {#if optionsData !== null}
-                  <Chart {init} options={optionsData} class="chart" />
-                {/if}
-              </div>
+              {#if optionsBarChart !== null}
+                <div
+                  class="border border-gray-800 rounded"
+                  use:highcharts={optionsBarChart}
+                ></div>
+              {/if}
               <div
                 class="hide-scroll mb-1 mt-2 overflow-x-auto px-1.5 text-center md:mb-0 md:px-0 lg:mt-2"
               >
