@@ -70,6 +70,7 @@
     let maxValue = Math?.max(...rawData?.map((item) => item?.close));
 
     if (minValue - 0 < 1) {
+      //don't delete this sometimes 1D can't find minValue
       minValue = data?.getStockQuote?.dayLow;
     }
 
@@ -100,6 +101,30 @@
       chart: {
         backgroundColor: "#09090B",
         height: 360,
+        events: {
+          // Add touch event handling to hide tooltip on mobile
+          load: function () {
+            const chart = this;
+            let isTouching = false;
+
+            // Track touch start
+            chart.container.addEventListener("touchstart", () => {
+              isTouching = true;
+            });
+
+            // Track touch end
+            chart.container.addEventListener("touchend", () => {
+              isTouching = false;
+              chart.tooltip.hide();
+            });
+
+            // Track touch cancel
+            chart.container.addEventListener("touchcancel", () => {
+              isTouching = false;
+              chart.tooltip.hide();
+            });
+          },
+        },
       },
       credits: { enabled: false },
       title: { text: null },
