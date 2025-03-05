@@ -69,7 +69,7 @@
     const minValue = Math.min(...rawData?.map((item) => item?.close));
     const maxValue = Math.max(...rawData?.map((item) => item?.close));
 
-    const padding = 0.015; // 1.5%
+    const padding = 0.015;
     const yMin = minValue * (1 - padding);
     const yMax = maxValue * (1 + padding);
 
@@ -751,10 +751,7 @@
                 </div>
 
                 {#if output !== null && config !== null && dataMapping[displayData]?.length !== 0}
-                  <div
-                    class="border border-gray-800 rounded"
-                    use:highcharts={config}
-                  ></div>
+                  <div use:highcharts={config}></div>
                 {:else}
                   <div
                     class="flex justify-center w-full sm:w-[650px] h-[360px] items-center"
