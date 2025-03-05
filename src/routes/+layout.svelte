@@ -1,7 +1,7 @@
 <script lang="ts">
   import "../app.css";
   import "../app.pcss";
-
+  import { partytownSnippet } from "@builder.io/partytown/integration";
   //import { Toaster } from "svelte-french-toast";
   import { Toaster } from "svelte-sonner";
   import "@bprogress/core/css";
@@ -241,6 +241,30 @@
 </script>
 
 <svelte:window bind:innerWidth={$screenWidth} />
+
+<svelte:head>
+  <script>
+    // Forward the necessary functions to the web worker layer
+    partytown = {
+      forward: ["dataLayer.push", "gtag"],
+    };
+  </script>
+
+  {@html "<script>" + partytownSnippet() + "</script>"}
+
+  <script
+    type="text/partytown"
+    src="https://www.googletagmanager.com/gtag/js?id=G-CLFNW10SND"
+  ></script>
+  <script type="text/partytown">
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () {
+      dataLayer.push(arguments);
+    };
+    gtag("js", new Date());
+    gtag("config", "G-CLFNW10SND");
+  </script>
+</svelte:head>
 
 <div class="app {$page?.url?.pathname === '/' ? 'bg-[#000]' : ''}">
   <div class="flex min-h-screen w-full flex-col bg-default">

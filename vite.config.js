@@ -1,4 +1,5 @@
 import { sveltekit } from "@sveltejs/kit/vite";
+import { partytownVite } from '@builder.io/partytown/utils';
 //import { visualizer } from "rollup-plugin-visualizer";
 
 /** @type {import('vite').UserConfig} */
@@ -6,6 +7,7 @@ const config = {
   plugins: [
     //visualizer({ open: true }) // Plugin to visualize the bundle
     sveltekit(),
+    partytownVite(),
   ],
 
   server: {
