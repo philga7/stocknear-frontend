@@ -183,7 +183,7 @@
         on:click={() => sortData("premium")}
         class="cursor-pointer p-2 text-center select-none whitespace-nowrap"
       >
-        Premium
+        Avg. Paid
         <svg
           class="shrink-0 w-4 h-4 -mt-1 {sortOrders['premium'] === 'asc'
             ? 'rotate-180 inline-block'
@@ -411,13 +411,13 @@
         </div>
         <!-- Sector Column -->
         <div
-          class="p-2 text-left text-white text-sm sm:text-[1rem] whitespace-nowrap"
+          class="p-2 text-center text-white text-sm sm:text-[1rem] whitespace-nowrap"
         >
           <a
             href={sectorNavigation?.find(
               (item) => item?.title === displayedData[index]?.sector,
             )?.link}
-            class="hover:text-blue-400"
+            class="sm:hover:underline sm:hover:underline-offset-4"
           >
             {displayedData[index]?.sector?.length > 13
               ? displayedData[index]?.sector?.slice(0, 13) + "..."

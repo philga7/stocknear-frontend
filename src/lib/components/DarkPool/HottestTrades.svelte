@@ -33,8 +33,8 @@
     const day = parts.find((p) => p.type === "day").value;
     const hour = parts.find((p) => p.type === "hour").value.padStart(2, "0");
     const minute = parts
-      .find((p) => p.type === "minute")
-      .value.padStart(2, "0");
+      ?.find((p) => p.type === "minute")
+      ?.value.padStart(2, "0");
 
     const ampm = parts.find((p) => p.type === "dayPeriod").value; // AM/PM
 
@@ -49,7 +49,7 @@
     { key: "volume", label: "Volume", align: "right" },
     { key: "sizeVolRatio", label: "Size / Vol", align: "right" },
     { key: "sizeAvgVolRatio", label: "Size / Avg Vol", align: "right" },
-    { key: "premium", label: "Premium", align: "right" },
+    { key: "premium", label: "Avg. Paid", align: "right" },
   ];
   $: sortOrders = {
     rank: { order: "none", type: "number" },
