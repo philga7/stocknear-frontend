@@ -40,10 +40,16 @@
 
       if (subscriptionType === "lifeTime") {
         subId = import.meta.env.VITE_LEMON_SQUEEZY_LIFE_TIME_ACCESS_ID;
-      } else if (mode) {
-        subId = import.meta.env.VITE_LEMON_SQUEEZY_ANNUAL_ID;
+      } else if (mode && subscriptionType === "plus") {
+        subId = import.meta.env.VITE_LEMON_SQUEEZY_ANNUAL_ID_PLUS;
+      } else if (!mode && subscriptionType === "plus") {
+        subId = import.meta.env.VITE_LEMON_SQUEEZY_MONTHLY_ID_PLUS;
+      } else if (mode && subscriptionType === "pro") {
+        subId = import.meta.env.VITE_LEMON_SQUEEZY_ANNUAL_ID_PRO;
+      } else if (!mode && subscriptionType === "pro") {
+        subId = import.meta.env.VITE_LEMON_SQUEEZY_MONTHLY_ID_PRO;
       } else {
-        subId = import.meta.env.VITE_LEMON_SQUEEZY_MONTHLY_ID;
+        subId = import.meta.env.VITE_LEMON_SQUEEZY_ANNUAL_ID_PRO;
       }
       try {
       } catch (e) {
@@ -548,22 +554,25 @@
           </li>
         </ul>
         <div class="mt-auto pt-6 border-t border-zinc-700 mx-4">
-          <button
-            class="cursor-pointer w-full py-3 px-4 bg-blue-600 text-white rounded-lg font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
-            >Get Registered Now<svg
-              class="w-5 h-5 ml-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 5l7 7-7 7"
-              ></path></svg
-            ></button
-          >
+          {#if !data?.user}
+            <label
+              for="userLogin"
+              class="cursor-pointer w-full py-3 px-4 bg-blue-600 text-white rounded-lg font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
+              >Get Registered Now<svg
+                class="w-5 h-5 ml-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                ><path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                ></path></svg
+              ></label
+            >
+          {/if}
         </div>
       </div>
       <div
@@ -821,7 +830,9 @@
           </li>
         </ul>
         <div class="mt-auto pt-6 border-t border-zinc-700 mx-4">
-          <button
+          <label
+            for={!data?.user ? "userLogin" : ""}
+            on:click={() => purchasePlan("plus")}
             class="cursor-pointer w-full py-3 px-4 bg-blue-600 text-white rounded-lg font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
             >Unlock Plus Access Now<svg
               class="w-5 h-5 ml-2"
@@ -835,7 +846,7 @@
                 stroke-width="2"
                 d="M9 5l7 7-7 7"
               ></path></svg
-            ></button
+            ></label
           >
         </div>
       </div>
@@ -844,7 +855,7 @@
         class="flex flex-col relative bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-600 p-6 isolate"
       >
         <h3 class="text-3xl font-bold text-white">Pro</h3>
-        <p class="text-zinc-300 text-sm mt-1">Best for Serious Traders</p>
+        <p class="text-zinc-300 text-sm mt-1">Best for Professional Traders</p>
         <div class="mt-4">
           <span class="text-4xl font-bold text-white"
             >{mode ? "$15" : "$20"}</span
@@ -907,7 +918,9 @@
           </li>
         </ul>
         <div class="mt-auto pt-6 border-t border-zinc-700 mx-4">
-          <button
+          <label
+            for={!data?.user ? "userLogin" : ""}
+            on:click={() => purchasePlan("pro")}
             class="cursor-pointer w-full py-3 px-4 bg-blue-600 text-white rounded-lg font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
             >Unlock Pro Access Now<svg
               class="w-5 h-5 ml-2"
@@ -921,7 +934,7 @@
                 stroke-width="2"
                 d="M9 5l7 7-7 7"
               ></path></svg
-            ></button
+            ></label
           >
         </div>
       </div>
@@ -942,10 +955,12 @@
         </p>
         <!-- Button container: full width on mobile, 1/4 width on md+ -->
         <div class="flex justify-end w-full md:w-1/4 ml-auto mt-4 md:mt-0">
-          <button
+          <label
+            for={!data?.user ? "userLogin" : ""}
+            on:click={() => purchasePlan("lifeTime")}
             class="cursor-pointer w-full py-3 px-4 bg-blue-600 text-white rounded-lg font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
           >
-            Unlock Pro Access Now
+            Get Lifetime Now
             <svg
               class="w-5 h-5 ml-2"
               fill="none"
@@ -960,7 +975,7 @@
                 d="M9 5l7 7-7 7"
               ></path>
             </svg>
-          </button>
+          </label>
         </div>
       </div>
     </div>
@@ -985,22 +1000,22 @@
             <thead>
               <tr>
                 <th
-                  class="py-2 md:py-3 font-semibold text-white text-sm md:text-base"
+                  class="py-2 md:py-3 pt-8 font-semibold text-sm sm:text-lg text-white"
                 >
-                  Discover investment opportunities
+                  Research company stocks
                 </th>
                 <th
-                  class="py-2 md:py-3 font-semibold text-white text-center text-sm md:text-base"
+                  class="py-2 md:py-3 font-semibold text-white text-center text-sm sm:text-lg"
                 >
                   Free
                 </th>
                 <th
-                  class="py-2 md:py-3 font-semibold text-white text-center text-sm md:text-base"
+                  class="py-2 md:py-3 font-semibold text-white text-center text-sm sm:text-lg"
                 >
                   Plus
                 </th>
                 <th
-                  class="py-2 md:py-3 font-semibold text-white text-center text-sm md:text-base"
+                  class="py-2 md:py-3 font-semibold text-white text-center text-sm sm:text-lg"
                 >
                   Pro
                 </th>
@@ -1008,99 +1023,81 @@
             </thead>
             <tbody class="text-sm md:text-base">
               <tr>
-                <td class="py-2 md:py-3">Global market access</td>
-                <td class="py-2 md:py-3 text-center">✓</td>
-                <td class="py-2 md:py-3 text-center">✓</td>
-                <td class="py-2 md:py-3 text-center">✓</td>
+                <td class="py-2 md:py-3">Full Market Access</td>
+                <td class="py-2 md:py-3 text-center">❌</td>
+                <td class="py-2 md:py-3 text-center">✅</td>
+                <td class="py-2 md:py-3 text-center">✅</td>
               </tr>
               <tr>
-                <td class="py-2 md:py-3">Curated investment ideas</td>
-                <td class="py-2 md:py-3 text-center">✓</td>
-                <td class="py-2 md:py-3 text-center">✓</td>
-                <td class="py-2 md:py-3 text-center">✓</td>
+                <td class="py-2 md:py-3">Hedge Fund Portfolio</td>
+                <td class="py-2 md:py-3 text-center">❌</td>
+                <td class="py-2 md:py-3 text-center">✅</td>
+                <td class="py-2 md:py-3 text-center">✅</td>
               </tr>
               <tr>
-                <td class="py-2 md:py-3">Sample portfolios</td>
-                <td class="py-2 md:py-3 text-center">✓</td>
-                <td class="py-2 md:py-3 text-center">✓</td>
-                <td class="py-2 md:py-3 text-center">✓</td>
+                <td class="py-2 md:py-3">US Congress Portfolio</td>
+                <td class="py-2 md:py-3 text-center">❌</td>
+                <td class="py-2 md:py-3 text-center">✅</td>
+                <td class="py-2 md:py-3 text-center">✅</td>
               </tr>
               <tr>
-                <td class="py-2 md:py-3">Stock screeners &amp; Alerts</td>
-                <td class="py-2 md:py-3 text-center">Limited</td>
-                <td class="py-2 md:py-3 text-center">3</td>
-                <td class="py-2 md:py-3 text-center">10</td>
-              </tr>
-              <tr>
-                <td
-                  colspan="4"
-                  class="py-2 md:py-3 pt-8 font-semibold text-lg text-white"
-                >
-                  Research company stocks
-                </td>
-              </tr>
-              <tr>
-                <td class="py-2 md:py-3">Company stock reports</td>
-                <td class="py-2 md:py-3 text-center">5/mo</td>
-                <td class="py-2 md:py-3 text-center">30/mo</td>
+                <td class="py-2 md:py-3">Stock Screener</td>
+                <td class="py-2 md:py-3 text-center">❌</td>
+                <td class="py-2 md:py-3 text-center">Unlimited</td>
                 <td class="py-2 md:py-3 text-center">Unlimited</td>
               </tr>
               <tr>
-                <td class="py-2 md:py-3">Stock comparison tool</td>
-                <td class="py-2 md:py-3 text-center">✓</td>
-                <td class="py-2 md:py-3 text-center">✓</td>
-                <td class="py-2 md:py-3 text-center">✓</td>
-              </tr>
-              <tr>
-                <td class="py-2 md:py-3">Export to Excel &amp; PDF</td>
-                <td class="py-2 md:py-3 text-center">✓</td>
-                <td class="py-2 md:py-3 text-center">✓</td>
-                <td class="py-2 md:py-3 text-center">✓</td>
-              </tr>
-              <tr>
                 <td
                   colspan="4"
-                  class="py-2 md:py-3 pt-8 font-semibold text-lg text-white"
+                  class="py-2 md:py-3 pt-8 font-semibold text-sm sm:text-lg text-white"
                 >
-                  Portfolio management &amp; analysis
+                  Unusual Activity
                 </td>
               </tr>
               <tr>
-                <td class="py-2 md:py-3">No. of portfolios</td>
+                <td class="py-2 md:py-3">Realtime Options Data from OPRA</td>
+                <td class="py-2 md:py-3 text-center">❌</td>
+                <td class="py-2 md:py-3 text-center">❌</td>
+                <td class="py-2 md:py-3 text-center">✅</td>
+              </tr>
+              <tr>
+                <td class="py-2 md:py-3">Realtime Dark Pool Data</td>
+                <td class="py-2 md:py-3 text-center">❌</td>
+                <td class="py-2 md:py-3 text-center">❌</td>
+                <td class="py-2 md:py-3 text-center">✅</td>
+              </tr>
+
+              <tr>
+                <td
+                  colspan="4"
+                  class="py-2 md:py-3 pt-8 font-semibold text-sm sm:text-lg text-white"
+                >
+                  Trade Ideas
+                </td>
+              </tr>
+              <tr>
+                <td class="py-2 md:py-3">No. of Watchlists</td>
                 <td class="py-2 md:py-3 text-center">1</td>
+                <td class="py-2 md:py-3 text-center">Unlimited</td>
+                <td class="py-2 md:py-3 text-center">Unlimited</td>
+              </tr>
+              <tr>
+                <td class="py-2 md:py-3">No. of Price Alerts</td>
                 <td class="py-2 md:py-3 text-center">3</td>
-                <td class="py-2 md:py-3 text-center">5</td>
-              </tr>
-              <tr>
-                <td class="py-2 md:py-3">No. of holdings in each portfolio</td>
-                <td class="py-2 md:py-3 text-center">10</td>
-                <td class="py-2 md:py-3 text-center">30</td>
-                <td class="py-2 md:py-3 text-center">Unlimited</td>
-              </tr>
-              <tr>
-                <td class="py-2 md:py-3">Brokerage linking</td>
-                <td class="py-2 md:py-3 text-center"></td>
-                <td class="py-2 md:py-3 text-center">✓</td>
-                <td class="py-2 md:py-3 text-center">✓</td>
-              </tr>
-              <tr>
-                <td class="py-2 md:py-3">Important updates from each holding</td
-                >
-                <td class="py-2 md:py-3 text-center">Limited</td>
                 <td class="py-2 md:py-3 text-center">Unlimited</td>
                 <td class="py-2 md:py-3 text-center">Unlimited</td>
               </tr>
               <tr>
-                <td class="py-2 md:py-3">Weekly portfolio update email</td>
-                <td class="py-2 md:py-3 text-center">✓</td>
-                <td class="py-2 md:py-3 text-center">✓</td>
-                <td class="py-2 md:py-3 text-center">✓</td>
+                <td class="py-2 md:py-3">Wallstreet Analyst Rating</td>
+                <td class="py-2 md:py-3 text-center">❌</td>
+                <td class="py-2 md:py-3 text-center">✅</td>
+                <td class="py-2 md:py-3 text-center">✅</td>
               </tr>
               <tr>
-                <td class="py-2 md:py-3">Weekly Market insights newsletter</td>
-                <td class="py-2 md:py-3 text-center">✓</td>
-                <td class="py-2 md:py-3 text-center">✓</td>
-                <td class="py-2 md:py-3 text-center">✓</td>
+                <td class="py-2 md:py-3">AI Model Forecasts</td>
+                <td class="py-2 md:py-3 text-center">❌</td>
+                <td class="py-2 md:py-3 text-center">✅</td>
+                <td class="py-2 md:py-3 text-center">✅</td>
               </tr>
             </tbody>
           </table>
@@ -1126,7 +1123,7 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-white font-semibold text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
+                  class="collapse-title text-white text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
                   >What are the advantages of Stocknear Service?</summary
                 >
                 <div class="collapse-content">
@@ -1147,7 +1144,7 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-white font-semibold text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
+                  class="collapse-title text-white text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
                 >
                   Can I change my plan at any time?
                 </summary>
@@ -1171,7 +1168,7 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-white font-semibold text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
+                  class="collapse-title text-white text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
                 >
                   Are there any commissions in addition to the subscription
                   plans?
@@ -1189,7 +1186,7 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-white font-semibold text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
+                  class="collapse-title text-white text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
                 >
                   Can I request a refund?
                 </summary>
@@ -1210,7 +1207,7 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-white font-semibold text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
+                  class="collapse-title text-white text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
                 >
                   What are my payment options?
                 </summary>
@@ -1227,7 +1224,7 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-white font-semibold text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
+                  class="collapse-title text-white text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
                 >
                   Can I cancel at any time?
                 </summary>
@@ -1245,7 +1242,7 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-white font-semibold text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
+                  class="collapse-title text-white text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
                 >
                   Why is Stocknear so much cheaper than other platforms?
                 </summary>

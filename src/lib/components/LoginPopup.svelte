@@ -159,7 +159,7 @@ const output = await response.json();
   ></label>
 
   <div
-    class="modal-box w-full bg-table sm:border sm:border-gray-600 rounded-none sm:rounded {$screenWidth <
+    class="modal-box w-full bg-[#18181B] sm:border sm:border-gray-600 rounded-none sm:rounded-lg {$screenWidth <
     640
       ? 'min-h-screen'
       : ''}"
