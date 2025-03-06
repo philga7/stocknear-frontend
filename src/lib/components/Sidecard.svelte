@@ -97,11 +97,11 @@
         },
         borderRadius: 4,
         formatter: function () {
-          let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]"></span><br>`;
+          let tooltipContent = "";
           this.points.forEach((point) => {
             tooltipContent += `
-          <span class="text-white font-semibold text-sm">${point.series.name}:</span> 
-          <span class="text-white font-normal text-sm" style="color:${point.color}">${point.y}</span><br>
+          <span class="text-white font-semibold text-sm">${point.key}:</span> 
+          <span class="text-white font-normal text-sm" >${point.y}</span><br>
         `;
           });
           return tooltipContent;
