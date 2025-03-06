@@ -622,9 +622,7 @@
                                 class="sm:hover:bg-[#245073]/10 odd:bg-odd border border-gray-800"
                               >
                                 <td class="text-white text-sm sm:text-[1rem]">
-                                  <label class="p-1.5 rounded-md"
-                                    >{item?.time}</label
-                                  >
+                                  {item?.time}
                                 </td>
                                 <td
                                   class="flex flex-row items-center text-sm sm:text-[1rem] whitespace-nowrap"

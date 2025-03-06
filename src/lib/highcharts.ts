@@ -41,7 +41,7 @@ export default (node, config) => {
             const y = chart.chartHeight - marginY;
 
             chart.watermark = chart.renderer
-              .text('stocknear.com', x, y)
+              .text('', x, y)
               .attr({ align: 'right' })
               .css({
                 fontSize: '12px',

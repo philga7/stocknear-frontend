@@ -55,7 +55,7 @@
       },
       title: {
         text: `<div class="text-gray-200 mt-3 mb-2 text-center font-normal text-2xl">Price Target: <span class="${changesPercentage >= 0 ? "text-[#00FC50]" : "text-[#FF2F1F]"}">$${priceTarget}</span></div>
-        <div class="text-gray-200 text-center font-normal text-xl flex justify-center items-center">Analyst Consensus: <span class="ml-1 ${changesPercentage >= 0 ? "text-[#00FC50]" : "text-[#FF2F1F]"}">${consensusRating}</span></div>`,
+        <div class="text-gray-200 text-center font-normal text-xl flex justify-center items-center">Analyst Consensus: <span class="ml-1 ${consensusRating === "Buy" ? "text-[#00FC50]" : consensusRating === "Sell" ? "text-[#FF2F1F]" : consensusRating === "Hold" ? "text-[#D5AB31]" : "text-white"}">${consensusRating ?? "n/a"}</span></div>`,
         style: {
           color: "white",
           // Using inline CSS for margin-top and margin-bottom

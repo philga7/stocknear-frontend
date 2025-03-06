@@ -466,7 +466,7 @@
                 >
                   <Card.Title
                     class="text-xl sm:text-2xl tex-white font-semibold"
-                    >AI Analyst report
+                    >Analyst Insight Report
                   </Card.Title>
                   {#if analystReport?.date}
                     <label
