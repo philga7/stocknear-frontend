@@ -28,8 +28,6 @@
   let topHolders = 0;
 
   function plotData() {
-    shareholderList = shareholderList?.filter((item) => item?.ownership <= 100);
-
     let institutionalOwner =
       rawData?.ownershipPercent > 100 ? 99.99 : rawData?.ownershipPercent || 0;
     let otherOwner = institutionalOwner === 0 ? 0 : 100 - institutionalOwner;
@@ -235,59 +233,54 @@
     // Sort using the generic comparison function
     displayList = [...originalData].sort(compareValues)?.slice(0, 50);
   };
-
-  function generateStatementInfoHTML() {
-    if (shareholderList?.length > 0) {
-      return `
-      <span>
-         13F institutions, like mutual and pension funds, are large investors
-        required by the SEC to disclose their holdings quarterly, significantly
-        impacting company decisions and stock trends.
-      </span>
-    `;
-    } else {
-      return `
-      <span>
-        There are currently no records available for the 13 institutional
-        holders of ${$displayCompanyName}
-      </span>
-    `;
-    }
-  }
-
-  let htmlOutput = generateStatementInfoHTML();
 </script>
 
 <section class="overflow-hidden text-white h-full pb-8">
   <main class="overflow-hidden">
     {#if shareholderList?.length !== 0}
-      <div class="pb-2 rounded-md bg-default sm:bg-default">
-        <div class="text-white text-[1rem] mt-3">
-          As of {new Date(rawData?.date)?.toLocaleString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-            daySuffix: "2-digit",
-          })},
+      <div class="text-white text-[1rem] mt-3">
+        <p>
+          Total Institutes of {rawData?.investorsHolding?.toLocaleString(
+            "en-US",
+          )} in {removeCompanyStrings($displayCompanyName)}
+          {rawData?.investorsHoldingChange >= 0
+            ? "expanded their positions with an increase of"
+            : "reduced their positions with a decrease of"}
           <span class="font-semibold"
-            >{new Intl.NumberFormat("en", {
-              minimumFractionDigits: 0,
-              maximumFractionDigits: 0,
-            }).format(rawData?.investorsHolding)}</span
+            >{Math.abs(rawData?.investorsHoldingChange)}</span
           >
-          Institutions hold a total of
-          <span class="font-semibold"
-            >{@html abbreviateNumber(
-              rawData?.numberOf13Fshares,
+          investors compared to the previous quarter.
+          {rawData?.numberOf13FsharesChange >= 0
+            ? "An additional"
+            : "A reduction of"}
+          <span class="font-semibold">
+            {@html abbreviateNumber(
+              Math.abs(rawData?.numberOf13FsharesChange),
               false,
               true,
-            )}</span
-          >
-          {$displayCompanyName} shares, with a combined investment of
+            )}
+          </span>
+          shares, as total invested capital {rawData?.totalInvestedChange >= 0
+            ? "grew by"
+            : "declined by"}
+          <span class="font-semibold">
+            {@html abbreviateNumber(
+              Math.abs(rawData?.totalInvestedChange),
+              true,
+              true,
+            )}
+          </span>
+          {rawData?.ownershipPercent >= rawData?.lastOwnershipPercent
+            ? "with ownership percentage increasing from"
+            : "with ownership percentage dropping from"}
           <span class="font-semibold"
-            >{@html abbreviateNumber(rawData?.totalInvested, true, true)}</span
+            >{rawData?.lastOwnershipPercent?.toFixed(2)}%</span
+          >
+          to
+          <span class="font-semibold"
+            >{rawData?.ownershipPercent?.toFixed(2)}%</span
           >.
-        </div>
+        </p>
 
         <div
           class="border border-gray-800 rounded w-full mt-3"
