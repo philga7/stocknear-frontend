@@ -1023,7 +1023,7 @@
             class="mt-6 flex flex-col lg:flex-row gap-x-14 items-start w-full justify-between"
           >
             <div
-              class="lg:space-y-6 lg:order-2 lg:pt-1 sm:pl-7 lg:pl-0 w-full lg:w-[45%] sm:ml-auto lg:max-w-[400px]"
+              class="lg:space-y-6 lg:order-2 lg:pt-1 sm:pl-7 lg:pl-0 w-full lg:w-[45%] sm:ml-auto lg:max-w-[345px]"
             >
               <Sidecard {data} />
             </div>

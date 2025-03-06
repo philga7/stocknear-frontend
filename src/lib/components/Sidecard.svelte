@@ -1,6 +1,8 @@
 <script lang="ts">
   import { stockTicker } from "$lib/store";
   import { sectorNavigation } from "$lib/utils";
+  import highcharts from "$lib/highcharts.ts";
+
   export let data;
 
   let info;
@@ -22,6 +24,8 @@
   let changesPercentage = 0;
   let ipoDate = "n/a";
 
+  let configAnalyst = null;
+
   function getIndustryHref(industryName) {
     // Replace spaces with hyphens
     let formattedName = industryName?.replace(/ /g, "-");
@@ -31,6 +35,100 @@
     formattedName = formattedName?.replace(/-{2,}/g, "-");
     // Convert to lowercase for consistency
     return "/list/industry/" + formattedName?.toLowerCase();
+  }
+
+  function plotData() {
+    // X-axis categories
+    const categories = ["Sell", "Hold", "Buy"];
+
+    // Corresponding data
+    const dataValues = [sellCount, holdCount, buyCount];
+    const colors = ["#FF4C4C", "#F5B700", "#008A00"];
+
+    const options = {
+      chart: {
+        type: "column",
+        backgroundColor: "#09090B",
+        plotBackgroundColor: "#09090B",
+        height: 250,
+        animation: false,
+      },
+      title: {
+        text: `<div class="text-gray-200 mt-3 mb-2 text-center font-normal text-2xl">Price Target: <span class="${changesPercentage >= 0 ? "text-[#00FC50]" : "text-[#FF2F1F]"}">$${priceTarget}</span></div>
+        <div class="text-gray-200 text-center font-normal text-xl flex justify-center items-center">Analyst Consensus: <span class="ml-1 ${changesPercentage >= 0 ? "text-[#00FC50]" : "text-[#FF2F1F]"}">${consensusRating}</span></div>`,
+        style: {
+          color: "white",
+          // Using inline CSS for margin-top and margin-bottom
+        },
+        useHTML: true, // Enable HTML to apply custom class styling
+      },
+      credits: { enabled: false },
+      xAxis: {
+        categories: categories,
+        gridLineWidth: 0,
+        labels: {
+          style: { color: "white" },
+        },
+      },
+      yAxis: {
+        gridLineWidth: 1,
+        gridLineColor: "#111827",
+        labels: {
+          style: { color: "white" },
+          formatter: function () {
+            return Math.floor(this.value); // Ensures whole numbers only
+          },
+        },
+        title: { text: null },
+        opposite: true, // If you want the axis on the right side
+        allowDecimals: false, // Ensures no decimal values on the axis
+        min: Math.min(...dataValues), // Ensures the Y-axis starts at 1
+      },
+      tooltip: {
+        shared: true,
+        useHTML: true,
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        borderColor: "rgba(255, 255, 255, 0.2)",
+        borderWidth: 1,
+        style: {
+          color: "#fff",
+          fontSize: "16px",
+          padding: "10px",
+        },
+        borderRadius: 4,
+        formatter: function () {
+          let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]"></span><br>`;
+          this.points.forEach((point) => {
+            tooltipContent += `
+          <span class="text-white font-semibold text-sm">${point.series.name}:</span> 
+          <span class="text-white font-normal text-sm" style="color:${point.color}">${point.y}</span><br>
+        `;
+          });
+          return tooltipContent;
+        },
+      },
+      plotOptions: {
+        series: {
+          animation: false,
+        },
+      },
+      legend: {
+        enabled: false,
+      },
+      series: [
+        {
+          data: dataValues.map((value, index) => ({
+            y: value,
+            color: colors[index],
+            borderColor: colors[index],
+            borderRadius: "0px",
+          })),
+          animation: false,
+        },
+      ],
+    };
+
+    return options;
   }
 
   $: {
@@ -59,17 +157,9 @@
       snippet = description?.slice(0, 450) + "...";
 
       numOfAnalyst = data?.getAnalystSummary?.numOfAnalyst;
-      buyCount = ((data?.getAnalystSummary?.Buy / numOfAnalyst) * 100)?.toFixed(
-        2,
-      );
-      holdCount = (
-        (data?.getAnalystSummary?.Hold / numOfAnalyst) *
-        100
-      )?.toFixed(2);
-      sellCount = (
-        (data?.getAnalystSummary?.Sell / numOfAnalyst) *
-        100
-      )?.toFixed(2);
+      buyCount = data?.getAnalystSummary?.Buy;
+      holdCount = data?.getAnalystSummary?.Hold;
+      sellCount = data?.getAnalystSummary?.Sell;
       priceTarget =
         data?.getAnalystSummary?.medianPriceTarget !== ("n/a" && 0)
           ? data?.getAnalystSummary?.medianPriceTarget
@@ -83,6 +173,8 @@
       } catch (e) {
         changesPercentage = 0;
       }
+
+      configAnalyst = plotData();
     }
   }
 </script>
@@ -157,7 +249,7 @@
       </div>
       <a
         href={`/stocks/${$stockTicker}/profile`}
-        class="rounded cursor-pointer w-full m-auto py-2 h-full mt-6 text-lg text-center font-semibold text-black sm:hover:hover:bg-gray-300 bg-[#ffff] transition duration-100"
+        class="rounded cursor-pointer w-full m-auto py-2 h-full mt-6 text-[1rem] text-center font-semibold text-black sm:hover:hover:bg-gray-300 bg-[#ffff] transition duration-100"
       >
         Full Company Profile
       </a>
@@ -183,59 +275,14 @@
           from the latest price.
         </p>
 
-        <div class="mt-5 w-full m-auto flex justify-center items-center mb-5">
-          <div class="flex flex-col items-center w-full">
-            <!--Start Progress-->
-
-            <div class="flex flex-col items-center w-full">
-              <div class="flex flex-row items-center w-full mt-5 mb-2">
-                <span class="text-white text-start mr-auto"> Buy </span>
-                <span class="text-white text-md ml-auto">
-                  {buyCount}%
-                </span>
-              </div>
-              <progress
-                class="progress bg-[#3B3D3F] w-full [&::-webkit-progress-value]:bg-[#00FC50] [&::-moz-progress-bar]:bg-[#00FC50]"
-                value={buyCount}
-                max="100"
-              ></progress>
-            </div>
-
-            <div class="flex flex-col items-center w-full">
-              <div class="flex flex-row items-center w-full mt-5 mb-2">
-                <span class="text-white text-start mr-auto"> Hold </span>
-                <span class="text-white text-md ml-auto">
-                  {holdCount}%
-                </span>
-              </div>
-              <progress
-                class="progress bg-[#3B3D3F] w-full [&::-webkit-progress-value]:bg-[#fff] [&::-moz-progress-bar]:bg-[#fff]"
-                value={holdCount}
-                max="100"
-              ></progress>
-            </div>
-
-            <div class="flex flex-col items-center w-full">
-              <div class="flex flex-row items-center w-full mt-5 mb-2">
-                <span class="text-white text-start mr-auto"> Sell </span>
-                <span class="text-white text-md ml-auto">
-                  {sellCount}%
-                </span>
-              </div>
-              <progress
-                class="progress bg-[#3B3D3F] w-full [&::-webkit-progress-value]:bg-[#FF2F1F] [&::-moz-progress-bar]:bg-[#FF2F1F]"
-                value={sellCount}
-                max="100"
-              ></progress>
-            </div>
-
-            <!--End Progress-->
-          </div>
-        </div>
+        <div
+          class="mt-5 border border-gray-800 rounded"
+          use:highcharts={configAnalyst}
+        ></div>
 
         <a
           href={`/stocks/${$stockTicker}/forecast/analyst`}
-          class="rounded cursor-pointer w-full m-auto py-2 h-full mt-6 text-lg text-center font-semibold text-black sm:hover:hover:bg-gray-300 bg-[#ffff] transition duration-100"
+          class="rounded cursor-pointer w-full m-auto py-2 h-full mt-6 text-[1rem] font-semibold text-center text-black sm:hover:hover:bg-gray-300 bg-[#ffff] transition duration-100"
         >
           Stock Forecasts
         </a>
