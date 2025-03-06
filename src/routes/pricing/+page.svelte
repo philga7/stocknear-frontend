@@ -70,7 +70,7 @@
 </script>
 
 <SEO
-  title="Pricing"
+  title="Pricing Plans"
   descriptiion="Get unlimited access to all of our data and tools, including full financial history, full ETF holdings, and more."
 />
 
@@ -89,7 +89,7 @@
       <h1
         class="text-4xl sm:text-5xl font-bold text-white text-transparent pb-4"
       >
-        Save Time & Cut Costs
+        Save Time & Maximize Profits
       </h1>
     </div>
 
@@ -107,7 +107,7 @@
           class="sr-only peer"
         />
         <div
-          class="w-14 h-7 bg-[#09090B] border border-gray-600 rounded-full peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[0.40rem] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-indigo-600 {mode ===
+          class="w-14 h-7 bg-[#09090B] border border-gray-600 rounded-full peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[0.40rem] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-blue-600 {mode ===
           false
             ? 'after:translate-x-[-0.2rem]'
             : ''} "
@@ -124,7 +124,7 @@
         style="opacity: 1; transform: translateY(20px);"
         class="flex flex-col relative bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-600 p-6 isolate"
       >
-        <h3 class="text-3xl font-bold text-indigo-300">Basic</h3>
+        <h3 class="text-3xl font-bold text-white">Basic</h3>
         <p class="text-zinc-300 text-sm mt-1">Ideal for Beginners</p>
         <div class="mt-4">
           <span class="text-4xl font-bold text-white">$0</span><span
@@ -135,7 +135,7 @@
         <ul class="mt-6 mb-6 space-y-2">
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-indigo-300 flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -146,150 +146,411 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="text-indigo-300 font-medium"
-              >1,000 credits per month</span
+            ><span class="text-white">1 Watchlist</span>
+          </li>
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path></svg
+            ><span class="text-white">3 Price Alerts</span>
+          </li>
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path></svg
+            ><span class="text-white">Realtime Notification</span>
+          </li>
+
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              viewBox="0 0 64 64"
+              version="1.1"
+              fill="currentColor"
+              style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+              ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></g><g id="SVGRepo_iconCarrier">
+                <rect
+                  id="Icons"
+                  x="-448"
+                  y="-64"
+                  width="1280"
+                  height="800"
+                  style="fill:none;"
+                ></rect>
+                <g id="Icons1" serif:id="Icons">
+                  <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g>
+                  <g id="H3"> </g> <g id="list-ul"> </g>
+                  <g id="hamburger-1"> </g> <g id="hamburger-2"> </g>
+                  <g id="list-ol"> </g> <g id="list-task"> </g>
+                  <g id="trash"> </g> <g id="vertical-menu"> </g>
+                  <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g>
+                  <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> </g>
+                  <g id="clock"> </g> <g id="external-link"> </g>
+                  <g id="hr"> </g> <g id="info"> </g> <g id="warning"> </g>
+                  <g id="plus-circle"> </g> <g id="minus-circle"> </g>
+                  <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g>
+                  <path
+                    id="times"
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path>
+                  <path
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path> <g id="radio-check"> </g> <g id="eye-slash"> </g>
+                  <g id="eye"> </g> <g id="toggle-off"> </g>
+                  <g id="shredder"> </g>
+                  <g
+                    id="spinner--loading--dots-"
+                    serif:id="spinner [loading, dots]"
+                  >
+                  </g> <g id="react"> </g> <g id="check-selected"> </g>
+                  <g id="turn-off"> </g> <g id="code-block"> </g>
+                  <g id="user"> </g> <g id="coffee-bean"> </g>
+                  <g id="coffee-beans">
+                    <g id="coffee-bean1" serif:id="coffee-bean"> </g>
+                  </g> <g id="coffee-bean-filled"> </g>
+                  <g id="coffee-beans-filled">
+                    <g id="coffee-bean2" serif:id="coffee-bean"> </g>
+                  </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g>
+                  <g id="clipboard-copy"> </g> <g id="Layer1"> </g>
+                </g>
+              </g></svg
             >
-            <div class="relative inline-block">
-              <svg
-                class="w-4 h-4 ml-1 text-gray-300 flex-shrink-0 mt-1 cursor-pointer"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-                ><path
-                  fill-rule="evenodd"
-                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                  clip-rule="evenodd"
-                ></path></svg
-              >
-            </div>
+
+            <span class="text-gray-400">Hedge Fund Portfolio Access</span>
           </li>
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-indigo-300 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
+              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              viewBox="0 0 64 64"
+              version="1.1"
+              fill="currentColor"
+              style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+              ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+                id="SVGRepo_tracerCarrier"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="text-gray-400">2 tasks waiting in queue</span>
-          </li>
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 text-indigo-300 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="text-indigo-300 font-medium"
-              >Standard queue priority</span
+              ></g><g id="SVGRepo_iconCarrier">
+                <rect
+                  id="Icons"
+                  x="-448"
+                  y="-64"
+                  width="1280"
+                  height="800"
+                  style="fill:none;"
+                ></rect>
+                <g id="Icons1" serif:id="Icons">
+                  <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g>
+                  <g id="H3"> </g> <g id="list-ul"> </g>
+                  <g id="hamburger-1"> </g> <g id="hamburger-2"> </g>
+                  <g id="list-ol"> </g> <g id="list-task"> </g>
+                  <g id="trash"> </g> <g id="vertical-menu"> </g>
+                  <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g>
+                  <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> </g>
+                  <g id="clock"> </g> <g id="external-link"> </g>
+                  <g id="hr"> </g> <g id="info"> </g> <g id="warning"> </g>
+                  <g id="plus-circle"> </g> <g id="minus-circle"> </g>
+                  <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g>
+                  <path
+                    id="times"
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path>
+                  <path
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path> <g id="radio-check"> </g> <g id="eye-slash"> </g>
+                  <g id="eye"> </g> <g id="toggle-off"> </g>
+                  <g id="shredder"> </g>
+                  <g
+                    id="spinner--loading--dots-"
+                    serif:id="spinner [loading, dots]"
+                  >
+                  </g> <g id="react"> </g> <g id="check-selected"> </g>
+                  <g id="turn-off"> </g> <g id="code-block"> </g>
+                  <g id="user"> </g> <g id="coffee-bean"> </g>
+                  <g id="coffee-beans">
+                    <g id="coffee-bean1" serif:id="coffee-bean"> </g>
+                  </g> <g id="coffee-bean-filled"> </g>
+                  <g id="coffee-beans-filled">
+                    <g id="coffee-bean2" serif:id="coffee-bean"> </g>
+                  </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g>
+                  <g id="clipboard-copy"> </g> <g id="Layer1"> </g>
+                </g>
+              </g></svg
             >
-            <div class="relative inline-block">
-              <svg
-                class="w-4 h-4 ml-1 text-gray-300 flex-shrink-0 mt-1 cursor-pointer"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-                ><path
-                  fill-rule="evenodd"
-                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                  clip-rule="evenodd"
-                ></path></svg
-              >
-            </div>
+
+            <span class="text-gray-400">US Congress Portfolio Access</span>
           </li>
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-indigo-300 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
+              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              viewBox="0 0 64 64"
+              version="1.1"
+              fill="currentColor"
+              style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+              ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+                id="SVGRepo_tracerCarrier"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="text-gray-400"
-              >Assets are private &amp; customer owned</span
+              ></g><g id="SVGRepo_iconCarrier">
+                <rect
+                  id="Icons"
+                  x="-448"
+                  y="-64"
+                  width="1280"
+                  height="800"
+                  style="fill:none;"
+                ></rect>
+                <g id="Icons1" serif:id="Icons">
+                  <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g>
+                  <g id="H3"> </g> <g id="list-ul"> </g>
+                  <g id="hamburger-1"> </g> <g id="hamburger-2"> </g>
+                  <g id="list-ol"> </g> <g id="list-task"> </g>
+                  <g id="trash"> </g> <g id="vertical-menu"> </g>
+                  <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g>
+                  <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> </g>
+                  <g id="clock"> </g> <g id="external-link"> </g>
+                  <g id="hr"> </g> <g id="info"> </g> <g id="warning"> </g>
+                  <g id="plus-circle"> </g> <g id="minus-circle"> </g>
+                  <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g>
+                  <path
+                    id="times"
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path>
+                  <path
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path> <g id="radio-check"> </g> <g id="eye-slash"> </g>
+                  <g id="eye"> </g> <g id="toggle-off"> </g>
+                  <g id="shredder"> </g>
+                  <g
+                    id="spinner--loading--dots-"
+                    serif:id="spinner [loading, dots]"
+                  >
+                  </g> <g id="react"> </g> <g id="check-selected"> </g>
+                  <g id="turn-off"> </g> <g id="code-block"> </g>
+                  <g id="user"> </g> <g id="coffee-bean"> </g>
+                  <g id="coffee-beans">
+                    <g id="coffee-bean1" serif:id="coffee-bean"> </g>
+                  </g> <g id="coffee-bean-filled"> </g>
+                  <g id="coffee-beans-filled">
+                    <g id="coffee-bean2" serif:id="coffee-bean"> </g>
+                  </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g>
+                  <g id="clipboard-copy"> </g> <g id="Layer1"> </g>
+                </g>
+              </g></svg
             >
+
+            <span class="text-gray-400">Financial History Access</span>
+          </li>
+
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              viewBox="0 0 64 64"
+              version="1.1"
+              fill="currentColor"
+              style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+              ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></g><g id="SVGRepo_iconCarrier">
+                <rect
+                  id="Icons"
+                  x="-448"
+                  y="-64"
+                  width="1280"
+                  height="800"
+                  style="fill:none;"
+                ></rect>
+                <g id="Icons1" serif:id="Icons">
+                  <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g>
+                  <g id="H3"> </g> <g id="list-ul"> </g>
+                  <g id="hamburger-1"> </g> <g id="hamburger-2"> </g>
+                  <g id="list-ol"> </g> <g id="list-task"> </g>
+                  <g id="trash"> </g> <g id="vertical-menu"> </g>
+                  <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g>
+                  <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> </g>
+                  <g id="clock"> </g> <g id="external-link"> </g>
+                  <g id="hr"> </g> <g id="info"> </g> <g id="warning"> </g>
+                  <g id="plus-circle"> </g> <g id="minus-circle"> </g>
+                  <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g>
+                  <path
+                    id="times"
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path>
+                  <path
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path> <g id="radio-check"> </g> <g id="eye-slash"> </g>
+                  <g id="eye"> </g> <g id="toggle-off"> </g>
+                  <g id="shredder"> </g>
+                  <g
+                    id="spinner--loading--dots-"
+                    serif:id="spinner [loading, dots]"
+                  >
+                  </g> <g id="react"> </g> <g id="check-selected"> </g>
+                  <g id="turn-off"> </g> <g id="code-block"> </g>
+                  <g id="user"> </g> <g id="coffee-bean"> </g>
+                  <g id="coffee-beans">
+                    <g id="coffee-bean1" serif:id="coffee-bean"> </g>
+                  </g> <g id="coffee-bean-filled"> </g>
+                  <g id="coffee-beans-filled">
+                    <g id="coffee-bean2" serif:id="coffee-bean"> </g>
+                  </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g>
+                  <g id="clipboard-copy"> </g> <g id="Layer1"> </g>
+                </g>
+              </g></svg
+            >
+
+            <span class="text-gray-400">Stock Screener</span>
           </li>
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-indigo-300 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
+              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              viewBox="0 0 64 64"
+              version="1.1"
+              fill="currentColor"
+              style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+              ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+                id="SVGRepo_tracerCarrier"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="text-gray-400">Image AI Studio</span>
+              ></g><g id="SVGRepo_iconCarrier">
+                <rect
+                  id="Icons"
+                  x="-448"
+                  y="-64"
+                  width="1280"
+                  height="800"
+                  style="fill:none;"
+                ></rect>
+                <g id="Icons1" serif:id="Icons">
+                  <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g>
+                  <g id="H3"> </g> <g id="list-ul"> </g>
+                  <g id="hamburger-1"> </g> <g id="hamburger-2"> </g>
+                  <g id="list-ol"> </g> <g id="list-task"> </g>
+                  <g id="trash"> </g> <g id="vertical-menu"> </g>
+                  <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g>
+                  <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> </g>
+                  <g id="clock"> </g> <g id="external-link"> </g>
+                  <g id="hr"> </g> <g id="info"> </g> <g id="warning"> </g>
+                  <g id="plus-circle"> </g> <g id="minus-circle"> </g>
+                  <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g>
+                  <path
+                    id="times"
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path>
+                  <path
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path> <g id="radio-check"> </g> <g id="eye-slash"> </g>
+                  <g id="eye"> </g> <g id="toggle-off"> </g>
+                  <g id="shredder"> </g>
+                  <g
+                    id="spinner--loading--dots-"
+                    serif:id="spinner [loading, dots]"
+                  >
+                  </g> <g id="react"> </g> <g id="check-selected"> </g>
+                  <g id="turn-off"> </g> <g id="code-block"> </g>
+                  <g id="user"> </g> <g id="coffee-bean"> </g>
+                  <g id="coffee-beans">
+                    <g id="coffee-bean1" serif:id="coffee-bean"> </g>
+                  </g> <g id="coffee-bean-filled"> </g>
+                  <g id="coffee-beans-filled">
+                    <g id="coffee-bean2" serif:id="coffee-bean"> </g>
+                  </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g>
+                  <g id="clipboard-copy"> </g> <g id="Layer1"> </g>
+                </g>
+              </g></svg
+            >
+
+            <span class="text-gray-400">Realtime Options Activity</span>
           </li>
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-indigo-300 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
+              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              viewBox="0 0 64 64"
+              version="1.1"
+              fill="currentColor"
+              style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+              ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+                id="SVGRepo_tracerCarrier"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="text-gray-400">AI texture editing</span>
-          </li>
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 text-indigo-300 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="text-gray-400">Download community models</span>
-          </li>
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 text-indigo-300 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="text-gray-400">Free Remesh, LODs and all Tools</span>
+              ></g><g id="SVGRepo_iconCarrier">
+                <rect
+                  id="Icons"
+                  x="-448"
+                  y="-64"
+                  width="1280"
+                  height="800"
+                  style="fill:none;"
+                ></rect>
+                <g id="Icons1" serif:id="Icons">
+                  <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g>
+                  <g id="H3"> </g> <g id="list-ul"> </g>
+                  <g id="hamburger-1"> </g> <g id="hamburger-2"> </g>
+                  <g id="list-ol"> </g> <g id="list-task"> </g>
+                  <g id="trash"> </g> <g id="vertical-menu"> </g>
+                  <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g>
+                  <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> </g>
+                  <g id="clock"> </g> <g id="external-link"> </g>
+                  <g id="hr"> </g> <g id="info"> </g> <g id="warning"> </g>
+                  <g id="plus-circle"> </g> <g id="minus-circle"> </g>
+                  <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g>
+                  <path
+                    id="times"
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path>
+                  <path
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path> <g id="radio-check"> </g> <g id="eye-slash"> </g>
+                  <g id="eye"> </g> <g id="toggle-off"> </g>
+                  <g id="shredder"> </g>
+                  <g
+                    id="spinner--loading--dots-"
+                    serif:id="spinner [loading, dots]"
+                  >
+                  </g> <g id="react"> </g> <g id="check-selected"> </g>
+                  <g id="turn-off"> </g> <g id="code-block"> </g>
+                  <g id="user"> </g> <g id="coffee-bean"> </g>
+                  <g id="coffee-beans">
+                    <g id="coffee-bean1" serif:id="coffee-bean"> </g>
+                  </g> <g id="coffee-bean-filled"> </g>
+                  <g id="coffee-beans-filled">
+                    <g id="coffee-bean2" serif:id="coffee-bean"> </g>
+                  </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g>
+                  <g id="clipboard-copy"> </g> <g id="Layer1"> </g>
+                </g>
+              </g></svg
+            >
+
+            <span class="text-gray-400">Realtime Dark Pool Trades</span>
           </li>
         </ul>
         <div class="mt-auto pt-6 border-t border-zinc-700 mx-4">
           <button
-            class="w-full py-3 px-4 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-500 transition duration-300 flex items-center justify-center"
-            >Unlock Full Access Now<svg
+            class="cursor-pointer w-full py-3 px-4 bg-blue-600 text-white rounded-lg font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
+            >Get Registered Now<svg
               class="w-5 h-5 ml-2"
               fill="none"
               stroke="currentColor"
@@ -309,18 +570,21 @@
         style="opacity: 1; transform: translateY(20px);"
         class="flex flex-col relative bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-600 p-6 isolate"
       >
-        <h3 class="text-3xl font-bold text-indigo-300">Plus</h3>
-        <p class="text-zinc-300 text-sm mt-1">Best for intermediate traders</p>
+        <h3 class="text-3xl font-bold text-white">Plus</h3>
+        <p class="text-zinc-300 text-sm mt-1">Best for Intermediate Traders</p>
         <div class="mt-4">
-          <span class="text-4xl font-bold text-white">$7.50</span><span
-            class="text-white text-xl ml-1">/Month</span
-          >
+          <span class="text-4xl font-bold text-white"
+            >{mode ? "$7.50" : "$10"}</span
+          ><span class="text-white text-xl ml-1">/Month</span>
         </div>
+        <p class="text-gray-400 text-sm mt-1 mx-4 {!mode ? 'hidden' : ''}">
+          (Billed Annually)
+        </p>
 
         <ul class="mt-6 mb-6 space-y-2">
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-indigo-300 flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -331,26 +595,43 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="text-indigo-300 font-medium"
-              >3,200 credits per month</span
+            ><span class="text-white">Unlimited Watchlist</span>
+          </li>
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path></svg
+            ><span class="text-white">Unlimited Price Alerts</span>
+          </li>
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path></svg
             >
-            <div class="relative inline-block">
-              <svg
-                class="w-4 h-4 ml-1 text-gray-300 flex-shrink-0 mt-1 cursor-pointer"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-                ><path
-                  fill-rule="evenodd"
-                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                  clip-rule="evenodd"
-                ></path></svg
-              >
-            </div>
+
+            <span class="text-white">Unlimited Stock Screener</span>
           </li>
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-indigo-300 flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -361,11 +642,12 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="text-gray-400">5 tasks waiting in queue</span>
+            ><span class="text-white">Realtime Notification</span>
           </li>
+
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-indigo-300 flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -376,26 +658,13 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="text-indigo-300 font-medium"
-              >Standard queue priority</span
             >
-            <div class="relative inline-block">
-              <svg
-                class="w-4 h-4 ml-1 text-gray-300 flex-shrink-0 mt-1 cursor-pointer"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-                ><path
-                  fill-rule="evenodd"
-                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                  clip-rule="evenodd"
-                ></path></svg
-              >
-            </div>
+
+            <span class="text-white">Hedge Fund Portfolio Access</span>
           </li>
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-indigo-300 flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -406,13 +675,13 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="text-gray-400"
-              >Assets are private &amp; customer owned</span
             >
+
+            <span class="text-white">US Congress Portfolio Access</span>
           </li>
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-indigo-300 flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -423,57 +692,137 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="text-gray-400">Image AI Studio</span>
+            >
+
+            <span class="text-white">Financial History Access</span>
+          </li>
+
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              viewBox="0 0 64 64"
+              version="1.1"
+              fill="currentColor"
+              style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+              ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></g><g id="SVGRepo_iconCarrier">
+                <rect
+                  id="Icons"
+                  x="-448"
+                  y="-64"
+                  width="1280"
+                  height="800"
+                  style="fill:none;"
+                ></rect>
+                <g id="Icons1" serif:id="Icons">
+                  <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g>
+                  <g id="H3"> </g> <g id="list-ul"> </g>
+                  <g id="hamburger-1"> </g> <g id="hamburger-2"> </g>
+                  <g id="list-ol"> </g> <g id="list-task"> </g>
+                  <g id="trash"> </g> <g id="vertical-menu"> </g>
+                  <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g>
+                  <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> </g>
+                  <g id="clock"> </g> <g id="external-link"> </g>
+                  <g id="hr"> </g> <g id="info"> </g> <g id="warning"> </g>
+                  <g id="plus-circle"> </g> <g id="minus-circle"> </g>
+                  <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g>
+                  <path
+                    id="times"
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path>
+                  <path
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path> <g id="radio-check"> </g> <g id="eye-slash"> </g>
+                  <g id="eye"> </g> <g id="toggle-off"> </g>
+                  <g id="shredder"> </g>
+                  <g
+                    id="spinner--loading--dots-"
+                    serif:id="spinner [loading, dots]"
+                  >
+                  </g> <g id="react"> </g> <g id="check-selected"> </g>
+                  <g id="turn-off"> </g> <g id="code-block"> </g>
+                  <g id="user"> </g> <g id="coffee-bean"> </g>
+                  <g id="coffee-beans">
+                    <g id="coffee-bean1" serif:id="coffee-bean"> </g>
+                  </g> <g id="coffee-bean-filled"> </g>
+                  <g id="coffee-beans-filled">
+                    <g id="coffee-bean2" serif:id="coffee-bean"> </g>
+                  </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g>
+                  <g id="clipboard-copy"> </g> <g id="Layer1"> </g>
+                </g>
+              </g></svg
+            >
+
+            <span class="text-gray-400">Realtime Options Activity</span>
           </li>
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-indigo-300 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
+              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              viewBox="0 0 64 64"
+              version="1.1"
+              fill="currentColor"
+              style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+              ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+                id="SVGRepo_tracerCarrier"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="text-gray-400">AI texture editing</span>
-          </li>
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 text-indigo-300 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="text-gray-400">Download community models</span>
-          </li>
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 text-indigo-300 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="text-gray-400">Free Remesh, LODs and all Tools</span>
+              ></g><g id="SVGRepo_iconCarrier">
+                <rect
+                  id="Icons"
+                  x="-448"
+                  y="-64"
+                  width="1280"
+                  height="800"
+                  style="fill:none;"
+                ></rect>
+                <g id="Icons1" serif:id="Icons">
+                  <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g>
+                  <g id="H3"> </g> <g id="list-ul"> </g>
+                  <g id="hamburger-1"> </g> <g id="hamburger-2"> </g>
+                  <g id="list-ol"> </g> <g id="list-task"> </g>
+                  <g id="trash"> </g> <g id="vertical-menu"> </g>
+                  <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g>
+                  <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> </g>
+                  <g id="clock"> </g> <g id="external-link"> </g>
+                  <g id="hr"> </g> <g id="info"> </g> <g id="warning"> </g>
+                  <g id="plus-circle"> </g> <g id="minus-circle"> </g>
+                  <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g>
+                  <path
+                    id="times"
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path>
+                  <path
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path> <g id="radio-check"> </g> <g id="eye-slash"> </g>
+                  <g id="eye"> </g> <g id="toggle-off"> </g>
+                  <g id="shredder"> </g>
+                  <g
+                    id="spinner--loading--dots-"
+                    serif:id="spinner [loading, dots]"
+                  >
+                  </g> <g id="react"> </g> <g id="check-selected"> </g>
+                  <g id="turn-off"> </g> <g id="code-block"> </g>
+                  <g id="user"> </g> <g id="coffee-bean"> </g>
+                  <g id="coffee-beans">
+                    <g id="coffee-bean1" serif:id="coffee-bean"> </g>
+                  </g> <g id="coffee-bean-filled"> </g>
+                  <g id="coffee-beans-filled">
+                    <g id="coffee-bean2" serif:id="coffee-bean"> </g>
+                  </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g>
+                  <g id="clipboard-copy"> </g> <g id="Layer1"> </g>
+                </g>
+              </g></svg
+            >
+
+            <span class="text-gray-400">Realtime Dark Pool Trades</span>
           </li>
         </ul>
         <div class="mt-auto pt-6 border-t border-zinc-700 mx-4">
           <button
-            class="w-full py-3 px-4 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-500 transition duration-300 flex items-center justify-center"
+            class="cursor-pointer w-full py-3 px-4 bg-blue-600 text-white rounded-lg font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
             >Unlock Plus Access Now<svg
               class="w-5 h-5 ml-2"
               fill="none"
@@ -494,18 +843,21 @@
         style="opacity: 1; transform: translateY(20px);"
         class="flex flex-col relative bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-600 p-6 isolate"
       >
-        <h3 class="text-3xl font-bold text-indigo-300">Pro</h3>
-        <p class="text-zinc-300 text-sm mt-1">Best for serious traders</p>
+        <h3 class="text-3xl font-bold text-white">Pro</h3>
+        <p class="text-zinc-300 text-sm mt-1">Best for Serious Traders</p>
         <div class="mt-4">
-          <span class="text-4xl font-bold text-white">$20</span><span
-            class="text-white text-xl ml-1">/Month</span
-          >
+          <span class="text-4xl font-bold text-white"
+            >{mode ? "$15" : "$20"}</span
+          ><span class="text-white text-xl ml-1">/Month</span>
         </div>
+        <p class="text-gray-400 text-sm mt-1 mx-4 {!mode ? 'hidden' : ''}">
+          (Billed Annually)
+        </p>
 
         <ul class="mt-6 mb-6 space-y-2">
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-indigo-300 flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -516,26 +868,29 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="text-indigo-300 font-medium"
-              >22,000 credits per month</span
+            ><span class="text-white">Everything in Plus and ...</span>
+          </li>
+
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path></svg
             >
-            <div class="relative inline-block">
-              <svg
-                class="w-4 h-4 ml-1 text-gray-300 flex-shrink-0 mt-1 cursor-pointer"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-                ><path
-                  fill-rule="evenodd"
-                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                  clip-rule="evenodd"
-                ></path></svg
-              >
-            </div>
+
+            <span class="text-white">Realtime Options Activity</span>
           </li>
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-indigo-300 flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -546,119 +901,14 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="text-gray-400">10 tasks waiting in queue</span>
-          </li>
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 text-indigo-300 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="text-indigo-300 font-medium"
-              >Maximum queue priority</span
             >
-            <div class="relative inline-block">
-              <svg
-                class="w-4 h-4 ml-1 text-gray-300 flex-shrink-0 mt-1 cursor-pointer"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-                ><path
-                  fill-rule="evenodd"
-                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                  clip-rule="evenodd"
-                ></path></svg
-              >
-            </div>
-          </li>
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 text-indigo-300 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="text-gray-400"
-              >Assets are private &amp; customer owned</span
-            >
-          </li>
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 text-indigo-300 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="text-gray-400">Image AI Studio</span>
-          </li>
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 text-indigo-300 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="text-gray-400">AI texture editing</span>
-          </li>
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 text-indigo-300 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="text-gray-400">Download community models</span>
-          </li>
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 text-indigo-300 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="text-gray-400">Free Remesh, LODs and all Tools</span>
+
+            <span class="text-white">Realtime Dark Pool Trades</span>
           </li>
         </ul>
         <div class="mt-auto pt-6 border-t border-zinc-700 mx-4">
           <button
-            class="w-full py-3 px-4 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-500 transition duration-300 flex items-center justify-center"
+            class="cursor-pointer w-full py-3 px-4 bg-blue-600 text-white rounded-lg font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
             >Unlock Pro Access Now<svg
               class="w-5 h-5 ml-2"
               fill="none"
@@ -677,165 +927,187 @@
       </div>
 
       <div
-        style="opacity: 1; transform: translateY(20px);"
-        class="text-start w-full col-span-1 lg:col-span-3 bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-600 p-6 isolate"
+        class="text-left w-full col-span-1 lg:col-span-3 bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-600 p-6 isolate translate-y-5 opacity-100 transition-all duration-300"
       >
+        <!-- Responsive header: stacks vertically on mobile, horizontal on md+ -->
         <div class="flex flex-row items-center justify-between">
-          <h3 class="text-3xl font-bold text-indigo-300">Lifetime</h3>
-          <div class="inline-block">
-            <span class="text-4xl font-bold text-white">$599</span>
+          <h3 class="text-2xl md:text-3xl font-bold text-white">Lifetime</h3>
+          <div>
+            <span class="text-3xl md:text-4xl font-bold text-white">$599</span>
           </div>
         </div>
-        <p class="text-lg mt-2">Everything in Pro, pay once, never again!</p>
-        <div class="ml-auto flex justify-end w-1/4">
+        <!-- Responsive paragraph text -->
+        <p class="text-base md:text-lg mt-2">
+          Everything in Pro, pay once, never again!
+        </p>
+        <!-- Button container: full width on mobile, 1/4 width on md+ -->
+        <div class="flex justify-end w-full md:w-1/4 ml-auto mt-4 md:mt-0">
           <button
-            class="w-full py-3 px-4 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-500 transition duration-300 flex items-center justify-center"
-            >Unlock Pro Access Now<svg
+            class="cursor-pointer w-full py-3 px-4 bg-blue-600 text-white rounded-lg font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
+          >
+            Unlock Pro Access Now
+            <svg
               class="w-5 h-5 ml-2"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
-              ><path
+            >
+              <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 stroke-width="2"
                 d="M9 5l7 7-7 7"
-              ></path></svg
-            ></button
-          >
+              ></path>
+            </svg>
+          </button>
         </div>
       </div>
     </div>
 
     <!--Feature Table-->
-    <section class="py-12 mt-10">
+    <section class="py-8 md:py-12 mt-8 md:mt-10">
       <div class="max-w-6xl mx-auto">
-        <h2 class="text-4xl font-bold text-white mb-10 text-center">
+        <h2
+          class="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-10 text-center"
+        >
           Compare plans &amp; features
         </h2>
-        <!-- Use an overflow-x container so the table is scrollable on small screens -->
+        <!-- Make sure the table can scroll horizontally on small screens -->
         <div class="overflow-x-auto">
-          <table class="w-full border-collapse text-left">
-            <!-- Optionally define column widths and background colors for columns -->
+          <table class="min-w-full border-collapse text-left">
             <colgroup>
               <col class="w-1/3" />
-              <!-- 'Free' column -->
               <col class="w-1/6" />
-              <!-- 'Premium' column (light blue) -->
-              <col class="w-1/6 bg-indigo-500/20" />
-              <!-- 'Unlimited' column (slightly darker blue) -->
-              <col class="w-1/6 bg-indigo-500/40" />
+              <col class="w-1/6" />
+              <col class="w-1/6" />
             </colgroup>
-
             <thead>
               <tr>
-                <th class="py-3 font-semibold text-white">
-                  Discover investment opportunities</th
+                <th
+                  class="py-2 md:py-3 font-semibold text-white text-sm md:text-base"
                 >
-                <th class="py-3 font-semibold text-white text-center">Free</th>
-                <th class="py-3 font-semibold text-white text-center">Plus</th>
-                <th class="py-3 font-semibold text-white text-center">Pro</th>
+                  Discover investment opportunities
+                </th>
+                <th
+                  class="py-2 md:py-3 font-semibold text-white text-center text-sm md:text-base"
+                >
+                  Free
+                </th>
+                <th
+                  class="py-2 md:py-3 font-semibold text-white text-center text-sm md:text-base"
+                >
+                  Plus
+                </th>
+                <th
+                  class="py-2 md:py-3 font-semibold text-white text-center text-sm md:text-base"
+                >
+                  Pro
+                </th>
               </tr>
             </thead>
-
-            <tbody class="">
+            <tbody class="text-sm md:text-base">
               <tr>
-                <td class="py-3">Global market access</td>
-                <td class="py-3 text-center">✓</td>
-                <td class="py-3 text-center">✓</td>
-                <td class="py-3 text-center">✓</td>
+                <td class="py-2 md:py-3">Global market access</td>
+                <td class="py-2 md:py-3 text-center">✓</td>
+                <td class="py-2 md:py-3 text-center">✓</td>
+                <td class="py-2 md:py-3 text-center">✓</td>
               </tr>
               <tr>
-                <td class="py-3">Curated investment ideas</td>
-                <td class="py-3 text-center">✓</td>
-                <td class="py-3 text-center">✓</td>
-                <td class="py-3 text-center">✓</td>
+                <td class="py-2 md:py-3">Curated investment ideas</td>
+                <td class="py-2 md:py-3 text-center">✓</td>
+                <td class="py-2 md:py-3 text-center">✓</td>
+                <td class="py-2 md:py-3 text-center">✓</td>
               </tr>
               <tr>
-                <td class="py-3">Sample portfolios</td>
-                <td class="py-3 text-center">✓</td>
-                <td class="py-3 text-center">✓</td>
-                <td class="py-3 text-center">✓</td>
+                <td class="py-2 md:py-3">Sample portfolios</td>
+                <td class="py-2 md:py-3 text-center">✓</td>
+                <td class="py-2 md:py-3 text-center">✓</td>
+                <td class="py-2 md:py-3 text-center">✓</td>
               </tr>
               <tr>
-                <td class="py-3">Stock screeners &amp; Alerts</td>
-                <td class="py-3 text-center">Limited</td>
-                <td class="py-3 text-center">3</td>
-                <td class="py-3 text-center">10</td>
+                <td class="py-2 md:py-3">Stock screeners &amp; Alerts</td>
+                <td class="py-2 md:py-3 text-center">Limited</td>
+                <td class="py-2 md:py-3 text-center">3</td>
+                <td class="py-2 md:py-3 text-center">10</td>
               </tr>
-
               <tr>
-                <td colspan="4" class="py-3 font-semibold text-lg text-white">
+                <td
+                  colspan="4"
+                  class="py-2 md:py-3 pt-8 font-semibold text-lg text-white"
+                >
                   Research company stocks
                 </td>
               </tr>
               <tr>
-                <td class="py-3">Company stock reports</td>
-                <td class="py-3 text-center">5/mo</td>
-                <td class="py-3 text-center">30/mo</td>
-                <td class="py-3 text-center">Unlimited</td>
+                <td class="py-2 md:py-3">Company stock reports</td>
+                <td class="py-2 md:py-3 text-center">5/mo</td>
+                <td class="py-2 md:py-3 text-center">30/mo</td>
+                <td class="py-2 md:py-3 text-center">Unlimited</td>
               </tr>
               <tr>
-                <td class="py-3">Stock comparison tool</td>
-                <td class="py-3 text-center">✓</td>
-                <td class="py-3 text-center">✓</td>
-                <td class="py-3 text-center">✓</td>
+                <td class="py-2 md:py-3">Stock comparison tool</td>
+                <td class="py-2 md:py-3 text-center">✓</td>
+                <td class="py-2 md:py-3 text-center">✓</td>
+                <td class="py-2 md:py-3 text-center">✓</td>
               </tr>
               <tr>
-                <td class="py-3">Export to Excel &amp; PDF</td>
-                <td class="py-3 text-center">✓</td>
-                <td class="py-3 text-center">✓</td>
-                <td class="py-3 text-center">✓</td>
+                <td class="py-2 md:py-3">Export to Excel &amp; PDF</td>
+                <td class="py-2 md:py-3 text-center">✓</td>
+                <td class="py-2 md:py-3 text-center">✓</td>
+                <td class="py-2 md:py-3 text-center">✓</td>
               </tr>
-
-              <!-- Category 3: Portfolio management & analysis -->
               <tr>
-                <td colspan="4" class="py-3 font-semibold text-lg text-white">
+                <td
+                  colspan="4"
+                  class="py-2 md:py-3 pt-8 font-semibold text-lg text-white"
+                >
                   Portfolio management &amp; analysis
                 </td>
               </tr>
               <tr>
-                <td class="py-3">No. of portfolios</td>
-                <td class="py-3 text-center">1</td>
-                <td class="py-3 text-center">3</td>
-                <td class="py-3 text-center">5</td>
+                <td class="py-2 md:py-3">No. of portfolios</td>
+                <td class="py-2 md:py-3 text-center">1</td>
+                <td class="py-2 md:py-3 text-center">3</td>
+                <td class="py-2 md:py-3 text-center">5</td>
               </tr>
               <tr>
-                <td class="py-3">No. of holdings in each portfolio</td>
-                <td class="py-3 text-center">10</td>
-                <td class="py-3 text-center">30</td>
-                <td class="py-3 text-center">Unlimited</td>
+                <td class="py-2 md:py-3">No. of holdings in each portfolio</td>
+                <td class="py-2 md:py-3 text-center">10</td>
+                <td class="py-2 md:py-3 text-center">30</td>
+                <td class="py-2 md:py-3 text-center">Unlimited</td>
               </tr>
               <tr>
-                <td class="py-3">Brokerage linking</td>
-                <td class="py-3 text-center"></td>
-                <td class="py-3 text-center">✓</td>
-                <td class="py-3 text-center">✓</td>
+                <td class="py-2 md:py-3">Brokerage linking</td>
+                <td class="py-2 md:py-3 text-center"></td>
+                <td class="py-2 md:py-3 text-center">✓</td>
+                <td class="py-2 md:py-3 text-center">✓</td>
               </tr>
               <tr>
-                <td class="py-3">Important updates from each holding</td>
-                <td class="py-3 text-center">Limited</td>
-                <td class="py-3 text-center">Unlimited</td>
-                <td class="py-3 text-center">Unlimited</td>
+                <td class="py-2 md:py-3">Important updates from each holding</td
+                >
+                <td class="py-2 md:py-3 text-center">Limited</td>
+                <td class="py-2 md:py-3 text-center">Unlimited</td>
+                <td class="py-2 md:py-3 text-center">Unlimited</td>
               </tr>
               <tr>
-                <td class="py-3">Weekly portfolio update email</td>
-                <td class="py-3 text-center">✓</td>
-                <td class="py-3 text-center">✓</td>
-                <td class="py-3 text-center">✓</td>
+                <td class="py-2 md:py-3">Weekly portfolio update email</td>
+                <td class="py-2 md:py-3 text-center">✓</td>
+                <td class="py-2 md:py-3 text-center">✓</td>
+                <td class="py-2 md:py-3 text-center">✓</td>
               </tr>
               <tr>
-                <td class="py-3">Weekly Market insights newsletter</td>
-                <td class="py-3 text-center">✓</td>
-                <td class="py-3 text-center">✓</td>
-                <td class="py-3 text-center">✓</td>
+                <td class="py-2 md:py-3">Weekly Market insights newsletter</td>
+                <td class="py-2 md:py-3 text-center">✓</td>
+                <td class="py-2 md:py-3 text-center">✓</td>
+                <td class="py-2 md:py-3 text-center">✓</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
     </section>
+
     <!--Feature Table -->
 
     <!--Start FAQ-->
