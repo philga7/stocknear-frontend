@@ -106,7 +106,7 @@
           borderRadius: "1px",
         },
         {
-          name: "Other Owner",
+          name: "Others",
           data: [otherOwner],
           animation: false,
           color: "#D97706",
