@@ -126,52 +126,6 @@
     };
   };
 
-  const submitChangePlan = () => {
-    return async ({ result, update }) => {
-      switch (result.type) {
-        case "success":
-          toast.success("Changing to Annual Plan successfully!", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
-          await update();
-          break;
-        case "redirect":
-          toast.success("Changing to Annual Plan successfully!", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
-          await update();
-          break;
-        case "failure":
-          toast.error("Something went wrong.", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
-          await update();
-          break;
-        case "error":
-          toast.error(result.error.message, {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
-          });
-          break;
-        default:
-          await update();
-      }
-
-      setTimeout(() => {
-        if (result.type === "redirect") {
-          const anchor = document.createElement("a");
-          anchor.href = "/profile";
-          anchor.dataset.sveltekitReload = true;
-          document.body.appendChild(anchor);
-          anchor.dispatchEvent(new MouseEvent("click"));
-        }
-      }, 5000);
-    };
-  };
-
   onMount(async () => {
     pwaInstalled = isPWAInstalled();
     nottifPermGranted = await requestNotificationPermission();
@@ -526,23 +480,6 @@
                 >
                   Cancel Subscription
                 </label>
-                {#if subscriptionData?.product_name?.includes("Monthly")}
-                  <label
-                    for={subscriptionData?.card_brand !== null &&
-                    subscriptionData?.card_brand?.length !== 0
-                      ? "changeSubscriptionModal"
-                      : "errorSubscriptionModal"}
-                    class="sm:ml-3 {subscriptionData?.card_brand !== null &&
-                    subscriptionData?.card_brand?.length !== 0
-                      ? 'cursor-pointer'
-                      : 'cursor-not-allowed'} {subscriptionData?.card_brand !==
-                      null && subscriptionData?.card_brand?.length !== 0
-                      ? 'bg-white sm:hover:bg-white/80 text-black'
-                      : 'bg-gray-600 opacity-[0.8] text-white'} text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
-                  >
-                    Change to Annual Plan
-                  </label>
-                {/if}
               </div>
             {:else if subscriptionData?.status_formatted === "Cancelled"}
               <label
@@ -712,57 +649,6 @@
   </form>
 </dialog>
 <!-- End Reactivate Subscription Modal -->
-
-<!-- Start Cancel Subscription Modal -->
-<input type="checkbox" id="changeSubscriptionModal" class="modal-toggle" />
-
-<dialog id="changeSubscriptionModal" class="modal modal-bottom sm:modal-middle">
-  <label
-    for="changeSubscriptionModal"
-    class="cursor-pointer modal-backdrop bg-[#000]/40"
-  ></label>
-
-  <!-- Desktop modal content -->
-  <form
-    method="POST"
-    action="?/changeSubscription"
-    use:enhance={submitChangePlan}
-    class="modal-box w-full bg-secondary flex flex-col items-center"
-  >
-    <div class="mx-auto mb-8 h-1.5 w-20 shrink-0 rounded-full bg-gray-500" />
-    <div class="text-white mb-5 text-center">
-      <h3 class="font-bold text-2xl mb-5">Are you sure?</h3>
-      <span class="text-white text-[1rem] font-normal">
-        You're account will transfer from from monthly plan to annual plan.
-      </span>
-    </div>
-
-    <button
-      on:click={() => (isClicked = !isClicked)}
-      class="{!isClicked
-        ? ''
-        : 'hidden'} cursor-pointer px-7 py-2 mb-5 rounded text-center bg-[#fff] text-black text-[1rem]"
-    >
-      Proceed
-      <input
-        class="hidden"
-        name="subscriptionId"
-        value={subscriptionData?.first_subscription_item?.subscription_id}
-      />
-    </button>
-    {#if isClicked === true}
-      <label
-        class="cursor-pointer px-7 py-2 mb-5 rounded bg-[#fff] text-center text-black text-[1rem] font-normal"
-      >
-        <div class="flex flex-row m-auto">
-          <span class="loading loading-infinity"></span>
-          <span class="text-black ml-2">Proceeding</span>
-        </div>
-      </label>
-    {/if}
-  </form>
-</dialog>
-<!-- End Cancel Subscription Modal -->
 
 <!-- Start Cancel Subscription Modal -->
 <input type="checkbox" id="errorSubscriptionModal" class="modal-toggle" />

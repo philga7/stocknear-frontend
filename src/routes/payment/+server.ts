@@ -37,11 +37,29 @@ function isValidSignature(payload, signatureHeader) {
  * @param {boolean} refunded - Whether the payment was refunded.
  * @returns {string} - "Pro" if conditions match, otherwise "Free".
  */
-function determineTier(status, refunded) {
-  // List of statuses that qualify for the "Pro" tier if not refunded
-  const proStatuses = new Set(["paid", "active", "cancelled", "on_trial"]);
-  return !refunded && proStatuses.has(status) ? "Pro" : "Free";
+function determineTier(productName, status, refunded) {
+  // Define statuses that qualify for the "Pro" tier if not refunded.
+  const condition = new Set(["paid", "active", "cancelled", "on_trial"]);
+  // First, ensure the product is not refunded and the status qualifies.
+  if (refunded || !condition.has(status)) {
+    return "Free";
+  }
+
+  // At this point, refunded is false and the status qualifies.
+  // Check productName for tier-specific keywords.
+  if (productName) {
+    if (productName.includes("Plus")) {
+      return "Plus";
+    }
+    if (productName.includes("Pro") || productName.includes("Life Time")) {
+      return "Pro";
+    }
+  }
+
+  // Fallback: if no product name conditions are met, default to "Pro" (per the original logic).
+  return "Pro";
 }
+
 
 export const POST = async ({ request, locals }) => {
   try {
@@ -89,8 +107,10 @@ export const POST = async ({ request, locals }) => {
       );
     }
 
-    const tier = determineTier(status, refunded);
-
+  
+    const tier = determineTier(payload?.data?.attributes?.product_name, status, refunded);
+    //console.log(tier, payload?.data?.attributes?.product_name)
+    
     // Update the user and log the payment
     try {
   
