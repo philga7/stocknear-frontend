@@ -277,7 +277,7 @@
         <div
           class="mb-4 grid grid-cols-2 grid-rows-2 divide-contrast rounded-md border border-gray-600 md:grid-cols-4 md:grid-rows-1 md:divide-x"
         >
-          <div class="p-4 bp:p-5 sm:p-6">
+          <div class="p-4 bp:p-5 sm:p-6 border-r border-gray-600">
             <div class="text-[1rem] font-normal text-white">Total Analysts</div>
 
             <div
@@ -286,7 +286,7 @@
               {numOfAnalyst}
             </div>
           </div>
-          <div class="p-4 bp:p-5 sm:p-6 border-l border-gray-600 md:border-0">
+          <div class="p-4 bp:p-5 sm:p-6 border-r-0 md:border-r border-gray-600">
             <div class="text-[1rem] font-normal text-white">
               Consensus Rating
             </div>
@@ -296,7 +296,9 @@
               {consensusRating}
             </div>
           </div>
-          <div class="p-4 bp:p-5 sm:p-6 border-t border-gray-600 md:border-0">
+          <div
+            class="p-4 bp:p-5 sm:p-6 border-r-0 md:border-r border-t md:border-t-0 border-gray-600"
+          >
             <div class="text-[1rem] font-normal text-white">Price Target</div>
             <div
               class="mt-1 break-words font-semibold leading-8 text-white text-xl sm:text-2xl"
