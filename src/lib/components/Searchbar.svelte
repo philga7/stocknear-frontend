@@ -73,7 +73,7 @@
       closePopup?.dispatchEvent(new MouseEvent("click"));
     }
 
-    await goto(
+    goto(
       `/${assetType === "ETF" ? "etf" : assetType === "Index" ? "index" : "stocks"}/${symbol}`,
     );
 
@@ -168,8 +168,8 @@
         `/api/searchbar?query=${encodeURIComponent(inputValue)}&limit=10`,
       );
       searchBarData = await response?.json();
-    }, 50); // delay
-    isLoading = false;
+      isLoading = false;
+    }, 300); // delay
   }
 
   function handleKeyDown(symbol) {
@@ -251,7 +251,7 @@
     ) {
       (async () => {
         // Add 500 ms delay is important otherwise bug since #each has searchHistory and updates too quickly and redirects to wrong symbol
-        await new Promise((resolve) => setTimeout(resolve, 500));
+        await new Promise((resolve) => setTimeout(resolve, 800));
 
         // Update search history after delay
         searchHistory = updatedSearchHistory;
@@ -330,7 +330,13 @@
           <div
             class="absolute inset-y-0 right-0 flex items-center gap-x-2 px-3 text-gray-350 font-semibold"
           >
-            {#if isLoading}
+            {#if isLoading && inputValue?.length > 0}
+              <div
+                class="pointer-events-none absolute end-6 top-2.5 gap-1 opacity-80 rtl:flex-row-reverse flex"
+              >
+                <span class="loading loading-spinner loading-sm"></span>
+              </div>
+            {:else if isLoading}
               <span class="loading loading-spinner loading-sm"></span>
             {:else if inputValue?.length > 0}
               <label class="cursor-pointer" on:click={() => (inputValue = "")}>
@@ -354,56 +360,79 @@
             {/if}
           </div>
         </div>
-        <Combobox.Content
-          class="w-auto z-40 -mt-0.5 rounded-md border border-gray-700 bg-secondary px-1 py-3 shadow-popover outline-hidden"
-          sideOffset={8}
-        >
-          {#if inputValue?.length > 0 && searchBarData?.length > 0}
-            <div
-              class="pl-2 pb-2 border-b border-gray-600 text-white text-sm font-semibold w-full"
-            >
-              Suggestions
-            </div>
-            {#each searchBarData as item}
-              <Combobox.Item
-                class="cursor-pointer text-white border-b border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-2 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-primary"
-                value={item?.symbol}
-                label={item?.name}
-                on:click={() => handleSearch(item?.symbol, item?.type)}
+        {#if isLoading && inputValue?.length > 0}{:else}
+          <Combobox.Content
+            class="w-auto z-40 -mt-0.5 rounded-md border border-gray-700 bg-secondary px-1 py-3 shadow-popover outline-hidden"
+            sideOffset={8}
+          >
+            {#if inputValue?.length > 0 && searchBarData?.length > 0}
+              <div
+                class="pl-2 pb-2 border-b border-gray-600 text-white text-sm font-semibold w-full"
               >
-                <div class="flex flex-row items-center justify-between w-full">
-                  <span class="text-sm text-blue-400">{item?.symbol}</span>
-                  <span class="ml-3 text-sm text-white">{item?.name}</span>
-                  <span class="ml-auto text-sm text-white">{item?.type}</span>
-                </div>
-              </Combobox.Item>
-            {/each}
-          {:else if inputValue?.length === 0 || !showSuggestions}
-            <div
-              class="pl-2 pb-2 border-b border-gray-600 text-white text-sm font-semibold w-full"
-            >
-              {searchHistory?.length > 0 ? "Recent" : "Popular"}
-            </div>
-            {#each searchHistory?.length > 0 ? searchHistory : popularList as item}
-              <Combobox.Item
-                class="cursor-pointer text-white border-b border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-2 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-primary"
-                value={item?.symbol}
-                label={item?.name}
-                on:click={() => handleSearch(item?.symbol, item?.type)}
+                Suggestions
+              </div>
+              {#each searchBarData as item}
+                <Combobox.Item
+                  class="cursor-pointer text-white border-b border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-2 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-primary"
+                  value={item?.symbol}
+                  label={item?.name}
+                  on:click={() => handleSearch(item?.symbol, item?.type)}
+                >
+                  <div
+                    class="flex flex-row items-center justify-between w-full"
+                  >
+                    <span class="text-sm text-blue-400">{item?.symbol}</span>
+                    <span class="ml-3 text-sm text-white">{item?.name}</span>
+                    <span class="ml-auto text-sm text-white">{item?.type}</span>
+                  </div>
+                </Combobox.Item>
+              {/each}
+            {:else if inputValue?.length === 0}
+              <div
+                class="pl-2 pb-2 border-b border-gray-600 text-white text-sm font-semibold w-full"
               >
-                <div class="flex flex-row items-center justify-between w-full">
-                  <span class="text-sm text-blue-400">{item?.symbol}</span>
-                  <span class="ml-3 text-sm text-white">{item?.name}</span>
-                  <span class="ml-auto text-sm text-white">{item?.type}</span>
-                </div>
-              </Combobox.Item>
-            {/each}
-          {:else}
-            <span class="block px-5 py-2 text-sm text-white">
-              No results found
-            </span>
-          {/if}
-        </Combobox.Content>
+                {searchHistory?.length > 0 ? "Recent" : "Popular"}
+              </div>
+              {#each searchHistory as item}
+                <Combobox.Item
+                  class="cursor-pointer text-white border-b border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-2 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-primary"
+                  value={item?.symbol}
+                  label={item?.name}
+                  on:click={() => handleSearch(item?.symbol, item?.type)}
+                >
+                  <div
+                    class="flex flex-row items-center justify-between w-full"
+                  >
+                    <span class="text-sm text-blue-400">{item?.symbol}</span>
+                    <span class="ml-3 text-sm text-white">{item?.name}</span>
+                    <span class="ml-auto text-sm text-white">{item?.type}</span>
+                  </div>
+                </Combobox.Item>
+              {/each}
+            {:else if showSuggestions}
+              {#each searchHistory as item}
+                <Combobox.Item
+                  class="cursor-pointer text-white border-b border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-2 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-primary"
+                  value={item?.symbol}
+                  label={item?.name}
+                  on:click={() => handleSearch(item?.symbol, item?.type)}
+                >
+                  <div
+                    class="flex flex-row items-center justify-between w-full"
+                  >
+                    <span class="text-sm text-blue-400">{item?.symbol}</span>
+                    <span class="ml-3 text-sm text-white">{item?.name}</span>
+                    <span class="ml-auto text-sm text-white">{item?.type}</span>
+                  </div>
+                </Combobox.Item>
+              {/each}
+            {:else}
+              <span class="block px-5 py-2 text-sm text-white">
+                No results found
+              </span>
+            {/if}
+          </Combobox.Content>
+        {/if}
       </Combobox.Root>
     </div>
   </div>
@@ -423,11 +452,11 @@
   bind:checked={searchBarModalChecked}
 />
 
-<dialog id="searchBarModal" class="modal p-3 sm:p-0">
+<dialog id="searchBarModal" class="modal modal-bottom">
   <label for="searchBarModal" class="cursor-pointer modal-backdrop"></label>
 
   <div
-    class="z-999 modal-box overflow-hidden rounded-md bg-secondary border border-gray-600 sm:my-8 sm:m-auto sm:h-auto w-full sm:w-3/4 lg:w-1/2 2xl:w-1/3"
+    class="z-40 modal-box overflow-hidden rounded-md bg-secondary border border-gray-600 sm:my-8 sm:m-auto sm:h-auto w-full sm:w-3/4 lg:w-1/2 2xl:w-1/3"
   >
     <label
       for="searchBarModal"
@@ -596,6 +625,3 @@
     </div>
   </div>
 </dialog>
-
-<!--End Drawer Sidewise for mobile-->
-<!--End Drawer Sidewise for mobile-->
