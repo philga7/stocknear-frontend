@@ -66,7 +66,7 @@
           >
             <ul class="flex flex-row items-center w-full text-white">
               <a
-                href={`/stocks/${$etfTicker}/options`}
+                href={`/etf/${$etfTicker}/options`}
                 on:click={() => changeSubSection("overview")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'overview'
                   ? 'text-white bg-primary/90'
@@ -75,7 +75,7 @@
                 Overview
               </a>
               <a
-                href={`/stocks/${$etfTicker}/options/unusual-activity`}
+                href={`/etf/${$etfTicker}/options/unusual-activity`}
                 on:click={() => changeSubSection("unusual-activity")}
                 class="p-2 px-5 cursor-pointer {displaySubSection ===
                 'unusual-activity'
@@ -85,7 +85,7 @@
                 Unusual Activity
               </a>
               <a
-                href={`/stocks/${$etfTicker}/options/hottest-contracts`}
+                href={`/etf/${$etfTicker}/options/hottest-contracts`}
                 on:click={() => changeSubSection("hottest-contracts")}
                 class="p-2 px-5 cursor-pointer {displaySubSection ===
                 'hottest-contracts'
@@ -95,7 +95,7 @@
                 Hottest Contracts
               </a>
               <a
-                href={`/stocks/${$etfTicker}/options/volatility`}
+                href={`/etf/${$etfTicker}/options/volatility`}
                 on:click={() => changeSubSection("volatility")}
                 class="p-2 px-5 cursor-pointer {displaySubSection ===
                 'volatility'
@@ -105,7 +105,7 @@
                 Volatility
               </a>
               <a
-                href={`/stocks/${$etfTicker}/options/oi`}
+                href={`/etf/${$etfTicker}/options/oi`}
                 on:click={() => changeSubSection("oi")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'oi'
                   ? 'text-white bg-primary/90'
@@ -115,7 +115,7 @@
               </a>
 
               <a
-                href={`/stocks/${$etfTicker}/options/gex`}
+                href={`/etf/${$etfTicker}/options/gex`}
                 on:click={() => changeSubSection("gex")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'gex'
                   ? 'text-white bg-primary/90'
@@ -124,7 +124,7 @@
                 GEX
               </a>
               <a
-                href={`/stocks/${$etfTicker}/options/dex`}
+                href={`/etf/${$etfTicker}/options/dex`}
                 on:click={() => changeSubSection("dex")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'dex'
                   ? 'text-white bg-primary/90'

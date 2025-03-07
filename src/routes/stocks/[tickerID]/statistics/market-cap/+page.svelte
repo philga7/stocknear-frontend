@@ -385,7 +385,7 @@
   }
 
   const exportData = (format = "csv") => {
-    if (data?.user?.tier === "Pro") {
+    if (["Pro", "Plus"]?.includes(data?.user?.tier)) {
       // Add headers row
       const csvRows = [];
       csvRows.push("date,market-cap");
@@ -629,7 +629,7 @@
                       >Download</span
                     >
                     <svg
-                      class="{data?.user?.tier === 'Pro'
+                      class="{['Pro', 'Plus']?.includes(data?.user?.tier)
                         ? 'hidden'
                         : ''} ml-1 -mt-0.5 w-3.5 h-3.5"
                       xmlns="http://www.w3.org/2000/svg"
@@ -662,7 +662,7 @@
                     class="bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1 mt-4"
                   >
                     {#each tabs as item, i}
-                      {#if data?.user?.tier !== "Pro" && i > 0}
+                      {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}
                         <button
                           on:click={() => goto("/pricing")}
                           class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"

@@ -140,7 +140,8 @@
                               <tr
                                 class="bg-table odd:bg-odd border-bborder-gray-800 {index +
                                   1 ===
-                                  rawData?.length && data?.user?.tier !== 'Pro'
+                                  rawData?.length &&
+                                !['Pro', 'Plus']?.includes(data?.user?.tier)
                                   ? 'opacity-[0.1]'
                                   : ''}"
                               >
@@ -256,7 +257,7 @@
         </main>
 
         <aside class="hidden lg:block relative fixed w-1/4 ml-4">
-          {#if data?.user?.tier !== "Pro"}
+          {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
             <div
               class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
             >

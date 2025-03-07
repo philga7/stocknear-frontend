@@ -86,7 +86,7 @@
       if (isAChecked !== isBChecked) return isAChecked ? -1 : 1;
 
       // Check if the user is not Pro
-      if (data?.user?.tier !== "Pro") {
+      if (!["Pro", "Plus"]?.includes(data?.user?.tier)) {
         const isAPriority = proOnlyItems.has(a?.name);
         const isBPriority = proOnlyItems.has(b?.name);
 
@@ -225,7 +225,7 @@
       {#each searchQuery?.length !== 0 ? testList : allRows as item}
         <DropdownMenu.Item class="sm:hover:bg-primary">
           <div class="flex items-center">
-            {#if data?.user?.tier === "Pro" || excludedRules?.has(item?.rule)}
+            {#if ["Pro", "Plus"]?.includes(data?.user?.tier) || excludedRules?.has(item?.rule)}
               <label
                 on:click|capture={(event) => {
                   event.preventDefault();

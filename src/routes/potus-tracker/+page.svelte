@@ -274,7 +274,7 @@
                     <DropdownMenu.Separator />
                     <DropdownMenu.Group>
                       {#each updatedSectorList as sector}
-                        {#if sector === "S&P500" || data?.user?.tier === "Pro"}
+                        {#if sector === "S&P500" || ["Pro", "Plus"]?.includes(data?.user?.tier)}
                           <DropdownMenu.Item
                             on:click={() => (selectedSector = sector)}
                             class="cursor-pointer hover:bg-primary"

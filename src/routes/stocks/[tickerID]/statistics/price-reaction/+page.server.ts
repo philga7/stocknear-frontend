@@ -17,7 +17,7 @@ export const load = async ({ locals, params }) => {
     });
 
     let output = await response.json();
-    output.history = user?.tier !== 'Pro' ? output?.history?.slice(0,3) : output.history;
+    output.history = !["Pro", "Plus"]?.includes(user?.tier) ? output?.history?.slice(0,3) : output.history;
     return output;
   };
 

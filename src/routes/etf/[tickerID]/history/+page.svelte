@@ -212,7 +212,7 @@
   };
 
   async function exportData() {
-    if (data?.user?.tier === "Pro") {
+    if (["Pro", "Plus"]?.includes(data?.user?.tier)) {
       let exportList = rawData?.map(
         ({
           time,
@@ -342,7 +342,7 @@
                         >
                           Weekly
                         </DropdownMenu.Item>
-                        {#if data?.user?.tier !== "Pro"}
+                        {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
                           {#each ["Monthly", "Quarterly", "Annual"] as entry}
                             <DropdownMenu.Item
                               on:click={() => goto("/pricing")}
@@ -391,7 +391,7 @@
                 >
                   <span class="truncate text-white">Download</span>
                   <svg
-                    class="{data?.user?.tier === 'Pro'
+                    class="{['Pro', 'Plus']?.includes(data?.user?.tier)
                       ? 'hidden'
                       : ''} ml-1 -mt-0.5 w-3.5 h-3.5"
                     xmlns="http://www.w3.org/2000/svg"
@@ -422,7 +422,8 @@
                           <tr
                             class="sm:hover:bg-[#245073]/10 border-b border-gray-800 odd:bg-odd {index +
                               1 ===
-                              rawData?.length && data?.user?.tier !== 'Pro'
+                              rawData?.length &&
+                            !['Pro', 'Plus']?.includes(data?.user?.tier)
                               ? 'opacity-[0.1]'
                               : ''}"
                           >

@@ -102,7 +102,10 @@
           updatedTickers.push($etfTicker);
 
           // Check tier limits
-          if (data?.user?.tier !== "Pro" && updatedTickers.length > 5) {
+          if (
+            !["Pro", "Plus"]?.includes(data?.user?.tier) &&
+            updatedTickers.length > 5
+          ) {
             toast.error("Upgrade to Pro to add unlimited stocks!", {
               style:
                 "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",

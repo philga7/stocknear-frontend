@@ -258,7 +258,7 @@
   }
 
   async function handleSelectAll() {
-    if (data?.user?.tier === "Pro") {
+    if (["Pro", "Plus"]?.includes(data?.user?.tier)) {
       searchQuery = "";
       ruleOfList = allRows;
       ruleOfList = [...ruleOfList];
@@ -313,7 +313,7 @@
       }
 
       // Check if the user is not Pro
-      if (data?.user?.tier !== "Pro") {
+      if (!["Pro", "Plus"]?.includes(data?.user?.tier)) {
         const isAPriority = proOnlyItems.has(a?.name);
         const isBPriority = proOnlyItems.has(b?.name);
 
@@ -444,7 +444,7 @@
         });
 
         // Check for the user's tier and filter out paywalled features
-        if (data?.user?.tier !== "Pro") {
+        if (!["Pro", "Plus"]?.includes(data?.user?.tier)) {
           ruleOfList = ruleOfList.filter((item) =>
             excludedRules.has(item?.rule),
           );
@@ -788,7 +788,7 @@
                   />
                   <span class="ml-2">{item?.name}</span>
                 </label>
-              {:else if data?.user?.tier === "Pro" || excludedRules?.has(item?.rule)}
+              {:else if ["Pro", "Plus"]?.includes(data?.user?.tier) || excludedRules?.has(item?.rule)}
                 <label
                   on:click|capture={(event) => {
                     event.preventDefault();
@@ -862,7 +862,7 @@
           class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800 {index +
             1 ===
             rawData?.length &&
-          data?.user?.tier !== 'Pro' &&
+          !['Pro', 'Plus']?.includes(data?.user?.tier) &&
           hideLastRow
             ? 'opacity-[0.1]'
             : ''}"

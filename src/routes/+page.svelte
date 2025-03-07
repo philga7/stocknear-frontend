@@ -71,7 +71,7 @@
   {/if}
 
   <!--
-  {#if data?.user?.tier !== "Pro" || data?.user?.freeTrial === true}
+  {#if !["Pro", "Plus"]?.includes(data?.user?.tier) || data?.user?.freeTrial === true}
     <div
       class="mb-5 relative isolate sm:rounded text-center flex justify-center items-center gap-x-6 overflow-hidden bg-[#FFC233] px-6 py-3.5 sm:py-2.5 sm:px-3.5 sm:before:flex-1"
     >
@@ -398,7 +398,7 @@
               {#if recentWIIM?.length !== 0}
                 <ul style="padding-left: 5px;">
                   {#each recentWIIM as item, index}
-                    {#if index >= 3 && data?.user?.tier !== "Pro"}
+                    {#if index >= 3 && !["Pro", "Plus"]?.includes(data?.user?.tier)}
                       <li
                         class="text-sm sm:text-[1rem]"
                         style="margin-left: 8px; margin-bottom: 15px; list-style-type: disc;"
@@ -587,7 +587,7 @@
               {#if data?.getDashboard?.upcomingEarnings?.length !== 0}
                 <ul style="padding-left: 5px;">
                   {#each data?.getDashboard?.upcomingEarnings as item, index}
-                    {#if index >= 3 && data?.user?.tier !== "Pro"}
+                    {#if index >= 3 && !["Pro", "Plus"]?.includes(data?.user?.tier)}
                       <li
                         class="text-sm sm:text-[1rem]"
                         style=" margin-left: 8px;  margin-bottom: 30px; list-style-type: disc;"

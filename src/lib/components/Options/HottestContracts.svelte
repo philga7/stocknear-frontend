@@ -595,7 +595,7 @@
                   class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800 {index +
                     1 ===
                     volumeList?.slice(0, 3)?.length &&
-                  data?.user?.tier !== 'Pro'
+                  !['Pro']?.includes(data?.user?.tier)
                     ? 'opacity-[0.1]'
                     : ''}"
                 >
@@ -715,7 +715,7 @@
                   class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800 {index +
                     1 ===
                     openInterestList?.slice(0, 3)?.length &&
-                  data?.user?.tier !== 'Pro'
+                  !['Pro']?.includes(data?.user?.tier)
                     ? 'opacity-[0.1]'
                     : ''}"
                 >
@@ -817,7 +817,7 @@
           </table>
         </div>
 
-        <UpgradeToPro {data} />
+        <UpgradeToPro {data} display={true} />
       </div>
     </div>
   </div>
@@ -825,9 +825,7 @@
 
 <dialog
   id="optionDetailsDesktopModal"
-  class="modal {$screenWidth < 640
-    ? 'modal-bottom '
-    : ''} bg-[#000]/40 sm:px-5"
+  class="modal {$screenWidth < 640 ? 'modal-bottom ' : ''} bg-[#000]/40 sm:px-5"
 >
   <div
     class="modal-box w-full {rawDataHistory?.length > 0

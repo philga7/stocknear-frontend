@@ -177,7 +177,8 @@
                       <tr
                         class="sm:hover:bg-[#245073]/10 odd:bg-odd {index +
                           1 ===
-                          rawData?.length && data?.user?.tier !== 'Pro'
+                          rawData?.length &&
+                        !['Pro', 'Plus']?.includes(data?.user?.tier)
                           ? 'opacity-[0.1]'
                           : ''}"
                       >

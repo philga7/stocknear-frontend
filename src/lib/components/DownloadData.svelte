@@ -7,7 +7,7 @@
   export let title;
 
   const exportData = (format = "csv") => {
-    if (data?.user?.tier === "Pro") {
+    if (["Pro", "Plus"]?.includes(data?.user?.tier)) {
       // Add headers row
       const csvRows = [];
 
@@ -58,7 +58,9 @@
 >
   <span class="truncate text-white">Download</span>
   <svg
-    class="{data?.user?.tier === 'Pro' ? 'hidden' : ''} ml-1 mt-0.5 w-3.5 h-3.5"
+    class="{['Pro', 'Plus']?.includes(data?.user?.tier)
+      ? 'hidden'
+      : ''} ml-1 mt-0.5 w-3.5 h-3.5"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
     ><path

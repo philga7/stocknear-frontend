@@ -122,7 +122,7 @@
     if (activeIdx === 0) {
       tableList = filterEndOfYearDates(rawData);
     } else {
-      if (data?.user?.tier === "Pro") {
+      if (["Pro", "Plus"]?.includes(data?.user?.tier)) {
         tableList = filterEndOfQuarterDates(rawData);
       } else {
         goto("/pricing");
@@ -790,7 +790,8 @@
                     >
                       {item.title}
                       <svg
-                        class="{data?.user?.tier !== 'Pro' && i === 1
+                        class="{!['Pro', 'Plus']?.includes(data?.user?.tier) &&
+                        i === 1
                           ? ''
                           : 'hidden'} inline-block ml-0.5 -mt-1 w-3.5 h-3.5"
                         xmlns="http://www.w3.org/2000/svg"

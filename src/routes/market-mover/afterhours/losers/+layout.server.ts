@@ -1,4 +1,4 @@
-export const load = async ({ locals, setHeaders }) => {
+export const load = async ({ locals }) => {
   const { apiURL, apiKey, user } = locals;
 
 
@@ -14,8 +14,7 @@ export const load = async ({ locals, setHeaders }) => {
     });
 
     let  output = await response.json();
-    setHeaders({ "cache-control": "public, max-age=60*5" });
-    output = user?.tier !== "Pro" ? output?.slice(0, 5) : output;
+    output = !["Pro", "Plus"]?.includes(user?.tier) ? output?.slice(0, 5) : output;
 
     return output;
   };

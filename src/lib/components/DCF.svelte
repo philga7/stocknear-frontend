@@ -240,7 +240,7 @@
       />
     </div>
 
-    {#if data?.user?.tier === "Pro"}
+    {#if ["Pro", "Plus"]?.includes(data?.user?.tier)}
       {#if isLoaded}
         {#if fairPrice !== null}
           <div

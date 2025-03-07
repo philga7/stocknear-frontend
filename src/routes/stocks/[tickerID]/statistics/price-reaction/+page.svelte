@@ -374,7 +374,7 @@
                     >
                     <tr
                       class="group {index + 1 === rawData?.length &&
-                      data?.user?.tier !== 'Pro'
+                      !['Pro', 'Plus']?.includes(data?.user?.tier)
                         ? 'opacity-[0.1]'
                         : ''}"
                       ><td

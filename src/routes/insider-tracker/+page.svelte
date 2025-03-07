@@ -54,7 +54,7 @@
   }
 
   onMount(() => {
-    if (data?.user?.tier === "Pro") {
+    if (["Pro", "Plus"]?.includes(data?.user?.tier)) {
       window.addEventListener("scroll", handleScroll);
       return () => {
         window.removeEventListener("scroll", handleScroll);
@@ -230,7 +230,8 @@
                       <tr
                         class="sm:hover:bg-[#245073]/10 odd:bg-odd {index +
                           1 ===
-                          stockList?.length && data?.user?.tier !== 'Pro'
+                          stockList?.length &&
+                        !['Pro', 'Plus']?.includes(data?.user?.tier)
                           ? 'opacity-[0.1]'
                           : ''}"
                       >

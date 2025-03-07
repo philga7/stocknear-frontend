@@ -176,7 +176,7 @@
                         </div>
 
                         <div class="flex flex-col w-full pt-2">
-                          {#if index === 0 && data?.user?.tier !== "Pro"}
+                          {#if index === 0 && !["Pro", "Plus"]?.includes(data?.user?.tier)}
                             <span class="mt-3">
                               {item?.text?.slice(0, 50) + "..."}
                               Unlock content with

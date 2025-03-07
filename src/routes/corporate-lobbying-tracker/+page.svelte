@@ -195,7 +195,8 @@
                     <tr
                       class="sm:hover:bg-[#245073] border-b border-[#27272A] sm:hover:bg-opacity-[0.2] odd:bg-odd {index +
                         1 ===
-                        displayList?.length && data?.user?.tier !== 'Pro'
+                        displayList?.length &&
+                      !['Pro', 'Plus']?.includes(data?.user?.tier)
                         ? 'opacity-[0.1]'
                         : ''}"
                     >

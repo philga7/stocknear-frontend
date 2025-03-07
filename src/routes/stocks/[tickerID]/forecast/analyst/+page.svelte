@@ -226,7 +226,7 @@
                   class="bg-secondary w-full sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1 mt-4"
                 >
                   {#each tabs as item, i}
-                    {#if data?.user?.tier !== "Pro" && i > 0}
+                    {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}
                       <button
                         on:click={() => goto("/pricing")}
                         class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
@@ -369,13 +369,13 @@
                 </tr>
               </thead>
               <tbody>
-                {#each data?.user?.tier === "Pro" ? historyList : historyList?.slice(0, 3) as item, index}
+                {#each ["Pro", "Plus"]?.includes(data?.user?.tier) ? historyList : historyList?.slice(0, 3) as item, index}
                   <tr
                     class=" {latestInfoDate(item?.date)
                       ? 'bg-[#F9AB00]/10'
                       : 'odd:bg-odd '}  {index + 1 ===
                       historyList?.slice(0, 3)?.length &&
-                    data?.user?.tier !== 'Pro'
+                    !['Pro', 'Plus']?.includes(data?.user?.tier)
                       ? 'opacity-[0.1]'
                       : ''}"
                   >
@@ -549,7 +549,7 @@
         {#if rawData?.length !== 0}
           <UpgradeToPro {data} />
         {/if}
-        {#if data?.user?.tier !== "Pro"}
+        {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
           <div class="mt-4 py-6 xl:mt-10 border-t border-gray-200">
             <div class="mx-auto max-w-7xl px-3 xs:px-6 lg:px-8">
               <div class="mx-auto max-w-2xl md:text-center">

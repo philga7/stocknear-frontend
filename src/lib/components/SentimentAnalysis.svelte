@@ -185,7 +185,7 @@
             {#each sentimentList as item}
               <div class="flex flex-col items-center">
                 <span class="text-white text-[1rem] mb-4">
-                  {#if data?.user?.tier === "Pro"}
+                  {#if ["Pro", "Plus"]?.includes(data?.user?.tier)}
                     {item?.value !== 0 ? item?.value : "-"}
                   {:else if ["1M", "1Y"]?.includes(item?.label)}
                     {item?.value}
@@ -209,7 +209,7 @@
                       : 'bg-[#00FC50]'} rounded-full"
                   style="height: 120px;"
                 >
-                  {#if data?.user?.tier === "Pro"}
+                  {#if ["Pro", "Plus"]?.includes(data?.user?.tier)}
                     <div
                       class="bg-[#2F2F2F] w-2 rounded-t-full"
                       style="height: {100 - item?.value * 10}%;"

@@ -414,7 +414,7 @@
                       class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800 {index +
                         1 ===
                         optionList?.slice(0, 3)?.length &&
-                      data?.user?.tier !== 'Pro'
+                      !['Pro']?.includes(data?.user?.tier)
                         ? 'opacity-[0.1]'
                         : ''}"
                     >
@@ -624,7 +624,7 @@
               </table>
             </div>
 
-            <UpgradeToPro {data} />
+            <UpgradeToPro {data} display={true} />
           {/if}
         {/if}
       </div>

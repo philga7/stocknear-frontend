@@ -340,7 +340,7 @@
                       class="odd:bg-odd sm:hover:bg-[#245073]/10 border-b border-gray-800 {index +
                         1 ===
                         rawData?.slice(0, 3)?.length &&
-                      data?.user?.tier !== 'Pro'
+                      !['Pro', 'Plus']?.includes(data?.user?.tier)
                         ? 'opacity-[0.1]'
                         : ''}"
                     >

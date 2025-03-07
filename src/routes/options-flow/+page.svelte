@@ -1639,7 +1639,7 @@
                 {filteredData}
                 {rawData}
               />
-              <UpgradeToPro {data} />
+              <UpgradeToPro {data} display={true} />
             </div>
           {:else}
             <div

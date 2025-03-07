@@ -601,7 +601,7 @@
   }
 
   async function handleSelectAll() {
-    if (data?.user?.tier === "Pro") {
+    if (["Pro", "Plus"]?.includes(data?.user?.tier)) {
       searchQuery = "";
       ruleOfList = allRows;
       ruleOfList = [...ruleOfList];
@@ -611,7 +611,7 @@
 
       saveRules();
     } else {
-      toast.error("Only for Pro Members", {
+      toast.error("Only for Plus & Pro Members", {
         style:
           "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
       });
@@ -682,7 +682,7 @@
         });
 
         // Check for the user's tier and filter out paywalled features
-        if (data?.user?.tier !== "Pro") {
+        if (!["Pro", "Plus"]?.includes(data?.user?.tier)) {
           ruleOfList = ruleOfList.filter((item) =>
             excludedRules.has(item?.rule),
           );
@@ -846,7 +846,7 @@
       }
 
       // Check if the user is not Pro
-      if (data?.user?.tier !== "Pro") {
+      if (!["Pro", "Plus"]?.includes(data?.user?.tier)) {
         const isAPriority = proOnlyItems.has(a?.name);
         const isBPriority = proOnlyItems.has(b?.name);
 
@@ -1402,7 +1402,7 @@
                                   />
                                   <span class="ml-2">{item?.name}</span>
                                 </label>
-                              {:else if data?.user?.tier === "Pro" || excludedRules?.has(item?.rule)}
+                              {:else if ["Pro", "Plus"]?.includes(data?.user?.tier) || excludedRules?.has(item?.rule)}
                                 <label
                                   on:click|capture={(event) => {
                                     event.preventDefault();
@@ -1666,7 +1666,7 @@
                         class="bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded p-1 mt-4"
                       >
                         {#each tabs as item, i}
-                          {#if data?.user?.tier !== "Pro" && i > 0}
+                          {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}
                             <button
                               on:click={() => goto("/pricing")}
                               class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"

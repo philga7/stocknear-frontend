@@ -407,7 +407,7 @@
                           <td
                             class="text-sm sm:text-[1rem] text-start whitespace-nowrap"
                           >
-                            {#if index >= 5 && data?.user?.tier !== "Pro"}
+                            {#if index >= 5 && !["Pro", "Plus"]?.includes(data?.user?.tier)}
                               <a class="block relative" href="/pricing">
                                 <span
                                   class="text-base font-semibold text-blue-link blur-sm group-hover:blur-[6px]"

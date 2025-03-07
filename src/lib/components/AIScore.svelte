@@ -57,7 +57,8 @@
                   stroke-width="3"
                   stroke-dasharray="100.48"
                   stroke-dashoffset={100.48 -
-                    ((tier === "Pro" ? score : 0) / 10) * 100.48}
+                    ((["Pro", "Plus"]?.includes(tier) ? score : 0) / 10) *
+                      100.48}
                 >
                 </circle>
               </g>
@@ -67,7 +68,7 @@
                 y="21"
                 text-anchor="middle"
                 font-size="10"
-                fill="#000">{tier === "Pro" ? score : 0}</text
+                fill="#000">{["Pro", "Plus"]?.includes(tier) ? score : 0}</text
               >
             </svg>
 
@@ -75,7 +76,7 @@
             <div
               class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
             >
-              {#if tier === "Pro"}
+              {#if ["Pro", "Plus"]?.includes(tier)}
                 <span class="text-center text-white text-xl font-semibold">
                   {score}
                 </span>
@@ -107,7 +108,7 @@
           </div>
         </div>
         <h4 class="text-center text-white text-sm mt-1 font-semibold">
-          {#if tier === "Pro"}
+          {#if ["Pro", "Plus"]?.includes(tier)}
             {#if score === 10}
               Strong Buy
             {:else if score >= 7}

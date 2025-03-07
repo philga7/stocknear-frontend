@@ -262,7 +262,7 @@
   }
 
   onMount(async () => {
-    if (data?.user?.tier === "Pro") {
+    if (["Pro", "Plus"]?.includes(data?.user?.tier)) {
       window.addEventListener("scroll", handleScroll);
       return () => {
         window.removeEventListener("scroll", handleScroll);
@@ -417,12 +417,12 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {#each data?.user?.tier === "Pro" ? optionList : optionList?.slice(0, 3) as item, index}
+                  {#each ["Pro", "Plus"]?.includes(data?.user?.tier) ? optionList : optionList?.slice(0, 3) as item, index}
                     <tr
                       class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800 {index +
                         1 ===
                         optionList?.slice(0, 3)?.length &&
-                      data?.user?.tier !== 'Pro'
+                      !['Pro', 'Plus']?.includes(data?.user?.tier)
                         ? 'opacity-[0.1]'
                         : ''}"
                     >

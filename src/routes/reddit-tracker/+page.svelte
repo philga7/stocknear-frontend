@@ -483,7 +483,7 @@
                       class="flex flex-row items-center w-full text-sm sm:text-[1rem] text-white"
                     >
                       {#each tabs as item, index}
-                        {#if data?.user?.tier === "Pro" || index === 0}
+                        {#if ["Pro", "Plus"]?.includes(data?.user?.tier) || index === 0}
                           <label
                             on:click={() => changeTimePeriod(index)}
                             class="p-2 px-5 cursor-pointer {activeIdx === index
@@ -492,7 +492,7 @@
                           >
                             {item.title}
                           </label>
-                        {:else if data?.user?.tier !== "Pro"}
+                        {:else if !["Pro", "Plus"]?.includes(data?.user?.tier)}
                           <a
                             href="/pricing"
                             class="flex flex-row items-center p-2 px-5 cursor-pointer {activeIdx ===

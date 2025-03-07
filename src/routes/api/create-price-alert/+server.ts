@@ -8,7 +8,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
   
   // If the user is not Pro, check the current number of active price alerts.
-  if (user?.tier !== 'Pro') {
+  if (!["Pro","Plus"]?.includes(user?.tier)) {
     const totalAlerts = await pb.collection("priceAlert").getFullList({
       // Ensure the filter checks for a boolean false.
       filter: `user="${user?.id}" && triggered=false`

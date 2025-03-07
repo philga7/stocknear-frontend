@@ -309,7 +309,7 @@
           class="flex justify-start space-x-2 w-full ml-2 absolute top-3.5 z-10"
         >
           {#each ["1Y", "3Y", "5Y", "Max"] as item, index}
-            {#if data?.user?.tier === "Pro" || index === 0}
+            {#if ["Pro", "Plus"]?.includes(data?.user?.tier) || index === 0}
               <label
                 on:click={() => (timePeriod = item)}
                 class="px-3 py-1 {timePeriod === item
@@ -318,7 +318,7 @@
               >
                 {item}
               </label>
-            {:else if data?.user?.tier !== "Pro"}
+            {:else if !["Pro", "Plus"]?.includes(data?.user?.tier)}
               <a
                 href="/pricing"
                 class="px-3 py-1 flex flex-row items-center {timePeriod === item

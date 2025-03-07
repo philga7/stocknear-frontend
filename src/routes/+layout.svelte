@@ -773,7 +773,7 @@
                   </a>
                 </Button>
               </Sheet.Close>
-              {#if data?.user?.tier !== "Pro"}
+              {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
                 <Sheet.Close asChild let:builder>
                   <Button
                     builders={[builder]}
@@ -791,7 +791,7 @@
                           <Gem class="h-5.5 w-5.5" />
                         </div>
                         <span class="ml-3 text-white text-[1rem]"
-                          >Stock Analysis Pro</span
+                          >Pricing Plan</span
                         >
                       </div>
                     </a>
@@ -1192,7 +1192,7 @@
                   </div>
                   <span class="ml-3 text-white">News</span>
                 </a>
-                {#if data?.user?.tier !== "Pro"}
+                {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
                   <a
                     href="/pricing"
                     class="flex flex-row items-center ml-9 w-full mt-3"
@@ -1202,7 +1202,7 @@
                     >
                       <Gem class="h-5.5 w-5.5" />
                     </div>
-                    <span class="ml-3 text-white">Stock Analysis Pro</span>
+                    <span class="ml-3 text-white">Pricing Plan</span>
                   </a>
                 {/if}
               </nav>

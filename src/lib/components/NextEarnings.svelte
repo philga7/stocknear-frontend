@@ -68,7 +68,7 @@
           during market hours.
         {/if}
         <br />Analysts project revenue of
-        {#if data?.user?.tier !== "Pro"}
+        {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
           ... Unlock content with
           <a
             class="inline-block ml-0.5 text-blue-400 sm:hover:text-white"

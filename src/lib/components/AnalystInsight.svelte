@@ -48,7 +48,7 @@
         id={"analystInsightInfo"}
       />
     </div>
-    {#if data?.user?.tier === "Pro"}
+    {#if ["Pro", "Plus"]?.includes(data?.user?.tier)}
       <div class="w-full flex flex-col items-start">
         <div class="text-white text-[1rem] mt-2 mb-2 w-full">
           The AI model summarizes the latest Wallstreet Analyst Insight Report

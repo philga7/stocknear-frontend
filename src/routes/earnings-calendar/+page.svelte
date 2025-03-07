@@ -451,13 +451,13 @@
                           <TableHeader {columns} {sortOrders} {sortData} />
                         </thead>
                         <tbody>
-                          {#each data?.user?.tier === "Pro" ? day : day?.slice(0, 6) as item, index}
+                          {#each ["Pro", "Plus"]?.includes(data?.user?.tier) ? day : day?.slice(0, 6) as item, index}
                             <!-- row -->
                             <tr
                               class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800 {index +
                                 1 ===
                                 day?.slice(0, 6)?.length &&
-                              data?.user?.tier !== 'Pro'
+                              !['Pro', 'Plus']?.includes(data?.user?.tier)
                                 ? 'opacity-[0.1]'
                                 : ''}"
                             >

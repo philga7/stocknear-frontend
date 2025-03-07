@@ -202,7 +202,7 @@
             <div class="w-full m-auto mt-10">
               <Table
                 {data}
-                rawData={data?.user?.tier === "Pro"
+                rawData={["Pro", "Plus"]?.includes(data?.user?.tier)
                   ? data?.getHedgeFundsData?.holdings
                   : data?.getHedgeFundsData?.holdings?.slice(0, 5)}
                 {excludedRules}

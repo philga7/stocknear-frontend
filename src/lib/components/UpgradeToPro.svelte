@@ -1,8 +1,9 @@
 <script lang="ts">
   export let data;
+  export let display = false;
 </script>
 
-{#if data?.user?.tier !== "Pro"}
+{#if (display === true && data?.user?.tier !== "Pro") || !["Pro", "Plus"]?.includes(data?.user?.tier)}
   <div class="mt-4 py-6">
     <div class="mx-auto max-w-7xl px-3 xs:px-6 lg:px-8">
       <div class="mx-auto max-w-2xl text-center">

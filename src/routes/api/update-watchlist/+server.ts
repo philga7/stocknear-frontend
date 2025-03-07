@@ -12,7 +12,7 @@ export const POST = (async ({ request, locals }) => {
 
 
   // Determine the ticker limit: 50 for Pro users, 5 for non-Pro users.
-  const isProUser = user?.tier === "Pro";
+  const isProUser = user?.tier === "Pro" || user?.tier === "Plus";
   const tickerLimit = isProUser ? 100 : 5;
 
   try {

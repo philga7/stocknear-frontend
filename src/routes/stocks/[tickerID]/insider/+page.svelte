@@ -557,7 +557,7 @@
                         class="text-white odd:bg-odd border-b border-gray-800 {index +
                           1 ===
                           insiderTradingList?.slice(0, 6)?.length &&
-                        data?.user?.tier !== 'Pro'
+                        !['Pro', 'Plus']?.includes(data?.user?.tier)
                           ? 'opacity-[0.1]'
                           : ''}"
                       >
@@ -627,7 +627,7 @@
               </table>
             </div>
 
-            {#if rawData?.length > 5 && rawData?.length === insiderTradingList?.length && data?.user?.tier === "Pro"}
+            {#if rawData?.length > 5 && rawData?.length === insiderTradingList?.length && ["Pro", "Plus"]?.includes(data?.user?.tier)}
               <label
                 on:click={backToTop}
                 class="w-32 py-1.5 mt-10 hover:bg-white hover:bg-opacity-[0.05] cursor-pointer m-auto flex justify-center items-center border border-gray-600 rounded-full"

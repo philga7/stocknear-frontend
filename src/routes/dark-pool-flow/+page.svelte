@@ -1297,7 +1297,7 @@
           {#if displayedData?.length !== 0}
             <div class="mt-3 w-full overflow-x-auto h-[850px] overflow-hidden">
               <DarkPoolTable {data} {displayedData} {filteredData} {rawData} />
-              <UpgradeToPro {data} />
+              <UpgradeToPro {data} display={true} />
             </div>
           {:else}
             <div

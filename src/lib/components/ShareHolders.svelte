@@ -515,7 +515,8 @@
                 <tr
                   class="border-b border-gray-800 odd:bg-odd sm:hover:bg-[#245073]/10 {index +
                     1 ===
-                    shareholderList?.length && data?.user?.tier !== 'Pro'
+                    shareholderList?.length &&
+                  !['Pro', 'Plus']?.includes(data?.user?.tier)
                     ? 'opacity-[0.1]'
                     : ''}"
                 >

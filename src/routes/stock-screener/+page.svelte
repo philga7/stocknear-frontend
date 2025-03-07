@@ -1471,7 +1471,7 @@
   }
 
   async function handleCreateStrategy() {
-    if (data?.user?.tier === "Pro") {
+    if (["Pro", "Plus"]?.includes(data?.user?.tier)) {
       const closePopup = document.getElementById("addStrategy");
       closePopup?.dispatchEvent(new MouseEvent("click"));
     } else {
@@ -1643,7 +1643,7 @@
 
   function changeRule(state: string) {
     if (
-      data?.user?.tier !== "Pro" &&
+      !["Pro", "Plus"]?.includes(data?.user?.tier) &&
       [
         "gexRatio",
         "ivRank",
@@ -3723,7 +3723,7 @@ const handleKeyDown = (event) => {
               <div
                 class="flex w-full items-center space-x-1.5 py-1.5 md:w-1/2 lg:w-1/3 lg:py-1"
               >
-                {#if ["gexRatio", "ivRank", "iv30d", "totalOI", "changeOI", "netCallPrem", "netPutPrem", "callVolume", "putVolume", "pcRatio", "topAnalystRating", "topAnalystCounter", "topAnalystPriceTarget", "topAnalystUpside", "score"]?.includes(row?.rule) && data?.user?.tier !== "Pro"}
+                {#if ["gexRatio", "ivRank", "iv30d", "totalOI", "changeOI", "netCallPrem", "netPutPrem", "callVolume", "putVolume", "pcRatio", "topAnalystRating", "topAnalystCounter", "topAnalystPriceTarget", "topAnalystUpside", "score"]?.includes(row?.rule) && !["Pro", "Plus"]?.includes(data?.user?.tier)}
                   <label id={row?.rule} on:click={() => changeRule(row?.rule)}>
                     <svg
                       class="w-4 h-4 mb-1 inline-block text-[#A3A3A3] sm:hover:text-white cursor-pointer"

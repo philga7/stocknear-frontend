@@ -43,7 +43,7 @@
               {#each highDataList as item, index}
                 <td class="px-1 py-[3px] text-sm sm:text-[1rem]">
                   {#if index !== 0}
-                    {#if userTier !== "Pro" && index >= highDataList?.length - 2}
+                    {#if !["Pro", "Plus"]?.includes(userTier) && index >= highDataList?.length - 2}
                       <a class="inline-block ml-0.5 text-white" href="/pricing"
                         >Pro<svg
                           class="w-4 h-4 ml-0.5 mb-1 inline-block text-[#A3A3A3]"
@@ -66,7 +66,7 @@
               {#each avgDataList as item, index}
                 <td class="px-1 py-[3px] text-sm sm:text-[1rem]">
                   {#if index !== 0}
-                    {#if userTier !== "Pro" && index >= avgDataList?.length - 2}
+                    {#if !["Pro", "Plus"]?.includes(userTier) && index >= avgDataList?.length - 2}
                       <a class="inline-block ml-0.5 text-white" href="/pricing"
                         >Pro<svg
                           class="w-4 h-4 ml-0.5 mb-1 inline-block text-[#A3A3A3]"
@@ -89,7 +89,7 @@
               {#each lowDataList as item, index}
                 <td class="px-1 py-[3px] text-sm sm:text-[1rem]">
                   {#if index !== 0}
-                    {#if userTier !== "Pro" && index >= lowDataList?.length - 2}
+                    {#if !["Pro", "Plus"]?.includes(userTier) && index >= lowDataList?.length - 2}
                       <a class="inline-block ml-0.5 text-white" href="/pricing"
                         >Pro<svg
                           class="w-4 h-4 ml-0.5 mb-1 inline-block text-[#A3A3A3]"
@@ -143,7 +143,7 @@
               {#each computeGrowthSingleList(highDataList, avgDataList) as item, index}
                 <td class="px-1 py-[3px] text-sm sm:text-[1rem]">
                   {#if index !== 0}
-                    {#if userTier !== "Pro" && index >= highDataList?.length - 2}
+                    {#if !["Pro", "Plus"]?.includes(userTier) && index >= highDataList?.length - 2}
                       <a class="inline-block ml-0.5 text-white" href="/pricing"
                         >Pro<svg
                           class="w-4 h-4 ml-0.5 mb-1 inline-block text-[#A3A3A3]"
@@ -176,7 +176,7 @@
               {#each avgGrowthList?.filter((item) => item.FY >= 25) as item, index}
                 <td class="px-1 py-[3px] text-sm sm:text-[1rem]">
                   {#if index !== 0}
-                    {#if userTier !== "Pro" && index >= avgDataList?.length - 2}
+                    {#if !["Pro", "Plus"]?.includes(userTier) && index >= avgDataList?.length - 2}
                       <a class="inline-block ml-0.5 text-white" href="/pricing"
                         >Pro<svg
                           class="w-4 h-4 ml-0.5 mb-1 inline-block text-[#A3A3A3]"
@@ -209,7 +209,7 @@
               {#each computeGrowthSingleList(lowDataList, avgDataList) as item, index}
                 <td class="px-1 py-[3px] text-sm sm:text-[1rem]">
                   {#if index !== 0}
-                    {#if userTier !== "Pro" && index >= lowDataList?.length - 2}
+                    {#if !["Pro", "Plus"]?.includes(userTier) && index >= lowDataList?.length - 2}
                       <a class="inline-block ml-0.5 text-white" href="/pricing"
                         >Pro<svg
                           class="w-4 h-4 ml-0.5 mb-1 inline-block text-[#A3A3A3]"

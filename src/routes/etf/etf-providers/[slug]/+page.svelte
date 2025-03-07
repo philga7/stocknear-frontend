@@ -199,7 +199,8 @@
                 <tr
                   class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800 {index +
                     1 ===
-                    etfProviderData?.length && data?.user?.tier !== 'Pro'
+                    etfProviderData?.length &&
+                  !['Pro', 'Plus']?.includes(data?.user?.tier)
                     ? 'opacity-[0.1]'
                     : ''}"
                 >
