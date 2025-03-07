@@ -15,39 +15,24 @@
   let showSuggestions = false;
   let touchedInput = false;
 
-  $: inputValue = "";
+  // FIX: Declare inputValue as a normal variable instead of using a reactive assignment.
+  let inputValue = "";
+
   let nextPage = false;
   let searchOpen = false;
   let searchBarModalChecked = false; // Initialize it to false
   let inputElement;
   let isNavigating = false;
 
+  // NEW: Flag to ensure we only auto-dispatch ArrowDown once per modal open.
+  let suggestionSelected = false;
+
   const popularList = [
-    {
-      symbol: "KO",
-      name: "Coca Cola Company",
-      type: "Stock",
-    },
-    {
-      symbol: "TSLA",
-      name: "Tesla Inc",
-      type: "Stock",
-    },
-    {
-      symbol: "AMD",
-      name: "Advanced Micro Devices",
-      type: "Stock",
-    },
-    {
-      symbol: "SPY",
-      name: "SPDR S&P 500 ETF Trust",
-      type: "ETF",
-    },
-    {
-      symbol: "NVDA",
-      name: "Nvidia",
-      type: "Stock",
-    },
+    { symbol: "KO", name: "Coca Cola Company", type: "Stock" },
+    { symbol: "TSLA", name: "Tesla Inc", type: "Stock" },
+    { symbol: "AMD", name: "Advanced Micro Devices", type: "Stock" },
+    { symbol: "SPY", name: "SPDR S&P 500 ETF Trust", type: "ETF" },
+    { symbol: "NVDA", name: "Nvidia", type: "Stock" },
   ];
 
   async function handleSearch(symbol, assetType) {
@@ -111,7 +96,6 @@
     const closePopup = document.getElementById("searchBarModal");
     closePopup?.dispatchEvent(new MouseEvent("click"));
 
-    // Reset the flag after a short delay
     setTimeout(() => {
       isNavigating = false;
     }, 100);
@@ -156,11 +140,10 @@
   async function search() {
     isLoading = true;
 
-    clearTimeout(timeoutId); // Clear any existing timeout
+    clearTimeout(timeoutId);
 
     if (!inputValue.trim()) {
-      // Skip if query is empty or just whitespace
-      searchBarData = []; // Clear previous results
+      searchBarData = [];
       isLoading = false;
       return;
     }
@@ -171,7 +154,7 @@
       );
       searchBarData = await response?.json();
       isLoading = false;
-    }, 200); // delay
+    }, 200);
   }
 
   function handleKeyDown(symbol) {
@@ -205,7 +188,6 @@
 
   function saveRecentTicker() {
     try {
-      // Save the version along with the rules
       localStorage?.setItem("search-history", JSON?.stringify(searchHistory));
     } catch (e) {
       console.log("Failed saving indicator rules: ", e);
@@ -215,14 +197,12 @@
   onMount(() => {
     try {
       const savedRules = localStorage?.getItem("search-history");
-
       if (savedRules) {
         searchHistory = JSON.parse(savedRules);
       }
     } catch (e) {
       console.log(e);
     }
-
     window.addEventListener("keydown", handleControlK);
     return () => {
       window.removeEventListener("keydown", handleControlK);
@@ -235,14 +215,17 @@
       if ($screenWidth > 640) {
         inputElement.focus();
       }
-      //Page is not scrollable now
+      // Prevent body scroll while modal is open
       document.body.classList.add("overflow-hidden");
+      // Reset our flag when modal is (re‑)opened.
+      suggestionSelected = false;
     }
   }
 
   $: {
     if (searchBarModalChecked === false && typeof window !== "undefined") {
       showSuggestions = inputValue = "";
+      suggestionSelected = false;
       document.body.classList?.remove("overflow-hidden");
     }
   }
@@ -253,10 +236,8 @@
       updatedSearchHistory?.length > 0
     ) {
       (async () => {
-        // Add 500 ms delay is important otherwise bug since #each has searchHistory and updates too quickly and redirects to wrong symbol
+        // Delay is needed so that the #each block updates properly
         await new Promise((resolve) => setTimeout(resolve, 500));
-
-        // Update search history after delay
         searchHistory = updatedSearchHistory;
         updatedSearchHistory = [];
         saveRecentTicker();
@@ -267,11 +248,7 @@
 
   $: {
     if (searchBarData) {
-      if (searchBarData?.length > 0) {
-        showSuggestions = true;
-      } else {
-        showSuggestions = false;
-      }
+      showSuggestions = searchBarData?.length > 0;
     }
   }
 
@@ -281,13 +258,20 @@
     }
   }
 
-  $: if (showSuggestions && searchBarData?.length && touchedInput) {
+  // FIX: Dispatch ArrowDown only once (when suggestions open) to auto‑select the first suggestion.
+  $: if (
+    showSuggestions &&
+    searchBarData?.length &&
+    touchedInput &&
+    !suggestionSelected
+  ) {
     tick().then(() => {
       const input = document.getElementById("combobox-input");
       if (input) {
         input.dispatchEvent(
           new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true }),
         );
+        suggestionSelected = true;
       }
     });
   }
