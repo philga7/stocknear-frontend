@@ -339,9 +339,7 @@
               >
                 Official Presidential Schedule
               </h3>
-              <div
-                class="max-h-[600px] overflow-y-auto border border-gray-800 rounded-md p-4 no-scrollbar"
-              >
+              <div class="border border-gray-800 rounded-md p-4">
                 <div class="space-y-4">
                   {#each Object?.entries(groupedByDate) as [date, items], indexA}
                     <div class="my-4">
@@ -434,9 +432,7 @@
               >
                 Executive Actions
               </h3>
-              <div
-                class="max-h-[600px] overflow-y-auto border border-gray-800 rounded-md p-4 no-scrollbar"
-              >
+              <div class=" border border-gray-800 rounded-md p-4">
                 <div class="space-y-4">
                   {#each Object.entries(groupedOrders) as [date, items], indexA}
                     <div class="my-4">
@@ -617,9 +613,7 @@
                 </h3>
               </div>
 
-              <div
-                class="max-h-[600px] overflow-y-auto border border-gray-800 rounded-md p-4 no-scrollbar"
-              >
+              <div class="border border-gray-800 rounded-md p-4">
                 <div class="space-y-4">
                   {#each posts as item}
                     <div class="my-4">
