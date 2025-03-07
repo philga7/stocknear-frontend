@@ -81,7 +81,7 @@
     // Reset the flag after navigation
     setTimeout(() => {
       isNavigating = false;
-    }, 50);
+    }, 100);
   }
 
   async function popularTicker(state) {
@@ -114,7 +114,7 @@
     // Reset the flag after a short delay
     setTimeout(() => {
       isNavigating = false;
-    }, 50);
+    }, 100);
   }
 
   function searchBarTicker(state) {
@@ -171,7 +171,7 @@
       );
       searchBarData = await response?.json();
       isLoading = false;
-    }, 50); // delay
+    }, 200); // delay
   }
 
   function handleKeyDown(symbol) {
@@ -231,6 +231,7 @@
 
   $: {
     if (searchBarModalChecked === true && typeof window !== "undefined") {
+      console.log("open");
       if ($screenWidth > 640) {
         inputElement.focus();
       }
