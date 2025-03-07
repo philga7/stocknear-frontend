@@ -70,59 +70,37 @@
     <svelte:component this={AppInstalled} />
   {/if}
 
-  <!--
   {#if !["Pro", "Plus"]?.includes(data?.user?.tier) || data?.user?.freeTrial === true}
-    <div
-      class="mb-5 relative isolate sm:rounded text-center flex justify-center items-center gap-x-6 overflow-hidden bg-[#FFC233] px-6 py-3.5 sm:py-2.5 sm:px-3.5 sm:before:flex-1"
-    >
-      <div
-        class="absolute left-[max(-7rem,calc(50%-52rem))] top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl"
-        aria-hidden="true"
+    <div class="flex justify-center mb-5">
+      <a
+        href="/pricing"
+        class="cursor-pointer hidden sm:flex items-center gap-2 px-6 py-3.5 sm:px-3.5 sm:py-2.5 text-[1rem] font-medium text-indigo-300 bg-indigo-500/20 border border-indigo-500/30 rounded-lg transition-all duration-200 hover:bg-indigo-500/30"
+        tabindex="0"
       >
-        <div
-          class="aspect-577/310 w-[36.0625rem] bg-linear-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
-          style="clip-path: polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)"
-        ></div>
-      </div>
-      <div
-        class="absolute left-[max(45rem,calc(50%+8rem))] top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl"
-        aria-hidden="true"
-      >
-        <div
-          class="aspect-577/310 w-[36.0625rem] bg-linear-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
-          style="clip-path: polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)"
-        ></div>
-      </div>
-      <div
-        class="w-full m-auto flex flex-col sm:flex-row justify-center items-center gap-x-4 gap-y-2"
-      >
-        <p
-          class="text-md text-black font-semibold flex flex-col sm:flex-row items-center"
+        <svg
+          class="w-5 h-5 text-zinc-300"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
         >
-         <span class="text-black font-bold">Last Chance</span><svg
-            viewBox="0 0 2 2"
-            class="mx-2 inline h-0.5 w-0.5 fill-current hidden sm:inline-block"
-            aria-hidden="true"><circle cx="1" cy="1" r="1" /></svg
-          >
-          The Lifetime Deal officially ends permanently this Friday at 12:00 AM (CET).
-        </p>
-
-        <a
-          href="/pricing"
-          class="flex-none rounded-full m-auto sm:m-0 px-3.5 py-1 text-[1rem] font-semibold text-black shadow-xs sm:hover:bg-gray-100 bg-[#fff] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
-        >
-          Get Lifetime
-        </a>
-      </div>
+          <path
+            fill-rule="evenodd"
+            d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+        <span>Introducing Plus Tier: Our new affordable plan for Traders</span>
+      </a>
     </div>
   {/if}
-  -->
 
   <div class="flex flex-col m-auto justify-center items-center">
     <div class="text-center mb-10 w-full px-4 sm:px-3 mt-10">
       {#if data?.user}
         <Feedback {data} />
       {/if}
+      <!--
       <div
         class="text-center mb-10 relative w-fit flex justify-center m-auto text-white"
       >
@@ -141,6 +119,7 @@
           >
         </div>
       </div>
+-->
 
       <h1
         class="hidden sm:block text-3xl lg:text-4xl text-white font-bold text-center mb-10 relative w-fit flex justify-center m-auto"
