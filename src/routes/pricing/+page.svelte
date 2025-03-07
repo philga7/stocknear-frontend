@@ -950,7 +950,7 @@
           </div>
         </div>
         <!-- Responsive paragraph text -->
-        <p class="text-base md:text-lg mt-2">
+        <p class="text-white md:text-lg mt-2">
           Everything in Pro, pay once, never again!
         </p>
         <!-- Button container: full width on mobile, 1/4 width on md+ -->
@@ -1021,7 +1021,7 @@
                 </th>
               </tr>
             </thead>
-            <tbody class="text-sm md:text-base">
+            <tbody class="text-sm md:text-white">
               <tr>
                 <td class="py-2 md:py-3">Full Market Access</td>
                 <td class="py-2 md:py-3 text-center">❌</td>
