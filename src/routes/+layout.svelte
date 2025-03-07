@@ -281,7 +281,7 @@
             <Button
               builders={[builder]}
               size="icon"
-              class="bg-default text-white sm:hover:bg-primary border-none"
+              class="bg-default text-white sm:hover:bg-[#18181B] border-none"
             >
               <Menu class="h-5.5 w-5.5 sm:w-7 sm:h-7" />
               <span class="sr-only">Toggle Menu</span>
@@ -289,13 +289,13 @@
           </Sheet.Trigger>
           <Sheet.Content
             side="left"
-            class="max-w-screen w-full sm:max-w-xs bg-[#141417] overflow-y-auto text-white"
+            class="max-w-screen w-full sm:max-w-xs bg-[#18181B] overflow-y-auto text-white"
           >
-            <nav class=" grid gap-6 text-lg bg-[#141417]">
+            <nav class=" grid gap-6 text-lg bg-[#18181B]">
               <Sheet.Close asChild let:builder>
                 <Button
                   builders={[builder]}
-                  class="bg-[#141417] hover:bg-[#141417] -ml-4 mr-auto"
+                  class="bg-[#18181B] hover:bg-[#18181B] -ml-4 mr-auto"
                 >
                   <a
                     href="/"
@@ -315,7 +315,7 @@
                 <Button
                   builders={[builder]}
                   type="submit"
-                  class="w-full bg-[#141417] hover:bg-[#141417] -ml-4 mr-auto"
+                  class="w-full bg-[#18181B] hover:bg-[#18181B] -ml-4 mr-auto"
                 >
                   <a
                     href="/"
@@ -346,7 +346,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full bg-[#141417] hover:bg-[#141417]"
+                            class="w-full bg-[#18181B] hover:bg-[#18181B]"
                           >
                             <a
                               href="/analysts"
@@ -358,7 +358,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full bg-[#141417] hover:bg-[#141417]"
+                            class="w-full bg-[#18181B] hover:bg-[#18181B]"
                           >
                             <a
                               href="/analysts/top-stocks"
@@ -370,7 +370,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full bg-[#141417] hover:bg-[#141417]"
+                            class="w-full bg-[#18181B] hover:bg-[#18181B]"
                           >
                             <a
                               href="/industry"
@@ -382,7 +382,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full bg-[#141417] hover:bg-[#141417]"
+                            class="w-full bg-[#18181B] hover:bg-[#18181B]"
                           >
                             <a
                               href="/stock-screener"
@@ -393,7 +393,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full bg-[#141417] hover:bg-[#141417]"
+                            class="w-full bg-[#18181B] hover:bg-[#18181B]"
                           >
                             <a
                               href="/market-mover/gainers"
@@ -405,7 +405,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full bg-[#141417] hover:bg-[#141417]"
+                            class="w-full bg-[#18181B] hover:bg-[#18181B]"
                           >
                             <a
                               href="/heatmap"
@@ -417,7 +417,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full bg-[#141417] hover:bg-[#141417]"
+                            class="w-full bg-[#18181B] hover:bg-[#18181B]"
                           >
                             <a
                               href="/list"
@@ -447,7 +447,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full bg-[#141417] hover:bg-[#141417]"
+                            class="w-full bg-[#18181B] hover:bg-[#18181B]"
                           >
                             <a
                               href="/etf/new-launches"
@@ -458,7 +458,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full bg-[#141417] hover:bg-[#141417]"
+                            class="w-full bg-[#18181B] hover:bg-[#18181B]"
                           >
                             <a
                               href="/etf/etf-providers"
@@ -488,7 +488,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full bg-[#141417] hover:bg-[#141417]"
+                            class="w-full bg-[#18181B] hover:bg-[#18181B]"
                           >
                             <a
                               href="/dividends-calendar"
@@ -499,7 +499,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full bg-[#141417] hover:bg-[#141417]"
+                            class="w-full bg-[#18181B] hover:bg-[#18181B]"
                           >
                             <a
                               href="/earnings-calendar"
@@ -511,7 +511,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full bg-[#141417] hover:bg-[#141417]"
+                            class="w-full bg-[#18181B] hover:bg-[#18181B]"
                           >
                             <a
                               href="/ipos"
@@ -523,7 +523,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full bg-[#141417] hover:bg-[#141417]"
+                            class="w-full bg-[#18181B] hover:bg-[#18181B]"
                           >
                             <a
                               href="/economic-calendar"
@@ -534,7 +534,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full bg-[#141417] hover:bg-[#141417]"
+                            class="w-full bg-[#18181B] hover:bg-[#18181B]"
                           >
                             <a
                               href="/economic-indicator"
@@ -547,7 +547,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full bg-[#141417] hover:bg-[#141417]"
+                            class="w-full bg-[#18181B] hover:bg-[#18181B]"
                           >
                             <a
                               href="/stock-splits-calendar"
@@ -579,7 +579,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full bg-[#141417] hover:bg-[#141417]"
+                            class="w-full bg-[#18181B] hover:bg-[#18181B]"
                           >
                             <a
                               href="/politicians/flow-data"
@@ -590,7 +590,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full bg-[#141417] hover:bg-[#141417]"
+                            class="w-full bg-[#18181B] hover:bg-[#18181B]"
                           >
                             <a
                               href="/politicians"
@@ -622,7 +622,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full bg-[#141417] hover:bg-[#141417]"
+                            class="w-full bg-[#18181B] hover:bg-[#18181B]"
                           >
                             <a
                               href="/insider-tracker"
@@ -634,7 +634,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full bg-[#141417] hover:bg-[#141417]"
+                            class="w-full bg-[#18181B] hover:bg-[#18181B]"
                           >
                             <a
                               href="/reddit-tracker"
@@ -646,7 +646,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full bg-[#141417] hover:bg-[#141417]"
+                            class="w-full bg-[#18181B] hover:bg-[#18181B]"
                           >
                             <a
                               href="/potus-tracker"
@@ -659,7 +659,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full bg-[#141417] hover:bg-[#141417]"
+                            class="w-full bg-[#18181B] hover:bg-[#18181B]"
                           >
                             <a
                               href="/sentiment-tracker"
@@ -690,7 +690,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full bg-[#141417] hover:bg-[#141417]"
+                            class="w-full bg-[#18181B] hover:bg-[#18181B]"
                           >
                             <a
                               href="/market-flow"
@@ -702,7 +702,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full bg-[#141417] hover:bg-[#141417]"
+                            class="w-full bg-[#18181B] hover:bg-[#18181B]"
                           >
                             <a
                               href="/options-flow"
@@ -713,7 +713,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full bg-[#141417] hover:bg-[#141417]"
+                            class="w-full bg-[#18181B] hover:bg-[#18181B]"
                           >
                             <a
                               href="/dark-pool-flow"
@@ -732,7 +732,7 @@
                 <Button
                   builders={[builder]}
                   type="submit"
-                  class="bg-[#141417] hover:bg-[#141417] -ml-4 w-full"
+                  class="bg-[#18181B] hover:bg-[#18181B] -ml-4 w-full"
                 >
                   <a
                     href="/hedge-funds"
@@ -756,7 +756,7 @@
                 <Button
                   builders={[builder]}
                   type="submit"
-                  class="bg-[#141417] hover:bg-[#141417] -ml-4 w-full"
+                  class="bg-[#18181B] hover:bg-[#18181B] -ml-4 w-full"
                 >
                   <a
                     href="/market-news"
@@ -778,7 +778,7 @@
                   <Button
                     builders={[builder]}
                     type="submit"
-                    class="bg-[#141417] hover:bg-[#141417] -ml-4 w-full"
+                    class="bg-[#18181B] hover:bg-[#18181B] -ml-4 w-full"
                   >
                     <a
                       href="/pricing"
@@ -826,7 +826,7 @@
                   <Button
                     size="icon"
                     aria-label="Settings"
-                    class="overflow-hidden rounded-md bg-default sm:hover:bg-primary border border-gray-600 w-10 h-10"
+                    class="overflow-hidden rounded-md bg-default sm:hover:bg-[#18181B] border border-gray-600 w-10 h-10"
                     builders={[builder]}
                   >
                     <svg
@@ -843,7 +843,7 @@
                 <DropdownMenu.Content align="end">
                   <a href="/profile" class="cursor-pointer">
                     <DropdownMenu.Item
-                      class="sm:hover:bg-primary cursor-pointer"
+                      class="sm:hover:bg-[#18181B] cursor-pointer"
                     >
                       My Account
                     </DropdownMenu.Item>
@@ -852,14 +852,14 @@
 
                   <a href="/watchlist/stocks" class="cursor-pointer">
                     <DropdownMenu.Item
-                      class="sm:hover:bg-primary cursor-pointer"
+                      class="sm:hover:bg-[#18181B] cursor-pointer"
                     >
                       Watchlist
                     </DropdownMenu.Item>
                   </a>
                   <a href="/price-alert" class="cursor-pointer">
                     <DropdownMenu.Item
-                      class="sm:hover:bg-primary cursor-pointer"
+                      class="sm:hover:bg-[#18181B] cursor-pointer"
                     >
                       Price Alert
                     </DropdownMenu.Item>
@@ -873,7 +873,7 @@
                       class="w-full text-start cursor-pointer"
                     >
                       <DropdownMenu.Item
-                        class="sm:hover:bg-primary cursor-pointer"
+                        class="sm:hover:bg-[#18181B] cursor-pointer"
                       >
                         <span class="text-start">Logout</span>
                       </DropdownMenu.Item>
@@ -896,7 +896,7 @@
         <div class="flex w-full">
           <div class="hidden 3xl:block 3xl:w-[300px]">
             <aside
-              class="fixed overflow-y-auto no-scrollbar overflow-hidden inset-y-0 left-0 z-50 3xl:flex w-64 flex-col 3xl:border-r 3xl:border-gray-800 bg-[#141417]"
+              class="fixed overflow-y-auto no-scrollbar overflow-hidden inset-y-0 left-0 z-50 3xl:flex w-64 flex-col 3xl:border-r 3xl:border-gray-800 bg-[#18181B]"
             >
               <nav
                 class="flex flex-col items-center mr-auto gap-y-4 3xl:py-5 w-full"

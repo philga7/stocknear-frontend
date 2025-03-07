@@ -276,7 +276,7 @@
         </p>
 
         <div
-          class="mt-5 border border-gray-800 rounded"
+          class="mt-5 border border-gray-700 rounded"
           use:highcharts={configAnalyst}
         ></div>
 
