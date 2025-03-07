@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { index, displayCompanyName } from "$lib/store";
+  import { indexTicker, displayCompanyName } from "$lib/store";
 
   import SEO from "$lib/components/SEO.svelte";
   import HottestContracts from "$lib/components/Options/HottestContracts.svelte";
@@ -9,8 +9,8 @@
 </script>
 
 <SEO
-  title={`${$displayCompanyName} (${$index}) | Explore the Hottest Options Contracts`}
-  description={`Analyze historical volume, open interest, and trends in option chains for ${$displayCompanyName} (${$index}). Discover actionable insights for trading decisions.`}
+  title={`${$displayCompanyName} (${$indexTicker}) | Explore the Hottest Options Contracts`}
+  description={`Analyze historical volume, open interest, and trends in option chains for ${$displayCompanyName} (${$indexTicker}). Discover actionable insights for trading decisions.`}
 />
 
 <section
@@ -21,7 +21,7 @@
       class="w-full relative flex justify-center items-center overflow-hidden"
     >
       {#if data?.getData?.volume?.length > 0}
-        <HottestContracts {data} ticker={$index} />
+        <HottestContracts {data} ticker={$indexTicker} />
       {:else}
         <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
           <div class="mt-2">

@@ -561,7 +561,7 @@
                         class="sm:hover:bg-[#245073]/10 border-b border-gray-800 odd:bg-odd {index +
                           1 ===
                           originalPosTickers?.length &&
-                        !['Pro', 'Plus']?.includes(data?.user?.tier)
+                        !['Pro']?.includes(data?.user?.tier)
                           ? 'opacity-[0.1]'
                           : ''}"
                       >
@@ -665,7 +665,7 @@
                         class="sm:hover:bg-[#245073]/10 border-b border-gray-800 odd:bg-odd {index +
                           1 ===
                           originalNegTickers?.length &&
-                        !['Pro', 'Plus']?.includes(data?.user?.tier)
+                        !['Pro']?.includes(data?.user?.tier)
                           ? 'opacity-[0.1]'
                           : ''}"
                       >
@@ -735,7 +735,7 @@
                 </table>
               </div>
             </div>
-            <UpgradeToPro {data} />
+            <UpgradeToPro {data} display={true} />
           </div>
         </main>
       </div>
