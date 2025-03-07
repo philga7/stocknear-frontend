@@ -81,7 +81,7 @@
     // Reset the flag after navigation
     setTimeout(() => {
       isNavigating = false;
-    }, 100);
+    }, 50);
   }
 
   async function popularTicker(state) {
@@ -114,7 +114,7 @@
     // Reset the flag after a short delay
     setTimeout(() => {
       isNavigating = false;
-    }, 100);
+    }, 50);
   }
 
   function searchBarTicker(state) {
@@ -171,7 +171,7 @@
       );
       searchBarData = await response?.json();
       isLoading = false;
-    }, 300); // delay
+    }, 50); // delay
   }
 
   function handleKeyDown(symbol) {
@@ -231,7 +231,6 @@
 
   $: {
     if (searchBarModalChecked === true && typeof window !== "undefined") {
-      console.log("open");
       if ($screenWidth > 640) {
         inputElement.focus();
       }
@@ -254,7 +253,7 @@
     ) {
       (async () => {
         // Add 500 ms delay is important otherwise bug since #each has searchHistory and updates too quickly and redirects to wrong symbol
-        await new Promise((resolve) => setTimeout(resolve, 800));
+        await new Promise((resolve) => setTimeout(resolve, 500));
 
         // Update search history after delay
         searchHistory = updatedSearchHistory;
