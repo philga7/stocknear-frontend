@@ -42,12 +42,11 @@
                 platform affordable and accessible to all investors.
                 <br />
                 <br />
-                Our Stock Analysis Pro Membership is priced to be less than a hamburger
-                or döner, ensuring that high-quality stock data is within reach for
-                retail investors of all backgrounds.
+                Our Plans are priced ensure that high-quality stock data is within
+                reach for retail investors of all backgrounds.
               </p>
               <div class="text-white mb-5 text-[1rem]">
-                While the Pro Membership is designed to sustain our basic
+                While the Membership is designed to sustain our basic
                 operations, your additional support can help us go even further.
                 By sponsoring, you're not just supporting a platform; you're
                 investing in a vision of open, transparent, and affordable
@@ -100,7 +99,7 @@
               </h2>
               <p class="text-white mb-5 text-[1rem]">
                 If you believe in our mission and want to support us beyond your
-                Pro Subscription, please support us via GitHub Sponsors. Every
+                Subscription, please support us via GitHub Sponsors. Every
                 contribution, no matter the size, makes a significant impact on
                 our ability to serve you and the retail investor community.
                 <br />
