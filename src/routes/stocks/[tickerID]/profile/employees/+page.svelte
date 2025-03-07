@@ -93,7 +93,7 @@
         animation: false,
       },
       title: {
-        text: `<h3 class="mt-3 mb-1">${removeCompanyStrings($displayCompanyName)} Employees</h3>`,
+        text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">${removeCompanyStrings($displayCompanyName)} Employees</h3>`,
         style: {
           color: "white",
         },

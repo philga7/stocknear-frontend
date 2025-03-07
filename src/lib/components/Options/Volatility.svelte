@@ -103,7 +103,7 @@
       credits: { enabled: false },
       legend: { enabled: false },
       title: {
-        text: `<h3 class="mt-3 mb-1">Volatiltiy Exposure</h3>`,
+        text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">Volatiltiy Exposure</h3>`,
         useHTML: true,
         style: { color: "white" },
       },

@@ -1,18 +1,19 @@
 <script lang="ts">
   import { displayCompanyName, stockTicker, etfTicker } from "$lib/store";
-  import InfoModal from "$lib/components/InfoModal.svelte";
   import { abbreviateNumber, abbreviateNumberWithColor } from "$lib/utils";
   import highcharts from "$lib/highcharts.ts";
+  import RealtimeTrade from "$lib/components/DarkPool/RealtimeTrade.svelte";
 
-  let category = "Size";
+  let category = "Today's Trend";
 
+  export let data;
   export let rawData = [];
   export let metrics = {};
 
   let config;
 
-  function getPlotOptions(category) {
-    const xAxis = rawData?.map((item) => item[category?.toLowerCase()]);
+  function getBarChart() {
+    const xAxis = rawData?.map((item) => item?.size);
     const yAxis = rawData?.map((item) => item?.price_level || 0);
 
     // Find max value index for highlighting
@@ -33,7 +34,7 @@
       credits: { enabled: false },
       legend: { enabled: false },
       title: {
-        text: `<h3 class="mt-3 mb-1">Dark Pool Price Levels</h3>`,
+        text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">Dark Pool Price Levels</h3>`,
         useHTML: true,
         style: { color: "white" },
       },
@@ -124,7 +125,7 @@
       },
       series: [
         {
-          name: `Total ${category}`,
+          name: `Total Size`,
           data: xAxis,
           animation: false,
         },
@@ -135,26 +136,12 @@
   }
 
   $: if (($stockTicker || $etfTicker) && category) {
-    config = getPlotOptions(category) || null;
+    config = getBarChart() || null;
   }
 </script>
 
 <section class="overflow-hidden text-white h-full pb-8 pt-3">
   <main class="overflow-hidden">
-    <div class="flex flex-row items-center">
-      <label
-        for="priceLevelInfo"
-        class="mr-1 cursor-pointer flex flex-row items-center text-white text-xl sm:text-2xl font-bold"
-      >
-        Price Level
-      </label>
-      <InfoModal
-        title={"Price Level"}
-        content={"Price levels reveal where significant trading activity occurs, aiding investors in identifying key support and resistance zones."}
-        id={"priceLevelInfo"}
-      />
-    </div>
-
     {#if rawData?.length !== 0 && Object?.keys(metrics)?.length > 0}
       <div class="w-full flex flex-col items-start">
         <div class="text-white text-[1rem] mt-2 w-full">
@@ -176,22 +163,47 @@
 
       <div class=" rounded-md bg-default mt-5 sm:mt-0">
         <div class="flex justify-end mb-2 space-x-2 z-10 text-sm">
-          {#each ["Size", "Premium"] as item}
-            <label
-              on:click={() => (category = item)}
-              class="px-3 py-1 {category === item
-                ? 'bg-white text-black'
-                : 'text-white bg-table'} border border-gray-800 transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
-            >
-              {item}
-            </label>
+          {#each ["Today's Trend", "Price Level"] as item, index}
+            {#if data?.user?.tier === "Pro" || index === 0}
+              <label
+                on:click={() => (category = item)}
+                class="px-3 py-1 text-sm {category === item
+                  ? 'bg-white text-black '
+                  : 'text-white bg-table text-opacity-[0.6]'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+              >
+                {item}
+              </label>
+            {:else if data?.user?.tier !== "Pro"}
+              <a
+                href="/pricing"
+                class="px-3 py-1 text-sm flex flex-row items-center border border-gray-700 {category ===
+                item
+                  ? 'bg-white text-black '
+                  : 'text-white bg-table text-opacity-[0.6]'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+              >
+                {item}
+                <svg
+                  class="ml-1 -mt-w-3.5 h-3.5 inline-block"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  ><path
+                    fill="currentColor"
+                    d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                  /></svg
+                >
+              </a>
+            {/if}
           {/each}
         </div>
 
-        <div
-          class="border border-gray-800 rounded w-full"
-          use:highcharts={config}
-        ></div>
+        {#if category === "Price Level"}
+          <div
+            class="border border-gray-800 rounded w-full"
+            use:highcharts={config}
+          ></div>
+        {:else}
+          <RealtimeTrade {data} />
+        {/if}
       </div>
     {/if}
   </main>

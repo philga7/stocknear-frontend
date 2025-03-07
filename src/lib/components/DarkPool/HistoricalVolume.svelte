@@ -82,7 +82,7 @@
         animation: false,
       },
       title: {
-        text: `<h3 class="mt-3 mb-1">${removeCompanyStrings($displayCompanyName)} Historical Chart</h3>`,
+        text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">${removeCompanyStrings($displayCompanyName)} Historical Chart</h3>`,
         style: {
           color: "white",
         },

@@ -49,7 +49,7 @@
       credits: { enabled: false },
       legend: { enabled: false },
       title: {
-        text: `<h3 class="mt-3 mb-1">Open Interest By Strike</h3>`,
+        text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">Open Interest By Strike</h3>`,
         useHTML: true,
         style: { color: "white" },
       },

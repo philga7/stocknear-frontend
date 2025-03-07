@@ -384,7 +384,7 @@
       },
       credits: { enabled: false },
       title: {
-        text: `<h3 class="mt-3 mb-1">Contract History</h3>`,
+        text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">Contract History</h3>`,
         useHTML: true,
         style: { color: "white" },
       },

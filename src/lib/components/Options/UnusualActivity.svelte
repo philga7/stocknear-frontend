@@ -148,6 +148,11 @@
         enabled: false,
       },
       plotOptions: {
+        column: {
+          groupPadding: 0.1, // Increase to add more space between groups of columns
+          pointPadding: 0.1, // Adjust to fine-tune spacing within a group
+          borderWidth: 0, // Optional: Remove borders if not needed
+        },
         series: {
           color: "white",
           animation: false, // Disable series animation
@@ -159,28 +164,25 @@
         },
       },
       chart: {
-        // Removed global type so each series can define its own type.
         backgroundColor: "#09090B",
         plotBackgroundColor: "#09090B",
         height: 360,
-        width: 850,
         animation: false,
       },
       title: {
-        text: `<h3 class="mt-3 mb-1 ">${ticker} Unusual Options Activity</h3>`,
+        text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">${ticker} Unusual Options Activity</h3>`,
         style: {
           color: "white",
-          // Using inline CSS for margin-top and margin-bottom
         },
-        useHTML: true, // Enable HTML to apply custom class styling
+        useHTML: true,
       },
       xAxis: {
         type: "datetime",
         endOnTick: false,
         categories: dates,
         crosshair: {
-          color: "#fff", // Set the color of the crosshair line
-          width: 1, // Adjust the line width as needed
+          color: "#fff",
+          width: 1,
           dashStyle: "Solid",
         },
         labels: {
@@ -196,10 +198,9 @@
           },
         },
         tickPositioner: function () {
-          // Create custom tick positions with wider spacing
           const positions = [];
           const info = this.getExtremes();
-          const tickCount = 5; // Reduce number of ticks displayed
+          const tickCount = 5;
           const interval = Math.floor((info.max - info.min) / tickCount);
 
           for (let i = 0; i <= tickCount; i++) {
@@ -231,8 +232,8 @@
       tooltip: {
         shared: true,
         useHTML: true,
-        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
-        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        borderColor: "rgba(255, 255, 255, 0.2)",
         borderWidth: 1,
         style: {
           color: "#fff",
@@ -241,7 +242,6 @@
         },
         borderRadius: 4,
         formatter: function () {
-          // Format the x value to display time in hh:mm format
           let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]">${new Date(
             this?.x,
           ).toLocaleDateString("en-US", {
@@ -250,12 +250,11 @@
             day: "numeric",
           })}</span><br>`;
 
-          // Loop through each point in the shared tooltip
           this.points.forEach((point) => {
             tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
-          <span class="text-white font-normal text-sm" style="color:${point.color}">${abbreviateNumber(
-            point.y,
-          )}</span><br>`;
+      <span class="text-white font-normal text-sm" style="color:${point.color}">${abbreviateNumber(
+        point.y,
+      )}</span><br>`;
           });
 
           return tooltipContent;
@@ -267,8 +266,8 @@
           type: "column",
           data: callData,
           color: "#00FC50",
-          borderColor: "#00FC50", // Match border color
-          borderRadius: "2px",
+          borderColor: "#00FC50",
+          borderRadius: "0px",
           marker: {
             enabled: false,
           },
@@ -279,8 +278,8 @@
           type: "column",
           data: putData,
           color: "#EE5365",
-          borderColor: "#EE5365", // Match border color
-          borderRadius: "2px",
+          borderColor: "#EE5365",
+          borderRadius: "0px",
           marker: {
             enabled: false,
           },
@@ -304,11 +303,8 @@
               [1, "rgba(255, 255, 255, 0.001)"],
             ],
           },
-          // If you prefer a smooth (curved) line, you can use the "spline" type:
-          // type: "spline"
         },
       ],
-
       legend: {
         enabled: false,
       },
@@ -450,7 +446,7 @@
       },
       credits: { enabled: false },
       title: {
-        text: `<h3 class="mt-3 mb-1">Contract History</h3>`,
+        text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">Contract History</h3>`,
         useHTML: true,
         style: { color: "white" },
       },

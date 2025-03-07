@@ -51,6 +51,7 @@
         </div>
         {#if priceLevel?.length > 0}
           <PriceLevel
+            {data}
             rawData={priceLevel}
             metrics={data?.getPriceLevel?.metrics}
           />
