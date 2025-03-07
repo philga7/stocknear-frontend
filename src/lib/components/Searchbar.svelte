@@ -4,6 +4,7 @@
   import Search from "lucide-svelte/icons/search";
   import { goto } from "$app/navigation";
   import { Combobox } from "bits-ui";
+  import { tick } from "svelte";
 
   let searchHistory = [];
   let updatedSearchHistory = [];
@@ -154,6 +155,7 @@
 
   async function search() {
     isLoading = true;
+
     clearTimeout(timeoutId); // Clear any existing timeout
 
     if (!inputValue.trim()) {
@@ -229,6 +231,7 @@
 
   $: {
     if (searchBarModalChecked === true && typeof window !== "undefined") {
+      console.log("open");
       if ($screenWidth > 640) {
         inputElement.focus();
       }
@@ -276,6 +279,17 @@
     if (inputValue) {
       search();
     }
+  }
+
+  $: if (showSuggestions && searchBarData?.length && touchedInput) {
+    tick().then(() => {
+      const input = document.getElementById("combobox-input");
+      if (input) {
+        input.dispatchEvent(
+          new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true }),
+        );
+      }
+    });
   }
 </script>
 
