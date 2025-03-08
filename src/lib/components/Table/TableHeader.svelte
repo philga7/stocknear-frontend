@@ -16,11 +16,13 @@
   `;
 </script>
 
-<tr class="bg-default border-b border-[#27272A]">
+<tr
+  class="bg-white dark:bg-default border-b border-[#27272A] text-muted dark:text-white"
+>
   {#each columns as column}
     <th
       on:click={() => sortData(column.key)}
-      class="cursor-pointer select-none text-white font-semibold text-sm whitespace-nowrap {column.align ===
+      class="cursor-pointer select-none font-semibold text-sm whitespace-nowrap {column.align ===
       'right'
         ? 'text-end'
         : 'text-start'}"

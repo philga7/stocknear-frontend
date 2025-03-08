@@ -3,7 +3,7 @@
 
   import HoverStockChart from "$lib/components/HoverStockChart.svelte";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
-  import { abbreviateNumberWithColor, sectorList } from "$lib/utils";
+  import { abbreviateNumber, sectorList } from "$lib/utils";
   import InfoModal from "$lib/components/InfoModal.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
 
@@ -11,6 +11,7 @@
   import { Button } from "$lib/components/shadcn/button/index.js";
   import SEO from "$lib/components/SEO.svelte";
   import highcharts from "$lib/highcharts.ts";
+  import { mode } from "mode-watcher";
 
   export let data;
   let isLoading = false;
@@ -280,8 +281,8 @@
     const options = {
       chart: {
         type: "column",
-        backgroundColor: "#09090B",
-        plotBackgroundColor: "#09090B",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
         height: 360, // Set the maximum height for the chart
         animation: false,
       },
@@ -320,7 +321,7 @@
           // Loop through each point in the shared tooltip
           this.points.forEach((point) => {
             tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
-          <span class="text-white font-normal text-sm" style="color:${point.color}">${abbreviateNumberWithColor(
+          <span class="text-white font-normal text-sm" >${abbreviateNumber(
             point.y,
           )}</span><br>`;
           });
@@ -334,13 +335,13 @@
         min: startTime, // Force start at 9:30
         max: endTime, // Force end at 16:10
         crosshair: {
-          color: "#fff", // Set the color of the crosshair line
+          color: $mode === "light" ? "black" : "white", // Set the color of the crosshair line
           width: 1, // Adjust the line width as needed
           dashStyle: "Solid",
         },
         labels: {
           style: {
-            color: "#fff",
+            color: $mode === "light" ? "black" : "white",
           },
           distance: 20, // Increases space between label and axis
           formatter: function () {
@@ -377,9 +378,9 @@
         },
         {
           gridLineWidth: 1,
-          gridLineColor: "#111827",
+          gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
           labels: {
-            style: { color: "white" },
+            style: { color: $mode === "light" ? "black" : "white" },
           },
           title: { text: null },
           opposite: true,
@@ -392,7 +393,7 @@
           type: "spline",
           data: priceSeries,
           yAxis: 0,
-          color: "#fff",
+          color: $mode === "light" ? "#2C6288" : "#fff",
           marker: {
             enabled: false,
             states: {
@@ -404,12 +405,13 @@
           lineWidth: 2,
           zIndex: 10,
         },
+
         {
           name: "Net Call Prem",
           type: "spline",
           data: netCallPremSeries,
           yAxis: 1,
-          color: "#90EE90",
+          color: $mode === "light" ? "#208646" : "#90EE90",
           marker: {
             enabled: false,
             states: {
@@ -424,7 +426,7 @@
           type: "spline",
           data: netPutPremSeries,
           yAxis: 1,
-          color: "#FF6B6B",
+          color: $mode === "light" ? "#DC2626" : "#FF6B6B",
           marker: {
             enabled: false,
             states: {
@@ -456,7 +458,7 @@
   config = marketTideData ? getPlotOptions() : null;
 
   $: {
-    if (selectedSector) {
+    if (selectedSector || $mode) {
       topPosNetPremium =
         data?.getData?.topPosNetPremium[sectorDict[selectedSector]] || [];
       topNegNetPremium =
@@ -479,7 +481,9 @@
   description="Get real-time insights on all sectors of the stock market flow sentiment through options premium analysis. Track trends and make informed trading decisions."
 />
 
-<section class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden">
+<section
+  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden text-muted dark:text-white"
+>
   <div class="w-full overflow-hidden m-auto">
     <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
       <div
@@ -488,7 +492,7 @@
         <main class="w-full">
           <div class="w-full m-auto">
             {#if config !== null}
-              <p class="mt-4 text-white">
+              <p class="mt-4">
                 <strong>{selectedSector}</strong> Flow tracks sector stocks, net
                 call/put premiums, and price movements to gauge market sentiment
                 and momentum in real time.
@@ -497,7 +501,7 @@
               <div
                 class="flex flex-col sm:flex-row items-start sm:items-center sm:justify-between w-full mt-2 sm:mt-0"
               >
-                <div class="text-white text-xs sm:text-sm italic mt-5 mb-5">
+                <div class=" text-xs sm:text-sm italic mt-5 mb-5">
                   Last Updated: {formatDate(
                     findLastNonNull(marketTideData, "time"),
                   )}
@@ -507,10 +511,9 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="w-full border-gray-600 border bg-default sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
+                        class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                       >
-                        <span class="truncate text-white">{selectedSector}</span
-                        >
+                        <span class="truncate">{selectedSector}</span>
                         <svg
                           class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
                           viewBox="0 0 20 20"
@@ -529,7 +532,7 @@
                     <DropdownMenu.Content
                       class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                     >
-                      <DropdownMenu.Label class="text-gray-400">
+                      <DropdownMenu.Label class="text-muted dark:text-gray-400">
                         Select Sector
                       </DropdownMenu.Label>
                       <DropdownMenu.Separator />
@@ -538,14 +541,14 @@
                           {#if sector === "Technology" || data?.user?.tier === "Pro"}
                             <DropdownMenu.Item
                               on:click={() => (selectedSector = sector)}
-                              class="cursor-pointer hover:bg-primary"
+                              class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                             >
                               {sector}
                             </DropdownMenu.Item>
                           {:else}
                             <DropdownMenu.Item
                               on:click={() => goto("/pricing")}
-                              class="cursor-pointer hover:bg-primary"
+                              class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                             >
                               {sector}
                               <svg
@@ -574,15 +577,14 @@
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6"
               >
                 <div
-                  class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
+                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4 transition-colors"
                 >
-                  <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
+                  <div class=" text-sm mb-2 flex items-center">
                     <span>Volume</span>
-                    <span class="ml-1 text-yellow-400">●</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-xl font-bold text-white">
-                      {@html abbreviateNumberWithColor(
+                    <span class="text-xl font-bold">
+                      {@html abbreviateNumber(
                         findLastNonNull(marketTideData, "net_volume"),
                         false,
                         true,
@@ -592,15 +594,14 @@
                 </div>
 
                 <div
-                  class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
+                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4 transition-colors"
                 >
-                  <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
+                  <div class=" text-sm mb-2 flex items-center">
                     <span>Net Call Prem</span>
-                    <span class="ml-1 text-green-500">●</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-xl font-bold text-white"
-                      >{@html abbreviateNumberWithColor(
+                    <span class="text-xl font-bold"
+                      >{@html abbreviateNumber(
                         findLastNonNull(marketTideData, "net_call_premium"),
                         false,
                         true,
@@ -610,15 +611,14 @@
                 </div>
 
                 <div
-                  class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
+                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4 transition-colors"
                 >
-                  <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
+                  <div class=" text-sm mb-2 flex items-center">
                     <span>Net Put Prem</span>
-                    <span class="ml-1 text-red-400">●</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-xl font-bold text-white"
-                      >{@html abbreviateNumberWithColor(
+                    <span class="text-xl font-bold"
+                      >{@html abbreviateNumber(
                         findLastNonNull(marketTideData, "net_put_premium"),
                         false,
                         true,
@@ -629,7 +629,7 @@
               </div>
 
               <div
-                class="chart border border-gray-800 rounded"
+                class="chart border border-gray-300 dark:border-gray-800 rounded"
                 use:highcharts={config}
               ></div>
             {/if}
@@ -640,7 +640,7 @@
                 <div class="flex flex-row items-center">
                   <label
                     for="topPosNetPrem"
-                    class="mr-1 cursor-pointer flex flex-row items-center text-white text-xl font-bold"
+                    class="mr-1 cursor-pointer flex flex-row items-center text-xl font-bold"
                   >
                     Top Stocks by Positive Net Prem
                   </label>
@@ -656,7 +656,7 @@
                 class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
               >
                 <table
-                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md text-white w-full bg-table border border-gray-800 m-auto"
+                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-table border border-gray-300 dark:border-gray-300 dark:border-gray-800 m-auto"
                 >
                   <thead>
                     <TableHeader
@@ -668,7 +668,7 @@
                   <tbody>
                     {#each displayPosTickers as item, index}
                       <tr
-                        class="sm:hover:bg-[#245073]/10 border-b border-gray-800 odd:bg-odd {index +
+                        class="bg-white dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
                           1 ===
                           originalPosTickers?.length &&
                         !['Pro']?.includes(data?.user?.tier)
@@ -676,7 +676,7 @@
                           : ''}"
                       >
                         <td
-                          class="text-start text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                          class="text-start text-sm sm:text-[1rem] whitespace-nowrap"
                         >
                           {item?.rank}
                         </td>
@@ -688,7 +688,7 @@
                         </td>
 
                         <td
-                          class="text-start text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                          class="text-start text-sm sm:text-[1rem] whitespace-nowrap"
                         >
                           {item?.name?.length > 20
                             ? item?.name?.slice(0, 20) + "..."
@@ -696,7 +696,7 @@
                         </td>
 
                         <td
-                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                         >
                           {item?.price}
                         </td>
@@ -704,28 +704,28 @@
                         <td
                           class="text-sm sm:text-[1rem] {item?.changesPercentage >=
                           0
-                            ? "text-[#00FC50] before:content-['+'] "
-                            : 'text-[#FF2F1F]'} text-end"
+                            ? "text-[#208646] dark:text-[#00FC50] before:content-['+'] "
+                            : 'text-[#DC2626] dark:text-[#FF2F1F]'} text-end"
                         >
-                          {item?.changesPercentage}%
+                          {item?.changesPercentage?.toFixed(2)}%
                         </td>
 
                         <td class="text-sm sm:text-[1rem] text-end">
-                          {@html abbreviateNumberWithColor(
+                          {@html abbreviateNumber(
                             item?.net_premium,
                             false,
                             true,
                           )}
                         </td>
                         <td class="text-sm sm:text-[1rem] text-end">
-                          {@html abbreviateNumberWithColor(
+                          {@html abbreviateNumber(
                             item?.net_call_premium,
                             false,
                             true,
                           )}
                         </td>
                         <td class="text-sm sm:text-[1rem] text-end">
-                          {@html abbreviateNumberWithColor(
+                          {@html abbreviateNumber(
                             item?.net_put_premium,
                             false,
                             true,
@@ -745,7 +745,7 @@
                 <div class="flex flex-row items-center">
                   <label
                     for="topNegNetPrem"
-                    class="mr-1 cursor-pointer flex flex-row items-center text-white text-xl font-bold"
+                    class="mr-1 cursor-pointer flex flex-row items-center text-xl font-bold"
                   >
                     Top Stocks by Negative Net Prem
                   </label>
@@ -761,7 +761,7 @@
                 class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
               >
                 <table
-                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md text-white w-full bg-table border border-gray-800 m-auto"
+                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-table border border-gray-300 dark:border-gray-300 dark:border-gray-800 m-auto"
                 >
                   <thead>
                     <TableHeader
@@ -773,7 +773,7 @@
                   <tbody>
                     {#each displayNegTickers as item, index}
                       <tr
-                        class="sm:hover:bg-[#245073]/10 border-b border-gray-800 odd:bg-odd {index +
+                        class="bg-white dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
                           1 ===
                           originalNegTickers?.length &&
                         !['Pro']?.includes(data?.user?.tier)
@@ -781,7 +781,7 @@
                           : ''}"
                       >
                         <td
-                          class="text-start text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                          class="text-start text-sm sm:text-[1rem] whitespace-nowrap"
                         >
                           {item?.rank}
                         </td>
@@ -793,7 +793,7 @@
                         </td>
 
                         <td
-                          class="text-start text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                          class="text-start text-sm sm:text-[1rem] whitespace-nowrap"
                         >
                           {item?.name?.length > 20
                             ? item?.name?.slice(0, 20) + "..."
@@ -801,7 +801,7 @@
                         </td>
 
                         <td
-                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                         >
                           {item?.price}
                         </td>
@@ -816,21 +816,21 @@
                         </td>
 
                         <td class="text-sm sm:text-[1rem] text-end">
-                          {@html abbreviateNumberWithColor(
+                          {@html abbreviateNumber(
                             item?.net_premium,
                             false,
                             true,
                           )}
                         </td>
                         <td class="text-sm sm:text-[1rem] text-end">
-                          {@html abbreviateNumberWithColor(
+                          {@html abbreviateNumber(
                             item?.net_call_premium,
                             false,
                             true,
                           )}
                         </td>
                         <td class="text-sm sm:text-[1rem] text-end">
-                          {@html abbreviateNumberWithColor(
+                          {@html abbreviateNumber(
                             item?.net_put_premium,
                             false,
                             true,
@@ -853,20 +853,3 @@
     </div>
   </div>
 </section>
-
-<style>
-  .app {
-    height: 600px;
-    max-width: 100%; /* Ensure chart width doesn't exceed the container */
-  }
-
-  @media (max-width: 640px) {
-    .app {
-      height: 510px;
-    }
-  }
-
-  .chart {
-    width: 100%;
-  }
-</style>

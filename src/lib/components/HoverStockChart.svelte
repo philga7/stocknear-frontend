@@ -179,7 +179,9 @@
       <HoverCard.Trigger
         class="rounded-sm underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-black"
       >
-        <a href={getHref(symbol)} class="sm:hover:text-white text-blue-400"
+        <a
+          href={getHref(symbol)}
+          class="sm:hover:text-muted dark:sm:hover:text-white text-blue-500 dark:text-blue-400"
           >{symbol?.length !== 0 ? symbol : "-"}</a
         >
       </HoverCard.Trigger>

@@ -53,7 +53,6 @@
   import Newspaper from "lucide-svelte/icons/newspaper";
   import AudioLine from "lucide-svelte/icons/audio-lines";
   import Gem from "lucide-svelte/icons/gem";
-  import stocknear_logo from "$lib/images/stocknear_logo.png";
 
   export let data;
 
@@ -812,13 +811,13 @@
           </Sheet.Content>
         </Sheet.Root>
 
-        <a href="/" class="-ml-2 flex shrink-0">
+        <a href="/" class="-ml-2 flex flex-row items-center shrink-0">
           <img
             class="avatar w-9 3xl:w-10 rounded-full"
             src="/pwa-192x192.png"
             alt="Stocknear Logo"
           />
-          <span class="text-muted dark:text-white font-semibold ml-2 text-lg">Stocknear</span>
+          <span class="text-muted dark:text-white font-semibold ml-2 text-xl">Stocknear</span>
         </a>
 
         <div
