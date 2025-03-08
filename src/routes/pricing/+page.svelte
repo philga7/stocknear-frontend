@@ -88,7 +88,7 @@
 </svelte:head>
 
 <section
-  class="bg-default min-h-screen mb-40 w-full max-w-3xl sm:max-w-5xl pt-10 m-auto"
+  class="bg-default min-h-screen mb-40 w-full max-w-3xl sm:max-w-5xl pt-10 m-auto text-white"
 >
   <div class="px-3">
     <div class="mx-auto text-center mb-8">
