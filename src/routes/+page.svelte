@@ -64,7 +64,7 @@
 />
 
 <div
-  class="w-full sm:max-w-[1400px] overflow-hidden m-auto min-h-screen bg-white dark:bg-default text-muted dark:text-white mb-40"
+  class="w-full sm:max-w-[1400px] overflow-hidden m-auto min-h-screen bg-white dark:bg-default text-muted dark:text-white mb-16"
 >
   {#if AppInstalled && !$closedPWA}
     <svelte:component this={AppInstalled} />
@@ -413,7 +413,7 @@
 
                         <a
                           href={`/stocks/${item?.ticker}`}
-                          class="inline-block badge duration-0 rounded-sm ml-1 px-2 m-auto text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted"
+                          class="inline-block badge duration-0 bg-blue-50 font-semibold dark:font-normal rounded-sm ml-1 px-2 m-auto text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted"
                           >{item?.ticker}</a
                         >
                       </li>
@@ -697,8 +697,8 @@
                     )}:
 
                     <li
-                      class="text-sm sm:text-[1rem]"
-                      style="color: #fff;  margin-top:10px; margin-left: 30px; margin-bottom: 10px; list-style-type: disc;"
+                      class="text-sm sm:text-[1rem] text-muted dark:text-white"
+                      style="margin-top:10px; margin-left: 30px; margin-bottom: 10px; list-style-type: disc;"
                     >
                       Revenue of {abbreviateNumber(item?.revenue)}
                       {item?.revenueSurprise > 0 ? "exceeds" : "misses"} estimates
@@ -713,7 +713,8 @@
                         : "growth"}.
                     </li>
                     <li
-                      style="color: #fff; line-height: 22px; margin-top:0px; margin-left: 30px; margin-bottom: 30px; list-style-type: disc;"
+                      class="text-muted dark:text-white"
+                      style="line-height: 22px; margin-top:0px; margin-left: 30px; margin-bottom: 30px; list-style-type: disc;"
                     >
                       EPS of {item?.eps}
                       {item?.epsSurprise > 0 ? "exceeds" : "misses"} estimates by

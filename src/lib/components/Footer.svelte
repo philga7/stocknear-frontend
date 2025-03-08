@@ -4,7 +4,7 @@
 
 <!--Footer-->
 <footer
-  class="bg-default border-t border-gray-600 z-20 sm:z-50 relative bottom-0 w-full sm:px-10 m-auto"
+  class="bg-[#1F2937] dark:bg-default border-t border-gray-600 z-20 sm:z-50 relative bottom-0 w-full sm:px-10 m-auto"
 >
   <div class="container mx-auto px-5 sm:px-3">
     <div class="w-full flex flex-col md:flex-row py-3">
@@ -81,7 +81,7 @@
 
         <!--
         <a href="https://stats.uptimerobot.com/MP0zLix9yk" rel="noopener noreferrer" target="_blank" class="flex flex-row items-center mt-4">
-          <span class="text-white sm:hover:text-blue-400">
+          <span class="text-white dark:sm:hover:text-blue-400">
             Server Status
           </span>
           <span class="relative flex h-3 w-3 ml-2">
@@ -98,28 +98,28 @@
           <li class="mt-2 inline-block mr-2 md:block md:mr-0">
             <a
               href="/stocks"
-              class="no-underline sm:hover:underline text-gray-100 sm:hover:text-blue-400"
+              class="no-underline sm:hover:underline text-gray-300 sm:hover:text-white dark:text-gray-100 dark:sm:hover:text-blue-400"
               >Stocks</a
             >
           </li>
           <li class="mt-2 inline-block mr-2 md:block md:mr-0">
             <a
               href="/etf"
-              class="no-underline sm:hover:underline text-gray-100 sm:hover:text-blue-400"
+              class="no-underline sm:hover:underline text-gray-300 sm:hover:text-white dark:text-gray-100 dark:sm:hover:text-blue-400"
               >ETFs</a
             >
           </li>
           <li class="mt-2 inline-block mr-2 md:block md:mr-0">
             <a
               href="/blog"
-              class="no-underline sm:hover:underline text-gray-100 sm:hover:text-blue-400"
+              class="no-underline sm:hover:underline text-gray-300 sm:hover:text-white dark:text-gray-100 dark:sm:hover:text-blue-400"
               >Blog</a
             >
           </li>
           <li class="mt-2 inline-block mr-2 md:block md:mr-0">
             <a
               href="/learning-center"
-              class="no-underline sm:hover:underline text-gray-100 sm:hover:text-blue-400"
+              class="no-underline sm:hover:underline text-gray-300 sm:hover:text-white dark:text-gray-100 dark:sm:hover:text-blue-400"
               >Learning Center</a
             >
           </li>
@@ -132,21 +132,21 @@
           <li class="mt-2 inline-block mr-2 md:block md:mr-0">
             <a
               href="/pricing"
-              class="no-underline sm:hover:underline text-gray-100 sm:hover:text-blue-400"
+              class="no-underline sm:hover:underline text-gray-300 sm:hover:text-white dark:text-gray-100 dark:sm:hover:text-blue-400"
               >Pricing</a
             >
           </li>
           <li class="mt-2 inline-block mr-2 md:block md:mr-0">
             <a
               href="/newsletter"
-              class="no-underline sm:hover:underline text-gray-100 sm:hover:text-blue-400"
+              class="no-underline sm:hover:underline text-gray-300 sm:hover:text-white dark:text-gray-100 dark:sm:hover:text-blue-400"
               >Free Newsletter</a
             >
           </li>
           <li class="mt-2 inline-block mr-2 md:block md:mr-0">
             <a
               href="/donation"
-              class="no-underline sm:hover:underline text-gray-100 sm:hover:text-blue-400"
+              class="no-underline sm:hover:underline text-gray-300 sm:hover:text-white dark:text-gray-100 dark:sm:hover:text-blue-400"
               >Support Us ❤</a
             >
           </li>
@@ -159,14 +159,14 @@
           <li class="mt-2 inline-block mr-2 md:block md:mr-0">
             <a
               href="/login"
-              class="no-underline sm:hover:underline text-gray-100 sm:hover:text-blue-400"
+              class="no-underline sm:hover:underline text-gray-300 sm:hover:text-white dark:text-gray-100 dark:sm:hover:text-blue-400"
               >Login</a
             >
           </li>
           <li class="mt-2 inline-block mr-2 md:block md:mr-0">
             <a
               href="/sitemap"
-              class="no-underline sm:hover:underline text-gray-100 sm:hover:text-blue-400"
+              class="no-underline sm:hover:underline text-gray-300 sm:hover:text-white dark:text-gray-100 dark:sm:hover:text-blue-400"
             >
               Sitemap
             </a>
@@ -174,21 +174,21 @@
           <li class="mt-2 inline-block mr-2 md:block md:mr-0">
             <a
               href="/advertise"
-              class="no-underline sm:hover:underline text-gray-100 sm:hover:text-blue-400"
+              class="no-underline sm:hover:underline text-gray-300 sm:hover:text-white dark:text-gray-100 dark:sm:hover:text-blue-400"
               >Advertise</a
             >
           </li>
           <li class="mt-2 inline-block mr-2 md:block md:mr-0">
             <a
               href="/data-disclaimer"
-              class="no-underline sm:hover:underline text-gray-100 sm:hover:text-blue-400"
+              class="no-underline sm:hover:underline text-gray-300 sm:hover:text-white dark:text-gray-100 dark:sm:hover:text-blue-400"
               >Data Disclaimer</a
             >
           </li>
           <li class="mt-2 inline-block mr-2 md:block md:mr-0">
             <a
               href="/affiliate-program"
-              class="no-underline sm:hover:underline text-gray-100 sm:hover:text-blue-400"
+              class="no-underline sm:hover:underline text-gray-300 sm:hover:text-white dark:text-gray-100 dark:sm:hover:text-blue-400"
               >Affiliate Program</a
             >
           </li>
@@ -201,7 +201,7 @@
           <li class="mt-2 inline-block mr-2 md:block md:mr-0">
             <a
               href="/about"
-              class="no-underline sm:hover:underline text-gray-100 sm:hover:text-blue-400"
+              class="no-underline sm:hover:underline text-gray-300 sm:hover:text-white dark:text-gray-100 dark:sm:hover:text-blue-400"
             >
               About Us
             </a>
@@ -209,7 +209,7 @@
           <li class="mt-2 inline-block mr-2 md:block md:mr-0">
             <a
               href="/contact"
-              class="no-underline sm:hover:underline text-gray-100 sm:hover:text-blue-400"
+              class="no-underline sm:hover:underline text-gray-300 sm:hover:text-white dark:text-gray-100 dark:sm:hover:text-blue-400"
             >
               Contact Us
             </a>
@@ -218,21 +218,21 @@
           <li class="mt-2 inline-block mr-2 md:block md:mr-0">
             <a
               href="/terms-of-use"
-              class="no-underline sm:hover:underline text-gray-100 sm:hover:text-blue-400"
+              class="no-underline sm:hover:underline text-gray-300 sm:hover:text-white dark:text-gray-100 dark:sm:hover:text-blue-400"
               >Terms of Use</a
             >
           </li>
           <li class="mt-2 inline-block mr-2 md:block md:mr-0">
             <a
               href="/privacy-policy"
-              class="no-underline sm:hover:underline text-gray-100 sm:hover:text-blue-400"
+              class="no-underline sm:hover:underline text-gray-300 sm:hover:text-white dark:text-gray-100 dark:sm:hover:text-blue-400"
               >Privacy Policy</a
             >
           </li>
           <li class="mt-2 inline-block mr-2 md:block md:mr-0">
             <a
               href="/imprint"
-              class="no-underline sm:hover:underline text-gray-100 sm:hover:text-blue-400"
+              class="no-underline sm:hover:underline text-gray-300 sm:hover:text-white dark:text-gray-100 dark:sm:hover:text-blue-400"
               >Imprint</a
             >
           </li>
@@ -240,14 +240,14 @@
           <li class="mt-2 inline-block mr-2 md:block md:mr-0">
             <a
               href="/blog"
-              class="no-underline sm:hover:underline text-gray-100 sm:hover:text-blue-400"
+              class="no-underline sm:hover:underline text-gray-300 sm:hover:text-white dark:text-gray-100 dark:sm:hover:text-blue-400"
             >
               Blog
             </a>
           </li>-->
           <!--
           <li class="mt-2 inline-block mr-2 md:block md:mr-0">
-            <a href="/newsletter" class="no-underline sm:hover:underline text-gray-100 sm:hover:text-blue-400">
+            <a href="/newsletter" class="no-underline sm:hover:underline text-gray-300 sm:hover:text-white dark:text-gray-100 dark:sm:hover:text-blue-400">
               Newsletter
             </a>
           </li>

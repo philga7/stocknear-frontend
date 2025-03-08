@@ -80,7 +80,7 @@
   description="The latest news on individual stocks on the US stock market, gathered from trusted finance and investing websites."
 />
 
-<div class="w-full overflow-hidden m-auto mt-5">
+<div class="w-full overflow-hidden m-auto mt-5 text-muted dark:text-white">
   <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
     <div
       class="relative flex justify-center items-start overflow-hidden w-full"
@@ -90,13 +90,13 @@
           <div class="grid grid-cols-1 gap-y-3">
             {#if news?.length !== 0}
               {#each news as item, index}
-                <div class="w-full flex flex-col bg-default rounded-md m-auto">
+                <div class="w-full flex flex-col rounded-md m-auto">
                   {#if checkIfYoutubeVideo(item.url)}
                     {#if showVideo[index]}
                       <!-- Show the YouTube iframe when the user clicks play -->
                       <div class="w-full aspect-video mb-4">
                         <iframe
-                          class="w-full h-full rounded-md border border-gray-800"
+                          class="w-full h-full rounded-md border border-gray-300 dark:border-gray-800"
                           src={`https://www.youtube.com/embed/${checkIfYoutubeVideo(item.url)}`}
                           frameborder="0"
                           allow="clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -128,10 +128,10 @@
                         href={item?.url}
                         rel="noopener noreferrer"
                         target="_blank"
-                        class="text-lg sm:text-xl font-bold text-white"
+                        class="text-lg sm:text-xl font-bold"
                       >
                         {item?.title}
-                        <p class="text-white text-sm mt-2 font-normal">
+                        <p class=" text-sm mt-2 font-normal">
                           {item?.text?.length > 200
                             ? item?.text?.slice(0, 200) + "..."
                             : item?.text}
@@ -145,7 +145,7 @@
                         href={item?.url}
                         rel="noopener noreferrer"
                         target="_blank"
-                        class="w-full sm:max-w-56 h-fit max-h-96 sm:mr-3 border border-gray-800 rounded-md"
+                        class="w-full sm:max-w-56 h-fit max-h-96 sm:mr-3 border border-gray-300 dark:border-gray-800 rounded-md"
                       >
                         <div class="shrink-0 m-auto">
                           <img
@@ -164,10 +164,10 @@
                           href={item?.url}
                           rel="noopener noreferrer"
                           target="_blank"
-                          class="text-lg sm:text-xl font-bold text-white"
+                          class="text-lg sm:text-xl font-bold"
                         >
                           {item?.title}
-                          <p class="text-white text-sm mt-2 font-normal">
+                          <p class=" text-sm mt-2 font-normal">
                             {item?.text?.length > 200
                               ? item?.text?.slice(0, 200) + "..."
                               : item?.text}
@@ -177,7 +177,9 @@
                     </div>
                   {/if}
                 </div>
-                <hr class="border-gray-600 w-full m-auto mt-5 mb-5" />
+                <hr
+                  class="border-gray-300 dark:border-gray-600 w-full m-auto mt-5 mb-5"
+                />
               {/each}
             {/if}
           </div>
@@ -186,16 +188,16 @@
       <aside class="hidden lg:block relative fixed w-1/4">
         {#if marketNews?.length !== 0}
           <div
-            class="w-full sm:hover:text-white text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer"
           >
             <div class="p-4 text-sm">
-              <h3 class="text-xl text-white font-bold mb-3">Market News</h3>
-              <ul class="text-white">
+              <h3 class="text-xl font-bold mb-3">Market News</h3>
+              <ul class="">
                 {#each marketNews?.slice(0, 10) as item}
                   <li class="mb-3 last:mb-1">
                     {formatDate(item?.publishedDate)} ago -
                     <a
-                      class="sm:hover:text-white text-blue-400"
+                      class="sm:hover:text-muted dark:sm:hover:text-white text-blue-500 dark:text-blue-400"
                       href={item?.url}
                       target="_blank"
                       rel="noopener noreferrer nofollow">{item?.title}</a
