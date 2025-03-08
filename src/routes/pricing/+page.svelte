@@ -1161,6 +1161,7 @@
     <!--Feature Table -->
 
     <!--Start FAQ-->
+
     <section class="bg-default">
       <div class="mx-auto">
         <div class="py-12 md:py-10">
@@ -1176,7 +1177,7 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-white text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
+                  class="collapse-title text-white text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
                   >What are the advantages of Stocknear Service?</summary
                 >
                 <div class="collapse-content">
@@ -1197,7 +1198,7 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-white text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
+                  class="collapse-title text-white text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
                 >
                   Can I change my plan at any time?
                 </summary>
@@ -1221,7 +1222,7 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-white text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
+                  class="collapse-title text-white text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
                 >
                   Are there any commissions in addition to the subscription
                   plans?
@@ -1239,7 +1240,7 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-white text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
+                  class="collapse-title text-white text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
                 >
                   Can I request a refund?
                 </summary>
@@ -1260,7 +1261,7 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-white text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
+                  class="collapse-title text-white text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
                 >
                   What are my payment options?
                 </summary>
@@ -1277,7 +1278,7 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-white text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
+                  class="collapse-title text-white text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
                 >
                   Can I cancel at any time?
                 </summary>
@@ -1295,7 +1296,7 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-white text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
+                  class="collapse-title text-white text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
                 >
                   Why is Stocknear so much cheaper than other platforms?
                 </summary>
@@ -1328,67 +1329,3 @@
 {/if}
 
 <!--End Login Modal-->
-
-<style lang="scss">
-  @import url(https://fonts.googleapis.com/css?family=Lato:700);
-  @import url(https://fonts.googleapis.com/css?family=Lato:700);
-
-  .box {
-    position: relative;
-    width: 100%;
-  }
-  /* common */
-  .ribbon {
-    width: 100px; /* Adjusted width for mobile */
-    height: 100px; /* Adjusted height for mobile */
-    overflow: hidden;
-    position: absolute;
-  }
-  .ribbon::before,
-  .ribbon::after {
-    position: absolute;
-    z-index: -1;
-    content: "";
-    display: block;
-    border: 3px solid #e1341e; /* Reduced border thickness for mobile */
-  }
-  .ribbon span {
-    position: absolute;
-    display: block;
-    width: 150px; /* Adjusted width for mobile */
-    padding: 10px 0; /* Reduced padding for mobile */
-    background-color: #e1341e;
-    box: 0 3px 6px rgba(0, 0, 0, 0.6); /* Reduced box for mobile */
-    color: #fff;
-    font:
-      700 10px/1 "Lato",
-      sans-serif; /* Reduced font size for mobile */
-    text-transform: normalcase;
-    text-align: center;
-  }
-
-  /* top right*/
-  .ribbon-top-right {
-    top: -5px; /* Adjusted positioning for mobile */
-    right: -5px; /* Adjusted positioning for mobile */
-  }
-  .ribbon-top-right::before,
-  .ribbon-top-right::after {
-    border-top-color: transparent;
-    border-right-color: transparent;
-  }
-  .ribbon-top-right::before {
-    top: 0;
-    left: 0;
-  }
-  .ribbon-top-right::after {
-    bottom: 0;
-    right: 0;
-  }
-  .ribbon-top-right span {
-    left: -15px; /* Adjusted positioning for mobile */
-    top: 20px; /* Adjusted positioning for mobile */
-    transform: rotate(45deg);
-    font-size: 0.97rem;
-  }
-</style>
