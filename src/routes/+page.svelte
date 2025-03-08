@@ -64,7 +64,7 @@
 />
 
 <div
-  class="w-full sm:max-w-[1400px] overflow-hidden m-auto min-h-screen bg-default mb-40"
+  class="w-full sm:max-w-[1400px] overflow-hidden m-auto min-h-screen bg-white dark:bg-default text-muted dark:text-white mb-40"
 >
   {#if AppInstalled && !$closedPWA}
     <svelte:component this={AppInstalled} />
@@ -122,13 +122,13 @@
 -->
 
       <h1
-        class="hidden sm:block text-3xl lg:text-4xl text-white font-bold text-center mb-10 relative w-fit flex justify-center m-auto"
+        class="hidden sm:block text-3xl lg:text-4xl text-muted dark:text-white font-bold text-center mb-10 relative w-fit flex justify-center m-auto"
       >
-        Clear & <span class="italic text-[#fff]">Simple</span> Market Insight.
+        Clear & <span class="italic">Simple</span> Market Insight.
       </h1>
 
       <h2
-        class="text-white text-2xl font-semibold text-start w-full pb-4 sm:pl-4 sm:pb-2"
+        class="text-muted dark:text-white text-2xl font-semibold text-start w-full pb-4 sm:pl-4 sm:pb-2"
       >
         Dashboard
       </h2>
@@ -136,7 +136,7 @@
       <main class="flex flex-1 flex-col gap-4 sm:p-4 md:gap-8">
         <div class="grid gap-4 md:gap-8 grid-cols-1 lg:grid-cols-2 text-start">
           <Card.Root
-            class="order-1 sm:order-2 overflow-x-auto overflow-hidden overflow-y-auto no-scrollbar max-h-[450px]"
+            class=" order-1 sm:order-2 overflow-x-auto overflow-hidden overflow-y-auto no-scrollbar max-h-[450px]"
           >
             <Card.Header class="flex flex-row items-center">
               <div class="flex flex-col items-start w-full">
@@ -144,7 +144,7 @@
                   <Card.Title
                     ><a
                       href={`/market-mover/${marketStatus === 0 ? "gainers" : marketStatus === 1 ? "premarket/gainers" : "afterhours/gainers"}`}
-                      class="text-xl sm:text-2xl tex-white font-semibold cursor-pointer sm:hover:underline sm:hover:underline-offset-4"
+                      class="text-xl sm:text-2xl text-muted dark:text-white font-semibold cursor-pointer sm:hover:underline sm:hover:underline-offset-4"
                     >
                       {marketStatus === 0
                         ? "Top"
@@ -173,21 +173,18 @@
                 <Table.Root class="overflow-x-auto w-full">
                   <Table.Header>
                     <Table.Row>
-                      <Table.Head class="text-white font-semibold"
-                        >Symbol</Table.Head
-                      >
-                      <Table.Head
-                        class="hidden sm:table-cell text-white font-semibold"
+                      <Table.Head class=" font-semibold">Symbol</Table.Head>
+                      <Table.Head class="hidden sm:table-cell  font-semibold"
                         >Name</Table.Head
                       >
-                      <Table.Head class="text-white text-right font-semibold"
+                      <Table.Head class=" text-right font-semibold"
                         >Price</Table.Head
                       >
-                      <Table.Head class="text-white text-right font-semibold"
+                      <Table.Head class=" text-right font-semibold"
                         >Change</Table.Head
                       >
                       <Table.Head
-                        class="text-white text-right font-semibold whitespace-nowrap"
+                        class=" text-right font-semibold whitespace-nowrap"
                         >Market Cap</Table.Head
                       >
                     </Table.Row>
@@ -198,7 +195,7 @@
                         <Table.Cell class="text-sm sm:text-[1rem]">
                           <a
                             href={`/stocks/${item?.symbol}`}
-                            class="text-blue-400 sm:hover:text-white cursor-pointer"
+                            class="text-blue-600 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white cursor-pointer"
                             >{item?.symbol}</a
                           >
                         </Table.Cell>
@@ -218,13 +215,13 @@
                           class="text-right md:table.-cell xl:table.-column text-sm sm:text-[1rem] text-white"
                         >
                           {#if item?.changesPercentage >= 0}
-                            <span class="text-[#00FC50]"
+                            <span class="text-[#208646] dark:text-[#00FC50]"
                               >+{item?.changesPercentage >= 1000
                                 ? abbreviateNumber(item?.changesPercentage)
                                 : item?.changesPercentage?.toFixed(2)}%</span
                             >
                           {:else}
-                            <span class="text-[#FF2F1F]"
+                            <span class="text-[#DC2626] dark:text-[#FF2F1F]"
                               >{item?.changesPercentage <= -1000
                                 ? abbreviateNumber(item?.changesPercentage)
                                 : item?.changesPercentage?.toFixed(2)}%
@@ -256,7 +253,7 @@
                   <Card.Title>
                     <a
                       href={`/market-mover/${marketStatus === 0 ? "losers" : marketStatus === 1 ? "premarket/losers" : "afterhours/losers"}`}
-                      class="text-xl sm:text-2xl tex-white font-semibold cursor-pointer sm:hover:underline sm:hover:underline-offset-4"
+                      class="text-xl sm:text-2xl text-muted dark:text-white font-semibold cursor-pointer sm:hover:underline sm:hover:underline-offset-4"
                     >
                       {marketStatus === 0
                         ? "Top"
@@ -285,21 +282,18 @@
                 <Table.Root class="overflow-x-auto w-full">
                   <Table.Header>
                     <Table.Row>
-                      <Table.Head class="text-white font-semibold"
-                        >Symbol</Table.Head
-                      >
-                      <Table.Head
-                        class="hidden sm:table-cell text-white font-semibold"
+                      <Table.Head class=" font-semibold">Symbol</Table.Head>
+                      <Table.Head class="hidden sm:table-cell  font-semibold"
                         >Name</Table.Head
                       >
-                      <Table.Head class="text-white text-right font-semibold"
+                      <Table.Head class=" text-right font-semibold"
                         >Price</Table.Head
                       >
-                      <Table.Head class="text-white text-right font-semibold"
+                      <Table.Head class=" text-right font-semibold"
                         >Change</Table.Head
                       >
                       <Table.Head
-                        class="text-white text-right font-semibold whitespace-nowrap"
+                        class=" text-right font-semibold whitespace-nowrap"
                         >Market Cap</Table.Head
                       >
                     </Table.Row>
@@ -310,7 +304,7 @@
                         <Table.Cell class="text-sm sm:text-[1rem]">
                           <a
                             href={`/stocks/${item?.symbol}`}
-                            class="text-blue-400 sm:hover:text-white cursor-pointer"
+                            class="text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted cursor-pointer"
                             >{item?.symbol}</a
                           >
                         </Table.Cell>
@@ -330,13 +324,13 @@
                           class="text-right md:table.-cell xl:table.-column text-sm sm:text-[1rem] text-white"
                         >
                           {#if item?.changesPercentage >= 0}
-                            <span class="text-[#00FC50]"
+                            <span class="text-[#208646] dark:text-[#00FC50]"
                               >+{item?.changesPercentage >= 1000
                                 ? abbreviateNumber(item?.changesPercentage)
                                 : item?.changesPercentage?.toFixed(2)}%</span
                             >
                           {:else}
-                            <span class="text-[#FF2F1F]"
+                            <span class="text-[#DC2626] dark:text-[#FF2F1F]"
                               >{item?.changesPercentage <= -1000
                                 ? abbreviateNumber(item?.changesPercentage)
                                 : item?.changesPercentage?.toFixed(2)}%
@@ -366,8 +360,7 @@
             <Card.Header class="flex flex-row items-center">
               <div class="flex flex-col items-start w-full">
                 <div class="flex flex-row w-full items-center">
-                  <Card.Title
-                    class="text-xl sm:text-2xl tex-white font-semibold"
+                  <Card.Title class="text-xl sm:text-2xl  font-semibold"
                     >Stock & Market News</Card.Title
                   >
                 </div>
@@ -407,7 +400,7 @@
 
                         <a
                           href={`/stocks/${item?.ticker}`}
-                          class="inline-block badge duration-0 rounded-sm ml-1 px-2 m-auto text-blue-400 sm:hover:text-white"
+                          class="inline-block badge duration-0 rounded-sm ml-1 px-2 m-auto text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted"
                           >{item?.ticker}</a
                         >
                       </li>
@@ -420,7 +413,7 @@
 
                         <a
                           href={`/stocks/${item?.ticker}`}
-                          class="inline-block badge duration-0 rounded-sm ml-1 px-2 m-auto text-blue-400 sm:hover:text-white"
+                          class="inline-block badge duration-0 rounded-sm ml-1 px-2 m-auto text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted"
                           >{item?.ticker}</a
                         >
                       </li>
@@ -444,18 +437,17 @@
                   class="whitespace-nowrap flex flex-row w-full items-center"
                 >
                   <Card.Title
-                    class="text-xl sm:text-2xl tex-white font-semibold"
+                    class="text-xl sm:text-2xl text-muted dark:text-white font-semibold"
                     >Analyst Insight Report
                   </Card.Title>
                   {#if analystReport?.date}
-                    <label
-                      class="hidden sm:inline-block text-white text-sm italic ml-auto"
+                    <label class="hidden sm:inline-block text-sm italic ml-auto"
                       >Updated {analystReport?.date}</label
                     >
                   {/if}
                 </div>
                 {#if analystReport?.date}
-                  <label class="sm:hidden text-white text-xs italic mt-2"
+                  <label class="sm:hidden text-xs italic mt-2"
                     >Updated {analystReport?.date}</label
                   >
                 {/if}
@@ -465,12 +457,12 @@
               {#if Object?.keys(analystReport)?.length > 0}
                 {analystReport?.insight}
 
-                <div class="text-white mt-4">
+                <div class="text-muted dark:text-white mt-4">
                   According to {analystReport?.numOfAnalyst} analyst ratings, the
                   average rating for
                   <a
                     href={`/stocks/${analystReport?.symbol}`}
-                    class="text-blue-400 sm:hover:text-white cursor-pointer"
+                    class="text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted cursor-pointer"
                     >{analystReport?.symbol}</a
                   >
                   stock is "{analystReport?.consensusRating}" The 12-month stock
@@ -480,9 +472,7 @@
                     : "decrease"} of {analystReport?.highPriceChange}% from the
                   latest price.
                 </div>
-                <table
-                  class="w-full text-right text-tiny text-white xs:text-sm sm:text-base mt-5"
-                >
+                <table class="w-full text-right xs:text-sm sm:text-base mt-5">
                   <thead
                     ><tr
                       class="border-b border-gray-600 font-normal text-sm sm:text-[1rem]"
@@ -507,26 +497,26 @@
                       ><td class="py-[3px] text-left lg:py-0.5">Change</td>
                       <td
                         class={analystReport?.lowPriceChange > 0
-                          ? "before:content-['+'] text-[#00FC50]"
-                          : "text-[#FF2F1F]"}
+                          ? "before:content-['+'] text-[#208646] dark:text-[#00FC50]"
+                          : "text-[#DC2626] dark:text-[#FF2F1F]"}
                         >{analystReport?.lowPriceChange}%</td
                       >
                       <td
                         class={analystReport?.avgPriceChange > 0
-                          ? "before:content-['+'] text-[#00FC50]"
-                          : "text-[#FF2F1F]"}
+                          ? "before:content-['+'] text-[#208646] dark:text-[#00FC50]"
+                          : "text-[#DC2626] dark:text-[#FF2F1F]"}
                         >{analystReport?.avgPriceChange}%</td
                       >
                       <td
                         class={analystReport?.medianPriceChange > 0
-                          ? "before:content-['+'] text-[#00FC50]"
-                          : "text-[#FF2F1F]"}
+                          ? "before:content-['+'] text-[#208646] dark:text-[#00FC50]"
+                          : "text-[#DC2626] dark:text-[#FF2F1F]"}
                         >{analystReport?.medianPriceChange}%</td
                       >
                       <td
                         class={analystReport?.highPriceChange > 0
-                          ? "before:content-['+'] text-[#00FC50]"
-                          : "text-[#FF2F1F]"}
+                          ? "before:content-['+'] text-[#208646] dark:text-[#00FC50]"
+                          : "text-[#DC2626] dark:text-[#FF2F1F]"}
                         >{analystReport?.highPriceChange}%</td
                       ></tr
                     ></tbody
@@ -547,7 +537,7 @@
               <div class="flex flex-col items-start w-full">
                 <div class="flex flex-row w-full items-center">
                   <Card.Title
-                    class="text-xl sm:text-2xl tex-white font-semibold"
+                    class="text-xl sm:text-2xl text-muted dark:text-white font-semibold"
                     >Upcoming Earnings</Card.Title
                   >
                   <a
@@ -573,7 +563,7 @@
                       >
                         <strong>{item?.name}</strong> (<a
                           href={`/stocks/${item?.symbol}`}
-                          class="text-blue-400 sm:hover:text-white cursor-pointer"
+                          class="text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted cursor-pointer"
                           >{item?.symbol}</a
                         >)
                         {item?.isToday === true
@@ -629,7 +619,7 @@
                       >
                         <strong>{item?.name}</strong> (<a
                           href={`/stocks/${item?.symbol}`}
-                          class="text-blue-400 sm:hover:text-white cursor-pointer"
+                          class="text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted cursor-pointer"
                           >{item?.symbol}</a
                         >)
                         {item?.isToday === true
@@ -685,9 +675,10 @@
               <div class="flex flex-col items-start w-full">
                 <div class="flex flex-row w-full items-center">
                   <Card.Title
-                    class="text-xl sm:text-2xl tex-white font-semibold"
-                    >Recent Earnings <span class="text-sm text-gray-300"
-                      >(NYSE Time)</span
+                    class="text-xl sm:text-2xl text-muted dark:text-white font-semibold"
+                    >Recent Earnings <span
+                      class="text-sm text-gray-700 dark:text-gray-300"
+                      >(EST Time)</span
                     ></Card.Title
                   >
                 </div>
@@ -699,7 +690,7 @@
                   {#each data?.getDashboard?.recentEarnings as item}
                     <strong>{item?.name}</strong> (<a
                       href={`/stocks/${item?.symbol}`}
-                      class="text-blue-400 sm:hover:text-white cursor-pointer"
+                      class="text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted cursor-pointer"
                       >{item?.symbol}</a
                     >) has released its quarterly earnings at {formatTime(
                       item?.time,

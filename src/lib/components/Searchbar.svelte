@@ -323,7 +323,7 @@
           <Combobox.Input
             id="combobox-input"
             on:click={() => (inputValue = "")}
-            class="grow rounded-sm border border-gray-600 py-2 pl-9 text-[1rem] placeholder-gray-400 focus:border-default focus:shadow-lg focus:outline-hidden focus:ring-0 tiny:pl-8 xs:pl-10 text-white md:py-2 w-full bg-secondary focus:bg-secondary"
+            class="grow rounded-sm border border-gray-300 dark:border-gray-600 py-2 pl-9 text-[1rem] placeholder-gray-600 dark:placeholder-gray-400  focus:shadow-lg focus:outline-hidden focus:ring-0 tiny:pl-8 xs:pl-10 text-muted dark:text-white md:py-2 w-full bg-[#F9FAFB] dark:bg-secondary focus:bg-white dark:focus:bg-secondary"
             placeholder="Company or stock symbol..."
             aria-label="Company or stock symbol..."
           />
@@ -348,58 +348,77 @@
               <div
                 class="pointer-events-none absolute end-6 top-2.5 gap-1 opacity-80 rtl:flex-row-reverse hidden lg:flex"
               >
-                <kbd class="kbd kbd-sm bg-[#1C2128] text-gray-400">ctrl</kbd>
-                <kbd class="kbd kbd-sm bg-[#1C2128] text-gray-400">K</kbd>
+                <kbd
+                  class="kbd kbd-sm bg-gray-300 dark:bg-[#1C2128] text-gray-600 dark:text-gray-400"
+                  >ctrl</kbd
+                >
+                <kbd
+                  class="kbd kbd-sm bg-gray-300 dark:bg-[#1C2128] text-gray-600 dark:text-gray-400"
+                  >K</kbd
+                >
               </div>
             {/if}
           </div>
         </div>
         <Combobox.Content
-          class="w-auto z-40 -mt-0.5 rounded-md border border-gray-700 bg-secondary px-1 py-3 shadow-popover outline-hidden"
+          class="w-auto z-40 -mt-0.5  rounded-md border border-gray-300 dark:border-gray-700 bg-[#F9FAFB] dark:bg-secondary px-1 py-3 shadow-xl outline-hidden"
           sideOffset={8}
         >
           {#if inputValue?.length > 0 && searchBarData?.length > 0}
             <div
-              class="pl-2 pb-2 border-b border-gray-600 text-white text-sm font-semibold w-full"
+              class="pl-2 pb-2 border-b border-gray-300 dark:border-gray-600 text-muted dark:text-white text-sm font-semibold w-full"
             >
               Suggestions
             </div>
             {#each searchBarData as item}
               <Combobox.Item
-                class="cursor-pointer text-white border-b border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-2 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-primary"
+                class="cursor-pointer text-muted dark:text-white border-b border-gray-300 dark:border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-2 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-200 dark:data-highlighted:bg-gray-200 dark:data-highlighted:bg-primary"
                 value={item?.symbol}
                 label={item?.name}
                 on:click={() => handleSearch(item?.symbol, item?.type)}
               >
                 <div class="flex flex-row items-center justify-between w-full">
-                  <span class="text-sm text-blue-400">{item?.symbol}</span>
-                  <span class="ml-3 text-sm text-white">{item?.name}</span>
-                  <span class="ml-auto text-sm text-white">{item?.type}</span>
+                  <span class="text-sm text-blue-500 dark:text-blue-400"
+                    >{item?.symbol}</span
+                  >
+                  <span class="ml-3 text-sm text-muted dark:text-white"
+                    >{item?.name}</span
+                  >
+                  <span class="ml-auto text-sm text-muted dark:text-white"
+                    >{item?.type}</span
+                  >
                 </div>
               </Combobox.Item>
             {/each}
           {:else if inputValue?.length === 0 || !showSuggestions}
             <div
-              class="pl-2 pb-2 border-b border-gray-600 text-white text-sm font-semibold w-full"
+              class="pl-2 pb-2 border-b border-gray-300 dark:border-gray-600 text-muted dark:text-white text-sm font-semibold w-full"
             >
               {searchHistory?.length > 0 ? "Recent" : "Popular"}
             </div>
             {#each searchHistory?.length > 0 ? searchHistory : popularList as item}
               <Combobox.Item
-                class="cursor-pointer text-white border-b border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-2 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-primary"
+                class="cursor-pointer text-white border-b border-gray-300 dark:border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-2 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-200 dark:data-highlighted:bg-primary"
                 value={item?.symbol}
                 label={item?.name}
                 on:click={() => handleSearch(item?.symbol, item?.type)}
               >
                 <div class="flex flex-row items-center justify-between w-full">
-                  <span class="text-sm text-blue-400">{item?.symbol}</span>
-                  <span class="ml-3 text-sm text-white">{item?.name}</span>
-                  <span class="ml-auto text-sm text-white">{item?.type}</span>
+                  <span
+                    class="text-sm text-muted font-semibold dark:font-normal dark:text-blue-400"
+                    >{item?.symbol}</span
+                  >
+                  <span class="ml-3 text-sm text-muted dark:text-white"
+                    >{item?.name}</span
+                  >
+                  <span class="ml-auto text-sm text-muted dark:text-white"
+                    >{item?.type}</span
+                  >
                 </div>
               </Combobox.Item>
             {/each}
           {:else}
-            <span class="block px-5 py-2 text-sm text-white">
+            <span class="block px-5 py-2 text-sm text-muted dark:text-white">
               No results found
             </span>
           {/if}
@@ -411,7 +430,7 @@
 
 <label
   for="searchBarModal"
-  class="sm:hidden cursor-pointer p-2 sm:hover:bg-primary text-gray-300 sm:hover:text-white shrink-0 flex items-center justify-center border border-gray-600 rounded-md"
+  class="sm:hidden cursor-pointer p-2 sm:hover:bg-primary text-gray-300 sm:hover:text-white shrink-0 flex items-center justify-center border border-gray-300 dark:border-gray-600 rounded-md"
 >
   <Search class="h-[20px] w-[20px]" />
 </label>
@@ -427,7 +446,7 @@
   <label for="searchBarModal" class="cursor-pointer modal-backdrop"></label>
 
   <div
-    class="z-999 modal-box overflow-hidden rounded-md bg-secondary border border-gray-600 sm:my-8 sm:m-auto sm:h-auto w-full sm:w-3/4 lg:w-1/2 2xl:w-1/3"
+    class="z-999 modal-box overflow-hidden rounded-md bg-secondary border border-gray-300 dark:border-gray-600 sm:my-8 sm:m-auto sm:h-auto w-full sm:w-3/4 lg:w-1/2 2xl:w-1/3"
   >
     <label
       for="searchBarModal"
@@ -473,7 +492,7 @@
 
         <input
           id="modal-search"
-          class="rounded-md w-full text-white bg-secondary border border-gray-600 focus:ring-transparent placeholder-gray-200 py-3 pl-10 pr-4"
+          class="rounded-md w-full text-white bg-gray-300 dark:bg-secondary border border-gray-300 dark:border-gray-600 focus:ring-transparent placeholder-gray-200 py-3 pl-10 pr-4"
           type="search"
           placeholder="Company or stock symbol..."
           bind:value={inputValue}
@@ -514,17 +533,19 @@
         <ul class="text-sm">
           {#if !showSuggestions}
             {#each searchHistory?.length > 0 ? searchHistory : popularList as item}
-              <li class="border-b border-gray-600">
+              <li class="border-b border-gray-300 dark:border-gray-600">
                 <a
                   href={`/${item?.type === "ETF" ? "etf" : item?.type === "Index" ? "index" : "stocks"}/${item?.symbol}`}
                   on:click={() => popularTicker(item?.symbol)}
                   class="mb-2 {item?.symbol === focusedSuggestion
                     ? 'cursor-pointer flex justify-start items-center p-2 text-white bg-primary rounded group'
-                    : 'cursor-pointer bg-secondary sm:hover:bg-primary rounded-md flex justify-start items-center p-2 text-white  group'} w-full"
+                    : 'cursor-pointer bg-secondary sm:hover:bg-gray-300 dark:sm:hover:bg-primary rounded-md flex justify-start items-center p-2 text-white  group'} w-full"
                 >
                   <div class="flex flex-row items-center w-full">
                     <div class="flex flex-col">
-                      <span class="text-blue-400">{item?.symbol}</span>
+                      <span class="text-blue-500 dark:text-blue-400"
+                        >{item?.symbol}</span
+                      >
                       <span class="text-white"
                         >{item?.name.length > 150
                           ? item?.name?.slice(0, 150) + "..."
@@ -544,7 +565,7 @@
               Suggestions
             </div>
             {#each searchBarData as item}
-              <li class="border-b border-gray-600">
+              <li class="border-b border-gray-300 dark:border-gray-600">
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <!-- svelte-ignore a11y-label-has-associated-control -->
                 <a
@@ -556,7 +577,9 @@
                 >
                   <div class="flex flex-row items-center w-full">
                     <div class="flex flex-col">
-                      <span class="text-blue-400">{item?.symbol}</span>
+                      <span class="text-blue-500 dark:text-blue-400"
+                        >{item?.symbol}</span
+                      >
                       <span class="text-white"
                         >{item?.name?.length > 150
                           ? item?.name?.slice(0, 150) + "..."

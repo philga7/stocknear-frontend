@@ -6,7 +6,9 @@
   import { Toaster } from "svelte-sonner";
   import "@bprogress/core/css";
   import { BProgress } from "@bprogress/core";
+  import { ModeWatcher } from "mode-watcher";
 
+	import { setMode, mode } from "mode-watcher";
   import { page } from "$app/stores";
 
   import Footer from "$lib/components/Footer.svelte";
@@ -238,6 +240,14 @@
     isBeforeMarketOpen.set(isBeforeMarketOpenValue);
     isAfterMarketClose.set(isAfterMarketCloseValue);
   };
+
+  	function handleModeChange() {
+		if ($mode === "light") {
+			setMode("dark");
+		} else {
+			setMode("light");
+		}
+	}
 </script>
 
 <svelte:window bind:innerWidth={$screenWidth} />
@@ -267,21 +277,21 @@
 </svelte:head>
 
 <div class="app {$page?.url?.pathname === '/' ? 'bg-[#000]' : ''}">
-  <div class="flex min-h-screen w-full flex-col bg-default">
+  <div class="flex min-h-screen w-full flex-col bg-white dark:bg-default">
     <div class="w-full">
       <div
         class="w-full navbar sticky {$screenWidth &&
         $screenWidth < 640 &&
         hideHeader
           ? 'invisible -mt-20'
-          : ''} top-0 z-40 bg-default border-b border-gray-800 flex h-14 items-center gap-4 px-4 sm:h-auto sm:px-6"
+          : ''} top-0 z-40 bg-white dark:bg-default border-b border-gray-800 flex h-14 items-center gap-4 px-4 sm:h-auto sm:px-6"
       >
         <Sheet.Root>
           <Sheet.Trigger asChild let:builder>
             <Button
               builders={[builder]}
               size="icon"
-              class="bg-default text-white sm:hover:bg-[#18181B] border-none"
+              class="bg-white dark:bg-default text-white sm:hover:bg-[#18181B] border-none"
             >
               <Menu class="h-5.5 w-5.5 sm:w-7 sm:h-7" />
               <span class="sr-only">Toggle Menu</span>
@@ -289,7 +299,7 @@
           </Sheet.Trigger>
           <Sheet.Content
             side="left"
-            class="max-w-screen w-full sm:max-w-xs bg-[#18181B] overflow-y-auto text-white"
+            class="max-w-screen w-full sm:max-w-xs bg-[#18181B] overflow-y-auto text-muted dark:text-white"
           >
             <nav class=" grid gap-6 text-lg bg-[#18181B]">
               <Sheet.Close asChild let:builder>
@@ -299,7 +309,7 @@
                 >
                   <a
                     href="/"
-                    class="flex items-center gap-4 px-0.5 text-white text-[1rem] font-semibold"
+                    class="flex items-center gap-4 px-0.5 text-muted dark:text-white text-[1rem] font-semibold"
                   >
                     <img
                       class="avatar w-9 sm:w-10 rounded-full"
@@ -808,7 +818,7 @@
             src={stocknear_logo}
             alt="Stocknear Logo"
           />
-          <span class="text-white font-semibold ml-2 text-lg">Stocknear</span>
+          <span class="text-muted dark:text-white font-semibold ml-2 text-lg">Stocknear</span>
         </a>
 
         <div
@@ -826,11 +836,11 @@
                   <Button
                     size="icon"
                     aria-label="Settings"
-                    class="overflow-hidden rounded-md bg-default sm:hover:bg-[#18181B] border border-gray-600 w-10 h-10"
+                    class="overflow-hidden rounded-md bg-gray-200 dark:bg-default sm:hover:bg-[#18181B] border border-gray-300 dark:border-gray-600 w-10 h-10"
                     builders={[builder]}
                   >
                     <svg
-                      class="h-[28px] w-[28px] overflow-hidden rounded-full text-gray-300"
+                      class="h-[28px] w-[28px] overflow-hidden rounded-full text-gray-500 dark:text-gray-300"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       ><path
@@ -865,6 +875,13 @@
                     </DropdownMenu.Item>
                   </a>
 
+                  <button on:click={handleModeChange} class="cursor-pointer w-full sm:hover:bg-[#18181B] relative flex cursor-default select-none items-center rounded px-2 py-1.5 text-sm outline-hidden data-disabled:pointer-events-none">
+ 
+                    <span>{$mode === 'light' ? 'Light' : 'Dark'} Mode</span>
+                    <span class="sr-only">Toggle theme</span>
+                  </button>
+
+
                   <DropdownMenu.Separator />
                   <form class="cursor-pointer" action="/logout" method="POST">
                     <button
@@ -875,6 +892,7 @@
                       <DropdownMenu.Item
                         class="sm:hover:bg-[#18181B] cursor-pointer"
                       >
+                      <svg class="lucide lucide-log-out mr-2 w-3.5 h-3.5 transform scale-x-[-1]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" x2="9" y1="12" y2="12"></line></svg>
                         <span class="text-start">Logout</span>
                       </DropdownMenu.Item>
                     </button>
@@ -1217,6 +1235,7 @@
               -->
 
               <slot />
+              <ModeWatcher defaultMode={"dark"}/>
               <Toaster position="top-center" />
               {#if Cookie && $showCookieConsent === true}
                 <Cookie />

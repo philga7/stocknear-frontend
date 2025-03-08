@@ -15,9 +15,9 @@
   <a
     href="/notifications"
     on:click={toggle}
-    class="text-gray-300 sm:hover:text-white cursor-pointer sm:hover:bg-primary relative border p-2 rounded-md border-gray-600 ml-3 -mr-1"
+    class="bg-gray-200 dark:bg-default text-gray-500 dark:text-gray-300 sm:hover:text-white cursor-pointer sm:hover:bg-primary relative border p-2 rounded-md border-gray-300 dark:border-gray-600 ml-3 -mr-1"
   >
-    <Bell class="h-[20px] w-[20px]" />
+    <Bell class="h-[20px] w-[20px] " />
 
     {#if hasUnreadElement}
       <div class="absolute top-2 -right-2 flex">
