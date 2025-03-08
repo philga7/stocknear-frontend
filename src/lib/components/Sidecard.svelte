@@ -15,9 +15,11 @@
   let website = "n/a";
   let snippet;
 
+  let strongBuyCount = 0;
   let buyCount = 0;
   let holdCount = 0;
   let sellCount = 0;
+  let strongSellCount = 0;
   let priceTarget = "n/a";
   let numOfAnalyst = 0;
   let consensusRating = "n/a";
@@ -39,11 +41,23 @@
 
   function plotData() {
     // X-axis categories
-    const categories = ["Sell", "Hold", "Buy"];
+    const categories = [
+      "Strong<br>Sell",
+      "Sell",
+      "Hold",
+      "Buy",
+      "Strong<br>Buy",
+    ];
 
     // Corresponding data
-    const dataValues = [sellCount, holdCount, buyCount];
-    const colors = ["#FF4C4C", "#F5B700", "#008A00"];
+    const dataValues = [
+      strongSellCount,
+      sellCount,
+      holdCount,
+      buyCount,
+      strongBuyCount,
+    ];
+    const colors = ["#FF4C4C", "#FF4C4C", "#F5B700", "#008A00", "#008A00"];
 
     const options = {
       chart: {
@@ -54,7 +68,8 @@
         animation: false,
       },
       title: {
-        text: `<div class="text-gray-200 mt-3 mb-2 text-center font-normal text-2xl">Price Target: <span class="${changesPercentage >= 0 ? "text-[#00FC50]" : "text-[#FF2F1F]"}">$${priceTarget}</span></div>
+        text: `<div class="text-gray-200 mt-3  text-center font-normal text-2xl">Price Target: <span class="${changesPercentage >= 0 ? "text-[#00FC50]" : "text-[#FF2F1F]"}">$${priceTarget}</span></div>
+        <div class="text-gray-200  mb-2 text-center font-normal text-xl">(${changesPercentage}% ${changesPercentage >= 0 ? "upside" : "downside"})</div>
         <div class="text-gray-200 text-center font-normal text-xl flex justify-center items-center">Analyst Consensus: <span class="ml-1 ${consensusRating === "Buy" ? "text-[#00FC50]" : consensusRating === "Sell" ? "text-[#FF2F1F]" : consensusRating === "Hold" ? "text-[#D5AB31]" : "text-white"}">${consensusRating ?? "n/a"}</span></div>`,
         style: {
           color: "white",
@@ -67,7 +82,8 @@
         categories: categories,
         gridLineWidth: 0,
         labels: {
-          style: { color: "white" },
+          rotation: 0,
+          style: { color: "white", fontSize: "12.5px" },
         },
       },
       yAxis: {
@@ -100,7 +116,7 @@
           let tooltipContent = "";
           this.points.forEach((point) => {
             tooltipContent += `
-          <span class="text-white font-semibold text-sm">${point.key}:</span> 
+          <span class="text-white font-semibold text-sm">${point.key?.replace("<br>", " ")}:</span> 
           <span class="text-white font-normal text-sm" >${point.y}</span><br>
         `;
           });
@@ -157,9 +173,12 @@
       snippet = description?.slice(0, 450) + "...";
 
       numOfAnalyst = data?.getAnalystSummary?.numOfAnalyst;
-      buyCount = data?.getAnalystSummary?.Buy;
-      holdCount = data?.getAnalystSummary?.Hold;
-      sellCount = data?.getAnalystSummary?.Sell;
+      strongBuyCount = data?.getAnalystSummary?.strongBuy || 0;
+      buyCount = data?.getAnalystSummary?.buy || 0;
+      holdCount = data?.getAnalystSummary?.hold || 0;
+      sellCount = data?.getAnalystSummary?.sell || 0;
+      strongSellCount = data?.getAnalystSummary?.strongSell || 0;
+
       priceTarget =
         data?.getAnalystSummary?.medianPriceTarget !== ("n/a" && 0)
           ? data?.getAnalystSummary?.medianPriceTarget
@@ -276,7 +295,7 @@
         </p>
 
         <div
-          class="mt-5 border border-gray-700 rounded"
+          class="mt-3 border border-gray-700 rounded"
           use:highcharts={configAnalyst}
         ></div>
 

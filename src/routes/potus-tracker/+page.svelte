@@ -158,8 +158,8 @@
             enabled: true,
             color: "white",
             style: {
-              fontSize: "13px",
-              fontWeight: "bold",
+              fontSize: "14px",
+              fontWeight: "normal",
             },
             formatter: function () {
               return this.y.toFixed(2) + "%"; // Add percentage symbol
@@ -178,11 +178,13 @@
             {
               value: 0, // Values below 0
               color: "#E02424", // Red
+              borderRadius: "0px",
               borderColor: "#E02424", // Red border
             },
             {
               color: "#10B981", // Green for values 0 and above
               borderColor: "#10B981", // Green border
+              borderRadius: "0px",
             },
           ],
         },
