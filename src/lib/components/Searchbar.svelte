@@ -4,7 +4,6 @@
   import Search from "lucide-svelte/icons/search";
   import { goto } from "$app/navigation";
   import { Combobox } from "bits-ui";
-  import { tick } from "svelte";
 
   let searchHistory = [];
   let updatedSearchHistory = [];
@@ -15,24 +14,39 @@
   let showSuggestions = false;
   let touchedInput = false;
 
-  // FIX: Declare inputValue as a normal variable instead of using a reactive assignment.
-  let inputValue = "";
-
+  $: inputValue = "";
   let nextPage = false;
   let searchOpen = false;
   let searchBarModalChecked = false; // Initialize it to false
   let inputElement;
   let isNavigating = false;
 
-  // NEW: Flag to ensure we only auto-dispatch ArrowDown once per modal open.
-  let suggestionSelected = false;
-
   const popularList = [
-    { symbol: "KO", name: "Coca Cola Company", type: "Stock" },
-    { symbol: "TSLA", name: "Tesla Inc", type: "Stock" },
-    { symbol: "AMD", name: "Advanced Micro Devices", type: "Stock" },
-    { symbol: "SPY", name: "SPDR S&P 500 ETF Trust", type: "ETF" },
-    { symbol: "NVDA", name: "Nvidia", type: "Stock" },
+    {
+      symbol: "KO",
+      name: "Coca Cola Company",
+      type: "Stock",
+    },
+    {
+      symbol: "TSLA",
+      name: "Tesla Inc",
+      type: "Stock",
+    },
+    {
+      symbol: "AMD",
+      name: "Advanced Micro Devices",
+      type: "Stock",
+    },
+    {
+      symbol: "SPY",
+      name: "SPDR S&P 500 ETF Trust",
+      type: "ETF",
+    },
+    {
+      symbol: "NVDA",
+      name: "Nvidia",
+      type: "Stock",
+    },
   ];
 
   async function handleSearch(symbol, assetType) {
@@ -59,7 +73,7 @@
       closePopup?.dispatchEvent(new MouseEvent("click"));
     }
 
-    goto(
+    await goto(
       `/${assetType === "ETF" ? "etf" : assetType === "Index" ? "index" : "stocks"}/${symbol}`,
     );
 
@@ -96,6 +110,7 @@
     const closePopup = document.getElementById("searchBarModal");
     closePopup?.dispatchEvent(new MouseEvent("click"));
 
+    // Reset the flag after a short delay
     setTimeout(() => {
       isNavigating = false;
     }, 100);
@@ -139,11 +154,11 @@
 
   async function search() {
     isLoading = true;
-
-    clearTimeout(timeoutId);
+    clearTimeout(timeoutId); // Clear any existing timeout
 
     if (!inputValue.trim()) {
-      searchBarData = [];
+      // Skip if query is empty or just whitespace
+      searchBarData = []; // Clear previous results
       isLoading = false;
       return;
     }
@@ -153,8 +168,8 @@
         `/api/searchbar?query=${encodeURIComponent(inputValue)}&limit=10`,
       );
       searchBarData = await response?.json();
-      isLoading = false;
-    }, 200);
+    }, 50); // delay
+    isLoading = false;
   }
 
   function handleKeyDown(symbol) {
@@ -188,6 +203,7 @@
 
   function saveRecentTicker() {
     try {
+      // Save the version along with the rules
       localStorage?.setItem("search-history", JSON?.stringify(searchHistory));
     } catch (e) {
       console.log("Failed saving indicator rules: ", e);
@@ -197,12 +213,14 @@
   onMount(() => {
     try {
       const savedRules = localStorage?.getItem("search-history");
+
       if (savedRules) {
         searchHistory = JSON.parse(savedRules);
       }
     } catch (e) {
       console.log(e);
     }
+
     window.addEventListener("keydown", handleControlK);
     return () => {
       window.removeEventListener("keydown", handleControlK);
@@ -211,21 +229,17 @@
 
   $: {
     if (searchBarModalChecked === true && typeof window !== "undefined") {
-      console.log("open");
       if ($screenWidth > 640) {
         inputElement.focus();
       }
-      // Prevent body scroll while modal is open
+      //Page is not scrollable now
       document.body.classList.add("overflow-hidden");
-      // Reset our flag when modal is (re‑)opened.
-      suggestionSelected = false;
     }
   }
 
   $: {
     if (searchBarModalChecked === false && typeof window !== "undefined") {
       showSuggestions = inputValue = "";
-      suggestionSelected = false;
       document.body.classList?.remove("overflow-hidden");
     }
   }
@@ -236,8 +250,10 @@
       updatedSearchHistory?.length > 0
     ) {
       (async () => {
-        // Delay is needed so that the #each block updates properly
+        // Add 500 ms delay is important otherwise bug since #each has searchHistory and updates too quickly and redirects to wrong symbol
         await new Promise((resolve) => setTimeout(resolve, 500));
+
+        // Update search history after delay
         searchHistory = updatedSearchHistory;
         updatedSearchHistory = [];
         saveRecentTicker();
@@ -248,7 +264,11 @@
 
   $: {
     if (searchBarData) {
-      showSuggestions = searchBarData?.length > 0;
+      if (searchBarData?.length > 0) {
+        showSuggestions = true;
+      } else {
+        showSuggestions = false;
+      }
     }
   }
 
@@ -256,24 +276,6 @@
     if (inputValue) {
       search();
     }
-  }
-
-  // FIX: Dispatch ArrowDown only once (when suggestions open) to auto‑select the first suggestion.
-  $: if (
-    showSuggestions &&
-    searchBarData?.length &&
-    touchedInput &&
-    !suggestionSelected
-  ) {
-    tick().then(() => {
-      const input = document.getElementById("combobox-input");
-      if (input) {
-        input.dispatchEvent(
-          new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true }),
-        );
-        suggestionSelected = true;
-      }
-    });
   }
 </script>
 
@@ -328,13 +330,7 @@
           <div
             class="absolute inset-y-0 right-0 flex items-center gap-x-2 px-3 text-gray-350 font-semibold"
           >
-            {#if isLoading && inputValue?.length > 0}
-              <div
-                class="pointer-events-none absolute end-6 top-2.5 gap-1 opacity-80 rtl:flex-row-reverse flex"
-              >
-                <span class="loading loading-spinner loading-sm"></span>
-              </div>
-            {:else if isLoading}
+            {#if isLoading}
               <span class="loading loading-spinner loading-sm"></span>
             {:else if inputValue?.length > 0}
               <label class="cursor-pointer" on:click={() => (inputValue = "")}>
@@ -358,79 +354,56 @@
             {/if}
           </div>
         </div>
-        {#if isLoading && inputValue?.length > 0}{:else}
-          <Combobox.Content
-            class="w-auto z-40 -mt-0.5 rounded-md border border-gray-700 bg-secondary px-1 py-3 shadow-popover outline-hidden"
-            sideOffset={8}
-          >
-            {#if inputValue?.length > 0 && searchBarData?.length > 0}
-              <div
-                class="pl-2 pb-2 border-b border-gray-600 text-white text-sm font-semibold w-full"
+        <Combobox.Content
+          class="w-auto z-40 -mt-0.5 rounded-md border border-gray-700 bg-secondary px-1 py-3 shadow-popover outline-hidden"
+          sideOffset={8}
+        >
+          {#if inputValue?.length > 0 && searchBarData?.length > 0}
+            <div
+              class="pl-2 pb-2 border-b border-gray-600 text-white text-sm font-semibold w-full"
+            >
+              Suggestions
+            </div>
+            {#each searchBarData as item}
+              <Combobox.Item
+                class="cursor-pointer text-white border-b border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-2 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-primary"
+                value={item?.symbol}
+                label={item?.name}
+                on:click={() => handleSearch(item?.symbol, item?.type)}
               >
-                Suggestions
-              </div>
-              {#each searchBarData as item}
-                <Combobox.Item
-                  class="cursor-pointer text-white border-b border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-2 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-primary"
-                  value={item?.symbol}
-                  label={item?.name}
-                  on:click={() => handleSearch(item?.symbol, item?.type)}
-                >
-                  <div
-                    class="flex flex-row items-center justify-between w-full"
-                  >
-                    <span class="text-sm text-blue-400">{item?.symbol}</span>
-                    <span class="ml-3 text-sm text-white">{item?.name}</span>
-                    <span class="ml-auto text-sm text-white">{item?.type}</span>
-                  </div>
-                </Combobox.Item>
-              {/each}
-            {:else if inputValue?.length === 0}
-              <div
-                class="pl-2 pb-2 border-b border-gray-600 text-white text-sm font-semibold w-full"
+                <div class="flex flex-row items-center justify-between w-full">
+                  <span class="text-sm text-blue-400">{item?.symbol}</span>
+                  <span class="ml-3 text-sm text-white">{item?.name}</span>
+                  <span class="ml-auto text-sm text-white">{item?.type}</span>
+                </div>
+              </Combobox.Item>
+            {/each}
+          {:else if inputValue?.length === 0 || !showSuggestions}
+            <div
+              class="pl-2 pb-2 border-b border-gray-600 text-white text-sm font-semibold w-full"
+            >
+              {searchHistory?.length > 0 ? "Recent" : "Popular"}
+            </div>
+            {#each searchHistory?.length > 0 ? searchHistory : popularList as item}
+              <Combobox.Item
+                class="cursor-pointer text-white border-b border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-2 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-primary"
+                value={item?.symbol}
+                label={item?.name}
+                on:click={() => handleSearch(item?.symbol, item?.type)}
               >
-                {searchHistory?.length > 0 ? "Recent" : "Popular"}
-              </div>
-              {#each searchHistory as item}
-                <Combobox.Item
-                  class="cursor-pointer text-white border-b border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-2 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-primary"
-                  value={item?.symbol}
-                  label={item?.name}
-                  on:click={() => handleSearch(item?.symbol, item?.type)}
-                >
-                  <div
-                    class="flex flex-row items-center justify-between w-full"
-                  >
-                    <span class="text-sm text-blue-400">{item?.symbol}</span>
-                    <span class="ml-3 text-sm text-white">{item?.name}</span>
-                    <span class="ml-auto text-sm text-white">{item?.type}</span>
-                  </div>
-                </Combobox.Item>
-              {/each}
-            {:else if showSuggestions}
-              {#each searchHistory as item}
-                <Combobox.Item
-                  class="cursor-pointer text-white border-b border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-2 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-primary"
-                  value={item?.symbol}
-                  label={item?.name}
-                  on:click={() => handleSearch(item?.symbol, item?.type)}
-                >
-                  <div
-                    class="flex flex-row items-center justify-between w-full"
-                  >
-                    <span class="text-sm text-blue-400">{item?.symbol}</span>
-                    <span class="ml-3 text-sm text-white">{item?.name}</span>
-                    <span class="ml-auto text-sm text-white">{item?.type}</span>
-                  </div>
-                </Combobox.Item>
-              {/each}
-            {:else}
-              <span class="block px-5 py-2 text-sm text-white">
-                No results found
-              </span>
-            {/if}
-          </Combobox.Content>
-        {/if}
+                <div class="flex flex-row items-center justify-between w-full">
+                  <span class="text-sm text-blue-400">{item?.symbol}</span>
+                  <span class="ml-3 text-sm text-white">{item?.name}</span>
+                  <span class="ml-auto text-sm text-white">{item?.type}</span>
+                </div>
+              </Combobox.Item>
+            {/each}
+          {:else}
+            <span class="block px-5 py-2 text-sm text-white">
+              No results found
+            </span>
+          {/if}
+        </Combobox.Content>
       </Combobox.Root>
     </div>
   </div>
@@ -454,7 +427,7 @@
   <label for="searchBarModal" class="cursor-pointer modal-backdrop"></label>
 
   <div
-    class="z-40 modal-box overflow-hidden rounded-md bg-secondary border border-gray-600 sm:my-8 sm:m-auto sm:h-auto w-full sm:w-3/4 lg:w-1/2 2xl:w-1/3"
+    class="z-999 modal-box overflow-hidden rounded-md bg-secondary border border-gray-600 sm:my-8 sm:m-auto sm:h-auto w-full sm:w-3/4 lg:w-1/2 2xl:w-1/3"
   >
     <label
       for="searchBarModal"
