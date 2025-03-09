@@ -5,6 +5,7 @@
   import VirtualList from "svelte-tiny-virtual-list";
   import HoverStockChart from "$lib/components/HoverStockChart.svelte";
   import { toast } from "svelte-sonner";
+  import { mode } from "mode-watcher";
 
   export let data;
   export let optionsWatchlist;
@@ -94,8 +95,7 @@
       }
     } else {
       toast.error("Only for Pro Members", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
     }
   }

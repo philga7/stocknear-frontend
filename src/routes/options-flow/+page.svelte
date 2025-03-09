@@ -5,6 +5,7 @@
   import { cn } from "$lib/utils";
   import { onMount, onDestroy } from "svelte";
   import { toast } from "svelte-sonner";
+  import { mode } from "mode-watcher";
 
   import { DateFormatter, type DateValue } from "@internationalized/date";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
@@ -230,8 +231,7 @@
   function handleAddRule() {
     if (ruleName === "") {
       toast.error("Please select a rule", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
       return;
     }
@@ -512,8 +512,7 @@
       }
     } else {
       toast.error(`Market is closed`, {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
     }
   }
@@ -780,8 +779,7 @@
       }
     } else {
       toast.error("Only for Pro Members", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
     }
   };

@@ -10,6 +10,7 @@
     removeCompanyStrings,
   } from "$lib/utils";
   import { toast } from "svelte-sonner";
+  import { mode } from "mode-watcher";
 
   import { onMount, onDestroy, afterUpdate } from "svelte";
   import Input from "$lib/components/Input.svelte";
@@ -298,16 +299,14 @@
     // Validate the title input
     if (!title || title.toString().trim().length === 0) {
       toast.error("Title cannot be empty!", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
       return;
     }
 
     if (title.toString().length > 100) {
       toast.error("Title is too long. Keep it simple and concise bruv!", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
       return;
     }
@@ -394,8 +393,7 @@
 
       if (output === "success") {
         toast.success("Watchlist deleted successfully!", {
-          style:
-            "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+          style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
         });
 
         allList = allList?.filter((item) => item?.id !== displayWatchList?.id);
@@ -408,15 +406,13 @@
         clicked.dispatchEvent(new MouseEvent("click"));
       } else {
         toast.error("Something went wrong. Please try again!", {
-          style:
-            "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+          style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
         });
       }
     } catch (error) {
       console.error("Error:", error);
       toast.error("An error occurred. Please try again later.", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
     }
   }
@@ -447,8 +443,7 @@
   async function handleDeleteTickers() {
     if (numberOfChecked === 0) {
       toast.error(`You need to select symbols before you can delete them`, {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
     } else {
       watchList = watchList?.filter(
@@ -514,8 +509,7 @@
     // Check if the ticker is already in the watchlist.
     if (watchList?.some((item) => item?.symbol === ticker)) {
       toast.error("This symbol is already in your watchlist", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
       inputValue = "";
       return;
@@ -551,8 +545,7 @@
       loading: "Updating watchlist...",
       success: "Watchlist updated successfully!",
       error: (err) => err.message || "Failed to update watchlist",
-      style:
-        "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+      style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
     });
 
     try {
@@ -612,8 +605,7 @@
       saveRules();
     } else {
       toast.error("Only for Plus & Pro Members", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
     }
   }

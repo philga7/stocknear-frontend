@@ -5,6 +5,7 @@
   import { setCache, getCache } from "$lib/store";
   import { onDestroy, onMount } from "svelte";
   import { toast } from "svelte-sonner";
+  import { mode } from "mode-watcher";
 
   export let data;
   let isLoaded = false;
@@ -65,8 +66,7 @@
     } catch (error) {
       console.error("Error loading heatmap:", error);
       toast.error("Failed to load heatmap. Please try again.", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
     } finally {
       isLoading = false;
@@ -117,8 +117,7 @@
         loading: "Downloading heatmap...",
         success: "Heatmap downloaded!",
         error: "Download failed. Try again.",
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       },
     );
   }

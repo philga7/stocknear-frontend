@@ -4,6 +4,7 @@
   import SEO from "$lib/components/SEO.svelte";
   import { onMount } from "svelte";
   import { toast } from "svelte-sonner";
+  import { mode } from "mode-watcher";
 
   export let data;
   let editMode = false;
@@ -89,13 +90,11 @@
   async function handleDelete() {
     if (numberOfChecked === 0) {
       toast.error(`You need to select symbols before you can delete them`, {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
     } else if (data?.getOptionsWatchlist?.id?.length === 0) {
       toast.error(`You need to select symbols before you can delete them`, {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
     } else {
       optionsWatchlist = optionsWatchlist?.filter(

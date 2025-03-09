@@ -1,5 +1,6 @@
 <script lang="ts">
   import { toast } from "svelte-sonner";
+  import { mode } from "mode-watcher";
 
   import { openPriceAlert, newPriceAlertData } from "$lib/store";
 
@@ -19,8 +20,7 @@
     // Validate input locally.
     if (targetPrice < 0) {
       toast.error("Target Price must be above zero", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
       return;
     }
@@ -61,8 +61,7 @@
       loading: "Creating price alert...",
       success: "Successfully created price alert",
       error: (err) => err.message || "Failed to create price alert",
-      style:
-        "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+      style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
     });
 
     // Await the promise and handle the result.

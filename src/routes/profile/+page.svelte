@@ -1,6 +1,7 @@
 <script lang="ts">
   import SEO from "$lib/components/SEO.svelte";
   import { toast } from "svelte-sonner";
+  import { mode } from "mode-watcher";
 
   import { enhance } from "$app/forms";
   import { isPWAInstalled } from "$lib/utils";
@@ -23,7 +24,7 @@
   let isPushSubscribed = data?.getPushSubscriptionData !== null ? true : false;
   let notificationChannels = data?.getNotificationChannels;
 
-  const mode = Object?.entries(notificationChannels)
+  const modeStatus = Object?.entries(notificationChannels)
     .filter(([key, value]) => typeof value === "boolean") // Filter boolean properties
     .reduce((acc, [key, value]) => {
       acc[key] = value; // Add to mode object
@@ -39,29 +40,25 @@
       switch (result.type) {
         case "success":
           toast.success("Subscription Cancelled successfully!", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+            style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
           });
           await update();
           break;
         case "redirect":
           toast.success("Subscription Cancelled successfully!", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+            style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
           });
           await update();
           break;
         case "failure":
           toast.error("Something went wrong.", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+            style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
           });
           await update();
           break;
         case "error":
           toast.error(result.error.message, {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+            style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
           });
           break;
         default:
@@ -85,29 +82,25 @@
       switch (result.type) {
         case "success":
           toast.success("Subscription Reactivate successfully!", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+            style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
           });
           await update();
           break;
         case "redirect":
           toast.success("Subscription Reactivate successfully!", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+            style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
           });
           await update();
           break;
         case "failure":
           toast.error("Something went wrong.", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+            style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
           });
           await update();
           break;
         case "error":
           toast.error(result.error.message, {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+            style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
           });
           break;
         default:
@@ -141,8 +134,7 @@
     unsubscribe();
     isPushSubscribed = false;
     toast.success("Push notification deactivated successfully!", {
-      style:
-        "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+      style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
     });
   }
 
@@ -152,13 +144,11 @@
     if (output?.success === true) {
       isPushSubscribed = true;
       toast.success("Push notification activated successfully!", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
     } else {
       toast.error("Your browser does not support push notifications...", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
     }
     loading = false;
@@ -167,7 +157,7 @@
   async function updateNotificationChannels() {
     const postData = {
       id: notificationChannels?.id,
-      ...mode,
+      ...modeStatus,
     };
 
     const response = await fetch("/api/update-notification-channels", {
@@ -180,7 +170,7 @@
   }
 
   async function toggleMode(state) {
-    mode[state] = !mode[state];
+    modeStatus[state] = !modeStatus[state];
     await updateNotificationChannels();
   }
 </script>
@@ -191,12 +181,12 @@
 />
 
 <section
-  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pb-20 pt-5 px-4 lg:px-3"
+  class="text-muted dark:text-white w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pb-20 pt-5 px-4 lg:px-3"
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
-      <li><a href="/" class="text-gray-300">Home</a></li>
-      <li class="text-gray-300">My Account</li>
+      <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
+      <li class="text-muted dark:text-gray-300">My Account</li>
     </ul>
   </div>
 
@@ -207,17 +197,13 @@
       >
         <main class="w-full lg:w-3/4 lg:mr-auto">
           <div class="mb-6 border-b-[2px]">
-            <h1 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
-              My Account
-            </h1>
+            <h1 class="mb-1 text-2xl sm:text-3xl font-bold">My Account</h1>
           </div>
 
           <div
-            class="rounded border border-gray-600 p-4 text-base xs:p-4 xs:text-lg text-white"
+            class="rounded border border-gray-600 p-4 text-base xs:p-4 xs:text-lg"
           >
-            <h2 class="text-white text-2xl font-semibold mb-3">
-              User Information
-            </h2>
+            <h2 class=" text-2xl font-semibold mb-3">User Information</h2>
             <div class="mt-1">
               <strong>Email:</strong>
               {data?.user?.email}
@@ -230,15 +216,17 @@
                 year: "numeric",
               })}
             </div>
-            <a href="/update-password" class="sm:hover:text-white text-blue-400"
+            <a
+              href="/update-password"
+              class="sm:hover:text-muted dark:sm:hover:text-white text-blue-500 dark:text-blue-400"
               >Update Password</a
             >
           </div>
 
           <div
-            class="mt-6 rounded border border-gray-600 p-4 text-base xs:p-4 xs:text-lg text-white"
+            class="mt-6 rounded border border-gray-600 p-4 text-base xs:p-4 xs:text-lg"
           >
-            <h2 class="text-white text-2xl font-semibold mb-3">Notification</h2>
+            <h2 class=" text-2xl font-semibold mb-3">Notification</h2>
             Customize your notification alerts based on your preferences.
 
             <div class="flex flex-col items-start w-full mt-4 mb-4">
@@ -246,7 +234,7 @@
                 <div class="flex flex-row items-center">
                   <label
                     for="earningsSurpriseInfo"
-                    class=" cursor-pointer flex flex-row items-center text-white"
+                    class=" cursor-pointer flex flex-row items-center"
                   >
                     <h4>Earnings Surprise</h4>
                   </label>
@@ -260,12 +248,12 @@
                   <input
                     on:click={() => toggleMode("earningsSurprise")}
                     type="checkbox"
-                    checked={mode["earningsSurprise"]}
-                    value={mode["earningsSurprise"]}
+                    checked={modeStatus["earningsSurprise"]}
+                    value={modeStatus["earningsSurprise"]}
                     class="sr-only peer"
                   />
                   <div
-                    class="w-10 h-5 bg-gray-600 rounded-full peer-checked:after:translate-x-4 peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[0.25rem] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-purple-500"
+                    class="w-10 h-5 bg-gray-600 rounded-full peer-checked:after:translate-x-4 peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[0.25rem] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#1C64F2]"
                   ></div>
                 </label>
               </div>
@@ -275,7 +263,7 @@
                 <div class="flex flex-row items-center">
                   <label
                     for="whyPriceMovedInfo"
-                    class=" cursor-pointer flex flex-row items-center text-white"
+                    class=" cursor-pointer flex flex-row items-center"
                   >
                     <h4>Why Price Moved</h4>
                   </label>
@@ -289,12 +277,12 @@
                   <input
                     on:click={() => toggleMode("wiim")}
                     type="checkbox"
-                    checked={mode["wiim"]}
-                    value={mode["wiim"]}
+                    checked={modeStatus["wiim"]}
+                    value={modeStatus["wiim"]}
                     class="sr-only peer"
                   />
                   <div
-                    class="w-10 h-5 bg-gray-600 rounded-full peer-checked:after:translate-x-4 peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[0.25rem] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-purple-500"
+                    class="w-10 h-5 bg-gray-600 rounded-full peer-checked:after:translate-x-4 peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[0.25rem] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#1C64F2]"
                   ></div>
                 </label>
               </div>
@@ -304,7 +292,7 @@
                 <div class="flex flex-row items-center">
                   <label
                     for="topAnalystInfo"
-                    class=" cursor-pointer flex flex-row items-center text-white"
+                    class=" cursor-pointer flex flex-row items-center"
                   >
                     <h4>Top Analyst Rating</h4>
                   </label>
@@ -318,20 +306,18 @@
                   <input
                     on:click={() => toggleMode("topAnalyst")}
                     type="checkbox"
-                    checked={mode["topAnalyst"]}
-                    value={mode["topAnalyst"]}
+                    checked={modeStatus["topAnalyst"]}
+                    value={modeStatus["topAnalyst"]}
                     class="sr-only peer"
                   />
                   <div
-                    class="w-10 h-5 bg-gray-600 rounded-full peer-checked:after:translate-x-4 peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[0.25rem] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-purple-500"
+                    class="w-10 h-5 bg-gray-600 rounded-full peer-checked:after:translate-x-4 peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[0.25rem] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#1C64F2]"
                   ></div>
                 </label>
               </div>
             </div>
 
-            <h3 class="text-white text-xl font-semibold mb-2 mt-4">
-              Push Notification
-            </h3>
+            <h3 class=" text-xl font-semibold mb-2 mt-4">Push Notification</h3>
             {#if pwaInstalled}
               <div class="mt-3">
                 {#if nottifPermGranted === null}
@@ -394,13 +380,11 @@
           </div>
 
           <div
-            class="mt-6 rounded border border-gray-600 p-4 text-base xs:p-4 xs:text-lg text-white"
+            class="mt-6 rounded border border-gray-600 p-4 text-base xs:p-4 xs:text-lg"
           >
-            <h2 class="text-white text-2xl font-semibold mb-3">
-              Manage Subscription
-            </h2>
+            <h2 class=" text-2xl font-semibold mb-3">Manage Subscription</h2>
             <div class="flex flex-row items-center">
-              <span class="text-white text-[1rem] sm:text-lg"> Status: </span>
+              <span class=" text-[1rem] sm:text-lg"> Status: </span>
               <div class="ml-2 flex flex-row items-center">
                 <span class="relative flex h-2 w-2">
                   <span
@@ -422,7 +406,7 @@
                   ></span>
                 </span>
 
-                <span class="ml-2 text-[1rem] text-slate-200">
+                <span class="ml-2 text-[1rem] dark:text-slate-200">
                   {#if data?.user?.freeTrial === true}
                     Active
                   {:else}
@@ -433,7 +417,7 @@
               </div>
             </div>
             {#if subscriptionData?.status_formatted === "Active"}
-              <span class="text-white text-sm pr-5">
+              <span class=" text-sm pr-5">
                 Your subscription will automatically renew on {new Date(
                   subscriptionData?.renews_at,
                 )?.toLocaleDateString("en-GB", {
@@ -443,7 +427,7 @@
                 })}
               </span>
             {:else if subscriptionData?.status_formatted === "Cancelled"}
-              <span class="text-white text-sm">
+              <span class=" text-sm">
                 Your subscription will remain active until {new Date(
                   subscriptionData?.ends_at,
                 )?.toLocaleDateString("en-GB", {
@@ -454,7 +438,7 @@
               </span>
             {/if}
             <div class="flex flex-col justify-start items-start mt-4 mb-4">
-              <span class="text-white mr-2 text-lg"> Current Plan: </span>
+              <span class=" mr-2 text-lg"> Current Plan: </span>
               <span class="text-[1rem]">
                 {#if subscriptionData?.first_order_item?.product_name === "Pro Subscription (Life Time Access)"}
                   Lifetime Access
@@ -476,7 +460,7 @@
               >
                 <label
                   for="cancelSubscriptionModal"
-                  class="cursor-pointer text-white border border-gray-600 sm:hover:bg-primary bg-opacity-[0.5] text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
+                  class="cursor-pointer border border-gray-600 sm:hover:bg-primary bg-opacity-[0.5] text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
                 >
                   Cancel Subscription
                 </label>
@@ -489,20 +473,23 @@
                 Reactivate Subscription
               </label>
             {:else if subscriptionData?.status_formatted === "Paid" && !subscriptionData?.first_order_item?.product_name === "Pro Subscription (Life Time Access)"}
-              <span class="text-white mt-5">
+              <span class=" mt-5">
                 Please wait a moment; you will be updated to Pro in a second.
               </span>
             {:else if subscriptionData?.first_order_item?.product_name?.includes("Life Time")}{:else}
-              <a href="/pricing" class="sm:hover:text-white text-blue-400">
+              <a
+                href="/pricing"
+                class="sm:hover:text-muted dark:sm:hover:text-white text-blue-500 dark:text-blue-400"
+              >
                 Get Full Access with Pro Subscription.
               </a>
             {/if}
           </div>
 
           <div
-            class="mt-6 rounded border border-gray-600 p-4 text-base xs:p-4 xs:text-lg text-white"
+            class="mt-6 rounded border border-gray-600 p-4 text-base xs:p-4 xs:text-lg"
           >
-            <h2 class="text-white text-2xl font-semibold mb-3">Need help?</h2>
+            <h2 class=" text-2xl font-semibold mb-3">Need help?</h2>
             <div class="mt-1">
               <strong>Here's how to get support:</strong>
             </div>
@@ -511,7 +498,7 @@
                 <li>
                   Send an email to <a
                     href={`mailto:${emailAddress}`}
-                    class="text-blue-400 hover:text-white hover:underline"
+                    class="sm:hover:text-muted dark:sm:hover:text-white text-blue-500 dark:text-blue-400"
                     >{emailAddress}</a
                   >
                 </li>
@@ -521,7 +508,7 @@
                     rel="noopener noreferrer"
                     target="_blank"
                     href="https://www.reddit.com/r/stocknear/"
-                    class="text-blue-400"
+                    class="sm:hover:text-muted dark:sm:hover:text-white text-blue-500 dark:text-blue-400"
                   >
                     r/stocknear</a
                   >.
@@ -531,7 +518,8 @@
                     rel="noopener noreferrer"
                     target="_blank"
                     href="https://discord.com/invite/hCwZMMZ2MT"
-                    class="text-blue-400">Discord Channel</a
+                    class="sm:hover:text-muted dark:sm:hover:text-white text-blue-500 dark:text-blue-400"
+                    >Discord Channel</a
                   >.
                 </li>
               </ul>
@@ -560,9 +548,9 @@
     class="modal-box w-full bg-secondary flex flex-col items-center"
   >
     <div class="mx-auto mb-8 h-1.5 w-20 shrink-0 rounded-full bg-gray-500" />
-    <div class="text-white mb-5 text-center">
+    <div class=" mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">Are you sure?</h3>
-      <span class="text-white text-[1rem] font-normal">
+      <span class=" text-[1rem] font-normal">
         You will no longer be charged for this subscription, and at the end of
         the billing period, your account will transfer to the Free Plan.
       </span>
@@ -615,9 +603,9 @@
     class="modal-box w-full bg-secondary flex flex-col items-center"
   >
     <div class="mx-auto mb-8 h-1.5 w-20 shrink-0 rounded-full bg-gray-500" />
-    <div class="text-white mb-5 text-center">
+    <div class=" mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">Reactivate Subscription</h3>
-      <span class="text-white text-[1rem] font-normal">
+      <span class=" text-[1rem] font-normal">
         Reactivate your Pro Subscription now to unlock unlimited features and
         gain the edge over the competition.
       </span>
@@ -662,9 +650,9 @@
   <!-- Desktop modal content -->
   <div class="modal-box w-full bg-secondary flex flex-col items-center">
     <div class="mx-auto mb-8 h-1.5 w-20 shrink-0 rounded-full bg-gray-500" />
-    <div class="text-white mb-5 text-center">
+    <div class=" mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">Paypal not supported</h3>
-      <span class="text-white text-[1rem] font-normal">
+      <span class=" text-[1rem] font-normal">
         Apologies, our payment provider currently only supports credit cards for
         changing plans from monthly to annual. We are working to expand this to
         other payment methods.
@@ -689,12 +677,10 @@
 
   <div class="modal-box rounded w-full bg-secondary border border-gray-600">
     <div class="flex flex-row items-center pt-5">
-      <h4 class="text-white text-2xl font-bold text-center m-auto">
-        Steps to install
-      </h4>
+      <h4 class=" text-2xl font-bold text-center m-auto">Steps to install</h4>
       <label
         for="installModal"
-        class="inline-block cursor-pointer absolute right-3 top-3 text-[1.3rem] sm:text-[1.8rem] text-white"
+        class="inline-block cursor-pointer absolute right-3 top-3 text-[1.3rem] sm:text-[1.8rem]"
       >
         <svg
           class="w-6 h-6 sm:w-8 sm:h-8"
@@ -708,9 +694,7 @@
       </label>
     </div>
 
-    <div
-      class="text-white flex flex-col justify-center items-center text-xl h-full"
-    >
+    <div class=" flex flex-col justify-center items-center text-xl h-full">
       <ul class="list-decimal list-inside text-left mt-5">
         <li class="mb-2">Tap on the Safari share button.</li>
         <li class="mb-2">Tap on "Add to Home Screen."</li>
@@ -725,7 +709,7 @@
     <div class="border-t border-gray-600 mt-2">
       <label
         for="installModal"
-        class="mt-4 font-semibold text-white text-xl m-auto flex justify-center"
+        class="mt-4 font-semibold text-xl m-auto flex justify-center"
       >
         Close
       </label>

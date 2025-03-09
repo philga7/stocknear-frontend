@@ -3,6 +3,7 @@
   import { goto } from "$app/navigation";
   import { clearCache, screenWidth, getCache, setCache } from "$lib/store";
   import { toast } from "svelte-sonner";
+  import { mode } from "mode-watcher";
 
   import {
     abbreviateNumber,
@@ -1494,8 +1495,7 @@
 
     if (output === "success") {
       toast.success("Strategy deleted successfully!", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
 
       strategyList =
@@ -1532,8 +1532,7 @@
       );
     } else if (output === "failure") {
       toast.error("Something went wrong. Please try again", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
     }
   }
@@ -1549,16 +1548,14 @@
 
     if (!title || title.length === 0) {
       toast.error("Title cannot be empty!", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
       return;
     }
 
     if (title?.length > 100) {
       toast.error("Title is too long. Keep it simple and concise bruv!", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
       return;
     }
@@ -1581,8 +1578,7 @@
     const output = await response?.json();
     if (output?.id && output?.id?.length !== 0) {
       toast.success("Strategy created successfully!", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
 
       const closePopup = document.getElementById("addStrategy");
@@ -1595,8 +1591,7 @@
       selectedPopularStrategy = "";
     } else {
       toast.error("Something went wrong. Please try again later!", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
     }
 
@@ -1711,8 +1706,7 @@
   function handleAddRule() {
     if (ruleName === "") {
       toast.error("Please select a rule", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
       return;
     }
@@ -1926,8 +1920,7 @@ const handleKeyDown = (event) => {
 
         if (printToast === true) {
           toast.success("Strategy saved!", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+            style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
           });
         }
 

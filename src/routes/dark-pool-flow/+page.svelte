@@ -5,6 +5,7 @@
   import { cn, sectorList } from "$lib/utils";
   import { onMount, onDestroy } from "svelte";
   import { toast } from "svelte-sonner";
+  import { mode } from "mode-watcher";
 
   import { DateFormatter, type DateValue } from "@internationalized/date";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
@@ -163,8 +164,7 @@
   function handleAddRule() {
     if (ruleName === "") {
       toast.error("Please select a rule", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
       return;
     }
@@ -440,8 +440,7 @@
       }
     } else {
       toast.error(`Market is closed`, {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
     }
   }
@@ -770,8 +769,7 @@
               <input
                 on:click={() =>
                   toast.info("Feature is coming soon 🔥", {
-                    style:
-                      "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+                    style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
                   })}
                 type="checkbox"
                 checked={mode}
@@ -854,8 +852,7 @@
                   <Button
                     on:click={() =>
                       toast.info("Feature is coming soon 🔥", {
-                        style:
-                          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+                        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
                       })}
                     class={cn(
                       "w-full sm:w-[160px] truncate sm:mr-3 py-3 bg-[#000] sm:hover:bg-[#000] sm:hover:text-white text-white justify-center sm:justify-start text-center sm:text-left font-normal border-none rounded-md",

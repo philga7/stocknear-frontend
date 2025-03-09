@@ -1,5 +1,6 @@
 <script lang="ts">
   import { toast } from "svelte-sonner";
+  import { mode } from "mode-watcher";
 
   export let url;
 
@@ -14,8 +15,7 @@
         .catch((error) => console.log("Error sharing content:", error));
     } else {
       toast?.error("Sharing is not supported by your device", {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
     }
   }

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import { toast } from "svelte-sonner";
+  import { mode } from "mode-watcher";
   import Input from "$lib/components/Input.svelte";
   import SEO from "$lib/components/SEO.svelte";
 
@@ -17,8 +18,7 @@
         });
       } else if (result.error || result.errors) {
         toast.error("Invalid credentials", {
-          style:
-            "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+          style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
         });
       }
       await update();

@@ -9,6 +9,7 @@
   } from "$lib/utils";
   //import { enhance } from '$app/forms';
   import { toast } from "svelte-sonner";
+  import { mode } from "mode-watcher";
 
   import { goto } from "$app/navigation";
   import { screenWidth, newPriceAlertData } from "$lib/store";
@@ -84,13 +85,11 @@
   async function handleDeleteTickers() {
     if (numberOfChecked === 0) {
       toast.error(`You need to select symbols before you can delete them`, {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
     } else {
       toast.success(`Price alerts deleted successfully`, {
-        style:
-          "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
 
       const symbolsToDelete = priceAlertList

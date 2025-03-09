@@ -1,5 +1,6 @@
 <script lang="ts">
   import { toast } from "svelte-sonner";
+  import { mode } from "mode-watcher";
   import { enhance } from "$app/forms";
 
   import SEO from "$lib/components/SEO.svelte";
@@ -14,30 +15,26 @@
       switch (result.type) {
         case "success":
           toast.success("Password resetted. Check your emails!", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+            style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
           });
           await update();
           break;
         case "redirect":
           isClicked = true;
           toast.success("Password resetted. Check your emails!", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+            style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
           });
           await update();
           break;
         case "failure":
           toast.error("Invalid credentials", {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+            style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
           });
           await update();
           break;
         case "error":
           toast.error(result.error.message, {
-            style:
-              "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+            style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
           });
           break;
         default:
