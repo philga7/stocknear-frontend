@@ -261,12 +261,12 @@
 />
 
 <section
-  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pb-20 pt-5 px-4 lg:px-3"
+  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pb-20 pt-5 px-4 lg:px-3 text-muted dark:text-white"
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
-      <li><a href="/" class="text-gray-300">Home</a></li>
-      <li class="text-gray-300">Reddit Tracker</li>
+      <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
+      <li class="text-muted dark:text-gray-300">Reddit Tracker</li>
     </ul>
   </div>
 
@@ -277,7 +277,7 @@
       >
         <main class="w-full lg:w-3/4 lg:pr-5">
           <div class="mb-6 border-b-[2px]">
-            <h1 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
+            <h1 class="mb-1 text-2xl sm:text-3xl font-bold">
               Wallsteetbets Tracker
             </h1>
           </div>
@@ -293,7 +293,7 @@
                   <Card.Description class="text-gray-300 text-sm pb-2"
                     >Number of Posts in the last 24 hours:</Card.Description
                   >
-                  <Card.Description class="text-white text-[1rem] pb-2"
+                  <Card.Description class=" text-[1rem] pb-2"
                     ><span class="text-[#408FFF] font-bold text-2xl">
                       +{postList?.at(-1)}
                     </span> posts today
@@ -322,7 +322,7 @@
                   <Card.Description class="text-gray-300 text-sm pb-2"
                     >Number of Comments in the last 24 hours:</Card.Description
                   >
-                  <Card.Description class="text-white text-[1rem] pb-2"
+                  <Card.Description class=" text-[1rem] pb-2"
                     ><span class="text-[#F71F4F] font-bold text-2xl">
                       +{abbreviateNumber(commentList?.at(-1))}
                     </span> comments today
@@ -348,9 +348,7 @@
               </Card.Root>
             </div>
 
-            <div
-              class="mt-10 grid gap-4 md:gap-8 grid-cols-1 text-start text-white"
-            >
+            <div class="mt-10 grid gap-4 md:gap-8 grid-cols-1 text-start">
               <Lazy>
                 <div class="order-1 overflow-x-auto h-full mt-5 sm:mt-0">
                   <div class="flex flex-row items-center">
@@ -371,13 +369,13 @@
                   <div class="">
                     {#each data?.getRedditTracker?.posts as item}
                       <div
-                        class="flex flex-col items-start mb-3 p-3 border border-gray-800 rounded-md bg-[#141417]"
+                        class="flex flex-col items-start mb-3 p-3 border border-gray-300 dark:border-gray-800 rounded-md shadow-sm border-gray-200 dark:bg-[#141417]"
                       >
                         <a
                           href={"https://www.reddit.com" + item?.permalink}
                           rel="noopener noreferrer"
                           target="_blank"
-                          class="text-[1rem] sm:text-xl font-semibold mb-3 transition duration-100 text-white sm:hover:text-blue-400"
+                          class="text-[1rem] sm:text-xl font-semibold mb-3 transition duration-100 sm:hover:text-blue-500 dark:sm:hover:text-blue-400"
                         >
                           {item?.title}
                         </a>
@@ -446,7 +444,7 @@
                             href={"https://www.reddit.com/user/" + item?.author}
                             rel="noopener noreferrer"
                             target="_blank"
-                            class="hidden sm:inline-block text-sm text-white sm:hover:text-blue-400"
+                            class="hidden sm:inline-block text-sm sm:hover:text-blue-500 dark:sm:hover:text-blue-400"
                           >
                             Posted by {item?.author}
                           </a>
@@ -454,7 +452,7 @@
                             href={"https://www.reddit.com" + item?.permalink}
                             rel="noopener noreferrer"
                             target="_blank"
-                            class="mt-2 sm:mt-0 text-sm text-white sm:hover:text-blue-400"
+                            class="mt-2 sm:mt-0 text-sm sm:hover:text-blue-500 dark:sm:hover:text-blue-400"
                           >
                             {formatUtcTimestamp(item?.created_utc)}
                             <Link
@@ -478,31 +476,33 @@
                       >Updated {formattedDate}</span
                     >
                   </div>
-                  <nav class="border-b-[2px] overflow-x-auto whitespace-nowrap">
+                  <nav
+                    class="border-[#2C6288] dark:border-white border-b-[2px] overflow-x-auto whitespace-nowrap"
+                  >
                     <ul
-                      class="flex flex-row items-center w-full text-sm sm:text-[1rem] text-white"
+                      class="flex flex-row items-center w-full text-sm sm:text-[1rem]"
                     >
                       {#each tabs as item, index}
                         {#if ["Pro", "Plus"]?.includes(data?.user?.tier) || index === 0}
                           <label
                             on:click={() => changeTimePeriod(index)}
                             class="p-2 px-5 cursor-pointer {activeIdx === index
-                              ? 'text-white bg-primary/90'
-                              : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                              ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                              : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
                           >
                             {item.title}
                           </label>
                         {:else if !["Pro", "Plus"]?.includes(data?.user?.tier)}
                           <a
                             href="/pricing"
-                            class="flex flex-row items-center p-2 px-5 cursor-pointer {activeIdx ===
+                            class="p-2 px-5 cursor-pointer flex flex-row items-center {activeIdx ===
                             index
-                              ? 'text-white bg-primary/90'
-                              : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                              ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                              : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
                           >
                             <span class="">{item.title}</span>
                             <svg
-                              class="ml-2 w-3.5 h-3.5"
+                              class="ml-2 w-3.5 h-3.5 inline-block"
                               xmlns="http://www.w3.org/2000/svg"
                               viewBox="0 0 24 24"
                               ><path
@@ -520,34 +520,29 @@
                   <Table.Root class="overflow-x-auto w-full">
                     <Table.Header>
                       <Table.Row>
-                        <Table.Head class="text-white text-sm font-semibold"
+                        <Table.Head class=" text-sm font-semibold"
                           >Rank</Table.Head
                         >
-                        <Table.Head class="text-white text-sm font-semibold"
+                        <Table.Head class=" text-sm font-semibold"
                           >Symbol</Table.Head
                         >
-                        <Table.Head
-                          class="text-white text-sm font-semibold text-end"
+                        <Table.Head class=" text-sm font-semibold text-end"
                           >Mentions</Table.Head
                         >
-                        <Table.Head
-                          class="text-white text-sm font-semibold text-end"
+                        <Table.Head class=" text-sm font-semibold text-end"
                           >Calls</Table.Head
                         >
-                        <Table.Head
-                          class="text-white text-sm font-semibold text-end"
+                        <Table.Head class=" text-sm font-semibold text-end"
                           >Puts</Table.Head
                         >
-                        <Table.Head
-                          class="text-white text-sm font-semibold text-end"
+                        <Table.Head class=" text-sm font-semibold text-end"
                           >Sentiment</Table.Head
                         >
-                        <Table.Head
-                          class="text-white text-sm font-semibold text-end"
+                        <Table.Head class=" text-sm font-semibold text-end"
                           >Price</Table.Head
                         >
                         <Table.Head
-                          class="text-white text-sm text-right whitespace-nowrap"
+                          class=" text-sm text-right  font-semibold whitespace-nowrap"
                           >% Change</Table.Head
                         >
                       </Table.Row>
@@ -564,9 +559,7 @@
                                 symbol={item?.symbol}
                                 assetType={item?.assetType}
                               />
-                              <span
-                                class="text-white whitespace-wrap hidden sm:block"
-                              >
+                              <span class="whitespace-wrap hidden sm:block">
                                 {item?.name}
                               </span>
                             </div>
@@ -575,19 +568,19 @@
                             >{item?.count}</Table.Cell
                           >
                           <Table.Cell
-                            class="text-right text-[1rem] text-[#00FC50]"
+                            class="text-right text-[1rem] text-green-600 dark:text-[#00FC50]"
                             >{item?.call}</Table.Cell
                           >
                           <Table.Cell
-                            class="text-right text-[1rem] text-[#FF2F1F]"
+                            class="text-right text-[1rem] text-red-600 dark:text-[#FF2F1F]"
                             >{item?.put}</Table.Cell
                           >
                           <Table.Cell
                             class="text-right text-[1rem] {item?.avgSentiment >
                             0.4
-                              ? 'text-[#00FC50]'
+                              ? 'text-green-600 dark:text-[#00FC50]'
                               : item?.avgSentiment < -0.1
-                                ? 'text-[#FF2F1F]'
+                                ? 'text-red-600 dark:text-[#FF2F1F]'
                                 : 'text-[#C6A755]'} "
                             >{item?.avgSentiment > 0.4
                               ? "Bullish"
@@ -596,15 +589,15 @@
                                 : "Neutral"}</Table.Cell
                           >
 
-                          <Table.Cell class="text-right text-[1rem] text-white"
+                          <Table.Cell class="text-right text-[1rem] "
                             >{item?.price?.toFixed(2)}</Table.Cell
                           >
 
                           <Table.Cell class="text-right text-[1rem] ">
                             <span
                               class="{item?.changesPercentage > 0
-                                ? 'text-[#00FC50]'
-                                : 'text-[#FF2F1F]'} text-end"
+                                ? 'text-green-600 dark:text-[#00FC50]'
+                                : 'text-red-600 dark:text-[#FF2F1F]'} text-end"
                             >
                               {#if item?.changesPercentage > 0}
                                 +{item?.changesPercentage?.toFixed(2)}%
@@ -636,38 +629,42 @@
 
         <aside class="hidden lg:block relative fixed w-1/4 ml-4">
           <div
-            class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href="/potus-tracker"
               class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
             >
               <div class="w-full flex justify-between items-center p-3 mt-3">
-                <h2 class="text-start text-xl font-semibold text-white ml-3">
+                <h2 class="text-start text-xl font-semibold ml-3">
                   POTUS Tracker
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
+                <ArrowLogo
+                  class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
+                />
               </div>
-              <span class="text-white p-3 ml-3 mr-3">
+              <span class=" p-3 ml-3 mr-3">
                 Follow the latest executive orders of the US President
               </span>
             </a>
           </div>
 
           <div
-            class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href="/insider-tracker"
               class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
             >
               <div class="w-full flex justify-between items-center p-3 mt-3">
-                <h2 class="text-start text-xl font-semibold text-white ml-3">
+                <h2 class="text-start text-xl font-semibold ml-3">
                   Insider Tracker
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
+                <ArrowLogo
+                  class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
+                />
               </div>
-              <span class="text-white p-3 ml-3 mr-3">
+              <span class=" p-3 ml-3 mr-3">
                 Get the latest unusual insider trading in realtime
               </span>
             </a>

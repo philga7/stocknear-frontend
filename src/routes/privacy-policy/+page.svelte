@@ -10,12 +10,12 @@
 />
 
 <section
-  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden pb-20 pt-5 px-4 lg:px-3"
+  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden pb-20 pt-5 px-4 lg:px-3 text-muted dark:text-white"
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
-      <li><a href="/" class="text-gray-300">Home</a></li>
-      <li class="text-gray-300">Privacy Policy</li>
+      <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
+      <li class="text-muted dark:text-gray-300">Privacy Policy</li>
     </ul>
   </div>
 
@@ -26,18 +26,16 @@
       >
         <main class="w-full lg:w-3/4 lg:pr-5">
           <div class="mb-6 border-b-[2px]">
-            <h1 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
-              Privacy Policy
-            </h1>
+            <h1 class="mb-1 text-2xl sm:text-3xl font-bold">Privacy Policy</h1>
           </div>
 
-          <div class="w-full bg-default m-auto">
+          <div class="w-full m-auto">
             <div class="">
-              <p class="text-gray-200 italic mb-2 text-sm">
+              <p class="text-muted dark:text-gray-200 italic mb-2 text-sm">
                 Last updated: 22.06.2023
               </p>
 
-              <p class="text-white mb-10">
+              <p class=" mb-10">
                 Stocknear (the "website" or "site") is committed to protecting
                 your privacy. This Privacy Policy explains the types of
                 information we collect from you, how we use it, and the
@@ -45,7 +43,7 @@
                 policy in its entirety along with our
                 <a
                   href="/terms-of-use"
-                  class="text-blue-400 sm:hover:underline sm:hover:text-white"
+                  class="text-blue-500 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline"
                   >Terms of use</a
                 >. Generally, you may use our website without providing personal
                 data. When personal data (such as your name, address, or email
@@ -60,11 +58,9 @@
                 the event of such misuse.
               </p>
 
-              <h2 class="mb-1 text-white text-2xl sm:text-3xl font-bold mb-3">
-                Cookies
-              </h2>
+              <h2 class="mb-1 text-2xl sm:text-3xl font-bold mb-3">Cookies</h2>
 
-              <p class="text-white mb-10">
+              <p class=" mb-10">
                 Our website utilizes cookies to enhance your browsing
                 experience. By visiting stocknear.com, you consent to our use of
                 cookies in accordance with our Privacy Policy. Cookies enable us
@@ -72,11 +68,11 @@
                 functionality of specific sections of our site.
               </p>
 
-              <h2 class="mb-1 text-white text-2xl sm:text-3xl font-bold mb-3">
+              <h2 class="mb-1 text-2xl sm:text-3xl font-bold mb-3">
                 Links to Other Sites
               </h2>
 
-              <div class="text-white mb-10">
+              <div class=" mb-10">
                 Our Service may include links to third-party websites that are
                 not under our control. When you click on a third-party link, you
                 will be directed to their site. We strongly encourage you to
@@ -85,11 +81,11 @@
                 policies of these external sites.
               </div>
 
-              <h2 class="mb-1 text-white text-2xl sm:text-3xl font-bold mb-3">
+              <h2 class="mb-1 text-2xl sm:text-3xl font-bold mb-3">
                 Security of Data
               </h2>
 
-              <div class="text-white mb-10">
+              <div class=" mb-10">
                 We prioritize the security of your data; however, please be
                 aware that no method of Internet transmission or electronic
                 storage is entirely secure. While we employ commercially
@@ -97,12 +93,12 @@
                 guarantee its absolute security.
               </div>
 
-              <h2 class="text-white text-2xl sm:text-3xl font-bold mb-3">
+              <h2 class=" text-2xl sm:text-3xl font-bold mb-3">
                 Your Data Protection Rights Under General Data Protection
                 Regulation (GDPR)
               </h2>
 
-              <div class="text-white mb-10">
+              <div class=" mb-10">
                 If you reside in the European Union (EU) or the European
                 Economic Area (EEA), you have specific data protection rights
                 under the GDPR. We strive to enable you to review, correct,
@@ -111,7 +107,7 @@
                 wish to have it removed from our systems, please contact us at
                 <a
                   href={`mailto:${emailAddress}`}
-                  class="text-blue-400 hover:text-white hover:underline"
+                  class="text-blue-500 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline"
                   >{emailAddress}</a
                 >.<br /><br />
                 In addition, you have the following rights:
@@ -149,12 +145,12 @@
                 details, please contact the relevant authority in your region.
               </div>
 
-              <h2 class="mb-1 text-white text-2xl sm:text-3xl font-bold mb-3">
+              <h2 class="mb-1 text-2xl sm:text-3xl font-bold mb-3">
                 Your Data Protection Rights under the California Privacy
                 Protection Act (CalOPPA)
               </h2>
 
-              <div class="text-white mb-10">
+              <div class=" mb-10">
                 CalOPPA is the first state law in the United States requiring
                 commercial websites and online services to post a privacy
                 policy. This law applies to any entity collecting personally
@@ -178,7 +174,7 @@
                     at
                     <a
                       href={`mailto:${emailAddress}`}
-                      class="text-blue-400 hover:text-white hover:underline"
+                      class="text-blue-500 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline"
                       >{emailAddress}</a
                     >.
                   </li>
@@ -189,11 +185,11 @@
                 or use advertising technologies.
               </div>
 
-              <h2 class="mb-1 text-white text-2xl sm:text-3xl font-bold mb-3">
+              <h2 class="mb-1 text-2xl sm:text-3xl font-bold mb-3">
                 Children's Privacy
               </h2>
 
-              <div class="text-white mb-10">
+              <div class=" mb-10">
                 Our Services are not intended for children under the age of 18.
                 We do not knowingly collect personally identifiable information
                 from individuals under 18. If you become aware that a child has
@@ -203,11 +199,11 @@
                 that information from our servers.
               </div>
 
-              <h2 class="mb-1 text-white text-2xl sm:text-3xl font-bold mb-3">
+              <h2 class="mb-1 text-2xl sm:text-3xl font-bold mb-3">
                 Changes to this Privacy Policy
               </h2>
 
-              <div class="text-white mb-10">
+              <div class=" mb-10">
                 We reserve the right to modify this Privacy Policy at any time.
                 Any changes will be communicated by posting the updated policy
                 on this page. We recommend that you review this Privacy Policy
@@ -220,38 +216,42 @@
 
         <aside class="hidden lg:block relative fixed w-1/4 ml-4">
           <div
-            class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href="/donation"
               class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
             >
               <div class="w-full flex justify-between items-center p-3 mt-3">
-                <h2 class="text-start text-xl font-semibold text-white ml-3">
+                <h2 class="text-start text-xl font-semibold ml-3">
                   Sponsor Us
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
+                <ArrowLogo
+                  class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
+                />
               </div>
-              <span class="text-white p-3 ml-3 mr-3">
+              <span class=" p-3 ml-3 mr-3">
                 Learn more about why we're doing this here
               </span>
             </a>
           </div>
 
           <div
-            class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href="/contact"
               class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
             >
               <div class="w-full flex justify-between items-center p-3 mt-3">
-                <h2 class="text-start text-xl font-semibold text-white ml-3">
+                <h2 class="text-start text-xl font-semibold ml-3">
                   Contact Us
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
+                <ArrowLogo
+                  class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
+                />
               </div>
-              <span class="text-white p-3 ml-3 mr-3">
+              <span class=" p-3 ml-3 mr-3">
                 Let me know if you need something
               </span>
             </a>

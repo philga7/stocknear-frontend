@@ -6,12 +6,12 @@
 <SEO title="Terms of Use" description="" />
 
 <section
-  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden pb-20 pt-5 px-4 lg:px-3"
+  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden pb-20 pt-5 px-4 lg:px-3 text-muted dark:text-white"
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
-      <li><a href="/" class="text-gray-300">Home</a></li>
-      <li class="text-gray-300">Terms of Use</li>
+      <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
+      <li class="text-muted dark:text-gray-300">Terms of Use</li>
     </ul>
   </div>
 
@@ -22,34 +22,32 @@
       >
         <main class="w-full lg:w-3/4 lg:pr-5">
           <div class="mb-6 border-b-[2px]">
-            <h1 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
-              Terms of Use
-            </h1>
+            <h1 class="mb-1 text-2xl sm:text-3xl font-bold">Terms of Use</h1>
           </div>
 
-          <div class=" w-full bg-default m-auto">
+          <div class=" w-full m-auto">
             <div class="">
-              <p class="text-gray-200 italic mb-2 text-sm">
+              <p class="dark:text-gray-200 italic mb-2 text-sm">
                 Last updated: 28.02.2025
               </p>
 
-              <p class="text-white mb-10">
+              <p class=" mb-10">
                 Kindly review these Terms and Conditions carefully before using
                 this website. By accessing or using this site, you agree to be
                 bound by these Terms as well as our
                 <a
                   href="/privacy-policy"
-                  class="text-blue-400 hover:text-white hover:underline"
+                  class="text-blue-500 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline"
                   >Privacy Policy</a
                 >. Stocknear reserves the right to modify these Terms at any
                 time.
               </p>
 
-              <h2 class="mb-1 text-white text-2xl sm:text-3xl font-bold mb-3">
+              <h2 class="mb-1 text-2xl sm:text-3xl font-bold mb-3">
                 No Investment Advice Provided by Stocknear
               </h2>
 
-              <p class="text-white mb-10">
+              <p class=" mb-10">
                 The information presented on this website is intended solely for
                 educational purposes. Before making any investment or financial
                 decisions, we strongly recommend that you consult with a
@@ -75,11 +73,11 @@
                 PROVIDED.
               </p>
 
-              <h2 class="mb-1 text-white text-2xl sm:text-3xl font-bold mb-3">
+              <h2 class="mb-1 text-2xl sm:text-3xl font-bold mb-3">
                 Accuracy of Data Not Guaranteed
               </h2>
 
-              <p class="text-white mb-10">
+              <p class=" mb-10">
                 Our stock data is aggregated from a variety of sources. While we
                 make every effort to ensure its accuracy, we cannot guarantee
                 that all information is current or error-free. We recommend that
@@ -87,21 +85,21 @@
                 filings, prior to making investment decisions.
               </p>
 
-              <h2 class="mb-1 text-white text-2xl sm:text-3xl font-bold mb-3">
+              <h2 class="mb-1 text-2xl sm:text-3xl font-bold mb-3">
                 Use of Our Content
               </h2>
 
-              <p class="text-white mb-10">
+              <p class=" mb-10">
                 Republishing our content in its entirety without our explicit
                 permission is prohibited. You may, however, use brief excerpts
                 provided they remain unaltered and proper attribution is given.
               </p>
 
-              <h2 class="mb-1 text-white text-2xl sm:text-3xl font-bold mb-3">
+              <h2 class="mb-1 text-2xl sm:text-3xl font-bold mb-3">
                 Liability Limitations
               </h2>
 
-              <p class="text-white mb-10">
+              <p class=" mb-10">
                 Neither Stocknear nor its authors shall be liable for any
                 damages arising from the use of this website's content. Although
                 we strive for accuracy and completeness, we cannot warrant the
@@ -116,11 +114,11 @@
                 act promptly.
               </p>
 
-              <h2 class="mb-1 text-white text-2xl sm:text-3xl font-bold mb-3">
+              <h2 class="mb-1 text-2xl sm:text-3xl font-bold mb-3">
                 Copyright
               </h2>
 
-              <p class="text-white mb-10">
+              <p class=" mb-10">
                 All content and materials created by the site operators are
                 protected under German copyright law. Any reproduction,
                 modification, distribution, or other form of exploitation beyond
@@ -138,7 +136,7 @@
                 us at
                 <a
                   href="mailto:contact@stocknear.com"
-                  class="text-blue-400 hover:text-white hover:underline"
+                  class="text-blue-500 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline"
                   >contact@stocknear.com</a
                 >
                 using the subject line "Copyright Infringement" and provide a detailed
@@ -149,15 +147,15 @@
                 Some images on this site are provided courtesy of
                 <a
                   href="https://de.freepik.com/"
-                  class="text-blue-400 sm:hover:text-white">FreePik</a
+                  class="text-blue-400 sm:hover:">FreePik</a
                 >.
               </p>
 
-              <h2 class="mb-1 text-white text-2xl sm:text-3xl font-bold mb-3">
+              <h2 class="mb-1 text-2xl sm:text-3xl font-bold mb-3">
                 Subscriptions
               </h2>
 
-              <p class="text-white mb-10">
+              <p class=" mb-10">
                 We may offer subscription services via Lemon Squeezy. Specific
                 terms related to subscriptions will be presented at the time of
                 purchase, and by subscribing, you agree to those terms.<br /><br
@@ -169,7 +167,7 @@
                 Settings or by contacting us at
                 <a
                   href="mailto:support@stocknear.com"
-                  class="text-blue-400 hover:text-white hover:underline"
+                  class="text-blue-500 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline"
                   >support@stocknear.com</a
                 >.<br /><br />
                 If you are not completely satisfied with your subscription, you may
@@ -177,11 +175,11 @@
                 requests made after 30 days will not be eligible.
               </p>
 
-              <h2 class="mb-1 text-white text-2xl sm:text-3xl font-bold mb-3">
+              <h2 class="mb-1 text-2xl sm:text-3xl font-bold mb-3">
                 Changes to Pricing and Service Plans
               </h2>
 
-              <p class="text-white mb-10">
+              <p class=" mb-10">
                 From time to time, we may adjust the pricing of our subscription
                 plans to reflect changes in operational costs, including
                 production, licensing, distribution, customer support,
@@ -193,11 +191,11 @@
                 during the notice period to avoid future charges.
               </p>
 
-              <h2 class="mb-1 text-white text-2xl sm:text-3xl font-bold mb-3">
+              <h2 class="mb-1 text-2xl sm:text-3xl font-bold mb-3">
                 Lifetime Access
               </h2>
 
-              <div class="text-white mb-10">
+              <div class=" mb-10">
                 Lifetime access grants you the right to use our Services for as
                 long as they are provided by Stocknear.<br /><br />
                 While Stocknear is committed to offering its Services for the foreseeable
@@ -206,11 +204,11 @@
                 consequently terminate.
               </div>
 
-              <h2 class="mb-1 text-white text-2xl sm:text-3xl font-bold mb-3">
+              <h2 class="mb-1 text-2xl sm:text-3xl font-bold mb-3">
                 Termination
               </h2>
 
-              <div class="text-white mb-10">
+              <div class=" mb-10">
                 We reserve the right to suspend or terminate your account and
                 deny access to the Service at any time, without prior notice,
                 for any reason, including but not limited to breaches of these
@@ -223,11 +221,11 @@
                 limitations, will remain in effect.
               </div>
 
-              <h2 class="mb-1 text-white text-2xl sm:text-3xl font-bold mb-3">
+              <h2 class="mb-1 text-2xl sm:text-3xl font-bold mb-3">
                 Amendments to Terms
               </h2>
 
-              <div class="text-white mb-10">
+              <div class=" mb-10">
                 We may amend these Terms at any time by posting updated versions
                 on this site. It is your responsibility to review these Terms
                 periodically. Your continued use of the Platform following any
@@ -236,11 +234,11 @@
                 the Service.
               </div>
 
-              <h2 class="mb-1 text-white text-2xl sm:text-3xl font-bold mb-3">
+              <h2 class="mb-1 text-2xl sm:text-3xl font-bold mb-3">
                 Data Disclaimer
               </h2>
 
-              <div class="text-white mb-10">
+              <div class=" mb-10">
                 All data provided on this website is offered solely for
                 informational purposes and should not be the exclusive basis for
                 any trading or investment decisions.<br /><br />
@@ -249,26 +247,26 @@
                 our contact form or email us directly at
                 <a
                   href="mailto:support@stocknear.com"
-                  class="text-blue-400 hover:text-white hover:underline"
+                  class="text-blue-500 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline"
                   >support@stocknear.com</a
                 >.
               </div>
 
-              <h2 class="mb-1 text-white text-2xl sm:text-3xl font-bold mb-3">
+              <h2 class="mb-1 text-2xl sm:text-3xl font-bold mb-3">
                 Complete Agreement
               </h2>
 
-              <p class="text-white mb-10">
+              <p class=" mb-10">
                 These Terms and Conditions, together with our
                 <a
                   href="/privacy-policy"
-                  class="text-blue-400 hover:text-white hover:underline"
+                  class="text-blue-500 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline"
                   >Privacy Policy</a
                 >
                 and
                 <a
                   href="/imprint"
-                  class="text-blue-400 hover:text-white hover:underline"
+                  class="text-blue-500 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline"
                   >Imprint</a
                 >, constitute the entire agreement between you and Stocknear.
                 <br /><br />
@@ -281,38 +279,42 @@
 
         <aside class="hidden lg:block relative fixed w-1/4 ml-4">
           <div
-            class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href="/donation"
               class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
             >
               <div class="w-full flex justify-between items-center p-3 mt-3">
-                <h2 class="text-start text-xl font-semibold text-white ml-3">
+                <h2 class="text-start text-xl font-semibold ml-3">
                   Sponsor Us
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
+                <ArrowLogo
+                  class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
+                />
               </div>
-              <span class="text-white p-3 ml-3 mr-3">
+              <span class=" p-3 ml-3 mr-3">
                 Learn more about why we're doing this here
               </span>
             </a>
           </div>
 
           <div
-            class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href="/contact"
               class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
             >
               <div class="w-full flex justify-between items-center p-3 mt-3">
-                <h2 class="text-start text-xl font-semibold text-white ml-3">
+                <h2 class="text-start text-xl font-semibold ml-3">
                   Contact Us
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
+                <ArrowLogo
+                  class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
+                />
               </div>
-              <span class="text-white p-3 ml-3 mr-3">
+              <span class=" p-3 ml-3 mr-3">
                 Let me know if you need something
               </span>
             </a>

@@ -10,7 +10,9 @@
   description="Stay ahead in the market with our pro newsletter! Get the latest updates, trends, and insights delivered straight to your inbox."
 />
 
-<div class="w-full max-w-7xl min-h-screen text-white m-auto mt-5 mb-40">
+<div
+  class="w-full max-w-7xl min-h-screen text-muted dark:text-white m-auto mt-5 mb-40"
+>
   <main
     id="main"
     class="mx-auto max-w-screen-lg space-x-20 p-6 md:flex md:p-10"
