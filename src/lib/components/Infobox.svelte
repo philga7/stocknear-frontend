@@ -3,7 +3,7 @@
 </script>
 
 <div
-  class="sm:mt-5 bg-inherit sm:mt-0 border-l-3 border-l-white border-r-0 border-t-0 border-b-0 border p-0 sm:p-4 text-white flex flex-row items-center"
+  class="sm:mt-5 sm:mt-0 border-l-3 border-l-muted dark:border-l-white border-r-0 border-t-0 border-b-0 border p-0 sm:p-4 text-muted dark:text-white flex flex-row items-center"
 >
   <svg
     class="h-6 w-6 hidden sm:block"

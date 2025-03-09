@@ -9,15 +9,17 @@
   description="Welcome to Stocknear — a site that aims to be the internet's best source of free stock data and information for regular investors."
 />
 
-<body class="text-white w-full">
-  <section class="border-b border-gray-600 sm:rounded-md w-full">
+<body class="text-muted dark:text-white w-full">
+  <section
+    class="border-b border-gray-200 shadow dark:border-gray-600 sm:rounded-md w-full bg-gray-100 dark:bg-default"
+  >
     <div class="mx-auto max-w-7xl px-6 py-16 sm:py-28 md:px-8">
       <div class="text-center">
-        <h1 class="mt-1 text-4xl font-bold text-white sm:text-5xl lg:text-6xl">
+        <h1 class="mt-1 text-4xl font-bold sm:text-5xl lg:text-6xl">
           About Us
         </h1>
         <p
-          class="mx-auto mt-5 max-w-3xl text-xl leading-normal text-white md:mt-7 md:text-2xl"
+          class="mx-auto mt-5 max-w-3xl text-xl leading-normal md:mt-7 md:text-2xl"
         >
           Welcome to Stocknear — a stock analysis platform built by users, for
           users. Our goal is to be the internet's top source of free stock data
@@ -27,13 +29,13 @@
     </div>
   </section>
 
-  <section class="border-t border-gray-600 text-white">
+  <section class="border-t border-gray-300 dark:border-gray-600">
     <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
       <div class="lg:text-center">
-        <h2 class="mt-2 text-3xl font-bold leading-8 text-white sm:text-4xl">
+        <h2 class="mt-2 text-3xl font-bold leading-8 sm:text-4xl">
           What sets us apart
         </h2>
-        <p class="mt-4 max-w-lg text-xl text-white lg:mx-auto">
+        <p class="mt-4 max-w-lg text-xl lg:mx-auto">
           We're here to make investing simple and efficient with data that’s
           always up-to-date and highly accurate.
         </p>
@@ -45,7 +47,7 @@
           <div class="relative">
             <dt>
               <div
-                class="absolute flex h-12 w-12 items-center justify-center rounded-md bg-white text-black"
+                class="absolute flex h-12 w-12 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-white text-white dark:text-black"
               >
                 <svg
                   class="h-6 w-6"
@@ -74,7 +76,7 @@
           <div class="relative">
             <dt>
               <div
-                class="absolute flex h-12 w-12 items-center justify-center rounded-md bg-white text-black"
+                class="absolute flex h-12 w-12 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-white text-white dark:text-black"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -101,7 +103,7 @@
           <div class="relative">
             <dt>
               <div
-                class="absolute flex h-12 w-12 items-center justify-center rounded-md bg-white text-black"
+                class="absolute flex h-12 w-12 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-white text-white dark:text-black"
               >
                 <svg
                   class="w-6 h-6"
@@ -128,7 +130,7 @@
           <div class="relative">
             <dt>
               <div
-                class="absolute flex h-12 w-12 items-center justify-center rounded-md bg-white text-black"
+                class="absolute flex h-12 w-12 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-white text-white dark:text-black"
               >
                 <svg
                   class="w-5 h-5"
@@ -155,7 +157,7 @@
           <div class="relative">
             <dt>
               <div
-                class="absolute flex h-12 w-12 items-center justify-center rounded-md bg-white text-black"
+                class="absolute flex h-12 w-12 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-white text-white dark:text-black"
               >
                 <svg
                   class="w-6 h-6"
@@ -182,7 +184,7 @@
           <div class="relative">
             <dt>
               <div
-                class="absolute flex h-12 w-12 items-center justify-center rounded-md bg-white text-black"
+                class="absolute flex h-12 w-12 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-white text-white dark:text-black"
               >
                 <svg
                   class="h-6 w-6"
@@ -211,12 +213,14 @@
     </div>
   </section>
 
-  <section class="border-t border-gray-600 text-white">
+  <section
+    class="border-t border-gray-200 shadow dark:border-gray-600 bg-gray-100 dark:bg-default"
+  >
     <div class="mx-auto max-w-7xl px-6 py-12 lg:px-8 lg:py-28">
       <div class="space-y-12 lg:grid lg:grid-cols-3 lg:gap-8 lg:space-y-0">
         <div class="space-y-5 sm:space-y-4">
           <h2 class="text-3xl font-bold sm:text-4xl">Our Team</h2>
-          <p class="text-lg text-white sm:text-xl">
+          <p class="text-lg sm:text-xl">
             Stocknear is an open-source project solely maintained by Muslem
             Rahimi.
           </p>
@@ -241,10 +245,12 @@
                   <div class="space-y-4">
                     <div class="space-y-1 text-lg font-semibold leading-6">
                       <h3>Muslem Rahimi, PhD</h3>
-                      <p class="text-blue-400">Founder / Chief of Nothing</p>
+                      <p class="text-blue-500 dark:text-blue-400">
+                        Founder / Chief of Nothing
+                      </p>
                     </div>
                     <div class="text-lg">
-                      <p class="text-white">
+                      <p class="">
                         Muslem founded Stocknear in 2022 after leaving his role
                         as an insurance mathematician at Deloitte. He holds a
                         Bachelor's degree in Physics from the University of

@@ -11,12 +11,12 @@
 />
 
 <section
-  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden pb-20 pt-5 px-4 lg:px-3"
+  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden pb-20 pt-5 px-4 lg:px-3 text-muted dark:text-white"
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
-      <li><a href="/" class="text-gray-300">Home</a></li>
-      <li class="text-gray-300">Sponsor</li>
+      <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
+      <li class="text-muted dark:text-gray-300">Sponsor</li>
     </ul>
   </div>
 
@@ -27,15 +27,13 @@
       >
         <main class="w-full lg:w-3/4 lg:pr-5">
           <div class="mb-6 border-b-[2px]">
-            <h1 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
-              Sponsor
-            </h1>
+            <h1 class="mb-1 text-2xl sm:text-3xl font-bold">Sponsor</h1>
           </div>
 
-          <div class="w-full bg-default m-auto">
+          <div class="w-full m-auto">
             <div class="">
-              <h2 class="text-white text-xl font-semibold mb-5">Hey 👋,</h2>
-              <p class="text-white mb-5 text-[1rem]">
+              <h2 class=" text-xl font-semibold mb-5">Hey 👋,</h2>
+              <p class=" mb-5 text-[1rem]">
                 Thank you for considering supporting our mission. As the sole
                 person behind Stocknear—handling everything from backend
                 development to customer service—I'm committed to keeping our
@@ -45,7 +43,7 @@
                 Our Plans are priced ensure that high-quality stock data is within
                 reach for retail investors of all backgrounds.
               </p>
-              <div class="text-white mb-5 text-[1rem]">
+              <div class=" mb-5 text-[1rem]">
                 While the Membership is designed to sustain our basic
                 operations, your additional support can help us go even further.
                 By sponsoring, you're not just supporting a platform; you're
@@ -94,10 +92,10 @@
                 </ul>
               </div>
 
-              <h2 class="text-white text-2xl font-semibold">
+              <h2 class=" text-2xl font-semibold">
                 Become a sponsor to Stocknear
               </h2>
-              <p class="text-white mb-5 text-[1rem]">
+              <p class=" mb-5 text-[1rem]">
                 If you believe in our mission and want to support us beyond your
                 Subscription, please support us via GitHub Sponsors. Every
                 contribution, no matter the size, makes a significant impact on
@@ -121,38 +119,40 @@
 
         <aside class="hidden lg:block relative fixed w-1/4 ml-4">
           <div
-            class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href="/about"
               class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
             >
               <div class="w-full flex justify-between items-center p-3 mt-3">
-                <h2 class="text-start text-xl font-semibold text-white ml-3">
-                  About Us
-                </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
+                <h2 class="text-start text-xl font-semibold ml-3">About Us</h2>
+                <ArrowLogo
+                  class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
+                />
               </div>
-              <span class="text-white p-3 ml-3 mr-3">
+              <span class=" p-3 ml-3 mr-3">
                 Learn more about why we're doing this here
               </span>
             </a>
           </div>
 
           <div
-            class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href="/contact"
               class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
             >
               <div class="w-full flex justify-between items-center p-3 mt-3">
-                <h2 class="text-start text-xl font-semibold text-white ml-3">
+                <h2 class="text-start text-xl font-semibold ml-3">
                   Contact Us
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
+                <ArrowLogo
+                  class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
+                />
               </div>
-              <span class="text-white p-3 ml-3 mr-3">
+              <span class=" p-3 ml-3 mr-3">
                 Let me know if you need something
               </span>
             </a>

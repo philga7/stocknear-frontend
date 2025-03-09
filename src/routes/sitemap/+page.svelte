@@ -193,15 +193,17 @@
   description="Navigate through Stocknear's complete collection of financial tools and market analysis resources. Access real-time stock data, ETFs, options flow, and more."
 />
 
-<main>
+<main class="text-muted dark:text-white">
   <section
     class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pb-20 pt-5 px-4 lg:px-3"
     aria-label="Sitemap Navigation"
   >
     <nav class="text-sm sm:text-[1rem] breadcrumbs" aria-label="Breadcrumb">
       <ul>
-        <li><a href="/" class="text-gray-300">Home</a></li>
-        <li class="text-gray-300" aria-current="page">Sitemap</li>
+        <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
+        <li class="text-muted dark:text-gray-300" aria-current="page">
+          Sitemap
+        </li>
       </ul>
     </nav>
 
@@ -212,12 +214,10 @@
         >
           <article class="w-full lg:w-3/4 lg:pr-10">
             <div class="mb-6 border-b-[2px]">
-              <h1 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
-                Sitemap
-              </h1>
+              <h1 class="mb-1 text-2xl sm:text-3xl font-bold">Sitemap</h1>
             </div>
 
-            <div class=" w-full bg-default m-auto text-white">
+            <div class=" w-full m-auto">
               <div class="content">
                 <p class="text-[1rem] sm:text-lg">
                   Explore a comprehensive list of Stocknear's financial tools
@@ -225,9 +225,7 @@
                   ETFs, options flow, and more. Use our search bar for quick
                   access to specific stock symbols.
                 </p>
-                <h2 class="text-white text-xl sm:text-2xl font-bold mt-8 mb-5">
-                  Pages
-                </h2>
+                <h2 class=" text-xl sm:text-2xl font-bold mt-8 mb-5">Pages</h2>
                 <nav aria-label="Site Pages">
                   <ul
                     class="list-outside list-disc space-y-1 p-1 pl-6 md:gap-x-8 md:text-lg"
@@ -244,7 +242,7 @@
                   </ul>
                 </nav>
 
-                <h2 class="text-white text-xl sm:text-2xl font-bold mt-8 mb-5">
+                <h2 class=" text-xl sm:text-2xl font-bold mt-8 mb-5">
                   Articles
                 </h2>
                 <nav aria-label="Site Pages">
@@ -265,7 +263,7 @@
                   </ul>
                 </nav>
 
-                <h2 class="text-white text-xl sm:text-2xl font-bold mt-8 mb-5">
+                <h2 class=" text-xl sm:text-2xl font-bold mt-8 mb-5">
                   Learning Center
                 </h2>
                 <nav aria-label="Site Pages">
@@ -285,7 +283,7 @@
                   </ul>
                 </nav>
 
-                <h2 class="text-white text-xl sm:text-2xl font-bold mt-8 mb-5">
+                <h2 class=" text-xl sm:text-2xl font-bold mt-8 mb-5">
                   Financial terms
                 </h2>
                 <nav aria-label="Site Pages">
@@ -311,57 +309,63 @@
 
           <aside class="hidden lg:block relative fixed w-1/4 mt-4">
             <div
-              class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
+              class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
             >
               <a
                 href="/pricing"
                 class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
               >
                 <div class="w-full flex justify-between items-center p-3 mt-3">
-                  <h2 class="text-start text-xl font-semibold text-white ml-3">
+                  <h2 class="text-start text-xl font-semibold ml-3">
                     Pro Subscription
                   </h2>
-                  <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
+                  <ArrowLogo
+                    class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
+                  />
                 </div>
-                <span class="text-white p-3 ml-3 mr-3">
+                <span class=" p-3 ml-3 mr-3">
                   Upgrade now for unlimited access to all data and tools.
                 </span>
               </a>
             </div>
 
             <div
-              class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
+              class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
             >
               <a
                 href="/donation"
                 class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
               >
                 <div class="w-full flex justify-between items-center p-3 mt-3">
-                  <h2 class="text-start text-xl font-semibold text-white ml-3">
+                  <h2 class="text-start text-xl font-semibold ml-3">
                     Sponsor Us
                   </h2>
-                  <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
+                  <ArrowLogo
+                    class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
+                  />
                 </div>
-                <span class="text-white p-3 ml-3 mr-3">
+                <span class=" p-3 ml-3 mr-3">
                   Learn more about why we're doing this here
                 </span>
               </a>
             </div>
 
             <div
-              class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
+              class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
             >
               <a
                 href="/contact"
                 class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
               >
                 <div class="w-full flex justify-between items-center p-3 mt-3">
-                  <h2 class="text-start text-xl font-semibold text-white ml-3">
+                  <h2 class="text-start text-xl font-semibold ml-3">
                     Contact Us
                   </h2>
-                  <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
+                  <ArrowLogo
+                    class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
+                  />
                 </div>
-                <span class="text-white p-3 ml-3 mr-3">
+                <span class=" p-3 ml-3 mr-3">
                   Let me know if you need something
                 </span>
               </a>
