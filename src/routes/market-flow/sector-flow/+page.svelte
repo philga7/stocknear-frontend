@@ -656,7 +656,7 @@
                 class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
               >
                 <table
-                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-table border border-gray-300 dark:border-gray-300 dark:border-gray-800 m-auto"
+                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
                 >
                   <thead>
                     <TableHeader
@@ -668,7 +668,7 @@
                   <tbody>
                     {#each displayPosTickers as item, index}
                       <tr
-                        class="bg-white dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
+                        class=" dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
                           1 ===
                           originalPosTickers?.length &&
                         !['Pro']?.includes(data?.user?.tier)
@@ -761,7 +761,7 @@
                 class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
               >
                 <table
-                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-table border border-gray-300 dark:border-gray-300 dark:border-gray-800 m-auto"
+                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
                 >
                   <thead>
                     <TableHeader
@@ -773,7 +773,7 @@
                   <tbody>
                     {#each displayNegTickers as item, index}
                       <tr
-                        class="bg-white dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
+                        class=" dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
                           1 ===
                           originalNegTickers?.length &&
                         !['Pro']?.includes(data?.user?.tier)

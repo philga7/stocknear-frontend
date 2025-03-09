@@ -852,7 +852,7 @@
                 <DropdownMenu.Content align="end">
                   <a href="/profile" class="cursor-pointer">
                     <DropdownMenu.Item
-                      class="sm:hover:bg-[#18181B] cursor-pointer"
+                      class="sm:hover:bg-gray-300 dark:sm:hover:bg-[#18181B] cursor-pointer"
                     >
                       My Account
                     </DropdownMenu.Item>
@@ -861,20 +861,20 @@
 
                   <a href="/watchlist/stocks" class="cursor-pointer">
                     <DropdownMenu.Item
-                      class="sm:hover:bg-[#18181B] cursor-pointer"
+                      class="sm:hover:bg-gray-300 dark:sm:hover:bg-[#18181B] cursor-pointer"
                     >
                       Watchlist
                     </DropdownMenu.Item>
                   </a>
                   <a href="/price-alert" class="cursor-pointer">
                     <DropdownMenu.Item
-                      class="sm:hover:bg-[#18181B] cursor-pointer"
+                      class="sm:hover:bg-gray-300 dark:sm:hover:bg-[#18181B] cursor-pointer"
                     >
                       Price Alert
                     </DropdownMenu.Item>
                   </a>
 
-                  <button on:click={handleModeChange} class="cursor-pointer w-full sm:hover:bg-[#18181B] relative flex cursor-default select-none items-center rounded px-2 py-1.5 text-sm outline-hidden data-disabled:pointer-events-none">
+                  <button on:click={handleModeChange} class="cursor-pointer w-full sm:hover:bg-gray-300 dark:sm:hover:bg-[#18181B] relative flex cursor-default select-none items-center rounded px-2 py-1.5 text-sm outline-hidden data-disabled:pointer-events-none">
  
                     <span>{$mode === 'light' ? 'Light' : 'Dark'} Mode</span>
                     <span class="sr-only">Toggle theme</span>
@@ -889,7 +889,7 @@
                       class="w-full text-start cursor-pointer"
                     >
                       <DropdownMenu.Item
-                        class="sm:hover:bg-[#18181B] cursor-pointer"
+                        class="sm:hover:bg-gray-300 dark:sm:hover:bg-[#18181B] cursor-pointer"
                       >
                       <svg class="lucide lucide-log-out mr-2 w-3.5 h-3.5 transform scale-x-[-1]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" x2="9" y1="12" y2="12"></line></svg>
                         <span class="text-start">Logout</span>
