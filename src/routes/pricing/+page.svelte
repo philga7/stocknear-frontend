@@ -88,7 +88,7 @@
 </svelte:head>
 
 <section
-  class=" min-h-screen mb-40 w-full max-w-3xl sm:max-w-5xl m-auto text-muted dark:"
+  class=" min-h-screen mb-40 w-full max-w-3xl sm:max-w-5xl m-auto text-muted dark:text-white"
 >
   <div
     class="flex flex-col sm:flex-row w-full mx-auto justify-center items-center sm:space-x-8 text-sm relative pt-5 pb-20"
@@ -131,14 +131,15 @@
           d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"
         ></path></svg
       ><span class="ml-1 mr-2 font-bold text-muted dark:text-zinc-300"
-        ><span>4.3</span>/5</span
+        ><span>4.4</span>/5</span
       ><span class="font-medium text-muted dark:text-zinc-300"
         >Rated "Excellent" on <a
           rel="noopener noreferrer"
           target="_blank"
           href="https://www.trustpilot.com/review/stocknear.com"
           class="sm:hover: sm:hover:underline sm:hover:underline-offset-4"
-          >Trustpilot</a
+        >
+          Trustpilot</a
         ></span
       >
     </div>

@@ -835,7 +835,7 @@
                   <Button
                     size="icon"
                     aria-label="Settings"
-                    class="overflow-hidden rounded-md bg-gray-200 dark:bg-default sm:hover:bg-[#18181B] border border-gray-300 dark:border-gray-600 w-10 h-10"
+                    class="overflow-hidden rounded-md bg-gray-200 dark:bg-default dark:sm:hover:bg-[#18181B] border border-gray-300 dark:border-gray-600 w-10 h-10"
                     builders={[builder]}
                   >
                     <svg
