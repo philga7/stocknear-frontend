@@ -35,23 +35,21 @@
 </script>
 
 {#if Object?.keys(rawData)?.length !== 0}
-  <div class="space-y-3 overflow-hidden">
+  <div class="space-y-3 overflow-hidden text-muted dark:text-white">
     <!--Start Content-->
     <div class="w-auto lg:w-full flex flex-col m-auto">
       <div class="flex flex-col items-center w-full mb-3">
         <div class="flex flex-row justify-start mr-auto items-center">
           <!--<img class="h-10 inline-block mr-2" src={copilotIcon} />-->
           <div class="flex flex-row items-center">
-            <h3
-              class="mr-1 flex flex-row items-center text-white text-2xl font-bold"
-            >
+            <h3 class="mr-1 flex flex-row items-center text-2xl font-bold">
               Next Earnings Release
             </h3>
           </div>
         </div>
       </div>
 
-      <div class="text-white text-[1rem]">
+      <div class=" text-[1rem]">
         {$displayCompanyName} is scheduled to release its earnings on {new Date(
           rawData?.date ?? null,
         )?.toLocaleString("en-US", {
@@ -89,10 +87,10 @@
           >, reflecting a
           <span
             class="{revenueRatio >= 0 && revenueRatio !== 'Infinity'
-              ? "before:content-['+'] text-[#00FC50]"
+              ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
               : revenueRatio < 0 && revenueRatio !== 'Infinity'
-                ? 'text-[#FF2F1F]'
-                : 'text-white'} "
+                ? 'text-red-600 dark:text-[#FF2F1F]'
+                : 'text-muted dark:text-white'} "
             >{revenueRatio !== "Infinity"
               ? abbreviateNumber(revenueRatio) + "%"
               : "n/a"}</span
@@ -107,7 +105,7 @@
             <span class="font-semibold">{rawData?.epsEst}</span>, making a
             <span
               class="{epsRatio > 0
-                ? "before:content-['+'] text-[#00FC50]"
+                ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
                 : 'text-[#FF2F1F]'} ">{epsRatio}%</span
             >
             {epsRatio > 0 ? "increase" : epsRatio < 0 ? "decrease" : ""} YoY.

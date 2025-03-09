@@ -102,13 +102,13 @@
   }
 </script>
 
-<div class="space-y-3 overflow-hidden">
+<div class="space-y-3 overflow-hidden text-muted dark:text-white">
   <div class="w-auto lg:w-full p-1 flex flex-col m-auto">
     <div class="flex flex-col items-center w-full mb-1">
       <div class="flex flex-row justify-start mr-auto items-center">
         <div class="flex flex-row items-center">
           <label
-            class="mr-1 cursor-pointer flex flex-row items-center text-white text-2xl font-bold"
+            class="mr-1 cursor-pointer flex flex-row items-center text-2xl font-bold"
           >
             <h2>News</h2>
           </label>
@@ -116,9 +116,9 @@
       </div>
     </div>
 
-    <div class=" mt-1 sm:mt-0 text-white">
+    <div class=" mt-1 sm:mt-0">
       <div
-        class="hflex flex-row items-center justify-between overflow-x-auto border-b border-gray-600 py-1.5"
+        class="hflex flex-row items-center justify-between overflow-x-auto border-b border-gray-300 dark:border-gray-600 py-1.5"
       >
         <ul
           class="hide-scroll mb-0.5 flex flex-row overflow-x-auto whitespace-nowrap text-lg"
@@ -126,9 +126,9 @@
           <li>
             <button
               on:click={() => (displaySection = "all")}
-              class="rounded-md px-3 py-0.5 sm:hover:bg-secondary {displaySection ===
+              class="cursor-pointer rounded-md px-3 py-0.5 sm:hover:bg-blue-50 dark:sm:hover:bg-secondary {displaySection ===
               'all'
-                ? 'bg-secondary'
+                ? 'bg-blue-50 dark:bg-secondary'
                 : ''}">All</button
             >
           </li>
@@ -136,9 +136,9 @@
             <li>
               <button
                 on:click={() => (displaySection = "videos")}
-                class="rounded-md px-3 py-0.5 ml-2 sm:hover:bg-secondary {displaySection ===
+                class="ml-1 cursor-pointer rounded-md px-3 py-0.5 sm:hover:bg-blue-50 dark:sm:hover:bg-secondary {displaySection ===
                 'videos'
-                  ? 'bg-secondary'
+                  ? 'bg-blue-50 dark:bg-secondary'
                   : ''}">Videos</button
               >
             </li>
@@ -147,9 +147,9 @@
             <li>
               <button
                 on:click={() => getPressRelease()}
-                class="rounded-md px-3 py-0.5 ml-2 sm:hover:bg-secondary {displaySection ===
+                class="ml-1 cursor-pointer rounded-md px-3 py-0.5 sm:hover:bg-blue-50 dark:sm:hover:bg-secondary {displaySection ===
                 'press-releases'
-                  ? 'bg-secondary'
+                  ? 'bg-blue-50 dark:bg-secondary'
                   : ''}"
                 ><span class="inline sm:hidden">Press</span><span
                   class="hidden sm:inline">Press Releases</span
@@ -165,7 +165,7 @@
       {#if filteredNewsList?.length > 0}
         <div class="grid grid-cols-1 gap-2 pb-5 pt-5">
           {#each filteredNewsList as item, index (item.url)}
-            <div class="w-full flex flex-col bg-default rounded-md m-auto">
+            <div class="w-full flex flex-col rounded-md m-auto">
               {#if checkIfYoutubeVideo(item.url)}
                 {#if showVideo[index]}
                   <!-- Show the YouTube iframe when the user clicks play -->
@@ -196,17 +196,17 @@
                   </div>
                 {/if}
                 <div class="mt-3 w-full">
-                  <h3 class="text-sm text-white/80 truncate mb-2">
+                  <h3 class="text-sm dark:text-white/80 truncate mb-2">
                     {formatDate(item?.publishedDate)} &#183; {item?.site}
                   </h3>
                   <a
                     href={item?.url}
                     rel="noopener noreferrer"
                     target="_blank"
-                    class="text-lg sm:text-xl font-bold text-white"
+                    class="text-lg sm:text-xl font-bold"
                   >
                     {item?.title}
-                    <p class="text-white text-sm mt-2 font-normal">
+                    <p class=" text-sm mt-2 font-normal">
                       {item?.text?.length > 200
                         ? item?.text?.slice(0, 200) + "..."
                         : item?.text}
@@ -239,10 +239,10 @@
                       href={item?.url}
                       rel="noopener noreferrer"
                       target="_blank"
-                      class="text-lg sm:text-xl font-bold text-white"
+                      class="text-lg sm:text-xl font-bold"
                     >
                       {item?.title}
-                      <p class="text-white text-sm mt-2 font-normal">
+                      <p class=" text-sm mt-2 font-normal">
                         {item?.text?.length > 200
                           ? item?.text?.slice(0, 200) + "..."
                           : item?.text}
@@ -252,7 +252,9 @@
                 </div>
               {/if}
             </div>
-            <hr class="border-gray-600 w-full m-auto mt-5 mb-5" />
+            <hr
+              class="border-gray-300 dark:border-gray-600 w-full m-auto mt-5 mb-5"
+            />
           {/each}
         </div>
       {:else}

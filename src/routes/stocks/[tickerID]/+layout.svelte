@@ -382,7 +382,7 @@
 <svelte:window bind:scrollY={y} />
 
 <body
-  class="bg-default w-full max-w-screen sm:max-w-[1250px] min-h-screen overflow-hidden"
+  class="text-muted dark:text-white w-full max-w-screen sm:max-w-[1250px] min-h-screen overflow-hidden"
 >
   <!-- Page wrapper -->
   <div class="mt-5 flex flex-col w-full relative w-full sm:max-w-[1250px]">
@@ -391,7 +391,7 @@
         <div class="w-full">
           <div class="sm:flex sm:justify-start w-full">
             <!--Start Mobile Navbar-->
-            <div class="fixed top-0 left-0 right-0 z-20 bg-default sm:hidden">
+            <div class="fixed top-0 left-0 right-0 z-20 sm:hidden">
               <div class="navbar w-full px-4 py-2">
                 <div
                   class="{isScrolled
@@ -424,10 +424,10 @@
                         ? "hidden"
                         : "flex flex-col items-center ml-6 transition-transform ease-in"}
                     >
-                      <span class="text-white text-xs font-semibold">
+                      <span class=" text-xs font-semibold">
                         {$stockTicker}
                       </span>
-                      <span class="text-white text-sm">
+                      <span class=" text-sm">
                         {#if $currentPortfolioPrice !== null && $currentPortfolioPrice !== 0}
                           {$currentPortfolioPrice}
                         {:else}
@@ -545,7 +545,7 @@
                     {:else}
                       <label
                         for="userLogin"
-                        class="cursor-pointer shrink-0 text-white mr-4"
+                        class="cursor-pointer shrink-0 mr-4"
                       >
                         <svg
                           class="w-6 h-6 inline-block"
@@ -610,7 +610,7 @@
                           <div class="flex flex-col ml-auto mr-2">
                             {#if userWatchList?.length !== 0}
                               <div
-                                class="shrink-0 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
+                                class="shrink-0 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative flex items-center justify-center"
                               >
                                 <label
                                   for="addWatchListModal"
@@ -641,7 +641,7 @@
                               </div>
                             {:else if userWatchList?.length === 0}
                               <div
-                                class="shrink-0 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
+                                class="shrink-0 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative flex items-center justify-center"
                               >
                                 <label
                                   on:click={() =>
@@ -675,11 +675,11 @@
                           </div>
                         {:else}
                           <div
-                            class="shrink-0 ml-auto mr-2 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
+                            class="shrink-0 ml-auto mr-2 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative flex items-center justify-center"
                           >
                             <label
                               for="userLogin"
-                              class="cursor-pointer shrink-0 text-white"
+                              class="cursor-pointer shrink-0"
                             >
                               <svg
                                 class="w-7 h-7 inline-block"
@@ -698,12 +698,12 @@
                         <!--Start Price Alert -->
 
                         <div
-                          class="shrink-0 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
+                          class="shrink-0 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative flex items-center justify-center"
                         >
                           <label
                             on:click={() => ($openPriceAlert = true)}
                             for={data?.user ? "priceAlertModal" : "userLogin"}
-                            class="cursor-pointer shrink-0 text-white"
+                            class="cursor-pointer shrink-0"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -750,9 +750,7 @@
                             <div
                               class="flex flex-row justify-between items-center w-full sm:-mt-[50px] mb-5 sm:mb-10"
                             >
-                              <h1
-                                class="text-2xl lg:text-3xl font-bold text-white"
-                              >
+                              <h1 class="text-2xl lg:text-3xl font-bold">
                                 {$displayCompanyName?.length > charNumber
                                   ? $displayCompanyName?.slice(0, charNumber) +
                                     "..."
@@ -775,7 +773,7 @@
                             </div>
 
                             <div
-                              class="-mt-5 sm:-mt-8 mb-5 flex flex-row items-end space-x-2 xs:space-x-3 sm:space-x-5 text-white"
+                              class="-mt-5 sm:-mt-8 mb-5 flex flex-row items-end space-x-2 xs:space-x-3 sm:space-x-5"
                             >
                               <div class="w-full max-w-[50%] whitespace-nowrap">
                                 <div
@@ -903,16 +901,14 @@
                     <nav
                       class="sm:ml-4 border-b-[2px] overflow-x-auto whitespace-nowrap no-scrollbar"
                     >
-                      <ul
-                        class="flex flex-row items-center w-full text-[1rem] text-white"
-                      >
+                      <ul class="flex flex-row items-center w-full text-[1rem]">
                         <a
                           href={`/stocks/${$stockTicker}`}
                           on:click={() => changeSection("overview")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'overview'
-                            ? 'text-white bg-secondary font-semibold'
-                            : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary'}"
+                            ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
+                            : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                         >
                           Overview
                         </a>
@@ -921,8 +917,8 @@
                           on:click={() => changeSection("financials")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'financials'
-                            ? 'text-white bg-secondary font-semibold'
-                            : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary'}"
+                            ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
+                            : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                         >
                           Financials
                         </a>
@@ -931,8 +927,8 @@
                           on:click={() => changeSection("statistics")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'statistics'
-                            ? 'text-white bg-secondary font-semibold'
-                            : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary'}"
+                            ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
+                            : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                           >Statistics</a
                         >
 
@@ -941,8 +937,8 @@
                           on:click={() => changeSection("metrics")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'metrics'
-                            ? 'text-white bg-secondary font-semibold'
-                            : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary'}"
+                            ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
+                            : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                           >Metrics</a
                         >
 
@@ -952,8 +948,8 @@
                             on:click={() => changeSection("forecast")}
                             class="p-2 px-5 cursor-pointer {displaySection ===
                             'forecast'
-                              ? 'text-white bg-secondary font-semibold'
-                              : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary'}"
+                              ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
+                              : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                           >
                             Forecast
                           </a>
@@ -963,8 +959,8 @@
                           on:click={() => changeSection("dark-pool")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'dark-pool'
-                            ? 'text-white bg-secondary font-semibold'
-                            : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary'}"
+                            ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
+                            : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                         >
                           Dark Pool
                         </a>
@@ -973,8 +969,8 @@
                           on:click={() => changeSection("options")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'options'
-                            ? 'text-white bg-secondary font-semibold'
-                            : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary'}"
+                            ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
+                            : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                         >
                           Options
                         </a>
@@ -984,8 +980,8 @@
                           on:click={() => changeSection("insider")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'insider'
-                            ? 'text-white bg-secondary font-semibold'
-                            : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary'}"
+                            ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
+                            : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                         >
                           Insider
                         </a>
@@ -994,8 +990,8 @@
                           on:click={() => changeSection("dividends")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'dividends'
-                            ? 'text-white bg-secondary font-semibold'
-                            : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary'}"
+                            ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
+                            : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                         >
                           Dividends
                         </a>
@@ -1004,8 +1000,8 @@
                           on:click={() => changeSection("history")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'history'
-                            ? 'text-white bg-secondary font-semibold'
-                            : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary'}"
+                            ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
+                            : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                         >
                           History
                         </a>
@@ -1014,8 +1010,8 @@
                           on:click={() => changeSection("profile")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'profile'
-                            ? 'text-white bg-secondary font-semibold'
-                            : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary'}"
+                            ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
+                            : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                         >
                           Profile
                         </a>

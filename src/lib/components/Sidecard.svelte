@@ -2,6 +2,7 @@
   import { stockTicker } from "$lib/store";
   import { sectorNavigation } from "$lib/utils";
   import highcharts from "$lib/highcharts.ts";
+  import { mode } from "mode-watcher";
 
   export let data;
 
@@ -62,15 +63,15 @@
     const options = {
       chart: {
         type: "column",
-        backgroundColor: "#09090B",
-        plotBackgroundColor: "#09090B",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
         height: 250,
         animation: false,
       },
       title: {
-        text: `<div class="text-gray-200 mt-3  text-center font-normal text-2xl">Price Target: <span class="${changesPercentage >= 0 ? "text-[#00FC50]" : "text-[#FF2F1F]"}">$${priceTarget}</span></div>
-        <div class="text-gray-200  mb-2 text-center font-normal text-xl">(${changesPercentage}% ${changesPercentage >= 0 ? "upside" : "downside"})</div>
-        <div class="text-gray-200 text-center font-normal text-xl flex justify-center items-center">Analyst Consensus: <span class="ml-1 ${consensusRating === "Buy" ? "text-[#00FC50]" : consensusRating === "Sell" ? "text-[#FF2F1F]" : consensusRating === "Hold" ? "text-[#D5AB31]" : "text-white"}">${consensusRating ?? "n/a"}</span></div>`,
+        text: `<div class="text-muted dark:text-gray-200 mt-3  text-center font-normal text-2xl">Price Target: <span class="${changesPercentage >= 0 ? "text-green-500 dark:text-[#00FC50]" : "text-[#FF2F1F]"}">$${priceTarget}</span></div>
+        <div class="text-muted dark:text-gray-200  mb-2 text-center font-normal text-xl">(${changesPercentage}% ${changesPercentage >= 0 ? "upside" : "downside"})</div>
+        <div class="text-muted dark:text-gray-200 text-center font-normal text-xl flex justify-center items-center">Analyst Consensus: <span class="ml-1 ${consensusRating === "Buy" ? "text-green-500 dark:text-[#00FC50]" : consensusRating === "Sell" ? "text-red-500 dark:text-[#FF2F1F]" : consensusRating === "Hold" ? "text-orange-500 dark:text-[#D5AB31]" : "text-muted dark:text-white"}">${consensusRating ?? "n/a"}</span></div>`,
         style: {
           color: "white",
           // Using inline CSS for margin-top and margin-bottom
@@ -83,14 +84,17 @@
         gridLineWidth: 0,
         labels: {
           rotation: 0,
-          style: { color: "white", fontSize: "12.5px" },
+          style: {
+            color: $mode === "light" ? "black" : "white",
+            fontSize: "12.5px",
+          },
         },
       },
       yAxis: {
         gridLineWidth: 1,
-        gridLineColor: "#111827",
+        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
         labels: {
-          style: { color: "white" },
+          style: { color: $mode === "light" ? "black" : "white" },
           formatter: function () {
             return Math.floor(this.value); // Ensures whole numbers only
           },
@@ -148,7 +152,7 @@
   }
 
   $: {
-    if ($stockTicker) {
+    if ($stockTicker || $mode) {
       info = data?.getStockDeck;
       ipoDate =
         info?.ipoDate !== null && info?.ipoDate?.length > 0
@@ -198,69 +202,69 @@
   }
 </script>
 
-<div class="space-y-3">
+<div class="space-y-3 text-muted dark:text-white">
   <div class="h-auto w-full">
     <!--Start Content-->
     <div class="w-auto lg:w-full flex flex-col m-auto">
-      <h2 class="mb-2 text-2xl text-white font-semibold">
+      <h2 class="mb-2 text-2xl font-semibold">
         About {$stockTicker}
       </h2>
-      <p class="text-gray-200">
+      <p class="dark:text-gray-200">
         {snippet}
       </p>
       <div class="inline-block">
         <a
           href={`/stocks/${$stockTicker}/profile`}
-          class="w-full text-md mt-1 cursor-pointer sm:hover:text-white text-blue-400 sm:hover:underline"
+          class="w-full text-md mt-1 cursor-pointer sm:hover:text-muted dark:sm:hover:text-white text-blue-500 dark:text-blue-400 sm:hover:underline"
         >
           [Show more]
         </a>
       </div>
 
       <div class="mt-3 grid grid-cols-2 gap-3 w-full">
-        <div class="col-span-1 text-gray-200">
+        <div class="col-span-1 dark:text-gray-200">
           <span class="block font-semibold">Industry</span>
           <a
             href={getIndustryHref(industry)}
-            class="sm:hover:text-blue-400 text-white underline underline-offset-4"
+            class="sm:hover:text-blue-500 dark:sm:hover:text-blue-400 underline underline-offset-4"
             >{industry}</a
           >
         </div>
-        <div class="col-span-1 text-gray-200">
+        <div class="col-span-1 dark:text-gray-200">
           <span class="block font-semibold">Sector</span>
           <a
             href={sectorNavigation?.find((item) => item?.title === sector)
               ?.link}
-            class="sm:hover:text-blue-400 text-white underline underline-offset-4"
+            class="sm:hover:text-blue-500 dark:sm:hover:text-blue-400 underline underline-offset-4"
             >{sector}</a
           >
         </div>
-        <div class="col-span-1 text-gray-200">
+        <div class="col-span-1 dark:text-gray-200">
           <span class="block font-semibold">IPO Date</span>
           <span>{ipoDate}</span>
         </div>
-        <div class="col-span-1 text-gray-200">
+        <div class="col-span-1 dark:text-gray-200">
           <span class="block font-semibold">Employees</span>
           <a
             href={`/stocks/${$stockTicker}/profile/employees`}
-            class="sm:hover:text-blue-400 text-white underline underline-offset-4"
+            class="sm:hover:text-blue-500 dark:sm:hover:text-blue-400 underline underline-offset-4"
             >{new Intl.NumberFormat("en")?.format(employees)}</a
           >
         </div>
-        <div class="col-span-1 text-gray-200">
+        <div class="col-span-1 dark:text-gray-200">
           <span class="block font-semibold">Stock Exchange</span>
           <span>{exchange}</span>
         </div>
-        <div class="col-span-1 text-gray-200">
+        <div class="col-span-1 dark:text-gray-200">
           <span class="block font-semibold">Ticker Symbol</span>
           <span>{$stockTicker}</span>
         </div>
         {#if website}
-          <div class="col-span-1 whitespace-nowrap text-gray-200">
+          <div class="col-span-1 whitespace-nowrap dark:text-gray-200">
             <span class="block font-semibold">Website</span>
             <a
               href={website}
-              class="sm:hover:text-white truncate text-blue-400"
+              class="sm:hover:text-muted dark:sm:hover:text-white truncate text-blue-500 dark:text-blue-400"
               target="_blank">{website}</a
             >
           </div>
@@ -268,7 +272,7 @@
       </div>
       <a
         href={`/stocks/${$stockTicker}/profile`}
-        class="rounded cursor-pointer w-full m-auto py-2 h-full mt-6 text-[1rem] text-center font-semibold text-black sm:hover:hover:bg-gray-300 bg-[#ffff] transition duration-100"
+        class="rounded cursor-pointer w-full m-auto py-2 h-full mt-6 text-[1rem] text-center font-semibold text-white dark:text-black sm:hover:text-muted dark:sm:hover:bg-gray-300 bg-[#3C74D4] dark:bg-[#ffff] transition duration-100"
       >
         Full Company Profile
       </a>
@@ -286,8 +290,8 @@
     <div class="h-auto w-full">
       <!--Start Content-->
       <div class="w-auto lg:w-full flex flex-col m-auto pb-10">
-        <h2 class="mb-2 text-2xl text-white font-semibold">Analyst Forecast</h2>
-        <p class="text-gray-200">
+        <h2 class="mb-2 text-2xl font-semibold">Analyst Forecast</h2>
+        <p class="dark:text-gray-200">
           According to {numOfAnalyst} analyst ratings, the average rating for {$stockTicker}
           stock is "{consensusRating}." The 12-month stock price forecast is ${priceTarget},
           which is {changesPercentage > 0 ? "an increase" : "a decrease"} of {changesPercentage}%
@@ -295,13 +299,13 @@
         </p>
 
         <div
-          class="mt-3 border border-gray-700 rounded"
+          class="mt-3 border border-gray-300 dark:border-gray-700 rounded"
           use:highcharts={configAnalyst}
         ></div>
 
         <a
           href={`/stocks/${$stockTicker}/forecast/analyst`}
-          class="rounded cursor-pointer w-full m-auto py-2 h-full mt-6 text-[1rem] font-semibold text-center text-black sm:hover:hover:bg-gray-300 bg-[#ffff] transition duration-100"
+          class="rounded cursor-pointer w-full m-auto py-2 h-full mt-6 text-[1rem] text-center font-semibold text-white dark:text-black sm:hover:text-muted dark:sm:hover:bg-gray-300 bg-[#3C74D4] dark:bg-[#ffff] transition duration-100"
         >
           Stock Forecasts
         </a>

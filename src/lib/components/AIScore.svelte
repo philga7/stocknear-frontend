@@ -13,16 +13,14 @@
   }
 </script>
 
-<section class="overflow-hidden text-white">
+<section class="overflow-hidden text-muted dark:text-white">
   <main class="overflow-hidden">
     <div class="w-full">
       <div
-        class="flex flex-col items-center w-auto p-4 sm:p-4 bg-default sm:bg-default rounded-md relative"
+        class="flex flex-col items-center w-auto p-4 sm:p-4 rounded-md relative"
       >
         <div class="relative">
-          <h3 class="text-center text-white text-sm sm:text-[1rem] mb-2">
-            AI Score
-          </h3>
+          <h3 class="text-center text-sm sm:text-[1rem] mb-2">AI Score</h3>
         </div>
 
         <div class="flex flex-row items-center justify-between">
@@ -77,7 +75,7 @@
               class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
             >
               {#if ["Pro", "Plus"]?.includes(tier)}
-                <span class="text-center text-white text-xl font-semibold">
+                <span class="text-center text-xl font-semibold">
                   {score}
                 </span>
               {:else}
@@ -107,7 +105,7 @@
             </div>
           </div>
         </div>
-        <h4 class="text-center text-white text-sm mt-1 font-semibold">
+        <h4 class="text-center text-sm mt-1 font-semibold">
           {#if ["Pro", "Plus"]?.includes(tier)}
             {#if score === 10}
               Strong Buy
