@@ -13,7 +13,6 @@
 
   import { goto } from "$app/navigation";
   import { screenWidth, newPriceAlertData } from "$lib/store";
-  import ArrowLogo from "lucide-svelte/icons/move-up-right";
   import HoverStockChart from "$lib/components/HoverStockChart.svelte";
   import { Combobox } from "bits-ui";
   import PriceAlert from "$lib/components/PriceAlert.svelte";
@@ -84,7 +83,7 @@
 
   async function handleDeleteTickers() {
     if (numberOfChecked === 0) {
-      toast.error(`You need to select symbols before you can delete them`, {
+      toast?.error(`You need to select symbols before you can delete them`, {
         style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
     } else {
@@ -116,7 +115,7 @@
         groupedEarnings = [...groupEarnings(earnings)];
       } else {
         groupedEarnings = [];
-        groupedEarnings = [];
+        groupedNews = [];
       }
 
       const postData = {
@@ -271,12 +270,12 @@
 />
 
 <section
-  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pb-20 pt-5 px-3"
+  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pb-20 pt-5 px-3 text-muted dark:text-white"
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
-      <li><a href="/" class="text-gray-300">Home</a></li>
-      <li class="text-gray-300">Price Alert</li>
+      <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
+      <li class="text-muted dark:text-gray-300">Price Alert</li>
     </ul>
   </div>
 
@@ -287,9 +286,7 @@
       >
         <main class="w-full">
           <div class="mb-6 border-b-[2px]">
-            <h1 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
-              Price Alerts
-            </h1>
+            <h1 class="mb-1 text-2xl sm:text-3xl font-bold">Price Alerts</h1>
           </div>
 
           {#if data?.user}
@@ -301,46 +298,44 @@
                   {#if editMode}
                     <label
                       on:click={handleDeleteTickers}
-                      class="border text-sm border-gray-600 mr-2 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2.5 pl-3 pr-4 font-semibold text-white bg-default sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
+                      class="shadow-sm border text-sm border-gray-300 dark:border-gray-600 mr-2 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2.5 pl-3 pr-4 font-semibold sm:hover:bg-gray-100 dark:sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
                     >
                       <svg
                         class="inline-block w-5 h-5"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
                         ><path
-                          fill="white"
+                          fill="currentColor"
                           d="M10 5h4a2 2 0 1 0-4 0M8.5 5a3.5 3.5 0 1 1 7 0h5.75a.75.75 0 0 1 0 1.5h-1.32l-1.17 12.111A3.75 3.75 0 0 1 15.026 22H8.974a3.75 3.75 0 0 1-3.733-3.389L4.07 6.5H2.75a.75.75 0 0 1 0-1.5zm2 4.75a.75.75 0 0 0-1.5 0v7.5a.75.75 0 0 0 1.5 0zM14.25 9a.75.75 0 0 1 .75.75v7.5a.75.75 0 0 1-1.5 0v-7.5a.75.75 0 0 1 .75-.75m-7.516 9.467a2.25 2.25 0 0 0 2.24 2.033h6.052a2.25 2.25 0 0 0 2.24-2.033L18.424 6.5H5.576z"
                         /></svg
                       >
-                      <span class="ml-1 text-white text-sm">
+                      <span class="ml-1 text-sm">
                         {numberOfChecked}
                       </span>
                     </label>
                   {/if}
                   <label
                     on:click={handleEditMode}
-                    class="border text-sm border-gray-600 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2 px-3 text-white bg-default sm:hover:bg-primary ease-out sm:hover:text-red-500"
+                    class="shadow-sm border text-sm border-gray-300 dark:border-gray-600 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2 px-3 sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out sm:hover:text-red-500"
                   >
                     <svg
                       class="inline-block w-5 h-5"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 1024 1024"
                       ><path
-                        fill="white"
+                        fill="currentColor"
                         d="M832 512a32 32 0 1 1 64 0v352a32 32 0 0 1-32 32H160a32 32 0 0 1-32-32V160a32 32 0 0 1 32-32h352a32 32 0 0 1 0 64H192v640h640z"
                       /><path
-                        fill="white"
+                        fill="currentColor"
                         d="m469.952 554.24l52.8-7.552L847.104 222.4a32 32 0 1 0-45.248-45.248L477.44 501.44l-7.552 52.8zm422.4-422.4a96 96 0 0 1 0 135.808l-331.84 331.84a32 32 0 0 1-18.112 9.088L436.8 623.68a32 32 0 0 1-36.224-36.224l15.104-105.6a32 32 0 0 1 9.024-18.112l331.904-331.84a96 96 0 0 1 135.744 0z"
                       /></svg
                     >
                     {#if !editMode}
-                      <span class="ml-1 text-white text-sm sm:text-[1rem]">
+                      <span class="ml-1 text-sm sm:text-[1rem]">
                         Edit Alert
                       </span>
                     {:else}
-                      <span class="ml-1 text-white text-sm sm:text-[1rem]">
-                        Cancel
-                      </span>
+                      <span class="ml-1 text-sm sm:text-[1rem]"> Cancel </span>
                     {/if}
                   </label>
                 </div>
@@ -373,35 +368,37 @@
                     </div>
                     <Combobox.Input
                       on:input={search}
-                      class="text-sm sm:text-[1rem] controls-input text-white bg-default focus:outline-hidden border border-gray-600 rounded-md placeholder:text-white/80 px-3 py-2 pl-8 xs:pl-10 grow w-full sm:min-w-56 max-w-xs"
+                      class="shadow-sm text-sm sm:text-[1rem] controls-input focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded-md placeholder:text-muted/80 dark:placeholder:text-white/80 px-3 py-2 pl-8 xs:pl-10 grow w-full sm:min-w-56 max-w-xs"
                       placeholder="Add new stock"
                       aria-label="Add new stock"
                     />
                   </div>
                   {#if inputValue?.length !== 0}
                     <Combobox.Content
-                      class="w-auto z-10 rounded-md border border-gray-700 bg-default px-1 py-3 shadow-popover outline-hidden"
+                      class="w-auto z-10 rounded-md bg-white dark:bg-default border border-gray-300 dark:border-gray-700  px-1 py-3 shadow-sm outline-hidden"
                       sideOffset={8}
                     >
                       {#each searchBarData as item}
                         <Combobox.Item
-                          class="cursor-pointer text-white border-b border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-5 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-primary"
+                          class="cursor-pointer border-b border-gray-300 dark:border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-5 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-100 dark:data-highlighted:bg-primary"
                           value={item.symbol}
                           label={item.name}
                           on:click={(e) =>
                             handleAddAlert(e, item?.symbol, item?.type)}
                         >
                           <div class="flex flex-col items-start">
-                            <span class="text-sm text-blue-400"
+                            <span
+                              class="text-sm text-blue-500 dark:text-blue-400"
                               >{item?.symbol}</span
                             >
-                            <span class="text-xs sm:text-sm text-white"
+                            <span
+                              class="text-xs sm:text-sm text-muted dark:text-white"
                               >{item?.name}</span
                             >
                           </div>
                         </Combobox.Item>
                       {:else}
-                        <span class="block px-5 py-2 text-sm text-white">
+                        <span class="block px-5 py-2 text-sm">
                           No results found
                         </span>
                       {/each}
@@ -416,36 +413,28 @@
                 class="w-full rounded-md overflow-hidden overflow-x-auto no-scrollbar"
               >
                 <table
-                  class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto mt-4"
+                  class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
                 >
                   <!-- head -->
-                  <thead class="bg-default">
+                  <thead class="text-muted dark:text-white">
                     <tr class="">
-                      <th class="text-white font-semibold text-sm">Symbol</th>
-                      <th class="text-white font-semibold text-sm">Company</th>
+                      <th class=" font-semibold text-sm">Symbol</th>
+                      <th class=" font-semibold text-sm">Company</th>
 
-                      <th class="text-white font-semibold text-end text-sm"
+                      <th class=" font-semibold text-end text-sm"
                         >Price Target</th
                       >
-                      <th class="text-white font-semibold text-end text-sm"
-                        >Condition</th
-                      >
-                      <th class="text-white font-semibold text-end text-sm">
-                        Price</th
-                      >
-                      <th class="text-white font-semibold text-end text-sm"
-                        >% Change</th
-                      >
-                      <th class="text-white font-semibold text-end text-sm"
-                        >Volume</th
-                      >
+                      <th class=" font-semibold text-end text-sm">Condition</th>
+                      <th class=" font-semibold text-end text-sm"> Price</th>
+                      <th class=" font-semibold text-end text-sm">% Change</th>
+                      <th class=" font-semibold text-end text-sm">Volume</th>
                     </tr>
                   </thead>
                   <tbody class="p-3">
                     {#each priceAlertList as item}
                       <!-- row -->
                       <tr
-                        class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800"
+                        class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                       >
                         <td
                           on:click={() => handleFilter(item?.id)}
@@ -457,11 +446,11 @@
                               false}
                             class="{!editMode
                               ? 'hidden'
-                              : ''} bg-[#2E3238] h-[18px] w-[18px] rounded-sm ring-offset-0 mr-3 cursor-pointer"
+                              : ''} dark:bg-[#2E3238] h-[18px] w-[18px] rounded-sm ring-offset-0 mr-3 cursor-pointer"
                           />
                           {#if editMode}
                             <label
-                              class="text-blue-400 sm:hover:text-white cursor-pointer"
+                              class="sm:hover:text-muted text-blue-500 dark:text-blue-400 dark:sm:hover:text-white cursor-pointer"
                             >
                               {item?.symbol}
                             </label>
@@ -473,47 +462,45 @@
                           {/if}
                         </td>
 
-                        <td
-                          class="text-white text-sm sm:text-[1rem] whitespace-nowrap"
-                        >
+                        <td class=" text-sm sm:text-[1rem] whitespace-nowrap">
                           {item?.name?.length > charNumber
                             ? item?.name?.slice(0, charNumber) + "..."
                             : item?.name}
                         </td>
 
                         <td
-                          class="text-white text-sm sm:text-[1rem] whitespace-nowrap text-end"
+                          class=" text-sm sm:text-[1rem] whitespace-nowrap text-end"
                         >
                           {item?.targetPrice}
                         </td>
 
                         <td
-                          class="text-white text-sm sm:text-[1rem] whitespace-nowrap text-end"
+                          class=" text-sm sm:text-[1rem] whitespace-nowrap text-end"
                         >
                           {item?.condition}
                         </td>
 
                         <td
-                          class="text-white text-sm sm:text-[1rem] whitespace-nowrap text-end"
+                          class=" text-sm sm:text-[1rem] whitespace-nowrap text-end"
                         >
-                          {item.price?.toFixed(2)}
+                          {item?.price?.toFixed(2)}
                         </td>
 
                         <td
-                          class="text-white text-sm sm:text-[1rem] whitespace-nowrap text-end"
+                          class=" text-sm sm:text-[1rem] whitespace-nowrap text-end"
                         >
                           {#if item?.changesPercentage >= 0}
-                            <span class="text-[#00FC50]"
+                            <span class="text-green-600 dark:text-[#00FC50]"
                               >+{item?.changesPercentage?.toFixed(2)}%</span
                             >
                           {:else}
-                            <span class="text-[#FF2F1F]"
+                            <span class="text-red-600 dark:text-[#FF2F1F]"
                               >{item?.changesPercentage?.toFixed(2)}%
                             </span>
                           {/if}
                         </td>
                         <td
-                          class="text-white text-sm sm:text-[1rem] whitespace-nowrap text-end"
+                          class=" text-sm sm:text-[1rem] whitespace-nowrap text-end"
                         >
                           {abbreviateNumber(item?.volume)}
                         </td>
@@ -524,15 +511,15 @@
               </div>
 
               <div
-                class="w-full m-auto border-b border-gray-600 mt-10 mb-5"
+                class="w-full m-auto border-b border-gray-300 dark:border-gray-600 mt-10 mb-5"
               ></div>
 
-              <div class=" text-white">
+              <div class=" ">
                 <div
                   class="inline-flex justify-center w-full rounded-md sm:w-auto mb-3"
                 >
                   <div
-                    class="bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1 mt-4"
+                    class="bg-gray-200 dark:bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1 mt-4"
                   >
                     {#each tabs as item, i}
                       {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}
@@ -572,7 +559,7 @@
                             class="relative text-sm sm:text-[1rem] block font-semibold {activeIdx ===
                             i
                               ? 'text-black'
-                              : 'text-white'}"
+                              : ''}"
                           >
                             {item.title}
                           </span>
@@ -584,14 +571,16 @@
                 {#if activeIdx === 0}
                   {#if groupedNews?.length > 0}
                     {#each displayList as [date, titleGroups]}
-                      <h3 class="mb-1.5 mt-3 font-semibold text-faded">
+                      <h3 class="mb-1.5 mt-3 font-semibold">
                         {date}
                       </h3>
-                      <div class="border border-gray-700">
+                      <div class="border border-gray-300 dark:border-gray-700">
                         {#each titleGroups as { title, items, symbols }}
-                          <div class="flex border-gray-600 text-small">
+                          <div
+                            class="flex border-gray-300 dark:border-gray-600 text-small"
+                          >
                             <div
-                              class="hidden min-w-[100px] items-center justify-center bg-primary p-1 lg:flex"
+                              class="hidden min-w-[100px] items-center justify-center bg-gray-100 dark:bg-primary p-1 lg:flex"
                             >
                               {new Date(
                                 items[0].publishedDate,
@@ -602,13 +591,13 @@
                               })}
                             </div>
                             <div
-                              class="grow px-3 py-2 lg:py-1 border-t border-gray-700"
+                              class="grow px-3 py-2 lg:py-1 border-t border-gray-300 dark:border-gray-700"
                             >
                               <a
                                 href={items[0].url}
                                 target="_blank"
                                 rel="nofollow noopener noreferrer"
-                                class="text-white sm:hover:text-blue-400"
+                                class=" sm:hover:text-blue-400"
                               >
                                 <h4
                                   class="text-sm font-semibold lg:text-[1rem]"
@@ -619,7 +608,7 @@
                               <div
                                 class="flex flex-wrap gap-x-2 pt-2 text-sm lg:pt-0.5"
                               >
-                                <div class="text-white lg:hidden">
+                                <div class=" lg:hidden">
                                   {new Date(
                                     items[0].publishedDate,
                                   ).toLocaleTimeString("en-US", {
@@ -628,7 +617,7 @@
                                     hour12: true,
                                   })}
                                 </div>
-                                <div class="text-white">
+                                <div class="">
                                   {items[0].site}
                                 </div>
                                 &#183;
@@ -636,7 +625,7 @@
                                   {#each symbols as symbol}
                                     <a
                                       href={`/${items[0].type}/${symbol}`}
-                                      class="sm:hover:text-white text-blue-400"
+                                      class="sm:hover: text-blue-400"
                                     >
                                       {symbol}
                                     </a>
@@ -659,16 +648,18 @@
                     <h3 class="mb-1.5 mt-3 font-semibold text-faded">
                       {date}
                     </h3>
-                    <div class="border border-gray-700">
+                    <div class="border border-gray-300 dark:border-gray-700">
                       {#each titleGroups as item}
-                        <div class="flex border-gray-600 text-small">
+                        <div
+                          class="flex border-gray-300 dark:border-gray-600 text-small"
+                        >
                           <div
-                            class="hidden min-w-[100px] items-center justify-center bg-primary p-1 lg:flex"
+                            class="hidden min-w-[100px] items-center justify-center bg-gray-100 dark:bg-primary p-1 lg:flex"
                           >
                             {formatTime(item?.time)}
                           </div>
                           <div
-                            class="grow px-3 py-2 lg:py-1 border-t border-gray-700"
+                            class="grow px-3 py-2 lg:py-1 border-t border-gray-300 dark:border-gray-700"
                           >
                             <div>
                               <strong>{item?.name}</strong>
@@ -713,7 +704,7 @@
                             <div
                               class="flex flex-wrap gap-x-2 pt-2 text-sm lg:pt-0.5"
                             >
-                              <div class="text-white lg:hidden">
+                              <div class=" lg:hidden">
                                 {formatTime(item?.time)}
                               </div>
                             </div>
@@ -733,13 +724,11 @@
           {/if}
           {#if priceAlertList?.length === 0}
             <div class="flex flex-col justify-center items-center m-auto mt-14">
-              <span class="text-white font-bold text-white text-xl sm:text-3xl">
+              <span class=" font-bold text-xl sm:text-3xl">
                 No Alerts set
               </span>
 
-              <span
-                class="text-white text-sm sm:text-[1rem] m-auto p-4 text-center"
-              >
+              <span class=" text-sm sm:text-[1rem] m-auto p-4 text-center">
                 Create price alerts for your stocks that have the most potential
                 in your opinion.
               </span>
