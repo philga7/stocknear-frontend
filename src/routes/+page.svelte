@@ -74,11 +74,11 @@
     <div class="flex justify-center mb-5">
       <a
         href="/pricing"
-        class="cursor-pointer hidden sm:flex items-center gap-2 px-6 py-3.5 sm:px-3.5 sm:py-2.5 text-[1rem] font-medium text-indigo-300 bg-indigo-500/20 border border-indigo-500/30 rounded-lg transition-all duration-200 hover:bg-indigo-500/30"
+        class="cursor-pointer hidden sm:flex items-center gap-2 px-6 py-3.5 sm:px-3.5 sm:py-2.5 text-[1rem] font-medium dark:text-indigo-300 bg-blue-100 dark:bg-indigo-500/20 sm:hover:bg-indigo-500/30 border border-indigo-500/20 shadow dark:border-indigo-500/30 rounded-lg transition-all duration-100"
         tabindex="0"
       >
         <svg
-          class="w-5 h-5 text-zinc-300"
+          class="w-5 h-5 text-zinc-500 dark:text-zinc-300"
           fill="currentColor"
           viewBox="0 0 20 20"
           aria-hidden="true"

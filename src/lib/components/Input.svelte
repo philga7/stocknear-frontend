@@ -37,13 +37,17 @@
   }
 </script>
 
-<div class="form-control w-full max-w-2xl mb-2 {hidden ? 'hidden' : ''}">
+<div
+  class="form-control w-full max-w-2xl mb-2 text-muted dark:text-white {hidden
+    ? 'hidden'
+    : ''}"
+>
   <label for={id} class="label pb-1">
-    <span class="text-white label-text">{label}</span>
+    <span class="text-muted dark:label-text">{label}</span>
   </label>
   <div class="relative">
     <input
-      class=" input input-lg input-bordered border border-gray-600 focus:outline-none w-full bg-secondary placeholder-gray-300 text-white whitespace-normal"
+      class="input input-lg input-bordered border border-gray-600 focus:outline-none w-full bg-white dark:bg-secondary placeholder-gray-600 dark:placeholder-gray-300 whitespace-normal"
       {type}
       {placeholder}
       {required}

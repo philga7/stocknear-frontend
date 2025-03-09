@@ -901,7 +901,7 @@
             {:else}
               <a
                 href="/login"
-                class="inline-flex items-center justify-center rounded bg-[#fff] px-4 py-2 text-sm font-semibold text-black shadow-xs transition-all duration-150 sm:hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
+                class="inline-flex items-center justify-center rounded bg-[#3B82F6] dark:bg-[#fff] px-4 py-2 text-sm font-semibold  shadow-xs transition-all duration-150 sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
               >
                 Login
               </a>

@@ -26,7 +26,7 @@
           {
             toast.success("Login successfully!", {
               style:
-                "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px;",
+                "border-radius: 5px; background: #fff; color: #000; border-color: #4B5563; font-size: 15px; ",
             });
             await update();
             break;
@@ -82,20 +82,18 @@
 />
 
 <div
-  class="relative w-full max-w-3xl mx-auto min-h-screen pb-40 sm:mt-10 {oauthLoading
+  class="text-muted dark:text-white relative w-full max-w-3xl mx-auto min-h-screen pb-40 sm:mt-10 {oauthLoading
     ? 'opacity-[0.2]'
     : ''}"
 >
   <div class="grid grid-cols-1 gap-4">
     <div class="relative">
-      <h1
-        class="text-center text-white text-2xl sm:text-3xl pt-10 sm:pt-0 font-bold"
-      >
+      <h1 class="text-center text-2xl sm:text-3xl pt-10 sm:pt-0 font-bold">
         Sign In
       </h1>
     </div>
 
-    <span class="text-gray-400 text-center"> Welcome back! </span>
+    <span class="dark:text-gray-400 text-center"> Welcome back! </span>
 
     <div class="relative w-full max-w-lg m-auto">
       <form
@@ -120,7 +118,7 @@
         <div class="w-full max-w-lg">
           <a
             href="/reset-password"
-            class="text-sm text-blue-400 sm:hover:text-white sm:hover:underline"
+            class="text-sm text-blue-500 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline"
             >Forgot Password?</a
           >
         </div>
@@ -129,13 +127,13 @@
           {#if !loading && !isClicked}
             <button
               type="submit"
-              class="cursor-pointer py-2.5 bg-[#fff] border-none sm:hover:bg-gray-300 transition duration-100 btn-md w-full rounded-md m-auto text-black font-semibold text-[1rem]"
+              class="cursor-pointer py-2.5 bg-[#3B82F6] dark:bg-[#fff] border-none sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 transition duration-100 btn-md w-full rounded-md m-auto text-white dark:text-black font-semibold text-[1rem]"
             >
               <span>Login</span>
             </button>
           {:else}
             <label
-              class="cursor-not-allowed btn bg-[#fff] opacity-[0.5] border border-gray-600 sm:hover:bg-gray-300 transition duration-100 btn-md w-full rounded-md m-auto text-black font-semibold text-[1rem]"
+              class="cursor-not-allowed btn bg-[#3B82F6] dark:bg-[#fff] opacity-[0.5] border border-gray-600 sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 transition duration-100 btn-md w-full rounded-md m-auto text-white dark:text-black font-semibold text-[1rem]"
             >
               <div class="flex flex-row m-auto items-center">
                 <span class="loading loading-infinity"></span>
@@ -145,8 +143,8 @@
           {/if}
         </div>
 
-        <div class="divider divider-[#fff] pt-5 pb-10">
-          <span class="text-white text-[1rem] z-10">Or login using</span>
+        <div class="divider dark:divider-[#fff] pt-5 pb-10">
+          <span class=" text-[1rem] z-10">Or login using</span>
         </div>
 
         <div class="flex flex-row items-center gap-x-5 pb-6">
@@ -157,7 +155,7 @@
               on:click={() => (oauthLoading = !oauthLoading)}
               on:mouseenter={handleHoverGoogle}
               on:mouseleave={handleHoverGoogle}
-              class="cursor-pointer shrink-0 rounded-full w-12 h-12 relative bg-default flex items-center justify-center border border-gray-600 sm:hover:bg-secondary text-white"
+              class="cursor-pointer shrink-0 rounded-full w-12 h-12 relative bg-default flex items-center justify-center border border-gray-600 sm:hover:bg-secondary"
             >
               <svg
                 class="{isHoveredGoogle
@@ -207,7 +205,7 @@
               on:click={() => (oauthLoading = !oauthLoading)}
               on:mouseenter={handleHoverDiscord}
               on:mouseleave={handleHoverDiscord}
-              class="cursor-pointer shrink-0 rounded-full w-12 h-12 relative bg-default flex items-center justify-center border border-gray-600 sm:hover:bg-secondary text-white"
+              class="cursor-pointer shrink-0 rounded-full w-12 h-12 relative bg-default flex items-center justify-center border border-gray-600 sm:hover:bg-secondary"
             >
               <svg
                 class="{isHoveredDiscord
@@ -742,7 +740,7 @@
               on:click={() => (oauthLoading = !oauthLoading)}
               on:mouseenter={handleHoverGithub}
               on:mouseleave={handleHoverGithub}
-              class="cursor-pointer shrink-0 rounded-full w-12 h-12 relative bg-default flex items-center justify-center border border-gray-600 sm:hover:bg-secondary text-white"
+              class="cursor-pointer shrink-0 rounded-full w-12 h-12 relative bg-default flex items-center justify-center border border-gray-600 sm:hover:bg-secondary"
             >
               <svg
                 class="{isHoveredGithub
@@ -760,10 +758,12 @@
         </div>
 
         <p
-          class="pb-1 text-sm w-full max-w-lg text-white flex justify-center items-center"
+          class="pb-1 text-sm w-full max-w-lg flex justify-center items-center"
         >
           You don't have an account?
-          <a href="/register" class="text-blue-400 hover:underline ml-1"
+          <a
+            href="/register"
+            class="text-blue-500 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400 sm:hover:underline ml-1"
             >Sign up</a
           >
         </p>
