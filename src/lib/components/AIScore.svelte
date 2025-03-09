@@ -1,8 +1,8 @@
 <script lang="ts">
   import { scoreComponent, stockTicker } from "$lib/store";
 
-  export let score;
-  export let tier;
+  export let score = 0;
+  export let tier = "Free";
 
   // Use the correct reactive declaration
   $: {
@@ -20,7 +20,11 @@
         class="flex flex-col items-center w-auto p-4 sm:p-4 rounded-md relative"
       >
         <div class="relative">
-          <h3 class="text-center text-sm sm:text-[1rem] mb-2">AI Score</h3>
+          <h3
+            class="font-semibold dark:font-normal text-center text-sm sm:text-[1rem] mb-2"
+          >
+            AI Score
+          </h3>
         </div>
 
         <div class="flex flex-row items-center justify-between">
@@ -36,7 +40,7 @@
                 cy="18"
                 r="16"
                 fill="none"
-                class="stroke-current text-[#303030]"
+                class="stroke-current text-gray-300 dark:text-[#303030]"
                 stroke-width="2"
               ></circle>
               <!-- score Circle inside a group with rotation -->
@@ -48,10 +52,10 @@
                   r="16"
                   fill="none"
                   class="stroke-current {score >= 7
-                    ? 'text-[#00FC50]'
+                    ? 'text-green-600 dark:text-[#00FC50]'
                     : score >= 4
-                      ? 'text-[#fff]'
-                      : 'text-[#FF2F1F]'}"
+                      ? 'text-blue-900 dark:text-[#fff]'
+                      : 'text-red-600 dark:text-[#FF2F1F]'}"
                   stroke-width="3"
                   stroke-dasharray="100.48"
                   stroke-dashoffset={100.48 -
@@ -61,13 +65,6 @@
                 </circle>
               </g>
               <!-- Text in the middle -->
-              <text
-                x="18"
-                y="21"
-                text-anchor="middle"
-                font-size="10"
-                fill="#000">{["Pro", "Plus"]?.includes(tier) ? score : 0}</text
-              >
             </svg>
 
             <!-- Percentage Text -->
@@ -87,7 +84,7 @@
                   </span>
                   <div class="absolute top-0.5 flex items-center">
                     <svg
-                      class="size-5 text-[#fff]"
+                      class="size-5 text-muted dark:text-[#fff]"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                       style="max-width: 40px;"

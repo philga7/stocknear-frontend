@@ -44,22 +44,20 @@
   }
 </script>
 
-<div class="space-y-3 overflow-hidden">
+<div class="space-y-3 overflow-hidden text-muted dark:text-white">
   <!--Start Content-->
   <div class="w-auto lg:w-full p-1 flex flex-col m-auto">
     <div class="flex flex-col items-center w-full mb-3">
       <div class="flex flex-row justify-start mr-auto items-center">
         <!--<img class="h-10 inline-block mr-2" src={copilotIcon} />-->
         <div class="flex flex-row items-center">
-          <h3
-            class="mr-1 flex flex-row items-center text-white text-2xl font-bold"
-          >
+          <h3 class="mr-1 flex flex-row items-center text-2xl font-bold">
             Earnings Surprise
           </h3>
           <label
             class="{latestInfoDate(rawData?.date)
-              ? ''
-              : 'hidden'} text-black bg-[#fff] ml-2 font-semibold not-italic text-xs rounded px-2 py-0.5"
+              ? 'border border-gray-300'
+              : 'hidden'} shadow bg-blue-100 dark:text-black dark:bg-[#fff] ml-2 font-semibold not-italic text-xs rounded px-2 py-0.5"
             >New</label
           >
         </div>
@@ -67,9 +65,9 @@
     </div>
 
     <div
-      class="text-white text-[1rem] {latestInfoDate(rawData?.date)
-        ? 'bg-[#F9AB00]/10 p-3 rounded-md'
-        : 'bg-default pl-1'} "
+      class="text-[1rem] {latestInfoDate(rawData?.date)
+        ? 'bg-blue-100 p-3 rounded-md shadow'
+        : ' pl-1'} "
     >
       <div class="mt-1">
         {removeCompanyStrings($displayCompanyName)} has released their quartely earnings
@@ -83,7 +81,7 @@
 
       <li
         class="ml-[20px] sm:ml-[30px]"
-        style="color: #fff; line-height: 22px; margin-top:10px; margin-bottom: 10px; list-style-type: disc;"
+        style="line-height: 22px; margin-top:10px; margin-bottom: 10px; list-style-type: disc;"
       >
         Revenue of <span class=""
           >{abbreviateNumber(rawData?.revenue, true)}</span
@@ -94,14 +92,14 @@
         )}, with
         <span
           class=" {revenueRatio > 0
-            ? "before:content-['+'] text-[#00FC50]"
-            : 'text-[#FF2F1F]'}">{revenueRatio}%</span
+            ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
+            : 'text-red-600 dark:text-[#FF2F1F]'}">{revenueRatio}%</span
         >
         YoY {revenueRatio < 0 ? "decline" : "growth"}.
       </li>
       <li
         class="ml-[20px] sm:ml-[30px]"
-        style="color: #fff; line-height: 22px; margin-top: 0px; margin-bottom: 0px; list-style-type: disc;"
+        style="line-height: 22px; margin-top: 0px; margin-bottom: 0px; list-style-type: disc;"
       >
         EPS of <span class="">{rawData?.eps}</span>
         {rawData?.epsSurprise > 0 ? "exceeds" : "misses"} estimates by {rawData?.epsSurprise?.toFixed(
@@ -109,10 +107,10 @@
         )}, with
         <span
           class=" {epsRatio === null
-            ? 'text-white'
+            ? ''
             : epsRatio > 0
-              ? 'text-[#00FC50]'
-              : 'text-[#FF2F1F]'}"
+              ? 'text-green-600 dark:text-[#00FC50]'
+              : 'text-red-600 dark:text-[#FF2F1F]'}"
         >
           {epsRatio === null ? "n/a" : `${epsRatio}%`}
         </span>

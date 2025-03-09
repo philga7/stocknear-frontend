@@ -88,7 +88,7 @@
 </svelte:head>
 
 <section
-  class="bg-default min-h-screen mb-40 w-full max-w-3xl sm:max-w-5xl m-auto text-white"
+  class=" min-h-screen mb-40 w-full max-w-3xl sm:max-w-5xl m-auto text-muted dark:"
 >
   <div
     class="flex flex-col sm:flex-row w-full mx-auto justify-center items-center sm:space-x-8 text-sm relative pt-5 pb-20"
@@ -106,7 +106,7 @@
         ><path
           d="M96 224c35.3 0 64-28.7 64-64s-28.7-64-64-64-64 28.7-64 64 28.7 64 64 64zm448 0c35.3 0 64-28.7 64-64s-28.7-64-64-64-64 28.7-64 64 28.7 64 64 64zm32 32h-64c-17.6 0-33.5 7.1-45.1 18.6 40.3 22.1 68.9 62 75.1 109.4h66c17.7 0 32-14.3 32-32v-32c0-35.3-28.7-64-64-64zm-256 0c61.9 0 112-50.1 112-112S381.9 32 320 32 208 82.1 208 144s50.1 112 112 112zm76.8 32h-8.3c-20.8 10-43.9 16-68.5 16s-47.6-6-68.5-16h-8.3C179.6 288 128 339.6 128 403.2V432c0 26.5 21.5 48 48 48h288c26.5 0 48-21.5 48-48v-28.8c0-63.6-51.6-115.2-115.2-115.2zm-223.7-13.4C161.5 263.1 145.6 256 128 256H64c-35.3 0-64 28.7-64 64v32c0 17.7 14.3 32 32 32h65.9c6.3-47.4 34.9-87.3 75.2-109.4z"
         ></path></svg
-      ><span class="font-medium text-zinc-300"
+      ><span class="font-medium text-muted dark:text-zinc-300"
         >Trusted by <span>4,000</span>+ Traders</span
       >
     </div>
@@ -130,13 +130,14 @@
         ><path
           d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"
         ></path></svg
-      ><span class="ml-1 mr-2 font-bold text-zinc-300"><span>4.3</span>/5</span
-      ><span class="font-medium text-zinc-300"
+      ><span class="ml-1 mr-2 font-bold text-muted dark:text-zinc-300"
+        ><span>4.3</span>/5</span
+      ><span class="font-medium text-muted dark:text-zinc-300"
         >Rated "Excellent" on <a
           rel="noopener noreferrer"
           target="_blank"
           href="https://www.trustpilot.com/review/stocknear.com"
-          class="sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
+          class="sm:hover: sm:hover:underline sm:hover:underline-offset-4"
           >Trustpilot</a
         ></span
       >
@@ -145,9 +146,7 @@
 
   <div class="px-3">
     <div class="mx-auto text-center mb-8">
-      <h1
-        class="text-4xl sm:text-5xl font-bold text-white text-transparent pb-4"
-      >
+      <h1 class="text-4xl sm:text-5xl font-bold pb-4">
         Save Time & Maximize Profits
       </h1>
     </div>
@@ -155,7 +154,7 @@
     <!--<Discount/>-->
 
     <div class="flex flex-row items-center justify-end">
-      <span class="text-[1rem] font-semibold text-white mr-3"> Monthly </span>
+      <span class="text-[1rem] font-semibold mr-3"> Monthly </span>
 
       <label class="inline-flex cursor-pointer relative">
         <input
@@ -181,20 +180,22 @@
     >
       <div
         style="opacity: 1; transform: translateY(20px);"
-        class="flex flex-col relative bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-600 p-6 isolate"
+        class="flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
       >
-        <h3 class="text-3xl font-bold text-white">Basic</h3>
-        <p class="text-zinc-300 text-sm mt-1">Ideal for Beginners</p>
+        <h3 class="text-3xl font-bold">Basic</h3>
+        <p class="text-muted dark:text-zinc-300 text-sm mt-1">
+          Ideal for Beginners
+        </p>
         <div class="mt-4">
-          <span class="text-4xl font-bold text-white">$0</span><span
-            class="text-white text-xl ml-1">/Month</span
+          <span class="text-4xl font-bold">$0</span><span class=" text-xl ml-1"
+            >/Month</span
           >
         </div>
 
         <ul class="mt-6 mb-6 space-y-2">
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -205,11 +206,11 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="text-white">1 Watchlist</span>
+            ><span class="">1 Watchlist</span>
           </li>
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -220,11 +221,11 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="text-white">3 Price Alerts</span>
+            ><span class="">3 Price Alerts</span>
           </li>
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -235,12 +236,12 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="text-white">Realtime Notification</span>
+            ><span class="">Realtime Notification</span>
           </li>
 
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
               viewBox="0 0 64 64"
               version="1.1"
               fill="currentColor"
@@ -297,11 +298,13 @@
               </g></svg
             >
 
-            <span class="text-gray-400">Hedge Fund Portfolio Access</span>
+            <span class="text-muted dark:text-gray-400"
+              >Hedge Fund Portfolio Access</span
+            >
           </li>
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
               viewBox="0 0 64 64"
               version="1.1"
               fill="currentColor"
@@ -358,11 +361,13 @@
               </g></svg
             >
 
-            <span class="text-gray-400">US Congress Portfolio Access</span>
+            <span class="text-muted dark:text-gray-400"
+              >US Congress Portfolio Access</span
+            >
           </li>
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
               viewBox="0 0 64 64"
               version="1.1"
               fill="currentColor"
@@ -419,12 +424,14 @@
               </g></svg
             >
 
-            <span class="text-gray-400">Financial History Access</span>
+            <span class="text-muted dark:text-gray-400"
+              >Financial History Access</span
+            >
           </li>
 
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
               viewBox="0 0 64 64"
               version="1.1"
               fill="currentColor"
@@ -481,11 +488,11 @@
               </g></svg
             >
 
-            <span class="text-gray-400">Stock Screener</span>
+            <span class="text-muted dark:text-gray-400">Stock Screener</span>
           </li>
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
               viewBox="0 0 64 64"
               version="1.1"
               fill="currentColor"
@@ -542,11 +549,13 @@
               </g></svg
             >
 
-            <span class="text-gray-400">Realtime Options Activity</span>
+            <span class="text-muted dark:text-gray-400"
+              >Realtime Options Activity</span
+            >
           </li>
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
               viewBox="0 0 64 64"
               version="1.1"
               fill="currentColor"
@@ -603,14 +612,16 @@
               </g></svg
             >
 
-            <span class="text-gray-400">Realtime Dark Pool Trades</span>
+            <span class="text-muted dark:text-gray-400"
+              >Realtime Dark Pool Trades</span
+            >
           </li>
         </ul>
         <div class="mt-auto pt-6 border-t border-zinc-700 mx-4">
           {#if !data?.user}
             <label
               for="userLogin"
-              class="cursor-pointer w-full py-3 px-4 bg-blue-600 text-white rounded-lg font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
+              class="text-white cursor-pointer w-full py-3 px-4 bg-blue-600 rounded-lg font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
               >Get Registered Now<svg
                 class="w-5 h-5 ml-2"
                 fill="none"
@@ -630,23 +641,29 @@
       </div>
       <div
         style="opacity: 1; transform: translateY(20px);"
-        class="flex flex-col relative bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-600 p-6 isolate"
+        class="flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
       >
-        <h3 class="text-3xl font-bold text-white">Plus</h3>
-        <p class="text-zinc-300 text-sm mt-1">Best for Intermediate Traders</p>
+        <h3 class="text-3xl font-bold">Plus</h3>
+        <p class="text-muted dark:text-zinc-300 text-sm mt-1">
+          Best for Intermediate Traders
+        </p>
         <div class="mt-4">
-          <span class="text-4xl font-bold text-white"
-            >{mode ? "$7.50" : "$10"}</span
-          ><span class="text-white text-xl ml-1">/Month</span>
+          <span class="text-4xl font-bold">{mode ? "$7.50" : "$10"}</span><span
+            class=" text-xl ml-1">/Month</span
+          >
         </div>
-        <p class="text-gray-400 text-sm mt-1 mx-4 {!mode ? 'hidden' : ''}">
+        <p
+          class="text-muted dark:text-gray-400 text-sm mt-1 mx-4 {!mode
+            ? 'hidden'
+            : ''}"
+        >
           (Billed Annually)
         </p>
 
         <ul class="mt-6 mb-6 space-y-2">
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -657,11 +674,11 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="text-white">Unlimited Watchlist</span>
+            ><span class="">Unlimited Watchlist</span>
           </li>
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -672,44 +689,11 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="text-white">Unlimited Price Alerts</span>
+            ><span class="">Unlimited Price Alerts</span>
           </li>
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            >
-
-            <span class="text-white">Unlimited Stock Screener</span>
-          </li>
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="text-white">Realtime Notification</span>
-          </li>
-
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -722,11 +706,27 @@
               ></path></svg
             >
 
-            <span class="text-white">Hedge Fund Portfolio Access</span>
+            <span class="">Unlimited Stock Screener</span>
           </li>
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path></svg
+            ><span class="">Realtime Notification</span>
+          </li>
+
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -739,11 +739,11 @@
               ></path></svg
             >
 
-            <span class="text-white">US Congress Portfolio Access</span>
+            <span class="">Hedge Fund Portfolio Access</span>
           </li>
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -756,12 +756,29 @@
               ></path></svg
             >
 
-            <span class="text-white">Financial History Access</span>
+            <span class="">US Congress Portfolio Access</span>
+          </li>
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path></svg
+            >
+
+            <span class="">Financial History Access</span>
           </li>
 
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
               viewBox="0 0 64 64"
               version="1.1"
               fill="currentColor"
@@ -818,11 +835,13 @@
               </g></svg
             >
 
-            <span class="text-gray-400">Realtime Options Activity</span>
+            <span class="text-muted dark:text-gray-400"
+              >Realtime Options Activity</span
+            >
           </li>
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
               viewBox="0 0 64 64"
               version="1.1"
               fill="currentColor"
@@ -879,14 +898,16 @@
               </g></svg
             >
 
-            <span class="text-gray-400">Realtime Dark Pool Trades</span>
+            <span class="text-muted dark:text-gray-400"
+              >Realtime Dark Pool Trades</span
+            >
           </li>
         </ul>
         <div class="mt-auto pt-6 border-t border-zinc-700 mx-4">
           <label
             for={!data?.user ? "userLogin" : ""}
             on:click={() => purchasePlan("plus")}
-            class="cursor-pointer w-full py-3 px-4 bg-blue-600 text-white rounded-lg font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
+            class="text-white cursor-pointer w-full py-3 px-4 bg-blue-600 rounded-lg font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
             >Unlock Plus Access Now<svg
               class="w-5 h-5 ml-2"
               fill="none"
@@ -905,23 +926,29 @@
       </div>
       <div
         style="opacity: 1; transform: translateY(20px);"
-        class="flex flex-col relative bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-600 p-6 isolate"
+        class="flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
       >
-        <h3 class="text-3xl font-bold text-white">Pro</h3>
-        <p class="text-zinc-300 text-sm mt-1">Best for Professional Traders</p>
+        <h3 class="text-3xl font-bold">Pro</h3>
+        <p class="text-muted dark:text-zinc-300 text-sm mt-1">
+          Best for Professional Traders
+        </p>
         <div class="mt-4">
-          <span class="text-4xl font-bold text-white"
-            >{mode ? "$15" : "$20"}</span
-          ><span class="text-white text-xl ml-1">/Month</span>
+          <span class="text-4xl font-bold">{mode ? "$15" : "$20"}</span><span
+            class=" text-xl ml-1">/Month</span
+          >
         </div>
-        <p class="text-gray-400 text-sm mt-1 mx-4 {!mode ? 'hidden' : ''}">
+        <p
+          class="text-muted dark:text-gray-400 text-sm mt-1 mx-4 {!mode
+            ? 'hidden'
+            : ''}"
+        >
           (Billed Annually)
         </p>
 
         <ul class="mt-6 mb-6 space-y-2">
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -932,12 +959,12 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="text-white">Everything in Plus and ...</span>
+            ><span class="">Everything in Plus and ...</span>
           </li>
 
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -950,11 +977,11 @@
               ></path></svg
             >
 
-            <span class="text-white">Realtime Options Activity</span>
+            <span class="">Realtime Options Activity</span>
           </li>
           <li class="flex items-start">
             <svg
-              class="w-5 h-5 mr-2 text-white flex-shrink-0 mt-0.5"
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -967,14 +994,14 @@
               ></path></svg
             >
 
-            <span class="text-white">Realtime Dark Pool Trades</span>
+            <span class="">Realtime Dark Pool Trades</span>
           </li>
         </ul>
         <div class="mt-auto pt-6 border-t border-zinc-700 mx-4">
           <label
             for={!data?.user ? "userLogin" : ""}
             on:click={() => purchasePlan("pro")}
-            class="cursor-pointer w-full py-3 px-4 bg-blue-600 text-white rounded-lg font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
+            class="text-white cursor-pointer w-full py-3 px-4 bg-blue-600 rounded-lg font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
             >Unlock Pro Access Now<svg
               class="w-5 h-5 ml-2"
               fill="none"
@@ -993,17 +1020,17 @@
       </div>
 
       <div
-        class="text-left w-full col-span-1 lg:col-span-3 bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-600 p-6 isolate translate-y-5 opacity-100 transition-all duration-300"
+        class="text-left w-full col-span-1 lg:col-span-3 bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-200 dark:border-zinc-600 p-6 isolate translate-y-5 opacity-100 transition-all duration-300"
       >
         <!-- Responsive header: stacks vertically on mobile, horizontal on md+ -->
         <div class="flex flex-row items-center justify-between">
-          <h3 class="text-2xl md:text-3xl font-bold text-white">Lifetime</h3>
+          <h3 class="text-2xl md:text-3xl font-bold">Lifetime</h3>
           <div>
-            <span class="text-3xl md:text-4xl font-bold text-white">$599</span>
+            <span class="text-3xl md:text-4xl font-bold">$599</span>
           </div>
         </div>
         <!-- Responsive paragraph text -->
-        <p class="text-white md:text-lg mt-2">
+        <p class=" md:text-lg mt-2">
           Everything in Pro, pay once, never again!
         </p>
         <!-- Button container: full width on mobile, 1/4 width on md+ -->
@@ -1011,7 +1038,7 @@
           <label
             for={!data?.user ? "userLogin" : ""}
             on:click={() => purchasePlan("lifeTime")}
-            class="cursor-pointer w-full py-3 px-4 bg-blue-600 text-white rounded-lg font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
+            class="text-white cursor-pointer w-full py-3 px-4 bg-blue-600 rounded-lg font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
           >
             Get Lifetime Now
             <svg
@@ -1036,9 +1063,7 @@
     <!--Feature Table-->
     <section class="py-8 md:py-12 mt-8 md:mt-10">
       <div class="max-w-6xl mx-auto">
-        <h2
-          class="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-10 text-center"
-        >
+        <h2 class="text-3xl md:text-4xl font-bold mb-6 md:mb-10 text-center">
           Compare plans &amp; features
         </h2>
         <!-- Make sure the table can scroll horizontally on small screens -->
@@ -1052,29 +1077,27 @@
             </colgroup>
             <thead>
               <tr>
-                <th
-                  class="py-2 md:py-3 pt-8 font-semibold text-sm sm:text-lg text-white"
-                >
+                <th class="py-2 md:py-3 pt-8 font-semibold text-sm sm:text-lg">
                   Research company stocks
                 </th>
                 <th
-                  class="py-2 md:py-3 font-semibold text-white text-center text-sm sm:text-lg"
+                  class="py-2 md:py-3 font-semibold text-center text-sm sm:text-lg"
                 >
                   Free
                 </th>
                 <th
-                  class="py-2 md:py-3 font-semibold text-white text-center text-sm sm:text-lg"
+                  class="py-2 md:py-3 font-semibold text-center text-sm sm:text-lg"
                 >
                   Plus
                 </th>
                 <th
-                  class="py-2 md:py-3 font-semibold text-white text-center text-sm sm:text-lg"
+                  class="py-2 md:py-3 font-semibold text-center text-sm sm:text-lg"
                 >
                   Pro
                 </th>
               </tr>
             </thead>
-            <tbody class="text-sm md:text-white">
+            <tbody class="text-sm md:">
               <tr>
                 <td class="py-2 md:py-3">Full Market Access</td>
                 <td class="py-2 md:py-3 text-center">❌</td>
@@ -1102,7 +1125,7 @@
               <tr>
                 <td
                   colspan="4"
-                  class="py-2 md:py-3 pt-8 font-semibold text-sm sm:text-lg text-white"
+                  class="py-2 md:py-3 pt-8 font-semibold text-sm sm:text-lg"
                 >
                   Unusual Activity
                 </td>
@@ -1123,7 +1146,7 @@
               <tr>
                 <td
                   colspan="4"
-                  class="py-2 md:py-3 pt-8 font-semibold text-sm sm:text-lg text-white"
+                  class="py-2 md:py-3 pt-8 font-semibold text-sm sm:text-lg"
                 >
                   Trade Ideas
                 </td>
@@ -1162,14 +1185,12 @@
 
     <!--Start FAQ-->
 
-    <section class="bg-default">
+    <section class="">
       <div class="mx-auto">
         <div class="py-12 md:py-10">
           <!-- Section header -->
           <div class="max-w-3xl mx-auto text-center pb-12 md:pb-14">
-            <h2 class="text-4xl font-bold text-white">
-              Frequently Asked Questions
-            </h2>
+            <h2 class="text-4xl font-bold">Frequently Asked Questions</h2>
           </div>
 
           <!-- Faqs -->
@@ -1177,12 +1198,12 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-white text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
+                  class="collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
                   >What are the advantages of Stocknear Service?</summary
                 >
                 <div class="collapse-content">
                   <p
-                    class="text-sm sm:text-[1rem] pb-5 text-gray-200 overflow-hidden transition-all duration-300 ease-in-out"
+                    class="text-sm sm:text-[1rem] pb-5 dark:text-gray-200 overflow-hidden transition-all duration-300 ease-in-out"
                   >
                     Stocknear Service provides simplified, actionable trading
                     data and an extensive tool suite for every trader, featuring
@@ -1198,19 +1219,19 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-white text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
+                  class="collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
                 >
                   Can I change my plan at any time?
                 </summary>
                 <div class="collapse-content">
                   <p
-                    class="text-sm sm:text-[1rem] pb-5 text-gray-200 transition-all duration-300 ease-in-out"
+                    class="text-sm sm:text-[1rem] pb-5 dark:text-gray-200 transition-all duration-300 ease-in-out"
                   >
                     Yes! Simply reach out to us via email, and we’ll take care
                     of it for you.
                     <a
                       href={`mailto:${emailAddress}`}
-                      class="text-blue-400 underline"
+                      class="text-blue-500 dark:text-blue-400 underline"
                     >
                       {emailAddress}
                     </a>
@@ -1222,14 +1243,14 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-white text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
+                  class="collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
                 >
                   Are there any commissions in addition to the subscription
                   plans?
                 </summary>
                 <div class="collapse-content">
                   <p
-                    class="text-sm sm:text-[1rem] pb-5 text-gray-200 overflow-hidden transition-all duration-300 ease-in-out"
+                    class="text-sm sm:text-[1rem] pb-5 dark:text-gray-200 overflow-hidden transition-all duration-300 ease-in-out"
                   >
                     No, we do not charge any additional commissions or hidden
                     fees beyond our subscription plans.
@@ -1240,18 +1261,19 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-white text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
+                  class="collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
                 >
                   Can I request a refund?
                 </summary>
                 <div class="collapse-content">
                   <p
-                    class="text-sm sm:text-[1rem] pb-5 text-gray-200 overflow-hidden transition-all duration-300 ease-in-out"
+                    class="text-sm sm:text-[1rem] pb-5 dark:text-gray-200 overflow-hidden transition-all duration-300 ease-in-out"
                   >
                     We offer a 30 day money back guarantee, no questions asked.
                     Just send an email to <a
                       href={`mailto:${emailAddress}`}
-                      class="text-blue-400 underline">{emailAddress}</a
+                      class="text-blue-500 dark:text-blue-400 underline"
+                      >{emailAddress}</a
                     > and you will get a full refund.
                   </p>
                 </div>
@@ -1261,13 +1283,13 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-white text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
+                  class="collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
                 >
                   What are my payment options?
                 </summary>
                 <div class="collapse-content">
                   <p
-                    class="text-sm sm:text-[1rem] pb-5 text-gray-200 overflow-hidden transition-all duration-300 ease-in-out"
+                    class="text-sm sm:text-[1rem] pb-5 dark:text-gray-200 overflow-hidden transition-all duration-300 ease-in-out"
                   >
                     We support Credit Card & Paypal payments.
                   </p>
@@ -1278,13 +1300,13 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-white text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
+                  class="collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
                 >
                   Can I cancel at any time?
                 </summary>
                 <div class="collapse-content">
                   <p
-                    class="text-sm sm:text-[1rem] pb-5 text-gray-200 overflow-hidden transition-all duration-300 ease-in-out"
+                    class="text-sm sm:text-[1rem] pb-5 dark:text-gray-200 overflow-hidden transition-all duration-300 ease-in-out"
                   >
                     Of course. There is a "Cancel Subscription" button in your
                     account area that you get access to after signing up. You
@@ -1296,13 +1318,13 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-white text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
+                  class="collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
                 >
                   Why is Stocknear so much cheaper than other platforms?
                 </summary>
                 <div class="collapse-content">
                   <p
-                    class="text-sm sm:text-[1rem] pb-5 text-gray-200 overflow-hidden transition-all duration-300 ease-in-out"
+                    class="text-sm sm:text-[1rem] pb-5 dark:text-gray-200 overflow-hidden transition-all duration-300 ease-in-out"
                   >
                     Stocknear is a solo project, which means I handle everything
                     myself—eliminating the need for a large team and costly

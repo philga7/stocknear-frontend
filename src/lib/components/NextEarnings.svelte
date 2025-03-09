@@ -106,7 +106,7 @@
             <span
               class="{epsRatio > 0
                 ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                : 'text-[#FF2F1F]'} ">{epsRatio}%</span
+                : 'text-retext-[#FF2F1F]'} ">{epsRatio}%</span
             >
             {epsRatio > 0 ? "increase" : epsRatio < 0 ? "decrease" : ""} YoY.
           {:else}

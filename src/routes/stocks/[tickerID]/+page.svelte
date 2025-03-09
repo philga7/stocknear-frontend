@@ -1,5 +1,6 @@
 <script lang="ts">
   import highcharts from "$lib/highcharts.ts";
+  import { mode } from "mode-watcher";
 
   import {
     getCache,
@@ -85,13 +86,17 @@
         ? data?.getStockQuote?.changesPercentage < 0
         : change < 0;
 
-    const lineColor = isNegative ? "#CC261A" : "#00FC50";
+    const lineColor = isNegative
+      ? "#CC261A"
+      : $mode === "light"
+        ? "#047857"
+        : "#00FC50";
     const fillColorStart = isNegative
       ? "rgba(204, 38, 26, 0.3)"
-      : "rgba(0, 252, 80, 0.3)";
+      : "rgb(4, 120, 87, 0.3)"; //"rgba(0, 252, 80, 0.3)";
     const fillColorEnd = isNegative
       ? "rgba(204, 38, 26, 0.004)"
-      : "rgba(0, 252, 80, 0.004)";
+      : "rgb(4, 120, 87, 0.004)"; //"rgba(0, 252, 80, 0.004)";
 
     const baseDate =
       rawData && rawData?.length ? new Date(rawData?.at(0)?.time) : new Date();
@@ -114,8 +119,9 @@
 
     const options = {
       chart: {
-        backgroundColor: "#09090B",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
         height: 360,
+        animation: false,
         events: {
           // Add touch event handling to hide tooltip on mobile
           load: function () {
@@ -150,7 +156,7 @@
         borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
         borderWidth: 1,
         style: {
-          color: "#fff",
+          color: $mode === "light" ? "black" : "white",
           fontSize: "16px",
           padding: "10px",
         },
@@ -201,12 +207,12 @@
         tickLength: 0,
         categories: displayData === "1D" ? null : dateList,
         crosshair: {
-          color: "#fff",
+          color: $mode === "light" ? "black" : "white",
           width: 1,
           dashStyle: "Solid",
         },
         labels: {
-          style: { color: "#fff" },
+          style: { color: $mode === "light" ? "black" : "white" },
           distance: 20,
           formatter: function () {
             const date = new Date(this?.value);
@@ -251,10 +257,10 @@
         startOnTick: false,
         endOnTick: false,
         gridLineWidth: 1,
-        gridLineColor: "#111827",
+        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
         title: { text: null },
         labels: {
-          style: { color: "white" },
+          style: { color: $mode === "light" ? "black" : "white" },
         },
         opposite: true,
         // Add a dashed plot line at the previous close value
@@ -636,7 +642,7 @@
   }
 
   $: {
-    if ($stockTicker) {
+    if ($stockTicker || $mode) {
       // add a check to see if running on client-side
       shouldUpdatePriceChart.set(false);
       oneDayPrice = [];
@@ -690,7 +696,8 @@
                             <span
                               class="block {displayData === interval
                                 ? 'text-muted dark:text-white'
-                                : 'text-gray-400'}">{interval}</span
+                                : 'text-muted dark:text-gray-400'}"
+                              >{interval}</span
                             >
                             <div
                               class="{displayData === interval
@@ -731,7 +738,8 @@
                             <span
                               class="block {displayData === interval
                                 ? 'text-muted dark:text-white'
-                                : 'text-gray-400'}">{interval}</span
+                                : 'text-muted dark:text-gray-400'}"
+                              >{interval}</span
                             >
                             <div
                               class="{displayData === interval

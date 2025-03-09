@@ -42,12 +42,12 @@
   }
 </script>
 
-<section class="overflow-hidden text-white h-full mt-5">
+<section class="overflow-hidden text-muted dark:text-white h-full mt-5">
   <main class="overflow-hidden">
     <div class="flex flex-row items-center">
       <label
         for="whyPriceMovedInfo"
-        class="mr-1 cursor-pointer flex flex-row items-center text-white text-2xl font-bold"
+        class="mr-1 cursor-pointer flex flex-row items-center text-2xl font-bold"
       >
         <h2>Why Price Moved</h2>
       </label>
@@ -77,21 +77,21 @@
                       '-'
                         ? 'bg-white'
                         : item?.changesPercentage >= 0
-                          ? 'bg-[#00FC50]'
-                          : 'bg-[#FF2F1F]'}"
+                          ? 'bg-green-600 dark:bg-[#00FC50]'
+                          : 'bg-red-600 dark:bg-[#FF2F1F]'}"
                     ></div>
                     <!-- Item Content -->
 
                     <div class="w-full h-full">
                       <div class="flex flex-col items-start">
                         <div class="flex flex-row items-start w-full">
-                          <span class="text-white text-sm"
+                          <span class=" text-sm"
                             >{formatDate(item?.date)}
                             <!--
                             &#183;
                             <a
                               href={item?.url}
-                              class="inline-block text-sm text-white sm:hover:underline sm:hover:underline-offset-4"
+                              class="inline-block text-sm  sm:hover:underline sm:hover:underline-offset-4"
                             >
                               Source
                             </a>
@@ -99,15 +99,14 @@
                           </span>
                           {#if latestInfoDate(item?.date)}
                             <label
-                              class="bg-[#fff] rounded text-black font-semibold text-xs px-2 py-0.5 ml-3"
+                              class="shadow bg-blue-100 border border-gray-200 dark:border-0 dark:bg-[#fff] rounded text-black font-semibold text-xs px-2 py-0.5 ml-3"
                               >New</label
                             >
                           {/if}
-                          <div
-                            class="text-white text-sm sm:text-[1rem] ml-auto"
-                          >
+                          <div class=" text-sm sm:text-[1rem] ml-auto">
                             {#if item?.changesPercentage >= 0}
-                              <span class="text-[#00FC50] inline-block"
+                              <span
+                                class="text-green-600 dark:text-[#00FC50] inline-block"
                                 >+{item?.changesPercentage}%</span
                               >
                               <svg
@@ -140,7 +139,8 @@
                                 </g></svg
                               >
                             {:else if item?.changesPercentage < 0}
-                              <span class="text-[#FF2F1F] inline-block"
+                              <span
+                                class="text-red-600 dark:text-[#FF2F1F] inline-block"
                                 >{item?.changesPercentage}%
                               </span>
                               <svg
@@ -195,7 +195,7 @@
                               >
                             </span>
                           {:else}
-                            <span class="text-white text-[1rem]">
+                            <span class=" text-[1rem]">
                               {item?.text}
                             </span>
                           {/if}
@@ -217,11 +217,13 @@
           class="cursor-pointer flex justify-center items-center mt-5"
         >
           <svg
-            class="w-10 h-10 transform {showFullHistory ? 'rotate-180' : ''} "
+            class="w-10 h-10 transform text-gray-400 dark:text-[#2A323C] {showFullHistory
+              ? 'rotate-180'
+              : ''} "
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             ><path
-              fill="#2A323C"
+              fill="currentColor"
               d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm0 13.5L7.5 11l1.42-1.41L12 12.67l3.08-3.08L16.5 11L12 15.5z"
             /></svg
           >
