@@ -26,12 +26,12 @@
 </script>
 
 <section
-  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden pb-20 pt-5 px-3"
+  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden pb-20 pt-5 px-3 text-muted dark:text-white"
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
-      <li><a href="/" class="text-gray-300">Home</a></li>
-      <li class="text-gray-300">Watchlist</li>
+      <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
+      <li class="text-muted dark:text-gray-300">Watchlist</li>
     </ul>
   </div>
 
@@ -41,22 +41,20 @@
         class="relative flex justify-center items-start overflow-hidden w-full"
       >
         <main class="w-full">
-          <h1 class="mb-6 text-white text-2xl sm:text-3xl font-bold">
-            Watchlist
-          </h1>
+          <h1 class="mb-6 text-2xl sm:text-3xl font-bold">Watchlist</h1>
 
           <nav
-            class=" border-b-[2px] border-gray-200 overflow-x-auto whitespace-nowrap"
+            class="border-[#2C6288] dark:border-white border-b-[2px] overflow-x-auto whitespace-nowrap"
           >
             <ul
-              class="flex flex-row items-center w-full text-[1rem] sm:text-lg text-white"
+              class="flex flex-row items-center w-full text-[1rem] sm:text-lg"
             >
               {#each tabs as item, i}
                 <a
                   href={item?.path}
                   class="p-2 px-5 cursor-pointer {activeIdx === i
-                    ? 'text-white bg-primary/90'
-                    : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                    ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                    : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
                 >
                   {item.title}
                 </a>

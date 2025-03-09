@@ -1054,7 +1054,7 @@
 />
 
 <section
-  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pt-5 pb-40"
+  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pt-5 pb-40 text-muted dark:text-white"
 >
   <div class="w-full overflow-hidden m-auto">
     <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
@@ -1069,7 +1069,7 @@
                 : 'md:block'}"
             >
               <div
-                class="hidden text-sm sm:text-[1rem] font-semibold text-white md:block sm:mb-2"
+                class="hidden text-sm sm:text-[1rem] font-semibold md:block sm:mb-2"
               >
                 My Watchlist
               </div>
@@ -1081,10 +1081,10 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="min-w-[110px] w-full sm:w-fit border-gray-600 border bg-default sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5 text-white rounded truncate"
+                        class="shadow-sm min-w-[110px] w-full sm:w-fit border-gray-300 bg-white dark:bg-default dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5  rounded truncate"
                       >
                         <span
-                          class="truncate font-medium text-white text-sm sm:text-[1rem]"
+                          class="truncate font-medium text-sm sm:text-[1rem]"
                           >{displayWatchList?.title !== undefined
                             ? displayWatchList?.title
                             : "Create Watchlist"}</span
@@ -1112,7 +1112,7 @@
                           <Button
                             on:click={handleWatchlistModal}
                             builders={[builder]}
-                            class="p-0 -mb-2 -mt-2 text-sm inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap text-base text-white bg-[#0909B] focus:outline-hidden sm:text-smaller"
+                            class="p-0 -mb-2 -mt-2 text-sm inline-flex cursor-pointer items-center justify-center space-x-1 bg-white dark:bg-default whitespace-nowrap  focus:outline-hidden sm:text-smaller"
                           >
                             <svg
                               class="h-4 w-4"
@@ -1138,13 +1138,13 @@
                             on:click={() => changeWatchList(item)}
                             class="text-sm sm:text-[1rem] {item?.id ===
                             displayWatchList?.id
-                              ? 'bg-primary'
-                              : ''} cursor-pointer sm:hover:bg-primary"
+                              ? 'bg-gray-200 dark:bg-primary'
+                              : ''} cursor-pointer sm:hover:bg-gray-200 dark:sm:hover:bg-primary"
                           >
                             {item?.title} ({item?.ticker?.length})
                             <label
                               for="deleteWatchlist"
-                              class="ml-auto inline-block cursor-pointer text-white sm:hover:text-red-500"
+                              class="ml-auto inline-block cursor-pointer sm:hover:text-red-500"
                               on:click|capture={handleDeleteModal}
                             >
                               <svg
@@ -1178,44 +1178,44 @@
                     {#if editMode}
                       <label
                         on:click={handleDeleteTickers}
-                        class="border text-sm border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 pl-3 pr-4 font-semibold text-white bg-default sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
+                        class="border shadow-sm text-sm border-gray-300 dark:border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 pl-3 pr-4 font-semibold sm:hover:bg-gray-200 dark:sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
                       >
                         <svg
                           class="inline-block w-5 h-5"
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 24 24"
                           ><path
-                            fill="white"
+                            fill="currentColor"
                             d="M10 5h4a2 2 0 1 0-4 0M8.5 5a3.5 3.5 0 1 1 7 0h5.75a.75.75 0 0 1 0 1.5h-1.32l-1.17 12.111A3.75 3.75 0 0 1 15.026 22H8.974a3.75 3.75 0 0 1-3.733-3.389L4.07 6.5H2.75a.75.75 0 0 1 0-1.5zm2 4.75a.75.75 0 0 0-1.5 0v7.5a.75.75 0 0 0 1.5 0zM14.25 9a.75.75 0 0 1 .75.75v7.5a.75.75 0 0 1-1.5 0v-7.5a.75.75 0 0 1 .75-.75m-7.516 9.467a2.25 2.25 0 0 0 2.24 2.033h6.052a2.25 2.25 0 0 0 2.24-2.033L18.424 6.5H5.576z"
                           /></svg
                         >
-                        <span class="ml-1 text-white text-sm">
+                        <span class="ml-1 text-sm">
                           {numberOfChecked}
                         </span>
                       </label>
                     {/if}
                     <label
                       on:click={handleEditMode}
-                      class="border text-sm border-gray-600 sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 px-3 text-white bg-default sm:hover:bg-primary ease-out sm:hover:text-red-500"
+                      class="shadow-sm border text-sm border-gray-300 dark:border-gray-600 sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 px-3 sm:hover:bg-gray-200 dark:sm:hover:bg-primary ease-out sm:hover:text-red-500"
                     >
                       <svg
                         class="inline-block w-5 h-5"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 1024 1024"
                         ><path
-                          fill="white"
+                          fill="currentColor"
                           d="M832 512a32 32 0 1 1 64 0v352a32 32 0 0 1-32 32H160a32 32 0 0 1-32-32V160a32 32 0 0 1 32-32h352a32 32 0 0 1 0 64H192v640h640z"
                         /><path
-                          fill="white"
+                          fill="currentColor"
                           d="m469.952 554.24l52.8-7.552L847.104 222.4a32 32 0 1 0-45.248-45.248L477.44 501.44l-7.552 52.8zm422.4-422.4a96 96 0 0 1 0 135.808l-331.84 331.84a32 32 0 0 1-18.112 9.088L436.8 623.68a32 32 0 0 1-36.224-36.224l15.104-105.6a32 32 0 0 1 9.024-18.112l331.904-331.84a96 96 0 0 1 135.744 0z"
                         /></svg
                       >
                       {#if !editMode}
-                        <span class="ml-1 text-white text-sm sm:text-[1rem]">
+                        <span class="ml-1 text-sm sm:text-[1rem]">
                           Edit Watchlist
                         </span>
                       {:else}
-                        <span class="ml-1 text-white text-sm sm:text-[1rem]">
+                        <span class="ml-1 text-sm sm:text-[1rem]">
                           Cancel
                         </span>
                       {/if}
@@ -1244,7 +1244,7 @@
                           stroke-linecap="round"
                           stroke-linejoin="round"
                           stroke-width="3"
-                          stroke="#fff"
+                          stroke="currentcolor"
                           viewBox="0 0 24 24"
                           style="max-width: 40px"
                           aria-hidden="true"
@@ -1255,34 +1255,36 @@
                       </div>
                       <Combobox.Input
                         on:input={search}
-                        class="text-sm sm:text-[1rem] controls-input text-white bg-default focus:outline-hidden border border-gray-600 rounded placeholder:text-white/80 px-3 py-2 pl-8 xs:pl-10 grow w-full sm:min-w-56 max-w-xs"
+                        class="text-sm sm:text-[1rem] controls-input shadow-sm focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:/80 px-3 py-2 pl-8 xs:pl-10 grow w-full sm:min-w-56 max-w-xs"
                         placeholder="Add new stock"
                         aria-label="Add new stock"
                       />
                     </div>
                     {#if inputValue?.length !== 0}
                       <Combobox.Content
-                        class="w-auto z-10 rounded border border-gray-700 bg-default px-1 py-3 shadow-popover outline-hidden"
+                        class="w-auto z-10 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-default px-1 py-3 shadow-sm outline-hidden"
                         sideOffset={8}
                       >
                         {#each searchBarData as item}
                           <Combobox.Item
-                            class="cursor-pointer text-white border-b border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-5 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-primary"
+                            class="cursor-pointer border-b border-gray-300 dark:border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-5 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-200 dark:data-highlighted:bg-primary"
                             value={item?.symbol}
                             label={item?.name}
                             on:click={(e) => handleAddTicker(e, item?.symbol)}
                           >
                             <div class="flex flex-col items-start">
-                              <span class="text-sm text-blue-400"
+                              <span
+                                class="text-sm text-blue-500 dark:text-blue-400"
                                 >{item?.symbol}</span
                               >
-                              <span class="text-xs sm:text-sm text-white"
+                              <span
+                                class="text-xs sm:text-sm text-muted dark:text-white"
                                 >{item?.name}</span
                               >
                             </div>
                           </Combobox.Item>
                         {:else}
-                          <span class="block px-5 py-2 text-sm text-white">
+                          <span class="block px-5 py-2 text-sm">
                             No results found
                           </span>
                         {/each}
@@ -1301,9 +1303,9 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="sm:ml-auto min-w-[110px] w-full sm:w-fit border-gray-600 border bg-default sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5 text-white rounded truncate"
+                        class="shadow-sm sm:ml-auto min-w-[110px] w-full sm:w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5  rounded truncate"
                       >
-                        <span class="truncate text-white text-sm sm:text-[1rem]"
+                        <span class="truncate text-sm sm:text-[1rem]"
                           >Indicators</span
                         >
                         <svg
@@ -1323,11 +1325,11 @@
                     </DropdownMenu.Trigger>
 
                     <DropdownMenu.Content
-                      class="w-60 max-h-[400px] overflow-y-auto scroller relative"
+                      class="w-60 max-h-[400px] overflow-y-auto scroller relative "
                     >
                       <!-- Search Input -->
                       <div
-                        class="sticky fixed -top-1 z-40 bg-default p-2 border-b border-gray-600"
+                        class="sticky fixed -top-1 z-40 bg-white dark:bg-default p-2 border-b border-gray-300 dark:border-gray-600"
                       >
                         <div class="relative w-full">
                           <!-- Input Field -->
@@ -1336,7 +1338,7 @@
                             on:input={handleInput}
                             autocomplete="off"
                             autofocus=""
-                            class="text-sm w-full border-0 bg-default focus:border-gray-200 focus:ring-0 text-white placeholder:text-gray-300 pr-8"
+                            class="text-sm w-full bg-white dark:bg-default border-0 focus:border-gray-200 focus:ring-0 placeholder:text-gray-300 pr-8"
                             type="text"
                             placeholder=""
                           />
@@ -1371,14 +1373,16 @@
                       <DropdownMenu.Group class="pb-2">
                         <!-- Added padding to avoid overlapping with Reset button -->
                         {#each searchQuery?.length !== 0 ? testList : allRows as item}
-                          <DropdownMenu.Item class="sm:hover:bg-primary">
+                          <DropdownMenu.Item
+                            class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary"
+                          >
                             <div class="flex items-center">
                               {#if defaultRules?.includes(item?.rule)}
                                 <label
                                   on:click|capture={(event) => {
                                     event.preventDefault();
                                   }}
-                                  class="text-white"
+                                  class=""
                                 >
                                   <input
                                     disabled={defaultRules?.includes(item?.rule)
@@ -1400,7 +1404,7 @@
                                     event.preventDefault();
                                     handleChangeValue(item?.name);
                                   }}
-                                  class="cursor-pointer text-white"
+                                  class="cursor-pointer"
                                   for={item?.name}
                                 >
                                   <input
@@ -1418,10 +1422,7 @@
                                   <span class="ml-2">{item?.name}</span>
                                 </label>
                               {:else}
-                                <a
-                                  href="/pricing"
-                                  class="cursor-pointer text-white"
-                                >
+                                <a href="/pricing" class="cursor-pointer">
                                   <svg
                                     class="h-[18px] w-[18px] inline-block text-icon group-hover:text-dark-400"
                                     viewBox="0 0 20 20"
@@ -1443,17 +1444,17 @@
                       </DropdownMenu.Group>
                       <!-- Reset Selection button -->
                       <div
-                        class="sticky -bottom-1 bg-default z-50 p-2 border-t border-gray-600 w-full flex justify-between items-center"
+                        class="sticky -bottom-1 bg-white dark:bg-default z-50 p-2 border-t border-gray-300 dark:border-gray-600 w-full flex justify-between items-center"
                       >
                         <label
                           on:click={handleResetAll}
-                          class="w-full sm:hover:text-white text-gray-300 bg-default text-start text-sm cursor-pointer"
+                          class="w-full dark:sm:hover:text-white text-muted dark:text-gray-300 bg-white dark:bg-default text-start text-sm cursor-pointer"
                         >
                           Reset Selection
                         </label>
                         <label
                           on:click={handleSelectAll}
-                          class="w-full flex justify-end sm:hover:text-white text-gray-300 bg-default text-start text-sm cursor-pointer"
+                          class="w-full flex justify-end dark:sm:hover:text-white text-muted dark:text-gray-300 bg-white dark:bg-default text-start text-sm cursor-pointer"
                         >
                           Select All
                         </label>
@@ -1466,21 +1467,17 @@
 
             {#if allList.length === 0}
               <div class="flex flex-col justify-center items-center m-auto z-0">
-                <span
-                  class="text-white font-bold text-white text-xl sm:text-3xl"
-                >
+                <span class=" font-bold text-xl sm:text-3xl">
                   Empty Watchlist
                 </span>
 
-                <span
-                  class="text-white text-sm sm:text-lg m-auto p-4 text-center"
-                >
+                <span class=" text-sm sm:text-lg m-auto p-4 text-center">
                   Fill it up with your favorite stocks and get realtime data and
                   the latest news in one place!
                 </span>
                 {#if !data?.user}
                   <a
-                    class="w-64 flex mt-10 justify-center items-center m-auto btn text-black bg-[#fff] sm:hover:bg-gray-300 transition duration-150 ease-in-out group"
+                    class="w-64 flex mt-10 justify-center items-center m-auto btn text-black bg-[#fff] sm:hover:bg-gray-200 transition duration-150 ease-in-out group"
                     href="/register"
                   >
                     Get Started
@@ -1510,13 +1507,13 @@
               <!--Start Table of Watchlist-->
               {#if watchList?.length !== 0}
                 <div class="w-full">
-                  <h2 class="font-semibold text-white text-xl">
+                  <h2 class="font-semibold text-xl">
                     {watchList?.length} Stocks
                   </h2>
 
                   <div class="w-full overflow-x-auto">
                     <table
-                      class="table table-sm table-compact rounded-none sm:rounded w-full bg-table border border-gray-800 m-auto mt-4"
+                      class="table table-sm table-compact rounded-none sm:rounded w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
                     >
                       <!-- head -->
                       <thead>
@@ -1525,11 +1522,11 @@
                       <tbody class="p-0">
                         {#each watchList as item}
                           <tr
-                            class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800"
+                            class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                           >
                             <td
                               on:click={() => handleFilter(item?.symbol)}
-                              class="text-blue-400 text-sm sm:text-[1rem] whitespace-nowrap text-start flex flex-row items-center"
+                              class="text-blue-500 dark:text-blue-400 text-sm sm:text-[1rem] whitespace-nowrap text-start flex flex-row items-center"
                             >
                               <input
                                 type="checkbox"
@@ -1538,11 +1535,11 @@
                                 ) ?? false}
                                 class="{!editMode
                                   ? 'hidden'
-                                  : ''} bg-[#2E3238] h-[18px] w-[18px] rounded-sm ring-offset-0 mr-3"
+                                  : ''}  dark:bg-[#2E3238] h-[18px] w-[18px] rounded-sm ring-offset-0 mr-3"
                               />
                               {#if editMode}
                                 <label
-                                  class="text-blue-400 sm:hover:text-white cursor-pointer"
+                                  class="text-blue-500 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white cursor-pointer"
                                 >
                                   {item?.symbol}
                                 </label>
@@ -1555,7 +1552,7 @@
                             </td>
 
                             <td
-                              class="text-white text-sm sm:text-[1rem] whitespace-nowrap"
+                              class=" text-sm sm:text-[1rem] whitespace-nowrap"
                             >
                               {item?.name?.length > charNumber
                                 ? item?.name?.slice(0, charNumber) + "..."
@@ -1565,7 +1562,7 @@
                               {#if isChecked(row?.name)}
                                 <td
                                   id={item?.symbol}
-                                  class="whitespace-nowrap text-sm sm:text-[1rem] text-end text-white"
+                                  class="whitespace-nowrap text-sm sm:text-[1rem] text-end"
                                 >
                                   {#if item?.[row?.rule] !== undefined && item?.[row?.rule] !== null}
                                     {#if row?.type === "int"}
@@ -1647,15 +1644,15 @@
                   </div>
 
                   <div
-                    class="w-full m-auto border-b border-gray-600 mt-10 mb-5"
+                    class="w-full m-auto border-b border-gray-300 dark:border-gray-600 mt-10 mb-5"
                   ></div>
 
-                  <div class=" text-white">
+                  <div class=" ">
                     <div
                       class="inline-flex justify-center w-full rounded sm:w-auto mb-3"
                     >
                       <div
-                        class="bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded p-1 mt-4"
+                        class="bg-gray-200 dark:bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded p-1 mt-4"
                       >
                         {#each tabs as item, i}
                           {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}
@@ -1695,7 +1692,7 @@
                                 class="relative text-sm sm:text-[1rem] block font-semibold {activeIdx ===
                                 i
                                   ? 'text-black'
-                                  : 'text-white'}"
+                                  : ''}"
                               >
                                 {item.title}
                               </span>
@@ -1710,11 +1707,15 @@
                           <h3 class="mb-1.5 mt-3 font-semibold text-faded">
                             {date}
                           </h3>
-                          <div class="border border-gray-700">
+                          <div
+                            class="border border-gray-300 dark:border-gray-700"
+                          >
                             {#each titleGroups as { title, items, symbols }}
-                              <div class="flex border-gray-600 text-small">
+                              <div
+                                class="flex border-gray-300 dark:border-gray-600 text-small"
+                              >
                                 <div
-                                  class="hidden min-w-[100px] items-center justify-center bg-primary p-1 lg:flex"
+                                  class="hidden min-w-[100px] items-center justify-center bg-gray-200 dark:bg-primary p-1 lg:flex"
                                 >
                                   {new Date(
                                     items[0].publishedDate,
@@ -1725,13 +1726,13 @@
                                   })}
                                 </div>
                                 <div
-                                  class="grow px-3 py-2 lg:py-1 border-t border-gray-700"
+                                  class="grow px-3 py-2 lg:py-1 border-t border-gray-300 dark:border-gray-700"
                                 >
                                   <a
                                     href={items[0].url}
                                     target="_blank"
                                     rel="nofollow noopener noreferrer"
-                                    class="text-white sm:hover:text-blue-400"
+                                    class="sm:hover:text-blue-500 dark:sm:hover:text-blue-400"
                                   >
                                     <h4
                                       class="text-sm font-semibold lg:text-[1rem]"
@@ -1742,7 +1743,7 @@
                                   <div
                                     class="flex flex-wrap gap-x-2 pt-2 text-sm lg:pt-0.5"
                                   >
-                                    <div class="text-white lg:hidden">
+                                    <div class=" lg:hidden">
                                       {new Date(
                                         items[0].publishedDate,
                                       ).toLocaleTimeString("en-US", {
@@ -1751,7 +1752,7 @@
                                         hour12: true,
                                       })}
                                     </div>
-                                    <div class="text-white">
+                                    <div class="">
                                       {items[0].site}
                                     </div>
                                     &#183;
@@ -1759,7 +1760,7 @@
                                       {#each symbols as symbol}
                                         <a
                                           href={`/${items[0].type}/${symbol}`}
-                                          class="sm:hover:text-white text-blue-400"
+                                          class="text-blue-500 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
                                         >
                                           {symbol}
                                         </a>
@@ -1782,16 +1783,20 @@
                         <h3 class="mb-1.5 mt-3 font-semibold text-faded">
                           {date}
                         </h3>
-                        <div class="border border-gray-700">
+                        <div
+                          class="border border-gray-300 dark:border-gray-700"
+                        >
                           {#each titleGroups as item}
-                            <div class="flex border-gray-600 text-small">
+                            <div
+                              class="flex border-gray-300 dark:border-gray-600 text-small"
+                            >
                               <div
-                                class="hidden min-w-[100px] items-center justify-center bg-primary p-1 lg:flex"
+                                class="hidden min-w-[100px] items-center justify-center bg-gray-200 dark:bg-primary p-1 lg:flex"
                               >
                                 {formatTime(item?.time)}
                               </div>
                               <div
-                                class="grow px-3 py-2 lg:py-1 border-t border-gray-700"
+                                class="grow px-3 py-2 lg:py-1 border-t border-gray-300 dark:border-gray-700"
                               >
                                 <div>
                                   {removeCompanyStrings(item?.name)}
@@ -1825,7 +1830,7 @@
                                 <div
                                   class="flex flex-wrap gap-x-2 pt-2 text-sm lg:pt-0.5"
                                 >
-                                  <div class="text-white lg:hidden">
+                                  <div class=" lg:hidden">
                                     {formatTime(item?.time)}
                                   </div>
                                 </div>
@@ -1849,15 +1854,11 @@
                 <div
                   class="flex flex-col justify-center items-center m-auto pt-5 z-0"
                 >
-                  <span
-                    class="text-white font-bold text-white text-xl sm:text-3xl"
-                  >
+                  <span class=" font-bold text-xl sm:text-3xl">
                     Empty Watchlist
                   </span>
 
-                  <span
-                    class="text-white text-sm sm:text-lg pt-5 m-auto p-4 text-center"
-                  >
+                  <span class=" text-sm sm:text-lg pt-5 m-auto p-4 text-center">
                     Fill it up with your favorite stocks and get realtime data
                     and the latest news in one place!
                   </span>
@@ -1894,8 +1895,10 @@
   ></label>
 
   <!-- Desktop modal content -->
-  <div class="modal-box w-full bg-secondary rounded">
-    <div class="text-white mb-5">
+  <div
+    class="modal-box w-full bg-white dark:bg-secondary rounded border-gray-300 shadow"
+  >
+    <div class="mb-5">
       <h3 class="font-bold text-2xl mb-5">New Watchlist</h3>
 
       <form on:submit={createWatchList} class="space-y-2 w-full m-auto">
@@ -1912,7 +1915,7 @@
 
         <button
           type="submit"
-          class="cursor-pointer mt-2 py-2.5 bg-[#fff] sm:hover:bg-gray-300 btn-md w-full rounded m-auto text-black font-semibold text-md"
+          class="cursor-pointer mt-2 py-3 bg-[#3B82F6] dark:bg-[#fff] sm:hover:bg-blue-600 dark:sm:hover:bg-gray-200 btn-md w-full rounded m-auto text-white dark:text-black font-semibold text-md"
         >
           Create Watchlist
         </button>
@@ -1934,7 +1937,7 @@
   ></label>
 
   <div
-    class="modal-box w-full bg-secondary border border-gray-600 overflow-hidden"
+    class="modal-box w-full bg-secondary border border-gray-300 dark:border-gray-600 overflow-hidden"
   >
     <h3
       class="font-bold text-[1rem] text-center sm:text-lg flex justify-center items-center mt-10 text-white"
@@ -1948,7 +1951,7 @@
       <label
         for="deleteWatchlist"
         on:click={deleteWatchlist}
-        class="cursor-pointer mt-2 py-2.5 text-center bg-[#fff] sm:hover:bg-gray-300 btn-md w-full rounded m-auto text-black font-semibold text-md"
+        class="cursor-pointer mt-2 py-2.5 text-center bg-[#fff] sm:hover:bg-gray-200 btn-md w-full rounded m-auto text-black font-semibold text-md"
       >
         Proceed
       </label>

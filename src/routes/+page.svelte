@@ -378,7 +378,7 @@
                         {item?.text?.slice(0, 48) + "..."}
                         <a href="/pricing" class="inline-block text-sm">
                           <svg
-                            class="size-4 text-[#fff] inline-block"
+                            class="size-4 inline-block"
                             viewBox="0 0 20 20"
                             fill="currentColor"
                             style="max-width: 40px;"
@@ -392,7 +392,7 @@
                           </svg>
 
                           <span
-                            class="ml-1 font-semibold text-gray-300 group-hover:text-white"
+                            class="ml-1 font-semibold text-muted dark:text-gray-300 group-hover:text-white"
                           >
                             Upgrade
                           </span>
@@ -400,7 +400,7 @@
 
                         <a
                           href={`/stocks/${item?.ticker}`}
-                          class="inline-block badge duration-0 rounded-sm ml-1 px-2 m-auto text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted"
+                          class="inline-block badge bg-blue-50 dark:bg-primary duration-0 rounded-sm ml-1 px-2 m-auto text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted"
                           >{item?.ticker}</a
                         >
                       </li>
@@ -413,7 +413,7 @@
 
                         <a
                           href={`/stocks/${item?.ticker}`}
-                          class="inline-block badge duration-0 bg-blue-50 font-semibold dark:font-normal rounded-sm ml-1 px-2 m-auto text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted"
+                          class="inline-block badge duration-0 bg-blue-50 dark:bg-primary font-semibold dark:font-normal rounded-sm ml-1 px-2 m-auto text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted"
                           >{item?.ticker}</a
                         >
                       </li>

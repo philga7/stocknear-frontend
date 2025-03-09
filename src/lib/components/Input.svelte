@@ -43,7 +43,7 @@
     : ''}"
 >
   <label for={id} class="label pb-1">
-    <span class="text-muted dark:label-text">{label}</span>
+    <span class="text-muted dark:text-white">{label}</span>
   </label>
   <div class="relative">
     <input

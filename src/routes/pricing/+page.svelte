@@ -99,7 +99,7 @@
         fill="currentColor"
         stroke-width="0"
         viewBox="0 0 640 512"
-        class="text-zinc-400 mr-2 text-base"
+        class="text-muted dark:text-zinc-400 mr-2"
         height="1em"
         width="1em"
         xmlns="http://www.w3.org/2000/svg"
@@ -123,7 +123,7 @@
         fill="currentColor"
         stroke-width="0"
         viewBox="0 0 576 512"
-        class="text-zinc-400 mr-2 text-base"
+        class="text-yellow-400 dark:text-zinc-400 mr-2"
         height="1em"
         width="1em"
         xmlns="http://www.w3.org/2000/svg"
@@ -1199,7 +1199,7 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
+                  class="font-semibold collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
                   >What are the advantages of Stocknear Service?</summary
                 >
                 <div class="collapse-content">
@@ -1220,7 +1220,7 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
+                  class="font-semibold collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
                 >
                   Can I change my plan at any time?
                 </summary>
@@ -1244,7 +1244,7 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
+                  class="font-semibold collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
                 >
                   Are there any commissions in addition to the subscription
                   plans?
@@ -1262,7 +1262,7 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
+                  class="font-semibold collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
                 >
                   Can I request a refund?
                 </summary>
@@ -1284,7 +1284,7 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
+                  class="font-semibold collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
                 >
                   What are my payment options?
                 </summary>
@@ -1301,7 +1301,7 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
+                  class="font-semibold collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
                 >
                   Can I cancel at any time?
                 </summary>
@@ -1319,7 +1319,7 @@
             <li>
               <details class="collapse collapse-arrow">
                 <summary
-                  class="collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
+                  class="font-semibold collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
                 >
                   Why is Stocknear so much cheaper than other platforms?
                 </summary>

@@ -430,7 +430,7 @@
 
 <label
   for="searchBarModal"
-  class="sm:hidden cursor-pointer p-2 sm:hover:bg-primary text-gray-300 sm:hover:text-white shrink-0 flex items-center justify-center border border-gray-300 dark:border-gray-600 rounded-md"
+  class="sm:hidden shadow cursor-pointer p-2 text-gray-500 dark:text-gray-300 dark:sm:hover:text-white shrink-0 flex items-center justify-center border border-gray-300 dark:border-gray-600 rounded-md"
 >
   <Search class="h-[20px] w-[20px]" />
 </label>

@@ -835,7 +835,7 @@
                   <Button
                     size="icon"
                     aria-label="Settings"
-                    class="overflow-hidden rounded-md bg-gray-200 dark:bg-default dark:sm:hover:bg-[#18181B] border border-gray-300 dark:border-gray-600 w-10 h-10"
+                    class="overflow-hidden rounded-md bg-white shadow sm:hover:bg-gray-100 dark:bg-default dark:sm:hover:bg-[#18181B] border border-gray-300 dark:border-gray-600 w-10 h-10"
                     builders={[builder]}
                   >
                     <svg
@@ -901,7 +901,7 @@
             {:else}
               <a
                 href="/login"
-                class="inline-flex items-center justify-center rounded bg-[#3B82F6] dark:bg-[#fff] px-4 py-2 text-sm font-semibold  shadow-xs transition-all duration-150 sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
+                class="inline-flex items-center justify-center rounded bg-[#3B82F6] dark:bg-[#fff] dark:text-black px-4 py-2 text-sm font-semibold  shadow-xs transition-all duration-150 sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
               >
                 Login
               </a>
