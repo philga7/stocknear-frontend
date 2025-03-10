@@ -147,13 +147,13 @@
   {/if}
 
   <div
-    class="mb-4 flex flex-col divide-y divide-gray-600 rounded-md border border-gray-600 sm:grid sm:grid-cols-3 sm:divide-x sm:divide-y-0"
+    class="mb-4 flex flex-col divide-y divide-gray-300 dark:divide-gray-600 rounded-md border border-gray-300 dark:border-gray-600 sm:grid sm:grid-cols-3 sm:divide-x sm:divide-y-0"
   >
     <div class="px-4 py-3 sm:px-2 sm:py-5 md:px-3 lg:p-6">
       <div class="flex items-center justify-between sm:block">
         <div class="text-[1rem] font-normal text-white">Listed Funds</div>
         <div
-          class="mt-1 break-words font-semibold leading-8 text-white text-xl sm:text-2xl"
+          class="mt-1 break-words font-semibold leading-8 text-xl sm:text-2xl"
         >
           {rawData?.length}
         </div>
@@ -163,7 +163,7 @@
       <div class="flex items-center justify-between sm:block">
         <div class="text-[1rem] font-normal text-white">Total Assets</div>
         <div
-          class="mt-1 break-words font-semibold leading-8 text-white text-xl sm:text-2xl"
+          class="mt-1 break-words font-semibold leading-8 text-xl sm:text-2xl"
         >
           {abbreviateNumber(totalAssets)}
         </div>
@@ -173,7 +173,7 @@
       <div class="flex items-center justify-between sm:block">
         <div class="text-[1rem] font-normal text-white">Average Cost</div>
         <div
-          class="mt-1 break-words font-semibold leading-8 text-white text-xl sm:text-2xl"
+          class="mt-1 break-words font-semibold leading-8 text-xl sm:text-2xl"
         >
           {avgExpenseRatio?.toFixed(2)}%
         </div>

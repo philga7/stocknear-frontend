@@ -84,7 +84,7 @@
 
         {#if rawData?.history?.length !== 0}
           <div
-            class="mb-4 grid grid-cols-2 grid-rows-1 divide-gray-600 rounded-md border border-gray-600 md:grid-cols-3 md:grid-rows-1 divide-x"
+            class="mb-4 grid grid-cols-2 grid-rows-1 divide-gray-300 dark:divide-gray-600 rounded-md border border-gray-300 dark:border-gray-600 md:grid-cols-3 md:grid-rows-1 divide-x"
           >
             <div class="p-4 bp:p-5 sm:p-6">
               <label

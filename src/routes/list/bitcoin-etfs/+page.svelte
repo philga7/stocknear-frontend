@@ -113,13 +113,13 @@
   />
 
   <div
-    class="mt-6 mb-4 flex flex-col divide-y divide-gray-600 rounded-md border border-gray-600 sm:grid sm:grid-cols-3 sm:divide-x sm:divide-y-0"
+    class="shadow-sm mt-6 mb-4 flex flex-col divide-y divide-gray-300 dark:divide-gray-600 rounded-md border border-gray-300 dark:border-gray-600 sm:grid sm:grid-cols-3 sm:divide-x sm:divide-y-0"
   >
     <div class="px-4 py-3 sm:px-2 sm:py-5 md:px-3 lg:p-6">
       <div class="flex items-center justify-between sm:block">
-        <div class="text-[1rem] font-semibold text-white">Total ETFs</div>
+        <div class="text-[1rem] font-semibold">Total ETFs</div>
         <div
-          class="mt-1 break-words font-semibold leading-8 text-white text-xl sm:text-2xl"
+          class="mt-1 break-words font-semibold leading-8 text-xl sm:text-2xl"
         >
           {new Intl.NumberFormat("en")?.format(rawData?.length)}
         </div>
@@ -127,9 +127,9 @@
     </div>
     <div class="px-4 py-3 sm:px-2 sm:py-5 md:px-3 lg:p-6">
       <div class="flex items-center justify-between sm:block">
-        <div class="text-[1rem] font-semibold text-white">Total Assets</div>
+        <div class="text-[1rem] font-semibold">Total Assets</div>
         <div
-          class="mt-1 break-words font-semibold leading-8 text-white text-xl sm:text-2xl"
+          class="mt-1 break-words font-semibold leading-8 text-xl sm:text-2xl"
         >
           {abbreviateNumber(totalAssets)}
         </div>
@@ -137,9 +137,9 @@
     </div>
     <div class="px-4 py-3 sm:px-2 sm:py-5 md:px-3 lg:p-6">
       <div class="flex items-center justify-between sm:block">
-        <div class="text-[1rem] font-semibold text-white">Avg. Cost</div>
+        <div class="text-[1rem] font-semibold">Avg. Cost</div>
         <div
-          class="mt-1 break-words font-semibold leading-8 text-white text-xl sm:text-2xl"
+          class="mt-1 break-words font-semibold leading-8 text-xl sm:text-2xl"
         >
           {avgExpenseRatio?.toFixed(2)}%
         </div>
@@ -160,7 +160,7 @@
     <!-- Content area -->
     <div class="w-full overflow-x-auto">
       <table
-        class="table rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto mt-4"
+        class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
       >
         <thead>
           <TableHeader {columns} {sortOrders} {sortData} />
@@ -169,10 +169,10 @@
           {#each displayList as item}
             <!-- row -->
             <tr
-              class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800"
+              class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
             >
               <td
-                class="text-white font-semibold sm:font-normal text-center text-sm sm:text-[1rem]"
+                class=" font-semibold sm:font-normal text-center text-sm sm:text-[1rem]"
               >
                 {item?.rank}
               </td>
@@ -181,35 +181,33 @@
                 <HoverStockChart symbol={item?.symbol} assetType="etf" />
               </td>
 
-              <td class="text-white text-sm sm:text-[1rem] whitespace-nowrap">
+              <td class=" text-sm sm:text-[1rem] whitespace-nowrap">
                 {item?.name?.length > charNumber
                   ? item?.name?.slice(0, charNumber) + "..."
                   : item?.name}
               </td>
 
-              <td class="text-white text-end text-sm sm:text-[1rem]">
+              <td class=" text-end text-sm sm:text-[1rem]">
                 {item?.price}
               </td>
 
-              <td class="text-white text-end text-sm sm:text-[1rem]">
+              <td class=" text-end text-sm sm:text-[1rem]">
                 {#if item?.changesPercentage >= 0}
-                  <span class="text-[#00FC50]"
+                  <span class="text-green-600 dark:text-[#00FC50]"
                     >+{item.changesPercentage?.toFixed(2)}%</span
                   >
                 {:else}
-                  <span class="text-[#FF2F1F]"
+                  <span class="text-red-600 dark:text-[#FF2F1F]"
                     >{item.changesPercentage?.toFixed(2)}%
                   </span>
                 {/if}
               </td>
 
-              <td class="text-white text-end text-sm sm:text-[1rem]">
+              <td class=" text-end text-sm sm:text-[1rem]">
                 {item?.expenseRatio}%
               </td>
 
-              <td
-                class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
-              >
+              <td class=" text-end text-sm sm:text-[1rem] whitespace-nowrap">
                 {abbreviateNumber(item?.totalAssets)}
               </td>
             </tr>

@@ -303,15 +303,19 @@
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
-      <li><a href="/" class="text-gray-300">Home</a></li>
+      <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
       {#if $page.url.pathname.startsWith("/list/industry")}
-        <li><a href="/industry" class="text-gray-300">Industry</a></li>
+        <li>
+          <a href="/industry" class="text-muted dark:text-gray-300">Industry</a>
+        </li>
       {:else}
-        <li><a href="/list/" class="text-gray-300">Lists</a></li>
+        <li>
+          <a href="/list/" class="text-muted dark:text-gray-300">Lists</a>
+        </li>
       {/if}
       {#if $page.url.pathname.startsWith("/list/")}
         <li>
-          <span class="text-gray-300">
+          <span class="text-muted dark:text-gray-300">
             {combinedNavigation?.find(
               (item) => item?.link === $page.url.pathname,
             )?.title}
@@ -321,10 +325,10 @@
     </ul>
   </div>
 
-  <div class="mt-10 sm:mt-5 w-full m-auto mb-10 bg-default overflow-hidden">
+  <div class="mt-10 sm:mt-5 w-full m-auto mb-10 overflow-hidden">
     <!--Start Top Winners/Losers-->
     <div class="flex flex-col justify-center items-center">
-      <div class="ml-2 text-start w-full text-white mb-2">
+      <div class="ml-2 text-start w-full mb-2">
         {#each navigation as item}
           {#if item?.link === $page.url.pathname}
             <h1 class="font-bold text-2xl">
@@ -343,38 +347,40 @@
 
         <aside class="hidden lg:block relative fixed w-1/4">
           <div
-            class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href={"/watchlist/stocks"}
               class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
             >
               <div class="w-full flex justify-between items-center p-3 mt-3">
-                <h2 class="text-start text-xl font-semibold text-white ml-3">
-                  Watchlist
-                </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
+                <h2 class="text-start text-xl font-semibold ml-3">Watchlist</h2>
+                <ArrowLogo
+                  class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
+                />
               </div>
-              <span class="text-white p-3 ml-3 mr-3">
+              <span class="p-3 ml-3 mr-3">
                 Build your watchlist to keep track of their performance.
               </span>
             </a>
           </div>
 
           <div
-            class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href={"/stock-screener"}
               class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
             >
               <div class="w-full flex justify-between items-center p-3 mt-3">
-                <h2 class="text-start text-xl font-semibold text-white ml-3">
+                <h2 class="text-start text-xl font-semibold ml-3">
                   Stock Screener
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
+                <ArrowLogo
+                  class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
+                />
               </div>
-              <span class="text-white p-3 ml-3 mr-3">
+              <span class="p-3 ml-3 mr-3">
                 Build your Stock Screener to find profitable stocks.
               </span>
             </a>
