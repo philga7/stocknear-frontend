@@ -141,7 +141,7 @@
                         class="text-sm sm:text-[1rem] text-end {growthValue > 0
                           ? 'text-green-600 dark:text-[#00FC50]'
                           : growthValue < 0
-                            ? 'text-[#FF2F1F]'
+                            ? 'text-red-600 dark:text-[#FF2F1F]'
                             : 'text-white'}  border-b border-gray-800"
                       >
                         {growthValue > 0 ? "+" : ""}{growthValue !== null &&
@@ -216,7 +216,7 @@
                           0
                             ? 'text-green-600 dark:text-[#00FC50]'
                             : growthValue < 0
-                              ? 'text-[#FF2F1F]'
+                              ? 'text-red-600 dark:text-[#FF2F1F]'
                               : 'text-white'}  border-b border-gray-800"
                         >
                           {growthValue > 0 ? "+" : ""}{growthValue !== null &&
@@ -293,7 +293,7 @@
                           0
                             ? 'text-green-600 dark:text-[#00FC50]'
                             : growthValue < 0
-                              ? 'text-[#FF2F1F]'
+                              ? 'text-red-600 dark:text-[#FF2F1F]'
                               : 'text-white'}  border-b border-gray-800"
                         >
                           {growthValue > 0 ? "+" : ""}{growthValue !== null &&

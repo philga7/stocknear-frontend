@@ -450,7 +450,7 @@
                             : ['Strong Sell', 'Sell']?.includes(
                                   item?.rating_current,
                                 )
-                              ? 'text-[#FF2F1F]'
+                              ? 'text-red-600 dark:text-[#FF2F1F]'
                               : ''}"
                       >
                         {item?.rating_current}

@@ -103,7 +103,7 @@
     <!-- Content area -->
     <div class="w-full overflow-x-auto">
       <table
-        class="table rounded-none sm:rounded-md w-full m-auto bg-table border border-gray-800 mt-4"
+        class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
       >
         <thead>
           <TableHeader {columns} {sortOrders} {sortData} />
@@ -112,12 +112,12 @@
           {#each displayList as item}
             <!-- row -->
             <tr
-              class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-oddborder-b border-gray-800"
+              class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
             >
               <td class=" text-sm sm:text-[1rem] whitespace-nowrap">
                 <a
                   href={`/list/industry/${item?.industry?.replace(/ /g, "-")?.replace(/&/g, "and")?.replace(/-{2,}/g, "-")?.toLowerCase()}`}
-                  class="sm:hover:underline sm:hover:underline-offset-4 text-white"
+                  class="sm:hover:underline sm:hover:underline-offset-4"
                 >
                   {item?.industry?.length > charNumber
                     ? item?.industry?.slice(0, charNumber) + "..."
@@ -125,50 +125,42 @@
                 </a>
               </td>
 
-              <td
-                class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
-              >
+              <td class=" text-end text-sm sm:text-[1rem] whitespace-nowrap">
                 {item?.numStocks}
               </td>
 
-              <td
-                class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
-              >
+              <td class=" text-end text-sm sm:text-[1rem] whitespace-nowrap">
                 {abbreviateNumber(item?.totalMarketCap) ?? "n/a"}
               </td>
 
-              <td
-                class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
-              >
+              <td class=" text-end text-sm sm:text-[1rem] whitespace-nowrap">
                 {item?.avgDividendYield?.toFixed(2) ?? "n/a"}%
               </td>
 
-              <td
-                class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
-              >
+              <td class=" text-end text-sm sm:text-[1rem] whitespace-nowrap">
                 {item?.pe?.toFixed(2) ?? "n/a"}
               </td>
 
               <td
                 class=" {item?.profitMargin >= 0
-                  ? "before:content-['+'] text-green-500 dark:text-[#00FC50]"
-                  : 'text-[#FF2F1F]'}   text-sm sm:text-[1rem] whitespace-nowrap text-end"
+                  ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
+                  : 'text-red-600 dark:text-[#FF2F1F]'}   text-sm sm:text-[1rem] whitespace-nowrap text-end"
               >
                 {abbreviateNumber(item?.profitMargin)}%
               </td>
 
               <td
                 class="{item?.avgChange1D >= 0
-                  ? "before:content-['+']  text-[#00FC50]"
-                  : 'text-[#FF2F1F]'} text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                  ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
+                  : 'text-red-600 dark:text-[#FF2F1F]'} text-end text-sm sm:text-[1rem] whitespace-nowrap"
               >
                 {item?.avgChange1D?.toFixed(2) ?? "n/a"}%
               </td>
 
               <td
                 class="{item?.avgChange1Y >= 0
-                  ? "before:content-['+']  text-[#00FC50]"
-                  : 'text-[#FF2F1F]'} text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                  ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
+                  : 'text-red-600 dark:text-[#FF2F1F]'} text-end text-sm sm:text-[1rem] whitespace-nowrap"
               >
                 {item?.avgChange1Y?.toFixed(2) ?? "n/a"}%
               </td>

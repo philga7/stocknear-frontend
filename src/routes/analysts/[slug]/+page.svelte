@@ -479,7 +479,7 @@
                                           'Sell',
                                           'Underperform',
                                         ]?.includes(item?.rating_current)
-                                      ? 'text-[#FF2F1F]'
+                                      ? 'text-red-600 dark:text-[#FF2F1F]'
                                       : 'text-gray-300'}"
                               >
                                 {item?.rating_current}
@@ -528,7 +528,7 @@
 
                           <td
                             class="{item?.upside >= 0 && item?.upside !== null
-                              ? "before:content-['+'] text-green-500 dark:text-[#00FC50]"
+                              ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
                               : item?.upside < 0 && item?.upside !== null
                                 ? 'text-red-600 dark:text-[#FF2F1F]'
                                 : ''} text-end text-sm sm:text-[1rem] whitespace-nowrap"

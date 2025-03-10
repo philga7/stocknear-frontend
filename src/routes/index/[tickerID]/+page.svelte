@@ -747,7 +747,7 @@
                   >
                     <span
                       class={displayLegend?.graphChange >= 0
-                        ? "before:content-['+'] text-green-500 dark:text-[#00FC50]"
+                        ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
                         : "text-[#FF2F1F]"}
                     >
                       {displayLegend?.graphChange ??

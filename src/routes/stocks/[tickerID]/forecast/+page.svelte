@@ -842,22 +842,22 @@
                       ><td class="py-[3px] text-left lg:py-0.5">Change</td>
                       <td
                         class={lowChange > 0
-                          ? "before:content-['+'] text-green-500 dark:text-[#00FC50]"
+                          ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
                           : "text-[#FF2F1F]"}>{lowChange}%</td
                       >
                       <td
                         class={avgChange > 0
-                          ? "before:content-['+'] text-green-500 dark:text-[#00FC50]"
+                          ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
                           : "text-[#FF2F1F]"}>{avgChange}%</td
                       >
                       <td
                         class={medianChange > 0
-                          ? "before:content-['+'] text-green-500 dark:text-[#00FC50]"
+                          ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
                           : "text-[#FF2F1F]"}>{medianChange}%</td
                       >
                       <td
                         class={highChange > 0
-                          ? "before:content-['+'] text-green-500 dark:text-[#00FC50]"
+                          ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
                           : "text-[#FF2F1F]"}>{highChange}%</td
                       ></tr
                     ></tbody

@@ -170,7 +170,8 @@
                   class="text-start text-[1rem] sm:text-lg font-semibold {priceSentiment ===
                   'Bullish'
                     ? 'text-[#37C97D]'
-                    : 'text-[#FF2F1F]'}">{priceSentiment}</span
+                    : 'text-red-600 dark:text-[#FF2F1F]'}"
+                  >{priceSentiment}</span
                 >
               </div>
             </div>
@@ -215,7 +216,7 @@
                         ? 'text-green-600 dark:text-[#00FC50]'
                         : r2Score >= 50
                           ? 'text-[#F8901E]'
-                          : 'text-[#FF2F1F]'}"
+                          : 'text-red-600 dark:text-[#FF2F1F]'}"
                       stroke-width="3"
                       stroke-dasharray="100"
                       stroke-dashoffset={100 - r2Score}
@@ -270,7 +271,7 @@
                         ? 'text-green-600 dark:text-[#00FC50]'
                         : mape <= 35
                           ? 'text-[#F8901E]'
-                          : 'text-[#FF2F1F]'}"
+                          : 'text-red-600 dark:text-[#FF2F1F]'}"
                       stroke-width="3"
                       stroke-dasharray="100"
                       stroke-dashoffset={100 - mape > 0 ? 100 - mape : 1}
@@ -299,7 +300,7 @@
           <span
             class="font-semibold {priceSentiment === 'Bullish'
               ? 'text-[#37C97D]'
-              : 'text-[#FF2F1F]'}">{priceSentiment}</span
+              : 'text-red-600 dark:text-[#FF2F1F]'}">{priceSentiment}</span
           >
           trend, suggesting that the future price is expected to {priceSentiment ===
           "Bullish"

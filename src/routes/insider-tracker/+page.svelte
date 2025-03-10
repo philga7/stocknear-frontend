@@ -269,7 +269,7 @@
                           class="text-sm sm:text-[1rem] whitespace-nowrap text-end {item?.changesPercentage >=
                           0
                             ? 'text-green-600 dark:text-[#00FC50]'
-                            : 'text-[#FF2F1F]'}"
+                            : 'text-red-600 dark:text-[#FF2F1F]'}"
                         >
                           {item?.changesPercentage > 0
                             ? "+"
@@ -287,7 +287,7 @@
                           'Buy'
                             ? 'text-green-600 dark:text-[#00FC50]'
                             : item?.transactionType === 'Sell'
-                              ? 'text-[#FF2F1F]'
+                              ? 'text-red-600 dark:text-[#FF2F1F]'
                               : 'text-[#E57C34]'}"
                         >
                           <div class="flex flex-row items-center justify-end">

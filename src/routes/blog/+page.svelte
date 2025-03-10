@@ -23,7 +23,7 @@
       >
         <main class="w-full">
           <div class="mb-6 border-b-[2px]">
-            <h1 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
+            <h1 class="mb-1 text-2xl sm:text-3xl font-bold">
               Stock Analysis Blog
             </h1>
           </div>
@@ -32,7 +32,7 @@
             {#if allBlogPosts?.length !== 0}
               {#each allBlogPosts as item}
                 <div
-                  class="flex flex-col overflow-hidden rounded border border-gray-700"
+                  class="shadow-sm sm:hover:shadow-lg flex flex-col overflow-hidden rounded border border-gray-300 dark:border-gray-700"
                 >
                   <div class="shrink-0">
                     <a href={"/blog/article/" + convertToSlug(item?.title)}
@@ -49,18 +49,16 @@
                     >
                   </div>
                   <div
-                    class="flex flex-1 flex-col justify-between bg-table p-4 sm:p-6"
+                    class="flex flex-1 flex-col justify-between bg-white dark:bg-table p-4 sm:p-6"
                   >
                     <div class="flex-1">
                       <a
                         href={"/blog/article/" + convertToSlug(item?.title)}
                         class="mt-2 block"
-                        ><h2
-                          class="text-lg sm:text-xl font-semibold text-white"
-                        >
+                        ><h2 class="text-lg sm:text-xl font-semibold">
                           {item?.title}
                         </h2>
-                        <p class="mt-3 text-sm text-white">
+                        <p class="mt-3 text-sm">
                           {item?.abstract.length > 250
                             ? item?.abstract?.slice(0, 250) + "..."
                             : item?.abstract}
@@ -68,7 +66,7 @@
                       >
                     </div>
                     <div class="mt-6 flex items-center">
-                      <div class="flex space-x-1 text-sm text-white">
+                      <div class="flex space-x-1 text-sm">
                         Published: <time datetime={item?.created} class="ml-1">
                           {new Date(item?.created)?.toLocaleString("en-US", {
                             month: "short",

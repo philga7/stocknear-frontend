@@ -768,7 +768,7 @@
                     <span
                       class="inline-block px-2 {item?.optionType === 'Calls'
                         ? 'text-green-600 dark:text-[#00FC50]'
-                        : 'text-[#FF2F1F]'}"
+                        : 'text-red-600 dark:text-[#FF2F1F]'}"
                     >
                       {item?.optionType}
                     </span>
@@ -817,7 +817,7 @@
                     'Bullish'
                       ? 'text-green-600 dark:text-[#00FC50]'
                       : item?.sentiment === 'Bearish'
-                        ? 'text-[#FF2F1F]'
+                        ? 'text-red-600 dark:text-[#FF2F1F]'
                         : 'text-[#C8A32D]'} "
                   >
                     {item?.sentiment}

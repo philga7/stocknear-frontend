@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { numberOfUnreadNotification } from "$lib/store";
   import { page } from "$app/stores";
 
   export let data;
@@ -42,17 +41,17 @@
     </ul>
   </div>
 
-  <div class="mt-10 sm:mt-5 w-full m-auto mb-10 bg-default overflow-hidden">
+  <div class="mt-10 sm:mt-5 w-full m-auto mb-10 overflow-hidden">
     <div class="mb-6">
-      <h1 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
+      <h1 class="mb-1 text-2xl sm:text-3xl font-bold">
         Stock Sectors & Industries
       </h1>
     </div>
 
-    <nav class="border-b-[2px] overflow-x-auto whitespace-nowrap mb-5">
-      <ul
-        class="flex flex-row items-center w-full text-[1rem] sm:text-lg text-white"
-      >
+    <nav
+      class="border-[#2C6288] dark:border-white border-b-[2px] overflow-x-auto whitespace-nowrap"
+    >
+      <ul class="flex flex-row items-center w-full text-[1rem] sm:text-lg">
         {#each tabs as item, i}
           <a
             href={i === 0
@@ -62,8 +61,8 @@
                 : "/industry/all"}
             on:click={() => handleMode(i)}
             class="p-2 px-5 cursor-pointer {activeIdx === i
-              ? 'text-white bg-primary/90'
-              : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+              ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+              : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
           >
             {item.title}
           </a>

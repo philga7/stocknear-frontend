@@ -168,7 +168,7 @@
                     class="stroke-current {rating > 5
                       ? 'text-green-600 dark:text-[#00FC50]'
                       : rating < 5
-                        ? 'text-[#FF2F1F]'
+                        ? 'text-red-600 dark:text-[#FF2F1F]'
                         : 'text-white'} "
                     stroke-width="4"
                     stroke-dasharray="100"
