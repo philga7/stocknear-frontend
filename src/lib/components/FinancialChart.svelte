@@ -2,6 +2,7 @@
   import highcharts from "$lib/highcharts.ts";
   import { abbreviateNumber } from "$lib/utils";
   import Lazy from "svelte-lazy";
+  import { mode } from "mode-watcher";
   import { onMount } from "svelte";
 
   export let data;
@@ -20,8 +21,8 @@
     return {
       chart: {
         type: "column",
-        backgroundColor: "#09090B",
-        plotBackgroundColor: "#09090B",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
         height: 360,
         animation: false,
       },
@@ -47,19 +48,19 @@
       title: {
         text: `<h3 class="mt-3 mb-1 sm:text-lg">${labelName}</h3>`,
         useHTML: true,
-        style: { color: "white" },
+        style: { color: $mode === "light" ? "black" : "white" },
       },
       xAxis: {
         endOnTick: false,
         categories: xList,
         crosshair: {
-          color: "#fff", // Set the color of the crosshair line
+          color: $mode === "light" ? "black" : "white", // Set the color of the crosshair line
           width: 1, // Adjust the line width as needed
           dashStyle: "Solid",
         },
         labels: {
           style: {
-            color: "#fff",
+            color: $mode === "light" ? "black" : "white",
           },
           rotation: -45,
           distance: 10, // Increases space between label and axis
@@ -67,9 +68,9 @@
       },
       yAxis: {
         gridLineWidth: 1,
-        gridLineColor: "#111827",
+        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
         labels: {
-          style: { color: "white" },
+          style: { color: $mode === "light" ? "black" : "white" },
           formatter: function () {
             return abbreviateNumber(this.value);
           },
@@ -151,21 +152,21 @@
   });
 
   // Watch for changes in props and update chart accordingly
-  $: if (filterRule || displayStatement || data || processedData) {
+  $: if (filterRule || displayStatement || data || processedData || $mode) {
     updateChart();
   }
 </script>
 
 {#if !isLoaded}
   <div
-    class="w-full h-[360px] flex justify-center items-center m-auto border border-gray-800 rounded"
+    class="w-full h-[360px] flex justify-center items-center m-auto shadow-sm border border-gray-300 dark:border-gray-800 rounded"
   >
     <span class="loading loading-bars loading-sm"></span>
   </div>
 {:else}
   <Lazy fadeOption={{ delay: 50, duration: 50 }} keep={true}>
     <div
-      class="border border-gray-800 rounded w-full"
+      class="shadow-sm border border-gray-300 dark:border-gray-800 rounded w-full"
       use:highcharts={config}
       bind:this={chartElement}
     ></div>

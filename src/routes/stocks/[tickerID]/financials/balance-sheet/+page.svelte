@@ -359,242 +359,223 @@
   description={`Detailed balance sheet for ${$displayCompanyName} (${$stockTicker}), including cash, debt, assets, liabilities, and book value.`}
 />
 
-<section class="bg-default w-full overflow-hidden text-white h-full">
+<section class=" w-full overflow-hidden h-full">
   <div
     class="w-full flex justify-center w-full sm-auto h-full overflow-hidden mt-4 sm:mt-0"
   >
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"
     >
-      {#if isLoaded}
-        <main class="w-full">
-          <div class="sm:pl-7 sm:pb-7 sm:pt-7 m-auto mt-2 sm:mt-0">
+      <main class="w-full">
+        <div class="sm:pl-7 sm:pb-7 sm:pt-7 m-auto mt-2 sm:mt-0">
+          <div
+            class="mb-3 flex flex-col sm:flex-row items-center justify-between"
+          >
+            <h1 class="text-xl sm:text-2xl font-bold">
+              {removeCompanyStrings($displayCompanyName)} Balance Sheet Statement
+            </h1>
             <div
-              class="mb-3 flex flex-col sm:flex-row items-center justify-between"
+              class="mt-3 sm:mt-0 mb-2 sm:mb-0 bg-gray-300 dark:bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1"
             >
-              <h1 class="text-xl sm:text-2xl text-white font-bold">
-                {removeCompanyStrings($displayCompanyName)} Balance Sheet Statement
-              </h1>
-              <div
-                class="mt-3 sm:mt-0 mb-2 sm:mb-0 bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1"
-              >
-                {#each tabs as item, i}
-                  {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}
-                    <button
-                      on:click={() => goto("/pricing")}
-                      class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
-                    >
-                      <span class="relative text-sm block font-semibold">
-                        {item.title}
-                        <svg
-                          class="inline-block ml-0.5 -mt-1 w-3.5 h-3.5"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          ><path
-                            fill="#A3A3A3"
-                            d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                          /></svg
-                        >
-                      </span>
-                    </button>
-                  {:else}
-                    <button
-                      on:click={() => (activeIdx = i)}
-                      class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
-                      i
-                        ? 'z-0'
-                        : ''} "
-                    >
-                      {#if activeIdx === i}
-                        <div
-                          class="absolute inset-0 rounded-md bg-[#fff]"
-                        ></div>
-                      {/if}
-                      <span
-                        class="relative text-sm block font-semibold whitespace-nowrap {activeIdx ===
-                        i
-                          ? 'text-black'
-                          : 'text-white'}"
-                      >
-                        {item.title}
-                      </span>
-                    </button>
-                  {/if}
-                {/each}
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 gap-2">
-              {#if financialData?.length > 0}
-                <div
-                  class="mb-2 flex flex-row items-center w-full justify-end sm:justify-center"
-                >
-                  <label
-                    class="inline-flex mt-2 sm:mt-0 cursor-pointer relative mr-auto"
+              {#each tabs as item, i}
+                {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}
+                  <button
+                    on:click={() => goto("/pricing")}
+                    class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
                   >
-                    <input
-                      on:click={toggleMode}
-                      type="checkbox"
-                      checked={$coolMode}
-                      value={$coolMode}
-                      class="sr-only peer"
-                    />
-                    <div
-                      class="w-11 h-6 bg-gray-400 rounded-full peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1563F9]"
-                    ></div>
-                    {#if $coolMode}
-                      <span class="ml-2 text-sm text-white"> Chart Mode </span>
-                    {:else}
-                      <span class="ml-2 text-sm text-white"> Table Mode </span>
-                    {/if}
-                  </label>
-
-                  <div class="flex flex-row items-center w-fit sm:ml-auto">
-                    <div class="relative inline-block text-left grow">
-                      <DropdownMenu.Root>
-                        <DropdownMenu.Trigger asChild let:builder>
-                          <Button
-                            builders={[builder]}
-                            class="w-full border-gray-600 border bg-default sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
-                          >
-                            <span class="truncate text-white">{$timeFrame}</span
-                            >
-                            <svg
-                              class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                              style="max-width:40px"
-                              aria-hidden="true"
-                            >
-                              <path
-                                fill-rule="evenodd"
-                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                clip-rule="evenodd"
-                              ></path>
-                            </svg>
-                          </Button>
-                        </DropdownMenu.Trigger>
-                        <DropdownMenu.Content
-                          class="w-56 h-fit max-h-72 overflow-y-auto scroller"
-                        >
-                          <DropdownMenu.Label class="text-gray-400">
-                            Select time frame
-                          </DropdownMenu.Label>
-                          <DropdownMenu.Separator />
-                          <DropdownMenu.Group>
-                            <DropdownMenu.Item
-                              on:click={() => ($timeFrame = "5Y")}
-                              class="cursor-pointer hover:bg-primary"
-                            >
-                              5 years
-                            </DropdownMenu.Item>
-                            <DropdownMenu.Item
-                              on:click={() => ($timeFrame = "10Y")}
-                              class="cursor-pointer hover:bg-primary"
-                            >
-                              10 years
-                            </DropdownMenu.Item>
-                            <DropdownMenu.Item
-                              on:click={() => ($timeFrame = "MAX")}
-                              class="cursor-pointer hover:bg-primary"
-                            >
-                              Max
-                            </DropdownMenu.Item>
-                          </DropdownMenu.Group>
-                        </DropdownMenu.Content>
-                      </DropdownMenu.Root>
-                    </div>
-                    <Button
-                      on:click={() => exportFundamentalData("csv")}
-                      class="ml-2 w-fit border-gray-600 border bg-default sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
-                    >
-                      <span class="truncate text-white">Download</span>
+                    <span class="relative text-sm block font-semibold">
+                      {item.title}
                       <svg
-                        class="{['Pro', 'Plus']?.includes(data?.user?.tier)
-                          ? 'hidden'
-                          : ''} ml-1 -mt-0.5 w-3.5 h-3.5"
+                        class="inline-block ml-0.5 -mt-1 w-3.5 h-3.5"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
                         ><path
-                          fill="#A3A3A3"
+                          fill="currentColor"
                           d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
                         /></svg
                       >
-                    </Button>
-                  </div>
-                </div>
-
-                {#if $coolMode}
-                  <div class="grid gap-5 xs:gap-6 lg:grid-cols-3 lg:gap-3">
-                    {#each fields as item, i}
-                      <FinancialChart
-                        data={financialData}
-                        {statementConfig}
-                        displayStatement={item?.key}
-                        {filterRule}
-                        {processedData}
-                        color={["#ff00cc", "#37ff00", "#0c63e7", "#07c8f9"][
-                          i % 4
-                        ]}
-                      />
-                    {/each}
-                  </div>
+                    </span>
+                  </button>
                 {:else}
-                  <div
-                    class="w-full rounded-none sm:rounded-md m-auto overflow-x-auto no-scrollbar"
+                  <button
+                    on:click={() => (activeIdx = i)}
+                    class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
+                    i
+                      ? 'z-0'
+                      : ''} "
                   >
-                    <table
-                      class="table table-sm bg-table border border-gray-800 table-compact w-full"
+                    {#if activeIdx === i}
+                      <div class="absolute inset-0 rounded-md bg-[#fff]"></div>
+                    {/if}
+                    <span
+                      class="relative text-sm block font-semibold whitespace-nowrap {activeIdx ===
+                      i
+                        ? 'text-black'
+                        : ''}"
                     >
-                      <thead class="bg-default">
-                        <tr class="text-white">
-                          <td
-                            class="text-start bg-default text-white text-sm font-semibold pr-10"
-                            >Year</td
-                          >
-                          {#each financialData as cash}
-                            {#if filterRule === "annual"}
-                              <td
-                                class="bg-default font-semibold text-sm text-end"
-                              >
-                                {"FY" + cash?.calendarYear?.slice(-2)}
-                              </td>
-                            {:else}
-                              <td
-                                class="bg-default font-semibold text-sm text-end"
-                              >
-                                {"FY" +
-                                  cash?.calendarYear?.slice(-2) +
-                                  " " +
-                                  cash?.period}
-                              </td>
-                            {/if}
-                          {/each}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <!-- row -->
-                        <FinancialTable data={financialData} {fields} />
-                      </tbody>
-                    </table>
-                  </div>
+                      {item.title}
+                    </span>
+                  </button>
                 {/if}
-              {/if}
+              {/each}
             </div>
           </div>
-        </main>
-      {:else}
-        <div class="w-full flex justify-center items-center h-80">
-          <div class="relative">
-            <label
-              class="bg-secondary rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-            >
-              <span class="loading loading-spinner loading-md text-gray-400"
-              ></span>
-            </label>
+
+          <div class="grid grid-cols-1 gap-2">
+            {#if financialData?.length > 0}
+              <div
+                class="mb-2 flex flex-row items-center w-full justify-end sm:justify-center"
+              >
+                <label
+                  class="inline-flex mt-2 sm:mt-0 cursor-pointer relative mr-auto"
+                >
+                  <input
+                    on:click={toggleMode}
+                    type="checkbox"
+                    checked={$coolMode}
+                    value={$coolMode}
+                    class="sr-only peer"
+                  />
+                  <div
+                    class="w-11 h-6 bg-gray-400 rounded-full peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1563F9]"
+                  ></div>
+                  {#if $coolMode}
+                    <span class="ml-2 text-sm"> Chart Mode </span>
+                  {:else}
+                    <span class="ml-2 text-sm"> Table Mode </span>
+                  {/if}
+                </label>
+
+                <div class="flex flex-row items-center w-fit sm:ml-auto">
+                  <div class="relative inline-block text-left grow">
+                    <DropdownMenu.Root>
+                      <DropdownMenu.Trigger asChild let:builder>
+                        <Button
+                          builders={[builder]}
+                          class="shadow-sm w-full border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                        >
+                          <span class="truncate">{$timeFrame}</span>
+                          <svg
+                            class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                            style="max-width:40px"
+                            aria-hidden="true"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clip-rule="evenodd"
+                            ></path>
+                          </svg>
+                        </Button>
+                      </DropdownMenu.Trigger>
+                      <DropdownMenu.Content
+                        class="w-56 h-fit max-h-72 overflow-y-auto scroller"
+                      >
+                        <DropdownMenu.Label
+                          class="text-muted dark:text-gray-400"
+                        >
+                          Select time frame
+                        </DropdownMenu.Label>
+                        <DropdownMenu.Separator />
+                        <DropdownMenu.Group>
+                          <DropdownMenu.Item
+                            on:click={() => ($timeFrame = "5Y")}
+                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                          >
+                            5 years
+                          </DropdownMenu.Item>
+                          <DropdownMenu.Item
+                            on:click={() => ($timeFrame = "10Y")}
+                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                          >
+                            10 years
+                          </DropdownMenu.Item>
+                          <DropdownMenu.Item
+                            on:click={() => ($timeFrame = "MAX")}
+                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                          >
+                            Max
+                          </DropdownMenu.Item>
+                        </DropdownMenu.Group>
+                      </DropdownMenu.Content>
+                    </DropdownMenu.Root>
+                  </div>
+                  <Button
+                    on:click={() => exportFundamentalData("csv")}
+                    class="shadow-sm ml-2 w-fit border-gray-300 dark:border-gray-600 border  sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                  >
+                    <span class="truncate">Download</span>
+                    <svg
+                      class="{['Pro', 'Plus']?.includes(data?.user?.tier)
+                        ? 'hidden'
+                        : ''} ml-1 -mt-0.5 w-3.5 h-3.5"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      ><path
+                        fill="currentColor"
+                        d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                      /></svg
+                    >
+                  </Button>
+                </div>
+              </div>
+
+              {#if $coolMode}
+                <div class="grid gap-5 xs:gap-6 lg:grid-cols-3 lg:gap-3">
+                  {#each fields as item, i}
+                    <FinancialChart
+                      data={financialData}
+                      {statementConfig}
+                      displayStatement={item?.key}
+                      {filterRule}
+                      {processedData}
+                      color={["#ff00cc", "#37ff00", "#0c63e7", "#07c8f9"][
+                        i % 4
+                      ]}
+                    />
+                  {/each}
+                </div>
+              {:else}
+                <div
+                  class="w-full rounded-none sm:rounded-md m-auto overflow-x-auto no-scrollbar"
+                >
+                  <table
+                    class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
+                  >
+                    <thead class="text-muted dark:text-white">
+                      <tr class="">
+                        <td class="text-start text-sm font-semibold pr-10"
+                          >Year</td
+                        >
+                        {#each financialData as cash}
+                          {#if filterRule === "annual"}
+                            <td class=" font-semibold text-sm text-end">
+                              {"FY" + cash?.calendarYear?.slice(-2)}
+                            </td>
+                          {:else}
+                            <td class=" font-semibold text-sm text-end">
+                              {"FY" +
+                                cash?.calendarYear?.slice(-2) +
+                                " " +
+                                cash?.period}
+                            </td>
+                          {/if}
+                        {/each}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- row -->
+                      <FinancialTable data={financialData} {fields} />
+                    </tbody>
+                  </table>
+                </div>
+              {/if}
+            {/if}
           </div>
         </div>
-      {/if}
+      </main>
     </div>
   </div>
 </section>
