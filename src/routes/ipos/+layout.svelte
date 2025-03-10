@@ -67,18 +67,20 @@
         class="relative flex justify-center items-start overflow-hidden w-full"
       >
         <main class="w-full lg:pr-5">
-          <h1 class="mb-6 text-white text-2xl sm:text-3xl font-bold">
+          <h1 class="mb-6 text-2xl sm:text-3xl font-bold">
             {activeIdx === 0 ? "Recent IPOs" : "IPO News"}
           </h1>
 
-          <nav class=" border-b-[2px] overflow-x-auto whitespace-nowrap">
-            <ul class="flex flex-row items-center w-full text-lg text-white">
+          <nav
+            class=" border-[#2C6288] dark:border-white border-b-[2px] overflow-x-auto whitespace-nowrap"
+          >
+            <ul class="flex flex-row items-center w-full text-lg">
               {#each tabs as item, i}
                 <a
                   href={item?.path}
                   class="p-2 px-5 cursor-pointer {activeIdx === i
-                    ? 'text-white bg-primary/90 font-semibold'
-                    : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                    ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                    : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
                 >
                   {item.title}
                 </a>
@@ -87,18 +89,16 @@
           </nav>
 
           {#if activeIdx === 0}
-            <nav class=" overflow-x-auto whitespace-nowrap">
-              <ul
-                class="flex flex-row items-center w-full text-[1rem] text-white"
-              >
+            <nav class="overflow-x-auto whitespace-nowrap">
+              <ul class="flex flex-row items-center w-full text-[1rem]">
                 {#each ["Latest", "2025", "2024", "2023", "2022", "2021", "2020", "2019"] as item}
                   {#if item !== "Latest"}
                     <a
                       href={`/ipos/${item}`}
                       on:click={() => (displaySection = item)}
                       class="p-2 px-5 cursor-pointer {displaySection === item
-                        ? 'text-white bg-primary/90'
-                        : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                        ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                        : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
                     >
                       {item}
                     </a>
@@ -107,8 +107,8 @@
                       href={`/ipos`}
                       on:click={() => (displaySection = item)}
                       class="p-2 px-5 cursor-pointer {displaySection === item
-                        ? 'text-white bg-primary/90'
-                        : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                        ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                        : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
                     >
                       {item}
                     </a>

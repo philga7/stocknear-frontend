@@ -121,7 +121,9 @@
                       </div>
                     {/if}
                     <div class="mt-3 w-full">
-                      <h3 class="text-sm text-white/80 truncate mb-2">
+                      <h3
+                        class="text-sm text-muted dark:text-white/80 truncate mb-2"
+                      >
                         {formatDate(item?.publishedDate)} &#183; {item?.site}
                       </h3>
                       <a
@@ -157,7 +159,9 @@
                         </div>
                       </a>
                       <div class="mt-3 sm:mt-0 w-full">
-                        <h3 class="text-sm text-white/80 truncate mb-2">
+                        <h3
+                          class="text-sm text-muted dark:text-white/80 truncate mb-2"
+                        >
                           {formatDate(item?.publishedDate)} &#183; {item?.site}
                         </h3>
                         <a

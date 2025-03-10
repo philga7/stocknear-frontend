@@ -59,42 +59,33 @@
       <main class="w-full lg:w-3/4 lg:pr-10">
         <div class="flex flex-col justify-center items-center">
           {#if rawData?.length !== 0}
-            <h2
-              class="text-white text-xl font- text-start mt-5 w-full font-semibold"
-            >
+            <h2 class=" text-xl font- text-start mt-5 w-full font-semibold">
               {rawData?.length} IPOs
             </h2>
             <div class="w-full overflow-x-auto">
               <table
-                class="mt-5 table table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto overflow-hidden"
+                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
               >
-                <thead class="bg-default">
+                <thead class="text-muted dark:text-white">
                   <tr>
-                    <th class="text-white font-semibold text-sm text-start"
-                      >IPO Date</th
-                    >
-                    <th class="text-white font-semibold text-sm text-start"
-                      >Symbol</th
-                    >
-                    <th class="text-white font-semibold text-sm">Name</th>
-                    <th class="text-white font-semibold text-end text-sm"
-                      >IPO Price</th
-                    >
-                    <th class="text-white font-semibold text-end text-sm"
+                    <th class=" font-semibold text-sm text-start">IPO Date</th>
+                    <th class=" font-semibold text-sm text-start">Symbol</th>
+                    <th class=" font-semibold text-sm">Name</th>
+                    <th class=" font-semibold text-end text-sm">IPO Price</th>
+                    <th class=" font-semibold text-end text-sm"
                       >Current Price</th
                     >
-                    <th class="text-white font-semibold text-end text-sm"
-                      >Return Since</th
+                    <th class=" font-semibold text-end text-sm">Return Since</th
                     >
                   </tr>
                 </thead>
                 <tbody>
                   {#each ipoList as item}
                     <tr
-                      class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-oddborder-b-[#09090B]"
+                      class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                     >
                       <td
-                        class="text-white text-sm sm:text-[1rem] whitespace-nowrap text-start border-b-[#09090B] whitespace-nowrap"
+                        class=" text-sm sm:text-[1rem] whitespace-nowrap text-start whitespace-nowrap"
                       >
                         {new Date(item?.ipoDate)?.toLocaleString("en-US", {
                           month: "short",
@@ -105,7 +96,7 @@
                       </td>
 
                       <td
-                        class="text-sm sm:text-[1rem] whitespace-nowrap text-start border-b-[#09090B] whitespace-nowrap"
+                        class="text-sm sm:text-[1rem] whitespace-nowrap text-start whitespace-nowrap"
                       >
                         <a
                           href={"/stocks/" + item?.symbol}
@@ -115,10 +106,8 @@
                         </a>
                       </td>
 
-                      <td
-                        class="text-gray-200 border-b-[#09090B] whitespace-nowrap text-sm sm:text-[1rem]"
-                      >
-                        <span class="text-white"
+                      <td class=" whitespace-nowrap text-sm sm:text-[1rem]">
+                        <span class=""
                           >{item?.name?.length > charNumber
                             ? formatString(item?.name?.slice(0, charNumber)) +
                               "..."
@@ -127,35 +116,33 @@
                       </td>
 
                       <td
-                        class="text-white text-sm sm:text-[1rem] whitespace-nowrap border-b-[#09090B] text-end"
+                        class=" text-sm sm:text-[1rem] whitespace-nowrap text-end"
                       >
                         {item?.ipoPrice !== null ? item?.ipoPrice : "n/a"}
                       </td>
 
-                      <td
-                        class="text-white border-b-[#09090B] text-sm sm:text-[1rem] text-end"
-                      >
+                      <td class="  text-sm sm:text-[1rem] text-end">
                         {item?.currentPrice !== null
                           ? item?.currentPrice
                           : "n/a"}
                       </td>
 
                       <td
-                        class="text-white border-b-[#09090B] text-end flex flex-row items-center justify-end"
+                        class="  text-end flex flex-row items-center justify-end"
                       >
                         {#if item?.return >= 0 && item?.return !== null}
                           <span
-                            class="inline-block text-[#00FC50] text-sm sm:text-[1rem] whitespace-nowrap"
+                            class="inline-block text-green-600 dark:text-[#00FC50] text-sm sm:text-[1rem] whitespace-nowrap"
                             >+{abbreviateNumber(item?.return)}%</span
                           >
                         {:else if item?.return < 0 && item?.return !== null}
                           <span
-                            class="inline-block text-[#FF2F1F] text-sm sm:text-[1rem] whitespace-nowrap"
+                            class="inline-block text-red-600 dark:text-[#FF2F1F] text-sm sm:text-[1rem] whitespace-nowrap"
                             >{abbreviateNumber(item?.return)}%
                           </span>
                         {:else}
                           <span
-                            class="inline-block text-white text-sm sm:text-[1rem] whitespace-nowrap"
+                            class="inline-block text-sm sm:text-[1rem] whitespace-nowrap"
                           >
                             n/a
                           </span>
@@ -179,11 +166,11 @@
       <aside class="hidden lg:block relative fixed w-1/4">
         {#if ipoNews?.length !== 0}
           <div
-            class="w-full sm:hover:text-white text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit"
           >
             <div class="p-4 text-sm">
-              <h3 class="text-xl text-white font-bold mb-3">IPO News</h3>
-              <ul class="text-white">
+              <h3 class="text-xl font-bold mb-3">IPO News</h3>
+              <ul class="">
                 {#each ipoNews?.slice(0, 10) as item}
                   <li class="mb-3 last:mb-1">
                     {item?.timestamp}
@@ -198,7 +185,7 @@
               </ul>
               <a
                 href={`/ipos/news`}
-                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
+                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-white dark:text-black m-auto sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 bg-[#3B82F6] dark:bg-[#fff] transition duration-100"
               >
                 More IPO News
               </a>

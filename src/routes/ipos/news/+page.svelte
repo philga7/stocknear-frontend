@@ -89,14 +89,14 @@
           <div class="grid grid-cols-1 gap-y-3">
             {#if news?.length !== 0}
               {#each news as item, index}
-                <div class="w-full flex flex-col bg-default rounded-md m-auto">
-                  {#if checkIfYoutubeVideo(item.link)}
+                <div class="w-full flex flex-col rounded-md m-auto">
+                  {#if checkIfYoutubeVideo(item?.link)}
                     {#if showVideo[index]}
                       <!-- Show the YouTube iframe when the user clicks play -->
                       <div class="w-full aspect-video mb-4">
                         <iframe
-                          class="w-full h-full rounded-md border border-gray-800"
-                          src={`https://www.youtube.com/embed/${checkIfYoutubeVideo(item.link)}`}
+                          class="w-full h-full rounded-md border border-gray-300 dark:border-gray-800"
+                          src={`https://www.youtube.com/embed/${checkIfYoutubeVideo(item?.link)}`}
                           frameborder="0"
                           allow="clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                           allowfullscreen
@@ -108,7 +108,7 @@
                         <div class="mb-3 sm:order-3 lg:pr-2">
                           <div
                             class="group relative block cursor-pointer bg-black bg-cover bg-[center_50%] object-contain after:block after:pb-[56.25%] after:content-[''] rounded-sm focus:outline-hidden focus:ring-2 focus:ring-blue-brand_light focus:ring-offset-2"
-                            style="background-image: url({item?.img});"
+                            style="background-image: url({item?.image});"
                             tabindex="0"
                             on:click={() => handlePlayClick(index)}
                           >
@@ -120,17 +120,19 @@
                       </div>
                     {/if}
                     <div class="mt-3 w-full">
-                      <h3 class="text-sm text-white/80 truncate mb-2">
-                        {item}
+                      <h3
+                        class="text-sm text-muted dark:text-white/80 truncate mb-2"
+                      >
+                        {item?.timestamp}
                       </h3>
                       <a
                         href={item?.link}
                         rel="noopener noreferrer"
                         target="_blank"
-                        class="text-lg sm:text-xl font-bold text-white"
+                        class="text-lg sm:text-xl font-bold"
                       >
                         {item?.title}
-                        <p class="text-white text-sm mt-2 font-normal">
+                        <p class=" text-sm mt-2 font-normal">
                           {item?.description?.length > 200
                             ? item?.description?.slice(0, 200) + "..."
                             : item?.description}
@@ -144,7 +146,7 @@
                         href={item?.link}
                         rel="noopener noreferrer"
                         target="_blank"
-                        class="w-full sm:max-w-56 h-fit max-h-96 sm:mr-3 border border-gray-800 rounded-md"
+                        class="w-full sm:max-w-56 h-fit max-h-96 sm:mr-3 border border-gray-300 dark:border-gray-800 rounded-md"
                       >
                         <div class="shrink-0 m-auto">
                           <img
@@ -156,17 +158,19 @@
                         </div>
                       </a>
                       <div class="mt-3 sm:mt-0 w-full">
-                        <h3 class="text-sm text-white/80 truncate mb-2">
+                        <h3
+                          class="text-sm text-muted dark:text-white/80 truncate mb-2"
+                        >
                           {item?.timestamp}
                         </h3>
                         <a
                           href={item?.url}
                           rel="noopener noreferrer"
                           target="_blank"
-                          class="text-lg sm:text-xl font-bold text-white"
+                          class="text-lg sm:text-xl font-bold"
                         >
                           {item?.title}
-                          <p class="text-white text-sm mt-2 font-normal">
+                          <p class=" text-sm mt-2 font-normal">
                             {item?.description?.length > 200
                               ? item?.description?.slice(0, 200) + "..."
                               : item?.description}
@@ -176,7 +180,9 @@
                     </div>
                   {/if}
                 </div>
-                <hr class="border-gray-600 w-full m-auto mt-5 mb-5" />
+                <hr
+                  class="border-gray-300 dark:border-gray-600 w-full m-auto mt-5 mb-5"
+                />
               {/each}
             {/if}
           </div>
@@ -185,11 +191,11 @@
       <aside class="hidden lg:block relative fixed w-1/4">
         {#if marketNews?.length !== 0}
           <div
-            class="w-full sm:hover:text-white text-white border border-gray-600 rounded-md h-fit pb-2 mt-4 cursor-pointer bg-inherit"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit"
           >
             <div class="p-4 text-sm">
-              <h3 class="text-xl text-white font-bold mb-3">Stocks News</h3>
-              <ul class="text-white">
+              <h3 class="text-xl font-bold mb-3">IPO News</h3>
+              <ul class="">
                 {#each marketNews?.slice(0, 10) as item}
                   <li class="mb-3 last:mb-1">
                     {formatDate(item?.publishedDate)} ago -
@@ -205,7 +211,7 @@
               </ul>
               <a
                 href={`/market-news`}
-                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-5 text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
+                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-white dark:text-black m-auto sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 bg-[#3B82F6] dark:bg-[#fff] transition duration-100"
               >
                 More Stocks News
               </a>

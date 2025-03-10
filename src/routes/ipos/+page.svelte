@@ -39,7 +39,7 @@
 />
 
 <div class="w-full overflow-hidden m-auto mt-5">
-  <h2 class="text-white text-xl font- text-start mt-5 w-full font-semibold">
+  <h2 class=" text-xl font- text-start mt-5 w-full font-semibold">
     Last {rawData?.length} IPOs
   </h2>
   <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
@@ -60,11 +60,11 @@
       <aside class="hidden lg:block relative fixed w-1/4">
         {#if ipoNews?.length !== 0}
           <div
-            class="w-full sm:hover:text-white text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit"
           >
             <div class="p-4 text-sm">
-              <h3 class="text-xl text-white font-bold mb-3">IPO News</h3>
-              <ul class="text-white">
+              <h3 class="text-xl font-bold mb-3">IPO News</h3>
+              <ul class="">
                 {#each ipoNews?.slice(0, 10) as item}
                   <li class="mb-3 last:mb-1">
                     {item?.timestamp}
@@ -79,7 +79,7 @@
               </ul>
               <a
                 href={`/ipos/news`}
-                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
+                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-white dark:text-black m-auto sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 bg-[#3B82F6] dark:bg-[#fff] transition duration-100"
               >
                 More IPO News
               </a>
