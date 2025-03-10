@@ -694,16 +694,18 @@
 
 <!-- Content area -->
 
-<div class="flex flex-row items-end justify-end w-fit ml-auto mt-5 mb-2">
+<div
+  class="flex flex-row items-end justify-end w-fit ml-auto mt-5 text-muted dark:text-white"
+>
   <DownloadData {data} {rawData} title={data?.getParams ?? "data"} />
 
   <DropdownMenu.Root>
     <DropdownMenu.Trigger asChild let:builder>
       <Button
         builders={[builder]}
-        class=" min-w-[110px] w-fit ml-3 border-gray-600 border bg-default sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5 text-white rounded-md"
+        class="shadow-sm min-w-[110px] w-fit ml-3 border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5  rounded-md"
       >
-        <span class="w-fit text-white text-sm sm:text-[1rem]">Indicators</span>
+        <span class="w-fit text-sm sm:text-[1rem]">Indicators</span>
         <svg
           class="ml-0.5 mt-1 h-5 w-5 inline-block shrink-0"
           viewBox="0 0 20 20"
@@ -725,7 +727,7 @@
     >
       <!-- Search Input -->
       <div
-        class="sticky fixed -top-1 z-40 bg-default p-2 border-b border-gray-600"
+        class="sticky fixed -top-1 z-40 bg-white dark:bg-default p-2 border-b border-gray-300 dark:border-gray-600"
       >
         <div class="relative w-full">
           <!-- Input Field -->
@@ -734,7 +736,7 @@
             on:input={handleInput}
             autocomplete="off"
             autofocus=""
-            class="text-sm w-full border-0 bg-default focus:border-gray-200 focus:ring-0 text-white placeholder:text-gray-300 pr-8"
+            class="text-sm w-full border-0 bg-white dark:bg-default focus:border-gray-200 focus:ring-0 placeholder:text-muted dark:text-gray-300 pr-8"
             type="text"
             placeholder=""
           />
@@ -769,14 +771,16 @@
       <DropdownMenu.Group class="pb-2">
         <!-- Added padding to avoid overlapping with Reset button -->
         {#each searchQuery?.length !== 0 ? testList : allRows as item}
-          <DropdownMenu.Item class="sm:hover:bg-primary">
+          <DropdownMenu.Item
+            class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary"
+          >
             <div class="flex items-center">
               {#if defaultRules?.includes(item?.rule)}
                 <label
                   on:click|capture={(event) => {
                     event.preventDefault();
                   }}
-                  class="text-white"
+                  class=""
                 >
                   <input
                     disabled={defaultRules?.includes(item?.rule) ? true : false}
@@ -794,7 +798,7 @@
                     event.preventDefault();
                     handleChangeValue(item?.name);
                   }}
-                  class="cursor-pointer text-white"
+                  class="cursor-pointer"
                   for={item?.name}
                 >
                   <input
@@ -808,7 +812,7 @@
                   <span class="ml-2">{item?.name}</span>
                 </label>
               {:else}
-                <a href="/pricing" class="cursor-pointer text-white">
+                <a href="/pricing" class="cursor-pointer">
                   <svg
                     class="h-[18px] w-[18px] inline-block text-icon group-hover:text-dark-400"
                     viewBox="0 0 20 20"
@@ -830,17 +834,17 @@
       </DropdownMenu.Group>
       <!-- Reset Selection button -->
       <div
-        class="sticky -bottom-1 bg-default z-50 p-2 border-t border-gray-600 w-full flex justify-between items-center"
+        class="sticky -bottom-1 bg-white dark:bg-default z-50 p-2 border-t border-gray-300 dark:border-gray-600 w-full flex justify-between items-center"
       >
         <label
           on:click={handleResetAll}
-          class="w-full sm:hover:text-white text-gray-300 bg-default text-start text-sm cursor-pointer"
+          class="w-full dark:sm:hover:text-white text-muted dark:text-gray-300 bg-white dark:bg-default text-start text-sm cursor-pointer"
         >
           Reset Selection
         </label>
         <label
           on:click={handleSelectAll}
-          class="w-full flex justify-end sm:hover:text-white text-gray-300 bg-default text-start text-sm cursor-pointer"
+          class="w-full flex justify-end dark:sm:hover:text-white text-muted dark:text-gray-300 bg-white dark:bg-default text-start text-sm cursor-pointer"
         >
           Select All
         </label>
@@ -849,9 +853,9 @@
   </DropdownMenu.Root>
 </div>
 
-<div class="w-full overflow-x-auto text-white">
+<div class="w-full overflow-x-auto text-muted dark:text-white">
   <table
-    class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto mt-4"
+    class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-2"
   >
     <thead>
       <TableHeader {columns} {sortOrders} {sortData} />
@@ -859,7 +863,7 @@
     <tbody>
       {#each stockList as item, index}
         <tr
-          class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800 {index +
+          class="sdark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
             1 ===
             rawData?.length &&
           !['Pro', 'Plus']?.includes(data?.user?.tier) &&
@@ -869,7 +873,7 @@
         >
           {#each columns as column}
             <td
-              class="text-sm sm:text-[1rem] whitespace-nowrap border-b border-gray-800"
+              class="text-sm sm:text-[1rem] whitespace-nowrap"
               class:text-left={column.align === "left"}
               class:text-right={column.align === "right"}
             >
@@ -897,11 +901,11 @@
                 {item[column.key]?.toLocaleString("en-US")}
               {:else if column?.type === "decimalSign"}
                 {#if item[column.key] >= 0}
-                  <span class="text-[#00FC50]"
+                  <span class="text-green-600 dark:text-[#00FC50]"
                     >+{item[column.key]?.toLocaleString("en-US")}</span
                   >
                 {:else if item[column.key] < 0}
-                  <span class="text-[#FF2F1F]"
+                  <span class="text-red-600 dark:text-[#FF2F1F]"
                     >{item[column.key]?.toLocaleString("en-US")}</span
                   >
                 {/if}
@@ -918,8 +922,8 @@
                       <span
                         class="inline-flex rounded-full h-1 w-1 {item?.previous >
                         item[column?.key]
-                          ? 'bg-[#FF2F1F]'
-                          : 'bg-[#00FC50]'} pulse-animation"
+                          ? 'bg-red-600 dark:bg-[#FF2F1F]'
+                          : 'bg-green-600 dark:bg-[#00FC50]'} pulse-animation"
                       ></span>
                     </span>
                   {/if}
@@ -933,23 +937,25 @@
                   : "< 0.01%"}
               {:else if column.type === "percentSign"}
                 {#if item[column.key] > 0}
-                  <span class="text-[#00FC50]"
+                  <span class="text-green-600 dark:text-[#00FC50]"
                     >+{abbreviateNumber(item[column.key]?.toFixed(2))}%</span
                   >
                 {:else if item[column.key] < 0}
-                  <span class="text-[#FF2F1F]"
+                  <span class="text-red-600 dark:text-[#FF2F1F]"
                     >{abbreviateNumber(item[column.key]?.toFixed(2))}%</span
                   >
                 {:else}
-                  <span class="text-[#fff]"
-                    >{item[column.key]?.toFixed(2)}%</span
-                  >
+                  <span>{item[column.key]?.toFixed(2)}%</span>
                 {/if}
               {:else if column?.type === "rating"}
                 {#if ["Strong Buy", "Buy"].includes(item[column.key])}
-                  <span class="text-[#00FC50]">{item[column.key]}</span>
+                  <span class="text-green-600 dark:text-[#00FC50]"
+                    >{item[column.key]}</span
+                  >
                 {:else if ["Strong Sell", "Sell"].includes(item[column.key])}
-                  <span class="text-[#FF2F1F]">{item[column.key]}</span>
+                  <span class="text-red-600 dark:text-[#FF2F1F]"
+                    >{item[column.key]}</span
+                  >
                 {:else if item[column.key] === "Hold"}
                   <span class="text-[#FFA838]">{item[column.key]}</span>
                 {:else}
@@ -958,10 +964,10 @@
               {:else if column.type === "sentiment"}
                 <div
                   class={item[column.key] >= 55
-                    ? "text-[#00FC50]"
+                    ? "text-green-600 dark:text-[#00FC50]"
                     : item[column.key] >= 50
                       ? "text-[#E57C34]"
-                      : "text-[#FF2F1F]"}
+                      : "text-red-600 dark:text-[#FF2F1F]"}
                 >
                   <div class="flex flex-row items-center justify-end">
                     <div class="">

@@ -35,7 +35,7 @@
   }
 </script>
 
-<section class="w-auto bg-default overflow-hidden text-black h-full">
+<section class="w-auto overflow-hidden text-muted dark:text-white h-full">
   <div class="m-auto h-full overflow-hidden">
     <main class="w-full">
       <div class="m-auto">
@@ -47,8 +47,8 @@
               href={`/stocks/${$stockTicker}/profile`}
               on:click={() => changeSubSection("overview")}
               class="p-2 px-5 cursor-pointer {displaySubSection === 'overview'
-                ? 'text-white bg-primary/90'
-                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
             >
               Overview
             </a>
@@ -57,8 +57,8 @@
               href={`/stocks/${$stockTicker}/profile/employees`}
               on:click={() => changeSubSection("employees")}
               class="p-2 px-5 cursor-pointer {displaySubSection === 'employees'
-                ? 'text-white bg-primary/90'
-                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
             >
               Employees
             </a>

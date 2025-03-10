@@ -275,7 +275,7 @@
   </script>
 </svelte:head>
 
-<div class="app {$page?.url?.pathname === '/' ? 'bg-[#000]' : ''}">
+<div class="app text-muted dark:text-white {$page?.url?.pathname === '/' ? 'bg-[#000]' : ''}">
   <div class="flex min-h-screen w-full flex-col bg-white dark:bg-default">
     <div class="w-full">
       <div

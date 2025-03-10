@@ -45,7 +45,7 @@ ${paragraphs.join("\n")}
   description={`Company profile for ${$displayCompanyName} (${$stockTicker}) with a description, list of executives, contact details and other key facts.`}
 />
 
-<section class="w-full bg-default overflow-hidden text-white h-full">
+<section class="w-full overflow-hidden text-muted dark:text-white h-full">
   <div class="w-full flex h-full overflow-hidden">
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"
@@ -62,7 +62,7 @@ ${paragraphs.join("\n")}
           </div>
           <div class="lg:-mr-6 shrink-0 lg:float-right lg:w-[336px]">
             <div
-              class="mt-7 rounded border border-gray-600 bg-primary px-3 pb-2 pt-3 xs:px-4 xs:pt-4 lg:mt-1"
+              class="mt-7 rounded border border-gray-300 dark:border-gray-600 bg-gray-200 shadow-sm dark:bg-primary px-3 pb-2 pt-3 xs:px-4 xs:pt-4 lg:mt-1"
             >
               <div class="text-center text-2xl font-semibold">
                 {$displayCompanyName}
@@ -76,7 +76,8 @@ ${paragraphs.join("\n")}
               </div>
               <table class="w-full">
                 <tbody
-                  ><tr class="border-b border-gray-600 last:border-0"
+                  ><tr
+                    class="border-b border-gray-300 dark:border-gray-600 last:border-0"
                     ><td
                       class="px-1 py-1.5 font-semibold lg:py-2"
                       data-svelte-h="svelte-bpivlp">Country</td
@@ -88,7 +89,8 @@ ${paragraphs.join("\n")}
                     ></tr
                   >
 
-                  <tr class="border-b border-gray-600 last:border-0"
+                  <tr
+                    class="border-b border-gray-300 dark:border-gray-600 last:border-0"
                     ><td
                       class="px-1 py-1.5 font-semibold lg:py-2"
                       data-svelte-h="svelte-pqn7mx">IPO Date</td
@@ -105,19 +107,21 @@ ${paragraphs.join("\n")}
                         : "n/a"}</td
                     ></tr
                   >
-                  <tr class="border-b border-gray-600 last:border-0"
+                  <tr
+                    class="border-b border-gray-300 dark:border-gray-600 last:border-0"
                     ><td class="px-1 py-1.5 font-semibold lg:py-2">Industry</td>
                     <td class="px-1 py-1.5 text-right lg:py-2"
                       ><a
                         href={rawData?.industry
                           ? getIndustryHref(rawData?.industry)
                           : "#"}
-                        class="sm:hover:text-blue-400 text-white underline underline-offset-4"
+                        class="sm:hover:text-blue-500 dark:sm:hover:text-blue-400 underline underline-offset-4"
                         >{rawData?.industry ?? "n/a"}</a
                       ></td
                     ></tr
                   >
-                  <tr class="border-b border-gray-600 last:border-0"
+                  <tr
+                    class="border-b border-gray-300 dark:border-gray-600 last:border-0"
                     ><td
                       class="px-1 py-1.5 font-semibold lg:py-2"
                       data-svelte-h="svelte-5e1uzt">Sector</td
@@ -127,17 +131,18 @@ ${paragraphs.join("\n")}
                         href={sectorNavigation?.find(
                           (item) => item?.title === rawData?.sector,
                         )?.link}
-                        class="sm:hover:text-blue-400 text-white underline underline-offset-4"
+                        class="sm:hover:text-blue-500 dark:sm:hover:text-blue-400 underline underline-offset-4"
                         >{rawData?.sector ? rawData?.sector : "n/a"}</a
                       ></td
                     ></tr
                   >
-                  <tr class="border-b border-gray-600 last:border-0"
+                  <tr
+                    class="border-b border-gray-300 dark:border-gray-600 last:border-0"
                     ><td class="px-1 py-1.5 font-semibold lg:py-2">Employees</td
                     >
                     <td class="px-1 py-1.5 text-right lg:py-2"
                       ><a
-                        class="sm:hover:text-blue-400 text-white underline underline-offset-4"
+                        class="sm:hover:text-blue-500 dark:sm:hover:text-blue-400 underline underline-offset-4"
                         href={`/stocks/${$stockTicker}/profile/employees`}
                         >{rawData?.fullTimeEmployees
                           ? new Intl.NumberFormat("en")?.format(
@@ -147,7 +152,8 @@ ${paragraphs.join("\n")}
                       ></td
                     ></tr
                   >
-                  <tr class="border-b border-gray-600 last:border-0"
+                  <tr
+                    class="border-b border-gray-300 dark:border-gray-600 last:border-0"
                     ><td
                       class="px-1 py-1.5 font-semibold lg:py-2"
                       data-svelte-h="svelte-1qhfmvo">CEO</td
@@ -163,18 +169,14 @@ ${paragraphs.join("\n")}
               Contact Details
             </h2>
             <div
-              class="rounded border border-gray-600 bg-primary px-4 pb-2 pt-4"
+              class="rounded border border-gray-300 dark:border-gray-600 bg-gray-200 shadow-sm dark:bg-primary px-4 pb-2 pt-4"
             >
               <table class="w-full">
                 <tbody
-                  ><tr class="border-b border-gray-600 last:border-0"
+                  ><tr
+                    class="border-b border-gray-300 dark:border-gray-600 last:border-0"
                     ><td colspan="2" class="pb-3"
-                      ><div
-                        class="mb-2 text-lg font-bold"
-                        data-svelte-h="svelte-4u53xl"
-                      >
-                        Address:
-                      </div>
+                      ><div class="mb-2 text-lg font-bold">Address:</div>
                       <div>
                         {rawData?.address
                           ? rawData?.address
@@ -187,12 +189,13 @@ ${paragraphs.join("\n")}
                     ></tr
                   >
 
-                  <tr class="border-b border-gray-600 last:border-0"
+                  <tr
+                    class="border-b border-gray-300 dark:border-gray-600 last:border-0"
                     ><td class="px-0.5 py-2 font-semibold">Website</td>
                     <td class="px-0.5 py-2 text-right">
                       <a
                         href={rawData?.website}
-                        class="sm:hover:text-white truncate text-blue-400"
+                        class="sm:hover:text-muted dark:sm:hover:text-white truncate text-blue-500 dark:text-blue-400"
                         target="_blank">{rawData?.website ?? "n/a"}</a
                       ></td
                     ></tr
@@ -202,87 +205,81 @@ ${paragraphs.join("\n")}
             </div>
             <h2 class="mt-6 xs:mt-8 font-bold text-2xl mb-2">Stock Details</h2>
             <div
-              class="rounded border border-gray-600 bg-primary px-2 pb-2 pt-2 xs:px-4 xs:pt-2.5"
+              class="rounded border border-gray-300 dark:border-gray-600 bg-gray-200 shadow-sm dark:bg-primary px-2 pb-2 pt-2 xs:px-4 xs:pt-2.5"
             >
               <table class="w-full">
                 <tbody
-                  ><tr class="border-b border-gray-600 last:border-0"
-                    ><td
-                      class="px-1 py-1.5 font-semibold lg:py-2"
-                      data-svelte-h="svelte-lmvnpx">Ticker Symbol</td
+                  ><tr
+                    class="border-b border-gray-300 dark:border-gray-600 last:border-0"
+                    ><td class="px-1 py-1.5 font-semibold lg:py-2"
+                      >Ticker Symbol</td
                     >
                     <td class="px-1 py-1.5 text-right lg:py-2"
                       >{rawData?.symbol ?? "n/a"}</td
                     ></tr
                   >
-                  <tr class="border-b border-gray-600 last:border-0"
-                    ><td
-                      class="px-1 py-1.5 font-semibold lg:py-2"
-                      data-svelte-h="svelte-h7dsem">Exchange</td
-                    >
+                  <tr
+                    class="border-b border-gray-300 dark:border-gray-600 last:border-0"
+                    ><td class="px-1 py-1.5 font-semibold lg:py-2">Exchange</td>
                     <td class="px-1 py-1.5 text-right lg:py-2"
                       >{rawData?.exchange ?? "n/a"}</td
                     ></tr
                   >
-                  <tr class="border-b border-gray-600 last:border-0"
-                    ><td
-                      class="px-1 py-1.5 font-semibold lg:py-2"
-                      data-svelte-h="svelte-q9yzrm">Fiscal Year</td
+                  <tr
+                    class="border-b border-gray-300 dark:border-gray-600 last:border-0"
+                    ><td class="px-1 py-1.5 font-semibold lg:py-2"
+                      >Fiscal Year</td
                     >
                     <td class="px-1 py-1.5 text-right lg:py-2"
                       >{rawData?.fiscalYearRange ?? "n/a"}</td
                     ></tr
                   >
-                  <tr class="border-b border-gray-600 last:border-0"
-                    ><td
-                      class="px-1 py-1.5 font-semibold lg:py-2"
-                      data-svelte-h="svelte-1tbczfa">Reporting Currency</td
+                  <tr
+                    class="border-b border-gray-300 dark:border-gray-600 last:border-0"
+                    ><td class="px-1 py-1.5 font-semibold lg:py-2"
+                      >Reporting Currency</td
                     >
                     <td class="px-1 py-1.5 text-right lg:py-2"
                       >{rawData?.currency ?? "n/a"}</td
                     ></tr
                   >
-                  <tr class="border-b border-gray-600 last:border-0"
-                    ><td
-                      class="px-1 py-1.5 font-semibold lg:py-2"
-                      data-svelte-h="svelte-ucpcs9">CIK Code</td
-                    >
+                  <tr
+                    class="border-b border-gray-300 dark:border-gray-600 last:border-0"
+                    ><td class="px-1 py-1.5 font-semibold lg:py-2">CIK Code</td>
                     <td class="px-1 py-1.5 text-right lg:py-2"
                       >{rawData?.cik ?? "n/a"}</td
                     ></tr
                   >
-                  <tr class="border-b border-gray-600 last:border-0"
-                    ><td
-                      class="px-1 py-1.5 font-semibold lg:py-2"
-                      data-svelte-h="svelte-1fdyovu">CUSIP Number</td
+                  <tr
+                    class="border-b border-gray-300 dark:border-gray-600 last:border-0"
+                    ><td class="px-1 py-1.5 font-semibold lg:py-2"
+                      >CUSIP Number</td
                     >
                     <td class="px-1 py-1.5 text-right lg:py-2"
                       >{rawData?.cusip ?? "n/a"}</td
                     ></tr
                   >
-                  <tr class="border-b border-gray-600 last:border-0"
-                    ><td
-                      class="px-1 py-1.5 font-semibold lg:py-2"
-                      data-svelte-h="svelte-t5u2mr">ISIN Number</td
+                  <tr
+                    class="border-b border-gray-300 dark:border-gray-600 last:border-0"
+                    ><td class="px-1 py-1.5 font-semibold lg:py-2"
+                      >ISIN Number</td
                     >
                     <td class="px-1 py-1.5 text-right lg:py-2"
                       >{rawData?.isin ?? "n/a"}</td
                     ></tr
                   >
-                  <tr class="border-b border-gray-600 last:border-0"
-                    ><td
-                      class="px-1 py-1.5 font-semibold lg:py-2"
-                      data-svelte-h="svelte-x8apyl">Employer ID</td
+                  <tr
+                    class="border-b border-gray-300 dark:border-gray-600 last:border-0"
+                    ><td class="px-1 py-1.5 font-semibold lg:py-2"
+                      >Employer ID</td
                     >
                     <td class="px-1 py-1.5 text-right lg:py-2"
                       >{rawData?.taxIdentificationNumber ?? "n/a"}</td
                     ></tr
                   >
-                  <tr class="border-b border-gray-600 last:border-0"
-                    ><td
-                      class="px-1 py-1.5 font-semibold lg:py-2"
-                      data-svelte-h="svelte-1o4kelt">SIC Code</td
-                    >
+                  <tr
+                    class="border-b border-gray-300 dark:border-gray-600 last:border-0"
+                    ><td class="px-1 py-1.5 font-semibold lg:py-2">SIC Code</td>
                     <td class="px-1 py-1.5 text-right lg:py-2"
                       >{rawData?.sicCode ?? "n/a"}</td
                     ></tr
@@ -298,27 +295,27 @@ ${paragraphs.join("\n")}
             </h2>
             {#if rawData?.executives?.length > 0}
               <table class="mb-6 w-full text-base xs:mb-8">
-                <thead class="bg-primary"
-                  ><tr class="border-y border-gray-600"
+                <thead class="bg-gray-200 shadow-sm dark:bg-primary"
+                  ><tr class="border-y border-gray-300 dark:border-gray-600"
                     ><th
-                      class="px-2 py-2.5 text-left font-semibold text-white xs:px-3 xs:py-3 sm:px-4"
+                      class="px-2 py-2.5 text-left font-semibold xs:px-3 xs:py-3 sm:px-4"
                       >Name</th
                     >
                     <th
-                      class="px-2 py-2.5 text-left font-semibold text-white xs:px-3 xs:py-3 sm:px-4"
+                      class="px-2 py-2.5 text-left font-semibold xs:px-3 xs:py-3 sm:px-4"
                       >Position</th
                     ></tr
                   ></thead
                 >
                 <tbody>
                   {#each rawData?.executives as item}
-                    <tr class="border-b border-gray-600 text-sm sm:text-[1rem]"
+                    <tr
+                      class="border-b border-gray-300 dark:border-gray-600 text-sm sm:text-[1rem]"
                       ><td
-                        class="px-2 py-2.5 align-top font-semibold text-white xs:px-3 xs:py-3 sm:px-4"
+                        class="px-2 py-2.5 align-top font-semibold xs:px-3 xs:py-3 sm:px-4"
                         >{item?.name}</td
                       >
-                      <td
-                        class="px-2 py-2.5 align-top text-white xs:px-3 xs:py-3 sm:px-4"
+                      <td class="px-2 py-2.5 align-top xs:px-3 xs:py-3 sm:px-4"
                         >{item?.position}</td
                       >
                     </tr>
@@ -334,27 +331,24 @@ ${paragraphs.join("\n")}
             {#if rawData?.filings?.length > 0}
               <table class="w-full">
                 <thead
-                  ><tr class="border-b border-t border-gray-600 bg-primary"
-                    ><th class="px-1 py-2 text-left text-white xs:px-2">Date</th
-                    >
-                    <th class="px-1 py-2 text-left text-white xs:px-2">Type</th>
-                    <th class="px-1 py-2 text-left text-white xs:px-2">Title</th
-                    ></tr
+                  ><tr
+                    class="border-b border-t border-gray-300 dark:border-gray-600 bg-gray-200 shadow-sm dark:bg-primary"
+                    ><th class="px-1 py-2 text-left xs:px-2">Date</th>
+                    <th class="px-1 py-2 text-left xs:px-2">Type</th>
+                    <th class="px-1 py-2 text-left xs:px-2">Title</th></tr
                   ></thead
                 >
                 <tbody>
                   {#each rawData?.filings as item}
-                    <tr class="border-b border-gray-600 text-sm sm:text-[1rem]"
-                      ><td
-                        class="whitespace-nowrap py-3 pr-1 align-top text-white xs:px-2"
+                    <tr
+                      class="border-b border-gray-300 dark:border-gray-600 text-sm sm:text-[1rem]"
+                      ><td class="whitespace-nowrap py-3 pr-1 align-top xs:px-2"
                         >{item?.date}</td
                       >
-                      <td class="px-1 py-3 align-top text-white xs:px-2"
-                        >{item?.type}</td
-                      >
+                      <td class="px-1 py-3 align-top xs:px-2">{item?.type}</td>
                       <td class="py-3 pl-1 align-top xs:px-2"
                         ><a
-                          class="text-blue-400 sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
+                          class="text-blue-500 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
                           href={item?.link}
                           target="_blank"
                           rel="noopener noreferrer"
@@ -371,10 +365,10 @@ ${paragraphs.join("\n")}
               No SEC filings available.
             {/if}
             <div
-              class="border-b border-gray-600 py-3 text-lg sm:text-xl font-semibold"
+              class="border-b border-gray-300 dark:border-gray-600 py-3 text-lg sm:text-xl font-semibold"
             >
               <a
-                class="text-blue-400 sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
+                class="text-blue-500 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
                 href={`https://www.sec.gov/cgi-bin/browse-edgar?CIK=${rawData?.cik}&amp;count=100`}
                 target="_blank"
                 rel="noopener noreferrer">View All SEC Filings</a

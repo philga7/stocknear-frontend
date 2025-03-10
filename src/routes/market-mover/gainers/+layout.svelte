@@ -40,7 +40,9 @@
   description="A list of the stocks with the highest percentage gain, highest percentage loss and most active today. See stock price, volume, market cap and more."
 />
 
-<section class="w-full overflow-hidden m-auto min-h-screen">
+<section
+  class="w-full overflow-hidden m-auto min-h-screen text-muted dark:text-white"
+>
   <div class="flex justify-center w-full m-auto overflow-hidden">
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"
@@ -48,55 +50,55 @@
       <main class="w-full">
         <!--Start Top Winners/Losers-->
 
-        <nav class=" pt-1 overflow-x-auto whitespace-nowrap">
+        <nav class="overflow-x-auto whitespace-nowrap">
           <ul
             class="flex flex-row items-center w-full text-sm sm:text-[1rem] text-white"
           >
             <a
               href="/market-mover/gainers"
               class="p-2 px-5 cursor-pointer {timePeriod === 'gainers'
-                ? 'text-white bg-primary/90'
-                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
             >
               Today
             </a>
             <a
               href="/market-mover/gainers/week"
               class="p-2 px-5 cursor-pointer {timePeriod === 'week'
-                ? 'text-white bg-primary/90'
-                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
             >
               Week
             </a>
             <a
               href="/market-mover/gainers/month"
               class="p-2 px-5 cursor-pointer {timePeriod === 'month'
-                ? 'text-white bg-primary/90'
-                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
             >
               Month
             </a>
             <a
               href="/market-mover/gainers/year"
               class="p-2 px-5 cursor-pointer {timePeriod === 'year'
-                ? 'text-white bg-primary/90'
-                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
             >
               Year
             </a>
             <a
               href="/market-mover/gainers/3Y"
               class="p-2 px-5 cursor-pointer {timePeriod === '3Y'
-                ? 'text-white bg-primary/90'
-                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
             >
               3 Years
             </a>
             <a
               href="/market-mover/gainers/5Y"
               class="p-2 px-5 cursor-pointer {timePeriod === '5Y'
-                ? 'text-white bg-primary/90'
-                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
             >
               5 Years
             </a>
@@ -110,7 +112,7 @@
             <div
               class="title-group flex flex-row items-center justify-start mb-3"
             >
-              <h1 class="text-white text-xl sm:text-2xl font-semibold">
+              <h1 class="text-xl sm:text-2xl font-semibold">
                 {displayTitle[timePeriod]?.replace("title", title)}
               </h1>
               {#if timePeriod === "1D" && ["Gainers", "Losers"]?.includes(title)}
@@ -122,7 +124,7 @@
               {/if}
 
               <div
-                class="mb-0 ml-5 mt-1 whitespace-nowrap text-sm font-semiboldt text-white"
+                class="mb-0 ml-5 mt-1 whitespace-nowrap text-sm font-semibold"
               >
                 <span class="hidden lg:inline">Updated</span>
                 {lastTradingDay}

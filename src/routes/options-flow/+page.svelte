@@ -778,7 +778,7 @@
         }
       }
     } else {
-      toast.error("Only for Pro Members", {
+      toast.error("Unlock Feature with Pro Tier 🔥", {
         style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
     }
@@ -869,7 +869,7 @@
               class="xl:tooltip xl:tooltip-bottom flex flex-col items-center mr-3 cursor-pointer"
             >
               <div
-                class="rounded-full w-10 h-10 relative bg-[#000] flex items-center justify-center"
+                class="rounded-full w-10 h-10 relative bg-gray-400 dark:bg-[#000] flex items-center justify-center"
               >
                 {#if !muted}
                   <svg
@@ -877,7 +877,7 @@
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 16 16"
                     ><path
-                      fill="#fff"
+                      fill="currentColor"
                       d="M9 2.5a.5.5 0 0 0-.849-.358l-2.927 2.85H3.5a1.5 1.5 0 0 0-1.5 1.5v2.99a1.5 1.5 0 0 0 1.5 1.5h1.723l2.927 2.875A.5.5 0 0 0 9 13.5zm1.111 2.689a.5.5 0 0 1 .703-.08l.002.001l.002.002l.005.004l.015.013l.046.04c.036.034.085.08.142.142c.113.123.26.302.405.54c.291.48.573 1.193.573 2.148c0 .954-.282 1.668-.573 2.148a3.394 3.394 0 0 1-.405.541a2.495 2.495 0 0 1-.202.196l-.008.007h-.001s-.447.243-.703-.078a.5.5 0 0 1 .075-.7l.002-.002l-.001.001l.002-.001h-.001l.018-.016c.018-.017.048-.045.085-.085a2.4 2.4 0 0 0 .284-.382c.21-.345.428-.882.428-1.63c0-.747-.218-1.283-.428-1.627a2.382 2.382 0 0 0-.368-.465a.5.5 0 0 1-.096-.717m1.702-2.08a.5.5 0 1 0-.623.782l.011.01l.052.045c.047.042.116.107.201.195c.17.177.4.443.63.794c.46.701.92 1.733.92 3.069a5.522 5.522 0 0 1-.92 3.065c-.23.35-.46.614-.63.79a3.922 3.922 0 0 1-.252.24l-.011.01h-.001a.5.5 0 0 0 .623.782l.033-.027l.075-.065c.063-.057.15-.138.253-.245a6.44 6.44 0 0 0 .746-.936a6.522 6.522 0 0 0 1.083-3.614a6.542 6.542 0 0 0-1.083-3.618a6.517 6.517 0 0 0-.745-.938a4.935 4.935 0 0 0-.328-.311l-.023-.019l-.007-.006l-.002-.002zM10.19 5.89l-.002-.001Z"
                     /></svg
                   >
@@ -887,7 +887,7 @@
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     ><path
-                      fill="#fff"
+                      fill="currentColor"
                       d="M3.28 2.22a.75.75 0 1 0-1.06 1.06L6.438 7.5H4.25A2.25 2.25 0 0 0 2 9.749v4.497a2.25 2.25 0 0 0 2.25 2.25h3.68a.75.75 0 0 1 .498.19l4.491 3.994c.806.716 2.081.144 2.081-.934V16.06l5.72 5.72a.75.75 0 0 0 1.06-1.061zm13.861 11.74l1.138 1.137A6.974 6.974 0 0 0 19 12a6.973 6.973 0 0 0-.84-3.328a.75.75 0 0 0-1.32.714c.42.777.66 1.666.66 2.614c0 .691-.127 1.351-.359 1.96m2.247 2.246l1.093 1.094A9.956 9.956 0 0 0 22 12a9.959 9.959 0 0 0-1.96-5.946a.75.75 0 0 0-1.205.892A8.459 8.459 0 0 1 20.5 12a8.458 8.458 0 0 1-1.112 4.206M9.52 6.338l5.48 5.48V4.25c0-1.079-1.274-1.65-2.08-.934z"
                     /></svg
                   >
@@ -934,7 +934,7 @@
           <div class="sm:ml-auto w-full sm:w-fit pt-5">
             <div class="relative flex flex-col sm:flex-row items-center">
               <div
-                class="relative w-full sm:w-fit pl-3 sm:mr-5 mb-4 sm:mb-0 flex-auto text-center bg-white dark:bg-secondary rounded-md border border-gray-300 dark:border-gray-600"
+                class="relative w-full sm:w-fit pl-3 sm:mr-5 mb-4 sm:mb-0 flex-auto text-center shadow-sm bg-white dark:bg-secondary rounded-md border border-gray-300 dark:border-gray-600"
               >
                 <label class="flex flex-row items-center">
                   <input
@@ -989,8 +989,8 @@
                 <Popover.Trigger asChild let:builder>
                   <Button
                     class={cn(
-                      "w-full sm:w-[160px] truncate sm:mr-3 py-3 bg-[#000] sm:hover:bg-[#000] sm:hover:  justify-center sm:justify-start text-center sm:text-left font-normal border-none rounded-md",
-                      !selectedDate && "text-gray-300",
+                      "w-full sm:w-[160px] truncate sm:mr-3 py-3 shadow-sm border-gray-300 justify-center sm:justify-start text-center sm:text-left font-normal border-none rounded-md",
+                      !selectedDate && "text-muted dark:text-gray-300",
                     )}
                     builders={[builder]}
                   >
@@ -1000,9 +1000,11 @@
                       : "Pick a date"}
                   </Button>
                 </Popover.Trigger>
-                <Popover.Content class="w-auto p-0 border-gray-500">
+                <Popover.Content
+                  class="w-auto p-0 border-gray-500 bg-white dark:bg-[#000]"
+                >
                   <Calendar
-                    class="bg-default "
+                    class=" "
                     bind:value={selectedDate}
                     initialFocus
                     onValueChange={getHistoricalFlow}
@@ -1043,7 +1045,7 @@
           >
             <label
               for="ruleModal"
-              class="inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none py-2 pl-3 pr-4 text-base font-semibold shadow-sm bg-gray-300 sm:hover:bg-gray-400 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+              class="inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none py-2 pl-3 pr-4 text-base font-semibold shadow-sm bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
             >
               <svg
                 class="h-5 w-5"
