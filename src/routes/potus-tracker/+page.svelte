@@ -6,6 +6,8 @@
   import { Button } from "$lib/components/shadcn/button/index.js";
   import { sectorList } from "$lib/utils";
   import avatar from "$lib/images/trump-avatar.jpeg";
+  import { mode } from "mode-watcher";
+  import { goto } from "$app/navigation";
 
   export let data;
 
@@ -116,15 +118,15 @@
       },
       chart: {
         type: "column",
-        backgroundColor: "#09090B",
-        plotBackgroundColor: "#09090B",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
         height: 360,
         animation: false,
       },
       title: {
         text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-xl">${selectedSector} - Performance</h3>`,
         style: {
-          color: "white",
+          color: $mode === "light" ? "black" : "white",
         },
         useHTML: true,
       },
@@ -132,14 +134,14 @@
         categories: categories,
         gridLineWidth: 0,
         labels: {
-          style: { color: "white" },
+          style: { color: $mode === "light" ? "black" : "white" },
         },
       },
       yAxis: {
         gridLineWidth: 1,
-        gridLineColor: "#111827",
+        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
         labels: {
-          style: { color: "white" },
+          style: { color: $mode === "light" ? "black" : "white" },
           formatter: function () {
             return this.value + "%"; // Add percentage symbol
           },
@@ -152,11 +154,11 @@
       },
       plotOptions: {
         series: {
-          color: "white",
+          color: $mode === "light" ? "black" : "white",
           animation: false,
           dataLabels: {
             enabled: true,
-            color: "white",
+            color: $mode === "light" ? "black" : "white",
             style: {
               fontSize: "14px",
               fontWeight: "normal",
@@ -197,7 +199,7 @@
   let config = null;
 
   $: {
-    if (selectedSector) {
+    if (selectedSector || $mode) {
       config = plotData() || null;
     }
   }
@@ -209,12 +211,12 @@
 />
 
 <section
-  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pb-20 pt-5 px-4 lg:px-3 text-white"
+  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pb-20 pt-5 px-4 lg:px-3 text-muted dark:text-white"
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
-      <li><a href="/" class="text-gray-300">Home</a></li>
-      <li class="text-gray-300">POTUS Tracker</li>
+      <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
+      <li class="text-muted dark:text-gray-300">POTUS Tracker</li>
     </ul>
   </div>
 
@@ -228,9 +230,7 @@
         <div class="w-full mt-5">
           <div class="lg:float-left lg:w-[calc(100%-336px-20px)]">
             <div class=" border-b-[2px]">
-              <h1 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
-                POTUS Tracker
-              </h1>
+              <h1 class="mb-1 text-2xl sm:text-3xl font-bold">POTUS Tracker</h1>
             </div>
           </div>
 
@@ -238,7 +238,7 @@
             <div class="mt-5 mb-5">
               <Infobox
                 text={`Since the inauguration of Donald J. Trump on January 20, 2025, the 
-  ${selectedSector} has ${data?.getData?.marketPerformance[sectorDict[selectedSector]]["Inauguration"] >= 0 ? "grown" : "declined"} by <span class="${data?.getData?.marketPerformance[sectorDict[selectedSector]]["Inauguration"] >= 0 ? "text-[#00FC50] before:content-['+']" : "text-[#FF2F1F]"}">
+  ${selectedSector} has ${data?.getData?.marketPerformance[sectorDict[selectedSector]]["Inauguration"] >= 0 ? "grown" : "declined"} by <span class="${data?.getData?.marketPerformance[sectorDict[selectedSector]]["Inauguration"] >= 0 ? "text-green-600 dark:text-[#00FC50] before:content-['+']" : "text-red-600 dark:text-[#FF2F1F]"}">
   ${data?.getData?.marketPerformance[sectorDict[selectedSector]]["Inauguration"] ?? "n/a"}%</span>.`}
               />
             </div>
@@ -249,9 +249,9 @@
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
                       builders={[builder]}
-                      class="w-full border-gray-600 border bg-default sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
+                      class="shadow-sm w-full border-gray-300 dark:border-gray-600 border bg-white sm:hover:bg-gray-100 dark:bg-default dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                     >
-                      <span class="truncate text-white">{selectedSector}</span>
+                      <span class="truncate">{selectedSector}</span>
                       <svg
                         class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
                         viewBox="0 0 20 20"
@@ -270,7 +270,9 @@
                   <DropdownMenu.Content
                     class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                   >
-                    <DropdownMenu.Label class="text-gray-400">
+                    <DropdownMenu.Label
+                      class="text-muted dark:text-muted dark:text-gray-400"
+                    >
                       Select Sector
                     </DropdownMenu.Label>
                     <DropdownMenu.Separator />
@@ -279,14 +281,14 @@
                         {#if sector === "S&P500" || ["Pro", "Plus"]?.includes(data?.user?.tier)}
                           <DropdownMenu.Item
                             on:click={() => (selectedSector = sector)}
-                            class="cursor-pointer hover:bg-primary"
+                            class="cursor-pointer sm:hover:bg-gray-200 dark:sm:hover:bg-primary"
                           >
                             {sector}
                           </DropdownMenu.Item>
                         {:else}
                           <DropdownMenu.Item
                             on:click={() => goto("/pricing")}
-                            class="cursor-pointer hover:bg-primary"
+                            class="cursor-pointer sm:hover:bg-gray-200 dark:sm:hover:bg-primary"
                           >
                             {sector}
                             <svg
@@ -312,22 +314,20 @@
             </div>
 
             <div
-              class="chart mt-5 border border-gray-800 rounded"
+              class="chart mt-5 border border-gray-300 dark:border-gray-800 rounded"
               use:highcharts={config}
             ></div>
 
             <nav
-              class="border-b-[2px] whitespace-nowrap mt-10 sm:mt-6 overflow-x-auto no-scrollbar"
+              class="border-[#2C6288] dark:border-white border-b-[2px] overflow-x-auto whitespace-nowrap no-scrollbar mt-4"
             >
-              <ul
-                class="flex flex-row items-center w-full text-[1rem] text-white"
-              >
+              <ul class="flex flex-row items-center w-full text-[1rem]">
                 {#each tabs as item, i}
                   <button
                     on:click={() => (activeIdx = i)}
                     class="p-2 px-5 cursor-pointer {activeIdx === i
-                      ? 'text-white bg-primary/90 font-semibold'
-                      : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                      ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                      : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
                   >
                     {item.title}
                   </button>
@@ -337,20 +337,20 @@
 
             {#if activeIdx === 0}
               <h3
-                class="text-white text-lg sm:text-xl font-semibold mb-2 mt-6 border-y border-gray-800 pt-2 pb-2"
+                class=" text-lg sm:text-xl font-semibold mb-2 mt-6 border-y border-gray-300 dark:border-gray-800 pt-2 pb-2"
               >
                 Official Presidential Schedule
               </h3>
-              <div class="border border-gray-800 rounded-md p-4">
+              <div
+                class="border border-gray-300 dark:border-gray-800 rounded-md p-4"
+              >
                 <div class="space-y-4">
                   {#each Object?.entries(groupedByDate) as [date, items], indexA}
                     <div class="my-4">
                       <div
-                        class="border-b border-gray-600 pb-2 w-full flex flex-row items-center justify-between"
+                        class="border-b border-gray-300 dark:border-gray-600 pb-2 w-full flex flex-row items-center justify-between"
                       >
-                        <span
-                          class="text-[1rem] sm:text-lg font-semibold text-white"
-                        >
+                        <span class="text-[1rem] sm:text-lg font-semibold">
                           {date}</span
                         >
                         {#if items?.at(0)?.changesPercentage}
@@ -358,8 +358,8 @@
                             <span class="inline-block">S&P500</span>
                             <span
                               class="{items?.at(0)?.changesPercentage > 0
-                                ? "text-[#00FC50] before:content-['+']"
-                                : 'text-[#FF2F1F]'} "
+                                ? "text-green-600 dark:text-[#00FC50] before:content-['+']"
+                                : 'text-red-600 dark:text-[#FF2F1F]'} "
                               >{items.length > 0
                                 ? items?.at(0)?.changesPercentage
                                 : "n/a"}%</span
@@ -411,7 +411,7 @@
                               {/if}
                             </div>
 
-                            <span class="text-sm text-gray-400">
+                            <span class="text-sm text-muted dark:text-gray-400">
                               {item.time_formatted}
                               {item.location !== null
                                 ? `- ${item?.location}`
@@ -430,20 +430,20 @@
               </div>
             {:else if activeIdx === 1}
               <h3
-                class="text-white text-lg sm:text-xl font-semibold mb-2 mt-6 border-y border-gray-800 pt-2 pb-2"
+                class=" text-lg sm:text-xl font-semibold mb-2 mt-6 border-y border-gray-300 dark:border-gray-800 pt-2 pb-2"
               >
                 Executive Actions
               </h3>
-              <div class=" border border-gray-800 rounded-md p-4">
+              <div
+                class=" border border-gray-300 dark:border-gray-800 rounded-md p-4"
+              >
                 <div class="space-y-4">
                   {#each Object.entries(groupedOrders) as [date, items], indexA}
                     <div class="my-4">
                       <div
-                        class="border-b border-gray-600 pb-2 flex flex-row items-center"
+                        class="border-b border-gray-300 dark:border-gray-600 pb-2 flex flex-row items-center"
                       >
-                        <span class="text-[1rem] font-semibold text-white"
-                          >{date}</span
-                        >
+                        <span class="text-[1rem] font-semibold">{date}</span>
                         {#if latestInfoDate(date)}
                           <label
                             class="bg-[#fff] rounded text-black font-semibold text-xs px-2 py-0.5 ml-3 inline-block"
@@ -455,7 +455,7 @@
 
                       {#each items as item, indexB}
                         <div
-                          class="flex flex-col items-start space-y-1 mb-6 border-b border-gray-800 pb-4"
+                          class="flex flex-col items-start space-y-1 mb-6 border-b border-gray-300 dark:border-gray-800 pb-4"
                         >
                           <div class="flex items-start space-x-3">
                             <img
@@ -466,17 +466,17 @@
                             />
 
                             <div class="flex flex-col w-full">
-                              <h3 class="text-white font-semibold">
+                              <h3 class=" font-semibold">
                                 {item?.title}
                               </h3>
 
                               <div
-                                class={`mt-1 px-3 py-1 rounded text-xs sm:text-sm  w-fit
+                                class={`mt-1 px-3 py-1 rounded text-xs sm:text-sm text-white w-fit
         ${
           item?.sentiment === "Bullish"
-            ? "bg-emerald-500 text-white"
+            ? "bg-emerald-500 "
             : item?.sentiment === "Bearish"
-              ? "bg-red-600 text-white"
+              ? "bg-red-600 "
               : "bg-gray-200 text-black"
         }`}
                               >
@@ -494,7 +494,7 @@
                                 on:click={() =>
                                   (expandedDescriptions[item.title] =
                                     !expandedDescriptions[item.title])}
-                                class="text-blue-400 hover:text-blue-300 ml-1"
+                                class="cursor-pointer text-blue-500 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white ml-1"
                               >
                                 {expandedDescriptions[item.title]
                                   ? "Read less"
@@ -509,7 +509,7 @@
                             href={item?.link}
                             rel="noopener noreferrer"
                             target="_blank"
-                            class="ml-14 inline-block text-sm text-white hover:underline"
+                            class="ml-14 inline-block text-sm hover:underline"
                           >
                             Source
                             <svg
@@ -596,7 +596,7 @@
               </div>
             {:else if activeIdx === 2}
               <div
-                class="flex flex-row items-center mb-2 mt-6 border-y border-gray-800 pt-2 pb-2"
+                class="flex flex-row items-center mb-2 mt-6 border-y border-gray-300 dark:border-gray-800 pt-2 pb-2"
               >
                 <svg
                   class="w-7 h-7 rounded-full inline-block"
@@ -610,17 +610,19 @@
                     /><path d="m24 28.4382h11.4878v9.4539h-11.4878z" /></g
                   ></svg
                 >
-                <h3 class="ml-2 text-white text-lg sm:text-xl font-semibold">
+                <h3 class="ml-2 text-lg sm:text-xl font-semibold">
                   Truth Social Posts
                 </h3>
               </div>
 
-              <div class="border border-gray-800 rounded-md p-4">
+              <div
+                class="border border-gray-300 dark:border-gray-800 rounded-md p-4"
+              >
                 <div class="space-y-4">
                   {#each posts as item}
                     <div class="my-4">
                       <div
-                        class="flex flex-col items-start space-y-1 mb-6 border-b border-gray-800 pb-4"
+                        class="flex flex-col items-start space-y-1 mb-6 border-b border-gray-300 dark:border-gray-800 pb-4"
                       >
                         <div class="flex items-start space-x-3">
                           <a
@@ -638,7 +640,7 @@
                           >
 
                           <div class="flex flex-col items-start w-full">
-                            <h3 class="text-white font-semibold">
+                            <h3 class=" font-semibold">
                               <a
                                 rel="noopener noreferrer"
                                 target="_blank"
@@ -647,7 +649,7 @@
                                 >Donald J. Trump</a
                               >
                             </h3>
-                            <h4 class="text-sm text-gray-400">
+                            <h4 class="text-sm text-muted dark:text-gray-400">
                               <a
                                 rel="noopener noreferrer"
                                 target="_blank"
@@ -668,12 +670,12 @@
                           href={item?.source}
                           rel="noopener noreferrer"
                           target="_blank"
-                          class="ml-12 pt-5 inline-block text-sm text-white sm:hover:underline"
+                          class="ml-12 pt-5 inline-block text-sm sm:hover:underline"
                         >
                           Original Post
                           <svg
                             class="w-4 h-4 sm:w-5 sm:h-5 -mt-0.5 inline-block"
-                            fill="#fff"
+                            fill="currentColor"
                             viewBox="0 0 64 64"
                             version="1.1"
                             xmlns="http://www.w3.org/2000/svg"
@@ -757,18 +759,18 @@
 
           <div class="order-4 shrink-0 lg:float-right lg:w-[336px]">
             <div
-              class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
+              class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
             >
               <a
                 href={`/newsletter`}
                 class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
               >
                 <div class="w-full flex justify-between items-center p-3 mt-3">
-                  <h2 class="text-start text-xl font-semibold text-white ml-3">
+                  <h2 class="text-start text-xl font-semibold ml-3">
                     Market Newsletter
                   </h2>
                 </div>
-                <span class="text-white p-3 ml-3 mr-3">
+                <span class=" p-3 ml-3 mr-3">
                   Get a daily email with the top market news in bullet point
                   format.
                 </span>
@@ -776,35 +778,35 @@
             </div>
 
             <div
-              class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
+              class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
             >
               <a
                 href={"/stock-screener"}
                 class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
               >
                 <div class="w-full flex justify-between items-center p-3 mt-3">
-                  <h2 class="text-start text-xl font-semibold text-white ml-3">
+                  <h2 class="text-start text-xl font-semibold ml-3">
                     Stock Screener
                   </h2>
                 </div>
-                <span class="text-white p-3 ml-3 mr-3">
+                <span class=" p-3 ml-3 mr-3">
                   Build your Stock Screener to find profitable stocks.
                 </span>
               </a>
             </div>
             <div
-              class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
+              class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
             >
               <a
                 href={"/watchlist/stocks"}
                 class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
               >
                 <div class="w-full flex justify-between items-center p-3 mt-3">
-                  <h2 class="text-start text-xl font-semibold text-white ml-3">
+                  <h2 class="text-start text-xl font-semibold ml-3">
                     Watchlist
                   </h2>
                 </div>
-                <span class="text-white p-3 ml-3 mr-3">
+                <span class=" p-3 ml-3 mr-3">
                   Keep track of your favorite stocks in real-time.
                 </span>
               </a>

@@ -499,12 +499,12 @@
   let previousVolume = 0; //This is needed to play the sound only if it changes.
   let notFound = false;
   let isLoaded = false;
-  $: mode = $isOpen === true ? true : false;
+  $: modeStatus = $isOpen === true ? true : false;
 
   function toggleMode() {
     if ($isOpen) {
-      mode = !mode;
-      if (mode === true && selectedDate !== undefined) {
+      modeStatus = !modeStatus;
+      if (modeStatus === true && selectedDate !== undefined) {
         selectedDate = undefined;
         rawData = data?.getOptionsFlowFeed;
         displayedData = [...rawData];
@@ -525,7 +525,7 @@
 
         socket.addEventListener("message", (event) => {
           const totalVolume = displayCallVolume + displayPutVolume;
-          if (mode === true) {
+          if (modeStatus === true) {
             try {
               newData = JSON?.parse(event.data) ?? [];
               if (newData?.length > 0) {
@@ -725,7 +725,7 @@
   const getHistoricalFlow = async () => {
     // Create a delay using setTimeout wrapped in a Promise
     if (data?.user?.tier === "Pro") {
-      mode = false;
+      modeStatus = false;
       isLoaded = false;
 
       displayRules = allRows?.filter((row) =>
@@ -830,9 +830,9 @@
   description="Explore unusual options from big institutional traders and hedge funds."
 />
 
-<body class="overflow-y-auto">
+<body class="overflow-y-auto text-muted dark:text-white">
   <section
-    class="w-full max-w-screen sm:max-w-7xl sm:max-w-[1400px] flex justify-center items-center bg-default pb-20 10 p-3 sm:p-0"
+    class="w-full max-w-screen sm:max-w-7xl sm:max-w-[1400px] flex justify-center items-center pb-20 10 p-3 sm:p-0"
   >
     <div class="w-full m-auto min-h-screen">
       <!--
@@ -846,17 +846,19 @@
 
       {#if !$isOpen}
         <div
-          class="text-white text-sm sm:text-[1rem] italic text-center sm:text-start w-full ml-2 mb-3"
+          class=" text-sm sm:text-[1rem] italic text-center sm:text-start w-full ml-2 mb-3"
         >
           Options Live flow of {data?.user?.tier === "Pro" && selectedDate
             ? df.format(selectedDate?.toDate())
-            : formattedNyseDate} (NYSE Time)
+            : formattedNyseDate} (EST timezone)
         </div>
       {/if}
 
-      <div class="rounded-md border border-gray-700 bg-primary p-2">
+      <div
+        class="rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-100 dark:bg-primary p-2"
+      >
         <div
-          class="flex flex-col sm:flex-row items-center pt-3 sm:pt-1 pb-3 sm:border-b sm:border-gray-600"
+          class="flex flex-col sm:flex-row items-center pt-3 sm:pt-1 pb-3 sm:border-b sm:border-gray-300 dark:border-gray-600"
         >
           <div
             class="flex flex-row items-center justify-center sm:justify-start"
@@ -895,8 +897,8 @@
 
             <span
               class="text-xs sm:text-sm sm:text-lg {!mode
-                ? 'text-white'
-                : 'text-gray-400'} mr-3"
+                ? ''
+                : 'text-muted dark:text-gray-400'} mr-3"
             >
               {$isOpen ? "Paused" : "Market Closed"}
             </span>
@@ -907,8 +909,8 @@
               <input
                 on:click={toggleMode}
                 type="checkbox"
-                checked={mode}
-                value={mode}
+                checked={modeStatus}
+                value={modeStatus}
                 disabled={!$isOpen}
                 class="sr-only peer"
               />
@@ -920,9 +922,9 @@
 
             <div class="ml-3 flex flex-col items-start">
               <span
-                class="text-xs sm:text-sm sm:text-lg {mode
-                  ? 'text-white'
-                  : 'text-gray-400'}"
+                class="text-xs sm:text-sm sm:text-lg {modeStatus
+                  ? ''
+                  : 'text-muted dark:text-gray-400'}"
               >
                 Live Flow
               </span>
@@ -932,13 +934,13 @@
           <div class="sm:ml-auto w-full sm:w-fit pt-5">
             <div class="relative flex flex-col sm:flex-row items-center">
               <div
-                class="relative w-full sm:w-fit pl-3 sm:mr-5 mb-4 sm:mb-0 flex-auto text-center bg-secondary rounded-md border border-gray-600"
+                class="relative w-full sm:w-fit pl-3 sm:mr-5 mb-4 sm:mb-0 flex-auto text-center bg-white dark:bg-secondary rounded-md border border-gray-300 dark:border-gray-600"
               >
                 <label class="flex flex-row items-center">
                   <input
                     id="modal-search"
                     type="search"
-                    class="text-white sm:ml-2 text-[1rem] placeholder-gray-300 border-transparent focus:border-transparent focus:ring-0 flex items-center justify-center w-full px-0 py-1.5 bg-[inherit]"
+                    class="sm:ml-2 text-[1rem] placeholder-gray-500 dark:placeholder-gray-300 border-transparent bg-white dark:bg-secondary focus:border-transparent focus:ring-0 flex items-center justify-center w-full px-0 py-1.5"
                     placeholder="Stock or ETF symbol..."
                     bind:value={filterQuery}
                     on:input={debouncedHandleInput}
@@ -957,7 +959,7 @@
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
                         ><path
-                          fill="white"
+                          fill="currentColor"
                           d="m6.4 18.308l-.708-.708l5.6-5.6l-5.6-5.6l.708-.708l5.6 5.6l5.6-5.6l.708.708l-5.6 5.6l5.6 5.6l-.708.708l-5.6-5.6z"
                         /></svg
                       >
@@ -968,7 +970,7 @@
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       ><path
-                        fill="#fff"
+                        fill="currentColor"
                         d="m19.485 20.154l-6.262-6.262q-.75.639-1.725.989t-1.96.35q-2.402 0-4.066-1.663T3.808 9.503T5.47 5.436t4.064-1.667t4.068 1.664T15.268 9.5q0 1.042-.369 2.017t-.97 1.668l6.262 6.261zM9.539 14.23q1.99 0 3.36-1.37t1.37-3.361t-1.37-3.36t-3.36-1.37t-3.361 1.37t-1.37 3.36t1.37 3.36t3.36 1.37"
                       /></svg
                     >
@@ -987,7 +989,7 @@
                 <Popover.Trigger asChild let:builder>
                   <Button
                     class={cn(
-                      "w-full sm:w-[160px] truncate sm:mr-3 py-3 bg-[#000] sm:hover:bg-[#000] sm:hover:text-white text-white justify-center sm:justify-start text-center sm:text-left font-normal border-none rounded-md",
+                      "w-full sm:w-[160px] truncate sm:mr-3 py-3 bg-[#000] sm:hover:bg-[#000] sm:hover:  justify-center sm:justify-start text-center sm:text-left font-normal border-none rounded-md",
                       !selectedDate && "text-gray-300",
                     )}
                     builders={[builder]}
@@ -1000,7 +1002,7 @@
                 </Popover.Trigger>
                 <Popover.Content class="w-auto p-0 border-gray-500">
                   <Calendar
-                    class="bg-default text-white"
+                    class="bg-default "
                     bind:value={selectedDate}
                     initialFocus
                     onValueChange={getHistoricalFlow}
@@ -1012,11 +1014,11 @@
         </div>
 
         <div
-          class="mr-1 flex items-center justify-between lg:mr-2 pb-1.5 border-b border-gray-600 mt-1.5"
+          class="mr-1 flex items-center justify-between lg:mr-2 pb-1.5 border-b border-gray-300 dark:border-gray-600 mt-1.5"
         >
           <button
             on:click={() => (showFilters = !showFilters)}
-            class="flex cursor-pointer items-center text-lg sm:text-xl font-semibold text-white"
+            class="flex cursor-pointer items-center text-lg sm:text-xl font-semibold"
             title="Hide Filter Area"
           >
             <svg
@@ -1041,7 +1043,7 @@
           >
             <label
               for="ruleModal"
-              class="inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 text-base font-semibold text-white shadow-xs bg-[#000] sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500 sm:text-smaller"
+              class="inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none py-2 pl-3 pr-4 text-base font-semibold shadow-sm bg-gray-300 sm:hover:bg-gray-400 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
             >
               <svg
                 class="h-5 w-5"
@@ -1062,7 +1064,7 @@
             {#if ruleOfList?.length !== 0}
               <label
                 on:click={handleResetAll}
-                class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 text-base font-semibold text-white shadow-xs bg-[#000] sm:hover:text-red-500 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500 sm:text-smaller"
+                class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 text-base font-semibold shadow-xs bg-[#000] sm:hover:text-red-500 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
               >
                 <svg
                   class="h-4 w-4"
@@ -1085,14 +1087,14 @@
           </div>
 
           <div
-            class="sm:grid sm:gap-x-2.5 md:grid-cols-2 lg:grid-cols-3 w-full mt-3 border-t border-b border-gray-600"
+            class="sm:grid sm:gap-x-2.5 md:grid-cols-2 lg:grid-cols-3 w-full mt-3 border-t border-b border-gray-300 dark:border-gray-600"
           >
             {#each displayRules as row (row?.rule)}
               <!--Start Added Rules-->
               <div
-                class="flex items-center justify-between space-x-2 px-1 py-1.5 text-smaller leading-tight text-white"
+                class="flex items-center justify-between space-x-2 px-1 py-1.5 text-smaller leading-tight"
               >
-                <div class="hide-scroll text-white">
+                <div class="hide-scroll">
                   {row?.label?.length > 20
                     ? row?.label?.slice(0, 20)?.replace("[%]", "") + "..."
                     : row?.label?.replace("[%]", "")}
@@ -1105,7 +1107,7 @@
                       role="tooltip"
                     >
                       <span
-                        class="absolute -right-[15px] -top-[3px] cursor-pointer p-1 text-gray-300 sm:hover:text-white"
+                        class="absolute -right-[15px] -top-[3px] cursor-pointer p-1 text-gray-300 sm:hover:"
                       >
                         <svg
                           class="h-[10.5px] w-[10.5px]"
@@ -1148,7 +1150,7 @@
                         <DropdownMenu.Trigger asChild let:builder>
                           <Button
                             builders={[builder]}
-                            class="bg-[#000] h-[40px] flex flex-row justify-between items-center w-[150px] xs:w-[140px] sm:w-[150px] px-3 text-white rounded-md truncate"
+                            class="bg-[#000] h-[40px] flex flex-row justify-between items-center w-[150px] xs:w-[140px] sm:w-[150px] px-3  rounded-md truncate"
                           >
                             <span class="truncate ml-2 text-sm sm:text-[1rem]">
                               {#if valueMappings[row?.rule] === "any"}
@@ -1198,7 +1200,7 @@
                                     <DropdownMenu.Trigger asChild let:builder
                                       ><Button
                                         builders={[builder]}
-                                        class="w-fit -mt-1 -ml-2 bg-default flex flex-row justify-between items-center text-white"
+                                        class="w-fit -mt-1 -ml-2 bg-default flex flex-row justify-between items-center "
                                       >
                                         <span
                                           class="truncate ml-2 text-sm sm:text-[1rem]"
@@ -1253,11 +1255,9 @@
                                         : ""}
                                       on:input={(e) =>
                                         handleValueInput(e, row?.rule, 0)}
-                                      class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder:text-gray-200 font-normal p-1 text-sm shadow-xs focus:border-blue-500 focus:ring-blue-500 bg-primary"
+                                      class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder:text-muted dark:text-gray-200 font-normal p-1 text-sm shadow-xs focus:border-blue-500 focus:ring-blue-500 bg-gray-100 dark:bg-primary"
                                     />
-                                    <span
-                                      class="text-white text-[1rem] font-normal mt-1"
-                                    >
+                                    <span class=" text-[1rem] font-normal mt-1">
                                       &
                                     </span>
                                     <input
@@ -1270,7 +1270,7 @@
                                         : ""}
                                       on:input={(e) =>
                                         handleValueInput(e, row?.rule, 1)}
-                                      class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder:text-gray-200 font-normal p-1 text-sm shadow-xs focus:border-blue-500 focus:ring-blue-500 bg-primary"
+                                      class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder:text-muted dark:text-gray-200 font-normal p-1 text-sm shadow-xs focus:border-blue-500 focus:ring-blue-500 bg-gray-100 dark:bg-primary"
                                     />
                                   </div>
                                 {:else}
@@ -1282,7 +1282,7 @@
                                       : valueMappings[row?.rule]}
                                     on:input={(e) =>
                                       handleValueInput(e, row?.rule)}
-                                    class="ios-zoom-fix block max-w-[4.8rem] rounded-sm placeholder:text-gray-200 font-normal p-1 text-sm shadow-xs focus:border-blue-500 focus:ring-blue-500 bg-primary"
+                                    class="ios-zoom-fix block max-w-[4.8rem] rounded-sm placeholder:text-muted dark:text-gray-200 font-normal p-1 text-sm shadow-xs focus:border-blue-500 focus:ring-blue-500 bg-gray-100 dark:bg-primary"
                                   />
                                 {/if}
 
@@ -1297,7 +1297,7 @@
                                           "add",
                                         )}
                                       ><svg
-                                        class="size-6 cursor-pointer text-white"
+                                        class="size-6 cursor-pointer"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
@@ -1317,7 +1317,7 @@
                                           "minus",
                                         )}
                                       ><svg
-                                        class="size-6 cursor-pointer text-white"
+                                        class="size-6 cursor-pointer"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
@@ -1349,7 +1349,7 @@
                                 {#if ruleCondition[row?.rule] === "between"}
                                   {#if newValue && row?.step[index + 1]}
                                     <DropdownMenu.Item
-                                      class="sm:hover:bg-primary"
+                                      class="sm:hover:bg-gray-100 dark:bg-primary"
                                     >
                                       <button
                                         on:click={() => {
@@ -1358,7 +1358,7 @@
                                             row?.step[index + 1],
                                           ]);
                                         }}
-                                        class="block w-full border-b border-gray-600 px-4 py-1.5 text-left text-sm sm:text-[1rem] rounded text-white last:border-0 sm:hover:bg-primary focus:bg-blue-100 focus:text-gray-900 focus:outline-hidden"
+                                        class="block w-full border-b border-gray-300 dark:border-gray-600 px-4 py-1.5 text-left text-sm sm:text-[1rem] rounded last:border-0 sm:hover:bg-gray-100 dark:bg-primary focus:bg-blue-100 focus:text-gray-900 focus:outline-hidden"
                                       >
                                         {ruleCondition[row?.rule]?.replace(
                                           "between",
@@ -1372,13 +1372,13 @@
                                   {/if}
                                 {:else}
                                   <DropdownMenu.Item
-                                    class="sm:hover:bg-primary"
+                                    class="sm:hover:bg-gray-100 dark:bg-primary"
                                   >
                                     <button
                                       on:click={() => {
                                         handleChangeValue(newValue);
                                       }}
-                                      class="block w-full border-b border-gray-600 px-4 py-1.5 text-left text-sm sm:text-[1rem] rounded text-white last:border-0 sm:hover:bg-primary focus:bg-blue-100 focus:text-gray-900 focus:outline-hidden"
+                                      class="block w-full border-b border-gray-300 dark:border-gray-600 px-4 py-1.5 text-left text-sm sm:text-[1rem] rounded last:border-0 sm:hover:bg-gray-100 dark:bg-primary focus:bg-blue-100 focus:text-gray-900 focus:outline-hidden"
                                     >
                                       {ruleCondition[row?.rule]
                                         ?.replace("under", "Under")
@@ -1403,7 +1403,7 @@
                                       on:click={() => {
                                         handleChangeValue(item);
                                       }}
-                                      class="cursor-pointer text-white"
+                                      class="cursor-pointer"
                                       for={item}
                                     >
                                       <input
@@ -1435,34 +1435,36 @@
           <div class="w-full grid grid-cols-1 lg:grid-cols-4 gap-y-3 gap-x-3">
             <!--Start Flow Sentiment-->
             <div
-              class="flex flex-row items-center flex-wrap w-full px-5 bg-primary border border-gray-600 rounded-md h-20"
+              class="shadow-sm flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded-md h-20"
             >
               <div class="flex flex-col items-start">
-                <span class="font-semibold text-gray-200 text-sm sm:text-[1rem]"
+                <span
+                  class="font-semibold text-muted dark:text-gray-200 text-sm sm:text-[1rem]"
                   >Flow Sentiment</span
                 >
                 <span
                   class="text-start text-[1rem] font-semibold {flowSentiment ===
                   'Bullish'
-                    ? 'text-[#00FC50]'
+                    ? 'text-green-600 dark:text-[#00FC50]'
                     : flowSentiment === 'Bearish'
-                      ? 'text-[#FF2F1F]'
+                      ? 'text-red-600 dark:text-[#FF2F1F]'
                       : flowSentiment === 'Neutral'
                         ? 'text-[#fff]'
-                        : 'text-white'}">{flowSentiment}</span
+                        : ''}">{flowSentiment}</span
                 >
               </div>
             </div>
             <!--End Flow Sentiment-->
             <!--Start Put/Call-->
             <div
-              class="flex flex-row items-center flex-wrap w-full px-5 bg-primary border border-gray-600 rounded-md h-20"
+              class="shadow-sm flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded-md h-20"
             >
               <div class="flex flex-col items-start">
-                <span class="font-semibold text-gray-200 text-sm sm:text-[1rem]"
+                <span
+                  class="font-semibold text-muted dark:text-gray-200 text-sm sm:text-[1rem]"
                   >Put/Call</span
                 >
-                <span class="text-start text-[1rem] font-semibold text-white">
+                <span class="text-start text-[1rem] font-semibold">
                   {putCallRatio?.toFixed(3)}
                 </span>
               </div>
@@ -1479,7 +1481,7 @@
                     cy="18"
                     r="16"
                     fill="none"
-                    class="stroke-current text-[#3E3E3E]"
+                    class="stroke-current text-gray-300 dark:text-[#3E3E3E]"
                     stroke-width="3"
                   ></circle>
                   <!-- Progress Circle inside a group with rotation -->
@@ -1502,7 +1504,7 @@
                 <div
                   class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
                 >
-                  <span class="text-center text-white text-sm"
+                  <span class="text-center text-sm"
                     >{putCallRatio?.toFixed(2)}</span
                   >
                 </div>
@@ -1512,13 +1514,14 @@
             <!--End Put/Call-->
             <!--Start Call Flow-->
             <div
-              class="flex flex-row items-center flex-wrap w-full px-5 bg-primary border border-gray-600 rounded-md h-20"
+              class="shadow-sm flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded-md h-20"
             >
               <div class="flex flex-col items-start">
-                <span class="font-semibold text-gray-200 text-sm sm:text-[1rem]"
+                <span
+                  class="font-semibold text-muted dark:text-gray-200 text-sm sm:text-[1rem]"
                   >Call Flow</span
                 >
-                <span class="text-start text-[1rem] font-semibold text-white">
+                <span class="text-start text-[1rem] font-semibold">
                   {new Intl.NumberFormat("en", {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
@@ -1538,7 +1541,7 @@
                     cy="18"
                     r="16"
                     fill="none"
-                    class="stroke-current text-[#3E3E3E]"
+                    class="stroke-current text-gray-300 dark:text-[#3E3E3E]"
                     stroke-width="3"
                   ></circle>
                   <!-- Progress Circle inside a group with rotation -->
@@ -1548,7 +1551,7 @@
                       cy="18"
                       r="16"
                       fill="none"
-                      class="stroke-current text-[#00FC50]"
+                      class="stroke-current text-green-600 dark:text-[#00FC50]"
                       stroke-width="3"
                       stroke-dasharray="100"
                       stroke-dashoffset={100 - callPercentage?.toFixed(2)}
@@ -1559,9 +1562,7 @@
                 <div
                   class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
                 >
-                  <span class="text-center text-white text-sm"
-                    >{callPercentage}%</span
-                  >
+                  <span class="text-center text-sm">{callPercentage}%</span>
                 </div>
               </div>
               <!-- End Circular Progress -->
@@ -1569,13 +1570,14 @@
             <!--End Call Flow-->
             <!--Start Put Flow-->
             <div
-              class="flex flex-row items-center flex-wrap w-full px-5 bg-primary border border-gray-600 rounded-md h-20"
+              class="shadow-sm flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded-md h-20"
             >
               <div class="flex flex-col items-start">
-                <span class="font-semibold text-gray-200 text-sm sm:text-[1rem]"
+                <span
+                  class="font-semibold text-muted dark:text-gray-200 text-sm sm:text-[1rem]"
                   >Put Flow</span
                 >
-                <span class="text-start text-[1rem] font-semibold text-white">
+                <span class="text-start text-[1rem] font-semibold">
                   {new Intl.NumberFormat("en", {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
@@ -1595,7 +1597,7 @@
                     cy="18"
                     r="16"
                     fill="none"
-                    class="stroke-current text-[#3E3E3E]"
+                    class="stroke-current text-gray-300 dark:text-[#3E3E3E]"
                     stroke-width="3"
                   ></circle>
                   <!-- Progress Circle inside a group with rotation -->
@@ -1616,9 +1618,7 @@
                 <div
                   class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
                 >
-                  <span class="text-center text-white text-sm"
-                    >{putPercentage}%</span
-                  >
+                  <span class="text-center text-sm">{putPercentage}%</span>
                 </div>
               </div>
               <!-- End Circular Progress -->
@@ -1641,7 +1641,7 @@
             </div>
           {:else}
             <div
-              class="text-white text-center p-3 sm:p-5 mb-10 mt-5 rounded-md sm:flex sm:flex-row sm:items-center border border-gray-600 text-sm sm:text-[1rem]"
+              class=" text-center p-3 sm:p-5 mb-10 mt-5 rounded-md sm:flex sm:flex-row sm:items-center border border-gray-300 dark:border-gray-600 text-sm sm:text-[1rem]"
             >
               <svg
                 class="w-6 h-6 shrink-0 inline-block sm:mr-2"
@@ -1660,9 +1660,10 @@
         <div class="flex justify-center items-center h-80">
           <div class="relative">
             <label
-              class="bg-primary rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+              class="bg-gray-100 dark:bg-primary rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
             >
-              <span class="loading loading-spinner loading-md text-gray-400"
+              <span
+                class="loading loading-spinner loading-md text-muted dark:text-gray-400"
               ></span>
             </label>
           </div>
@@ -1684,21 +1685,21 @@
   ></label>
 
   <div
-    class="modal-box relative bg-primary z-20 mx-2 min-h-[30vh] h-[800px] rounded bg-default opacity-100 border border-gray-600 bp:mx-3 sm:mx-4 w-full max-w-6xl overflow-y-auto"
+    class="modal-box text-muted dark:text-white relative bg-gray-100 dark:bg-primary z-20 mx-2 min-h-[30vh] h-[800px] rounded opacity-100 border border-gray-300 dark:border-gray-600 bp:mx-3 sm:mx-4 w-full max-w-6xl overflow-y-auto"
   >
     <div class="relative flex flex-col w-full">
       <!-- Sticky Header -->
 
       <div
-        class="fixed w-full h-fit sticky -top-6 z-40 bg-primary shadow-xs opacity-100 pb-6 pt-5 border-gray-600 border-b"
+        class="fixed w-full h-fit sticky -top-6 z-40 bg-gray-100 dark:bg-primary shadow-xs opacity-100 pb-6 pt-5 border-gray-300 dark:border-gray-600 border-b"
       >
         <div class="flex flex-row items-center justify-between mb-2">
-          <h1 class="text-white text-[1rem] sm:text-xl font-semibold">
+          <h1 class=" text-[1rem] sm:text-xl font-semibold">
             Select screener filters ({allRows?.length} total)
           </h1>
           <label
             for="ruleModal"
-            class="inline-block cursor-pointer absolute right-0 top-3 text-[1.3rem] sm:text-[1.8rem] text-white"
+            class="inline-block cursor-pointer absolute right-0 top-3 text-[1.3rem] sm:text-[1.8rem]"
           >
             <svg
               class="w-6 h-6 sm:w-8 sm:h-8"
@@ -1717,15 +1718,13 @@
           class="w-full h-8"
           on:keydown={(e) => (e?.key === "Enter" ? e.preventDefault() : "")}
         >
-          <label for="search" class="text-sm text-gray-200 sr-only"
-            >Search</label
-          >
+          <label for="search" class="text-sm sr-only">Search</label>
           <div class="relative w-full max-w-sm">
             <div
               class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
             >
               <svg
-                class="w-4 h-4 text-gray-200"
+                class="w-4 h-4 text-muted dark:text-gray-200"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -1749,7 +1748,7 @@
             >
               <button
                 on:click={() => (searchTerm = "")}
-                class="cursor-pointer text-gray-200 sm:hover:text-white"
+                class="cursor-pointer text-muted dark:text-gray-200 sm:hover:"
                 tabindex="0"
                 ><svg
                   class="w-5 h-5"
@@ -1771,7 +1770,7 @@
               autocomplete="off"
               type="search"
               id="search"
-              class="placeholder-gray-300 block w-full p-2 ps-10 text-sm text-gray-200 border border-gray-600 rounded-md bg-primary border border-blue-500"
+              class="placeholder-gray-500 dark:placeholder-gray-300 block w-full p-2 ps-10 text-sm text-muted dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-100 dark:bg-primary border border-blue-500"
               placeholder="Search"
               bind:value={searchTerm}
             />
@@ -1781,7 +1780,7 @@
       </div>
 
       <!-- Content -->
-      <div class="text-white mt-5">
+      <div class=" mt-5">
         <div class="flex flex-wrap">
           {#each searchTerm?.length !== 0 ? filteredRows : allRows as row}
             <div
@@ -1818,7 +1817,7 @@
         </div>
 
         {#if searchTerm?.length > 0 && filteredRows?.length === 0}
-          <div class="text-white mt-5 font-semibold text-[1rem] sm:text-lg">
+          <div class=" mt-5 font-semibold text-[1rem] sm:text-lg">
             Nothing found
           </div>
         {/if}
@@ -1838,25 +1837,23 @@
 
   <!-- Desktop modal content -->
   <div
-    class="modal-box rounded-md border border-gray-600 w-full bg-primary flex flex-col items-center"
+    class="modal-box text-muted dark:text-white rounded-md border border-gray-300 dark:border-gray-600 w-full bg-gray-100 dark:bg-primary flex flex-col items-center"
   >
-    <div class="text-white mb-5 text-center">
+    <div class=" mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">{tooltipTitle}</h3>
-      <span class="text-white text-[1rem] font-normal"
-        >{infoText?.text ?? "n/a"}</span
-      >
+      <span class=" text-[1rem] font-normal">{infoText?.text ?? "n/a"}</span>
       {#if infoText?.equation !== undefined}
         <div class="w-5/6 m-auto mt-5"></div>
-        <div class="text-[1rem] w-full pt-3 pb-3 m-auto text-white">
+        <div class="text-[1rem] w-full pt-3 pb-3 m-auto">
           {infoText?.equation}
         </div>
       {/if}
     </div>
 
-    <div class="border-t border-gray-600 mt-2 w-full">
+    <div class="border-t border-gray-300 dark:border-gray-600 mt-2 w-full">
       <label
         for="mobileTooltip"
-        class="mt-4 font-semibold text-white text-xl m-auto flex justify-center cursor-pointer"
+        class="mt-4 font-semibold text-xl m-auto flex justify-center cursor-pointer"
       >
         Close
       </label>

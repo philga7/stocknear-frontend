@@ -1252,7 +1252,7 @@
 
 <style lang="scss">
   :root {
-    --bprogress-color: #fff;
+    --bprogress-color: #00A6F4;
     --bprogress-height: 1px;
   }
 </style>

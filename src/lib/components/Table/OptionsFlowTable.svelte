@@ -1,6 +1,6 @@
 <script lang="ts">
   import { screenWidth } from "$lib/store";
-  import { abbreviateNumberWithColor } from "$lib/utils";
+  import { abbreviateNumber } from "$lib/utils";
 
   import VirtualList from "svelte-tiny-virtual-list";
   import HoverStockChart from "$lib/components/HoverStockChart.svelte";
@@ -234,12 +234,12 @@
   }
 </script>
 
-<div class="w-full overflow-x-auto">
+<div class="w-full overflow-x-auto text-muted dark:text-white">
   <!-- Set a min-width on smaller screens so the grid can show all columns -->
   <div class="min-w-[1000px]">
     <!-- Header row using grid -->
     <div
-      class="grid grid-cols-16 sticky top-0 z-40 border border-gray-800 bg-default text-white font-bold text-xs uppercase"
+      class="grid grid-cols-16 sticky top-0 z-10 border border-gray-300 dark:border-gray-800 bg-white dark:bg-default font-bold text-xs uppercase"
     >
       <div
         on:click={() => sortData("time")}
@@ -589,19 +589,19 @@
         let:style
         {style}
         class="grid grid-cols-16 gap-0"
-        class:bg-[#19191F]={index % 2 === 0}
-        class:bg-[#121217]={index % 2 !== 0}
+        class:bg-[#fff]={index % 2 === 0 && $mode === "light"}
+        class:bg-[#19191F]={index % 2 === 0 && $mode !== "light"}
+        class:bg-[#121217]={index % 2 !== 0 && $mode !== "light"}
+        class:bg-[#F6F7F8]={index % 2 !== 0 && $mode == "light"}
         class:opacity-30={index + 1 === rawData?.length &&
           data?.user?.tier !== "Pro"}
       >
-        <div
-          class="p-2 text-center text-white text-sm sm:text-[1rem] whitespace-nowrap"
-        >
+        <div class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap">
           {formatTime(displayedData[index]?.time)}
         </div>
         <div
           on:click|stopPropagation
-          class="p-2 text-center text-white text-sm sm:text-[1rem] whitespace-nowrap"
+          class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap"
         >
           <HoverStockChart
             symbol={displayedData[index]?.ticker}
@@ -617,7 +617,7 @@
             displayedData[index]?.id,
           )
             ? 'text-[#FBCE3C]'
-            : 'text-white'}"
+            : ''}"
         >
           <svg
             class="{displayedData[index]?.id === animationId
@@ -626,29 +626,23 @@
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
             ><path
-              fill="currentColor"
+              fill={$mode === "light" ? "#4B5563" : "#fff"}
               d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327l4.898.696c.441.062.612.636.282.95l-3.522 3.356l.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
             /></svg
           >
         </div>
 
-        <div
-          class="p-2 text-center text-white text-sm sm:text-[1rem] whitespace-nowrap"
-        >
+        <div class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap">
           {reformatDate(displayedData[index]?.date_expiration)}
         </div>
 
-        <div
-          class="p-2 text-center text-white text-sm sm:text-[1rem] whitespace-nowrap"
-        >
+        <div class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap">
           {displayedData[index]?.dte < 0
             ? "expired"
             : displayedData[index]?.dte + "d"}
         </div>
 
-        <div
-          class="p-2 text-center text-white text-sm sm:text-[1rem] whitespace-nowrap"
-        >
+        <div class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap">
           {displayedData[index]?.strike_price}
         </div>
 
@@ -656,7 +650,7 @@
           class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap {displayedData[
             index
           ]?.put_call === 'Calls'
-            ? 'text-[#00FC50]'
+            ? 'text-green-600 dark:text-[#00FC50]'
             : 'text-[#c44536]'} "
         >
           {displayedData[index]?.put_call}
@@ -666,30 +660,24 @@
           class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap {displayedData[
             index
           ]?.sentiment === 'Bullish'
-            ? 'text-[#00FC50]'
+            ? 'text-green-600 dark:text-[#00FC50]'
             : displayedData[index]?.sentiment === 'Bearish'
-              ? 'text-[#FF2F1F]'
+              ? 'text-red-600 dark:text-[#FF2F1F]'
               : 'text-[#C6A755]'} "
         >
           {displayedData[index]?.sentiment}
         </div>
 
-        <div
-          class="p-2 text-center text-white text-sm sm:text-[1rem] whitespace-nowrap"
-        >
+        <div class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap">
           {displayedData[index]?.underlying_price}
         </div>
 
-        <div
-          class="p-2 text-center text-white text-sm sm:text-[1rem] whitespace-nowrap"
-        >
+        <div class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap">
           {displayedData[index]?.price}
         </div>
 
-        <div
-          class="p-2 text-center text-white text-sm sm:text-[1rem] whitespace-nowrap"
-        >
-          {@html abbreviateNumberWithColor(
+        <div class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap">
+          {@html abbreviateNumber(
             displayedData[index]?.cost_basis,
             false,
             true,
@@ -700,8 +688,8 @@
           class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap uppercase {displayedData[
             index
           ]?.option_activity_type === 'Sweep'
-            ? 'text-[#C6A755]'
-            : 'text-[#976DB7]'}"
+            ? 'text-[#9E8135] dark:text-[#C6A755]'
+            : 'text-[#754A96] dark:text-[#976DB7]'}"
         >
           {displayedData[index]?.option_activity_type}
         </div>
@@ -725,27 +713,21 @@
             ?.replace("Midpoint", "Mid")}
         </div>
 
-        <div
-          class="p-2 text-center text-white text-sm sm:text-[1rem] whitespace-nowrap"
-        >
+        <div class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap">
           {new Intl.NumberFormat("en", {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0,
           }).format(displayedData[index]?.size)}
         </div>
 
-        <div
-          class="p-2 text-center text-white text-sm sm:text-[1rem] whitespace-nowrap"
-        >
+        <div class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap">
           {new Intl.NumberFormat("en", {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0,
           }).format(displayedData[index]?.volume)}
         </div>
 
-        <div
-          class="p-2 text-center text-white text-sm sm:text-[1rem] whitespace-nowrap"
-        >
+        <div class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap">
           {new Intl.NumberFormat("en", {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0,
