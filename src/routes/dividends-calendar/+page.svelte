@@ -325,7 +325,7 @@
       >
         <main class="w-full lg:pr-5">
           <div class="mb-6 border-b-[2px]">
-            <h1 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
+            <h1 class="mb-1 text-2xl sm:text-3xl font-bold">
               Dividends Calendar
             </h1>
           </div>
@@ -343,21 +343,21 @@
                   on:click={() => changeWeek("previous")}
                   class="{previousMax
                     ? 'opacity-80'
-                    : ''} hidden sm:flex h-16 w-48 cursor-pointer border m-auto flex bg-primary border border-gray-600 mb-3"
+                    : ''} hidden sm:flex h-16 w-48 cursor-pointer border m-auto flex bg-gray-200 dark:bg-primary border border-gray-300 dark:border-gray-600 mb-3"
                 >
                   <svg
                     class="w-6 h-6 m-auto rotate-180"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     ><path
-                      fill="white"
+                      fill="currentColor"
                       d="M8.025 22L6.25 20.225L14.475 12L6.25 3.775L8.025 2l10 10l-10 10Z"
                     /></svg
                   >
                 </label>
                 {#each weekday as day, index}
                   <div
-                    class="w-full text-white {index === selectedWeekday
+                    class="w-full {index === selectedWeekday
                       ? ''
                       : 'hidden sm:block'}"
                   >
@@ -365,8 +365,8 @@
                       on:click={() => toggleDate(index)}
                       class=" m-auto w-full cursor-pointer h-16 {index ===
                       selectedWeekday
-                        ? 'bg-white text-black font-semibold'
-                        : ''} rounded-md sm:rounded-none flex bg-default border border-gray-600 mb-3"
+                        ? 'bg-gray-200 dark:bg-white text-black font-semibold'
+                        : ''} rounded-md sm:rounded-none flex dark:bg-default border border-gray-300 dark:border-gray-600 mb-3"
                     >
                       <div
                         class=" flex flex-row justify-center items-center w-full"
@@ -421,14 +421,14 @@
                   on:click={() => changeWeek("next")}
                   class="{nextMax
                     ? 'opacity-80'
-                    : ''} hidden sm:flex h-16 w-48 cursor-pointer border m-auto flex bg-primary border border-gray-600 mb-3"
+                    : ''} hidden sm:flex h-16 w-48 cursor-pointer border m-auto flex bg-gray-200 dark:bg-primary border border-gray-300 dark:border-gray-600 mb-3"
                 >
                   <svg
                     class="w-6 h-6 m-auto"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     ><path
-                      fill="white"
+                      fill="currentColor"
                       d="M8.025 22L6.25 20.225L14.475 12L6.25 3.775L8.025 2l10 10l-10 10Z"
                     /></svg
                   >
@@ -438,13 +438,13 @@
               {#each weekday as day, index}
                 {#if index === selectedWeekday}
                   {#if day?.length !== 0}
-                    <h2 class="font-semibold text-white text-xl mt-5">
+                    <h2 class="font-semibold text-xl mt-5">
                       {formattedWeekday[index]?.split(", ")[1]} · {day?.length} Dividends
                     </h2>
 
                     <div class="w-full overflow-x-auto no-scrollbar">
                       <table
-                        class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto mt-4"
+                        class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
                       >
                         <thead>
                           <TableHeader {columns} {sortOrders} {sortData} />
@@ -453,23 +453,21 @@
                           {#each day as item}
                             <!-- row -->
                             <tr
-                              class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-oddborder-b border-gray-800"
+                              class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                             >
                               <td class=" text-sm sm:text-[1rem]">
                                 <HoverStockChart symbol={item?.symbol} />
                               </td>
 
                               <td
-                                class="text-white whitespace-nowrap text-sm sm:text-[1rem]"
+                                class=" whitespace-nowrap text-sm sm:text-[1rem]"
                               >
                                 {item?.name.length > 20
                                   ? item?.name.slice(0, 20) + "..."
                                   : item?.name}
                               </td>
 
-                              <td
-                                class="text-white text-sm text-end sm:text-[1rem]"
-                              >
+                              <td class=" text-sm text-end sm:text-[1rem]">
                                 {@html item?.marketCap !== null
                                   ? abbreviateNumber(
                                       item?.marketCap,
@@ -479,25 +477,21 @@
                                   : "n/a"}
                               </td>
 
-                              <td
-                                class="text-white text-sm sm:text-[1rem] text-end"
-                              >
+                              <td class=" text-sm sm:text-[1rem] text-end">
                                 {item?.revenue !== null
                                   ? abbreviateNumber(item?.revenue)
                                   : "n/a"}
                               </td>
 
                               <td
-                                class="text-white text-center text-sm sm:text-[1rem] text-end"
+                                class=" text-center text-sm sm:text-[1rem] text-end"
                               >
                                 {item?.adjDividend !== null
                                   ? item?.adjDividend?.toFixed(3)
                                   : "n/a"}
                               </td>
 
-                              <td
-                                class="text-white text-end text-sm sm:text-[1rem]"
-                              >
+                              <td class=" text-end text-sm sm:text-[1rem]">
                                 {item?.paymentDate !== null
                                   ? new Date(item?.paymentDate)?.toLocaleString(
                                       "en-US",

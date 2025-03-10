@@ -14,6 +14,7 @@
   import Infobox from "$lib/components/Infobox.svelte";
   import SEO from "$lib/components/SEO.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
+  import { mode } from "mode-watcher";
 
   export let data;
 
@@ -327,7 +328,7 @@
       >
         <main class="w-full lg:pr-5">
           <div class="mb-6 border-b-[2px]">
-            <h1 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
+            <h1 class="mb-1 text-2xl sm:text-3xl font-bold">
               Earnings Calendar
             </h1>
           </div>
@@ -344,21 +345,21 @@
                   on:click={() => changeWeek("previous")}
                   class="{previousMax
                     ? 'opacity-80'
-                    : ''} hidden sm:flex h-16 w-48 cursor-pointer border m-auto flex bg-primary border border-gray-600 mb-3"
+                    : ''} hidden sm:flex h-16 w-48 cursor-pointer border m-auto flex bg-gray-200 dark:bg-primary border border-gray-300 dark:border-gray-600 mb-3"
                 >
                   <svg
                     class="w-6 h-6 m-auto rotate-180"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     ><path
-                      fill="white"
+                      fill="currentColor"
                       d="M8.025 22L6.25 20.225L14.475 12L6.25 3.775L8.025 2l10 10l-10 10Z"
                     /></svg
                   >
                 </label>
                 {#each weekday as day, index}
                   <div
-                    class="w-full text-white {index === selectedWeekday
+                    class="w-full {index === selectedWeekday
                       ? ''
                       : 'hidden sm:block'}"
                   >
@@ -366,8 +367,8 @@
                       on:click={() => toggleDate(index)}
                       class=" m-auto w-full cursor-pointer h-16 {index ===
                       selectedWeekday
-                        ? 'bg-white text-black font-semibold'
-                        : ''} rounded-md sm:rounded-none flex bg-default border border-gray-600 mb-3"
+                        ? 'bg-gray-200 dark:bg-white text-black font-semibold'
+                        : ''} rounded-md sm:rounded-none flex dark:bg-default border border-gray-300 dark:border-gray-600 mb-3"
                     >
                       <div
                         class=" flex flex-row justify-center items-center w-full"
@@ -422,14 +423,14 @@
                   on:click={() => changeWeek("next")}
                   class="{nextMax
                     ? 'opacity-80'
-                    : ''} hidden sm:flex h-16 w-48 cursor-pointer border m-auto flex bg-primary border border-gray-600 mb-3"
+                    : ''} hidden sm:flex h-16 w-48 cursor-pointer border m-auto flex bg-gray-200 dark:bg-primary border border-gray-300 dark:border-gray-600 mb-3"
                 >
                   <svg
                     class="w-6 h-6 m-auto"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     ><path
-                      fill="white"
+                      fill="currentColor"
                       d="M8.025 22L6.25 20.225L14.475 12L6.25 3.775L8.025 2l10 10l-10 10Z"
                     /></svg
                   >
@@ -439,13 +440,13 @@
               {#each weekday as day, index}
                 {#if index === selectedWeekday}
                   {#if day?.length !== 0}
-                    <h2 class="font-semibold text-white text-xl mt-5">
+                    <h2 class="font-semibold text-xl mt-5">
                       {formattedWeekday[index]?.split(", ")[1]} · {day?.length} Earnings
                     </h2>
 
                     <div class="w-full overflow-x-auto no-scrollbar">
                       <table
-                        class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto mt-4"
+                        class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
                       >
                         <thead>
                           <TableHeader {columns} {sortOrders} {sortData} />
@@ -454,7 +455,7 @@
                           {#each ["Pro", "Plus"]?.includes(data?.user?.tier) ? day : day?.slice(0, 6) as item, index}
                             <!-- row -->
                             <tr
-                              class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-oddborder-b border-gray-800 {index +
+                              class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
                                 1 ===
                                 day?.slice(0, 6)?.length &&
                               !['Pro', 'Plus']?.includes(data?.user?.tier)
@@ -468,16 +469,14 @@
                               </td>
 
                               <td
-                                class="text-white whitespace-nowrap text-sm sm:text-[1rem]"
+                                class=" whitespace-nowrap text-sm sm:text-[1rem]"
                               >
                                 {item?.name.length > 20
                                   ? item?.name?.slice(0, 20) + "..."
                                   : item?.name}
                               </td>
 
-                              <td
-                                class="text-white text-end text-sm sm:text-[1rem]"
-                              >
+                              <td class=" text-end text-sm sm:text-[1rem]">
                                 {@html item?.marketCap !== null
                                   ? abbreviateNumber(
                                       item?.marketCap,
@@ -487,9 +486,7 @@
                                   : "n/a"}
                               </td>
 
-                              <td
-                                class="text-white text-end text-sm sm:text-[1rem]"
-                              >
+                              <td class=" text-end text-sm sm:text-[1rem]">
                                 <div
                                   class="flex flex-row items-center justify-end"
                                 >
@@ -506,7 +503,9 @@
                                     {#if !isFinite((item?.revenueEst / item?.revenuePrior - 1) * 100)}
                                       <span class="ml-1"></span>
                                     {:else if item?.revenueEst / item?.revenuePrior - 1 >= 0}
-                                      <span class="ml-1 text-[#22C55E]">
+                                      <span
+                                        class="ml-1 text-green-600 dark:text-[#00FC50]"
+                                      >
                                         +{(
                                           (item?.revenueEst /
                                             item?.revenuePrior -
@@ -515,7 +514,9 @@
                                         )?.toFixed(2)}%
                                       </span>
                                     {:else}
-                                      <span class="ml-1 text-[#FF2F1F]">
+                                      <span
+                                        class="ml-1 text-red-600 dark:text-[#FF2F1F]"
+                                      >
                                         {(
                                           (item?.revenueEst /
                                             item?.revenuePrior -
@@ -528,9 +529,7 @@
                                 </div>
                               </td>
 
-                              <td
-                                class="text-white text-end text-sm sm:text-[1rem]"
-                              >
+                              <td class=" text-end text-sm sm:text-[1rem]">
                                 <div
                                   class="flex flex-row items-center justify-end"
                                 >
@@ -541,14 +540,18 @@
                                   </span>
                                   {#if item?.epsEst !== null && item?.epsPrior !== null && item?.epsPrior !== 0}
                                     {#if item?.epsEst / item?.epsPrior - 1 >= 0}
-                                      <span class="ml-1 text-[#22C55E]">
+                                      <span
+                                        class="ml-1 text-green-600 dark:text-[#00FC50]"
+                                      >
                                         +{(
                                           (item?.epsEst / item?.epsPrior - 1) *
                                           100
                                         )?.toFixed(2)}%
                                       </span>
                                     {:else}
-                                      <span class="ml-1 text-[#FF2F1F]">
+                                      <span
+                                        class="ml-1 text-red-600 dark:text-[#FF2F1F]"
+                                      >
                                         {(
                                           (item?.epsEst / item?.epsPrior - 1) *
                                           100
@@ -560,7 +563,7 @@
                               </td>
 
                               <td
-                                class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                                class=" text-end text-sm sm:text-[1rem] whitespace-nowrap"
                               >
                                 {#if item?.release === "amc"}
                                   <svg
@@ -568,7 +571,9 @@
                                     xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 256 256"
                                     ><path
-                                      fill="#70A1EF"
+                                      fill={$mode === "light"
+                                        ? "#397de9"
+                                        : "#70A1EF"}
                                       d="M232.13 143.64a6 6 0 0 0-6-1.49a90.07 90.07 0 0 1-112.27-112.3a6 6 0 0 0-7.49-7.48a102.88 102.88 0 0 0-51.89 36.31a102 102 0 0 0 142.84 142.84a102.88 102.88 0 0 0 36.31-51.89a6 6 0 0 0-1.5-5.99m-42 48.29a90 90 0 0 1-126-126a90.9 90.9 0 0 1 35.52-28.27a102.06 102.06 0 0 0 118.69 118.69a90.9 90.9 0 0 1-28.24 35.58Z"
                                     /></svg
                                   >
@@ -578,7 +583,10 @@
                                     class="w-4 h-4 inline-block mr-1"
                                     xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 256 256"
-                                    ><g fill="#FEC001"
+                                    ><g
+                                      fill={$mode === "light"
+                                        ? "#C39401"
+                                        : "#FEC001"}
                                       ><path
                                         d="M184 128a56 56 0 1 1-56-56a56 56 0 0 1 56 56Z"
                                         opacity=".2"
