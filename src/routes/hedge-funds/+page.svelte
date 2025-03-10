@@ -87,8 +87,8 @@
   <body class="w-full overflow-hidden m-auto">
     <div class="text-sm sm:text-[1rem] breadcrumbs">
       <ul>
-        <li><a href="/" class="text-gray-300">Home</a></li>
-        <li class="text-gray-300">Hedge Funds</li>
+        <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
+        <li class="text-muted dark:text-gray-300">Hedge Funds</li>
       </ul>
     </div>
 
@@ -98,22 +98,22 @@
           class="relative flex justify-center items-center overflow-hidden w-full"
         >
           <main class="w-full">
-            <h1 class="mb-3 text-white text-2xl sm:text-3xl font-bold">
+            <h1 class="mb-3 text-2xl sm:text-3xl font-bold">
               All US Hedge Funds
             </h1>
             <div class="w-full pb-3">
-              <div class="relative right-0 bg-default">
+              <div class="relative right-0">
                 <ul
                   class="relative grid grid-cols-1 sm:grid-cols-4 gap-y-3 gap-x-3 flex flex-wrap p-1 list-none rounded-[3px]"
                 >
                   <li
-                    class="pl-3 py-1.5 flex-auto text-center bg-[#2E3238] rounded-[3px]"
+                    class="pl-3 py-1.5 flex-auto text-center shadow-sm bg-gray-100 dark:bg-[#2E3238] rounded-[3px]"
                   >
                     <label class="flex flex-row items-center">
                       <input
                         id="modal-search"
                         type="search"
-                        class="text-white ml-2 text-[1rem] placeholder-gray-400 border-transparent focus:border-transparent focus:ring-0 flex items-center justify-center w-full px-0 py-1 bg-inherit"
+                        class=" ml-2 text-[1rem] dark:placeholder-gray-400 bg-inherit border-transparent focus:border-transparent focus:ring-0 flex items-center justify-center w-full px-0 py-1"
                         placeholder="Find by name"
                         bind:value={filterQuery}
                         on:input={handleInput}
@@ -124,7 +124,7 @@
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
                         ><path
-                          fill="#fff"
+                          fill="currentColor"
                           d="m19.485 20.154l-6.262-6.262q-.75.639-1.725.989t-1.96.35q-2.402 0-4.066-1.663T3.808 9.503T5.47 5.436t4.064-1.667t4.068 1.664T15.268 9.5q0 1.042-.369 2.017t-.97 1.668l6.262 6.261zM9.539 14.23q1.99 0 3.36-1.37t1.37-3.361t-1.37-3.36t-3.36-1.37t-3.361 1.37t-1.37 3.36t1.37 3.36t3.36 1.37"
                         /></svg
                       >
@@ -141,7 +141,7 @@
                 {#each displayList as item}
                   <a
                     href={`/hedge-funds/${item?.cik}`}
-                    class="w-full cursor-pointer bg-[#141417] sm:hover:bg-[#000] transition-colors ease-in-out border sm:hover:border-[#000] sm:hover:shadow-[#8C5F1B] border-gray-800 shadow-md rounded-md h-auto pb-4 pt-4 mb-7"
+                    class="w-full cursor-pointer bg-gray-300 dark:bg-[#141417] sm:hover:bg-gray-400 dark:sm:hover:bg-[#000] transition-colors ease-in-out border dark:sm:hover:border-[#000] sm:hover:shadow-[#8C5F1B] border-gray-300 dark:border-gray-800 shadow-md rounded-md h-auto pb-4 pt-4 mb-7"
                   >
                     <div class="flex flex-col relative">
                       <img
@@ -152,7 +152,7 @@
                         class="flex flex-col justify-center items-center rounded-2xl"
                       >
                         <div
-                          class="-mt-3 shadow-lg rounded-full border border-slate-600 w-20 h-20 relative hedge-fund-striped bg-[#20202E] flex items-center justify-center"
+                          class="-mt-3 shadow-lg rounded-full border border-slate-300 dark:border-slate-600 w-20 h-20 relative hedge-fund-striped bg-[#20202E] flex items-center justify-center"
                         >
                           <img
                             style="clip-path: circle(50%);"
@@ -162,11 +162,11 @@
                           />
                         </div>
                         <span
-                          class="text-white text-md font-semibold mt-2 mb-2 w-64 text-center"
+                          class=" text-md font-semibold mt-2 mb-2 w-64 text-center"
                         >
                           {formatString(item?.name)}
                         </span>
-                        <span class="text-white text-md mb-8">
+                        <span class=" text-md mb-8">
                           AUM: {abbreviateNumber(item?.marketValue)}
                         </span>
                       </div>
@@ -178,21 +178,20 @@
                           <label
                             class="cursor-pointer flex flex-col items-start"
                           >
-                            <span class="text-white text-[1rem] font-semibold">
+                            <span class=" text-[1rem] font-semibold">
                               {new Intl.NumberFormat("en", {
                                 minimumFractionDigits: 0,
                                 maximumFractionDigits: 0,
                               }).format(item?.numberOfStocks)}
                             </span>
-                            <span class="text-white text-sm"># of Holdings</span
-                            >
+                            <span class=" text-sm"># of Holdings</span>
                           </label>
 
                           <div class="flex flex-col items-end">
-                            <span class="text-white text-[1rem] font-semibold">
+                            <span class=" text-[1rem] font-semibold">
                               {item?.turnover?.toFixed(2)}
                             </span>
-                            <span class="text-white text-sm">Turnover</span>
+                            <span class=" text-sm">Turnover</span>
                           </div>
                         </div>
 
@@ -206,7 +205,7 @@
                               class="flex flex-row mt-1 text-[1rem] font-semibold"
                             >
                               {#if item?.performancePercentage3Year >= 0}
-                                <span class="text-[#00FC50]"
+                                <span class="text-green-600 dark:text-[#00FC50]"
                                   >+{abbreviateNumber(
                                     item?.performancePercentage3Year?.toFixed(
                                       2,
@@ -223,9 +222,7 @@
                                 </span>
                               {/if}
                             </div>
-                            <span class="text-white text-sm"
-                              >3-Year Performance</span
-                            >
+                            <span class=" text-sm">3-Year Performance</span>
                           </label>
 
                           <div class="flex flex-col items-end">
@@ -233,7 +230,7 @@
                               class="flex flex-row mt-1 text-[1rem] font-semibold"
                             >
                               {#if item?.winRate >= 0}
-                                <span class="text-[#00FC50]"
+                                <span class="text-green-600 dark:text-[#00FC50]"
                                   >+{abbreviateNumber(
                                     item?.winRate?.toFixed(2),
                                   )}%</span
@@ -246,7 +243,7 @@
                                 </span>
                               {/if}
                             </div>
-                            <span class="text-white text-sm">Win Rate</span>
+                            <span class=" text-sm">Win Rate</span>
                           </div>
                         </div>
                       </div>

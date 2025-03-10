@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { screenWidth, numberOfUnreadNotification } from "$lib/store";
+  import { screenWidth } from "$lib/store";
   import { sectorNavigation } from "$lib/utils";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import { onMount } from "svelte";
@@ -180,10 +180,12 @@
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
-      <li><a href="/" class="text-gray-300">Home</a></li>
-      <li><a href="/analysts" class="text-gray-300">Analyst</a></li>
+      <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
+      <li>
+        <a href="/analysts" class="text-muted dark:text-gray-300">Analyst</a>
+      </li>
 
-      <li class="text-gray-300">{analystName ?? "n/a"}</li>
+      <li class="text-muted dark:text-gray-300">{analystName ?? "n/a"}</li>
     </ul>
   </div>
 
@@ -200,7 +202,7 @@
               >
                 <div class="shrink-0">
                   <svg
-                    class="h-16 w-16 sm:h-20 sm:w-20 text-gray-200"
+                    class="h-16 w-16 sm:h-20 sm:w-20 text-gray-500 dark:text-gray-200"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                     style="max-width:100px"
@@ -212,10 +214,12 @@
                   >
                 </div>
                 <div class="mt-0 pt-0.5 text-left">
-                  <h1 class="mb-0 text-2xl font-bold text-white">
+                  <h1 class="mb-0 text-2xl font-bold">
                     {analystName ?? "n/a"}
                   </h1>
-                  <p class="mb-0.5 text-[1rem] font-semibold text-gray-300">
+                  <p
+                    class="mb-0.5 text-[1rem] font-semibold text-muted dark:text-gray-300"
+                  >
                     Stock Analyst at {companyName ?? "n/a"}
                   </p>
                   <div class="inline-flex items-center">
@@ -235,7 +239,7 @@
                           </svg>
                         {:else}
                           <svg
-                            class="w-5 h-5 text-gray-300 dark:text-gray-500"
+                            class="w-5 h-5 text-gray-400 dark:text-gray-500"
                             aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="currentColor"
@@ -248,39 +252,39 @@
                         {/if}
                       {/each}
                     </div>
-                    <span class="ml-1 text-[1rem] text-white"
+                    <span class="ml-1 text-[1rem]"
                       >({analystScore ?? "n/a"})</span
                     >
                   </div>
                 </div>
               </div>
               <div
-                class="mt-4 grid grid-cols-2 overflow-hidden rounded border border-gray-600 py-2 text-center md:grid-cols-4 md:p-0 lg:mt-0 lg:border-none"
+                class="mt-4 grid grid-cols-2 overflow-hidden rounded border border-gray-300 dark:border-gray-600 py-2 text-center md:grid-cols-4 md:p-0 lg:mt-0 lg:border-none"
               >
                 <div class="flex flex-col px-4 py-2 bp:px-6 md:py-6">
-                  <div class="text-2xl font-semibold tracking-tight text-white">
+                  <div class="text-2xl font-semibold tracking-tight">
                     # {rank ?? "n/a"}
                   </div>
                   <div
-                    class="text-[1rem] font-semibold leading-6 text-gray-300"
+                    class="text-[1rem] font-semibold leading-6 text-muted dark:text-gray-300"
                   >
                     Out of {numOfAnalysts ?? "n/a"} analysts
                   </div>
                 </div>
                 <div
-                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-600 md:py-6"
+                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-300 dark:sm:border-gray-600 md:py-6"
                 >
-                  <div class="text-2xl font-bold tracking-tight text-white">
+                  <div class="text-2xl font-bold tracking-tight">
                     {totalRatings ?? "n/a"}
                   </div>
                   <div
-                    class="text-[1rem] font-semibold leading-6 text-gray-300"
+                    class="text-[1rem] font-semibold leading-6 text-muted dark:text-gray-300"
                   >
                     Total ratings
                   </div>
                 </div>
                 <div
-                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-600 md:py-6"
+                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-300 dark:sm:border-gray-600 md:py-6"
                 >
                   <div class="text-2xl font-bold tracking-tight">
                     <span
@@ -288,35 +292,35 @@
                         ? "before:content-['+'] text-[#36D984]"
                         : successRate < 0 && successRate !== undefined
                           ? "text-[#EF4444]"
-                          : "text-white"}
+                          : ""}
                       >{successRate !== undefined
                         ? successRate?.toFixed(2) + "%"
                         : "n/a"}</span
                     >
                   </div>
                   <div
-                    class="text-[1rem] font-semibold leading-6 text-gray-300"
+                    class="text-[1rem] font-semibold leading-6 text-muted dark:text-gray-300"
                   >
                     Success rate
                   </div>
                 </div>
                 <div
-                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-600 md:py-6"
+                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-300 dark:sm:border-gray-600 md:py-6"
                 >
-                  <div class="text-2xl font-bold tracking-tight text-white">
+                  <div class="text-2xl font-bold tracking-tight">
                     <span
                       class={avgReturn >= 0 && avgReturn !== undefined
                         ? "before:content-['+'] text-[#36D984]"
                         : avgReturn < 0 && avgReturn !== undefined
                           ? "text-[#EF4444]"
-                          : "text-white"}
+                          : ""}
                       >{avgReturn !== undefined
                         ? avgReturn?.toFixed(2) + "%"
                         : "n/a"}</span
                     >
                   </div>
                   <div
-                    class="text-[1rem] font-semibold leading-6 text-gray-300"
+                    class="text-[1rem] font-semibold leading-6 text-muted dark:text-gray-300"
                   >
                     Average return
                   </div>
@@ -325,9 +329,9 @@
             </div>
 
             {#if data?.getAnalystStats?.mainSectors?.length > 0}
-              <div class="mb-10 mt-10 text-white">
+              <div class="mb-10 mt-10">
                 <div
-                  class="relative my-3 space-y-2 rounded border border-gray-600 sm:my-6 p-4"
+                  class="relative my-3 space-y-2 rounded border border-gray-300 dark:border-gray-600 sm:my-6 p-4"
                 >
                   <div class="flex flex-col sm:flex-row">
                     <div class="mb-2 font-semibold sm:mb-0">Main Sectors:</div>
@@ -337,7 +341,7 @@
                           href={sectorNavigation?.find(
                             (listItem) => listItem?.title === item,
                           )?.link}
-                          class="px-3 text-sm py-1 sm:text-[1rem] rounded-md bg-white/10 sm:hover:bg-white/20 ml-0"
+                          class="inline-block badge bg-blue-50 dark:bg-primary duration-0 rounded-sm ml-1 px-3 m-auto text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted text-[1rem]"
                         >
                           {item}
                         </a>
@@ -352,7 +356,7 @@
                       {#each data?.getAnalystStats?.mainIndustries as item}
                         <a
                           href={`/list/industry/${item?.replace(/ /g, "-")?.replace(/&/g, "and")?.replace(/-{2,}/g, "-")?.toLowerCase()}`}
-                          class="px-3 text-sm py-1 sm:text-[1rem] rounded-md bg-white/10 sm:hover:bg-white/20 ml-0"
+                          class="inline-block badge bg-blue-50 dark:bg-primary duration-0 rounded-sm ml-1 px-3 m-auto text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted text-[1rem]"
                         >
                           {item}
                         </a>
@@ -364,16 +368,16 @@
             {/if}
 
             {#if rawData?.length > 0}
-              <span class="text-white font-semibold text-xl sm:text-2xl">
+              <span class=" font-semibold text-xl sm:text-2xl">
                 {numOfStocks} Stocks
               </span>
 
-              <div class="w-full m-auto mt-10">
+              <div class="w-full m-auto mt-4">
                 <div
                   class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
                 >
                   <table
-                    class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto"
+                    class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
                   >
                     <thead>
                       <TableHeader {columns} {sortOrders} {sortData} />
@@ -381,7 +385,7 @@
                     <tbody>
                       {#each stockList as item, index}
                         <tr
-                          class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b-[#09090B]"
+                          class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                         >
                           <td class="hidden lg:table-cell"
                             ><button
@@ -393,7 +397,7 @@
                                   ? 'rotate-180'
                                   : ''}"
                                 viewBox="0 0 20 20"
-                                fill="white"
+                                fill="currentColor"
                                 style="max-width:40px"
                                 ><path
                                   fill-rule="evenodd"
@@ -410,20 +414,20 @@
                             {#if index >= 5 && !["Pro", "Plus"]?.includes(data?.user?.tier)}
                               <a class="block relative" href="/pricing">
                                 <span
-                                  class="text-base font-semibold text-blue-link blur-sm group-hover:blur-[6px]"
+                                  class=" font-semibold text-blue-link blur-sm group-hover:blur-[6px]"
                                 >
                                   XXXX
                                 </span>
 
                                 <div
-                                  class="ml-px max-w-[130px] truncate text-sm text-white blur-sm group-hover:blur-[6px] lg:max-w-[150px]"
+                                  class="ml-px max-w-[130px] truncate text-sm blur-sm group-hover:blur-[6px] lg:max-w-[150px]"
                                 >
                                   XXXXXXXXXXXXXXXX
                                 </div>
 
                                 <div class="absolute top-3 flex items-center">
                                   <svg
-                                    class="size-5 text-[#fff]"
+                                    class="size-5 text-muted dark:text-[#fff]"
                                     viewBox="0 0 20 20"
                                     fill="currentColor"
                                     style="max-width: 40px;"
@@ -437,7 +441,7 @@
                                   </svg>
 
                                   <span
-                                    class="ml-1 font-semibold text-gray-300 group-hover:text-white"
+                                    class="ml-1 font-semibold text-muted dark:text-gray-300"
                                   >
                                     Upgrade
                                   </span>
@@ -447,7 +451,7 @@
                               <div class="flex flex-col items-start">
                                 <HoverStockChart symbol={item?.ticker} />
 
-                                <span class="text-white">
+                                <span class="">
                                   {item?.name?.length > charNumber
                                     ? item?.name?.slice(0, charNumber) + "..."
                                     : item?.name}
@@ -460,18 +464,16 @@
                             class="text-sm sm:text-[1rem] text-start whitespace-nowrap"
                           >
                             <div class="flex flex-col sm:flex-row items-start">
-                              <span class=" text-white mr-1"
-                                >{item?.action_company}:</span
-                              >
+                              <span class="mr-1">{item?.action_company}:</span>
                               <span
                                 class=" {[
                                   'Strong Buy',
                                   'Buy',
                                   'Outperform',
                                 ]?.includes(item?.rating_current)
-                                  ? 'text-[#00FC50]'
+                                  ? 'text-green-600 dark:text-[#00FC50]'
                                   : item?.rating_current === 'Hold'
-                                    ? 'text-[#FF7070]'
+                                    ? '"text-red-600 dark:text-[#FF7070]"'
                                     : [
                                           'Strong Sell',
                                           'Sell',
@@ -485,12 +487,11 @@
                             </div>
                           </td>
 
-                          <td
-                            class="text-white text-sm sm:text-[1rem] whitespace-nowrap"
-                          >
+                          <td class=" text-sm sm:text-[1rem] whitespace-nowrap">
                             <div class="flex flex-row items-center justify-end">
                               {#if Math?.ceil(item?.adjusted_pt_prior) !== 0}
-                                <span class="text-gray-100 font-normal"
+                                <span
+                                  class="text-muted dark:text-gray-100 font-normal"
                                   >{Math?.ceil(item?.adjusted_pt_prior)}</span
                                 >
                                 <svg
@@ -499,18 +500,18 @@
                                   viewBox="0 0 24 24"
                                   ><path
                                     fill="none"
-                                    stroke="white"
+                                    stroke="currentColor"
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
                                     stroke-width="1.5"
                                     d="M4 12h16m0 0l-6-6m6 6l-6 6"
                                   /></svg
                                 >
-                                <span class="text-white font-semibold"
+                                <span class=" font-semibold"
                                   >{Math?.ceil(item?.adjusted_pt_current)}</span
                                 >
                               {:else if Math?.ceil(item?.adjusted_pt_current) !== 0}
-                                <span class="text-white font-semibold"
+                                <span class=" font-semibold"
                                   >{Math?.ceil(item?.adjusted_pt_current)}</span
                                 >
                               {:else}
@@ -520,29 +521,29 @@
                           </td>
 
                           <td
-                            class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                            class=" text-end text-sm sm:text-[1rem] whitespace-nowrap"
                           >
                             {item?.price !== null ? item?.price : "n/a"}
                           </td>
 
                           <td
                             class="{item?.upside >= 0 && item?.upside !== null
-                              ? "before:content-['+'] text-[#00FC50]"
+                              ? "before:content-['+'] text-green-500 dark:text-[#00FC50]"
                               : item?.upside < 0 && item?.upside !== null
-                                ? 'text-[#FF2F1F]'
-                                : 'text-white'} text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                                ? 'text-red-600 dark:text-[#FF2F1F]'
+                                : ''} text-end text-sm sm:text-[1rem] whitespace-nowrap"
                           >
                             {item?.upside !== null ? item?.upside + "%" : "n/a"}
                           </td>
 
                           <td
-                            class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                            class=" text-end text-sm sm:text-[1rem] whitespace-nowrap"
                           >
                             {item?.ratings !== null ? item?.ratings : "n/a"}
                           </td>
 
                           <td
-                            class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                            class=" text-end text-sm sm:text-[1rem] whitespace-nowrap"
                           >
                             {new Date(item?.date).toLocaleString("en-US", {
                               month: "short",
@@ -553,7 +554,7 @@
                           </td>
                         </tr>
                         {#if checkedSymbol === item?.ticker}
-                          <tr class="bg-default"
+                          <tr class=""
                             ><td colspan="8" class="px-0" style=""
                               ><div class="-mt-0.5 px-0 pb-2">
                                 <div class="relative h-[400px]">

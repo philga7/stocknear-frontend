@@ -387,7 +387,7 @@
                           href={item?.analystId !== null
                             ? `/analysts/${item?.analystId}`
                             : "#"}
-                          class="sm:hover:text-white text-blue-400"
+                          class="text-blue-500 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
                           >{item?.analyst_name}
                         </a>
 
@@ -444,9 +444,9 @@
                         class=" {['Strong Buy', 'Buy']?.includes(
                           item?.rating_current,
                         )
-                          ? 'text-[#00FC50]'
+                          ? 'text-green-600 dark:text-[#00FC50]'
                           : item?.rating_current === 'Hold'
-                            ? 'text-[#FF7070]'
+                            ? '"text-red-600 dark:text-[#FF7070]"'
                             : ['Strong Sell', 'Sell']?.includes(
                                   item?.rating_current,
                                 )
@@ -558,9 +558,7 @@
                 >
                   Analyst Star Rankings
                 </h3>
-                <p
-                  class="mt-3 text-base leading-8 text-muted dark:text-faded xl:text-lg"
-                >
+                <p class="mt-3 leading-8 text-muted dark:text-faded xl:text-lg">
                   Our analyst star rankings are based on these four factors
                 </p>
               </div>
@@ -570,7 +568,7 @@
                 >
                   <div class="relative pl-14">
                     <dt
-                      class="text-base font-semibold leading-4 text-white md:leading-7"
+                      class=" font-semibold leading-4 text-white md:leading-7"
                     >
                       <div
                         class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#fff]"
@@ -591,15 +589,13 @@
                       </div>
                       Success Rate
                     </dt>
-                    <dd
-                      class="mt-2 text-base leading-7 text-muted dark:text-faded"
-                    >
+                    <dd class="mt-2 leading-7 text-muted dark:text-faded">
                       The percentage of ratings that are profitable.
                     </dd>
                   </div>
                   <div class="relative pl-14">
                     <dt
-                      class="text-base font-semibold leading-4 text-white md:leading-7"
+                      class=" font-semibold leading-4 text-white md:leading-7"
                     >
                       <div
                         class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#fff]"
@@ -620,16 +616,14 @@
                       </div>
                       Average Return
                     </dt>
-                    <dd
-                      class="mt-2 text-base leading-7 text-muted dark:text-faded"
-                    >
+                    <dd class="mt-2 leading-7 text-muted dark:text-faded">
                       The average percentage return within one year of the
                       rating.
                     </dd>
                   </div>
                   <div class="relative pl-14">
                     <dt
-                      class="text-base font-semibold leading-4 text-white md:leading-7"
+                      class=" font-semibold leading-4 text-white md:leading-7"
                     >
                       <div
                         class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#fff]"
@@ -650,16 +644,14 @@
                       </div>
                       Rating Count
                     </dt>
-                    <dd
-                      class="mt-2 text-base leading-7 text-muted dark:text-faded"
-                    >
+                    <dd class="mt-2 leading-7 text-muted dark:text-faded">
                       The more ratings the analyst has provided, the higher the
                       score.
                     </dd>
                   </div>
                   <div class="relative pl-14">
                     <dt
-                      class="text-base font-semibold leading-4 text-white md:leading-7"
+                      class=" font-semibold leading-4 text-white md:leading-7"
                     >
                       <div
                         class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#fff]"
@@ -680,9 +672,7 @@
                       </div>
                       Recency
                     </dt>
-                    <dd
-                      class="mt-2 text-base leading-7 text-muted dark:text-faded"
-                    >
+                    <dd class="mt-2 leading-7 text-muted dark:text-faded">
                       Ratings provided within the past year contribute to a
                       higher score.
                     </dd>

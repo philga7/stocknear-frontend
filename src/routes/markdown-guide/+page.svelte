@@ -39,8 +39,8 @@
   <!--  
     <div class="text-sm breadcrumbs ml-4">
       <ul>
-        <li><a href="/" class="text-gray-300">Home</a></li> 
-        <li class="text-gray-300">Markdown Guide</li>
+        <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li> 
+        <li class="text-muted dark:text-gray-300">Markdown Guide</li>
       </ul>
     </div>
     -->

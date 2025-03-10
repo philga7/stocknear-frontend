@@ -159,8 +159,8 @@
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
-      <li><a href="/" class="text-gray-300">Home</a></li>
-      <li class="text-gray-300">Corporate Lobbying Tracker</li>
+      <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
+      <li class="text-muted dark:text-gray-300">Corporate Lobbying Tracker</li>
     </ul>
   </div>
 
@@ -174,7 +174,7 @@
             <h1 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
               Lobbying Tracker
             </h1>
-            <p class="mb-3 px-1 text-base font-semibold text-muted sm:px-0">
+            <p class="mb-3 px-1 font-semibold text-muted sm:px-0">
               Track the latest lobbying spendings of US stock companies
             </p>
           </div>
@@ -230,7 +230,7 @@
                         class="text-white text-end text-sm sm:text-[1rem] border-b-[#09090B]"
                       >
                         {#if item?.changesPercentage >= 0}
-                          <span class="text-[#00FC50]"
+                          <span class="text-green-600 dark:text-[#00FC50]"
                             >+{item?.changesPercentage >= 1000
                               ? item?.changesPercentage
                               : item?.changesPercentage?.toFixed(2)}%</span

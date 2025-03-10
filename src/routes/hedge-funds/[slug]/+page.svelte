@@ -54,10 +54,18 @@
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
-      <li><a href="/" class="text-gray-300">Home</a></li>
-      <li><a href="/hedge-funds" class="text-gray-300">Hedge Fund</a></li>
+      <li>
+        <a href="/" class="text-muted dark:text-gray-300">Home</a>
+      </li>
+      <li>
+        <a href="/hedge-funds" class="text-muted dark:text-gray-300"
+          >Hedge Fund</a
+        >
+      </li>
 
-      <li class="text-gray-300">{formatString(companyName)}</li>
+      <li class="text-muted dark:text-gray-300">
+        {formatString(companyName)}
+      </li>
     </ul>
   </div>
 
@@ -84,51 +92,59 @@
                 </div>
 
                 <div class="mt-0 pt-0.5 text-left">
-                  <h1 class="mb-0 text-2xl font-bold text-white">
+                  <h1 class="mb-0 text-2xl font-bold">
                     {formatString(companyName)}
                   </h1>
-                  <p class="mb-0.5 text-sm font-semibold text-gray-300">
+                  <p
+                    class="mb-0.5 text-sm font-semibold text-muted dark:text-gray-300"
+                  >
                     CIK Number: {data?.getHedgeFundsData?.cik}
                   </p>
                 </div>
               </div>
               <div
-                class="mt-4 grid grid-cols-2 overflow-hidden rounded border border-gray-600 py-2 text-center md:grid-cols-5 md:p-0 lg:mt-0 lg:border-none"
+                class="mt-4 grid grid-cols-2 overflow-hidden rounded border border-gray-300 dark:border-gray-600 py-2 text-center md:grid-cols-5 md:p-0 lg:mt-0 lg:border-none"
               >
                 <div class="flex flex-col px-4 py-2 bp:px-6 md:py-6">
-                  <div class="text-2xl font-bold tracking-tight text-white">
+                  <div class="text-2xl font-bold tracking-tight">
                     {abbreviateNumber(hedgeFundStats?.marketValue)}
                   </div>
-                  <div class="text-sm font-semibold leading-6 text-gray-300">
+                  <div
+                    class="text-sm font-semibold leading-6 text-muted dark:text-gray-300"
+                  >
                     Market Value
                   </div>
                 </div>
 
                 <div
-                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-600 md:py-6"
+                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-300 dark:sm:border-gray-600 md:py-6"
                 >
-                  <div class="text-2xl font-semibold tracking-tight text-white">
+                  <div class="text-2xl font-semibold tracking-tight">
                     {data?.getHedgeFundsData?.holdings?.length?.toLocaleString(
                       "en-US",
                     )}
                   </div>
-                  <div class="text-sm font-semibold leading-6 text-gray-300">
+                  <div
+                    class="text-sm font-semibold leading-6 text-muted dark:text-gray-300"
+                  >
                     # of Holdings
                   </div>
                 </div>
                 <div
-                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-600 md:py-6"
+                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-300 dark:sm:border-gray-600 md:py-6"
                 >
-                  <div class="text-2xl font-bold tracking-tight text-white">
+                  <div class="text-2xl font-bold tracking-tight">
                     {hedgeFundStats?.averageHoldingPeriod} months
                   </div>
-                  <div class="text-sm font-semibold leading-6 text-gray-300">
+                  <div
+                    class="text-sm font-semibold leading-6 text-muted dark:text-gray-300"
+                  >
                     Avg. Holding Period
                   </div>
                 </div>
 
                 <div
-                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-600 md:py-6"
+                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-300 dark:sm:border-gray-600 md:py-6"
                 >
                   <div class="text-2xl font-bold tracking-tight">
                     <span
@@ -138,14 +154,16 @@
                       >{hedgeFundStats?.winRate?.toFixed(2)}%</span
                     >
                   </div>
-                  <div class="text-sm font-semibold leading-6 text-gray-300">
+                  <div
+                    class="text-sm font-semibold leading-6 text-muted dark:text-gray-300"
+                  >
                     Win Rate
                   </div>
                 </div>
                 <div
-                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-600 md:py-6"
+                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-300 dark:sm:border-gray-600 md:py-6"
                 >
-                  <div class="text-2xl font-bold tracking-tight text-white">
+                  <div class="text-2xl font-bold tracking-tight">
                     <span
                       class={hedgeFundStats?.performancePercentage3Year >= 0
                         ? "before:content-['+'] text-[#36D984]"
@@ -155,16 +173,18 @@
                       )}%</span
                     >
                   </div>
-                  <div class="text-sm font-semibold leading-6 text-gray-300">
+                  <div
+                    class="text-sm font-semibold leading-6 text-muted dark:text-gray-300"
+                  >
                     Peformance 3-Years
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="mb-10 mt-10 text-white">
+            <div class="mb-10 mt-10">
               <div
-                class="relative my-3 space-y-2 rounded border border-gray-600 sm:my-6 p-4"
+                class="relative my-3 space-y-2 rounded border border-gray-300 dark:border-gray-600 sm:my-6 p-4"
               >
                 <div class="flex flex-col sm:flex-row">
                   <div class="mb-2 font-semibold sm:mb-0">Main Sectors:</div>
@@ -174,7 +194,7 @@
                         href={sectorNavigation?.find(
                           (listItem) => listItem?.title === item,
                         )?.link}
-                        class="px-3 text-sm py-1 sm:text-[1rem] rounded-md bg-white/10 sm:hover:bg-white/20 ml-0"
+                        class="inline-block badge bg-blue-50 dark:bg-primary duration-0 rounded-sm ml-1 px-3 m-auto text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted text-[1rem]"
                       >
                         {item}
                       </a>
@@ -189,7 +209,7 @@
                     {#each data?.getHedgeFundsData?.mainIndustries as item}
                       <a
                         href={`/list/industry/${item?.replace(/ /g, "-")?.replace(/&/g, "and")?.replace(/-{2,}/g, "-")?.toLowerCase()}`}
-                        class="px-3 text-sm py-1 sm:text-[1rem] rounded-md bg-white/10 sm:hover:bg-white/20 ml-0"
+                        class="inline-block badge bg-blue-50 dark:bg-primary duration-0 rounded-sm ml-1 px-3 m-auto text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted text-[1rem]"
                       >
                         {item}
                       </a>
@@ -199,7 +219,7 @@
               </div>
             </div>
 
-            <div class="w-full m-auto mt-10">
+            <div class="w-full m-auto mt-4">
               <Table
                 {data}
                 rawData={["Pro", "Plus"]?.includes(data?.user?.tier)

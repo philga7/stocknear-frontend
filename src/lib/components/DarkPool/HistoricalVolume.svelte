@@ -357,7 +357,7 @@
             {#each tableList as item, index}
               <!-- row -->
               <tr
-                class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800"
+                class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-oddborder-b border-gray-800"
               >
                 <td class="text-white text-sm sm:text-[1rem] whitespace-nowrap">
                   {new Date(item?.date)?.toLocaleDateString("en-US", {
@@ -385,7 +385,7 @@
                   {#if index === tableList?.length - 1}
                     n/a
                   {:else if item?.shortVolume > tableList[index + 1]?.shortVolume}
-                    <span class="text-[#00FC50]">
+                    <span class="text-green-600 dark:text-[#00FC50]">
                       +{(
                         ((item?.shortVolume -
                           tableList[index + 1]?.shortVolume) /

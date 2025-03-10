@@ -103,7 +103,7 @@
                 >
                   <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
                     <span>Net Call Prem</span>
-                    <span class="ml-1 text-green-500">●</span>
+                    <span class="ml-1 text-green-600">●</span>
                   </div>
                   <div class="flex items-baseline">
                     <span class="text-xl font-bold text-white"

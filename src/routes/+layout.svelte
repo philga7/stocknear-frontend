@@ -922,7 +922,7 @@
               >
                 <a
                   href="/"
-                  class="ml-3 mb-5 flex justify-end items-center h-9 w-9 shrink-0 gap-2 rounded-full text-lg font-semibold text-primary-foreground md:h-10 md:w-10 md:text-base"
+                  class="ml-3 mb-5 flex justify-end items-center h-9 w-9 shrink-0 gap-2 rounded-full text-lg font-semibold text-primary-foreground md:h-10 md:w-10 md:"
                 >
                   <img
                     class="avatar w-9 3xl:w-12 rounded-full"

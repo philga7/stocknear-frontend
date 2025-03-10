@@ -12,7 +12,6 @@
   import { onMount } from "svelte";
   import SEO from "$lib/components/SEO.svelte";
 
-
   let chats = [];
   let date;
 
@@ -78,15 +77,13 @@
   });
 </script>
 
-
-
-<SEO title={`${$displayCompanyName} (${$stockTicker}) Q${quarter} ${year} · Earnings Call Transcript · Stocknear`}
+<SEO
+  title={`${$displayCompanyName} (${$stockTicker}) Q${quarter} ${year} · Earnings Call Transcript · Stocknear`}
   description={`Get the latest Earnings Call Transcript of ${$displayCompanyName} (${$stockTicker}) for different years and quarters.`}
 />
 
 <section
   class="w-full bg-default overflow-hidden text-white min-h-screen mb-40 sm:mb-0"
-
 >
   <div class="h-full overflow-hidden">
     <div class="relative flex justify-center items-center overflow-hidden">
@@ -217,7 +214,7 @@
                     <div
                       class="flex items-center space-x-2 rtl:space-x-reverse"
                     >
-                      <span class="text-sm text-base">
+                      <span class="text-sm">
                         {item?.name}
                       </span>
                     </div>
@@ -247,7 +244,7 @@
                 <div class="flex flex-col items-start gap-2.5 mt-8">
                   <div class="flex flex-row items-center">
                     <div
-                      class="avatar rounded-full w-8 h-8 sm:w-10 sm:h-10 relative bg-red-600 bg-opacity-[0.6] flex items-center justify-center text-white text-sm sm:text-base"
+                      class="avatar rounded-full w-8 h-8 sm:w-10 sm:h-10 relative bg-red-600 bg-opacity-[0.6] flex items-center justify-center text-white text-sm sm:"
                     >
                       <span
                         class="absolute inset-0 flex items-center justify-center"
@@ -258,7 +255,7 @@
                     <div
                       class="ml-2 flex items-center space-x-2 rtl:space-x-reverse"
                     >
-                      <span class="text-sm text-base">
+                      <span class="text-sm">
                         {item?.name}
                       </span>
                     </div>
@@ -281,9 +278,9 @@
               Back to top
             </label>
           {:else}
-             <Infobox
-                text={`No transcript available for ${$displayCompanyName} for the Q${displayQuarter} of ${displayYear}`}
-              />
+            <Infobox
+              text={`No transcript available for ${$displayCompanyName} for the Q${displayQuarter} of ${displayYear}`}
+            />
           {/if}
         {:else}
           <div class="flex justify-center items-center h-80">

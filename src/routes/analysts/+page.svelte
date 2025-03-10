@@ -141,8 +141,8 @@
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
-      <li><a href="/" class="text-gray-300">Home</a></li>
-      <li class="text-gray-300">Top Wall Street Analysts</li>
+      <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
+      <li class="text-muted dark:text-gray-300">Top Wall Street Analysts</li>
     </ul>
   </div>
 
@@ -153,10 +153,10 @@
       >
         <main class="w-full lg:w-3/4 lg:pr-5">
           <div class="mb-6 border-b-[2px]">
-            <h1 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
+            <h1 class="mb-1 text-2xl sm:text-3xl font-bold">
               Top Wall Street Analysts
             </h1>
-            <p class="mb-3 px-1 text-base font-semibold text-muted sm:px-0">
+            <p class="mb-3 px-1 font-semibold text-muted sm:px-0">
               A list of Wall Street Analysts, ranked by their performance
             </p>
           </div>
@@ -167,7 +167,7 @@
                 class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto sm:overflow-hidden"
               >
                 <table
-                  class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto"
+                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
                 >
                   <thead>
                     <TableHeader {columns} {sortOrders} {sortData} />
@@ -175,16 +175,14 @@
                   <tbody>
                     {#each analystList as item, index}
                       <tr
-                        class="sm:hover:bg-[#245073]/10 odd:bg-odd {index +
+                        class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd{index +
                           1 ===
                           rawData?.length &&
                         !['Pro', 'Plus']?.includes(data?.user?.tier)
                           ? 'opacity-[0.1]'
                           : ''}"
                       >
-                        <td
-                          class="text-white text-sm sm:text-[1rem] text-white text-center"
-                        >
+                        <td class=" text-sm sm:text-[1rem] text-center">
                           {item?.rank}
                         </td>
 
@@ -194,10 +192,10 @@
                           <div class="flex flex-col items-start">
                             <a
                               href={"/analysts/" + item?.analystId}
-                              class="sm:hover:text-white text-blue-400"
+                              class="font-semibold dark:font-normal text-blue-500 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
                               >{item?.analystName}
                             </a>
-                            <!--<span class="text-white">{item?.companyName} </span>-->
+                            <!--<span class="">{item?.companyName} </span>-->
                             <div class="flex flex-row items-center mt-1">
                               {#each Array.from({ length: 5 }) as _, i}
                                 {#if i < Math.floor(item?.analystScore)}
@@ -214,7 +212,7 @@
                                   </svg>
                                 {:else}
                                   <svg
-                                    class="w-3.5 h-3.5 text-gray-300 dark:text-gray-500"
+                                    class="w-3.5 h-3.5 text-gray-400 dark:text-gray-500"
                                     aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="currentColor"
@@ -227,7 +225,7 @@
                                 {/if}
                               {/each}
 
-                              <span class="ml-1 text-gray-400">
+                              <span class="ml-1 dark:text-gray-400">
                                 ({item?.analystScore !== null
                                   ? item?.analystScore
                                   : 0})
@@ -237,43 +235,46 @@
                         </td>
 
                         <td
-                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                         >
                           {#if Number(item?.successRate) >= 0}
-                            <span class="text-[#00FC50]"
+                            <span
+                              class="font-semibold dark:font-normal text-green-600 dark:text-[#00FC50]"
                               >+{Number(item?.successRate)?.toFixed(2)}%</span
                             >
                           {/if}
                         </td>
 
                         <td
-                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                         >
                           {#if Number(item?.avgReturn) >= 0}
-                            <span class="text-[#00FC50]"
+                            <span
+                              class="font-semibold dark:font-normal text-green-600 dark:text-[#00FC50]"
                               >+{Number(item?.avgReturn)?.toFixed(2)}%</span
                             >
                           {:else}
-                            <span class="text-[#B84242]"
+                            <span
+                              class="font-semibold dark:font-normal text-[#B84242]"
                               >{Number(item?.avgReturn)?.toFixed(2)}%</span
                             >
                           {/if}
                         </td>
 
                         <td
-                          class="text-end text-white text-sm sm:text-[1rem] whitespace-nowrap"
+                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                         >
                           {item?.totalRatings}
                         </td>
 
                         <!--
-                            <td class="text-white text-sm sm:text-[1rem] whitespace-nowrap text-white text-end">
+                            <td class=" text-sm sm:text-[1rem] whitespace-nowrap  text-end">
                               {item?.mainSectors?.at(0)}
                             </td>
                             -->
 
                         <td
-                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                         >
                           {item?.lastRating !== null
                             ? new Date(item?.lastRating)?.toLocaleString(
@@ -314,12 +315,12 @@
               <div class="mx-auto max-w-7xl px-3 xs:px-6 lg:px-8">
                 <div class="mx-auto max-w-2xl md:text-center">
                   <h3
-                    class="mt-2 text-2xl font-bold tracking-tight text-white bp:text-3xl"
+                    class="mt-2 text-2xl font-bold tracking-tight bp:text-3xl"
                   >
                     Analyst Star Rankings
                   </h3>
                   <p
-                    class="mt-3 text-base leading-8 text-muted dark:text-faded xl:text-lg"
+                    class="mt-3 leading-8 text-muted dark:text-faded xl:text-lg"
                   >
                     Our analyst star rankings are based on these four factors
                   </p>
@@ -329,9 +330,7 @@
                     class="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2 lg:max-w-none lg:grid-cols-4 lg:gap-y-16"
                   >
                     <div class="relative pl-14">
-                      <dt
-                        class="text-base font-semibold leading-4 text-white md:leading-7"
-                      >
+                      <dt class=" font-semibold leading-4 md:leading-7">
                         <div
                           class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#fff]"
                         >
@@ -351,16 +350,12 @@
                         </div>
                         Success Rate
                       </dt>
-                      <dd
-                        class="mt-2 text-base leading-7 text-muted dark:text-faded"
-                      >
+                      <dd class="mt-2 leading-7 text-muted dark:text-faded">
                         The percentage of ratings that are profitable.
                       </dd>
                     </div>
                     <div class="relative pl-14">
-                      <dt
-                        class="text-base font-semibold leading-4 text-white md:leading-7"
-                      >
+                      <dt class=" font-semibold leading-4 md:leading-7">
                         <div
                           class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#fff]"
                         >
@@ -380,17 +375,13 @@
                         </div>
                         Average Return
                       </dt>
-                      <dd
-                        class="mt-2 text-base leading-7 text-muted dark:text-faded"
-                      >
+                      <dd class="mt-2 leading-7 text-muted dark:text-faded">
                         The average percentage return within one year of the
                         rating.
                       </dd>
                     </div>
                     <div class="relative pl-14">
-                      <dt
-                        class="text-base font-semibold leading-4 text-white md:leading-7"
-                      >
+                      <dt class=" font-semibold leading-4 md:leading-7">
                         <div
                           class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#fff]"
                         >
@@ -410,17 +401,13 @@
                         </div>
                         Rating Count
                       </dt>
-                      <dd
-                        class="mt-2 text-base leading-7 text-muted dark:text-faded"
-                      >
+                      <dd class="mt-2 leading-7 text-muted dark:text-faded">
                         The more ratings the analyst has provided, the higher
                         the score.
                       </dd>
                     </div>
                     <div class="relative pl-14">
-                      <dt
-                        class="text-base font-semibold leading-4 text-white md:leading-7"
-                      >
+                      <dt class=" font-semibold leading-4 md:leading-7">
                         <div
                           class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#fff]"
                         >
@@ -440,9 +427,7 @@
                         </div>
                         Recency
                       </dt>
-                      <dd
-                        class="mt-2 text-base leading-7 text-muted dark:text-faded"
-                      >
+                      <dd class="mt-2 leading-7 text-muted dark:text-faded">
                         Ratings provided within the past year contribute to a
                         higher score.
                       </dd>
@@ -465,9 +450,7 @@
                 <h2 class="text-start text-xl font-semibold ml-3">
                   Top Stocks Picks
                 </h2>
-                <ArrowLogo
-                  class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
-                />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:" />
               </div>
               <span class="p-3 ml-3 mr-3">
                 Get the latest top Wall Street analyst ratings.
@@ -486,9 +469,7 @@
                 <h2 class="text-start text-xl font-semibold ml-3">
                   Top Shorted Stocks
                 </h2>
-                <ArrowLogo
-                  class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
-                />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:" />
               </div>
               <span class="p-3 ml-3 mr-3">
                 Never miss out another short squeeze

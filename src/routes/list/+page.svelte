@@ -263,7 +263,7 @@
     Category of Stocks Ranked by Market Cap
   </h2>
   <ul
-    class="list-outside list-disc space-y-1 p-1 pl-6 text-base md:columns-2 md:gap-x-8 md:text-lg"
+    class="list-outside list-disc space-y-1 p-1 pl-6 md:columns-2 md:gap-x-8 md:text-lg"
   >
     <li>
       <a

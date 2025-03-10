@@ -248,7 +248,7 @@
                             r="16"
                             fill="none"
                             class="stroke-current {buySellRatio >= 0.5
-                              ? 'text-[#00FC50]'
+                              ? 'text-green-600 dark:text-[#00FC50]'
                               : 'text-[#EE5365]'} "
                             stroke-width="3"
                             stroke-dasharray="100"
@@ -371,7 +371,7 @@
                             <div class="flex flex-col ml-3 font-normal">
                               <a
                                 href={`/politicians/${item?.id}`}
-                                class="sm:hover:text-white text-blue-400"
+                                class="text-blue-500 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
                                 >{getAbbreviatedName(
                                   item?.representative?.replace("_", " "),
                                 )}</a
@@ -410,7 +410,9 @@
                           class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
                         >
                           {#if item?.type === "Bought"}
-                            <span class="text-[#00FC50]">Bought</span>
+                            <span class="text-green-600 dark:text-[#00FC50]"
+                              >Bought</span
+                            >
                           {:else if item?.type === "Sold"}
                             <span class="text-[#FF2F1F]">Sold</span>
                           {:else if item?.type === "Exchange"}

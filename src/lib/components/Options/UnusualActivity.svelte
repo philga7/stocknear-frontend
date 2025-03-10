@@ -749,7 +749,7 @@
             <tbody>
               {#each data?.user?.tier !== "Pro" ? displayList?.slice(0, 3) : displayList as item, index}
                 <tr
-                  class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800 {index +
+                  class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-oddborder-b border-gray-800 {index +
                     1 ===
                     rawData?.slice(0, 3)?.length &&
                   !['Pro']?.includes(data?.user?.tier)
@@ -767,7 +767,7 @@
                   >
                     <span
                       class="inline-block px-2 {item?.optionType === 'Calls'
-                        ? 'text-[#00FC50]'
+                        ? 'text-green-600 dark:text-[#00FC50]'
                         : 'text-[#FF2F1F]'}"
                     >
                       {item?.optionType}
@@ -815,7 +815,7 @@
                   <td
                     class="text-sm sm:text-[1rem] text-end whitespace-nowrap {item?.sentiment ===
                     'Bullish'
-                      ? 'text-[#00FC50]'
+                      ? 'text-green-600 dark:text-[#00FC50]'
                       : item?.sentiment === 'Bearish'
                         ? 'text-[#FF2F1F]'
                         : 'text-[#C8A32D]'} "
@@ -1002,7 +1002,7 @@
                     </td>
                     <td class="text-sm sm:text-[1rem] text-end text-white">
                       {#if item?.changeOI >= 0 && item?.changeOI !== null}
-                        <span class="text-[#00FC50]"
+                        <span class="text-green-600 dark:text-[#00FC50]"
                           >+{item?.changeOI?.toLocaleString("en-US")}</span
                         >
                       {:else if item?.changeOI < 0 && item?.changeOI !== null}
@@ -1016,7 +1016,7 @@
 
                     <td class="text-sm sm:text-[1rem] text-end text-white">
                       {#if item?.changesPercentageOI > 0 && item?.changesPercentageOI !== undefined}
-                        <span class="text-[#00FC50]"
+                        <span class="text-green-600 dark:text-[#00FC50]"
                           >+{item?.changesPercentageOI + "%"}</span
                         >
                       {:else if item?.changesPercentageOI < 0 && item?.changesPercentageOI !== undefined}

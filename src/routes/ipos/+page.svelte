@@ -69,7 +69,7 @@
                   <li class="mb-3 last:mb-1">
                     {item?.timestamp}
                     <a
-                      class="sm:hover:text-white text-blue-400"
+                      class="text-blue-500 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
                       href={item?.link}
                       target="_blank"
                       rel="noopener noreferrer nofollow">{item?.title}</a

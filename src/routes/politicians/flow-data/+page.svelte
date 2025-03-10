@@ -71,8 +71,8 @@
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
-      <li><a href="/" class="text-gray-300">Home</a></li>
-      <li class="text-gray-300">Congress Flow</li>
+      <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
+      <li class="text-muted dark:text-gray-300">Congress Flow</li>
     </ul>
   </div>
 
@@ -169,7 +169,7 @@
                                     <div class="flex flex-col ml-3 font-normal">
                                       <a
                                         href={`/politicians/${item?.id}`}
-                                        class="sm:hover:text-white text-blue-400"
+                                        class="text-blue-500 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
                                         >{getAbbreviatedName(
                                           item?.representative?.replace(
                                             "_",
@@ -235,7 +235,10 @@
                                   class="text-sm sm:text-[1rem] text-end text-white"
                                 >
                                   {#if item?.type === "Bought"}
-                                    <span class="text-[#00FC50]">Bought</span>
+                                    <span
+                                      class="text-green-600 dark:text-[#00FC50]"
+                                      >Bought</span
+                                    >
                                   {:else if item?.type === "Sold"}
                                     <span class="text-[#FF2F1F]">Sold</span>
                                   {/if}

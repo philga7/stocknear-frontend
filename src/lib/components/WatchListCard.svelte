@@ -73,7 +73,7 @@
               {#each watchList as item}
                 <!-- row -->
                 <tr
-                  class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b-[#09090B]"
+                  class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-oddborder-b-[#09090B]"
                 >
                   <td
                     class="text-sm sm:text-[1rem] text-start border-b-[#09090B]"
@@ -128,7 +128,7 @@
                     class="border-b-[#09090B] text-end text-sm sm:text-[1rem] whitespace-nowrap"
                   >
                     {#if item?.changesPercentage >= 0}
-                      <span class="text-[#00FC50]"
+                      <span class="text-green-600 dark:text-[#00FC50]"
                         >+{item?.changesPercentage?.toFixed(2)}%</span
                       >
                     {:else}

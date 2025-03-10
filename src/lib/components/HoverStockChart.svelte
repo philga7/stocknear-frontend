@@ -207,7 +207,7 @@
               <p>
                 Current Price: {stockChartData?.price?.toFixed(2)} (<span
                   class="text-xs {change >= 0
-                    ? "before:content-['+'] text-[#00FC50]"
+                    ? "before:content-['+'] text-green-500 dark:text-[#00FC50]"
                     : 'text-[#FF2F1F]'}">{change?.toFixed(2)}</span
                 >)
               </p>

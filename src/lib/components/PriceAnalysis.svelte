@@ -212,7 +212,7 @@
                       r="16"
                       fill="none"
                       class="stroke-current {r2Score >= 65
-                        ? 'text-[#00FC50]'
+                        ? 'text-green-600 dark:text-[#00FC50]'
                         : r2Score >= 50
                           ? 'text-[#F8901E]'
                           : 'text-[#FF2F1F]'}"
@@ -267,7 +267,7 @@
                       r="16"
                       fill="none"
                       class="stroke-current {mape <= 15
-                        ? 'text-[#00FC50]'
+                        ? 'text-green-600 dark:text-[#00FC50]'
                         : mape <= 35
                           ? 'text-[#F8901E]'
                           : 'text-[#FF2F1F]'}"

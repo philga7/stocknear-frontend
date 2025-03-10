@@ -474,7 +474,7 @@
                     : "decrease"} of {analystReport?.highPriceChange}% from the
                   latest price.
                 </div>
-                <table class="w-full text-right xs:text-sm sm:text-base mt-5">
+                <table class="w-full text-right xs:text-sm sm: mt-5">
                   <thead
                     ><tr
                       class="border-b border-gray-600 font-normal text-sm sm:text-[1rem]"

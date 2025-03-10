@@ -83,7 +83,7 @@
                   rawData?.dividendPrior -
                   1 >
                 0
-                  ? "before:content-['+'] text-[#00FC50]"
+                  ? "before:content-['+'] text-green-500 dark:text-[#00FC50]"
                   : 'text-[#FF2F1F]'}"
               >
                 {(

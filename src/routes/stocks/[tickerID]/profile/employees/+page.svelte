@@ -517,7 +517,7 @@
 
             <div class="mt-5 w-full overflow-x-auto">
               <table
-                class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto"
+                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
               >
                 <thead class="bg-default">
                   <tr>
@@ -581,7 +581,7 @@
                         {#if index === historyList?.length - 1}
                           n/a
                         {:else if item?.employeeCount > historyList[index + 1]?.employeeCount}
-                          <span class="text-[#00FC50]">
+                          <span class="text-green-600 dark:text-[#00FC50]">
                             +{(
                               ((item?.employeeCount -
                                 historyList[index + 1]?.employeeCount) /

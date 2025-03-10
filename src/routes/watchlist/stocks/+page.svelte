@@ -1608,7 +1608,8 @@
                                         : "n/a"}
                                     {:else if row?.type === "percentSign"}
                                       {#if item[row?.rule] >= 0}
-                                        <span class="text-[#00FC50]"
+                                        <span
+                                          class="text-green-600 dark:text-[#00FC50]"
                                           >+{item[row?.rule]?.toFixed(2)}%</span
                                         >
                                       {:else}
@@ -1618,7 +1619,8 @@
                                       {/if}
                                     {:else if row?.type === "rating"}
                                       {#if ["Strong Buy", "Buy"].includes(item[row?.rule])}
-                                        <span class="text-[#00FC50]"
+                                        <span
+                                          class="text-green-600 dark:text-[#00FC50]"
                                           >{item[row?.rule]}</span
                                         >
                                       {:else if ["Strong Sell", "Sell"].includes(item[row?.rule])}

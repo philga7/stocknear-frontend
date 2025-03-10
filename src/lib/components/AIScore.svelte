@@ -80,7 +80,7 @@
               {:else}
                 <a class="block relative" href="/pricing">
                   <span
-                    class="text-base font-semibold text-blue-link blur-sm group-hover:blur-[3px]"
+                    class=" font-semibold text-blue-link blur-sm group-hover:blur-[3px]"
                   >
                     XX
                   </span>

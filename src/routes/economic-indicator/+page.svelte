@@ -627,8 +627,8 @@
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
-      <li><a href="/" class="text-gray-300">Home</a></li>
-      <li class="text-gray-300">US Economic Indicator</li>
+      <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
+      <li class="text-muted dark:text-gray-300">US Economic Indicator</li>
     </ul>
   </div>
 
@@ -870,7 +870,7 @@
                     {#each tableList as item}
                       <!-- row -->
                       <tr
-                        class="sm:hover:bg-[#245073]/10 odd:bg-odd border border-gray-800"
+                        class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-oddborder border-gray-800"
                       >
                         <td
                           class="text-white text-sm sm:text-[1rem] whitespace-nowrap"

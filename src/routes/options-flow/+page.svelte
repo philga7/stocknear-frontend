@@ -838,8 +838,8 @@
       <!--
         <div class="text-sm sm:text-[1rem] breadcrumbs mb-5">
           <ul>
-            <li><a href="/" class="text-gray-300">Home</a></li>
-            <li class="text-gray-300">Options Flow</li>
+            <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
+            <li class="text-muted dark:text-gray-300">Options Flow</li>
           </ul>
         </div>
         -->
@@ -1045,7 +1045,7 @@
           >
             <label
               for="ruleModal"
-              class="inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none py-2 pl-3 pr-4 text-base font-semibold shadow-sm bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+              class="inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none py-2 pl-3 pr-4 font-semibold shadow-sm bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
             >
               <svg
                 class="h-5 w-5"
@@ -1066,7 +1066,7 @@
             {#if ruleOfList?.length !== 0}
               <label
                 on:click={handleResetAll}
-                class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 text-base font-semibold shadow-xs bg-[#000] sm:hover:text-red-500 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-[#000] sm:hover:text-red-500 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
               >
                 <svg
                   class="h-4 w-4"

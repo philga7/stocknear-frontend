@@ -113,12 +113,13 @@
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
-      <li><a href="/" class="text-gray-300">Home</a></li>
+      <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
       <li>
-        <a href="/politicians" class="text-gray-300">Congress</a>
+        <a href="/politicians" class="text-muted dark:text-gray-300">Congress</a
+        >
       </li>
 
-      <li class="text-gray-300">{name}</li>
+      <li class="text-muted dark:text-gray-300">{name}</li>
     </ul>
   </div>
 
@@ -318,7 +319,7 @@
                 <tbody class="p-0">
                   {#each tableData as item}
                     <tr
-                      class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b-[#27272A] text-white"
+                      class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-oddborder-b-[#27272A] text-white"
                     >
                       <td class="hidden lg:table-cell"
                         ><button
@@ -363,7 +364,9 @@
                       >
                         <span class="">
                           {#if item?.type === "Bought"}
-                            <span class="text-[#00FC50]">{item?.type}</span>
+                            <span class="text-green-600 dark:text-[#00FC50]"
+                              >{item?.type}</span
+                            >
                           {:else if item?.type === "Sold"}
                             <span class="text-[#FF2F1F]">{item?.type}</span>
                           {:else if item?.type === "Exchange"}

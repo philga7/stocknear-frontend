@@ -592,7 +592,7 @@
             <tbody>
               {#each volumeList as item, index}
                 <tr
-                  class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800 {index +
+                  class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-oddborder-b border-gray-800 {index +
                     1 ===
                     volumeList?.slice(0, 3)?.length &&
                   !['Pro']?.includes(data?.user?.tier)
@@ -668,7 +668,7 @@
                     class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
                     {#if item?.changeOI >= 0}
-                      <span class="text-[#00FC50]"
+                      <span class="text-green-600 dark:text-[#00FC50]"
                         >+{item?.changeOI?.toLocaleString("en-US")}</span
                       >
                     {:else if item?.changeOI < 0}
@@ -712,7 +712,7 @@
             <tbody>
               {#each openInterestList as item, index}
                 <tr
-                  class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800 {index +
+                  class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-oddborder-b border-gray-800 {index +
                     1 ===
                     openInterestList?.slice(0, 3)?.length &&
                   !['Pro']?.includes(data?.user?.tier)
@@ -788,7 +788,7 @@
                     class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
                     {#if item?.changeOI >= 0}
-                      <span class="text-[#00FC50]"
+                      <span class="text-green-600 dark:text-[#00FC50]"
                         >+{item?.changeOI?.toLocaleString("en-US")}</span
                       >
                     {:else if item?.changeOI < 0}
@@ -971,7 +971,7 @@
                     </td>
                     <td class="text-sm sm:text-[1rem] text-end text-white">
                       {#if item?.changeOI >= 0 && item?.changeOI !== null}
-                        <span class="text-[#00FC50]"
+                        <span class="text-green-600 dark:text-[#00FC50]"
                           >+{item?.changeOI?.toLocaleString("en-US")}</span
                         >
                       {:else if item?.changeOI < 0 && item?.changeOI !== null}
@@ -985,7 +985,7 @@
 
                     <td class="text-sm sm:text-[1rem] text-end text-white">
                       {#if item?.changesPercentageOI > 0 && item?.changesPercentageOI !== undefined}
-                        <span class="text-[#00FC50]"
+                        <span class="text-green-600 dark:text-[#00FC50]"
                           >+{item?.changesPercentageOI + "%"}</span
                         >
                       {:else if item?.changesPercentageOI < 0 && item?.changesPercentageOI !== undefined}

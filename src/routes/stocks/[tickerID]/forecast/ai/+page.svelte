@@ -362,7 +362,7 @@
                         class="font-bold {['Strong Buy', 'Buy']?.includes(
                           consensusRating,
                         )
-                          ? 'text-[#00FC50]'
+                          ? 'text-green-600 dark:text-[#00FC50]'
                           : ['Strong Sell', 'Sell']?.includes(consensusRating)
                             ? 'text-[#FF2F1F]'
                             : 'text-[#fff]'}">{consensusRating}</span
@@ -380,7 +380,7 @@
                   class="hide-scroll mb-1 mt-2 overflow-x-auto px-1.5 text-center md:mb-0 md:px-0 lg:mt-2"
                 >
                   <table
-                    class="w-full text-right text-tiny text-white xs:text-sm sm:text-base"
+                    class="w-full text-right text-tiny text-white xs:text-sm sm:"
                   >
                     <thead
                       ><tr
@@ -405,22 +405,22 @@
                         ><td class="py-[3px] text-left lg:py-0.5">Change</td>
                         <td
                           class={lowChange > 0
-                            ? "before:content-['+'] text-[#00FC50]"
+                            ? "before:content-['+'] text-green-500 dark:text-[#00FC50]"
                             : "text-[#FF2F1F]"}>{lowChange}%</td
                         >
                         <td
                           class={avgChange > 0
-                            ? "before:content-['+'] text-[#00FC50]"
+                            ? "before:content-['+'] text-green-500 dark:text-[#00FC50]"
                             : "text-[#FF2F1F]"}>{avgChange}%</td
                         >
                         <td
                           class={medianChange > 0
-                            ? "before:content-['+'] text-[#00FC50]"
+                            ? "before:content-['+'] text-green-500 dark:text-[#00FC50]"
                             : "text-[#FF2F1F]"}>{medianChange}%</td
                         >
                         <td
                           class={highChange > 0
-                            ? "before:content-['+'] text-[#00FC50]"
+                            ? "before:content-['+'] text-green-500 dark:text-[#00FC50]"
                             : "text-[#FF2F1F]"}>{highChange}%</td
                         ></tr
                       ></tbody

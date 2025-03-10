@@ -6,6 +6,8 @@
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import HoverStockChart from "$lib/components/HoverStockChart.svelte";
   import RatingsChart from "$lib/components/RatingsChart.svelte";
+  import Infobox from "$lib/components/Infobox.svelte";
+
   import SEO from "$lib/components/SEO.svelte";
 
   export let data;
@@ -169,8 +171,8 @@
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
-      <li><a href="/" class="text-gray-300">Home</a></li>
-      <li class="text-gray-300">Insider Tracker</li>
+      <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
+      <li class="text-muted dark:text-gray-300">Insider Tracker</li>
     </ul>
   </div>
 
@@ -181,46 +183,22 @@
       >
         <main class="w-full">
           <div class="mb-6 border-b-[2px]">
-            <h1 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
-              Insider Tracker
-            </h1>
+            <h1 class="mb-1 text-2xl sm:text-3xl font-bold">Insider Tracker</h1>
           </div>
 
           {#if isLoaded}
-            <div class="mt-8 sm:px-0">
-              <div
-                class="border-l-4 border-white p-0 sm:p-4 text-white flex flex-row items-center"
-              >
-                <svg
-                  class="h-6 w-6 hidden sm:block"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  style="max-width:40px"
-                  aria-hidden="true"
-                  ><path
-                    fill-rule="evenodd"
-                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                    clip-rule="evenodd"
-                  ></path></svg
-                >
-                <div class="ml-3 w-full">
-                  <div class="flex w-full flex-row justify-between">
-                    <div>
-                      We update our data in real time to bring you the latest
+            <Infobox
+              text="We update our data in real time to bring you the latest
                       insights on unusual insider trading, sourced from SEC
-                      filings with a minimum transaction value of $100,000.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+                      filings with a minimum transaction value of $100,000."
+            />
 
             <div class="w-full m-auto mt-20 sm:mt-10">
               <div
                 class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto sm:overflow-hidden"
               >
                 <table
-                  class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto"
+                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
                 >
                   <thead>
                     <TableHeader {columns} {sortOrders} {sortData} />
@@ -228,7 +206,7 @@
                   <tbody>
                     {#each stockList as item, index}
                       <tr
-                        class="sm:hover:bg-[#245073]/10 odd:bg-odd {index +
+                        class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd{index +
                           1 ===
                           stockList?.length &&
                         !['Pro', 'Plus']?.includes(data?.user?.tier)
@@ -245,7 +223,7 @@
                                 ? 'rotate-180'
                                 : ''}"
                               viewBox="0 0 20 20"
-                              fill="white"
+                              fill="currentColor"
                               style="max-width:40px"
                               ><path
                                 fill-rule="evenodd"
@@ -260,7 +238,7 @@
                           <HoverStockChart symbol={item?.symbol} />
                         </td>
                         <td
-                          class="whitespace-nowrap text-white text-sm sm:text-[1rem] text-white text-start"
+                          class="whitespace-nowrap text-sm sm:text-[1rem] text-start"
                         >
                           {item?.name?.length > charNumber
                             ? item?.name?.slice(0, charNumber) + "..."
@@ -268,7 +246,7 @@
                         </td>
 
                         <td
-                          class="whitespace-nowrap text-white text-sm sm:text-[1rem] text-white text-start"
+                          class="whitespace-nowrap text-sm sm:text-[1rem] text-start"
                         >
                           {item?.reportingName?.length > charNumber
                             ? item?.reportingName?.slice(0, charNumber) + "..."
@@ -276,13 +254,13 @@
                         </td>
 
                         <td
-                          class="text-end text-sm sm:text-[1rem] text-white whitespace-nowrap"
+                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                         >
                           {abbreviateNumber(item?.marketCap)}
                         </td>
 
                         <td
-                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                         >
                           {item?.price}
                         </td>
@@ -290,7 +268,7 @@
                         <td
                           class="text-sm sm:text-[1rem] whitespace-nowrap text-end {item?.changesPercentage >=
                           0
-                            ? 'text-[#00FC50]'
+                            ? 'text-green-600 dark:text-[#00FC50]'
                             : 'text-[#FF2F1F]'}"
                         >
                           {item?.changesPercentage > 0
@@ -299,7 +277,7 @@
                         </td>
 
                         <td
-                          class="text-end text-sm sm:text-[1rem] text-white whitespace-nowrap"
+                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                         >
                           {abbreviateNumber(item?.totalShares)}
                         </td>
@@ -307,7 +285,7 @@
                         <td
                           class="text-end text-sm sm:text-[1rem] whitespace-nowrap {item?.transactionType ===
                           'Buy'
-                            ? 'text-[#00FC50]'
+                            ? 'text-green-600 dark:text-[#00FC50]'
                             : item?.transactionType === 'Sell'
                               ? 'text-[#FF2F1F]'
                               : 'text-[#E57C34]'}"
@@ -325,7 +303,7 @@
                         </td>
                       </tr>
                       {#if checkedSymbol === item?.symbol}
-                        <tr class="bg-default"
+                        <tr class=""
                           ><td colspan="9" class="px-0" style=""
                             ><div class="-mt-0.5 px-0 pb-2">
                               <div class="relative h-[400px]">

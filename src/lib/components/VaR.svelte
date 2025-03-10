@@ -166,7 +166,7 @@
                     r="16"
                     fill="none"
                     class="stroke-current {rating > 5
-                      ? 'text-[#00FC50]'
+                      ? 'text-green-600 dark:text-[#00FC50]'
                       : rating < 5
                         ? 'text-[#FF2F1F]'
                         : 'text-white'} "

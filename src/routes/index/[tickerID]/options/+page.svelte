@@ -419,7 +419,7 @@
                 <tbody>
                   {#each ["Pro"]?.includes(data?.user?.tier) ? optionList : optionList?.slice(0, 3) as item, index}
                     <tr
-                      class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800 {index +
+                      class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-oddborder-b border-gray-800 {index +
                         1 ===
                         optionList?.slice(0, 3)?.length &&
                       !['Pro']?.includes(data?.user?.tier)
@@ -432,7 +432,7 @@
 
                       <td class="text-white text-sm sm:text-[1rem] text-end">
                         {#if item?.changesPercentage >= 0 && item?.changesPercentage !== null}
-                          <span class="text-[#00FC50]"
+                          <span class="text-green-600 dark:text-[#00FC50]"
                             >+{item?.changesPercentage >= 1000
                               ? abbreviateNumberWithColor(
                                   item?.changesPercentage,
@@ -560,7 +560,7 @@
 
                       <td class="text-white text-sm sm:text-[1rem] text-end">
                         {#if item?.changeOI >= 0}
-                          <span class="text-[#00FC50]"
+                          <span class="text-green-600 dark:text-[#00FC50]"
                             >+{item?.changeOI?.toLocaleString("en-US")}</span
                           >
                         {:else if item?.changeOI < 0}
@@ -574,7 +574,7 @@
 
                       <td class="text-white text-sm sm:text-[1rem] text-end">
                         {#if item?.changesPercentageOI >= 0}
-                          <span class="text-[#00FC50]"
+                          <span class="text-green-600 dark:text-[#00FC50]"
                             >+{item?.changesPercentageOI >= 1000
                               ? abbreviateNumberWithColor(
                                   item?.changesPercentageOI,

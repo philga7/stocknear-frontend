@@ -436,7 +436,7 @@
       <tbody>
         {#each data?.user?.tier === "Pro" ? displayList : displayList?.slice(0, 3) as item, index}
           <tr
-            class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800 {index +
+            class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-oddborder-b border-gray-800 {index +
               1 ===
               displayList?.slice(0, 3)?.length &&
             !['Pro']?.includes(data?.user?.tier)
@@ -481,7 +481,7 @@
               class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
             >
               {#if item?.putCallRatio <= 1 && item?.putCallRatio !== null}
-                <span class="text-[#00FC50]"
+                <span class="text-green-600 dark:text-[#00FC50]"
                   >{item?.putCallRatio?.toFixed(2)}</span
                 >
               {:else if item?.putCallRatio >= 0 && item?.putCallRatio !== null}

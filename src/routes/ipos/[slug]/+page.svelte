@@ -91,7 +91,7 @@
                 <tbody>
                   {#each ipoList as item}
                     <tr
-                      class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b-[#09090B]"
+                      class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-oddborder-b-[#09090B]"
                     >
                       <td
                         class="text-white text-sm sm:text-[1rem] whitespace-nowrap text-start border-b-[#09090B] whitespace-nowrap"
@@ -109,7 +109,7 @@
                       >
                         <a
                           href={"/stocks/" + item?.symbol}
-                          class="sm:hover:text-white text-blue-400"
+                          class="text-blue-500 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
                         >
                           {item?.symbol}
                         </a>
@@ -188,7 +188,7 @@
                   <li class="mb-3 last:mb-1">
                     {item?.timestamp}
                     <a
-                      class="sm:hover:text-white text-blue-400"
+                      class="text-blue-500 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
                       href={item?.link}
                       target="_blank"
                       rel="noopener noreferrer nofollow">{item?.title}</a

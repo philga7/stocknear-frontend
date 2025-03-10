@@ -921,7 +921,7 @@
                 Dividends &amp; Yields
               </h2>
               <p
-                class="mb-4 px-0.5 text-base leading-relaxed xs:text-[1.05rem] lg:leading-normal"
+                class="mb-4 px-0.5 leading-relaxed xs:text-[1.05rem] lg:leading-normal"
               >
                 {#if rawData?.annualDividend !== null && rawData?.dividendYield !== null}
                   {$stockTicker} pays an annual dividend of ${rawData?.annualDividend},
@@ -1011,7 +1011,7 @@
             <div>
               <h2 class="mb-2 px-0.5 text-xl font-bold">Analyst Forecast</h2>
               <p
-                class="mb-4 px-0.5 text-base leading-relaxed xs:text-[1.05rem] lg:leading-normal"
+                class="mb-4 px-0.5 leading-relaxed xs:text-[1.05rem] lg:leading-normal"
                 data-test="statistics-text"
               >
                 {#if rawData?.priceTarget && rawData?.upside && rawData?.analystRating}
@@ -1083,7 +1083,7 @@
               <div>
                 <h2 class="mb-2 px-0.5 text-xl font-bold">Stock Splits</h2>
                 <p
-                  class="mb-4 px-0.5 text-base leading-relaxed xs:text-[1.05rem] lg:leading-normal"
+                  class="mb-4 px-0.5 leading-relaxed xs:text-[1.05rem] lg:leading-normal"
                   data-test="statistics-text"
                 >
                   The last stock split was on {new Date(

@@ -756,7 +756,7 @@
                                 >
                                   <span
                                     class={displayLegend?.change >= 0
-                                      ? "before:content-['+'] text-[#00FC50]"
+                                      ? "before:content-['+'] text-green-500 dark:text-[#00FC50]"
                                       : "text-[#FF2F1F]"}
                                   >
                                     {displayLegend?.change}
@@ -798,9 +798,9 @@
                                     {prePostData?.price?.toFixed(2)}
                                   </div>
                                   <div
-                                    class="mt-1.5 block text-sm xs:text-base sm:mt-0 sm:inline sm:text-lg {prePostData?.changesPercentage >=
+                                    class="mt-1.5 block text-sm xs: sm:mt-0 sm:inline sm:text-lg {prePostData?.changesPercentage >=
                                     0
-                                      ? "before:content-['+'] text-[#00FC50]"
+                                      ? "before:content-['+'] text-green-500 dark:text-[#00FC50]"
                                       : 'text-[#FF2F1F]'}"
                                   >
                                     {prePostData?.changesPercentage?.toFixed(

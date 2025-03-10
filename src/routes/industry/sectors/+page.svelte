@@ -111,7 +111,7 @@
           {#each displayList as item}
             <!-- row -->
             <tr
-              class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800"
+              class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-oddborder-b border-gray-800"
             >
               <td class=" text-sm sm:text-[1rem] whitespace-nowrap">
                 <a
@@ -152,7 +152,7 @@
 
               <td
                 class=" {item?.profitMargin >= 0
-                  ? "before:content-['+'] text-[#00FC50]"
+                  ? "before:content-['+'] text-green-500 dark:text-[#00FC50]"
                   : 'text-[#FF2F1F]'}   text-sm sm:text-[1rem] whitespace-nowrap text-end"
               >
                 {abbreviateNumber(item?.profitMargin)}%

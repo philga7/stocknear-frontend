@@ -817,7 +817,7 @@
                 class="hide-scroll mb-1 mt-2 overflow-x-auto px-1.5 text-center md:mb-0 md:px-0 lg:mt-2"
               >
                 <table
-                  class="w-full text-right text-tiny text-white xs:text-sm sm:text-base"
+                  class="w-full text-right text-tiny text-white xs:text-sm sm:"
                 >
                   <thead
                     ><tr
@@ -842,22 +842,22 @@
                       ><td class="py-[3px] text-left lg:py-0.5">Change</td>
                       <td
                         class={lowChange > 0
-                          ? "before:content-['+'] text-[#00FC50]"
+                          ? "before:content-['+'] text-green-500 dark:text-[#00FC50]"
                           : "text-[#FF2F1F]"}>{lowChange}%</td
                       >
                       <td
                         class={avgChange > 0
-                          ? "before:content-['+'] text-[#00FC50]"
+                          ? "before:content-['+'] text-green-500 dark:text-[#00FC50]"
                           : "text-[#FF2F1F]"}>{avgChange}%</td
                       >
                       <td
                         class={medianChange > 0
-                          ? "before:content-['+'] text-[#00FC50]"
+                          ? "before:content-['+'] text-green-500 dark:text-[#00FC50]"
                           : "text-[#FF2F1F]"}>{medianChange}%</td
                       >
                       <td
                         class={highChange > 0
-                          ? "before:content-['+'] text-[#00FC50]"
+                          ? "before:content-['+'] text-green-500 dark:text-[#00FC50]"
                           : "text-[#FF2F1F]"}>{highChange}%</td
                       ></tr
                     ></tbody
@@ -1008,9 +1008,7 @@
               <div
                 class="border-b px-3 py-5 last:border-b-0 xs:px-4 sm:p-6 md:border-b lg:border-b-0 border-gray-600"
               >
-                <div class="text-base font-normal text-white">
-                  Revenue This Year
-                </div>
+                <div class=" font-normal text-white">Revenue This Year</div>
                 <div
                   class="mt-1 flex flex-wrap items-baseline justify-between space-y-2 bp:space-y-0"
                 >
@@ -1080,9 +1078,7 @@
               <div
                 class="border-b px-3 py-5 last:border-b-0 xs:px-4 sm:p-6 md:border-b md:border-l lg:border-b-0"
               >
-                <div class="text-base font-normal text-white">
-                  Revenue Next Year
-                </div>
+                <div class=" font-normal text-white">Revenue Next Year</div>
                 <div
                   class="mt-1 flex flex-wrap items-baseline justify-between space-y-2 bp:space-y-0"
                 >
@@ -1148,9 +1144,7 @@
               <div
                 class="border-b px-3 py-5 last:border-b-0 xs:px-4 sm:p-6 md:border-b-0 lg:border-l"
               >
-                <div class="text-base font-normal text-white">
-                  EPS This Year
-                </div>
+                <div class=" font-normal text-white">EPS This Year</div>
                 <div
                   class="mt-1 flex flex-wrap items-baseline justify-between space-y-2 bp:space-y-0"
                 >
@@ -1201,9 +1195,7 @@
               <div
                 class="border-b px-3 py-5 last:border-b-0 xs:px-4 sm:p-6 md:border-l border-gray-600"
               >
-                <div class="text-base font-normal text-white">
-                  EPS Next Year
-                </div>
+                <div class=" font-normal text-white">EPS Next Year</div>
                 <div
                   class="mt-1 flex flex-wrap items-baseline justify-between space-y-2 bp:space-y-0"
                 >

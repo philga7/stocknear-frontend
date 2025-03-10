@@ -69,9 +69,9 @@
         animation: false,
       },
       title: {
-        text: `<div class="text-muted dark:text-gray-200 mt-3  text-center font-normal text-2xl">Price Target: <span class="${changesPercentage >= 0 ? "text-green-500 dark:text-[#00FC50]" : "text-[#FF2F1F]"}">$${priceTarget}</span></div>
+        text: `<div class="text-muted dark:text-gray-200 mt-3  text-center font-normal text-2xl">Price Target: <span class="${changesPercentage >= 0 ? "text-green-600 dark:text-[#00FC50]" : "text-[#FF2F1F]"}">$${priceTarget}</span></div>
         <div class="text-muted dark:text-gray-200  mb-2 text-center font-normal text-xl">(${changesPercentage}% ${changesPercentage >= 0 ? "upside" : "downside"})</div>
-        <div class="text-muted dark:text-gray-200 text-center font-normal text-xl flex justify-center items-center">Analyst Consensus: <span class="ml-1 ${consensusRating === "Buy" ? "text-green-500 dark:text-[#00FC50]" : consensusRating === "Sell" ? "text-red-500 dark:text-[#FF2F1F]" : consensusRating === "Hold" ? "text-orange-500 dark:text-[#D5AB31]" : "text-muted dark:text-white"}">${consensusRating ?? "n/a"}</span></div>`,
+        <div class="text-muted dark:text-gray-200 text-center font-normal text-xl flex justify-center items-center">Analyst Consensus: <span class="ml-1 ${consensusRating === "Buy" ? "text-green-600 dark:text-[#00FC50]" : consensusRating === "Sell" ? "text-red-500 dark:text-[#FF2F1F]" : consensusRating === "Hold" ? "text-orange-500 dark:text-[#D5AB31]" : "text-muted dark:text-white"}">${consensusRating ?? "n/a"}</span></div>`,
         style: {
           color: "white",
           // Using inline CSS for margin-top and margin-bottom

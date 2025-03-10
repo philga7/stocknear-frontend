@@ -200,9 +200,7 @@
             <h1 class="mb-1 text-2xl sm:text-3xl font-bold">My Account</h1>
           </div>
 
-          <div
-            class="rounded border border-gray-600 p-4 text-base xs:p-4 xs:text-lg"
-          >
+          <div class="rounded border border-gray-600 p-4 xs:p-4 xs:text-lg">
             <h2 class=" text-2xl font-semibold mb-3">User Information</h2>
             <div class="mt-1">
               <strong>Email:</strong>
@@ -224,7 +222,7 @@
           </div>
 
           <div
-            class="mt-6 rounded border border-gray-600 p-4 text-base xs:p-4 xs:text-lg"
+            class="mt-6 rounded border border-gray-600 p-4 xs:p-4 xs:text-lg"
           >
             <h2 class=" text-2xl font-semibold mb-3">Notification</h2>
             Customize your notification alerts based on your preferences.
@@ -380,7 +378,7 @@
           </div>
 
           <div
-            class="mt-6 rounded border border-gray-600 p-4 text-base xs:p-4 xs:text-lg"
+            class="mt-6 rounded border border-gray-600 p-4 xs:p-4 xs:text-lg"
           >
             <h2 class=" text-2xl font-semibold mb-3">Manage Subscription</h2>
             <div class="flex flex-row items-center">
@@ -487,7 +485,7 @@
           </div>
 
           <div
-            class="mt-6 rounded border border-gray-600 p-4 text-base xs:p-4 xs:text-lg"
+            class="mt-6 rounded border border-gray-600 p-4 xs:p-4 xs:text-lg"
           >
             <h2 class=" text-2xl font-semibold mb-3">Need help?</h2>
             <div class="mt-1">

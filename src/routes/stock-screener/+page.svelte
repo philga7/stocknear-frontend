@@ -2538,8 +2538,8 @@ const handleKeyDown = (event) => {
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
-      <li><a href="/" class="text-gray-300">Home</a></li>
-      <li><span class="text-gray-300">Stock Screener</span></li>
+      <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
+      <li><span class="text-muted dark:text-gray-300">Stock Screener</span></li>
     </ul>
   </div>
 
@@ -2683,7 +2683,7 @@ const handleKeyDown = (event) => {
                     <Button
                       on:click={handleCreateStrategy}
                       builders={[builder]}
-                      class="p-0 -mb-2 -mt-2 text-sm inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap text-base text-white bg-[#0909B] focus:outline-hidden sm:text-smaller"
+                      class="p-0 -mb-2 -mt-2 text-sm inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap  text-white bg-[#0909B] focus:outline-hidden sm:text-smaller"
                     >
                       <svg
                         class="h-4 w-4"
@@ -2752,7 +2752,7 @@ const handleKeyDown = (event) => {
         <div class="mt-3 flex flex-col gap-y-2.5 sm:flex-row lg:gap-y-2">
           <label
             for="ruleModal"
-            class="inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 text-base font-semibold text-white shadow-xs bg-[#000] sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500 sm:text-smaller"
+            class="inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 font-semibold text-white shadow-xs bg-[#000] sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500 sm:text-smaller"
           >
             <svg
               class="h-5 w-5"
@@ -2774,7 +2774,7 @@ const handleKeyDown = (event) => {
             <label
               for={!data?.user ? "userLogin" : ""}
               on:click={() => handleSave(true)}
-              class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 text-base font-semibold text-white shadow-xs bg-[#000] sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500 sm:text-smaller"
+              class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 font-semibold text-white shadow-xs bg-[#000] sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500 sm:text-smaller"
             >
               <svg
                 class="h-5 w-5"
@@ -2790,7 +2790,7 @@ const handleKeyDown = (event) => {
 
             <label
               for="deleteStrategy"
-              class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 text-base font-semibold text-white shadow-xs bg-[#000] sm:hover:bg-default/60 ease-out sm:hover:text-red-500 focus:outline-hidden focus:ring-2 focus:ring-blue-500 sm:text-smaller"
+              class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 font-semibold text-white shadow-xs bg-[#000] sm:hover:bg-default/60 ease-out sm:hover:text-red-500 focus:outline-hidden focus:ring-2 focus:ring-blue-500 sm:text-smaller"
             >
               <svg
                 class="h-5 w-5"
@@ -2808,7 +2808,7 @@ const handleKeyDown = (event) => {
           {#if ruleOfList?.length !== 0}
             <label
               on:click={handleResetAll}
-              class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 text-base font-semibold text-white shadow-xs bg-[#000] sm:hover:text-red-500 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500 sm:text-smaller"
+              class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 font-semibold text-white shadow-xs bg-[#000] sm:hover:text-red-500 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500 sm:text-smaller"
             >
               <svg
                 class="h-4 w-4"
@@ -3262,7 +3262,7 @@ const handleKeyDown = (event) => {
     >
       <nav class="w-full flex flex-row items-center py-2.5 sm:py-3 lg:py-1">
         <ul
-          class="flex flex-row overflow-x-auto items-center space-x-2 whitespace-nowrap text-base"
+          class="flex flex-row overflow-x-auto items-center space-x-2 whitespace-nowrap"
         >
           <li>
             <button
@@ -3371,7 +3371,7 @@ const handleKeyDown = (event) => {
 
                   <td class="text-white text-end text-sm sm:text-[1rem]">
                     {#if item?.changesPercentage >= 0}
-                      <span class="text-[#00FC50]"
+                      <span class="text-green-600 dark:text-[#00FC50]"
                         >+{item?.changesPercentage >= 1000
                           ? abbreviateNumber(item?.changesPercentage)
                           : item?.changesPercentage?.toFixed(2)}%</span
@@ -3478,7 +3478,7 @@ const handleKeyDown = (event) => {
                       {#if row?.rule === "marketCap"}
                         {abbreviateNumber(item[row?.rule])}
                       {:else if item[row?.rule] > 0}
-                        <span class="text-[#00FC50]"
+                        <span class="text-green-600 dark:text-[#00FC50]"
                           >+{abbreviateNumber(
                             item[row?.rule]?.toFixed(2),
                           )}%</span
@@ -3537,7 +3537,7 @@ const handleKeyDown = (event) => {
                         >
                       {:else if row?.rule === "upside"}
                         {#if item[row?.rule] > 0}
-                          <span class="text-[#00FC50]"
+                          <span class="text-green-600 dark:text-[#00FC50]"
                             >+{item[row?.rule]?.toFixed(2)}%</span
                           >
                         {:else if item[row?.rule] < 0}
@@ -3549,7 +3549,9 @@ const handleKeyDown = (event) => {
                         {/if}
                       {:else if ["analystRating", "topAnalystRating"]?.includes(row?.rule)}
                         {#if ["Strong Buy", "Buy"].includes(item[row?.rule])}
-                          <span class="text-[#00FC50]">{item[row?.rule]}</span>
+                          <span class="text-green-600 dark:text-[#00FC50]"
+                            >{item[row?.rule]}</span
+                          >
                         {:else if ["Strong Sell", "Sell"].includes(item[row?.rule])}
                           <span class="text-[#FF2F1F]">{item[row?.rule]}</span>
                         {:else if item[row?.rule] === "Hold"}

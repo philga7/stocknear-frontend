@@ -1,7 +1,8 @@
 <script lang="ts">
   import { setCache, getCache } from "$lib/store";
-  import { monthNames } from "$lib/utils";
   import highcharts from "$lib/highcharts.ts";
+  import { abbreviateNumber } from "$lib/utils";
+  import { mode } from "mode-watcher";
 
   export let data;
   export let symbol;
@@ -140,13 +141,13 @@
               radius: 6,
               fillColor: markerColor,
               lineWidth: 2,
-              lineColor: "#FFFFFF",
+              lineColor: $mode === "light" ? "black" : "white",
             },
             dataLabels: {
               enabled: true,
               format: formattedType,
               style: {
-                color: "#FFFFFF",
+                color: $mode === "light" ? "black" : "white",
                 fontWeight: "bold",
                 fontSize: "14px",
               },
@@ -159,7 +160,7 @@
     // Create Highcharts options
     const options = {
       chart: {
-        backgroundColor: "#09090B",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
         height: 360,
       },
       credits: { enabled: false },
@@ -167,20 +168,20 @@
       title: {
         text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">${symbol} - ${numOfRatings} Transaction</h3>`,
         useHTML: true,
-        style: { color: "white" },
+        style: { color: $mode === "light" ? "black" : "white" },
       },
       xAxis: {
         type: "datetime",
         endOnTick: false,
         categories: dates,
         crosshair: {
-          color: "#fff", // Set the color of the crosshair line
+          color: $mode === "light" ? "black" : "white", // Set the color of the crosshair line
           width: 1, // Adjust the line width as needed
           dashStyle: "Solid",
         },
         labels: {
           style: {
-            color: "#fff",
+            color: $mode === "light" ? "black" : "white",
           },
           distance: 20, // Increases space between label and axis
           formatter: function () {
@@ -206,9 +207,9 @@
       },
       yAxis: {
         gridLineWidth: 1,
-        gridLineColor: "#111827",
+        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
         labels: {
-          style: { color: "white" },
+          style: { color: $mode === "light" ? "black" : "white" },
         },
         title: { text: null },
         opposite: true,
@@ -220,21 +221,27 @@
         borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
         borderWidth: 1,
         style: {
-          color: "#fff",
+          color: "white",
           fontSize: "16px",
           padding: "10px",
         },
         borderRadius: 4,
         formatter: function () {
           // Format the x value to display time in hh:mm format
-          let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]">${this?.x}</span><br>`;
+          let tooltipContent = `<span class=" m-auto text-[1rem] font-[501]">${new Date(
+            this?.x,
+          ).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })}</span><br>`;
 
           // Loop through each point in the shared tooltip
           this.points.forEach((point) => {
-            tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
-          <span class="text-white font-normal text-sm" style="color:${point.color}">${
-            point.y
-          }</span><br>`;
+            tooltipContent += `<span class=" font-semibold text-sm">${point.series.name}:</span> 
+          <span class=" font-normal text-sm">${abbreviateNumber(
+            point.y,
+          )}</span><br>`;
           });
 
           return tooltipContent;
@@ -242,7 +249,7 @@
       },
       plotOptions: {
         series: {
-          color: "white",
+          color: $mode === "light" ? "black" : "white",
           animation: false, // Disable series animation
           states: {
             hover: {
@@ -261,7 +268,7 @@
               : value;
           }),
           type: "area",
-          color: "#FFFFFF",
+          color: $mode === "light" ? "#2C6288" : "white",
           lineWidth: 1,
           animation: false,
           zIndex: 10,
@@ -290,7 +297,7 @@
   }
 
   $: {
-    if (symbol && timePeriod) {
+    if ((symbol && timePeriod) || $mode) {
       isLoaded = false;
       config = null;
       historicalData = [];
@@ -313,8 +320,8 @@
               <label
                 on:click={() => (timePeriod = item)}
                 class="px-3 py-1 {timePeriod === item
-                  ? 'bg-white text-black '
-                  : 'text-white bg-table text-opacity-[0.6]'} border border-gray-700 transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+                  ? 'bg-gray-300 dark:bg-white text-muted'
+                  : 'text-muted dark:text-white bg-gray-100 dark:bg-table text-opacity-[0.6]'} border border-gray-200 dark:border-gray-700 transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
               >
                 {item}
               </label>
@@ -322,8 +329,8 @@
               <a
                 href="/pricing"
                 class="px-3 py-1 flex flex-row items-center {timePeriod === item
-                  ? 'bg-white text-black '
-                  : 'text-white bg-table text-opacity-[0.6]'} border border-gray-700 transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+                  ? 'bg-white text-muted'
+                  : 'text-muted dark:text-white bg-table text-opacity-[0.6]'} border border-gray-200 dark:border-gray-700 transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
               >
                 {item}
                 <svg
@@ -341,13 +348,13 @@
         </div>
       </div>
       <div
-        class="border border-gray-800 rounded w-full"
+        class="border border-gray-300 dark:border-gray-800 rounded w-full"
         use:highcharts={config}
       ></div>
     {:else}
       <div class="h-[250px] sm:h-[350px]">
         <div
-          class="flex h-full w-full flex-col items-center justify-center rounded-sm border border-gray-800 p-6 text-center md:p-12"
+          class="flex h-full w-full flex-col items-center justify-center rounded-sm border border-gray-300 dark:border-gray-800 p-6 text-center md:p-12"
         >
           <div class="mb-4 text-white text-[1rem] sm:text-xl font-semibold">
             No chart data available for {symbol}

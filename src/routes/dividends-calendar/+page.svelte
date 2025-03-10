@@ -313,8 +313,8 @@
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
-      <li><a href="/" class="text-gray-300">Home</a></li>
-      <li class="text-gray-300">Dividends Calendar</li>
+      <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
+      <li class="text-muted dark:text-gray-300">Dividends Calendar</li>
     </ul>
   </div>
 
@@ -453,7 +453,7 @@
                           {#each day as item}
                             <!-- row -->
                             <tr
-                              class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800"
+                              class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-oddborder-b border-gray-800"
                             >
                               <td class=" text-sm sm:text-[1rem]">
                                 <HoverStockChart symbol={item?.symbol} />

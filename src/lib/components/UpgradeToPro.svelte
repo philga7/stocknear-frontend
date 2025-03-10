@@ -44,7 +44,7 @@
               </div>
               Unlimited access to all data and tools
             </dt>
-            <dd class="mt-2 text-base leading-7">
+            <dd class="mt-2 leading-7">
               Unlimited access to all data and tools, giving you the edge over
               everyone else in the market.
             </dd>
@@ -72,7 +72,7 @@
               </div>
               Realtime Options & Dark Pool Data
             </dt>
-            <dd class="mt-2 text-base leading-7">
+            <dd class="mt-2 leading-7">
               Instant access to live options & dark pool data to spot
               opportunities and trade with precision before the market moves.
             </dd>
@@ -106,7 +106,7 @@
               </div>
               Top Wallstreet Analyst Ratings
             </dt>
-            <dd class="mt-2 text-base leading-7">
+            <dd class="mt-2 leading-7">
               Follow ratings from the best analysts on Wall Street to stay
               ahead.
             </dd>
@@ -135,7 +135,7 @@
               </div>
               Up to 30 years financial history
             </dt>
-            <dd class="mt-2 text-base leading-7">
+            <dd class="mt-2 leading-7">
               We deliver premium Wall Street data with top-tier accuracy and up
               to 30 years of history.
             </dd>

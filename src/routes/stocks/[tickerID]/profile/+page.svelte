@@ -294,7 +294,7 @@ ${paragraphs.join("\n")}
               Key Executives
             </h2>
             {#if rawData?.executives?.length > 0}
-              <table class="mb-6 w-full text-base xs:mb-8">
+              <table class="mb-6 w-full xs:mb-8">
                 <thead class="bg-gray-200 shadow-sm dark:bg-primary"
                   ><tr class="border-y border-gray-300 dark:border-gray-600"
                     ><th

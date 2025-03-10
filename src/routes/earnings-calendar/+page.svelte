@@ -315,8 +315,8 @@
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
-      <li><a href="/" class="text-gray-300">Home</a></li>
-      <li class="text-gray-300">Earnings Calendar</li>
+      <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
+      <li class="text-muted dark:text-gray-300">Earnings Calendar</li>
     </ul>
   </div>
 
@@ -454,7 +454,7 @@
                           {#each ["Pro", "Plus"]?.includes(data?.user?.tier) ? day : day?.slice(0, 6) as item, index}
                             <!-- row -->
                             <tr
-                              class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800 {index +
+                              class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-oddborder-b border-gray-800 {index +
                                 1 ===
                                 day?.slice(0, 6)?.length &&
                               !['Pro', 'Plus']?.includes(data?.user?.tier)
