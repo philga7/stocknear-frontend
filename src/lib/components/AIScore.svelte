@@ -13,7 +13,9 @@
   }
 </script>
 
-<section class="overflow-hidden text-muted dark:text-white">
+<section
+  class="overflow-hidden bg-white dark:bg-default text-muted dark:text-white"
+>
   <main class="overflow-hidden">
     <div class="w-full">
       <div

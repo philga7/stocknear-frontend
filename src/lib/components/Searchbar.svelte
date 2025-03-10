@@ -378,7 +378,8 @@
                 on:click={() => handleSearch(item?.symbol, item?.type)}
               >
                 <div class="flex flex-row items-center justify-between w-full">
-                  <span class="text-sm text-blue-500 dark:text-blue-400"
+                  <span
+                    class="text-sm text-muted font-semibold dark:font-normal dark:text-blue-400"
                     >{item?.symbol}</span
                   >
                   <span class="ml-3 text-sm text-muted dark:text-white"
@@ -443,21 +444,24 @@
 />
 
 <dialog id="searchBarModal" class="modal modal-bottom">
-  <label for="searchBarModal" class="cursor-pointer modal-backdrop"></label>
+  <label
+    for="searchBarModal"
+    class="cursor-pointer modal-backdrop bg-[#000] bg-[#000]/30"
+  ></label>
 
   <div
-    class="z-999 modal-box overflow-hidden rounded-md bg-secondary border border-gray-300 dark:border-gray-600 sm:my-8 sm:m-auto sm:h-auto w-full sm:w-3/4 lg:w-1/2 2xl:w-1/3"
+    class="z-999 modal-box overflow-hidden rounded-md shadow bg-white dark:bg-secondary border border-gray-300 dark:border-gray-600 sm:my-8 sm:m-auto sm:h-auto w-full sm:w-3/4 lg:w-1/2 2xl:w-1/3"
   >
     <label
       for="searchBarModal"
-      class="inline-block cursor-pointer absolute right-3 top-3 text-[1.3rem] sm:text-[1.8rem] text-white"
+      class="inline-block cursor-pointer absolute right-3 top-3 text-[1.3rem] sm:text-[1.8rem]"
     >
       <svg
         class="w-6 h-6 sm:w-8 sm:h-8"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         ><path
-          fill="white"
+          fill="currentColor"
           d="m6.4 18.308l-.708-.708l5.6-5.6l-5.6-5.6l.708-.708l5.6 5.6l5.6-5.6l.708.708l-5.6 5.6l5.6 5.6l-.708.708l-5.6-5.6z"
         /></svg
       >
@@ -467,7 +471,7 @@
     <div class="mt-8">
       <div class="relative">
         <div
-          class="inline-block cursor-pointer absolute right-5 top-1.5 text-[1.3rem] sm:text-[1.5rem] text-white"
+          class="inline-block cursor-pointer absolute right-5 top-1.5 text-[1.3rem] sm:text-[1.5rem]"
         >
           {#if isLoading}
             <span class="loading loading-spinner loading-sm"></span>
@@ -492,7 +496,7 @@
 
         <input
           id="modal-search"
-          class="rounded-md w-full text-white bg-gray-300 dark:bg-secondary border border-gray-300 dark:border-gray-600 focus:ring-transparent placeholder-gray-200 py-3 pl-10 pr-4"
+          class="rounded-md w-full bg-gray-300 dark:bg-secondary border border-gray-300 dark:border-gray-600 focus:ring-transparent placeholder-gray-600 dark:placeholder-gray-200 py-3 pl-10 pr-4"
           type="search"
           placeholder="Company or stock symbol..."
           bind:value={inputValue}
@@ -507,7 +511,7 @@
           aria-label="Search"
         >
           <svg
-            class="w-4 h-4 shrink-0 fill-current text-white ml-4 mr-2 text-slate-400"
+            class="w-4 h-4 shrink-0 fill-current ml-4 mr-2 dark:text-slate-400"
             viewBox="0 0 16 16"
             xmlns="http://www.w3.org/2000/svg"
             ><path
@@ -525,7 +529,7 @@
       <!-- Popular searches -->
       <div class="mb-3 last:mb-0 mt-3">
         {#if !showSuggestions}
-          <div class="text-start text-sm font-semibold text-white mb-2">
+          <div class="text-start text-sm font-semibold mb-2">
             {searchHistory?.length > 0 ? "Recent" : "Popular"}
           </div>
         {/if}
@@ -538,22 +542,23 @@
                   href={`/${item?.type === "ETF" ? "etf" : item?.type === "Index" ? "index" : "stocks"}/${item?.symbol}`}
                   on:click={() => popularTicker(item?.symbol)}
                   class="mb-2 {item?.symbol === focusedSuggestion
-                    ? 'cursor-pointer flex justify-start items-center p-2 text-white bg-primary rounded group'
-                    : 'cursor-pointer bg-secondary sm:hover:bg-gray-300 dark:sm:hover:bg-primary rounded-md flex justify-start items-center p-2 text-white  group'} w-full"
+                    ? 'cursor-pointer flex justify-start items-center p-2 bg-white dark:bg-primary rounded group'
+                    : 'cursor-pointer bg-white dark:bg-secondary sm:hover:bg-gray-300 dark:sm:hover:bg-primary rounded-md flex justify-start items-center p-2   group'} w-full"
                 >
                   <div class="flex flex-row items-center w-full">
                     <div class="flex flex-col">
-                      <span class="text-blue-500 dark:text-blue-400"
+                      <span
+                        class="font-semibold dark:font-normal text-muted dark:text-blue-400"
                         >{item?.symbol}</span
                       >
-                      <span class="text-white"
+                      <span class=""
                         >{item?.name.length > 150
                           ? item?.name?.slice(0, 150) + "..."
                           : item?.name}</span
                       >
                     </div>
 
-                    <div class="text-white ml-auto">
+                    <div class=" ml-auto">
                       {item?.type}
                     </div>
                   </div>
@@ -561,9 +566,7 @@
               </li>
             {/each}
           {:else if showSuggestions && searchBarData?.length > 0}
-            <div class="text-start text-sm font-semibold text-white mb-2">
-              Suggestions
-            </div>
+            <div class="text-start text-sm font-semibold mb-2">Suggestions</div>
             {#each searchBarData as item}
               <li class="border-b border-gray-300 dark:border-gray-600">
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -572,22 +575,23 @@
                   href={`/${item?.type === "ETF" ? "etf" : item?.type === "Index" ? "index" : "stocks"}/${item?.symbol}`}
                   on:click={() => searchBarTicker(item?.symbol)}
                   class="mb-2 {item?.symbol === focusedSuggestion
-                    ? 'shake-ticker cursor-pointer flex justify-start items-center p-2 text-white bg-primary rounded group'
-                    : 'cursor-pointer mb-2 bg-secondary sm:hover:bg-primary rounded-md flex justify-start items-center p-2 text-white group'}"
+                    ? 'shake-ticker cursor-pointer flex justify-start items-center p-2 bg-whitedark:bg-primary rounded group'
+                    : 'cursor-pointer mb-2 bg-white dark:bg-secondary sm:hover:bg-primary rounded-md flex justify-start items-center p-2  group'}"
                 >
                   <div class="flex flex-row items-center w-full">
                     <div class="flex flex-col">
-                      <span class="text-blue-500 dark:text-blue-400"
+                      <span
+                        class="font-semibold dark:font-normal text-muted dark:text-blue-400"
                         >{item?.symbol}</span
                       >
-                      <span class="text-white"
+                      <span class=""
                         >{item?.name?.length > 150
                           ? item?.name?.slice(0, 150) + "..."
                           : item?.name}</span
                       >
                     </div>
 
-                    <div class="text-white ml-auto">
+                    <div class=" ml-auto">
                       {item?.type}
                     </div>
                   </div>
@@ -596,9 +600,7 @@
             {/each}
           {:else if showSuggestions && searchBarData?.length === 0}
             <li>
-              <label
-                class="flex items-center p-2 text-white hover:text-white hover:bg-primary rounded group"
-              >
+              <label class="flex items-center p-2 rounded group">
                 <svg
                   class="w-3 h-3 fill-slate-400 shrink-0 mr-3 dark:fill-slate-500"
                   width="12"

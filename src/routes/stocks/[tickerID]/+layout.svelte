@@ -721,7 +721,7 @@
                         <!--End Price Alert -->
 
                         <div
-                          class="hidden sm:flex items-end justify-end absolute right-1.5 top-12 {$scoreComponent ===
+                          class="hidden sm:flex items-end justify-end absolute right-1.5 top-0 {$scoreComponent ===
                           false
                             ? 'invisible'
                             : ''}"
@@ -825,12 +825,12 @@
                                   class="border-l border-default pl-3 bp:pl-5"
                                 >
                                   <div
-                                    class="block text-2xl sm:text-[1.7rem] font-semibold leading-5 text-faded sm:inline"
+                                    class="block text-2xl sm:text-[1.7rem] font-semibold leading-5 sm:inline"
                                   >
                                     {prePostData?.price?.toFixed(2)}
                                   </div>
                                   <div
-                                    class="mt-1.5 block text-sm xs:text-base sm:mt-0 sm:inline sm:text-lg {prePostData?.changesPercentage >=
+                                    class="mt-1.5 block text-sm sm:mt-0 sm:inline sm:text-lg {prePostData?.changesPercentage >=
                                     0
                                       ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
                                       : 'text-red-600 dark:text-[#FF2F1F]'}"

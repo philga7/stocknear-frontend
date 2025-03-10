@@ -2,6 +2,7 @@
   import { displayCompanyName, stockTicker } from "$lib/store";
   import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
   import SEO from "$lib/components/SEO.svelte";
+  import { mode } from "mode-watcher";
 
   import { goto } from "$app/navigation";
   import highcharts from "$lib/highcharts.ts";
@@ -92,8 +93,8 @@
       },
       chart: {
         type: "column",
-        backgroundColor: "#09090B",
-        plotBackgroundColor: "#09090B",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
         height: 360, // Set the maximum height for the chart
         animation: false,
       },
@@ -103,7 +104,7 @@
             ? `<h3 class="mt-3 mb-1">${removeCompanyStrings($displayCompanyName)} Revenue - Annual</h3>`
             : `<h3 class="mt-3 mb-1">${removeCompanyStrings($displayCompanyName)} Revenue - Quarterly</h3>`,
         style: {
-          color: "white",
+          color: $mode === "light" ? "black" : "white",
           // Using inline CSS for margin-top and margin-bottom
         },
         useHTML: true, // Enable HTML to apply custom class styling
@@ -113,7 +114,7 @@
         categories: dates,
         gridLineWidth: 0,
         labels: {
-          style: { color: "white" },
+          style: { color: $mode === "light" ? "black" : "white" },
           formatter: function () {
             return timeIdx === 0 ? this?.value?.substring(0, 4) : this?.value;
           },
@@ -121,9 +122,9 @@
       },
       yAxis: {
         gridLineWidth: 1,
-        gridLineColor: "#111827",
+        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
         labels: {
-          style: { color: "white" },
+          style: { color: $mode === "light" ? "black" : "white" },
         },
         title: { text: null },
         opposite: true,
@@ -142,7 +143,7 @@
         borderRadius: 4,
         formatter: function () {
           // Format the x value to display time in hh:mm format
-          let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]">${new Date(
+          let tooltipContent = `<span class=" m-auto text-[1rem] font-[501]">${new Date(
             this?.x,
           ).toLocaleDateString("en-US", {
             year: "numeric",
@@ -152,8 +153,8 @@
 
           // Loop through each point in the shared tooltip
           this.points.forEach((point) => {
-            tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
-          <span class="text-white font-normal text-sm" style="color:${point.color}">${abbreviateNumber(
+            tooltipContent += `<span class=" font-semibold text-sm">${point.series.name}:</span> 
+          <span class=" font-normal text-sm">${abbreviateNumber(
             point.y,
           )}</span><br>`;
           });
@@ -164,11 +165,11 @@
 
       plotOptions: {
         series: {
-          color: "white",
+          color: $mode === "light" ? "black" : "white",
           animation: false,
           dataLabels: {
             enabled: timeIdx === 0 ? true : false,
-            color: "white",
+            color: $mode === "light" ? "black" : "white",
             style: {
               fontSize: "13px",
               fontWeight: "bold",
@@ -186,7 +187,7 @@
         {
           name: "Revenue",
           data: valueList,
-          color: "white",
+          color: $mode === "light" ? "#2C6288" : "white",
         },
       ],
     };
@@ -207,7 +208,7 @@
   description={`Explore the historical revenue, sales performance, and growth trends of ${$displayCompanyName} (${$stockTicker}). Get in-depth financial insights.`}
 />
 
-<section class="bg-default w-full overflow-hidden text-white h-full">
+<section class="w-full overflow-hidden h-full">
   <div class="w-full flex justify-center w-full sm-auto h-full overflow-hidden">
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"
@@ -215,7 +216,7 @@
       <main class="w-full">
         <div class="sm:pl-7 sm:pb-7 sm:pt-7 m-auto mt-2 sm:mt-0">
           <div class="">
-            <h1 class="text-xl sm:text-2xl text-white font-bold">
+            <h1 class="text-xl sm:text-2xl font-bold">
               {removeCompanyStrings($displayCompanyName)} Revenue
             </h1>
           </div>
@@ -230,60 +231,52 @@
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 mt-3"
               >
                 <div
-                  class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
+                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4 transition-colors"
                 >
-                  <div
-                    class="text-[#c3c6d0] text-sm sm:text-[1rem] mb-2 flex items-center"
-                  >
+                  <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
                     <span>Revenue (ttm)</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-xl font-bold text-white">
+                    <span class="text-xl font-bold">
                       {abbreviateNumber(rawData?.revenue, true)}</span
                     >
                   </div>
                 </div>
 
                 <div
-                  class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
+                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4 transition-colors"
                 >
-                  <div
-                    class="text-[#c3c6d0] text-sm sm:text-[1rem] mb-2 flex items-center"
-                  >
+                  <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
                     <span>Revenue Growth</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-xl font-bold text-white"
+                    <span class="text-xl font-bold"
                       >{rawData?.growthRevenue}%</span
                     >
                   </div>
                 </div>
 
                 <div
-                  class="bg-gray-800/30 rounded p-4 sm:hover:bg-gray-800/40 transition-colors"
+                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4 transition-colors"
                 >
-                  <div
-                    class="text-[#c3c6d0] text-sm sm:text-[1rem] mb-2 flex items-center"
-                  >
+                  <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
                     <span>Price / Sales Ratio</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-xl font-bold text-white"
+                    <span class="text-xl font-bold"
                       >{rawData?.priceToSalesRatio}</span
                     >
                   </div>
                 </div>
 
                 <div
-                  class="bg-gray-800/30 rounded p-4 sm:hover:bg-gray-800/40 transition-colors"
+                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4 transition-colors"
                 >
-                  <div
-                    class="text-[#c3c6d0] text-sm sm:text-[1rem] mb-2 flex items-center"
-                  >
+                  <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
                     <span>Revenue / Employee </span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-xl font-bold text-white"
+                    <span class="text-xl font-bold"
                       >{abbreviateNumber(
                         rawData?.revenuePerEmployee,
                         true,
@@ -293,29 +286,25 @@
                 </div>
 
                 <div
-                  class="bg-gray-800/30 rounded p-4 sm:hover:bg-gray-800/40 transition-colors"
+                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4 transition-colors"
                 >
-                  <div
-                    class="text-[#c3c6d0] text-sm sm:text-[1rem] mb-2 flex items-center"
-                  >
+                  <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
                     <span>Employees </span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-xl font-bold text-white"
+                    <span class="text-xl font-bold"
                       >{rawData?.employees?.toLocaleString("en-US")}</span
                     >
                   </div>
                 </div>
                 <div
-                  class="bg-gray-800/30 rounded p-4 sm:hover:bg-gray-800/40 transition-colors"
+                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4 transition-colors"
                 >
-                  <div
-                    class="text-[#c3c6d0] text-sm sm:text-[1rem] mb-2 flex items-center"
-                  >
+                  <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
                     <span>Market Cap </span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-xl font-bold text-white"
+                    <span class="text-xl font-bold"
                       >{abbreviateNumber(data?.getStockQuote?.marketCap)}</span
                     >
                   </div>
@@ -325,15 +314,13 @@
               <div
                 class=" flex flex-col sm:flex-row items-start sm:items-center w-full justify-between"
               >
-                <h2 class="text-xl sm:text-2xl text-white font-bold">
-                  Revenue Chart
-                </h2>
+                <h2 class="text-xl sm:text-2xl font-bold">Revenue Chart</h2>
 
                 <div
                   class="inline-flex justify-center w-full rounded-md sm:w-auto sm:ml-auto"
                 >
                   <div
-                    class="bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1 mt-4"
+                    class="bg-gray-300 dark:bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1 mt-4"
                   >
                     {#each plotTabs as item, i}
                       <button
@@ -352,7 +339,7 @@
                           class="relative text-sm block font-semibold {timeIdx ===
                           i
                             ? 'text-black'
-                            : 'text-white'}"
+                            : ''}"
                         >
                           {item.title}
                         </span>
@@ -370,9 +357,7 @@
               <div
                 class="mt-5 flex flex-col sm:flex-row items-start sm:items-center w-full justify-between sm:border-y border-gray-800 sm:pt-2 sm:pb-2"
               >
-                <h3
-                  class="text-xl sm:text-2xl text-white font-bold mb-2 sm:mb-0"
-                >
+                <h3 class="text-xl sm:text-2xl font-bold mb-2 sm:mb-0">
                   Revenue History
                 </h3>
 
@@ -380,7 +365,7 @@
                   class="inline-flex justify-center w-full rounded-md sm:w-auto sm:ml-auto"
                 >
                   <div
-                    class="bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1"
+                    class="bg-gray-300 dark:bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1"
                   >
                     {#each tabs as item, i}
                       {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}
@@ -418,7 +403,7 @@
                             class="relative text-sm block font-semibold whitespace-nowrap {activeIdx ===
                             i
                               ? 'text-black'
-                              : 'text-white'}"
+                              : ''}"
                           >
                             {item.title}
                           </span>
@@ -431,32 +416,26 @@
 
               <div class="w-full overflow-x-auto">
                 <table
-                  class="table table-sm table-compact bg-table border border-gray-800 rounded-none sm:rounded-md w-full m-auto mt-4"
+                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
                 >
-                  <thead class="bg-default">
+                  <thead class="text-muted dark:text-white">
                     <tr>
-                      <th class="text-white font-semibold text-start text-sm"
+                      <th class=" font-semibold text-start text-sm"
                         >{activeIdx === 0
                           ? "Fiscal Year End"
                           : "Quarter Ended"}</th
                       >
-                      <th class="text-white font-semibold text-end text-sm"
-                        >Revenue</th
-                      >
-                      <th class="text-white font-semibold text-end text-sm"
-                        >% Change</th
-                      >
+                      <th class=" font-semibold text-end text-sm">Revenue</th>
+                      <th class=" font-semibold text-end text-sm">% Change</th>
                     </tr>
                   </thead>
                   <tbody>
                     {#each tableList as item, index}
                       <!-- row -->
                       <tr
-                        class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800"
+                        class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                       >
-                        <td
-                          class="text-white text-sm sm:text-[1rem] whitespace-nowrap"
-                        >
+                        <td class=" text-sm sm:text-[1rem] whitespace-nowrap">
                           {new Date(item?.date)?.toLocaleDateString("en-US", {
                             day: "2-digit", // Include day number
                             month: "short", // Display short month name
@@ -465,18 +444,18 @@
                         </td>
 
                         <td
-                          class="text-white text-sm sm:text-[1rem] text-right whitespace-nowrap"
+                          class=" text-sm sm:text-[1rem] text-right whitespace-nowrap"
                         >
                           {abbreviateNumber(item?.revenue)}
                         </td>
 
                         <td
-                          class="text-white text-sm sm:text-[1rem] whitespace-nowrap text-end"
+                          class=" text-sm sm:text-[1rem] whitespace-nowrap text-end"
                         >
                           {#if index === tableList?.length - 1}
                             n/a
                           {:else if item?.revenue > tableList[index + 1]?.revenue}
-                            <span class="text-[#00FC50]">
+                            <span class="text-green-600 dark:text-[#00FC50]">
                               +{(
                                 ((item?.revenue -
                                   tableList[index + 1]?.revenue) /
@@ -485,7 +464,7 @@
                               )?.toFixed(2)}%
                             </span>
                           {:else if item?.revenue < tableList[index + 1]?.revenue}
-                            <span class="text-[#FF2F1F]">
+                            <span class="text-red-600 dark:text-[#FF2F1F]">
                               -{(
                                 Math.abs(
                                   (item?.revenue -
