@@ -485,7 +485,7 @@
                   >{item?.putCallRatio?.toFixed(2)}</span
                 >
               {:else if item?.putCallRatio >= 0 && item?.putCallRatio !== null}
-                <span class="text-[#FF2F1F]"
+                <span class="text-red-600 dark:text-[#FF2F1F]"
                   >{item?.putCallRatio?.toFixed(2)}</span
                 >
               {:else}

@@ -590,7 +590,7 @@
                             ).toFixed(2)}%
                           </span>
                         {:else if item?.employeeCount < historyList[index + 1]?.employeeCount}
-                          <span class="text-[#FF2F1F]">
+                          <span class="text-red-600 dark:text-[#FF2F1F]">
                             -{(
                               (Math.abs(
                                 item?.employeeCount -

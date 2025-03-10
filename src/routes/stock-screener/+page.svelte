@@ -3377,7 +3377,7 @@ const handleKeyDown = (event) => {
                           : item?.changesPercentage?.toFixed(2)}%</span
                       >
                     {:else}
-                      <span class="text-[#FF2F1F]"
+                      <span class="text-red-600 dark:text-[#FF2F1F]"
                         >{item?.changesPercentage <= -1000
                           ? abbreviateNumber(item?.changesPercentage)
                           : item?.changesPercentage?.toFixed(2)}%
@@ -3484,7 +3484,7 @@ const handleKeyDown = (event) => {
                           )}%</span
                         >
                       {:else if item[row?.rule] < 0}
-                        <span class="text-[#FF2F1F]"
+                        <span class="text-red-600 dark:text-[#FF2F1F]"
                           >{abbreviateNumber(
                             item[row?.rule]?.toFixed(2),
                           )}%</span
@@ -3541,7 +3541,7 @@ const handleKeyDown = (event) => {
                             >+{item[row?.rule]?.toFixed(2)}%</span
                           >
                         {:else if item[row?.rule] < 0}
-                          <span class="text-[#FF2F1F]"
+                          <span class="text-red-600 dark:text-[#FF2F1F]"
                             >{item[row?.rule]?.toFixed(2)}%</span
                           >
                         {:else}
@@ -3553,7 +3553,9 @@ const handleKeyDown = (event) => {
                             >{item[row?.rule]}</span
                           >
                         {:else if ["Strong Sell", "Sell"].includes(item[row?.rule])}
-                          <span class="text-[#FF2F1F]">{item[row?.rule]}</span>
+                          <span class="text-red-600 dark:text-[#FF2F1F]"
+                            >{item[row?.rule]}</span
+                          >
                         {:else if item[row?.rule] === "Hold"}
                           <span class="text-[#FFA838]">{item[row?.rule]}</span>
                         {:else}

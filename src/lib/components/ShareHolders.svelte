@@ -559,7 +559,7 @@
                         )}%</span
                       >
                     {:else if item?.changeInSharesNumberPercentage < 0}
-                      <span class="text-[#FF2F1F]"
+                      <span class="text-red-600 dark:text-[#FF2F1F]"
                         >{abbreviateNumber(
                           item?.changeInSharesNumberPercentage?.toFixed(2),
                         )}%</span

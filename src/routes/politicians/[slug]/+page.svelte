@@ -152,10 +152,12 @@
                   </div>
                 </div>
                 <div class="mt-0 pt-0.5 text-left">
-                  <h1 class="mb-0 text-xl sm:text-2xl font-bold text-white">
+                  <h1 class="mb-0 text-xl sm:text-2xl font-bold">
                     {formatString(name)}
                   </h1>
-                  <p class="mb-0.5 text-sm font-semibold text-gray-300">
+                  <p
+                    class="mb-0.5 text-sm font-semibold text-muted dark:text-gray-300"
+                  >
                     {politicianParty ?? "n/a"} / {politicianCongress}
                     {#if politicianDistrict !== undefined && politicianDistrict?.length !== 0}
                       / {politicianDistrict}
@@ -164,41 +166,39 @@
                 </div>
               </div>
               <div
-                class="mt-4 grid grid-cols-2 overflow-hidden rounded border border-gray-800 py-2 text-center md:grid-cols-4 md:p-0 lg:mt-0 lg:border-none"
+                class="mt-4 grid grid-cols-2 overflow-hidden rounded border border-gray-300 dark:border-gray-800 py-2 text-center md:grid-cols-4 md:p-0 lg:mt-0 lg:border-none"
               >
                 <div class="flex flex-col px-4 py-2 bp:px-6 md:py-6">
-                  <div
-                    class="text-xl sm:text-2xl font-bold tracking-tight text-white"
-                  >
+                  <div class="text-xl sm:text-2xl font-bold tracking-tight">
                     ${new Intl.NumberFormat("en", {
                       minimumFractionDigits: 0,
                       maximumFractionDigits: 0,
                     }).format(totalAmountTraded)}
                   </div>
-                  <div class="text-sm font-semibold leading-6 text-gray-300">
+                  <div
+                    class="text-sm font-semibold leading-6 text-muted dark:text-gray-300"
+                  >
                     Total Amount
                   </div>
                 </div>
 
                 <div
-                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-800 md:py-6"
+                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l border-gray-300 dark:sm:border-gray-800 md:py-6"
                 >
-                  <div
-                    class="text-xl sm:text-2xl font-semibold tracking-tight text-white"
-                  >
+                  <div class="text-xl sm:text-2xl font-semibold tracking-tight">
                     {numOfTrades?.toLocaleString("en-US")}
                   </div>
-                  <div class="text-sm font-semibold leading-6 text-gray-300">
+                  <div
+                    class="text-sm font-semibold leading-6 text-muted dark:text-gray-300"
+                  >
                     Transaction
                   </div>
                 </div>
 
                 <div
-                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-800 md:py-6"
+                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l border-gray-300 dark:sm:border-gray-800 md:py-6"
                 >
-                  <div
-                    class="text-xl sm:text-2xl font-semibold tracking-tight text-white"
-                  >
+                  <div class="text-xl sm:text-2xl font-semibold tracking-tight">
                     {lastTradedDate?.length !== undefined
                       ? new Date(lastTradedDate)?.toLocaleString("en-US", {
                           month: "short",
@@ -208,19 +208,21 @@
                         })
                       : "n/a"}
                   </div>
-                  <div class="text-sm font-semibold leading-6 text-gray-300">
+                  <div
+                    class="text-sm font-semibold leading-6 text-muted dark:text-gray-300"
+                  >
                     Last Transaction
                   </div>
                 </div>
                 <div
-                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-800 md:py-6"
+                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l border-gray-300 dark:sm:border-gray-800 md:py-6"
                 >
-                  <div
-                    class="text-xl sm:text-2xl font-bold tracking-tight text-white"
-                  >
+                  <div class="text-xl sm:text-2xl font-bold tracking-tight">
                     {buySellRatio?.toFixed(2)}
                   </div>
-                  <div class="text-sm font-semibold leading-6 text-gray-300">
+                  <div
+                    class="text-sm font-semibold leading-6 text-muted dark:text-gray-300"
+                  >
                     Buy/Sell
                   </div>
                 </div>
@@ -228,9 +230,9 @@
             </div>
 
             {#if mainSectors?.length !== 0}
-              <div class="mb-10 mt-10 text-white">
+              <div class="mb-10 mt-10">
                 <div
-                  class="relative my-3 space-y-2 rounded border border-gray-800 sm:my-6 p-4"
+                  class="relative my-3 space-y-2 rounded border border-gray-300 dark:border-gray-800 sm:my-6 p-4"
                 >
                   <div class="flex flex-col sm:flex-row">
                     <div class="mb-2 font-semibold sm:mb-0">Main Sectors:</div>
@@ -240,7 +242,7 @@
                           href={sectorNavigation?.find(
                             (listItem) => listItem?.title === item,
                           )?.link}
-                          class="px-3 text-sm py-1 sm:text-[1rem] rounded-md bg-white/10 sm:hover:bg-white/20 ml-0"
+                          class="inline-block badge bg-blue-50 dark:bg-primary duration-0 rounded-sm ml-1 px-3 m-auto text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted text-[1rem]"
                         >
                           {item}
                         </a>
@@ -255,7 +257,7 @@
                       {#each mainIndustries as item}
                         <a
                           href={`/list/industry/${item?.replace(/ /g, "-")?.replace(/&/g, "and")?.replace(/-{2,}/g, "-")?.toLowerCase()}`}
-                          class="px-3 text-sm py-1 sm:text-[1rem] rounded-md bg-white/10 sm:hover:bg-white/20 ml-0"
+                          class="inline-block badge bg-blue-50 dark:bg-primary duration-0 rounded-sm ml-1 px-3 m-auto text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted text-[1rem]"
                         >
                           {item}
                         </a>
@@ -266,60 +268,36 @@
               </div>
             {/if}
 
-            <h3 class="text-xl text-white font-bold mt-10">Trading History</h3>
+            <h3 class="text-xl font-bold mt-10">Trading History</h3>
 
             <div class="w-full overflow-x-auto">
               <table
-                class=" table table-sm table-compact rounded-none sm:rounded-md w-full bg-default m-auto mt-5 border border-gray-800"
+                class="mt-5 table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
               >
                 <!-- head -->
-                <thead>
-                  <tr class="bg-default">
+                <thead class="text-muted dark:text-white">
+                  <tr class="">
                     <th
-                      class="hidden lg:table-cell text-start bg-default text-white text-sm font-semibold"
+                      class="hidden lg:table-cell text-start text-sm font-semibold"
                     >
                     </th>
-                    <th
-                      class="text-start bg-default text-white text-sm font-semibold"
-                    >
-                      Symbol
-                    </th>
-                    <th
-                      class="text-start bg-default text-white text-sm font-semibold"
-                    >
-                      Name
-                    </th>
-                    <th
-                      class="text-end bg-default text-white text-sm font-semibold"
-                    >
+                    <th class="text-start text-sm font-semibold"> Symbol </th>
+                    <th class="text-start text-sm font-semibold"> Name </th>
+                    <th class="text-end text-sm font-semibold">
                       Transaction Type
                     </th>
-                    <th
-                      class="text-end bg-default text-white text-sm font-semibold"
-                    >
-                      Amount
-                    </th>
-                    <th
-                      class="text-end bg-default text-white text-sm font-semibold"
-                    >
+                    <th class="text-end text-sm font-semibold"> Amount </th>
+                    <th class="text-end text-sm font-semibold">
                       Transaction
                     </th>
-                    <th
-                      class="text-end bg-default text-white text-sm font-semibold"
-                    >
-                      Last Trade
-                    </th>
-                    <th
-                      class="text-end bg-default text-white text-sm font-semibold"
-                    >
-                      Filed
-                    </th>
+                    <th class="text-end text-sm font-semibold"> Last Trade </th>
+                    <th class="text-end text-sm font-semibold"> Filed </th>
                   </tr>
                 </thead>
                 <tbody class="p-0">
                   {#each tableData as item}
                     <tr
-                      class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-oddborder-b-[#27272A] text-white"
+                      class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                     >
                       <td class="hidden lg:table-cell"
                         ><button
@@ -331,7 +309,7 @@
                               ? 'rotate-180'
                               : ''}"
                             viewBox="0 0 20 20"
-                            fill="white"
+                            fill="currentColor"
                             style="max-width:40px"
                             ><path
                               fill-rule="evenodd"
@@ -343,7 +321,7 @@
                       >
 
                       <td
-                        class="text-start text-sm sm:text-[1rem] border-b border-b-[#27272A] whitespace-nowrap"
+                        class="text-start text-sm sm:text-[1rem] whitespace-nowrap"
                       >
                         <HoverStockChart
                           symbol={item?.symbol ?? item?.ticker}
@@ -351,16 +329,14 @@
                         />
                       </td>
 
-                      <td
-                        class="text-sm sm:text-[1rem] border-b border-b-[#27272A] whitespace-nowrap"
-                      >
+                      <td class="text-sm sm:text-[1rem] whitespace-nowrap">
                         {item?.name?.length > 20
                           ? item?.name?.slice(0, 20) + "..."
                           : item?.name}
                       </td>
 
                       <td
-                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white border-b border-b-[#27272A]"
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                       >
                         <span class="">
                           {#if item?.type === "Bought"}
@@ -368,7 +344,9 @@
                               >{item?.type}</span
                             >
                           {:else if item?.type === "Sold"}
-                            <span class="text-[#FF2F1F]">{item?.type}</span>
+                            <span class="text-red-600 dark:text-[#FF2F1F]"
+                              >{item?.type}</span
+                            >
                           {:else if item?.type === "Exchange"}
                             <span class="text-[#C6A755]">Exchange</span>
                           {/if}
@@ -376,19 +354,19 @@
                       >
 
                       <td
-                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white border-b border-b-[#27272A]"
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                       >
                         {item?.amount}</td
                       >
 
                       <td
-                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white border-b border-b-[#27272A]"
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                       >
                         {item?.transaction?.toLocaleString("en-US")}</td
                       >
 
                       <td
-                        class="text-end text-sm sm:text-[1rem] text-white border-b border-b-[#27272A] whitespace-nowrap"
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                       >
                         {new Date(item?.transactionDate)?.toLocaleString(
                           "en-US",
@@ -402,7 +380,7 @@
                       </td>
 
                       <td
-                        class="text-end text-sm sm:text-[1rem] text-white border-b border-b-[#27272A] whitespace-nowrap"
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                       >
                         {new Date(item?.disclosureDate)?.toLocaleString(
                           "en-US",
@@ -463,20 +441,7 @@
   .scroller {
     scrollbar-width: thin;
   }
-  .app {
-    height: 300px;
-    max-width: 100%; /* Ensure chart width doesn't exceed the container */
-  }
 
-  @media (max-width: 640px) {
-    .app {
-      height: 230px;
-    }
-  }
-
-  .chart {
-    width: 100%;
-  }
   .republican-striped {
     background-image: repeating-linear-gradient(
       -45deg,

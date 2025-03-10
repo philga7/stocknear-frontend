@@ -1613,7 +1613,8 @@
                                           >+{item[row?.rule]?.toFixed(2)}%</span
                                         >
                                       {:else}
-                                        <span class="text-[#FF2F1F]"
+                                        <span
+                                          class="text-red-600 dark:text-[#FF2F1F]"
                                           >{item[row?.rule]?.toFixed(2)}%</span
                                         >
                                       {/if}
@@ -1624,7 +1625,8 @@
                                           >{item[row?.rule]}</span
                                         >
                                       {:else if ["Strong Sell", "Sell"].includes(item[row?.rule])}
-                                        <span class="text-[#FF2F1F]"
+                                        <span
+                                          class="text-red-600 dark:text-[#FF2F1F]"
                                           >{item[row?.rule]}</span
                                         >
                                       {:else if item[row?.rule] === "Hold"}

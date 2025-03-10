@@ -213,7 +213,7 @@
                                   )}%</span
                                 >
                               {:else}
-                                <span class="text-[#FF2F1F]"
+                                <span class="text-red-600 dark:text-[#FF2F1F]"
                                   >{abbreviateNumber(
                                     item?.performancePercentage3Year?.toFixed(
                                       2,
@@ -236,7 +236,7 @@
                                   )}%</span
                                 >
                               {:else}
-                                <span class="text-[#FF2F1F]"
+                                <span class="text-red-600 dark:text-[#FF2F1F]"
                                   >{abbreviateNumber(
                                     item?.winRate?.toFixed(2),
                                   )}%

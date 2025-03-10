@@ -1,6 +1,6 @@
 <script lang="ts">
   import { formatString } from "$lib/utils";
-  import { screenWidth, numberOfUnreadNotification } from "$lib/store";
+  import { screenWidth } from "$lib/store";
   import { onMount } from "svelte";
   import HoverStockChart from "$lib/components/HoverStockChart.svelte";
   //import UpgradeToPro from '$lib/components/UpgradeToPro.svelte';
@@ -83,7 +83,7 @@
       >
         <main class="w-full lg:w-3/4 lg:pr-5">
           <div class="mb-6 border-b-[2px]">
-            <h1 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
+            <h1 class="mb-1 text-2xl sm:text-3xl font-bold">
               Latest Trades of Politicians
             </h1>
           </div>
@@ -104,33 +104,24 @@
                         class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto sm:overflow-hidden"
                       >
                         <table
-                          class="table table-sm table-pin-cols table-compact rounded-none sm:rounded-md w-full bg-default border border-gray-800 m-auto"
+                          class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
                         >
-                          <thead class="bg-default">
+                          <thead class="text-muted dark:text-white">
                             <tr class="">
-                              <th
-                                class=" text-start bg-default text-white text-sm sm:font-semibold"
-                              >
+                              <th class=" text-start text-sm sm:font-semibold">
                                 Person
                               </th>
-                              <td
-                                class="text-start bg-default text-white text-sm sm:font-semibold"
-                              >
+                              <td class="text-start text-sm sm:font-semibold">
                                 Company
                               </td>
 
-                              <td
-                                class="text-end bg-default text-white text-sm sm:font-semibold"
-                              >
+                              <td class="text-end text-sm sm:font-semibold">
                                 Date
                               </td>
-                              <td
-                                class="text-center bg-default text-white text-sm sm:font-semibold"
-                              >
+                              <td class="text-center text-sm sm:font-semibold">
                                 Amount
                               </td>
-                              <td
-                                class="text-white text-end text-sm sm:font-semibold"
+                              <td class=" text-end text-sm sm:font-semibold"
                                 >Type</td
                               >
                             </tr>
@@ -138,7 +129,7 @@
                           <tbody>
                             {#each displayList as item, index}
                               <tr
-                                class="bg-table odd:bg-odd border-bborder-gray-800 {index +
+                                class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
                                   1 ===
                                   rawData?.length &&
                                 !['Pro', 'Plus']?.includes(data?.user?.tier)
@@ -146,13 +137,11 @@
                                   : ''}"
                               >
                                 <th
-                                  class="{index % 2
-                                    ? 'bg-table'
-                                    : 'bg-odd'} text-white text-sm sm:text-[1rem] whitespace-nowrap"
+                                  class="text-sm sm:text-[1rem] whitespace-nowrap"
                                 >
                                   <div class="flex flex-row items-center">
                                     <div
-                                      class="shrink-0 rounded-full border border-slate-700 w-9 h-9 relative {item?.party ===
+                                      class="shrink-0 rounded-full w-9 h-9 relative {item?.party ===
                                       'Republican'
                                         ? 'bg-[#98272B]'
                                         : item?.party === 'Democratic'
@@ -177,16 +166,14 @@
                                           ),
                                         )}</a
                                       >
-                                      <span class="text-white"
-                                        >{item?.party}</span
-                                      >
+                                      <span class="">{item?.party}</span>
                                     </div>
                                   </div>
                                   <!--{item?.firstName} {item?.lastName}-->
                                 </th>
 
                                 <td
-                                  class="text-start whitespace-nowrap text-sm sm:text-[1rem] text-blue-400"
+                                  class="text-start whitespace-nowrap text-sm sm:text-[1rem]"
                                 >
                                   <div class="flex flex-col items-start">
                                     <HoverStockChart
@@ -194,7 +181,7 @@
                                       assetType={item?.assetType}
                                     />
 
-                                    <span class="text-white"
+                                    <span class=""
                                       >{item?.assetDescription.length >
                                       charNumber
                                         ? formatString(
@@ -211,7 +198,7 @@
                                 </td>
 
                                 <td
-                                  class="text-end text-sm sm:text-[1rem] text-white whitespace-nowrap"
+                                  class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                                 >
                                   {new Date(
                                     item?.disclosureDate,
@@ -224,23 +211,24 @@
                                 </td>
 
                                 <td
-                                  class="text-center text-sm sm:text-[1rem] text-white whitespace-nowrap"
+                                  class="text-center text-sm sm:text-[1rem] whitespace-nowrap"
                                 >
                                   {item?.amount?.replace(
                                     "$1,000,001 - $5,000,000",
                                     "$1Mio - $5Mio",
                                   )}
                                 </td>
-                                <td
-                                  class="text-sm sm:text-[1rem] text-end text-white"
-                                >
+                                <td class="text-sm sm:text-[1rem] text-end">
                                   {#if item?.type === "Bought"}
                                     <span
                                       class="text-green-600 dark:text-[#00FC50]"
                                       >Bought</span
                                     >
                                   {:else if item?.type === "Sold"}
-                                    <span class="text-[#FF2F1F]">Sold</span>
+                                    <span
+                                      class="text-red-600 dark:text-[#FF2F1F]"
+                                      >Sold</span
+                                    >
                                   {/if}
                                 </td>
                               </tr>
@@ -273,7 +261,7 @@
                     Pro Subscription
                   </h2>
                   <ArrowLogo
-                    class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
+                    class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:"
                   />
                 </div>
                 <span class="p-3 ml-3 mr-3">
@@ -294,9 +282,7 @@
                 <h2 class="text-start text-xl font-semibold ml-3">
                   Top Analyst
                 </h2>
-                <ArrowLogo
-                  class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
-                />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:" />
               </div>
               <span class="p-3 ml-3 mr-3">
                 Get the latest top Wall Street analyst ratings
@@ -315,9 +301,7 @@
                 <h2 class="text-start text-xl font-semibold ml-3">
                   Congress Trading
                 </h2>
-                <ArrowLogo
-                  class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
-                />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:" />
               </div>
               <span class="p-3 ml-3 mr-3">
                 Get the latest top Congress trading insights.

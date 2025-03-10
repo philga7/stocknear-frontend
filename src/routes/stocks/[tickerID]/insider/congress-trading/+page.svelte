@@ -409,7 +409,9 @@
                             >Bought</span
                           >
                         {:else if item?.type === "Sold"}
-                          <span class="text-[#FF2F1F]">Sold</span>
+                          <span class="text-red-600 dark:text-[#FF2F1F]"
+                            >Sold</span
+                          >
                         {:else if item?.type === "Exchange"}
                           <span class="text-[#C6A755]">Exchange</span>
                         {/if}

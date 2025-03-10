@@ -432,7 +432,7 @@
                               : item?.changesPercentage?.toFixed(2)}%</span
                           >
                         {:else if item?.changesPercentage < 0 && item?.changesPercentage !== null}
-                          <span class="text-[#FF2F1F]"
+                          <span class="text-red-600 dark:text-[#FF2F1F]"
                             >{item?.changesPercentage <= -1000
                               ? abbreviateNumberWithColor(
                                   item?.changesPercentage,
@@ -556,7 +556,7 @@
                             >+{item?.changeOI?.toLocaleString("en-US")}</span
                           >
                         {:else if item?.changeOI < 0}
-                          <span class="text-[#FF2F1F]"
+                          <span class="text-red-600 dark:text-[#FF2F1F]"
                             >{item?.changeOI?.toLocaleString("en-US")}
                           </span>
                         {:else}
@@ -574,7 +574,7 @@
                               : item?.changesPercentageOI?.toFixed(2)}%</span
                           >
                         {:else if item?.changesPercentageOI < 0}
-                          <span class="text-[#FF2F1F]"
+                          <span class="text-red-600 dark:text-[#FF2F1F]"
                             >{item?.changesPercentageOI <= -1000
                               ? abbreviateNumberWithColor(
                                   item?.changesPercentageOI,

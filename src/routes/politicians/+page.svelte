@@ -165,22 +165,22 @@
             class="relative flex justify-center items-center overflow-hidden w-full"
           >
             <main class="w-full">
-              <h1 class="mb-3 text-white text-2xl sm:text-3xl font-bold">
+              <h1 class="mb-3 text-2xl sm:text-3xl font-bold">
                 All US Politicians
               </h1>
               <div class="w-full pb-3">
-                <div class="relative right-0 bg-default">
+                <div class="relative right-0">
                   <ul
                     class="relative grid grid-cols-1 sm:grid-cols-4 gap-y-3 gap-x-3 flex flex-wrap p-1 list-none rounded-[3px]"
                   >
                     <li
-                      class="pl-3 py-1.5 flex-auto text-center bg-[#2E3238] rounded-[3px]"
+                      class="pl-3 py-1.5 flex-auto text-center shadow-sm bg-gray-100 dark:bg-[#2E3238] rounded-[3px]"
                     >
                       <label class="flex flex-row items-center">
                         <input
                           id="modal-search"
                           type="search"
-                          class="text-white ml-2 text-[1rem] placeholder-gray-400 border-transparent focus:border-transparent focus:ring-0 flex items-center justify-center w-full px-0 py-1 bg-inherit"
+                          class=" ml-2 text-[1rem] dark:placeholder-gray-400 bg-inherit border-transparent focus:border-transparent focus:ring-0 flex items-center justify-center w-full px-0 py-1"
                           placeholder="Find by name"
                           bind:value={filterQuery}
                           on:input={handleInput}
@@ -191,7 +191,7 @@
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 24 24"
                           ><path
-                            fill="#fff"
+                            fill="currentColor"
                             d="m19.485 20.154l-6.262-6.262q-.75.639-1.725.989t-1.96.35q-2.402 0-4.066-1.663T3.808 9.503T5.47 5.436t4.064-1.667t4.068 1.664T15.268 9.5q0 1.042-.369 2.017t-.97 1.668l6.262 6.261zM9.539 14.23q1.99 0 3.36-1.37t1.37-3.361t-1.37-3.36t-3.36-1.37t-3.361 1.37t-1.37 3.36t1.37 3.36t3.36 1.37"
                           /></svg
                         >
@@ -233,7 +233,7 @@
                   {#each displayList as item}
                     <a
                       href={`/politicians/${item?.id}`}
-                      class="w-full cursor-pointer bg-[#141417] sm:hover:bg-[#000] transition-colors ease-in-out {item?.party ===
+                      class="w-full cursor-pointer bg-gray-300 dark:bg-[#141417] sm:hover:bg-gray-400 dark:sm:hover:bg-[#000] transition-colors ease-in-out border dark:sm:hover:border-[#000] sm:hover:shadow-[#8C5F1B] border-gray-300 dark:border-gray-800 shadow-md rounded-md h-auto pb-4 pt-4 mb-7 {item?.party ===
                       'Republican'
                         ? 'sm:hover:shadow-[#80000D]'
                         : item?.party === 'Democratic'
@@ -247,7 +247,7 @@
                             addToFavorite(event, item?.id)}
                           class=" {favoriteList?.includes(item?.id)
                             ? 'text-[#FBCE3C]'
-                            : 'text-white'} absolute top-0 right-5 z-20"
+                            : ''} absolute top-0 right-5 z-20"
                         >
                           <svg
                             class="{item?.id === animationId
@@ -295,10 +295,10 @@
                               loading="lazy"
                             />
                           </div>
-                          <span class="text-white text-lg mt-2 mb-2">
+                          <span class=" text-lg mt-2 mb-2">
                             {item?.representative}
                           </span>
-                          <span class="text-white text-md mb-8">
+                          <span class=" text-md mb-8">
                             {item?.party ?? "n/a"}
                             {#if item?.district !== undefined && item?.district?.length !== 0}
                               / {item?.district}
@@ -312,18 +312,18 @@
                           <label
                             class="cursor-pointer flex flex-col items-center"
                           >
-                            <span class="text-white text-[1rem] font-semibold"
+                            <span class=" text-[1rem] font-semibold"
                               >{item?.totalTrades?.toLocaleString(
                                 "en-US",
                               )}</span
                             >
-                            <span class="text-slate-300 text-sm"
+                            <span class="text-muted dark:text-slate-300 text-sm"
                               >Total Trades</span
                             >
                           </label>
 
                           <div class="flex flex-col items-center">
-                            <span class="text-white text-[1rem] font-semibold">
+                            <span class=" text-[1rem] font-semibold">
                               {item?.lastTrade?.length !== undefined
                                 ? new Date(item?.lastTrade)?.toLocaleString(
                                     "en-US",
@@ -336,7 +336,7 @@
                                   )
                                 : "n/a"}
                             </span>
-                            <span class="text-slate-300 text-sm"
+                            <span class="text-muted dark:text-slate-300 text-sm"
                               >Last Traded</span
                             >
                           </div>

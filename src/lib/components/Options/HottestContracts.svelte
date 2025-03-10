@@ -672,7 +672,7 @@
                         >+{item?.changeOI?.toLocaleString("en-US")}</span
                       >
                     {:else if item?.changeOI < 0}
-                      <span class="text-[#FF2F1F]"
+                      <span class="text-red-600 dark:text-[#FF2F1F]"
                         >{item?.changeOI?.toLocaleString("en-US")}</span
                       >
                     {:else}
@@ -792,7 +792,7 @@
                         >+{item?.changeOI?.toLocaleString("en-US")}</span
                       >
                     {:else if item?.changeOI < 0}
-                      <span class="text-[#FF2F1F]"
+                      <span class="text-red-600 dark:text-[#FF2F1F]"
                         >{item?.changeOI?.toLocaleString("en-US")}</span
                       >
                     {:else}
@@ -975,7 +975,7 @@
                           >+{item?.changeOI?.toLocaleString("en-US")}</span
                         >
                       {:else if item?.changeOI < 0 && item?.changeOI !== null}
-                        <span class="text-[#FF2F1F]"
+                        <span class="text-red-600 dark:text-[#FF2F1F]"
                           >{item?.changeOI?.toLocaleString("en-US")}</span
                         >
                       {:else}
@@ -989,7 +989,7 @@
                           >+{item?.changesPercentageOI + "%"}</span
                         >
                       {:else if item?.changesPercentageOI < 0 && item?.changesPercentageOI !== undefined}
-                        <span class="text-[#FF2F1F]"
+                        <span class="text-red-600 dark:text-[#FF2F1F]"
                           >{item?.changesPercentageOI + "%"}</span
                         >
                       {:else if item?.changesPercentageOI === 0 && item?.changesPercentageOI !== undefined}

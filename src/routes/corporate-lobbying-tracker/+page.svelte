@@ -236,7 +236,7 @@
                               : item?.changesPercentage?.toFixed(2)}%</span
                           >
                         {:else}
-                          <span class="text-[#FF2F1F]"
+                          <span class="text-red-600 dark:text-[#FF2F1F]"
                             >{item?.changesPercentage <= -1000
                               ? item?.changesPercentage
                               : item?.changesPercentage?.toFixed(2)}%
