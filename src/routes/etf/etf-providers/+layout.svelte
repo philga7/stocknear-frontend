@@ -1,7 +1,5 @@
 <script lang="ts">
-  import { numberOfUnreadNotification } from "$lib/store";
   import { page } from "$app/stores";
-  import logo from "$lib/images/provider_logo.png";
   import { formatETFName } from "$lib/utils";
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
 
@@ -26,12 +24,14 @@
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
-      <li><a href="/" class="text-gray-300">Home</a></li>
+      <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
       <li>
-        <a href="/etf/etf-providers" class="text-gray-300">ETF Providers</a>
+        <a href="/etf/etf-providers" class="text-muted dark:text-gray-300"
+          >ETF Providers</a
+        >
       </li>
       {#if currentPath?.length !== 0 && typeof currentPath !== undefined}
-        <li class="text-gray-300">{currentPath}</li>
+        <li class="text-muted dark:text-gray-300">{currentPath}</li>
       {/if}
     </ul>
   </div>
@@ -42,11 +42,9 @@
         class="relative flex justify-center items-start overflow-hidden w-full"
       >
         <main class="w-full lg:w-3/4 lg:pr-5">
-          <h1 class=" text-white text-2xl sm:text-3xl font-bold">
-            ETF Providers
-          </h1>
+          <h1 class="text-2xl sm:text-3xl font-bold">ETF Providers</h1>
 
-          <div class="w-full m-auto mb-10 bg-default overflow-hidden">
+          <div class="w-full m-auto mb-10 overflow-hidden">
             <div class="w-full flex flex-col justify-center items-center">
               <slot />
             </div>
@@ -55,38 +53,42 @@
 
         <aside class="hidden lg:block relative fixed w-1/4 ml-4">
           <div
-            class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href={"/analysts"}
               class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
             >
               <div class="w-full flex justify-between items-center p-3 mt-3">
-                <h2 class="text-start text-xl font-semibold text-white ml-3">
+                <h2 class="text-start text-xl font-semibold ml-3">
                   Top Analyst
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
+                <ArrowLogo
+                  class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
+                />
               </div>
-              <span class="text-white p-3 ml-3 mr-3">
+              <span class="p-3 ml-3 mr-3">
                 Get the latest top Wall Street analyst ratings
               </span>
             </a>
           </div>
 
           <div
-            class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href={"/politicians"}
               class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
             >
               <div class="w-full flex justify-between items-center p-3 mt-3">
-                <h2 class="text-start text-xl font-semibold text-white ml-3">
+                <h2 class="text-start text-xl font-semibold ml-3">
                   Congress Trading
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
+                <ArrowLogo
+                  class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
+                />
               </div>
-              <span class="text-white p-3 ml-3 mr-3">
+              <span class="p-3 ml-3 mr-3">
                 Get the latest top Congress trading insights.
               </span>
             </a>

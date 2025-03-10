@@ -1,6 +1,6 @@
 <script lang="ts">
   import { abbreviateNumber, formatETFName } from "$lib/utils";
-  import { screenWidth, numberOfUnreadNotification } from "$lib/store";
+  import { screenWidth } from "$lib/store";
   import { onMount } from "svelte";
   import Infobox from "$lib/components/Infobox.svelte";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
@@ -147,11 +147,11 @@
   {/if}
 
   <div
-    class="mb-4 flex flex-col divide-y divide-gray-300 dark:divide-gray-600 rounded-md border border-gray-300 dark:border-gray-600 sm:grid sm:grid-cols-3 sm:divide-x sm:divide-y-0"
+    class="shadow-sm mb-4 flex flex-col divide-y divide-gray-300 dark:divide-gray-600 rounded-md border border-gray-300 dark:border-gray-600 sm:grid sm:grid-cols-3 sm:divide-x sm:divide-y-0"
   >
     <div class="px-4 py-3 sm:px-2 sm:py-5 md:px-3 lg:p-6">
       <div class="flex items-center justify-between sm:block">
-        <div class="text-[1rem] font-normal text-white">Listed Funds</div>
+        <div class="text-[1rem] font-normal">Listed Funds</div>
         <div
           class="mt-1 break-words font-semibold leading-8 text-xl sm:text-2xl"
         >
@@ -161,7 +161,7 @@
     </div>
     <div class="px-4 py-3 sm:px-2 sm:py-5 md:px-3 lg:p-6">
       <div class="flex items-center justify-between sm:block">
-        <div class="text-[1rem] font-normal text-white">Total Assets</div>
+        <div class="text-[1rem] font-normal">Total Assets</div>
         <div
           class="mt-1 break-words font-semibold leading-8 text-xl sm:text-2xl"
         >
@@ -171,7 +171,7 @@
     </div>
     <div class="px-4 py-3 sm:px-2 sm:py-5 md:px-3 lg:p-6">
       <div class="flex items-center justify-between sm:block">
-        <div class="text-[1rem] font-normal text-white">Average Cost</div>
+        <div class="text-[1rem] font-normal">Average Cost</div>
         <div
           class="mt-1 break-words font-semibold leading-8 text-xl sm:text-2xl"
         >
@@ -186,9 +186,9 @@
     <div class="flex justify-center w-full m-auto h-full overflow-hidden">
       <!-- Content area -->
       <div class="w-full">
-        <div class="w-full overflow-x-auto mt-5">
+        <div class="w-full overflow-x-auto">
           <table
-            class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800"
+            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
           >
             <thead>
               <TableHeader {columns} {sortOrders} {sortData} />
@@ -197,7 +197,7 @@
               {#each etfProviderData as item, index}
                 <!-- row -->
                 <tr
-                  class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800 {index +
+                  class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
                     1 ===
                     etfProviderData?.length &&
                   !['Pro', 'Plus']?.includes(data?.user?.tier)
@@ -208,31 +208,29 @@
                     <HoverStockChart symbol={item?.symbol} assetType={"etf"} />
                   </td>
 
-                  <td
-                    class="text-gray-200 text-sm sm:text-[1rem] whitespace-nowrap"
-                  >
+                  <td class="text-sm sm:text-[1rem] whitespace-nowrap">
                     {item?.name?.length > charNumber
                       ? item?.name?.slice(0, charNumber) + "..."
                       : item?.name}
                   </td>
 
                   <td
-                    class="text-white text-sm sm:text-[1rem] whitespace-nowrap border-b border-[#09090B] text-end"
+                    class=" text-sm sm:text-[1rem] whitespace-nowrap text-end"
                   >
                     {item?.price}
                   </td>
 
                   <td
-                    class="text-white text-sm sm:text-[1rem] whitespace-nowrap border-b border-[#09090B] text-end"
+                    class=" text-sm sm:text-[1rem] whitespace-nowrap text-end"
                   >
                     {#if item?.changesPercentage >= 0}
-                      <span class="text-[#00FC50]"
+                      <span class="text-green-600 dark:text-[#00FC50]"
                         >+{item?.changesPercentage >= 1000
                           ? abbreviateNumber(item?.changesPercentage)
                           : item?.changesPercentage?.toFixed(2)}%</span
                       >
                     {:else if item?.changesPercentage < 0}
-                      <span class="text-[#FF2F1F]"
+                      <span class="text-red-600 dark:text-[#FF2F1F]"
                         >{item?.changesPercentage <= -1000
                           ? abbreviateNumber(item?.changesPercentage)
                           : item?.changesPercentage?.toFixed(2)}%
@@ -243,19 +241,19 @@
                   </td>
 
                   <td
-                    class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                    class=" text-end text-sm sm:text-[1rem] whitespace-nowrap"
                   >
                     {abbreviateNumber(item?.totalAssets)}
                   </td>
 
                   <td
-                    class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                    class=" text-end text-sm sm:text-[1rem] whitespace-nowrap"
                   >
                     {item?.numberOfHoldings}
                   </td>
 
                   <td
-                    class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                    class=" text-end text-sm sm:text-[1rem] whitespace-nowrap"
                   >
                     {item?.expenseRatio}%
                   </td>

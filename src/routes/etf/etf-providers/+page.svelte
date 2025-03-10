@@ -101,7 +101,7 @@
     <div class="w-full">
       <div class="w-full overflow-x-auto">
         <table
-          class="table rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto mt-4"
+          class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
         >
           <thead>
             <TableHeader {columns} {sortOrders} {sortData} />
@@ -110,7 +110,7 @@
             {#each etfProviderList as item, index}
               <!-- row -->
               <tr
-                class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800 {index +
+                class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
                   1 ===
                   etfProviderList?.length &&
                 !['Pro', 'Plus']?.includes(data?.user?.tier)
@@ -120,33 +120,25 @@
                 <td class="text-sm sm:text-[1rem] whitespace-nowrap">
                   <a
                     href={"/etf/etf-providers/" + item?.etfProvider}
-                    class="sm:hover:underline sm:hover:underline-offset-4 text-white"
+                    class="sm:hover:underline sm:hover:underline-offset-4"
                   >
                     {formatETFName(item?.etfProvider)}
                   </a>
                 </td>
 
-                <td
-                  class="text-white text-sm sm:text-[1rem] whitespace-nowrap text-end"
-                >
+                <td class=" text-sm sm:text-[1rem] whitespace-nowrap text-end">
                   {abbreviateNumber(item?.totalAssets)}
                 </td>
 
-                <td
-                  class="text-white text-sm sm:text-[1rem] whitespace-nowrap text-end"
-                >
+                <td class=" text-sm sm:text-[1rem] whitespace-nowrap text-end">
                   {item?.funds}
                 </td>
 
-                <td
-                  class="text-white text-sm sm:text-[1rem] whitespace-nowrap text-end"
-                >
+                <td class=" text-sm sm:text-[1rem] whitespace-nowrap text-end">
                   {item?.avgExpenseRatio}%
                 </td>
 
-                <td
-                  class="text-white text-sm sm:text-[1rem] whitespace-nowrap text-end"
-                >
+                <td class=" text-sm sm:text-[1rem] whitespace-nowrap text-end">
                   {item?.avgHoldings}
                 </td>
               </tr>

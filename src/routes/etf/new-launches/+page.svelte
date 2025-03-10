@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { numberOfUnreadNotification, screenWidth } from "$lib/store";
+  import { screenWidth } from "$lib/store";
   import { abbreviateNumber } from "$lib/utils";
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
@@ -96,8 +96,8 @@
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
-      <li><a href="/" class="text-gray-300">Home</a></li>
-      <li><a class="text-gray-300">New Launches of ETFs</a></li>
+      <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
+      <li><a class="text-muted dark:text-gray-300">New Launches of ETFs</a></li>
     </ul>
   </div>
 
@@ -108,15 +108,15 @@
       >
         <main class="w-full lg:w-3/4 lg:pr-5">
           <div class="mb-6 border-b-[2px]">
-            <h1 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
+            <h1 class="mb-1 text-2xl sm:text-3xl font-bold">
               New Launches of ETFs
             </h1>
           </div>
 
-          <div class="w-full mt-5 m-auto mb-10 bg-default overflow-hidden">
+          <div class="w-full mt-5 m-auto mb-10 overflow-hidden">
             <!--Start Top Winners/Losers-->
             <div class="flex flex-col justify-center items-center">
-              <div class="text-start w-full text-white mb-2">
+              <div class="text-start w-full mb-2">
                 <span class="font-bold text-2xl">
                   {etfData?.length} ETFs
                 </span>
@@ -124,7 +124,7 @@
 
               <div class="w-full overflow-x-auto">
                 <table
-                  class="mt-5 table table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto overflow-hidden"
+                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
                 >
                   <thead>
                     <TableHeader {columns} {sortOrders} {sortData} />
@@ -132,11 +132,9 @@
                   <tbody>
                     {#each etfData as item}
                       <tr
-                        class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b-[#09090B]"
+                        class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                       >
-                        <td
-                          class="text-white text-sm sm:text-[1rem] whitespace-nowrap border-b-[#09090B]"
-                        >
+                        <td class=" text-sm sm:text-[1rem] whitespace-nowrap">
                           {new Date(item?.inceptionDate)?.toLocaleString(
                             "en-US",
                             {
@@ -148,27 +146,23 @@
                           )}
                         </td>
 
-                        <td
-                          class="text-sm sm:text-[1rem] whitespace-nowrap border-b-[#09090B]"
-                        >
+                        <td class="text-sm sm:text-[1rem] whitespace-nowrap">
                           <a
                             href={"/etf/" + item?.symbol}
-                            class="sm:hover:text-white text-blue-400"
+                            class="text-blue-500 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
                           >
                             {item?.symbol}
                           </a>
                         </td>
 
-                        <td
-                          class="text-white text-sm sm:text-[1rem] whitespace-nowrap border-b-[#09090B]"
-                        >
+                        <td class=" text-sm sm:text-[1rem] whitespace-nowrap">
                           {item?.name?.length > charNumber
                             ? item?.name?.slice(0, charNumber) + "..."
                             : item?.name}
                         </td>
 
                         <td
-                          class="text-white text-sm sm:text-[1rem] whitespace-nowrap border-b-[#09090B] text-end"
+                          class=" text-sm sm:text-[1rem] whitespace-nowrap text-end"
                         >
                           {item?.numberOfHoldings !== null &&
                           item?.numberOfHoldings !== 0
@@ -177,7 +171,7 @@
                         </td>
 
                         <td
-                          class="text-white text-sm sm:text-[1rem] whitespace-nowrap border-b-[#09090B] text-end"
+                          class=" text-sm sm:text-[1rem] whitespace-nowrap text-end"
                         >
                           {item?.totalAssets !== 0 && item?.totalAssets !== null
                             ? abbreviateNumber(item?.totalAssets)
@@ -194,38 +188,42 @@
 
         <aside class="hidden lg:block relative fixed w-1/4 ml-4">
           <div
-            class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href={"/analysts"}
               class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
             >
               <div class="w-full flex justify-between items-center p-3 mt-3">
-                <h2 class="text-start text-xl font-semibold text-white ml-3">
+                <h2 class="text-start text-xl font-semibold ml-3">
                   Top Analyst
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
+                <ArrowLogo
+                  class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
+                />
               </div>
-              <span class="text-white p-3 ml-3 mr-3">
+              <span class=" p-3 ml-3 mr-3">
                 Get the latest top Wall Street analyst ratings
               </span>
             </a>
           </div>
 
           <div
-            class="w-full text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href={"/politicians"}
               class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
             >
               <div class="w-full flex justify-between items-center p-3 mt-3">
-                <h2 class="text-start text-xl font-semibold text-white ml-3">
+                <h2 class="text-start text-xl font-semibold ml-3">
                   Congress Trading
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 shrink-0" />
+                <ArrowLogo
+                  class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
+                />
               </div>
-              <span class="text-white p-3 ml-3 mr-3">
+              <span class=" p-3 ml-3 mr-3">
                 Get the latest top Congress trading insights.
               </span>
             </a>
