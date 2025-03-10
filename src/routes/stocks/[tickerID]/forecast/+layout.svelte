@@ -65,8 +65,8 @@
               href={`/stocks/${$stockTicker}/forecast`}
               on:click={() => changeSubSection("overview")}
               class="p-2 px-5 cursor-pointer {displaySubSection === 'overview'
-                ? 'text-white bg-primary/90'
-                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
             >
               Overview
             </a>
@@ -75,8 +75,8 @@
               href={`/stocks/${$stockTicker}/forecast/analyst`}
               on:click={() => changeSubSection("analyst")}
               class="p-2 px-5 cursor-pointer {displaySubSection === 'analyst'
-                ? 'text-white bg-primary/90'
-                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
             >
               Analysts Ratings
             </a>
@@ -84,8 +84,8 @@
               href={`/stocks/${$stockTicker}/forecast/ai`}
               on:click={() => changeSubSection("ai")}
               class="p-2 px-5 cursor-pointer {displaySubSection === 'ai'
-                ? 'text-white bg-primary/90'
-                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
             >
               AI Forecast
             </a>

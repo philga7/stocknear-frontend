@@ -1,14 +1,15 @@
 <script lang="ts">
+  import { mode } from "mode-watcher";
   export let text;
 </script>
 
 <div
-  class="sm:mt-5 sm:mt-0 border-l-3 border-l-muted dark:border-l-white border-r-0 border-t-0 border-b-0 border p-0 sm:p-4 text-muted dark:text-white flex flex-row items-center"
+  class="sm:mt-5 sm:mt-0 border-l-3 border-l-[#3B82F6] dark:border-l-white border-r-0 border-t-0 border-b-0 border p-0 sm:p-4 text-muted dark:text-white flex flex-row items-center"
 >
   <svg
     class="h-6 w-6 hidden sm:block"
     viewBox="0 0 20 20"
-    fill="currentColor"
+    fill={$mode === "light" ? "#3B82F6" : "currentColor"}
     style="max-width:40px"
     aria-hidden="true"
     ><path

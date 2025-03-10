@@ -8,6 +8,7 @@
   //import * as XLSX from 'xlsx';
   import { goto } from "$app/navigation";
   import highcharts from "$lib/highcharts.ts";
+  import { mode } from "mode-watcher";
 
   export let data;
 
@@ -188,7 +189,6 @@
     tableList?.sort((a, b) => new Date(b?.date) - new Date(a?.date));
   }
 
-  let config = plotData();
   tableList = filterEndOfYearDates(rawData);
   tableList?.sort((a, b) => new Date(b?.date) - new Date(a?.date));
   changePercentageYearAgo = computeYearOverYearChange(rawData);
@@ -196,7 +196,7 @@
   async function changeStatement(state) {
     timePeriod = state;
 
-    config = await plotData();
+    config = plotData();
   }
 
   function filterDataByTimePeriod(rawData, timePeriod) {
@@ -257,14 +257,14 @@
         enabled: false,
       },
       chart: {
-        backgroundColor: "#09090B",
-        plotBackgroundColor: "#09090B",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
         height: 360, // Set the maximum height for the chart
       },
       title: {
         text: `<h3 class="mt-3 mb-1 ">${$stockTicker} Market Cap</h3>`,
         style: {
-          color: "white",
+          color: $mode === "light" ? "black" : "white",
           // Using inline CSS for margin-top and margin-bottom
         },
         useHTML: true, // Enable HTML to apply custom class styling
@@ -274,13 +274,13 @@
         endOnTick: false,
         categories: filteredData?.dates,
         crosshair: {
-          color: "#fff", // Set the color of the crosshair line
+          color: $mode === "light" ? "black" : "white", // Set the color of the crosshair line
           width: 1, // Adjust the line width as needed
           dashStyle: "Solid",
         },
         labels: {
           style: {
-            color: "#fff",
+            color: $mode === "light" ? "black" : "white",
           },
           distance: 20, // Increases space between label and axis
           formatter: function () {
@@ -306,9 +306,9 @@
       },
       yAxis: {
         gridLineWidth: 1,
-        gridLineColor: "#111827",
+        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
         labels: {
-          style: { color: "white" },
+          style: { color: $mode === "light" ? "black" : "white" },
         },
         title: { text: null },
         opposite: true,
@@ -327,7 +327,7 @@
         borderRadius: 4,
         formatter: function () {
           // Format the x value to display time in hh:mm format
-          let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]">${new Date(
+          let tooltipContent = `<span class=" m-auto text-[1rem] font-[501]">${new Date(
             this?.x,
           ).toLocaleDateString("en-US", {
             year: "numeric",
@@ -337,8 +337,8 @@
 
           // Loop through each point in the shared tooltip
           this.points.forEach((point) => {
-            tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
-          <span class="text-white font-normal text-sm" style="color:${point.color}">${abbreviateNumber(
+            tooltipContent += `<span class=" font-semibold text-sm">${point.series.name}:</span> 
+          <span class=" font-normal text-sm">${abbreviateNumber(
             point.y,
           )}</span><br>`;
           });
@@ -365,7 +365,7 @@
           name: "Mkt Cap",
           type: "area",
           data: filteredData?.marketCapList,
-          color: "#fff",
+          color: $mode === "light" ? "blue" : "white",
           lineWidth: 1,
           marker: {
             enabled: false,
@@ -417,6 +417,13 @@
     }
   };
 
+  let config = null;
+
+  $: {
+    if ($mode) {
+      config = plotData();
+    }
+  }
   $: capCategory = getMarketCapCategory(data?.getStockQuote?.marketCap);
 </script>
 
@@ -425,7 +432,7 @@
   description={`Historical Market Cap of ${$displayCompanyName}.`}
 />
 
-<section class="bg-default w-full overflow-hidden text-white h-full">
+<section class=" w-full overflow-hidden h-full">
   <div class="w-full flex justify-center w-full sm-auto h-full overflow-hidden">
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"
@@ -433,7 +440,7 @@
       <main class="w-full">
         <div class="sm:pl-7 sm:pb-7 sm:pt-7 m-auto mt-2 sm:mt-0">
           <div class="">
-            <h1 class="text-xl sm:text-2xl text-white font-bold">
+            <h1 class="text-xl sm:text-2xl font-bold">
               {removeCompanyStrings($displayCompanyName)} Market Cap
             </h1>
           </div>
@@ -463,31 +470,29 @@
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 mt-3"
               >
                 <div
-                  class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
+                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4 transition-colors"
                 >
-                  <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
+                  <div class=" text-sm mb-2 flex items-center">
                     <span>Market Cap</span>
-                    <span class="ml-1 text-violet-400">●</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-xl font-bold text-white">
+                    <span class="text-xl font-bold">
                       {abbreviateNumber(data?.getStockQuote?.marketCap)}</span
                     >
                   </div>
                 </div>
 
                 <div
-                  class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
+                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4 transition-colors"
                 >
-                  <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
+                  <div class=" text-sm mb-2 flex items-center">
                     <span>Category</span>
-                    <span class="ml-1 text-red-400">●</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-xl font-bold text-white"
+                    <span class="text-xl font-bold"
                       >{#if capCategory}
                         <a
-                          class="sm:hover:text-white text-blue-400"
+                          class="text-blue-500 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
                           href={capCategory.link}
                         >
                           {capCategory.name}
@@ -500,14 +505,13 @@
                 </div>
 
                 <div
-                  class="bg-gray-800/30 rounded p-4 sm:hover:bg-gray-800/40 transition-colors"
+                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4 transition-colors"
                 >
-                  <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
+                  <div class=" text-sm mb-2 flex items-center">
                     <span>1-Year Change</span>
-                    <span class="ml-1">●</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-xl font-bold text-white"
+                    <span class="text-xl font-bold"
                       >{changePercentageYearAgo > 100
                         ? "> 100"
                         : changePercentageYearAgo?.toFixed(1)}%</span
@@ -516,11 +520,11 @@
                       <span
                         class="text-sm {changePercentageYearAgo >= 0 &&
                         changePercentageYearAgo !== null
-                          ? "before:content-['+'] text-[#00FC50]"
+                          ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
                           : changePercentageYearAgo < 0 &&
                               changePercentageYearAgo !== null
-                            ? 'text-[#FF2F1F]'
-                            : 'text-white'}"
+                            ? 'text-red-600 dark:text-[#FF2F1F]'
+                            : ''}"
                       >
                         {changePercentageYearAgo >= 0 ? "Positive" : "Negative"}
                         Trend
@@ -533,9 +537,7 @@
               <div
                 class="flex flex-col sm:flex-row items-start sm:items-center w-full"
               >
-                <h2
-                  class="mb-3 sm:mb-0 text-xl sm:text-2xl text-white font-bold"
-                >
+                <h2 class="mb-3 sm:mb-0 text-xl sm:text-2xl font-bold">
                   Market Cap Chart
                 </h2>
 
@@ -547,9 +549,9 @@
                       <DropdownMenu.Trigger asChild let:builder>
                         <Button
                           builders={[builder]}
-                          class="w-full border-gray-600 border bg-default sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
+                          class="w-full shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                         >
-                          <span class="truncate text-white text-xs sm:text-sm"
+                          <span class="truncate text-xs sm:text-sm"
                             >{timePeriod}</span
                           >
                           <svg
@@ -570,50 +572,52 @@
                       <DropdownMenu.Content
                         class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                       >
-                        <DropdownMenu.Label class="text-gray-400">
+                        <DropdownMenu.Label
+                          class="text-muted dark:text-gray-400"
+                        >
                           Select time frame
                         </DropdownMenu.Label>
                         <DropdownMenu.Separator />
                         <DropdownMenu.Group>
                           <DropdownMenu.Item
                             on:click={() => changeStatement("1M")}
-                            class="cursor-pointer hover:bg-primary"
+                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                           >
                             1 Month
                           </DropdownMenu.Item>
                           <DropdownMenu.Item
                             on:click={() => changeStatement("6M")}
-                            class="cursor-pointer hover:bg-primary"
+                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                           >
                             6 Months
                           </DropdownMenu.Item>
                           <DropdownMenu.Item
                             on:click={() => changeStatement("1Y")}
-                            class="cursor-pointer hover:bg-primary"
+                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                           >
                             1 Year
                           </DropdownMenu.Item>
                           <DropdownMenu.Item
                             on:click={() => changeStatement("3Y")}
-                            class="cursor-pointer hover:bg-primary"
+                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                           >
                             3 Years
                           </DropdownMenu.Item>
                           <DropdownMenu.Item
                             on:click={() => changeStatement("5Y")}
-                            class="cursor-pointer hover:bg-primary"
+                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                           >
                             5 Years
                           </DropdownMenu.Item>
                           <DropdownMenu.Item
                             on:click={() => changeStatement("10Y")}
-                            class="cursor-pointer hover:bg-primary"
+                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                           >
                             10 Years
                           </DropdownMenu.Item>
                           <DropdownMenu.Item
                             on:click={() => changeStatement("Max")}
-                            class="cursor-pointer hover:bg-primary"
+                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                           >
                             Max
                           </DropdownMenu.Item>
@@ -623,11 +627,9 @@
                   </div>
                   <Button
                     on:click={() => exportData("csv")}
-                    class="ml-2 w-full border-gray-600 border bg-default sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
+                    class="ml-2 w-full shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                   >
-                    <span class="truncate text-white text-xs sm:text-sm"
-                      >Download</span
-                    >
+                    <span class="truncate text-xs sm:text-sm">Download</span>
                     <svg
                       class="{['Pro', 'Plus']?.includes(data?.user?.tier)
                         ? 'hidden'
@@ -644,14 +646,14 @@
               </div>
 
               <div
-                class="chart border border-gray-800 rounded"
+                class="chart border border-gray-300 shadow-sm dark:border-gray-800 rounded"
                 use:highcharts={config}
               ></div>
 
               <div
                 class=" flex flex-col sm:flex-row items-start sm:items-center w-full justify-between"
               >
-                <h3 class="text-xl sm:text-2xl text-white font-bold">
+                <h3 class="text-xl sm:text-2xl font-bold">
                   Market Cap History
                 </h3>
 
@@ -659,7 +661,7 @@
                   class="inline-flex justify-center w-full rounded-md sm:w-auto sm:ml-auto"
                 >
                   <div
-                    class="bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1 mt-4"
+                    class="bg-gray-300 dark:bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1 mt-4"
                   >
                     {#each tabs as item, i}
                       {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}
@@ -697,7 +699,7 @@
                             class="relative text-sm block font-semibold whitespace-nowrap {activeIdx ===
                             i
                               ? 'text-black'
-                              : 'text-white'}"
+                              : ''}"
                           >
                             {item.title}
                           </span>
@@ -710,30 +712,23 @@
 
               <div class="w-full overflow-x-auto">
                 <table
-                  class="table table-sm table-compact bg-table border border-gray-800 rounded-none sm:rounded-md w-full m-auto mt-4"
+                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
                 >
-                  <thead class="bg-default">
+                  <thead class="text-muted dark:text-white">
                     <tr>
-                      <th class="text-white font-semibold text-start text-sm"
-                        >Date</th
+                      <th class=" font-semibold text-start text-sm">Date</th>
+                      <th class=" font-semibold text-end text-sm">Market Cap</th
                       >
-                      <th class="text-white font-semibold text-end text-sm"
-                        >Market Cap</th
-                      >
-                      <th class="text-white font-semibold text-end text-sm"
-                        >% Change</th
-                      >
+                      <th class=" font-semibold text-end text-sm">% Change</th>
                     </tr>
                   </thead>
                   <tbody>
                     {#each tableList as item, index}
                       <!-- row -->
                       <tr
-                        class="sm:hover:bg-[#245073]/10 odd:bg-odd border-b border-gray-800"
+                        class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                       >
-                        <td
-                          class="text-white text-sm sm:text-[1rem] whitespace-nowrap"
-                        >
+                        <td class=" text-sm sm:text-[1rem] whitespace-nowrap">
                           {new Date(item?.date)?.toLocaleDateString("en-US", {
                             day: "2-digit", // Include day number
                             month: "short", // Display short month name
@@ -742,18 +737,18 @@
                         </td>
 
                         <td
-                          class="text-white text-sm sm:text-[1rem] text-right whitespace-nowrap"
+                          class=" text-sm sm:text-[1rem] text-right whitespace-nowrap"
                         >
                           {@html abbreviateNumber(item?.marketCap, false, true)}
                         </td>
 
                         <td
-                          class="text-white text-sm sm:text-[1rem] whitespace-nowrap text-end"
+                          class=" text-sm sm:text-[1rem] whitespace-nowrap text-end"
                         >
                           {#if index === tableList?.length - 1}
                             n/a
                           {:else if item?.marketCap > tableList[index + 1]?.marketCap}
-                            <span class="text-[#00FC50]">
+                            <span class="text-green-600 dark:text-[#00FC50]">
                               +{(
                                 ((item?.marketCap -
                                   tableList[index + 1]?.marketCap) /
@@ -762,7 +757,7 @@
                               )?.toFixed(2)}%
                             </span>
                           {:else if item?.marketCap < tableList[index + 1]?.marketCap}
-                            <span class="text-[#FF2F1F]">
+                            <span class="text-red-600 dark:text-[#FF2F1F]">
                               -{(
                                 Math.abs(
                                   (item?.marketCap -

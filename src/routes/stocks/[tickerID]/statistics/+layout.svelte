@@ -41,7 +41,7 @@
   }
 </script>
 
-<section class="w-auto bg-default overflow-hidden text-black h-full">
+<section class="w-auto overflow-hidden h-full">
   <div class="m-auto h-full overflow-hidden">
     <main class="w-full">
       <div class="m-auto">
@@ -53,8 +53,8 @@
               href={`/stocks/${$stockTicker}/statistics`}
               on:click={() => changeSubSection("overview")}
               class="p-2 px-5 cursor-pointer {displaySubSection === 'overview'
-                ? 'text-white bg-primary/90'
-                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
             >
               Overview
             </a>
@@ -63,8 +63,8 @@
               href={`/stocks/${$stockTicker}/statistics/market-cap`}
               on:click={() => changeSubSection("market-cap")}
               class="p-2 px-5 cursor-pointer {displaySubSection === 'market-cap'
-                ? 'text-white bg-primary/90'
-                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
             >
               Market Cap
             </a>
@@ -73,8 +73,8 @@
               href={`/stocks/${$stockTicker}/statistics/revenue`}
               on:click={() => changeSubSection("revenue")}
               class="p-2 px-5 cursor-pointer {displaySubSection === 'revenue'
-                ? 'text-white bg-primary/90'
-                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
             >
               Revenue
             </a>
@@ -84,8 +84,8 @@
               on:click={() => changeSubSection("price-reaction")}
               class="p-2 px-5 cursor-pointer {displaySubSection ===
               'price-reaction'
-                ? 'text-white bg-primary/90'
-                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
             >
               Price Reaction
             </a>
@@ -95,8 +95,8 @@
               on:click={() => changeSubSection("fail-to-deliver")}
               class="p-2 px-5 cursor-pointer {displaySubSection ===
               'fail-to-deliver'
-                ? 'text-white bg-primary/90'
-                : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
             >
               Fail-to-Deliver
             </a>
