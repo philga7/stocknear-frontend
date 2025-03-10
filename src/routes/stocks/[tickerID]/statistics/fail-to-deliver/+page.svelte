@@ -62,7 +62,7 @@
   description={`Historical Fail-to-Deliver shares of ${$displayCompanyName}.`}
 />
 
-<section class="bg-default w-full overflow-hidden text-white h-full">
+<section class=" w-full overflow-hidden h-full">
   <div class="w-full flex justify-center w-full sm-auto h-full overflow-hidden">
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"
@@ -70,7 +70,7 @@
       <main class="w-full">
         <div class="sm:pl-7 sm:pb-7 sm:pt-7 m-auto mt-2 sm:mt-0">
           <div class="mb-3">
-            <h1 class="text-xl sm:text-2xl text-white font-bold">
+            <h1 class="text-xl sm:text-2xl font-bold">
               {removeCompanyStrings($displayCompanyName)} Fail-to-Deliver
             </h1>
           </div>
@@ -80,20 +80,20 @@
               class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4"
             >
               <div
-                class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
+                class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4 transition-colors"
               >
-                <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
+                <div class=" text-sm mb-2 flex items-center">
                   <span>Total FTD Shares</span>
                 </div>
                 <div class="flex items-baseline">
-                  <span class="text-xl font-bold text-white">
+                  <span class="text-xl font-bold">
                     {abbreviateNumber(
                       rawData?.slice(-1)?.at(0)?.failToDeliver,
                       false,
                     )}</span
                   >
                   <div class="flex flex-col ml-2">
-                    <span class="text-sm text-violet-400">
+                    <span class="text-sm text-violet-600 dark:text-violet-400">
                       {rawData?.slice(-1)?.at(0)?.failToDeliver > 1e5
                         ? "Above Average"
                         : "Below Average"}
@@ -103,13 +103,13 @@
               </div>
 
               <div
-                class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
+                class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4 transition-colors"
               >
-                <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
+                <div class=" text-sm mb-2 flex items-center">
                   <span>FTD / Avg. Volume</span>
                 </div>
                 <div class="flex items-baseline">
-                  <span class="text-xl font-bold text-white"
+                  <span class="text-xl font-bold"
                     >{relativeFTD > 0.01
                       ? relativeFTD + "%"
                       : relativeFTD !== "n/a"
@@ -117,7 +117,7 @@
                         : "n/a"}</span
                   >
                   <div class="flex flex-col ml-2">
-                    <span class="text-sm text-red-400">
+                    <span class="text-sm text-red-600 dark:text-red-400">
                       {relativeFTD > 20 ? "High Impact" : "Low Impact"}
                     </span>
                   </div>
@@ -125,13 +125,13 @@
               </div>
 
               <div
-                class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
+                class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4 transition-colors"
               >
-                <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
+                <div class=" text-sm mb-2 flex items-center">
                   <span>1-Year Change</span>
                 </div>
                 <div class="flex items-baseline">
-                  <span class="text-xl font-bold text-white"
+                  <span class="text-xl font-bold"
                     >{changePercentageYearAgo > 100
                       ? "> 100"
                       : changePercentageYearAgo?.toFixed(1)}%</span
@@ -140,11 +140,11 @@
                     <span
                       class="text-sm {changePercentageYearAgo >= 0 &&
                       changePercentageYearAgo !== null
-                        ? "before:content-['+'] text-[#00FC50]"
+                        ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
                         : changePercentageYearAgo < 0 &&
                             changePercentageYearAgo !== null
-                          ? 'text-[#FF2F1F]'
-                          : 'text-white'}"
+                          ? 'text-red-600 dark:text-[#FF2F1F]'
+                          : ''}"
                     >
                       {changePercentageYearAgo >= 0 ? "Positive" : "Negative"} Trend
                     </span>

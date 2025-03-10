@@ -102,7 +102,7 @@
                       >{`${earningsData?.positiveEpsSurprises}/${earningsData?.totalReports}`}
                       quarters</span
                     >
-                    <span class="text-xs text-violet-400">
+                    <span class="text-xs text-violet-700 dark:text-violet-400">
                       {earningsData?.positiveEpsSurprises >
                       earningsData?.totalReports / 2
                         ? "Above Average"
@@ -145,18 +145,18 @@
                 </div>
                 <div class="flex items-baseline">
                   <span class="text-2xl font-bold"
-                    >{metrics.avgPriceImpact >= 0
+                    >{metrics?.avgPriceImpact >= 0
                       ? "+"
-                      : ""}{metrics.avgPriceImpact}%</span
+                      : ""}{metrics?.avgPriceImpact}%</span
                   >
                   <div class="flex flex-col ml-2">
                     <span class="text-sm">Next Day</span>
                     <span
-                      class="text-xs text-{metrics.avgPriceImpact >= 0
+                      class="text-xs text-{metrics?.avgPriceImpact >= 0
                         ? 'green'
                         : 'red'}-400"
                     >
-                      {metrics.avgPriceImpact >= 0 ? "Positive" : "Negative"} Trend
+                      {metrics?.avgPriceImpact >= 0 ? "Positive" : "Negative"} Trend
                     </span>
                   </div>
                 </div>
