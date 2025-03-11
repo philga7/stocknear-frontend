@@ -382,7 +382,7 @@
 
               // "Analyst Consensus:" in white, rating in color
               return `
-          <span class="text-lg">Analyst Consensus: </span>
+          <span class="text-lg text-muted dark:text-white">Analyst Consensus: </span>
           <span class="text-lg" style="color:${textColor};">${ratingText}</span>
         `;
             },

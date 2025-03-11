@@ -175,7 +175,7 @@
 
               // "Analyst Consensus:" in white, rating in color
               return `
-          <span class="text-lg">Analyst Consensus: </span>
+          <span class="text-lg text-muted dark:text-white">Analyst Consensus: </span>
           <span class="text-lg" style="color:${textColor};">${ratingText}</span>
         `;
             },
@@ -513,23 +513,12 @@
                       class="max-h-[225px]"
                       use:highcharts={optionsPieChart}
                     ></div>
-                    <div class="-mt-36 text-center text-xl font-semibold">
-                      Analyst Consensus: <span
-                        class="font-bold {['Strong Buy', 'Buy']?.includes(
-                          consensusRating,
-                        )
-                          ? 'text-green-600 dark:text-[#00FC50]'
-                          : ['Strong Sell', 'Sell']?.includes(consensusRating)
-                            ? 'text-red-600 dark:text-[#FF2F1F]'
-                            : 'text-[#fff]'}">{consensusRating}</span
-                      >
-                    </div>
                   </div>
                 </div>
               </div>
               <div class="grow pt-2 md:pt-4 lg:pl-4 lg:pt-0">
                 <div
-                  class="chart mt-5 sm:mt-0 border border-gray-300 dark:border-gray-800 rounded"
+                  class="chart mt-5 sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
                   use:highcharts={config}
                 ></div>
                 <div
