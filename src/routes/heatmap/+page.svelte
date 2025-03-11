@@ -155,7 +155,7 @@
       >
         <main class="w-full">
           <div class="border-b-[2px] flex justify-between items-center gap-4">
-            <h1 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
+            <h1 class="mb-1 text-2xl sm:text-3xl font-bold">
               S&P 500 - {selectedTimePeriod} Performance
             </h1>
           </div>
@@ -168,10 +168,10 @@
                 <DropdownMenu.Trigger asChild let:builder>
                   <Button
                     builders={[builder]}
-                    class="border-gray-600 border bg-default sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
+                    class="shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-gray-300 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                     disabled={isLoading}
                   >
-                    <span class="truncate text-white">Time Period</span>
+                    <span class="truncate">Time Period</span>
                     <svg
                       class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
                       viewBox="0 0 20 20"
@@ -198,11 +198,13 @@
                   ></div>
                   <DropdownMenu.Group>
                     {#each ["1D", "1W", "1M", "3M", "6M", "1Y", "3Y"] as item}
-                      <DropdownMenu.Item class="sm:hover:bg-primary">
+                      <DropdownMenu.Item
+                        class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                      >
                         <div class="flex items-center">
                           <button
                             on:click={() => getHeatMap(item)}
-                            class="cursor-pointer text-white"
+                            class="cursor-pointer"
                           >
                             <span class="mr-8">{item}</span>
                           </button>
@@ -217,10 +219,10 @@
                 <DropdownMenu.Trigger asChild let:builder>
                   <Button
                     builders={[builder]}
-                    class="border-gray-600 border bg-default sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
+                    class="shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                     disabled={isLoading || !isLoaded}
                   >
-                    <span class="truncate text-white">Download</span>
+                    <span class="truncate">Download</span>
                     <svg
                       class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
                       viewBox="0 0 20 20"
@@ -247,12 +249,14 @@
                   ></div>
                   <DropdownMenu.Group>
                     {#each ["PNG", "JPG", "SVG"] as item}
-                      <DropdownMenu.Item class="sm:hover:bg-primary">
+                      <DropdownMenu.Item
+                        class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                      >
                         <div class="flex items-center">
                           <button
                             on:click={() => downloadPlot(item)}
                             disabled={!isLoaded}
-                            class="cursor-pointer text-white"
+                            class="cursor-pointer"
                           >
                             <span class="mr-8">Download {item}</span>
                           </button>
@@ -264,15 +268,14 @@
               </DropdownMenu.Root>
             </div>
           </div>
-          <div class="w-full h-full bg-[#09090B] overflow-hidden">
+          <div class="w-full h-full overflow-hidden">
             {#if isLoading}
               <div class="flex justify-center items-center h-80">
                 <div class="relative">
                   <label
                     class=" h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                   >
-                    <span class="loading loading-bars loading-md text-gray-400"
-                    ></span>
+                    <span class="loading loading-bars loading-md"></span>
                   </label>
                 </div>
               </div>
@@ -286,7 +289,7 @@
               />
             {:else}
               <div class="flex justify-center items-center h-80">
-                <p class="text-gray-400">No data available</p>
+                <p class="">No data available</p>
               </div>
             {/if}
           </div>

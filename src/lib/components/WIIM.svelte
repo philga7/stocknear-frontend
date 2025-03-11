@@ -75,7 +75,7 @@
                     <div
                       class="w-1 h-full mr-4 rounded-lg {item?.changesPercentage ===
                       '-'
-                        ? 'bg-white'
+                        ? 'bg-blue-500 dark:bg-white'
                         : item?.changesPercentage >= 0
                           ? 'bg-green-600 dark:bg-[#00FC50]'
                           : 'bg-red-600 dark:bg-[#FF2F1F]'}"
