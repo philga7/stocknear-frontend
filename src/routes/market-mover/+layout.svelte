@@ -1,6 +1,5 @@
 <script lang="ts">
   import ScrollToTop from "$lib/components/ScrollToTop.svelte";
-  import ArrowLogo from "lucide-svelte/icons/move-up-right";
   import { page } from "$app/stores";
 
   export let data;

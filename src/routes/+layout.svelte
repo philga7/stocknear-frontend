@@ -355,7 +355,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full "
+                            class="w-full dark:bg-[#18181B]"
                           >
                             <a
                               href="/analysts"
@@ -367,7 +367,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full "
+                            class="w-full dark:bg-[#18181B]"
                           >
                             <a
                               href="/analysts/top-stocks"
@@ -379,7 +379,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full "
+                            class="w-full dark:bg-[#18181B]"
                           >
                             <a
                               href="/industry"
@@ -391,7 +391,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full "
+                            class="w-full dark:bg-[#18181B]"
                           >
                             <a
                               href="/stock-screener"
@@ -402,7 +402,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full "
+                            class="w-full dark:bg-[#18181B]"
                           >
                             <a
                               href="/market-mover/gainers"
@@ -414,7 +414,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full "
+                            class="w-full dark:bg-[#18181B]"
                           >
                             <a
                               href="/heatmap"
@@ -426,7 +426,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full "
+                            class="w-full dark:bg-[#18181B]"
                           >
                             <a
                               href="/list"
@@ -456,7 +456,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full"
+                            class="w-full dark:bg-[#18181B]"
                           >
                             <a
                               href="/etf/new-launches"
@@ -467,7 +467,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full"
+                            class="w-full dark:bg-[#18181B]"
                           >
                             <a
                               href="/etf/etf-providers"
@@ -497,7 +497,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full "
+                            class="w-full dark:bg-[#18181B]"
                           >
                             <a
                               href="/dividends-calendar"
@@ -508,7 +508,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full "
+                            class="w-full dark:bg-[#18181B]"
                           >
                             <a
                               href="/earnings-calendar"
@@ -520,7 +520,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full "
+                            class="w-full dark:bg-[#18181B]"
                           >
                             <a
                               href="/ipos"
@@ -532,7 +532,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full "
+                            class="w-full dark:bg-[#18181B]"
                           >
                             <a
                               href="/economic-calendar"
@@ -543,7 +543,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full "
+                            class="w-full dark:bg-[#18181B]"
                           >
                             <a
                               href="/economic-indicator"
@@ -556,7 +556,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full "
+                            class="w-full dark:bg-[#18181B]"
                           >
                             <a
                               href="/stock-splits-calendar"
@@ -588,7 +588,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full"
+                            class="w-full dark:bg-[#18181B]"
                           >
                             <a
                               href="/politicians/flow-data"
@@ -599,7 +599,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full"
+                            class="w-full dark:bg-[#18181B]"
                           >
                             <a
                               href="/politicians"
@@ -631,7 +631,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full"
+                            class="w-full dark:bg-[#18181B]"
                           >
                             <a
                               href="/insider-tracker"
@@ -643,7 +643,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full"
+                            class="w-full dark:bg-[#18181B]"
                           >
                             <a
                               href="/reddit-tracker"
@@ -655,7 +655,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full"
+                            class="w-full dark:bg-[#18181B]"
                           >
                             <a
                               href="/potus-tracker"
@@ -668,7 +668,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full"
+                            class="w-full dark:bg-[#18181B]"
                           >
                             <a
                               href="/sentiment-tracker"
@@ -699,7 +699,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full"
+                            class="w-full dark:bg-[#18181B]"
                           >
                             <a
                               href="/market-flow"
@@ -711,7 +711,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full"
+                            class="w-full dark:bg-[#18181B]"
                           >
                             <a
                               href="/options-flow"
@@ -722,7 +722,7 @@
                           <Button
                             builders={[builder]}
                             type="submit"
-                            class="w-full"
+                            class="w-full dark:bg-[#18181B]"
                           >
                             <a
                               href="/dark-pool-flow"
@@ -741,7 +741,7 @@
                 <Button
                   builders={[builder]}
                   type="submit"
-                  class=" -ml-4 w-full"
+                  class=" -ml-4 w-full dark:bg-[#18181B]"
                 >
                   <a
                     href="/hedge-funds"
@@ -749,7 +749,7 @@
                   >
                     <div class="flex flex-row items-center mr-auto">
                       <div
-                        class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white transition-colors hover:text-muted dark:text-white md:h-8 md:w-8"
+                        class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white transition-colors sm:hover:text-muted dark:text-white md:h-8 md:w-8"
                       >
                         <Boxes class="h-5.5 w-5.5" />
                       </div>
@@ -765,7 +765,7 @@
                 <Button
                   builders={[builder]}
                   type="submit"
-                  class=" -ml-4 w-full"
+                  class=" -ml-4 w-full dark:bg-[#18181B]"
                 >
                   <a
                     href="/market-news"
@@ -787,7 +787,7 @@
                   <Button
                     builders={[builder]}
                     type="submit"
-                    class=" -ml-4 w-full"
+                    class=" -ml-4 w-full dark:bg-[#18181B]"
                   >
                     <a
                       href="/pricing"

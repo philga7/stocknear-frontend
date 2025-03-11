@@ -70,14 +70,12 @@
 >
   <div class="grid grid-cols-1 gap-4">
     <div class="relative">
-      <h1
-        class="text-center text-white text-2xl sm:text-3xl pt-10 sm:pt-0 font-bold"
-      >
+      <h1 class="text-center text-2xl sm:text-3xl pt-10 sm:pt-0 font-bold">
         Getting Started
       </h1>
     </div>
 
-    <span class="text-gray-400 text-center">
+    <span class="text-muted dark:text-gray-400 text-center">
       Create an account & start your stock analysis
     </span>
 
@@ -118,13 +116,13 @@
         {#if !loading && !isClicked}
           <button
             type="submit"
-            class="py-2.5 cursor-pointer bg-[#fff] border border-gray-600 sm:hover:bg-gray-300 transition duration-100 text-black btn-md w-full rounded-md m-auto font-semibold text-[1rem]"
+            class="cursor-pointer py-2.5 bg-[#3B82F6] dark:bg-[#fff] border-none sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 transition duration-100 btn-md w-full rounded-md m-auto text-white dark:text-black font-semibold text-[1rem]"
           >
             <span>Register</span>
           </button>
         {:else}
           <label
-            class="cursor-not-allowed btn bg-[#fff] opacity-[0.5] border border-gray-600 sm:hover:bg-gray-300 transition duration-100 text-black btn-md w-full rounded-md m-auto font-semibold text-[1rem]"
+            class="cursor-not-allowed btn bg-[#3B82F6] dark:bg-[#fff] opacity-[0.5] border border-gray-600 sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 transition duration-100 btn-md w-full rounded-md m-auto text-white dark:text-black font-semibold text-[1rem]"
           >
             <div class="flex flex-row m-auto items-center">
               <span class="loading loading-infinity"></span>
@@ -133,21 +131,23 @@
           </label>
         {/if}
       </div>
-      <p
-        class="hidden sm:block pb-1 text-xs text-center w-full max-w-lg text-white"
-      >
+      <p class="hidden sm:block pb-1 text-xs text-center w-full max-w-lg">
         By registering you agree to stocknear's
-        <a href="/terms-of-use" class="text-blue-400 hover:underline"
+        <a
+          href="/terms-of-use"
+          class="text-blue-500 dark:text-blue-400 sm:hover:underline"
           >Terms of Use</a
         >
         and acknowledge that you've read our
-        <a href="/privacy-policy" class="text-blue-400 hover:underline"
+        <a
+          href="/privacy-policy"
+          class="text-blue-500 dark:text-blue-400 sm:hover:underline"
           >Privacy Policy</a
         >.
       </p>
 
       <div class="divider divider-[#fff] pt-10 pb-10">
-        <span class="text-white text-[1rem] z-10">Or register using</span>
+        <span class=" text-[1rem] z-10">Or register using</span>
       </div>
 
       <div class="flex flex-row items-center gap-x-5 pb-6">
@@ -158,7 +158,7 @@
             on:click={() => (oauthLoading = !oauthLoading)}
             on:mouseenter={handleHoverGoogle}
             on:mouseleave={handleHoverGoogle}
-            class="cursor-pointer shrink-0 rounded-full w-12 h-12 relative bg-default flex items-center justify-center border border-gray-600 sm:hover:bg-secondary text-white"
+            class="cursor-pointer shrink-0 rounded-full w-12 h-12 relative bg-default flex items-center justify-center border border-gray-600 sm:hover:bg-secondary"
           >
             <svg
               class="{isHoveredGoogle ? 'shake-logo' : ''} w-6 h-6 inline-block"
@@ -206,7 +206,7 @@
             on:click={() => (oauthLoading = !oauthLoading)}
             on:mouseenter={handleHoverDiscord}
             on:mouseleave={handleHoverDiscord}
-            class="cursor-pointer shrink-0 rounded-full w-12 h-12 relative bg-default flex items-center justify-center border border-gray-600 sm:hover:bg-secondary text-white"
+            class="cursor-pointer shrink-0 rounded-full w-12 h-12 relative bg-default flex items-center justify-center border border-gray-600 sm:hover:bg-secondary"
           >
             <svg
               class="{isHoveredDiscord
@@ -759,10 +759,14 @@
       </div>
 
       <p
-        class="pt-2 pb-1 text-sm w-full max-w-lg text-white flex justify-center items-center"
+        class="pt-2 pb-1 text-sm w-full max-w-lg flex justify-center items-center"
       >
         You already have an account?
-        <a href="/login" class="text-blue-400 hover:underline ml-1">Sign in</a>
+        <a
+          href="/login"
+          class="text-blue-500 dark:text-blue-400 sm:hover:underline ml-1"
+          >Sign in</a
+        >
       </p>
     </form>
   </div>
@@ -773,11 +777,15 @@
     class="absolute bottom-5 pb-1 text-xs text-center w-full max-w-lg text-gray-300"
   >
     By registering you agree to stocknear's
-    <a href="/terms-of-use" class="text-blue-400 hover:underline"
+    <a
+      href="/terms-of-use"
+      class="text-blue-500 dark:text-blue-400 sm:hover:underline"
       >Terms of Use</a
     >
     and acknowledge that you've read our
-    <a href="/privacy-policy" class="text-blue-400 hover:underline"
+    <a
+      href="/privacy-policy"
+      class="text-blue-500 dark:text-blue-400 sm:hover:underline"
       >Privacy Policy</a
     >.
   </p>

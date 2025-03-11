@@ -60,7 +60,7 @@
             <div
               class="title-group flex flex-row items-center justify-start mb-3"
             >
-              <h1 class="text-white text-xl sm:text-2xl font-semibold">
+              <h1 class="text-xl sm:text-2xl font-semibold">
                 Afterhours {categoryType === "gainers" ? "Gainers" : "Losers"}
               </h1>
               <InfoModal
@@ -70,7 +70,7 @@
               />
 
               <div
-                class="mb-0 ml-5 mt-1 whitespace-nowrap text-sm font-semiboldt text-white"
+                class="mb-0 ml-5 mt-1 whitespace-nowrap text-sm font-semibold"
               >
                 <span class="hidden lg:inline">Updated</span>
                 {lastTradingDay}
