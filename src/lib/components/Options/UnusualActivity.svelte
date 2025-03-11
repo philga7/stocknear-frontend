@@ -1,11 +1,12 @@
 <script lang="ts">
-  import { abbreviateNumber, abbreviateNumberWithColor } from "$lib/utils";
+  import { abbreviateNumber } from "$lib/utils";
   import { screenWidth, setCache, getCache } from "$lib/store";
 
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
   import highcharts from "$lib/highcharts.ts";
+  import { mode } from "mode-watcher";
 
   import { onMount } from "svelte";
 
@@ -34,7 +35,7 @@
 
   let displayList = rawData?.slice(0, 150) || [];
 
-  let configUnusual = plotData();
+  let configUnusual = null;
 
   function daysLeft(targetDate) {
     const targetTime = new Date(targetDate).getTime();
@@ -154,7 +155,7 @@
           borderWidth: 0, // Optional: Remove borders if not needed
         },
         series: {
-          color: "white",
+          color: $mode === "light" ? "black" : "white",
           animation: false, // Disable series animation
           states: {
             hover: {
@@ -164,15 +165,15 @@
         },
       },
       chart: {
-        backgroundColor: "#09090B",
-        plotBackgroundColor: "#09090B",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
         height: 360,
         animation: false,
       },
       title: {
         text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">${ticker} Unusual Options Activity</h3>`,
         style: {
-          color: "white",
+          color: $mode === "light" ? "black" : "white",
         },
         useHTML: true,
       },
@@ -181,13 +182,13 @@
         endOnTick: false,
         categories: dates,
         crosshair: {
-          color: "#fff",
+          color: $mode === "light" ? "black" : "white",
           width: 1,
           dashStyle: "Solid",
         },
         labels: {
           style: {
-            color: "#fff",
+            color: $mode === "light" ? "black" : "white",
           },
           formatter: function () {
             const date = new Date(this.value);
@@ -212,9 +213,9 @@
       yAxis: [
         {
           gridLineWidth: 1,
-          gridLineColor: "#111827",
+          gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
           labels: {
-            style: { color: "white" },
+            style: { color: $mode === "light" ? "black" : "white" },
           },
           title: { text: null },
           opposite: true,
@@ -232,8 +233,8 @@
       tooltip: {
         shared: true,
         useHTML: true,
-        backgroundColor: "rgba(0, 0, 0, 0.8)",
-        borderColor: "rgba(255, 255, 255, 0.2)",
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
+        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
         borderWidth: 1,
         style: {
           color: "#fff",
@@ -242,7 +243,8 @@
         },
         borderRadius: 4,
         formatter: function () {
-          let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]">${new Date(
+          // Format the x value to display time in a custom format
+          let tooltipContent = `<span class="m-auto text-[1rem] font-[501]">${new Date(
             this?.x,
           ).toLocaleDateString("en-US", {
             year: "numeric",
@@ -250,11 +252,12 @@
             day: "numeric",
           })}</span><br>`;
 
+          // Loop through each point in the shared tooltip
           this.points.forEach((point) => {
-            tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
-      <span class="text-white font-normal text-sm" style="color:${point.color}">${abbreviateNumber(
-        point.y,
-      )}</span><br>`;
+            tooltipContent += `
+        <span style="display:inline-block; width:10px; height:10px; background-color:${point.color}; border-radius:50%; margin-right:5px;"></span>
+        <span class="font-semibold text-sm">${point.series.name}:</span> 
+        <span class="font-normal text-sm">${abbreviateNumber(point.y)}</span><br>`;
           });
 
           return tooltipContent;
@@ -290,7 +293,7 @@
           type: "area",
           yAxis: 1,
           data: priceList,
-          color: "#fff",
+          color: $mode === "light" ? "#3B82F6" : "white",
           lineWidth: 1,
           marker: {
             enabled: false,
@@ -388,7 +391,7 @@
             new Date(item.date).getTime(),
             item.price,
           ]),
-          color: "#fff",
+          color: $mode === "light" ? "#3B82F6" : "white",
           lineWidth: 1,
           marker: { enabled: false },
           animation: false,
@@ -429,7 +432,7 @@
             new Date(item.date).getTime(),
             item.price,
           ]),
-          color: "#fff",
+          color: $mode === "light" ? "black" : "white",
           lineWidth: 1,
           marker: { enabled: false },
           animation: false,
@@ -440,7 +443,7 @@
     // Highcharts configuration object
     const options = {
       chart: {
-        backgroundColor: "#09090B",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
         animation: false,
         height: 360,
       },
@@ -448,12 +451,12 @@
       title: {
         text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">Contract History</h3>`,
         useHTML: true,
-        style: { color: "white" },
+        style: { color: $mode === "light" ? "black" : "white" },
       },
       // Disable markers globally on hover for all series
       plotOptions: {
         series: {
-          color: "white",
+          color: $mode === "light" ? "black" : "white",
           animation: false, // Disable series animation
           states: {
             hover: {
@@ -466,7 +469,7 @@
         type: "datetime",
         endOnTick: false,
         crosshair: {
-          color: "#fff",
+          color: $mode === "light" ? "black" : "white",
           width: 1,
           dashStyle: "Solid",
         },
@@ -495,8 +498,8 @@
       yAxis: [
         {
           gridLineWidth: 1,
-          gridLineColor: "#111827",
-          labels: { style: { color: "white" } },
+          gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
+          labels: { style: { color: $mode === "light" ? "black" : "white" } },
           title: { text: null },
           opposite: true,
         },
@@ -519,8 +522,8 @@
       tooltip: {
         shared: true,
         useHTML: true,
-        backgroundColor: "rgba(0, 0, 0, 0.8)",
-        borderColor: "rgba(255, 255, 255, 0.2)",
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
+        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
         borderWidth: 1,
         style: {
           color: "#fff",
@@ -529,20 +532,23 @@
         },
         borderRadius: 4,
         formatter: function () {
-          let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]">${new Date(
-            this.x,
+          // Format the x value to display time in a custom format
+          let tooltipContent = `<span class="m-auto text-[1rem] font-[501]">${new Date(
+            this?.x,
           ).toLocaleDateString("en-US", {
             year: "numeric",
             month: "short",
             day: "numeric",
           })}</span><br>`;
 
+          // Loop through each point in the shared tooltip
           this.points.forEach((point) => {
-            tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
-          <span class="text-white font-normal text-sm" style="color:${point.color}">${abbreviateNumber(
-            point.y,
-          )}</span><br>`;
+            tooltipContent += `
+        <span style="display:inline-block; width:10px; height:10px; background-color:${point.color}; border-radius:50%; margin-right:5px;"></span>
+        <span class="font-semibold text-sm">${point.series.name}:</span> 
+        <span class="font-normal text-sm">${abbreviateNumber(point.y)}</span><br>`;
           });
+
           return tooltipContent;
         },
       },
@@ -704,7 +710,7 @@
   };
 
   $: {
-    if (typeof window !== "undefined" && selectGraphType) {
+    if (selectGraphType) {
       isLoaded = false;
       if (rawDataHistory?.length > 0) {
         configContract = plotContractHistory();
@@ -715,18 +721,22 @@
       isLoaded = true;
     }
   }
+
+  $: {
+    if ($mode) {
+      configUnusual = plotData() || null;
+    }
+  }
 </script>
 
-<section
-  class="w-full bg-default overflow-hidden text-white min-h-screen pb-40"
->
+<section class="w-full overflow-hidden min-h-screen pb-40">
   <div class="w-full flex h-full overflow-hidden">
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"
     >
       <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
         <h2
-          class=" flex flex-row items-center text-white text-xl sm:text-2xl font-bold w-fit mb-2 sm:mb-0"
+          class=" flex flex-row items-center text-xl sm:text-2xl font-bold w-fit mb-2 sm:mb-0"
         >
           Unusual Activity
         </h2>
@@ -735,21 +745,21 @@
         />
 
         <div
-          class="mt-5 border border-gray-800 rounded"
+          class="mt-5 border border-gray-300 dark:border-gray-800 rounded"
           use:highcharts={configUnusual}
         ></div>
 
-        <div class="w-full overflow-x-auto text-white">
+        <div class="w-full overflow-x-auto">
           <table
-            class="w-full table table-sm table-compact bg-table border border-gray-800 rounded-none sm:rounded-md m-auto mt-4 overflow-x-auto"
+            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
           >
-            <thead>
+            <thead class="text-muted dark:text-white dark:bg-default">
               <TableHeader {columns} {sortOrders} {sortData} />
             </thead>
             <tbody>
               {#each data?.user?.tier !== "Pro" ? displayList?.slice(0, 3) : displayList as item, index}
                 <tr
-                  class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-oddborder-b border-gray-800 {index +
+                  class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
                     1 ===
                     rawData?.slice(0, 3)?.length &&
                   !['Pro']?.includes(data?.user?.tier)
@@ -757,7 +767,7 @@
                     : ''}"
                 >
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-start whitespace-nowrap"
+                    class=" text-sm sm:text-[1rem] text-start whitespace-nowrap"
                   >
                     {formatDate(item?.date)}
                   </td>
@@ -776,7 +786,7 @@
                       on:click={() => handleViewData(item)}
                       on:mouseover={() =>
                         getContractHistory(item?.option_symbol)}
-                      class="cursor-pointer text-[#04D9FF] sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
+                      class="cursor-pointer text-[#3B82F6] dark:text-[#04D9FF] dark:sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
                     >
                       {item?.strike}
 
@@ -786,7 +796,7 @@
                         xmlns="http://www.w3.org/2000/svg"
                         class="inline-block w-4 h-4 -mt-1"
                         viewBox="0 0 512 512"
-                        fill="#04D9FF"
+                        fill={$mode === "light" ? "#3B82F6" : "#04D9FF"}
                         ><path
                           d="M104 496H72a24 24 0 01-24-24V328a24 24 0 0124-24h32a24 24 0 0124 24v144a24 24 0 01-24 24zM328 496h-32a24 24 0 01-24-24V232a24 24 0 0124-24h32a24 24 0 0124 24v240a24 24 0 01-24 24zM440 496h-32a24 24 0 01-24-24V120a24 24 0 0124-24h32a24 24 0 0124 24v352a24 24 0 01-24 24zM216 496h-32a24 24 0 01-24-24V40a24 24 0 0124-24h32a24 24 0 0124 24v432a24 24 0 01-24 24z"
                         ></path></svg
@@ -795,19 +805,19 @@
                   </td>
 
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
                     {item?.dte}
                   </td>
 
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
                     {item?.unusualType}
                   </td>
 
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
                     {item?.executionEst}
                   </td>
@@ -818,29 +828,25 @@
                       ? 'text-green-600 dark:text-[#00FC50]'
                       : item?.sentiment === 'Bearish'
                         ? 'text-red-600 dark:text-[#FF2F1F]'
-                        : 'text-[#C8A32D]'} "
+                        : 'text-orange-600 dark:text-[#C8A32D]'} "
                   >
                     {item?.sentiment}
                   </td>
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
                     {item?.size?.toLocaleString("en-US")}
                   </td>
 
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
                     {item?.price}
                   </td>
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
-                    {@html abbreviateNumberWithColor(
-                      item?.premium,
-                      false,
-                      true,
-                    )}
+                    {abbreviateNumber(item?.premium, false, true)}
                   </td>
                 </tr>
               {/each}
@@ -859,26 +865,28 @@
   class="modal {$screenWidth < 640 ? 'modal-bottom ' : ''} bg-[#000]/40 sm:px-5"
 >
   <div
-    class="modal-box w-full {rawDataHistory?.length > 0
+    class="modal-box bg-white dark:bg-default w-full {rawDataHistory?.length > 0
       ? 'max-w-7xl'
-      : 'w-full'} rounded-md bg-default border-t sm:border border-gray-800 min-h-48 h-auto"
+      : 'w-full'} rounded-md border-t sm:border border-gray-300 dark:border-gray-800 min-h-48 h-auto"
   >
     <form
       method="dialog"
       class="modal-backdrop backdrop-blur-[4px] flex flex-row items-center w-full justify-between"
     >
-      <p class="text-white text-[1rem] sm:text-xl font-semibold cursor-text">
+      <p
+        class="text-muted dark:text-white text-[1rem] sm:text-xl font-semibold cursor-text"
+      >
         Contract: <span
-          class={optionType === "Calls" ? "text-[#00FC50]" : "text-[#FF2F1F]"}
+          class={optionType === "Calls"
+            ? "text-green-600 dark:text-[#00FC50]"
+            : "text-red-600 dark:text-[#FF2F1F]"}
           >{ticker}
           {strikePrice}
           {optionType}
           {dateExpiration} ({daysLeft(dateExpiration)})
         </span>
       </p>
-      <button
-        class="cursor-pointer text-[1.8rem] text-white focus:outline-hidden"
-      >
+      <button class="cursor-pointer text-[1.8rem] focus:outline-hidden">
         <svg
           class="w-8 h-8"
           xmlns="http://www.w3.org/2000/svg"
@@ -892,10 +900,10 @@
     </form>
     {#if rawDataHistory?.length > 0}
       <div
-        class="border-b border-gray-800 w-full mt-2 mb-2 sm:mb-3 sm:mt-3"
+        class="border-b border-gray-300 dark:border-gray-800 w-full mt-2 mb-2 sm:mb-3 sm:mt-3"
       ></div>
 
-      <div class="hidden sm:flex flex-wrap text-white pb-2">
+      <div class="hidden sm:flex flex-wrap pb-2">
         <div class="mr-3 whitespace-nowrap">
           {formatDate(optionHistoryList?.at(0)?.date)}:
         </div>
@@ -923,7 +931,7 @@
         </div>
       </div>
 
-      <div class="pb-8 sm:pb-2 rounded-md bg-default overflow-hidden">
+      <div class="pb-8 sm:pb-2 rounded-md overflow-hidden">
         <div
           class="flex flex-row items-center justify-between gap-x-2 ml-auto w-fit mt-2"
         >
@@ -931,15 +939,15 @@
             <label
               on:click={() => (selectGraphType = item)}
               class="px-3 py-1.5 {selectGraphType === item
-                ? 'bg-white text-black '
-                : 'text-white bg-default text-opacity-[0.6] border border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+                ? 'shadow-sm bg-gray-100 dark:bg-white text-black '
+                : 'shadow-sm text-opacity-[0.6] border border-gray-300 dark:border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
             >
               {item}
             </label>
           {/each}
         </div>
         <div
-          class="mt-2 border border-gray-800 rounded"
+          class="mt-2 border border-gray-300 dark:border-gray-800 rounded"
           use:highcharts={configContract}
         ></div>
       </div>
@@ -952,55 +960,45 @@
         <div class="flex justify-start items-center m-auto cursor-normal">
           {#if isLoaded}
             <table
-              class="table table-pin-cols table-sm bg-table border border-gray-800 table-compact rounded-none sm:rounded-md w-full m-auto mt-4 overflow-x-auto"
+              class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
             >
-              <thead class="bg-default">
+              <thead class="text-muted dark:text-white dark:bg-default">
                 <tr class="">
-                  <td class="text-white font-semibold text-sm text-start"
-                    >Date</td
-                  >
-                  <td class="text-white font-semibold text-sm text-end">Vol</td>
-                  <td class="text-white font-semibold text-sm text-end">OI</td>
-                  <td class="text-white font-semibold text-sm text-end"
-                    >OI Change</td
-                  >
-                  <td class="text-white font-semibold text-sm text-end"
-                    >% Change OI</td
-                  >
-                  <td class="text-white font-semibold text-sm text-end"
-                    >Last Price</td
-                  >
-                  <td class="text-white font-semibold text-sm text-end"
-                    >Avg Price</td
-                  >
-                  <td class="text-white font-semibold text-sm text-end">IV</td>
-                  <td class="text-white font-semibold text-sm text-end"
-                    >Total Prem</td
-                  >
-                  <td class="text-white font-semibold text-sm text-end">GEX</td>
-                  <td class="text-white font-semibold text-sm text-end">DEX</td>
+                  <td class=" font-semibold text-sm text-start">Date</td>
+                  <td class=" font-semibold text-sm text-end">Vol</td>
+                  <td class=" font-semibold text-sm text-end">OI</td>
+                  <td class=" font-semibold text-sm text-end">OI Change</td>
+                  <td class=" font-semibold text-sm text-end">% Change OI</td>
+                  <td class=" font-semibold text-sm text-end">Last Price</td>
+                  <td class=" font-semibold text-sm text-end">Avg Price</td>
+                  <td class=" font-semibold text-sm text-end">IV</td>
+                  <td class=" font-semibold text-sm text-end">Total Prem</td>
+                  <td class=" font-semibold text-sm text-end">GEX</td>
+                  <td class=" font-semibold text-sm text-end">DEX</td>
                 </tr>
               </thead>
               <tbody>
                 {#each optionHistoryList as item}
                   <!-- row -->
-                  <tr class="odd:bg-odd border-b border-gray-800">
-                    <td class="text-sm sm:text-[1rem] text-start text-white">
+                  <tr
+                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
+                  >
+                    <td class="text-sm sm:text-[1rem] text-start">
                       {formatDate(item?.date)}
                     </td>
 
-                    <td class="text-sm sm:text-[1rem] text-end text-white">
+                    <td class="text-sm sm:text-[1rem] text-end">
                       {item?.volume !== null
                         ? item?.volume?.toLocaleString("en-US")
                         : 0}
                     </td>
 
-                    <td class="text-sm sm:text-[1rem] text-end text-white">
+                    <td class="text-sm sm:text-[1rem] text-end">
                       {item?.open_interest !== undefined
                         ? item?.open_interest?.toLocaleString("en-US")
                         : "n/a"}
                     </td>
-                    <td class="text-sm sm:text-[1rem] text-end text-white">
+                    <td class="text-sm sm:text-[1rem] text-end">
                       {#if item?.changeOI >= 0 && item?.changeOI !== null}
                         <span class="text-green-600 dark:text-[#00FC50]"
                           >+{item?.changeOI?.toLocaleString("en-US")}</span
@@ -1014,7 +1012,7 @@
                       {/if}
                     </td>
 
-                    <td class="text-sm sm:text-[1rem] text-end text-white">
+                    <td class="text-sm sm:text-[1rem] text-end">
                       {#if item?.changesPercentageOI > 0 && item?.changesPercentageOI !== undefined}
                         <span class="text-green-600 dark:text-[#00FC50]"
                           >+{item?.changesPercentageOI + "%"}</span
@@ -1030,32 +1028,28 @@
                       {/if}
                     </td>
 
-                    <td class="text-sm sm:text-[1rem] text-end text-white">
+                    <td class="text-sm sm:text-[1rem] text-end">
                       {item?.close}
                     </td>
 
-                    <td class="text-sm sm:text-[1rem] text-end text-white">
+                    <td class="text-sm sm:text-[1rem] text-end">
                       {item?.mark}
                     </td>
 
-                    <td class="text-sm sm:text-[1rem] text-end text-white">
+                    <td class="text-sm sm:text-[1rem] text-end">
                       {(item?.implied_volatility * 100)?.toLocaleString(
                         "en-US",
                       ) + "%"}
                     </td>
 
-                    <td class="text-sm sm:text-[1rem] text-end text-white">
-                      {@html abbreviateNumberWithColor(
-                        item?.total_premium,
-                        false,
-                        true,
-                      )}
+                    <td class="text-sm sm:text-[1rem] text-end">
+                      {abbreviateNumber(item?.total_premium, false, true)}
                     </td>
-                    <td class="text-sm sm:text-[1rem] text-end text-white">
-                      {@html abbreviateNumberWithColor(item?.gex, false, true)}
+                    <td class="text-sm sm:text-[1rem] text-end">
+                      {abbreviateNumber(item?.gex, false, true)}
                     </td>
-                    <td class="text-sm sm:text-[1rem] text-end text-white">
-                      {@html abbreviateNumberWithColor(item?.dex, false, true)}
+                    <td class="text-sm sm:text-[1rem] text-end">
+                      {abbreviateNumber(item?.dex, false, true)}
                     </td>
                   </tr>
                 {/each}
@@ -1077,7 +1071,7 @@
       </div>
     {:else}
       <div
-        class="mt-10 flex justify-center sm:justify-start items-center w-full text-white"
+        class="mt-10 flex justify-center sm:justify-start items-center w-full"
       >
         No historical data available yet for the given contract
       </div>

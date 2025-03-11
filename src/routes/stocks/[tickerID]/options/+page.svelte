@@ -353,7 +353,7 @@
               <table
                 class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-3"
               >
-                <thead class="text-muted dark:text-white">
+                <thead class="text-muted dark:text-white dark:bg-default">
                   <tr class="">
                     <td class=" font-semibold text-sm text-start">Date</td>
                     <td class=" font-semibold text-sm text-end">% Change</td>

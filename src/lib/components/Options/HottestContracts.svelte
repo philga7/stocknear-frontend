@@ -5,6 +5,7 @@
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import highcharts from "$lib/highcharts.ts";
+  import { mode } from "mode-watcher";
 
   export let data;
   export let ticker;
@@ -378,7 +379,7 @@
     // Highcharts configuration object
     const options = {
       chart: {
-        backgroundColor: "#09090B",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
         animation: false,
         height: 360,
       },
@@ -467,7 +468,7 @@
         },
         borderRadius: 4,
         formatter: function () {
-          let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]">${new Date(
+          let tooltipContent = `<span class=" m-auto text-black text-[1rem] font-[501]">${new Date(
             this.x,
           ).toLocaleDateString("en-US", {
             year: "numeric",
@@ -476,8 +477,8 @@
           })}</span><br>`;
 
           this.points.forEach((point) => {
-            tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
-          <span class="text-white font-normal text-sm" style="color:${point.color}">${abbreviateNumber(
+            tooltipContent += `<span class=" font-semibold text-sm">${point.series.name}:</span> 
+          <span class=" font-normal text-sm" style="color:${point.color}">${abbreviateNumber(
             point.y,
           )}</span><br>`;
           });
@@ -569,22 +570,20 @@
   }
 </script>
 
-<section
-  class="w-full bg-default overflow-hidden text-white min-h-screen pb-40"
->
+<section class="w-full overflow-hidden min-h-screen pb-40">
   <div class="w-full flex h-full overflow-hidden">
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"
     >
       <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
         <h2
-          class=" flex flex-row items-center text-white text-xl sm:text-2xl font-bold w-fit mb-2 sm:mb-0"
+          class=" flex flex-row items-center text-xl sm:text-2xl font-bold w-fit mb-2 sm:mb-0"
         >
           Hottest Contracts (Highest Volume)
         </h2>
-        <div class="w-full overflow-x-auto text-white">
+        <div class="w-full overflow-x-auto">
           <table
-            class="w-full table table-sm table-compact bg-table border border-gray-800 rounded-none sm:rounded-md m-auto mt-4 overflow-x-auto"
+            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
           >
             <thead>
               <TableHeader {columns} {sortOrders} {sortData} />
@@ -592,7 +591,7 @@
             <tbody>
               {#each volumeList as item, index}
                 <tr
-                  class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-oddborder-b border-gray-800 {index +
+                  class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
                     1 ===
                     volumeList?.slice(0, 3)?.length &&
                   !['Pro']?.includes(data?.user?.tier)
@@ -604,8 +603,8 @@
                   >
                     <span
                       class={item?.option_type === "C"
-                        ? "text-[#00FC50]"
-                        : "text-[#FF2F1F]"}
+                        ? "text-green-600 dark:text-[#00FC50]"
+                        : "text-red-600 dark:text-[#FF2F1F]"}
                     >
                       {item?.option_type === "C" ? "Call" : "Put"}
                     </span>
@@ -613,7 +612,7 @@
                       on:click={() => handleViewData(item)}
                       on:mouseover={() =>
                         getContractHistory(item?.option_symbol)}
-                      class="px-2 sm:px-0 cursor-pointer text-[#04D9FF] sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
+                      class="px-2 sm:px-0 cursor-pointer text-[#04D9FF] sm:hover: sm:hover:underline sm:hover:underline-offset-4"
                     >
                       {item?.strike_price}
 
@@ -631,22 +630,22 @@
                     </label>
                   </td>
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
                     {item?.dte}
                   </td>
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
                     {item?.otm}%
                   </td>
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
                     {item?.last ?? "n/a"}
                   </td>
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
                     {#if item?.low && item?.high}
                       {item?.low}-{item?.high}
@@ -655,17 +654,17 @@
                     {/if}
                   </td>
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
                     {item?.volume?.toLocaleString("en-US")}
                   </td>
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
                     {item?.open_interest?.toLocaleString("en-US")}
                   </td>
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
                     {#if item?.changeOI >= 0}
                       <span class="text-green-600 dark:text-[#00FC50]"
@@ -683,7 +682,7 @@
                     {item?.iv ? item?.iv + "%" : "n/a"}
                   </td>
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
                     {@html abbreviateNumberWithColor(
                       item?.total_premium,
@@ -698,13 +697,13 @@
         </div>
 
         <h2
-          class=" flex flex-row items-center text-white text-xl sm:text-2xl font-bold w-fit mt-10"
+          class=" flex flex-row items-center text-xl sm:text-2xl font-bold w-fit mt-10"
         >
           Highest OI Contracts
         </h2>
-        <div class="w-full overflow-x-auto text-white">
+        <div class="w-full overflow-x-auto">
           <table
-            class="w-full table table-sm table-compact bg-table border border-gray-800 rounded-none sm:rounded-md m-auto mt-4 overflow-x-auto"
+            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
           >
             <thead>
               <TableHeader {columns} {sortOrders} sortData={sortDataOI} />
@@ -712,7 +711,7 @@
             <tbody>
               {#each openInterestList as item, index}
                 <tr
-                  class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-oddborder-b border-gray-800 {index +
+                  class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
                     1 ===
                     openInterestList?.slice(0, 3)?.length &&
                   !['Pro']?.includes(data?.user?.tier)
@@ -724,8 +723,8 @@
                   >
                     <span
                       class={item?.option_type === "C"
-                        ? "text-[#00FC50]"
-                        : "text-[#FF2F1F]"}
+                        ? "text-green-600 dark:text-[#00FC50]"
+                        : "text-red-600 dark:text-[#FF2F1F]"}
                     >
                       {item?.option_type === "C" ? "Call" : "Put"}
                     </span>
@@ -733,7 +732,7 @@
                       on:click={() => handleViewData(item)}
                       on:mouseover={() =>
                         getContractHistory(item?.option_symbol)}
-                      class="cursor-pointer text-[#04D9FF] sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
+                      class="cursor-pointer text-[#04D9FF] sm:hover: sm:hover:underline sm:hover:underline-offset-4"
                     >
                       {item?.strike_price}
 
@@ -751,22 +750,22 @@
                     </label>
                   </td>
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
                     {item?.dte}
                   </td>
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
                     {item?.otm}%
                   </td>
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
                     {item?.last ?? "n/a"}
                   </td>
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
                     {#if item?.low && item?.high}
                       {item?.low}-{item?.high}
@@ -775,17 +774,17 @@
                     {/if}
                   </td>
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
                     {item?.volume?.toLocaleString("en-US")}
                   </td>
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
                     {item?.open_interest?.toLocaleString("en-US")}
                   </td>
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
                     {#if item?.changeOI >= 0}
                       <span class="text-green-600 dark:text-[#00FC50]"
@@ -803,7 +802,7 @@
                     {item?.iv ? item?.iv + "%" : "n/a"}
                   </td>
                   <td
-                    class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
                     {@html abbreviateNumberWithColor(
                       item?.total_premium,
@@ -828,26 +827,28 @@
   class="modal {$screenWidth < 640 ? 'modal-bottom ' : ''} bg-[#000]/40 sm:px-5"
 >
   <div
-    class="modal-box w-full {rawDataHistory?.length > 0
+    class="modal-box bg-white dark:bg-default w-full {rawDataHistory?.length > 0
       ? 'max-w-7xl'
-      : 'w-full'} rounded-md bg-default border-t sm:border border-gray-800 min-h-48 h-auto"
+      : 'w-full'} rounded-md border-t sm:border border-gray-300 dark:border-gray-800 min-h-48 h-auto"
   >
     <form
       method="dialog"
       class="modal-backdrop backdrop-blur-[4px] flex flex-row items-center w-full justify-between"
     >
-      <p class="text-white text-[1rem] sm:text-xl font-semibold cursor-text">
+      <p
+        class="text-muted dark:text-white text-[1rem] sm:text-xl font-semibold cursor-text"
+      >
         Contract: <span
-          class={optionType === "Calls" ? "text-[#00FC50]" : "text-[#FF2F1F]"}
+          class={optionType === "Calls"
+            ? "text-green-600 dark:text-[#00FC50]"
+            : "text-red-600 dark:text-[#FF2F1F]"}
           >{ticker}
           {strikePrice}
           {optionType}
           {dateExpiration} ({daysLeft(dateExpiration)})
         </span>
       </p>
-      <button
-        class="cursor-pointer text-[1.8rem] text-white focus:outline-hidden"
-      >
+      <button class="cursor-pointer text-[1.8rem] focus:outline-hidden">
         <svg
           class="w-8 h-8"
           xmlns="http://www.w3.org/2000/svg"
@@ -861,10 +862,10 @@
     </form>
     {#if rawDataHistory?.length > 0}
       <div
-        class="border-b border-gray-800 w-full mt-2 mb-2 sm:mb-3 sm:mt-3"
+        class="border-b border-gray-300 dark:border-gray-800 w-full mt-2 mb-2 sm:mb-3 sm:mt-3"
       ></div>
 
-      <div class="hidden sm:flex flex-wrap text-white pb-2">
+      <div class="hidden sm:flex flex-wrap pb-2">
         <div class="mr-3 whitespace-nowrap">
           {formatDate(optionHistoryList?.at(0)?.date)}:
         </div>
@@ -892,7 +893,7 @@
         </div>
       </div>
 
-      <div class="pb-8 sm:pb-2 rounded-md bg-default overflow-hidden">
+      <div class="pb-8 sm:pb-2 rounded-md overflow-hidden">
         <div
           class="flex flex-row items-center justify-between gap-x-2 ml-auto w-fit mt-2"
         >
@@ -900,15 +901,15 @@
             <label
               on:click={() => (selectGraphType = item)}
               class="px-3 py-1.5 {selectGraphType === item
-                ? 'bg-white text-black '
-                : 'text-white bg-default text-opacity-[0.6] border border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+                ? 'shadow-sm bg-gray-100 dark:bg-white text-black '
+                : 'shadow-sm text-opacity-[0.6] border border-gray-300 dark:border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
             >
               {item}
             </label>
           {/each}
         </div>
         <div
-          class="mt-2 border border-gray-800 rounded"
+          class="mt-2 border border-gray-300 dark:border-gray-800 rounded"
           use:highcharts={config}
         ></div>
       </div>
@@ -921,55 +922,45 @@
         <div class="flex justify-start items-center m-auto cursor-normal">
           {#if isLoaded}
             <table
-              class="table table-pin-cols table-sm bg-table border border-gray-800 table-compact rounded-none sm:rounded-md w-full m-auto mt-4 overflow-x-auto"
+              class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
             >
-              <thead class="bg-default">
+              <thead class="text-muted dark:text-white dark:bg-default">
                 <tr class="">
-                  <td class="text-white font-semibold text-sm text-start"
-                    >Date</td
-                  >
-                  <td class="text-white font-semibold text-sm text-end">Vol</td>
-                  <td class="text-white font-semibold text-sm text-end">OI</td>
-                  <td class="text-white font-semibold text-sm text-end"
-                    >OI Change</td
-                  >
-                  <td class="text-white font-semibold text-sm text-end"
-                    >% Change OI</td
-                  >
-                  <td class="text-white font-semibold text-sm text-end"
-                    >Last Price</td
-                  >
-                  <td class="text-white font-semibold text-sm text-end"
-                    >Avg Price</td
-                  >
-                  <td class="text-white font-semibold text-sm text-end">IV</td>
-                  <td class="text-white font-semibold text-sm text-end"
-                    >Total Prem</td
-                  >
-                  <td class="text-white font-semibold text-sm text-end">GEX</td>
-                  <td class="text-white font-semibold text-sm text-end">DEX</td>
+                  <td class=" font-semibold text-sm text-start">Date</td>
+                  <td class=" font-semibold text-sm text-end">Vol</td>
+                  <td class=" font-semibold text-sm text-end">OI</td>
+                  <td class=" font-semibold text-sm text-end">OI Change</td>
+                  <td class=" font-semibold text-sm text-end">% Change OI</td>
+                  <td class=" font-semibold text-sm text-end">Last Price</td>
+                  <td class=" font-semibold text-sm text-end">Avg Price</td>
+                  <td class=" font-semibold text-sm text-end">IV</td>
+                  <td class=" font-semibold text-sm text-end">Total Prem</td>
+                  <td class=" font-semibold text-sm text-end">GEX</td>
+                  <td class=" font-semibold text-sm text-end">DEX</td>
                 </tr>
               </thead>
               <tbody>
                 {#each optionHistoryList as item}
                   <!-- row -->
-                  <tr class="odd:bg-odd border-b border-gray-800">
-                    <td class="text-sm sm:text-[1rem] text-start text-white">
+                  <tr
+                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
+                  >
+                    <td class="text-sm sm:text-[1rem] text-start">
                       {formatDate(item?.date)}
                     </td>
 
-                    <td class="text-sm sm:text-[1rem] text-end text-white">
+                    <td class="text-sm sm:text-[1rem] text-end">
                       {item?.volume !== null
                         ? item?.volume?.toLocaleString("en-US")
                         : 0}
                     </td>
 
-                    <td class="text-sm sm:text-[1rem] text-end text-white">
+                    <td class="text-sm sm:text-[1rem] text-end">
                       {item?.open_interest !== undefined
                         ? item?.open_interest?.toLocaleString("en-US")
                         : "n/a"}
                     </td>
-                    <td class="text-sm sm:text-[1rem] text-end text-white">
+                    <td class="text-sm sm:text-[1rem] text-end">
                       {#if item?.changeOI >= 0 && item?.changeOI !== null}
                         <span class="text-green-600 dark:text-[#00FC50]"
                           >+{item?.changeOI?.toLocaleString("en-US")}</span
@@ -983,7 +974,7 @@
                       {/if}
                     </td>
 
-                    <td class="text-sm sm:text-[1rem] text-end text-white">
+                    <td class="text-sm sm:text-[1rem] text-end">
                       {#if item?.changesPercentageOI > 0 && item?.changesPercentageOI !== undefined}
                         <span class="text-green-600 dark:text-[#00FC50]"
                           >+{item?.changesPercentageOI + "%"}</span
@@ -999,32 +990,28 @@
                       {/if}
                     </td>
 
-                    <td class="text-sm sm:text-[1rem] text-end text-white">
+                    <td class="text-sm sm:text-[1rem] text-end">
                       {item?.close}
                     </td>
 
-                    <td class="text-sm sm:text-[1rem] text-end text-white">
+                    <td class="text-sm sm:text-[1rem] text-end">
                       {item?.mark}
                     </td>
 
-                    <td class="text-sm sm:text-[1rem] text-end text-white">
+                    <td class="text-sm sm:text-[1rem] text-end">
                       {(item?.implied_volatility * 100)?.toLocaleString(
                         "en-US",
                       ) + "%"}
                     </td>
 
-                    <td class="text-sm sm:text-[1rem] text-end text-white">
-                      {@html abbreviateNumberWithColor(
-                        item?.total_premium,
-                        false,
-                        true,
-                      )}
+                    <td class="text-sm sm:text-[1rem] text-end">
+                      {abbreviateNumber(item?.total_premium, false, true)}
                     </td>
-                    <td class="text-sm sm:text-[1rem] text-end text-white">
-                      {@html abbreviateNumberWithColor(item?.gex, false, true)}
+                    <td class="text-sm sm:text-[1rem] text-end">
+                      {abbreviateNumber(item?.gex, false, true)}
                     </td>
-                    <td class="text-sm sm:text-[1rem] text-end text-white">
-                      {@html abbreviateNumberWithColor(item?.dex, false, true)}
+                    <td class="text-sm sm:text-[1rem] text-end">
+                      {abbreviateNumber(item?.dex, false, true)}
                     </td>
                   </tr>
                 {/each}
@@ -1046,7 +1033,7 @@
       </div>
     {:else}
       <div
-        class="mt-10 flex justify-center sm:justify-start items-center w-full text-white"
+        class="mt-10 flex justify-center sm:justify-start items-center w-full"
       >
         No historical data available yet for the given contract
       </div>

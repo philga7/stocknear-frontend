@@ -66,7 +66,7 @@
               <table
                 class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
               >
-                <thead class="text-muted dark:text-white">
+                <thead class="text-muted dark:text-white dark:bg-default">
                   <tr>
                     <th class=" font-semibold text-sm text-start">IPO Date</th>
                     <th class=" font-semibold text-sm text-start">Symbol</th>

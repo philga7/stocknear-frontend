@@ -416,7 +416,7 @@
                   class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
                 >
                   <!-- head -->
-                  <thead class="text-muted dark:text-white">
+                  <thead class="text-muted dark:text-white dark:bg-default">
                     <tr class="">
                       <th class=" font-semibold text-sm">Symbol</th>
                       <th class=" font-semibold text-sm">Company</th>

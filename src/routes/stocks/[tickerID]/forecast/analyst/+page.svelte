@@ -344,7 +344,7 @@
             <table
               class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
             >
-              <thead class="text-muted dark:text-white">
+              <thead class="text-muted dark:text-white dark:bg-default">
                 <tr>
                   <td class=" font-semibold text-sm text-start">Analyst</td>
                   <td class=" font-semibold text-sm text-start">Firm</td>

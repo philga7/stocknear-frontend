@@ -89,7 +89,7 @@
             <table
               class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
             >
-              <thead class="text-muted dark:text-white">
+              <thead class="text-muted dark:text-white dark:bg-default">
                 <tr>
                   <th
                     class=" border-b border-gray-300 dark:border-gray-800 font-semibold text-sm sm:text-[1rem] text-start"
@@ -167,7 +167,7 @@
               <table
                 class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
               >
-                <thead class="text-muted dark:text-white">
+                <thead class="text-muted dark:text-white dark:bg-default">
                   <tr>
                     <th
                       class="whitespace-nowrap dark:odd:bg-odd text-sm sm:text-[1rem] font-normal text-start border-b border-gray-300 dark:border-gray-800"
@@ -244,7 +244,7 @@
               <table
                 class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
               >
-                <thead class="text-muted dark:text-white">
+                <thead class="text-muted dark:text-white dark:bg-default">
                   <tr>
                     <th
                       class=" border-b border-gray-300 dark:border-gray-800 font-semibold text-sm sm:text-[1rem] text-start"
