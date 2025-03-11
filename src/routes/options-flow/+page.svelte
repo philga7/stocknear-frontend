@@ -15,6 +15,7 @@
   import CalendarIcon from "lucide-svelte/icons/calendar";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import SEO from "$lib/components/SEO.svelte";
+  import Infobox from "$lib/components/Infobox.svelte";
 
   import { page } from "$app/stores";
 
@@ -1066,7 +1067,7 @@
             {#if ruleOfList?.length !== 0}
               <label
                 on:click={handleResetAll}
-                class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-[#000] sm:hover:text-red-500 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none py-2 pl-3 pr-4 font-semibold shadow-sm bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
               >
                 <svg
                   class="h-4 w-4"
@@ -1109,7 +1110,7 @@
                       role="tooltip"
                     >
                       <span
-                        class="absolute -right-[15px] -top-[3px] cursor-pointer p-1 text-gray-300 sm:hover:"
+                        class="absolute -right-[15px] -top-[3px] cursor-pointer p-1 text-gray-500 dark:text-gray-300 dark:sm:hover:text-white"
                       >
                         <svg
                           class="h-[10.5px] w-[10.5px]"
@@ -1128,14 +1129,14 @@
                 <div class="flex items-center">
                   <button
                     on:click={() => handleDeleteRule(row?.rule)}
-                    class="mr-1.5 cursor-pointer text-gray-300 sm:hover:text-red-500 focus:outline-hidden"
+                    class="mr-1.5 cursor-pointer text-gray-500 dark:text-gray-300 sm:hover:text-red-500 focus:outline-hidden"
                     title="Remove filter"
                   >
                     <svg
                       class="w-6 h-6"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke="CurrentColor"
+                      stroke="currentColor"
                       style="max-width:40px"
                     >
                       <path
@@ -1152,7 +1153,7 @@
                         <DropdownMenu.Trigger asChild let:builder>
                           <Button
                             builders={[builder]}
-                            class="bg-[#000] h-[40px] flex flex-row justify-between items-center w-[150px] xs:w-[140px] sm:w-[150px] px-3  rounded-md truncate"
+                            class="shadow-sm h-[40px] flex flex-row justify-between items-center w-[150px] xs:w-[140px] sm:w-[150px] px-3 rounded-md truncate"
                           >
                             <span class="truncate ml-2 text-sm sm:text-[1rem]">
                               {#if valueMappings[row?.rule] === "any"}
@@ -1189,7 +1190,7 @@
                         >
                           {#if !categoricalRules?.includes(row?.rule)}
                             <DropdownMenu.Label
-                              class="absolute mt-2 h-11 border-gray-800 border-b -top-1 z-20 fixed sticky bg-default"
+                              class="absolute mt-2 h-11 border-gray-300 dark:border-gray-800 border-b -top-1 z-20 fixed sticky bg-white dark:bg-default"
                             >
                               <div
                                 class="flex items-center justify-start gap-x-1"
@@ -1202,7 +1203,7 @@
                                     <DropdownMenu.Trigger asChild let:builder
                                       ><Button
                                         builders={[builder]}
-                                        class="w-fit -mt-1 -ml-2 bg-default flex flex-row justify-between items-center "
+                                        class="w-fit -mt-1 -ml-2  flex flex-row justify-between items-center "
                                       >
                                         <span
                                           class="truncate ml-2 text-sm sm:text-[1rem]"
@@ -1284,7 +1285,7 @@
                                       : valueMappings[row?.rule]}
                                     on:input={(e) =>
                                       handleValueInput(e, row?.rule)}
-                                    class="ios-zoom-fix block max-w-[4.8rem] rounded-sm placeholder:text-muted dark:text-gray-200 font-normal p-1 text-sm shadow-xs focus:border-blue-500 focus:ring-blue-500 bg-gray-100 dark:bg-primary"
+                                    class="ios-zoom-fix block max-w-[4.8rem] rounded-sm placeholder:text-muted dark:placeholder:text-gray-200 font-normal p-1 text-sm shadow-xs focus:border-blue-500 focus:ring-blue-500 bg-gray-100 dark:bg-primary"
                                   />
                                 {/if}
 
@@ -1351,7 +1352,7 @@
                                 {#if ruleCondition[row?.rule] === "between"}
                                   {#if newValue && row?.step[index + 1]}
                                     <DropdownMenu.Item
-                                      class="sm:hover:bg-gray-100 dark:bg-primary"
+                                      class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                                     >
                                       <button
                                         on:click={() => {
@@ -1360,7 +1361,7 @@
                                             row?.step[index + 1],
                                           ]);
                                         }}
-                                        class="block w-full border-b border-gray-300 dark:border-gray-600 px-4 py-1.5 text-left text-sm sm:text-[1rem] rounded last:border-0 sm:hover:bg-gray-100 dark:bg-primary focus:bg-blue-100 focus:text-gray-900 focus:outline-hidden"
+                                        class="block w-full bg-white dark:bg-default border-b border-gray-300 dark:border-gray-600 px-4 py-1.5 text-left text-sm sm:text-[1rem] rounded last:border-0 sm:hover:bg-gray-100 focus:bg-blue-100 focus:text-gray-900 focus:outline-hidden"
                                       >
                                         {ruleCondition[row?.rule]?.replace(
                                           "between",
@@ -1374,13 +1375,13 @@
                                   {/if}
                                 {:else}
                                   <DropdownMenu.Item
-                                    class="sm:hover:bg-gray-100 dark:bg-primary"
+                                    class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                                   >
                                     <button
                                       on:click={() => {
                                         handleChangeValue(newValue);
                                       }}
-                                      class="block w-full border-b border-gray-300 dark:border-gray-600 px-4 py-1.5 text-left text-sm sm:text-[1rem] rounded last:border-0 sm:hover:bg-gray-100 dark:bg-primary focus:bg-blue-100 focus:text-gray-900 focus:outline-hidden"
+                                      class="block w-full bg-white dark:bg-default border-b border-gray-300 dark:border-gray-600 px-4 py-1.5 text-left text-sm sm:text-[1rem] rounded last:border-0 sm:hover:bg-gray-100 focus:bg-blue-100 focus:text-gray-900 focus:outline-hidden"
                                     >
                                       {ruleCondition[row?.rule]
                                         ?.replace("under", "Under")
@@ -1394,7 +1395,7 @@
                             {:else if categoricalRules?.includes(row?.rule)}
                               {#each row?.step as item}
                                 <DropdownMenu.Item
-                                  class="sm:hover:bg-[#2A2E39]"
+                                  class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                                 >
                                   <div
                                     class="flex items-center"
@@ -1642,20 +1643,9 @@
               <UpgradeToPro {data} display={true} />
             </div>
           {:else}
-            <div
-              class=" text-center p-3 sm:p-5 mb-10 mt-5 rounded-md sm:flex sm:flex-row sm:items-center border border-gray-300 dark:border-gray-600 text-sm sm:text-[1rem]"
-            >
-              <svg
-                class="w-6 h-6 shrink-0 inline-block sm:mr-2"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 256 256"
-                ><path
-                  fill="#fff"
-                  d="M128 24a104 104 0 1 0 104 104A104.11 104.11 0 0 0 128 24m-4 48a12 12 0 1 1-12 12a12 12 0 0 1 12-12m12 112a16 16 0 0 1-16-16v-40a8 8 0 0 1 0-16a16 16 0 0 1 16 16v40a8 8 0 0 1 0 16"
-                /></svg
-              >
-              Looks like your taste is one-of-a-kind! No matches found... yet!
-            </div>
+            <Infobox
+              text="Looks like your taste is one-of-a-kind! No matches found... yet!"
+            />
           {/if}
         </div>
       {:else}
@@ -1708,7 +1698,7 @@
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               ><path
-                fill="white"
+                fill="currentColor"
                 d="m6.4 18.308l-.708-.708l5.6-5.6l-5.6-5.6l.708-.708l5.6 5.6l5.6-5.6l.708.708l-5.6 5.6l5.6 5.6l-.708.708l-5.6-5.6z"
               /></svg
             >
@@ -1750,7 +1740,7 @@
             >
               <button
                 on:click={() => (searchTerm = "")}
-                class="cursor-pointer text-muted dark:text-gray-200 sm:hover:"
+                class="cursor-pointer text-muted dark:text-gray-200 dark:sm:hover:text-white"
                 tabindex="0"
                 ><svg
                   class="w-5 h-5"
@@ -1834,12 +1824,11 @@
 <input type="checkbox" id="mobileTooltip" class="modal-toggle" />
 
 <dialog id="mobileTooltip" class="modal p-3">
-  <label for="mobileTooltip" class="cursor-pointer modal-backdrop bg-[#000]/40"
-  ></label>
+  <label for="mobileTooltip" class="cursor-pointer modal-backdrop"></label>
 
   <!-- Desktop modal content -->
   <div
-    class="modal-box text-muted dark:text-white rounded-md border border-gray-300 dark:border-gray-600 w-full bg-gray-100 dark:bg-primary flex flex-col items-center"
+    class="modal-box border-gray-300 dark:border-none text-muted dark:text-white rounded-md border border-gray-300 dark:border-gray-600 w-full bg-gray-100 dark:bg-primary flex flex-col items-center"
   >
     <div class=" mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">{tooltipTitle}</h3>

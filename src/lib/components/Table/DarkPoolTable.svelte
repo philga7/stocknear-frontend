@@ -1,8 +1,9 @@
 <script lang="ts">
   import { screenWidth } from "$lib/store";
-  import { abbreviateNumberWithColor, sectorNavigation } from "$lib/utils";
+  import { abbreviateNumber, sectorNavigation } from "$lib/utils";
   import VirtualList from "svelte-tiny-virtual-list";
   import HoverStockChart from "$lib/components/HoverStockChart.svelte";
+  import { mode } from "mode-watcher";
 
   export let data;
   export let displayedData = [];
@@ -128,7 +129,7 @@
   <div class="min-w-[1000px]">
     <!-- Header row using grid -->
     <div
-      class="grid grid-cols-10 sticky top-0 z-40 border border-gray-800 bg-default text-white font-bold text-xs uppercase"
+      class="grid grid-cols-10 sticky top-0 z-40 border border-gray-300 dark:border-gray-800 font-bold text-xs uppercase"
     >
       <div
         on:click={() => sortData("date")}
@@ -350,15 +351,15 @@
         let:style
         {style}
         class="grid grid-cols-10 gap-0"
-        class:bg-[#19191F]={index % 2 === 0}
-        class:bg-[#121217]={index % 2 !== 0}
+        class:bg-[#fff]={index % 2 === 0 && $mode === "light"}
+        class:bg-[#19191F]={index % 2 === 0 && $mode !== "light"}
+        class:bg-[#121217]={index % 2 !== 0 && $mode !== "light"}
+        class:bg-[#F6F7F8]={index % 2 !== 0 && $mode == "light"}
         class:opacity-30={index + 1 === rawData?.length &&
           data?.user?.tier !== "Pro"}
       >
         <!-- Date Column -->
-        <div
-          class="p-2 text-center text-white text-xs sm:text-sm whitespace-nowrap"
-        >
+        <div class="p-2 text-center text-xs sm:text-sm whitespace-nowrap">
           {$screenWidth < 640
             ? formatToNewYorkTime(displayedData[index]?.date)?.slice(0, -3)
             : formatToNewYorkTime(displayedData[index]?.date)}
@@ -371,48 +372,38 @@
           />
         </div>
         <!-- Price Column -->
-        <div class="p-2 text-center text-white text-sm sm:text-[1rem]">
+        <div class="p-2 text-center text-sm sm:text-[1rem]">
           {displayedData[index]?.price}
         </div>
         <!-- Premium Column -->
-        <div class="p-2 text-center text-white text-sm sm:text-[1rem]">
-          {@html abbreviateNumberWithColor(
-            displayedData[index]?.premium,
-            true,
-            true,
-          )}
+        <div class="p-2 text-center text-sm sm:text-[1rem]">
+          {abbreviateNumber(displayedData[index]?.premium, true, true)}
         </div>
         <!-- Size Column -->
-        <div class="p-2 text-center text-white text-sm sm:text-[1rem]">
+        <div class="p-2 text-center text-sm sm:text-[1rem]">
           {new Intl.NumberFormat("en", {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0,
           }).format(displayedData[index]?.size)}
         </div>
         <!-- Volume Column -->
-        <div class="p-2 text-center text-white text-sm sm:text-[1rem]">
-          {@html abbreviateNumberWithColor(
-            displayedData[index]?.volume,
-            false,
-            true,
-          )}
+        <div class="p-2 text-center text-sm sm:text-[1rem]">
+          {abbreviateNumber(displayedData[index]?.volume, false, true)}
         </div>
         <!-- % Size / Vol Column -->
-        <div class="p-2 text-center text-white text-sm sm:text-[1rem]">
+        <div class="p-2 text-center text-sm sm:text-[1rem]">
           {displayedData[index]?.sizeVolRatio > 0.01
             ? displayedData[index]?.sizeVolRatio?.toFixed(2) + "%"
             : "< 0.01%"}
         </div>
         <!-- % Size / Avg Vol Column -->
-        <div class="p-2 text-center text-white text-sm sm:text-[1rem]">
+        <div class="p-2 text-center text-sm sm:text-[1rem]">
           {displayedData[index]?.sizeAvgVolRatio > 0.01
             ? displayedData[index]?.sizeAvgVolRatio?.toFixed(2) + "%"
             : "< 0.01%"}
         </div>
         <!-- Sector Column -->
-        <div
-          class="p-2 text-center text-white text-sm sm:text-[1rem] whitespace-nowrap"
-        >
+        <div class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap">
           <a
             href={sectorNavigation?.find(
               (item) => item?.title === displayedData[index]?.sector,
@@ -425,7 +416,7 @@
           </a>
         </div>
         <!-- Asset Type Column -->
-        <div class="p-2 text-center text-white text-sm sm:text-[1rem]">
+        <div class="p-2 text-center text-sm sm:text-[1rem]">
           {displayedData[index]?.assetType}
         </div>
       </div>

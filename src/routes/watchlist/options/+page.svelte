@@ -150,13 +150,13 @@
           {#if isLoaded}
             {#if optionsWatchlist?.length !== 0}
               <div class="flex flex-row justify-end items-center pb-2">
-                <h2 class="font-semibold text-white text-xl mr-auto">
+                <h2 class="font-semibold text-xl mr-auto">
                   {optionsWatchlist?.length} Options
                 </h2>
                 {#if editMode}
                   <label
                     on:click={handleDelete}
-                    class="border text-sm border-gray-600 ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2 pl-3 pr-4 font-semibold text-white shadow-xs bg-default sm:hover:bg-default/60 ease-out"
+                    class="border text-sm border-gray-300 dark:border-gray-600 ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2 pl-3 pr-4 font-semibold shadow-xs bg-default sm:hover:bg-default/60 ease-out"
                   >
                     <svg
                       class="inline-block w-5 h-5"
@@ -167,7 +167,7 @@
                         d="M10 5h4a2 2 0 1 0-4 0M8.5 5a3.5 3.5 0 1 1 7 0h5.75a.75.75 0 0 1 0 1.5h-1.32l-1.17 12.111A3.75 3.75 0 0 1 15.026 22H8.974a3.75 3.75 0 0 1-3.733-3.389L4.07 6.5H2.75a.75.75 0 0 1 0-1.5zm2 4.75a.75.75 0 0 0-1.5 0v7.5a.75.75 0 0 0 1.5 0zM14.25 9a.75.75 0 0 1 .75.75v7.5a.75.75 0 0 1-1.5 0v-7.5a.75.75 0 0 1 .75-.75m-7.516 9.467a2.25 2.25 0 0 0 2.24 2.033h6.052a2.25 2.25 0 0 0 2.24-2.033L18.424 6.5H5.576z"
                       /></svg
                     >
-                    <span class="ml-1 text-white text-sm">
+                    <span class="ml-1 text-sm">
                       {numberOfChecked}
                     </span>
                   </label>
@@ -175,7 +175,7 @@
 
                 <label
                   on:click={() => (editMode = !editMode)}
-                  class="border text-sm border-gray-600 ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2 pl-3 pr-4 font-semibold text-white shadow-xs bg-default sm:hover:bg-default/60 ease-out"
+                  class="border text-sm border-gray-300 dark:border-gray-600 ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2 pl-3 pr-4 font-semibold shadow-xs bg-default sm:hover:bg-default/60 ease-out"
                 >
                   <svg
                     class="inline-block w-5 h-5"
@@ -190,9 +190,9 @@
                     /></svg
                   >
                   {#if !editMode}
-                    <span class="ml-1 text-white text-sm"> Edit </span>
+                    <span class="ml-1 text-sm"> Edit </span>
                   {:else}
-                    <span class="ml-1 text-white text-sm"> Cancel </span>
+                    <span class="ml-1 text-sm"> Cancel </span>
                   {/if}
                 </label>
               </div>
@@ -264,9 +264,7 @@
                     {#each optionsWatchlist as item, index}
                       <!-- row -->
                       <tr class="odd:bg-odd border-b border-gray-800">
-                        <td
-                          class="text-white text-sm text-start whitespace-nowrap"
-                        >
+                        <td class=" text-sm text-start whitespace-nowrap">
                           {formatTime(item?.time)}
                         </td>
 
@@ -297,22 +295,18 @@
                             {/if}
                           </div>
                         </th>
-                        <td
-                          class="text-white text-sm sm:text-[1rem] text-start"
-                        >
+                        <td class=" text-sm sm:text-[1rem] text-start">
                           {formatDate(item?.date)}
                         </td>
-                        <td
-                          class="text-white text-sm sm:text-[1rem] text-start"
-                        >
+                        <td class=" text-sm sm:text-[1rem] text-start">
                           {reformatDate(item?.date_expiration)}
                         </td>
 
-                        <td class="text-white text-sm sm:text-[1rem] text-end">
+                        <td class=" text-sm sm:text-[1rem] text-end">
                           {item?.dte < 0 ? "expired" : item?.dte + "d"}
                         </td>
 
-                        <td class="text-sm sm:text-[1rem] text-end text-white">
+                        <td class="text-sm sm:text-[1rem] text-end">
                           {item?.strike_price}
                         </td>
 
@@ -336,16 +330,16 @@
                           {item?.sentiment}
                         </td>
                         <td
-                          class="text-sm sm:text-[1rem] text-white text-start whitespace-nowrap"
+                          class="text-sm sm:text-[1rem] text-start whitespace-nowrap"
                         >
                           {item?.execution_estimate}
                         </td>
 
-                        <td class="text-sm sm:text-[1rem] text-end text-white">
+                        <td class="text-sm sm:text-[1rem] text-end">
                           {item?.underlying_price}
                         </td>
 
-                        <td class="text-sm sm:text-[1rem] text-end text-white">
+                        <td class="text-sm sm:text-[1rem] text-end">
                           {item?.price}
                         </td>
 
@@ -367,18 +361,14 @@
                           {item?.option_activity_type}
                         </td>
 
-                        <td
-                          class="text-white text-end text-sm sm:text-[1rem] text-end"
-                        >
+                        <td class=" text-end text-sm sm:text-[1rem] text-end">
                           {new Intl.NumberFormat("en", {
                             minimumFractionDigits: 0,
                             maximumFractionDigits: 0,
                           }).format(item?.volume)}
                         </td>
 
-                        <td
-                          class="text-white text-end text-sm sm:text-[1rem] text-end"
-                        >
+                        <td class=" text-end text-sm sm:text-[1rem] text-end">
                           {new Intl.NumberFormat("en", {
                             minimumFractionDigits: 0,
                             maximumFractionDigits: 0,
@@ -393,15 +383,13 @@
               <div
                 class="flex flex-col justify-center items-center m-auto pt-8"
               >
-                <span
-                  class="text-white text-[1rem] sm:text-lg m-auto p-4 text-center"
-                >
+                <span class=" text-[1rem] sm:text-lg m-auto p-4 text-center">
                   Add your unusual options contracts and start tracking them
                   now!
                 </span>
                 <a
                   href="/options-flow"
-                  class="py-3 sm:hover:bg-primary rounded-md w-64 flex mt-5 justify-center items-center m-auto text-white border border-gray-600 group"
+                  class="py-3 sm:hover:bg-primary rounded-md w-64 flex mt-5 justify-center items-center m-auto border border-gray-300 dark:border-gray-600 group"
                 >
                   <span class="font-semibold text-[1rem]"
                     >Follow the Whales
@@ -412,15 +400,11 @@
               <div
                 class="flex flex-col justify-center items-center m-auto pt-8"
               >
-                <span
-                  class="text-white font-bold text-white text-2xl sm:text-3xl"
-                >
+                <span class=" font-bold text-2xl sm:text-3xl">
                   Empty Options List
                 </span>
 
-                <span
-                  class="text-white text-sm sm:text-lg m-auto p-4 text-center"
-                >
+                <span class=" text-sm sm:text-lg m-auto p-4 text-center">
                   Add your unusual options contracts and start tracking them
                   now!
                 </span>
@@ -453,7 +437,7 @@
                 {:else}
                   <a
                     href="/options-flow"
-                    class="w-64 flex mt-5 justify-center items-center m-auto btn text-white border border-gray-600 group"
+                    class="w-64 flex mt-5 justify-center items-center m-auto btn bg-blue-700 sm:hover:bg-blue-600 border border-gray-300 dark:border-gray-600 group"
                   >
                     <span class="font-semibold text-[1rem]"
                       >Follow the Whales
