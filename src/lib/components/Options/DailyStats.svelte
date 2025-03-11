@@ -1,15 +1,15 @@
 <script lang="ts">
   import InfoModal from "$lib/components/InfoModal.svelte";
-  import { abbreviateNumberWithColor } from "$lib/utils";
+  import { abbreviateNumber } from "$lib/utils";
   import * as HoverCard from "$lib/components/shadcn/hover-card/index.js";
 
   export let rawData = {};
 </script>
 
-<div class="text-white">
+<div class="">
   <label
     for="dailyStats"
-    class="mr-1 cursor-pointer flex flex-row items-center text-white text-xl sm:text-2xl font-bold w-fit"
+    class="mr-1 cursor-pointer flex flex-row items-center text-xl sm:text-2xl font-bold w-fit"
   >
     Daily Stats
     <InfoModal
@@ -21,49 +21,41 @@
   <div
     class="mt-5 order-5 lg:order-1 flex flex-row space-x-2 sm:space-x-3 xs:space-x-4"
   >
-    <table class="w-[50%] text-sm text-white sm:text-[1rem] xl:min-w-[300px]">
+    <table class="w-[50%] text-sm sm:text-[1rem] xl:min-w-[300px]">
       <tbody
         ><tr
-          class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >Call Volume</td
           >
           <td
             class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-            >{@html abbreviateNumberWithColor(
-              rawData?.call_volume,
-              false,
-              true,
-            )}</td
+            >{abbreviateNumber(rawData?.call_volume)}</td
           ></tr
         >
 
         <tr
-          class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >Call Premium</td
           >
           <td
             class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-            >{@html abbreviateNumberWithColor(
-              rawData?.call_premium,
-              false,
-              true,
-            )}</td
+            >{abbreviateNumber(rawData?.call_premium)}</td
           ></tr
         >
 
         <tr
-          class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >Premium</td
           >
           <td
             class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-            >{@html abbreviateNumberWithColor(
+            >{abbreviateNumber(
               rawData?.call_premium + rawData?.put_premium,
               false,
               true,
@@ -71,22 +63,18 @@
           ></tr
         >
         <tr
-          class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >Call Open Interest</td
           >
           <td
             class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-            >{@html abbreviateNumberWithColor(
-              rawData?.call_open_interest,
-              false,
-              true,
-            )}</td
+            >{abbreviateNumber(rawData?.call_open_interest)}</td
           ></tr
         >
         <tr
-          class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >Implied Volatility (IV)
@@ -97,71 +85,59 @@
           ></tr
         >
         <tr
-          class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >Total Open Interest</td
           >
           <td
             class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-            >{@html abbreviateNumberWithColor(
-              rawData?.total_open_interest,
-              false,
-              true,
-            )}</td
+            >{abbreviateNumber(rawData?.total_open_interest)}</td
           ></tr
         >
         <tr
-          class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >Net Premium
           </td>
           <td
             class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-            >{@html rawData?.net_premium
-              ? abbreviateNumberWithColor(rawData?.net_premium, false, true)
+            >{rawData?.net_premium
+              ? abbreviateNumber(rawData?.net_premium)
               : "n/a"}</td
           ></tr
         >
       </tbody>
     </table>
-    <table class="w-[50%] text-sm text-white xl:min-w-[300px]">
+    <table class="w-[50%] text-sm xl:min-w-[300px]">
       <tbody
         ><tr
-          class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >Put Volume</td
           >
           <td
             class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-            >{@html abbreviateNumberWithColor(
-              rawData?.put_volume,
-              false,
-              true,
-            )}</td
+            >{abbreviateNumber(rawData?.put_volume)}</td
           ></tr
         >
 
         <tr
-          class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >Put Premium</td
           >
           <td
             class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-            >{@html abbreviateNumberWithColor(
-              rawData?.put_premium,
-              false,
-              true,
-            )}</td
+            >{abbreviateNumber(rawData?.put_premium)}</td
           ></tr
         >
 
         <tr
-          class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >P/C Ratio</td
@@ -173,23 +149,19 @@
         >
 
         <tr
-          class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >Put Open Interest</td
           >
           <td
             class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-            >{@html abbreviateNumberWithColor(
-              rawData?.put_open_interest,
-              false,
-              true,
-            )}</td
+            >{abbreviateNumber(rawData?.put_open_interest)}</td
           ></tr
         >
 
         <tr
-          class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >IV Rank</td
@@ -201,7 +173,7 @@
         >
 
         <tr
-          class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >🐻/🐂 Prem
@@ -258,26 +230,26 @@
                   </div>
                 </HoverCard.Trigger>
                 <HoverCard.Content
-                  class="w-auto bg-secondary border border-gray-600"
+                  class="w-auto bg-secondary border border-gray-300 dark:border-gray-600"
                 >
                   <div class="flex justify-between space-x-4">
-                    <div class="space-y-1 flex flex-col items-start text-white">
+                    <div class="space-y-1 flex flex-col items-start">
                       <div>
-                        Bearish: {@html abbreviateNumberWithColor(
+                        Bearish: {abbreviateNumber(
                           rawData?.premium_ratio?.at(0),
                           false,
                           true,
                         )}
                       </div>
                       <div>
-                        Neutral: {@html abbreviateNumberWithColor(
+                        Neutral: {abbreviateNumber(
                           rawData?.premium_ratio?.at(1),
                           false,
                           true,
                         )}
                       </div>
                       <div>
-                        Bullish: {@html abbreviateNumberWithColor(
+                        Bullish: {abbreviateNumber(
                           rawData?.premium_ratio?.at(2),
                           false,
                           true,
@@ -294,7 +266,7 @@
         </tr>
 
         <tr
-          class="flex flex-col border-b border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >(Net Call x Net Put) Prem</td
@@ -303,16 +275,8 @@
             class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
           >
             {#if rawData?.net_call_premium || rawData?.net_put_premium}
-              {@html abbreviateNumberWithColor(
-                rawData?.net_call_premium,
-                false,
-                true,
-              )}
-              x {@html abbreviateNumberWithColor(
-                rawData?.net_put_premium,
-                false,
-                true,
-              )}
+              {abbreviateNumber(rawData?.net_call_premium)}
+              x {abbreviateNumber(rawData?.net_put_premium)}
             {:else}
               n/a
             {/if}

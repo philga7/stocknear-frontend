@@ -196,9 +196,7 @@
   description={`A list of analyst ratings for ${$displayCompanyName} (${$stockTicker})} stock. See upgrades, downgrades, price targets and more from top Wall Street stock analysts.`}
 />
 
-<section
-  class="bg-default overflow-hidden text-white h-full min-h-screen mb-40 sm:mb-0 w-full"
->
+<section class=" overflow-hidden h-full min-h-screen mb-40 sm:mb-0 w-full">
   <div class="flex justify-center m-auto h-full overflow-hidden w-full">
     <div
       class="relative flex justify-center items-center overflow-hidden w-full"
@@ -223,7 +221,7 @@
                 class="inline-flex justify-center w-full rounded-md sm:w-auto"
               >
                 <div
-                  class="bg-secondary w-full sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1 mt-4"
+                  class="bg-gray-300 dark:bg-secondary w-full sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1 mt-4"
                 >
                   {#each tabs as item, i}
                     {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}
@@ -238,7 +236,7 @@
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
                             ><path
-                              fill="#A3A3A3"
+                              fill="currentColor"
                               d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
                             /></svg
                           >
@@ -261,7 +259,7 @@
                           class="relative text-sm block font-semibold whitespace-nowrap {activeIdx ===
                           i
                             ? 'text-black'
-                            : 'text-white'}"
+                            : ''}"
                         >
                           {item.title}
                         </span>
@@ -275,10 +273,12 @@
         </div>
 
         <div
-          class="mb-4 grid grid-cols-2 grid-rows-2 divide-contrast rounded-md border border-gray-600 md:grid-cols-4 md:grid-rows-1 md:divide-x"
+          class="mb-4 grid grid-cols-2 grid-rows-2 divide-contrast rounded-md border border-gray-300 dark:border-gray-600 md:grid-cols-4 md:grid-rows-1 md:divide-x"
         >
-          <div class="p-4 bp:p-5 sm:p-6 border-r border-gray-600">
-            <div class="text-[1rem] font-normal text-white">Total Analysts</div>
+          <div
+            class="p-4 bp:p-5 sm:p-6 border-r border-gray-300 dark:border-gray-600"
+          >
+            <div class="text-[1rem] font-normal">Total Analysts</div>
 
             <div
               class="mt-1 break-words font-semibold leading-8 text-xl sm:text-2xl"
@@ -286,10 +286,10 @@
               {numOfAnalyst}
             </div>
           </div>
-          <div class="p-4 bp:p-5 sm:p-6 border-r-0 md:border-r border-gray-600">
-            <div class="text-[1rem] font-normal text-white">
-              Consensus Rating
-            </div>
+          <div
+            class="p-4 bp:p-5 sm:p-6 border-r-0 md:border-r border-gray-300 dark:border-gray-600"
+          >
+            <div class="text-[1rem] font-normal">Consensus Rating</div>
             <div
               class="mt-1 break-words font-semibold leading-8 text-xl sm:text-2xl"
             >
@@ -297,9 +297,9 @@
             </div>
           </div>
           <div
-            class="p-4 bp:p-5 sm:p-6 border-r-0 md:border-r border-t md:border-t-0 border-gray-600"
+            class="p-4 bp:p-5 sm:p-6 border-r-0 md:border-r border-t md:border-t-0 border-gray-300 dark:border-gray-600"
           >
-            <div class="text-[1rem] font-normal text-white">Price Target</div>
+            <div class="text-[1rem] font-normal">Price Target</div>
             <div
               class="mt-1 break-words font-semibold leading-8 text-xl sm:text-2xl"
             >
@@ -309,16 +309,16 @@
             </div>
           </div>
           <div
-            class="p-4 bp:p-5 sm:p-6 border-t border-gray-600 md:border-0 border-l border-gray-600 md:border-0"
+            class="p-4 bp:p-5 sm:p-6 border-t border-gray-300 dark:border-gray-600 md:border-0 border-l border-gray-300 dark:border-gray-600 md:border-0"
           >
-            <div class="text-[1rem] font-normal text-white">Upside</div>
+            <div class="text-[1rem] font-normal">Upside</div>
             <div
               class="mt-1 break-words font-semibold leading-8 text-xl sm:text-2xl {changesPercentage >=
               0
-                ? "before:content-['+'] after:content-['%'] text-[#00FC50]"
+                ? "before:content-['+'] after:content-['%'] text-green-600 dark:text-[#00FC50]"
                 : changesPercentage < 0
-                  ? "after:content-['%'] text-[#FF2F1F]"
-                  : 'text-white'}"
+                  ? "after:content-['%'] text-red-600 dark:text-[#FF2F1F]"
+                  : ''}"
             >
               {changesPercentage}
             </div>
@@ -336,44 +336,32 @@
             class="mt-10 mb-2 items-center justify-between py-0 md:mt-8 md:flex md:py-2"
           >
             <div class="flex justify-between md:block">
-              <h3 class="text-xl sm:text-2xl text-white font-bold">
-                Ratings History
-              </h3>
+              <h3 class="text-xl sm:text-2xl font-bold">Ratings History</h3>
             </div>
           </div>
 
           <div class=" w-full m-auto mb-4 overflow-x-auto lg:overflow-hidden">
             <table
-              class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto"
+              class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
             >
-              <thead class="bg-default">
+              <thead class="text-muted dark:text-white">
                 <tr>
-                  <td class="text-white font-semibold text-sm text-start"
-                    >Analyst</td
-                  >
-                  <td class="text-white font-semibold text-sm text-start"
-                    >Firm</td
-                  >
-                  <td class="text-white font-semibold text-sm text-end"
-                    >Rating</td
-                  >
-                  <td class="text-white font-semibold text-sm text-end"
-                    >Action</td
-                  >
-                  <td class="text-white font-semibold text-sm text-end"
-                    >Price Target</td
-                  >
+                  <td class=" font-semibold text-sm text-start">Analyst</td>
+                  <td class=" font-semibold text-sm text-start">Firm</td>
+                  <td class=" font-semibold text-sm text-end">Rating</td>
+                  <td class=" font-semibold text-sm text-end">Action</td>
+                  <td class=" font-semibold text-sm text-end">Price Target</td>
 
-                  <td class="text-white font-semibold text-sm text-end">Date</td
-                  >
+                  <td class=" font-semibold text-sm text-end">Date</td>
                 </tr>
               </thead>
               <tbody>
                 {#each ["Pro", "Plus"]?.includes(data?.user?.tier) ? historyList : historyList?.slice(0, 3) as item, index}
                   <tr
                     class=" {latestInfoDate(item?.date)
-                      ? 'bg-[#F9AB00]/10'
-                      : 'odd:bg-odd '}  {index + 1 ===
+                      ? 'bg-blue-100 dark:bg-[#F9AB00]/10  shadow'
+                      : 'dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd'}  {index +
+                      1 ===
                       historyList?.slice(0, 3)?.length &&
                     !['Pro', 'Plus']?.includes(data?.user?.tier)
                       ? 'opacity-[0.1]'
@@ -387,7 +375,7 @@
                           href={item?.analystId !== null
                             ? `/analysts/${item?.analystId}`
                             : "#"}
-                          class="text-blue-500 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
+                          class="text-blue-500 sm:hover:text-muted dark:sm:hover: dark:text-blue-400"
                           >{item?.analyst_name}
                         </a>
 
@@ -407,7 +395,7 @@
                               </svg>
                             {:else}
                               <svg
-                                class="w-3 h-3 text-gray-300 dark:text-gray-500"
+                                class="w-3 h-3 text-gray-400 dark:text-gray-500"
                                 aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="currentColor"
@@ -430,7 +418,7 @@
                     </td>
 
                     <td
-                      class="text-sm sm:text-[1rem] whitespace-nowrap text-start text-white"
+                      class="text-sm sm:text-[1rem] whitespace-nowrap text-start"
                     >
                       {item?.analyst?.length > charNumber
                         ? item?.analyst?.slice(0, charNumber) + "..."
@@ -438,7 +426,7 @@
                     </td>
 
                     <td
-                      class="text-sm sm:text-[1rem] whitespace-nowrap text-end text-white"
+                      class="text-sm sm:text-[1rem] whitespace-nowrap text-end"
                     >
                       <span
                         class=" {['Strong Buy', 'Buy']?.includes(
@@ -458,7 +446,7 @@
                     </td>
 
                     <td
-                      class="text-sm sm:text-[1rem] whitespace-nowrap text-end text-white"
+                      class="text-sm sm:text-[1rem] whitespace-nowrap text-end"
                     >
                       {item?.action_company?.replace(
                         "Initiates Coverage On",
@@ -467,7 +455,7 @@
                     </td>
 
                     <td
-                      class="text-sm sm:text-[1rem] whitespace-nowrap text-end text-white font-semibold"
+                      class="text-sm sm:text-[1rem] whitespace-nowrap text-end font-semibold"
                     >
                       <div class="flex flex-col items-end">
                         <div class="flex flex-row items-center">
@@ -503,12 +491,12 @@
                     </td>
 
                     <td
-                      class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                      class=" text-end text-sm sm:text-[1rem] whitespace-nowrap"
                     >
                       <div class="flex flex-col items-end">
-                        {#if latestInfoDate(item?.date)}
+                        {#if !latestInfoDate(item?.date)}
                           <label
-                            class="bg-[#fff] text-black font-semibold text-xs rounded px-2 py-0.5 ml-3 mb-1"
+                            class="border-gray-300 shadow-sm bg-blue-100 dark:bg-[#fff] text-black font-semibold text-xs rounded px-2 py-0.5 ml-3 mb-1"
                           >
                             New
                           </label>
@@ -529,7 +517,7 @@
         {:else if activeIdx === 1}
           <div class="w-full flex justify-start items-center m-auto mt-10 mb-6">
             <div
-              class="text-center w-fit text-gray-100 text-sm sm:text-[1rem] rounded-md h-auto border border-gray-600 p-4"
+              class="text-center w-fit text-gray-100 text-sm sm:text-[1rem] rounded-md h-auto border border-gray-300 dark:border-gray-600 p-4"
             >
               <svg
                 class="w-5 h-5 inline-block sm:mr-1 shrink-0"
@@ -553,12 +541,10 @@
           <div class="mt-4 py-6 xl:mt-10 border-t border-gray-200">
             <div class="mx-auto max-w-7xl px-3 xs:px-6 lg:px-8">
               <div class="mx-auto max-w-2xl md:text-center">
-                <h3
-                  class="mt-2 text-2xl font-bold tracking-tight text-white bp:text-3xl"
-                >
+                <h3 class="mt-2 text-2xl font-bold tracking-tight bp:text-3xl">
                   Analyst Star Rankings
                 </h3>
-                <p class="mt-3 leading-8 text-muted dark:text-faded xl:text-lg">
+                <p class="mt-3 leading-8 xl:text-lg">
                   Our analyst star rankings are based on these four factors
                 </p>
               </div>
@@ -567,11 +553,9 @@
                   class="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2 lg:max-w-none lg:grid-cols-4 lg:gap-y-16"
                 >
                   <div class="relative pl-14">
-                    <dt
-                      class=" font-semibold leading-4 text-white md:leading-7"
-                    >
+                    <dt class=" font-semibold leading-4 md:leading-7">
                       <div
-                        class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#fff]"
+                        class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-[#fff]"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -579,7 +563,7 @@
                           viewBox="0 0 24 24"
                           stroke-width="1.5"
                           stroke="currentColor"
-                          class="h-6 w-6 text-black"
+                          class="h-6 w-6 text-white dark:text-black"
                           ><path
                             stroke-linecap="round"
                             stroke-linejoin="round"
@@ -589,16 +573,14 @@
                       </div>
                       Success Rate
                     </dt>
-                    <dd class="mt-2 leading-7 text-muted dark:text-faded">
+                    <dd class="mt-2 leading-7">
                       The percentage of ratings that are profitable.
                     </dd>
                   </div>
                   <div class="relative pl-14">
-                    <dt
-                      class=" font-semibold leading-4 text-white md:leading-7"
-                    >
+                    <dt class=" font-semibold leading-4 md:leading-7">
                       <div
-                        class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#fff]"
+                        class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-[#fff]"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -606,7 +588,7 @@
                           viewBox="0 0 24 24"
                           stroke-width="1.5"
                           stroke="currentColor"
-                          class="h-6 w-6 text-black"
+                          class="h-6 w-6 text-white dark:text-black"
                           ><path
                             stroke-linecap="round"
                             stroke-linejoin="round"
@@ -616,17 +598,15 @@
                       </div>
                       Average Return
                     </dt>
-                    <dd class="mt-2 leading-7 text-muted dark:text-faded">
+                    <dd class="mt-2 leading-7">
                       The average percentage return within one year of the
                       rating.
                     </dd>
                   </div>
                   <div class="relative pl-14">
-                    <dt
-                      class=" font-semibold leading-4 text-white md:leading-7"
-                    >
+                    <dt class=" font-semibold leading-4 md:leading-7">
                       <div
-                        class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#fff]"
+                        class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-[#fff]"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -634,7 +614,7 @@
                           viewBox="0 0 24 24"
                           stroke-width="1.5"
                           stroke="currentColor"
-                          class="h-6 w-6 text-black"
+                          class="h-6 w-6 text-white dark:text-black"
                           ><path
                             stroke-linecap="round"
                             stroke-linejoin="round"
@@ -644,17 +624,15 @@
                       </div>
                       Rating Count
                     </dt>
-                    <dd class="mt-2 leading-7 text-muted dark:text-faded">
+                    <dd class="mt-2 leading-7">
                       The more ratings the analyst has provided, the higher the
                       score.
                     </dd>
                   </div>
                   <div class="relative pl-14">
-                    <dt
-                      class=" font-semibold leading-4 text-white md:leading-7"
-                    >
+                    <dt class=" font-semibold leading-4 md:leading-7">
                       <div
-                        class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#fff]"
+                        class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-[#fff]"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -662,7 +640,7 @@
                           viewBox="0 0 24 24"
                           stroke-width="1.5"
                           stroke="currentColor"
-                          class="h-6 w-6 text-black"
+                          class="h-6 w-6 text-white dark:text-black"
                           ><path
                             stroke-linecap="round"
                             stroke-linejoin="round"
@@ -672,7 +650,7 @@
                       </div>
                       Recency
                     </dt>
-                    <dd class="mt-2 leading-7 text-muted dark:text-faded">
+                    <dd class="mt-2 leading-7">
                       Ratings provided within the past year contribute to a
                       higher score.
                     </dd>

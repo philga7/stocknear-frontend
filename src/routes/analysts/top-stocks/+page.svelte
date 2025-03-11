@@ -83,7 +83,7 @@
                   <div class="relative pl-14">
                     <dt class=" font-semibold leading-4 md:leading-7">
                       <div
-                        class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#fff]"
+                        class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-[#fff]"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -91,7 +91,7 @@
                           viewBox="0 0 24 24"
                           stroke-width="1.5"
                           stroke="currentColor"
-                          class="h-6 w-6 text-black"
+                          class="h-6 w-6 text-white dark:text-black"
                           ><path
                             stroke-linecap="round"
                             stroke-linejoin="round"
@@ -108,7 +108,7 @@
                   <div class="relative pl-14">
                     <dt class=" font-semibold leading-4 md:leading-7">
                       <div
-                        class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#fff]"
+                        class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-[#fff]"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -116,7 +116,7 @@
                           viewBox="0 0 24 24"
                           stroke-width="1.5"
                           stroke="currentColor"
-                          class="h-6 w-6 text-black"
+                          class="h-6 w-6 text-white dark:text-black"
                           ><path
                             stroke-linecap="round"
                             stroke-linejoin="round"
@@ -134,7 +134,7 @@
                   <div class="relative pl-14">
                     <dt class=" font-semibold leading-4 md:leading-7">
                       <div
-                        class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#fff]"
+                        class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-[#fff]"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -142,7 +142,7 @@
                           viewBox="0 0 24 24"
                           stroke-width="1.5"
                           stroke="currentColor"
-                          class="h-6 w-6 text-black"
+                          class="h-6 w-6 text-white dark:text-black"
                           ><path
                             stroke-linecap="round"
                             stroke-linejoin="round"
@@ -160,7 +160,7 @@
                   <div class="relative pl-14">
                     <dt class=" font-semibold leading-4 md:leading-7">
                       <div
-                        class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#fff]"
+                        class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-[#fff]"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -168,7 +168,7 @@
                           viewBox="0 0 24 24"
                           stroke-width="1.5"
                           stroke="currentColor"
-                          class="h-6 w-6 text-black"
+                          class="h-6 w-6 text-white"
                           ><path
                             stroke-linecap="round"
                             stroke-linejoin="round"

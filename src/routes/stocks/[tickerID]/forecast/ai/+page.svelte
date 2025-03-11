@@ -2,23 +2,11 @@
   import { displayCompanyName, stockTicker, screenWidth } from "$lib/store";
   import Infobox from "$lib/components/Infobox.svelte";
   import highcharts from "$lib/highcharts.ts";
+  import { mode } from "mode-watcher";
 
-  import { Chart } from "svelte-echarts";
-  import { init, use } from "echarts/core";
-  import { LineChart, BarChart, GaugeChart } from "echarts/charts";
-  import { GridComponent, TooltipComponent } from "echarts/components";
-  import { CanvasRenderer } from "echarts/renderers";
   import SEO from "$lib/components/SEO.svelte";
 
   export let data;
-  use([
-    LineChart,
-    GaugeChart,
-    BarChart,
-    GridComponent,
-    TooltipComponent,
-    CanvasRenderer,
-  ]);
 
   const price = data?.getStockQuote?.price?.toFixed(2) || 0;
 
@@ -56,82 +44,158 @@
     // Determine the value based on the consensus rating
     switch (consensusRating) {
       case "Strong Sell":
-        value = 0;
-        break;
-      case "Sell":
-        value = 0.25;
-        break;
-      case "Hold":
         value = 0.5;
         break;
+      case "Sell":
+        value = 1.5;
+        break;
+      case "Hold":
+        value = 2.5;
+        break;
       case "Buy":
-        value = 0.75;
+        value = 3.5;
         break;
       case "Strong Buy":
-        value = 1;
+        value = 4.5;
         break;
       default:
         value = 0.5;
         break;
     }
-    const option = {
-      silent: true,
-      animation: false,
+
+    const options = {
+      legend: {
+        enabled: false,
+      },
+      credits: {
+        enabled: false,
+      },
+      chart: {
+        type: "gauge",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        animation: false,
+      },
+      title: {
+        text: null,
+      },
+      yAxis: {
+        min: 0,
+        max: 5,
+        tickPosition: "inside",
+        tickLength: 20,
+        tickWidth: 0,
+        minorTickInterval: null,
+        lineWidth: 0,
+        // Remove numeric tick labels
+        labels: {
+          enabled: false,
+        },
+        plotBands: [
+          {
+            from: 0,
+            to: 1,
+            color: "#9E190A",
+            thickness: 40,
+            borderRadius: "0px",
+          },
+          {
+            from: 1,
+            to: 2,
+            color: "#D9220E",
+            thickness: 40,
+            borderRadius: "0px",
+          },
+          {
+            from: 2,
+            to: 3,
+            color: "#f5b700",
+            thickness: 40,
+            borderRadius: "0px",
+          },
+          {
+            from: 3,
+            to: 4,
+            color: "#31B800",
+            thickness: 40,
+            borderRadius: "0px",
+          },
+          {
+            from: 4,
+            to: 5,
+            color: "#008A00",
+            thickness: 40,
+            borderRadius: "0px",
+          },
+        ],
+      },
+      pane: {
+        startAngle: -90,
+        endAngle: 89.9,
+        background: null,
+        center: ["50%", "50%"],
+        size: "70%",
+      },
       series: [
         {
-          type: "gauge",
-          startAngle: 180,
-          endAngle: 0,
-          center: ["50%", "45%"],
-          radius: "70%",
-          min: 0,
-          max: 1,
-          splitNumber: 4,
-          axisLine: {
-            lineStyle: {
-              width: 25,
-              color: [
-                [0.2, "#9E190A"],
-                [0.4, "#D9220E"],
-                [0.6, "#FF9E21"],
-                [0.8, "#31B800"],
-                [1, "#008A00"],
-              ],
+          name: "Rating",
+          data: [value],
+          animation: false,
+          dataLabels: {
+            enabled: true,
+            useHTML: true,
+            borderWidth: 0,
+            backgroundColor: "transparent",
+            style: {
+              textOutline: "none",
+              fontSize: "16px",
+              fontWeight: "bold",
+            },
+            formatter: function () {
+              const rating = this.y;
+              let ratingText = "";
+              let textColor = "";
+
+              if (rating < 1) {
+                ratingText = "Strong Sell";
+                textColor = "#D9220E";
+              } else if (rating < 2) {
+                ratingText = "Sell";
+                textColor = "#D9220E";
+              } else if (rating < 3) {
+                ratingText = "Hold";
+                textColor = "#f5b700";
+              } else if (rating < 4) {
+                ratingText = "Buy";
+                textColor = "#31B800";
+              } else {
+                ratingText = "Strong Buy";
+                textColor = "#31B800";
+              }
+
+              // "Analyst Consensus:" in white, rating in color
+              return `
+          <span class="text-lg">Analyst Consensus: </span>
+          <span class="text-lg" style="color:${textColor};">${ratingText}</span>
+        `;
             },
           },
-          pointer: {
-            icon: "path://M12.8,0.7l12,40.1H0.7L12.8,0.7z",
-            length: "25%",
-            width: 20,
-            offsetCenter: [0, "-30%"],
-            itemStyle: {
-              color: "#fff",
-            },
+          dial: {
+            radius: "80%",
+            backgroundColor: "#2A2E39",
+            baseWidth: 12,
+            baseLength: "0%",
+            rearLength: "0%",
           },
-          axisTick: {
-            length: 0,
+          pivot: {
+            backgroundColor: "#2A2E39",
+            radius: 8,
           },
-          splitLine: {
-            length: 0,
-          },
-          axisLabel: {
-            show: false,
-          },
-          detail: {
-            show: false, // Hide the numerical value display
-          },
-          data: [
-            {
-              value: value,
-              label: {
-                show: false, // Hide the data label
-              },
-            },
-          ],
         },
       ],
     };
-    return option;
+
+    return options;
   }
 
   function getPriceForecastChart() {
@@ -201,18 +265,18 @@
         },
       },
       chart: {
-        backgroundColor: "#09090B",
-        plotBackgroundColor: "#09090B",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
         height: 360,
         animation: false,
       },
       title: {
-        text: `<div class="grid grid-cols-2 w-[200px] sm:w-[500px] -mb-3.5 text-xs font-[501] text-gray-400">
+        text: `<div class="grid grid-cols-2 w-[200px] sm:w-[500px] -mb-3.5 text-xs font-[501] text-gray-600 dark:text-gray-400">
           <h3 class="text-left">${$screenWidth && $screenWidth < 640 ? "Past Year" : "Past 12 Months"}</h3>
           <h3 class="text-right">${$screenWidth && $screenWidth < 640 ? "Next Year" : "12 Month Forecast"}</h3>
          </div>`,
         style: {
-          color: "white",
+          color: $mode === "light" ? "black" : "white",
           width: "100%",
         },
         verticalAlign: "top",
@@ -220,12 +284,12 @@
       },
       xAxis: {
         gridLineWidth: 1,
-        gridLineColor: "#111827",
+        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
         type: "datetime",
         endOnTick: false,
         labels: {
           style: {
-            color: "#fff",
+            color: $mode === "light" ? "black" : "white",
           },
           formatter: function () {
             const date = new Date(this.value);
@@ -242,15 +306,14 @@
         },
         labels: {
           style: {
-            color: "#fff",
+            color: $mode === "light" ? "black" : "white",
           },
           formatter: function () {
             return `$${this.value.toFixed(0)}`;
           },
         },
         gridLineWidth: 1,
-        gridLineColor: "#111827",
-        tickInterval: 20, // Adjust this value to reduce step size
+        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
       },
 
       series: [
@@ -258,7 +321,7 @@
           animation: false,
           name: "Historical",
           data: processedHistorical,
-          color: "#fff",
+          color: $mode === "light" ? "#007050" : "#fff",
           marker: {
             enabled: true,
             symbol: "circle",
@@ -280,7 +343,7 @@
           animation: false,
           name: "Average",
           data: forecastAvg,
-          color: "#fff",
+          color: $mode === "light" ? "#007050" : "#fff",
           dashStyle: "Dash",
           marker: {
             enabled: false,
@@ -297,6 +360,93 @@
           },
         },
       ],
+      /*
+      annotations: [
+        {
+          labels: [
+            {
+              point: {
+                x: forecastHigh[forecastHigh.length - 1][0], // Last X (timestamp)
+                y: forecastHigh[forecastHigh.length - 1][1], // Last Y (Average value)
+                xAxis: 0,
+                yAxis: 0,
+              },
+              text: `<b>High</b><br><span class="text-sm">$${forecastHigh[forecastHigh.length - 1][1]}</span>`,
+              useHTML: true,
+              style: {
+                backgroundColor: "rgba(0, 0, 0, 0.8)",
+                borderColor: "rgba(255, 255, 255, 0.2)",
+                borderWidth: 1,
+                fontSize: "12px",
+                fontWeight: "bold",
+              },
+              align: "left",
+              verticalAlign: "middles",
+              x: -10,
+              y: 0,
+              backgroundColor: "rgba(0, 0, 0, 0.8)",
+              borderColor: "rgba(255, 255, 255, 0.2)",
+              borderWidth: 1,
+              padding: 8,
+              shape: "",
+            },
+            {
+              point: {
+                x: forecastAvg[forecastAvg.length - 1][0], // Last X (timestamp)
+                y: forecastAvg[forecastAvg.length - 1][1], // Last Y (Average value)
+                xAxis: 0,
+                yAxis: 0,
+              },
+              text: `<b>Average</b><br><span>$${forecastAvg[forecastAvg.length - 1][1]}</span>`,
+              useHTML: true,
+              style: {
+                backgroundColor: "rgba(0, 0, 0, 0.8)",
+                borderColor: "rgba(255, 255, 255, 0.2)",
+                borderWidth: 1,
+                fontSize: "12px",
+                fontWeight: "bold",
+              },
+              align: "right",
+              verticalAlign: "middle",
+              x: -10,
+              y: 30,
+              backgroundColor: "rgba(0, 0, 0, 0.8)",
+              borderColor: "rgba(255, 255, 255, 0.2)",
+              borderWidth: 1,
+              padding: 5,
+              shape: "",
+            },
+            {
+              point: {
+                x: forecastLow[forecastLow.length - 1][0], // Last X (timestamp)
+                y: forecastLow[forecastLow.length - 1][1], // Last Y (Average value)
+                xAxis: 0,
+                yAxis: 0,
+              },
+              text: `<b>Low</b><br><span>$${forecastLow[forecastLow.length - 1][1]}</span>`,
+              useHTML: true,
+              style: {
+                backgroundColor: "rgba(0, 0, 0, 0.8)",
+                borderColor: "rgba(255, 255, 255, 0.2)",
+                borderWidth: 1,
+                fontSize: "12px",
+                fontWeight: "bold",
+              },
+              align: "top",
+              verticalAlign: "middle",
+              x: -10,
+              y: -40,
+              backgroundColor: "rgba(0, 0, 0, 0.8)",
+              borderColor: "rgba(255, 255, 255, 0.2)",
+              borderWidth: 1,
+              padding: 5,
+              shape: "",
+            },
+          ],
+        },
+      ],
+      */
+
       legend: {
         enabled: false,
       },
@@ -307,8 +457,15 @@
     return options;
   }
 
-  let optionsPieChart = getPieChart() || null;
-  let config = getPriceForecastChart() || null;
+  let optionsPieChart = null;
+  let config = null;
+
+  $: {
+    if ($mode) {
+      optionsPieChart = getPieChart() || null;
+      config = getPriceForecastChart() || null;
+    }
+  }
 </script>
 
 <SEO
@@ -316,7 +473,7 @@
   description={`Discover our AI-powered forecast for ${$displayCompanyName} (${$stockTicker}). Get in-depth analyst ratings, price targets, upgrades, and downgrades from top Wall Street experts. Stay ahead of market trends and make smarter investment decisions.`}
 />
 
-<section class="w-full bg-default overflow-hidden text-white h-full">
+<section class="w-full overflow-hidden min-h-screen">
   <div class="w-full flex h-full overflow-hidden">
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"
@@ -328,7 +485,7 @@
         {#if Object?.keys(data?.getPriceAnalysis)?.length > 0}
           <div class="w-full mb-6 mt-3">
             <div
-              class="rounded-sm border border-gray-600 p-0.5 xs:p-1 md:flex md:flex-col md:space-y-4 md:divide-y md:p-4 lg:flex-row lg:space-x-4 lg:space-y-0 lg:divide-x lg:divide-y-0 divide-gray-600"
+              class="rounded-sm border border-gray-300 dark:border-gray-600 p-0.5 xs:p-1 md:flex md:flex-col md:space-y-4 md:divide-y md:p-4 lg:flex-row lg:space-x-4 lg:space-y-0 lg:divide-x lg:divide-y-0 divide-gray-300 dark:divide-gray-600"
             >
               <div
                 class="p-3 md:flex md:space-x-4 md:p-0 lg:block lg:max-w-[32%] lg:space-x-0"
@@ -352,11 +509,10 @@
                 </div>
                 <div>
                   <div>
-                    <div class="app h-[160px]">
-                      {#if optionsPieChart !== null}
-                        <Chart {init} options={optionsPieChart} class="chart" />
-                      {/if}
-                    </div>
+                    <div
+                      class="max-h-[225px]"
+                      use:highcharts={optionsPieChart}
+                    ></div>
                     <div class="-mt-36 text-center text-xl font-semibold">
                       Analyst Consensus: <span
                         class="font-bold {['Strong Buy', 'Buy']?.includes(
@@ -373,18 +529,16 @@
               </div>
               <div class="grow pt-2 md:pt-4 lg:pl-4 lg:pt-0">
                 <div
-                  class="chart mt-5 sm:mt-0 border border-gray-800 rounded"
+                  class="chart mt-5 sm:mt-0 border border-gray-300 dark:border-gray-800 rounded"
                   use:highcharts={config}
                 ></div>
                 <div
                   class="hide-scroll mb-1 mt-2 overflow-x-auto px-1.5 text-center md:mb-0 md:px-0 lg:mt-2"
                 >
-                  <table
-                    class="w-full text-right text-tiny text-white xs:text-sm sm:"
-                  >
+                  <table class="w-full text-right text-tiny xs:text-sm">
                     <thead
                       ><tr
-                        class="border-b border-gray-600 font-normal text-sm sm:text-[1rem]"
+                        class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
                         ><th class="py-[3px] text-left font-semibold lg:py-0.5"
                           >Target</th
                         > <th class="font-semibold">Low</th>
@@ -395,7 +549,7 @@
                     >
                     <tbody
                       ><tr
-                        class="border-b border-gray-600 font-normal text-sm sm:text-[1rem]"
+                        class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
                         ><td class="py-[3px] text-left lg:py-0.5">Price</td>
                         <td>${lowPriceTarget}</td>
                         <td>${avgPriceTarget}</td> <td>${medianPriceTarget}</td>
@@ -406,22 +560,26 @@
                         <td
                           class={lowChange > 0
                             ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                            : "text-[#FF2F1F]"}>{lowChange}%</td
+                            : "text-red-600 dark:text-[#FF2F1F]"}
+                          >{lowChange}%</td
                         >
                         <td
                           class={avgChange > 0
                             ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                            : "text-[#FF2F1F]"}>{avgChange}%</td
+                            : "text-red-600 dark:text-[#FF2F1F]"}
+                          >{avgChange}%</td
                         >
                         <td
                           class={medianChange > 0
                             ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                            : "text-[#FF2F1F]"}>{medianChange}%</td
+                            : "text-red-600 dark:text-[#FF2F1F]"}
+                          >{medianChange}%</td
                         >
                         <td
                           class={highChange > 0
                             ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                            : "text-[#FF2F1F]"}>{highChange}%</td
+                            : "text-red-600 dark:text-[#FF2F1F]"}
+                          >{highChange}%</td
                         ></tr
                       ></tbody
                     >
@@ -437,20 +595,3 @@
     </div>
   </div>
 </section>
-
-<style>
-  .app {
-    height: 300px;
-    max-width: 100%; /* Ensure chart width doesn't exceed the container */
-  }
-
-  @media (max-width: 640px) {
-    .app {
-      height: 300px;
-    }
-  }
-
-  .chart {
-    width: 100%;
-  }
-</style>

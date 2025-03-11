@@ -319,9 +319,7 @@
                   >
                     Analyst Star Rankings
                   </h3>
-                  <p
-                    class="mt-3 leading-8 text-muted dark:text-faded xl:text-lg"
-                  >
+                  <p class="mt-3 leading-8 xl:text-lg">
                     Our analyst star rankings are based on these four factors
                   </p>
                 </div>
@@ -332,7 +330,7 @@
                     <div class="relative pl-14">
                       <dt class=" font-semibold leading-4 md:leading-7">
                         <div
-                          class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#fff]"
+                          class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-[#fff]"
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -340,7 +338,7 @@
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
-                            class="h-6 w-6 text-black"
+                            class="h-6 w-6 text-white dark:text-black"
                             ><path
                               stroke-linecap="round"
                               stroke-linejoin="round"
@@ -350,14 +348,14 @@
                         </div>
                         Success Rate
                       </dt>
-                      <dd class="mt-2 leading-7 text-muted dark:text-faded">
+                      <dd class="mt-2 leading-7">
                         The percentage of ratings that are profitable.
                       </dd>
                     </div>
                     <div class="relative pl-14">
                       <dt class=" font-semibold leading-4 md:leading-7">
                         <div
-                          class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#fff]"
+                          class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-[#fff]"
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -365,7 +363,7 @@
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
-                            class="h-6 w-6 text-black"
+                            class="h-6 w-6 text-white dark:text-black"
                             ><path
                               stroke-linecap="round"
                               stroke-linejoin="round"
@@ -375,7 +373,7 @@
                         </div>
                         Average Return
                       </dt>
-                      <dd class="mt-2 leading-7 text-muted dark:text-faded">
+                      <dd class="mt-2 leading-7">
                         The average percentage return within one year of the
                         rating.
                       </dd>
@@ -383,7 +381,7 @@
                     <div class="relative pl-14">
                       <dt class=" font-semibold leading-4 md:leading-7">
                         <div
-                          class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#fff]"
+                          class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-[#fff]"
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -391,7 +389,7 @@
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
-                            class="h-6 w-6 text-black"
+                            class="h-6 w-6 text-white dark:text-black"
                             ><path
                               stroke-linecap="round"
                               stroke-linejoin="round"
@@ -401,7 +399,7 @@
                         </div>
                         Rating Count
                       </dt>
-                      <dd class="mt-2 leading-7 text-muted dark:text-faded">
+                      <dd class="mt-2 leading-7">
                         The more ratings the analyst has provided, the higher
                         the score.
                       </dd>
@@ -409,7 +407,7 @@
                     <div class="relative pl-14">
                       <dt class=" font-semibold leading-4 md:leading-7">
                         <div
-                          class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#fff]"
+                          class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-[#fff]"
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -417,7 +415,7 @@
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
-                            class="h-6 w-6 text-black"
+                            class="h-6 w-6 text-white dark:text-black"
                             ><path
                               stroke-linecap="round"
                               stroke-linejoin="round"
@@ -427,7 +425,7 @@
                         </div>
                         Recency
                       </dt>
-                      <dd class="mt-2 leading-7 text-muted dark:text-faded">
+                      <dd class="mt-2 leading-7">
                         Ratings provided within the past year contribute to a
                         higher score.
                       </dd>

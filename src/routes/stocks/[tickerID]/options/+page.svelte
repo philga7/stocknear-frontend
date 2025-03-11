@@ -3,7 +3,7 @@
   import DailyStats from "$lib/components/Options/DailyStats.svelte";
   import TickerFlow from "$lib/components/Options/TickerFlow.svelte";
 
-  import { abbreviateNumberWithColor, monthNames } from "$lib/utils";
+  import { abbreviateNumber, monthNames } from "$lib/utils";
   import { onMount } from "svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
 
@@ -90,7 +90,7 @@
               marker +
               param.seriesName +
               ": " +
-              abbreviateNumberWithColor(param.value, false, true) +
+              abbreviateNumber(param.value, false, true) +
               "<br/>";
           });
 
@@ -282,7 +282,7 @@
   description={`Explore unusual options activity for ${$displayCompanyName} (${$stockTicker}), providing insights into market sentiment and potential stock movement.`}
 />
 
-<section class="w-full bg-default overflow-hidden text-white min-h-screen">
+<section class="w-full overflow-hidden min-h-screen">
   <div class="w-full flex h-full overflow-hidden">
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"
@@ -318,15 +318,15 @@
             </select>
           </div>
 
-          <div class="app w-full bg-default">
+          <div class="app w-full ">
             {#if filteredList?.length !== 0}
               <Chart {init} {options} class="chart" />
             {:else}
               <span
-                class="text-xl text-white m-auto flex justify-center items-center h-full"
+                class="text-xl  m-auto flex justify-center items-center h-full"
               >
                 <div
-                  class="text-white text-sm sm:text-[1rem] sm:rounded-md h-auto border border-gray-600 p-4"
+                  class=" text-sm sm:text-[1rem] sm:rounded-md h-auto border border-gray-600 p-4"
                 >
                   <svg
                     class="w-5 h-5 inline-block sm:mr-2 shrink-0"
@@ -345,64 +345,42 @@
           -->
 
           {#if optionList?.length !== 0}
-            <h3 class="text-xl sm:text-2xl text-white font-bold text-start">
+            <h3 class="text-xl sm:text-2xl font-bold text-start">
               Historical {$stockTicker} Data
             </h3>
 
             <div class="flex justify-start items-center m-auto overflow-x-auto">
               <table
-                class="w-full table table-sm table-compact bg-table border border-gray-800 rounded-none sm:rounded-md m-auto mt-4 overflow-x-auto"
+                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-3"
               >
-                <thead class="bg-default">
+                <thead class="text-muted dark:text-white">
                   <tr class="">
-                    <td class="text-white font-semibold text-sm text-start"
-                      >Date</td
-                    >
-                    <td class="text-white font-semibold text-sm text-end"
-                      >% Change</td
-                    >
-                    <td class="text-white font-semibold text-sm text-end"
-                      >P/C</td
-                    >
-                    <td class="text-white font-semibold text-sm text-center"
-                      >Volume</td
-                    >
-                    <td class="text-white font-semibold text-sm text-center"
-                      >C Volume</td
-                    >
-                    <td class="text-white font-semibold text-sm text-center"
-                      >P Volume</td
-                    >
+                    <td class=" font-semibold text-sm text-start">Date</td>
+                    <td class=" font-semibold text-sm text-end">% Change</td>
+                    <td class=" font-semibold text-sm text-end">P/C</td>
+                    <td class=" font-semibold text-sm text-center">Volume</td>
+                    <td class=" font-semibold text-sm text-center">C Volume</td>
+                    <td class=" font-semibold text-sm text-center">P Volume</td>
                     <!--
-                    <td class="text-white font-semibold text-sm text-end"
+                    <td class=" font-semibold text-sm text-end"
                       >Vol/30D</td
                     >
                       -->
                     <!--
-                    <td class="text-white font-semibold text-sm text-end"
+                    <td class=" font-semibold text-sm text-end"
                       >🐻/🐂 Prem</td
                     >
                   -->
-                    <td class="text-white font-semibold text-sm text-end"
-                      >Total OI</td
-                    >
-                    <td class="text-white font-semibold text-sm text-end"
-                      >OI Change</td
-                    >
-                    <td class="text-white font-semibold text-sm text-end"
-                      >% OI Change</td
-                    >
-                    <td class="text-white font-semibold text-sm text-end"
-                      >C Prem</td
-                    >
-                    <td class="text-white font-semibold text-sm text-end"
-                      >P Prem</td
-                    >
+                    <td class=" font-semibold text-sm text-end">Total OI</td>
+                    <td class=" font-semibold text-sm text-end">OI Change</td>
+                    <td class=" font-semibold text-sm text-end">% OI Change</td>
+                    <td class=" font-semibold text-sm text-end">C Prem</td>
+                    <td class=" font-semibold text-sm text-end">P Prem</td>
                     <!--
-                    <td class="text-white font-semibold text-sm text-end"
+                    <td class=" font-semibold text-sm text-end"
                       >Net Prem</td
                     >
-                    <td class="text-white font-semibold text-sm text-end"
+                    <td class=" font-semibold text-sm text-end"
                       >Total Prem</td
                     >
                       -->
@@ -411,32 +389,28 @@
                 <tbody>
                   {#each data?.user?.tier === "Pro" ? optionList : optionList?.slice(0, 3) as item, index}
                     <tr
-                      class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-oddborder-b border-gray-800 {index +
+                      class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
                         1 ===
                         optionList?.slice(0, 3)?.length &&
                       !['Pro']?.includes(data?.user?.tier)
                         ? 'opacity-[0.1]'
                         : ''}"
                     >
-                      <td class="text-white text-sm sm:text-[1rem] text-start">
+                      <td class=" text-sm sm:text-[1rem] text-start">
                         {formatDate(item?.date)}
                       </td>
 
-                      <td class="text-white text-sm sm:text-[1rem] text-end">
+                      <td class=" text-sm sm:text-[1rem] text-end">
                         {#if item?.changesPercentage >= 0 && item?.changesPercentage !== null}
                           <span class="text-green-600 dark:text-[#00FC50]"
                             >+{item?.changesPercentage >= 1000
-                              ? abbreviateNumberWithColor(
-                                  item?.changesPercentage,
-                                )
+                              ? abbreviateNumber(item?.changesPercentage)
                               : item?.changesPercentage?.toFixed(2)}%</span
                           >
                         {:else if item?.changesPercentage < 0 && item?.changesPercentage !== null}
                           <span class="text-red-600 dark:text-[#FF2F1F]"
                             >{item?.changesPercentage <= -1000
-                              ? abbreviateNumberWithColor(
-                                  item?.changesPercentage,
-                                )
+                              ? abbreviateNumber(item?.changesPercentage)
                               : item?.changesPercentage?.toFixed(2)}%
                           </span>
                         {:else}
@@ -444,11 +418,11 @@
                         {/if}
                       </td>
 
-                      <td class="text-sm sm:text-[1rem] text-end text-white">
+                      <td class="text-sm sm:text-[1rem] text-end">
                         {item?.putCallRatio}
                       </td>
 
-                      <td class="text-sm sm:text-[1rem] text-end text-white">
+                      <td class="text-sm sm:text-[1rem] text-end">
                         {item?.volume?.toLocaleString("en-US")}
                       </td>
 
@@ -464,7 +438,7 @@
                         {item?.put_volume?.toLocaleString("en-US")}
                       </td>
                       <!--
-                      <td class="text-sm sm:text-[1rem] text-white text-end">
+                      <td class="text-sm sm:text-[1rem]  text-end">
                         {item?.avgVolumeRatio?.toFixed(2)}
                       </td>
                       -->
@@ -512,24 +486,24 @@
                           >
                             <div class="flex justify-between space-x-4">
                               <div
-                                class="space-y-1 flex flex-col items-start text-white"
+                                class="space-y-1 flex flex-col items-start "
                               >
                                 <div>
-                                  Bearish: {@html abbreviateNumberWithColor(
+                                  Bearish: {@html abbreviateNumber(
                                     item?.premium_ratio[0],
                                     false,
                                     true,
                                   )}
                                 </div>
                                 <div>
-                                  Neutral: {@html abbreviateNumberWithColor(
+                                  Neutral: {@html abbreviateNumber(
                                     item?.premium_ratio[1],
                                     false,
                                     true,
                                   )}
                                 </div>
                                 <div>
-                                  Bullish: {@html abbreviateNumberWithColor(
+                                  Bullish: {@html abbreviateNumber(
                                     item?.premium_ratio[2],
                                     false,
                                     true,
@@ -542,15 +516,15 @@
                       </td>
                       -->
 
-                      <td class="text-sm sm:text-[1rem] text-end text-white">
-                        {@html abbreviateNumberWithColor(
+                      <td class="text-sm sm:text-[1rem] text-end">
+                        {@html abbreviateNumber(
                           item?.total_open_interest,
                           false,
                           true,
                         )}
                       </td>
 
-                      <td class="text-white text-sm sm:text-[1rem] text-end">
+                      <td class=" text-sm sm:text-[1rem] text-end">
                         {#if item?.changeOI >= 0}
                           <span class="text-green-600 dark:text-[#00FC50]"
                             >+{item?.changeOI?.toLocaleString("en-US")}</span
@@ -560,58 +534,50 @@
                             >{item?.changeOI?.toLocaleString("en-US")}
                           </span>
                         {:else}
-                          <span class="text-white"> n/a </span>
+                          <span class=""> n/a </span>
                         {/if}
                       </td>
 
-                      <td class="text-white text-sm sm:text-[1rem] text-end">
+                      <td class=" text-sm sm:text-[1rem] text-end">
                         {#if item?.changesPercentageOI >= 0}
                           <span class="text-green-600 dark:text-[#00FC50]"
                             >+{item?.changesPercentageOI >= 1000
-                              ? abbreviateNumberWithColor(
-                                  item?.changesPercentageOI,
-                                )
+                              ? abbreviateNumber(item?.changesPercentageOI)
                               : item?.changesPercentageOI?.toFixed(2)}%</span
                           >
                         {:else if item?.changesPercentageOI < 0}
                           <span class="text-red-600 dark:text-[#FF2F1F]"
                             >{item?.changesPercentageOI <= -1000
-                              ? abbreviateNumberWithColor(
-                                  item?.changesPercentageOI,
-                                )
+                              ? abbreviateNumber(item?.changesPercentageOI)
                               : item?.changesPercentageOI?.toFixed(2)}%
                           </span>
                         {:else}
-                          <span class="text-white"> n/a </span>
+                          <span class=""> n/a </span>
                         {/if}
                       </td>
 
-                      <td class="text-sm sm:text-[1rem] text-end text-white">
-                        {@html abbreviateNumberWithColor(
+                      <td class="text-sm sm:text-[1rem] text-end">
+                        {@html abbreviateNumber(
                           item?.call_premium,
                           false,
                           true,
                         )}
                       </td>
 
-                      <td class="text-sm sm:text-[1rem] text-end text-white">
-                        {@html abbreviateNumberWithColor(
-                          item?.put_premium,
-                          false,
-                          true,
-                        )}
+                      <td class="text-sm sm:text-[1rem] text-end">
+                        {@html abbreviateNumber(item?.put_premium, false, true)}
                       </td>
                       <!--
-                      <td class="text-sm sm:text-[1rem] text-end text-white">
-                        {@html abbreviateNumberWithColor(
+                      <td class="text-sm sm:text-[1rem] text-end ">
+                        {@html abbreviateNumber(
                           item?.net_premium,
                           false,
                           true,
                         )}
                       </td>
 
-                      <td class="text-sm sm:text-[1rem] text-end text-white">
-                        {@html abbreviateNumberWithColor(
+                      <td class="text-sm sm:text-[1rem] text-end ">
+                        {@html abbreviateNumber(
                           item?.total_premium,
                           false,
                           true,

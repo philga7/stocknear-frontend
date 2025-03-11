@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { abbreviateNumberWithColor } from "$lib/utils";
+  import { abbreviateNumber } from "$lib/utils";
   import InfoModal from "$lib/components/InfoModal.svelte";
 
   export let tickerFlow = [];
@@ -57,7 +57,7 @@
             {#if tickerFlow?.length > 0}
               <label
                 for="dailyNetPutCallPrem"
-                class="mr-1 cursor-pointer flex flex-row items-center text-white text-xl sm:text-2xl font-bold w-fit"
+                class="mr-1 cursor-pointer flex flex-row items-center text-xl sm:text-2xl font-bold w-fit"
               >
                 Daily Net Put / Call Premium
                 <InfoModal
@@ -74,22 +74,21 @@
                 />
               </label>
 
-              <div class="text-white text-xs sm:text-sm italic mt-5 mb-3">
+              <div class=" text-xs sm:text-sm italic mt-5 mb-3">
                 Last Updated: {formatDate(findLastNonNull(tickerFlow, "time"))}
               </div>
               <div
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6"
               >
                 <div
-                  class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
+                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4 transition-colors"
                 >
-                  <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
+                  <div class=" text-sm mb-2 flex items-center">
                     <span>Volume</span>
-                    <span class="ml-1 text-yellow-400">●</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-xl font-bold text-white">
-                      {@html abbreviateNumberWithColor(
+                    <span class="text-xl font-bold">
+                      {abbreviateNumber(
                         findLastNonNull(tickerFlow, "net_volume"),
                         false,
                         true,
@@ -99,15 +98,14 @@
                 </div>
 
                 <div
-                  class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
+                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4 transition-colors"
                 >
-                  <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
+                  <div class=" text-sm mb-2 flex items-center">
                     <span>Net Call Prem</span>
-                    <span class="ml-1 text-green-600">●</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-xl font-bold text-white"
-                      >{@html abbreviateNumberWithColor(
+                    <span class="text-xl font-bold"
+                      >{abbreviateNumber(
                         findLastNonNull(tickerFlow, "net_call_premium"),
                         false,
                         true,
@@ -117,15 +115,14 @@
                 </div>
 
                 <div
-                  class="bg-gray-800/30 rounded-lg p-4 sm:hover:bg-gray-800/40 transition-colors"
+                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4 transition-colors"
                 >
-                  <div class="text-[#c3c6d0] text-sm mb-2 flex items-center">
+                  <div class=" text-sm mb-2 flex items-center">
                     <span>Net Put Prem</span>
-                    <span class="ml-1 text-red-400">●</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-xl font-bold text-white"
-                      >{@html abbreviateNumberWithColor(
+                    <span class="text-xl font-bold"
+                      >{abbreviateNumber(
                         findLastNonNull(tickerFlow, "net_put_premium"),
                         false,
                         true,
