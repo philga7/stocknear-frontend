@@ -677,83 +677,69 @@
           <!--End Ticker Section-->
           <!-- Start Graph -->
 
-          <div class="sm:pl-7 mt-4 mb-5 lg:flex lg:flex-row lg:gap-x-4 w-full">
-            {#if dataMapping[displayData]?.length === 0}
-              <div
-                class="order-1 lg:order-5 m-auto grow overflow-hidden border-gray-300 dark:border-gray-800 py-0.5 xs:py-1 sm:px-0.5 sm:pb-3 sm:pt-2.5 lg:mb-0 lg:border-0 lg:border-l lg:border-sharp lg:px-0 lg:py-0 lg:pl-5 md:mb-4 md:border-b"
-              >
-                <div class="h-[360px]">
-                  <div
-                    class="flex h-full w-full flex-col items-center justify-center rounded-sm border border-gray-300 dark:border-gray-800 p-6 text-center md:p-12"
-                  >
-                    <div class="mb-4 text-[1rem] sm:text-xl font-semibold">
-                      No {displayData} chart data available
-                    </div>
-                  </div>
-                </div>
-              </div>
-            {:else}
-              <div
-                class="order-1 lg:order-5 grow overflow-hidden border-gray-300 dark:border-gray-800 py-0.5 xs:py-1 sm:px-0.5 sm:pb-3 sm:pt-2.5 lg:mb-0 lg:border-0 lg:border-l lg:border-sharp lg:px-0 lg:py-0 lg:pl-5 md:mb-4 md:border-b"
-              >
-                <div class="flex items-center justify-between py-1 sm:pt-0.5">
-                  <div class="hide-scroll overflow-x-auto">
-                    <ul class="flex space-x-2">
-                      {#each intervals as interval}
-                        <li>
-                          <button
-                            on:click={() => changeData(interval)}
-                            class="cursor-pointer focus:outline-none"
-                          >
-                            <span
-                              class="block px-3 py-1 rounded transition-colors duration-100 ease-in-out
+          <div
+            class="sm:pl-7 mt-4 mb-5 lg:flex lg:flex-row lg:gap-x-4 w-full min-h-[360px]"
+          >
+            <div
+              class="order-1 lg:order-5 grow overflow-hidden border-gray-300 dark:border-gray-800 py-0.5 xs:py-1 sm:px-0.5 sm:pb-3 sm:pt-2.5 lg:mb-0 lg:border-0 lg:border-l lg:border-sharp lg:px-0 lg:py-0 lg:pl-5 md:mb-4 md:border-b"
+            >
+              <div class="flex items-center justify-between py-1 sm:pt-0.5">
+                <div class="hide-scroll overflow-x-auto">
+                  <ul class="flex space-x-2">
+                    {#each intervals as interval}
+                      <li>
+                        <button
+                          on:click={() => changeData(interval)}
+                          class="cursor-pointer focus:outline-none"
+                        >
+                          <span
+                            class="block px-3 py-1 rounded transition-colors duration-100 ease-in-out
           {displayData === interval
-                                ? 'bg-blue-50 text-blue-700 dark:bg-primary dark:text-white font-semibold'
-                                : 'bg-transparent text-gray-600 dark:sm:hover:text-white sm:hover:bg-gray-100 dark:sm:hover:bg-primary'}"
-                            >
-                              {interval}
-                            </span>
-                          </button>
-                        </li>
-                      {/each}
-                    </ul>
-                  </div>
-                  <div
-                    class="flex shrink flex-row space-x-1 pr-1 text-sm sm:text-[1rem]"
+                              ? 'bg-blue-50 text-blue-700 dark:bg-primary dark:text-white font-semibold'
+                              : 'bg-transparent text-gray-600 dark:sm:hover:text-white sm:hover:bg-gray-100 dark:sm:hover:bg-primary'}"
+                          >
+                            {interval}
+                          </span>
+                        </button>
+                      </li>
+                    {/each}
+                  </ul>
+                </div>
+                <div
+                  class="flex shrink flex-row space-x-1 pr-1 text-sm sm:text-[1rem]"
+                >
+                  <span
+                    class={displayLegend?.graphChange >= 0
+                      ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
+                      : "text-[#FF2F1F]"}
                   >
-                    <span
-                      class={displayLegend?.graphChange >= 0
-                        ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                        : "text-[#FF2F1F]"}
+                    {displayLegend?.graphChange ??
+                      data?.getStockQuote?.changesPercentage?.toFixed(2)}%
+                  </span>
+                  <span class="hidden text-muted dark:text-gray-200 sm:block"
+                    >({displayData})</span
+                  >
+                </div>
+              </div>
+
+              {#if output !== null && config !== null && dataMapping[displayData]?.length !== 0}
+                <div use:highcharts={config}></div>
+              {:else}
+                <div
+                  class="flex justify-center w-full sm:w-[650px] h-[360px] items-center"
+                >
+                  <div class="relative">
+                    <label
+                      class="bg-secondary rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                     >
-                      {displayLegend?.graphChange ??
-                        data?.getStockQuote?.changesPercentage?.toFixed(2)}%
-                    </span>
-                    <span class="hidden text-muted dark:text-gray-200 sm:block"
-                      >({displayData})</span
-                    >
+                      <span
+                        class="loading loading-spinner loading-md text-gray-400"
+                      ></span>
+                    </label>
                   </div>
                 </div>
-
-                {#if output !== null && config !== null && dataMapping[displayData]?.length !== 0}
-                  <div use:highcharts={config}></div>
-                {:else}
-                  <div
-                    class="flex justify-center w-full sm:w-[650px] h-[360px] items-center"
-                  >
-                    <div class="relative">
-                      <label
-                        class="bg-secondary rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                      >
-                        <span
-                          class="loading loading-spinner loading-md text-gray-400"
-                        ></span>
-                      </label>
-                    </div>
-                  </div>
-                {/if}
-              </div>
-            {/if}
+              {/if}
+            </div>
 
             <div
               class="mt-10 lg:mt-0 order-5 lg:order-1 flex flex-row space-x-2 sm:space-x-3 xs:space-x-4"
