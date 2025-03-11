@@ -679,7 +679,7 @@
             >
               <div class="flex items-center justify-between py-1 sm:pt-0.5">
                 <div class="hide-scroll overflow-x-auto">
-                  <ul class="flex space-x-2">
+                  <ul class="flex sm:space-x-2">
                     {#each intervals as interval}
                       <li>
                         <button
@@ -705,7 +705,7 @@
                   <span
                     class={displayLegend?.graphChange >= 0
                       ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                      : "text-[#FF2F1F]"}
+                      : "text-red-600 dark:text-[#FF2F1F]"}
                   >
                     {displayLegend?.graphChange ??
                       data?.getStockQuote?.changesPercentage?.toFixed(2)}%
