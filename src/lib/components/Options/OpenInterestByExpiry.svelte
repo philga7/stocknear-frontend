@@ -269,7 +269,13 @@
     displayList = [...originalData].sort(compareValues);
   };
 
-  let config = plotData() || null;
+  let config = null;
+
+  $: {
+    if ($mode) {
+      config = plotData() || null;
+    }
+  }
 </script>
 
 <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
@@ -277,7 +283,7 @@
     Open Interest Chart
   </h2>
 
-  <div class="w-full overflow-hidden m-auto mt-3">
+  <div class="w-full overflow-hidden m-auto mt-3 shadow-sm">
     {#if config !== null}
       <div
         class="border border-gray-300 dark:border-gray-800 rounded w-full"

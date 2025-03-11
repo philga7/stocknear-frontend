@@ -454,7 +454,6 @@
           {/if}
         {/each}
       </div>
-
       <div
         class="border border-gray-300 dark:border-gray-800 rounded w-full"
         use:highcharts={config}

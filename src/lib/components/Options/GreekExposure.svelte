@@ -4,6 +4,7 @@
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import highcharts from "$lib/highcharts.ts";
+  import { mode } from "mode-watcher";
 
   export let data;
   export let title;
@@ -103,15 +104,15 @@
         enabled: false,
       },
       chart: {
-        backgroundColor: "#09090B",
-        plotBackgroundColor: "#09090B",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
         height: 360,
         animation: false,
       },
       title: {
         text: `<h3 class="mt-3 mb-1 ">${title === "Gamma" ? "GEX" : "DEX"} Chart</h3>`,
         style: {
-          color: "white",
+          color: $mode === "light" ? "black" : "white",
           // Using inline CSS for margin-top and margin-bottom
         },
         useHTML: true, // Enable HTML to apply custom class styling
@@ -129,8 +130,8 @@
         },
         borderRadius: 4,
         formatter: function () {
-          // Format the x value to display time in hh:mm format
-          let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]">${new Date(
+          // Format the x value to display time in a custom format
+          let tooltipContent = `<span class="m-auto text-[1rem] font-[501]">${new Date(
             this?.x,
           ).toLocaleDateString("en-US", {
             year: "numeric",
@@ -139,11 +140,11 @@
           })}</span><br>`;
 
           // Loop through each point in the shared tooltip
-          this.points?.forEach((point) => {
-            tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
-          <span class="text-white font-normal text-sm" style="color:${point?.color}">${abbreviateNumber(
-            point.y,
-          )}</span><br>`;
+          this.points.forEach((point) => {
+            tooltipContent += `
+        <span style="display:inline-block; width:10px; height:10px; background-color:${point.color}; border-radius:50%; margin-right:5px;"></span>
+        <span class="font-semibold text-sm">${point.series.name}:</span> 
+        <span class="font-normal text-sm">${abbreviateNumber(point.y)}</span><br>`;
           });
 
           return tooltipContent;
@@ -154,13 +155,13 @@
         endOnTick: false,
         categories: dateList,
         crosshair: {
-          color: "#fff", // Set the color of the crosshair line
+          color: $mode === "light" ? "black" : "white", // Set the color of the crosshair line
           width: 1, // Adjust the line width as needed
           dashStyle: "Solid",
         },
         labels: {
           style: {
-            color: "#fff",
+            color: $mode === "light" ? "black" : "white",
           },
           distance: 20, // Increases space between label and axis
           formatter: function () {
@@ -190,7 +191,7 @@
       yAxis: [
         {
           gridLineWidth: 1,
-          gridLineColor: "#111827",
+          gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
           labels: {
             style: { color: "white" },
             formatter: function () {
@@ -221,7 +222,7 @@
           type: "line",
           data: priceList,
           yAxis: 1,
-          color: "#fff",
+          color: $mode === "light" ? "#3B82F6" : "white",
           lineWidth: 2,
           zIndex: 10,
           marker: { enabled: false },
@@ -366,16 +367,14 @@
   };
 
   $: {
-    if (timePeriod) {
+    if (timePeriod || $mode) {
       config = plotData();
     }
   }
 </script>
 
 <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
-  <h2
-    class=" flex flex-row items-center text-white text-xl sm:text-2xl font-bold w-fit"
-  >
+  <h2 class=" flex flex-row items-center text-xl sm:text-2xl font-bold w-fit">
     Daily {title} Exposure
   </h2>
 
@@ -386,19 +385,20 @@
           {#if data?.user?.tier === "Pro" || index === 0}
             <label
               on:click={() => (timePeriod = item)}
-              class="px-3 py-1 text-sm {timePeriod === item
-                ? 'bg-white text-black '
-                : 'text-white bg-table text-opacity-[0.6]'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+              class="px-3 py-1 text-sm shadow-sm border border-gray-300 dark:border-gray-600 {timePeriod ===
+              item
+                ? 'bg-gray-300 dark:bg-white text-black '
+                : ' bg-gray-100 dark:bg-table text-opacity-[0.6]'} transition ease-out duration-100 rounded-md cursor-pointer"
             >
               {item}
             </label>
           {:else if data?.user?.tier !== "Pro"}
             <a
               href="/pricing"
-              class="px-3 py-1 text-sm flex flex-row items-center border border-gray-700 {timePeriod ===
+              class="px-3 py-1 text-sm flex flex-row items-center border border-gray-300 dark:border-gray-600 {timePeriod ===
               item
-                ? 'bg-white text-black '
-                : 'text-white bg-table text-opacity-[0.6]'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+                ? 'bg-gray-300 dark:bg-white text-black '
+                : ' bg-gray-100 dark:bg-table text-opacity-[0.6]'} transition ease-out duration-100 rounded-md cursor-pointer"
             >
               {item}
               <svg
@@ -416,19 +416,19 @@
       </div>
 
       <div
-        class="chart border border-gray-800 rounded"
+        class="shadow-sm border border-gray-300 dark:border-gray-800 rounded"
         use:highcharts={config}
       ></div>
     {/if}
   </div>
 
-  <h3 class="text-xl sm:text-2xl text-white font-bold mt-5">
+  <h3 class="text-xl sm:text-2xl font-bold mt-5">
     {title === "Gamma" ? "GEX" : "DEX"} History
   </h3>
 
-  <div class="mt-3 w-full overflow-x-auto text-white">
+  <div class="mt-3 w-full overflow-x-auto">
     <table
-      class="w-full table table-sm table-compact bg-table border border-gray-800 rounded-none sm:rounded-md m-auto overflow-x-auto"
+      class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
     >
       <thead>
         <TableHeader {columns} {sortOrders} {sortData} />
@@ -436,30 +436,24 @@
       <tbody>
         {#each data?.user?.tier === "Pro" ? displayList : displayList?.slice(0, 3) as item, index}
           <tr
-            class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-oddborder-b border-gray-800 {index +
+            class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
               1 ===
               displayList?.slice(0, 3)?.length &&
             !['Pro']?.includes(data?.user?.tier)
               ? 'opacity-[0.1]'
               : ''}"
           >
-            <td
-              class="text-white text-sm sm:text-[1rem] text-start whitespace-nowrap"
-            >
+            <td class=" text-sm sm:text-[1rem] text-start whitespace-nowrap">
               {formatDate(item?.date)}
             </td>
-            <td
-              class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
-            >
+            <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
               {@html abbreviateNumberWithColor(
                 title === "Gamma" ? item?.call_gex : item?.call_dex,
                 false,
                 true,
               )}
             </td>
-            <td
-              class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
-            >
+            <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
               {@html abbreviateNumberWithColor(
                 title === "Gamma" ? item?.put_gex : item?.put_dex,
                 false,
@@ -467,9 +461,7 @@
               )}
             </td>
 
-            <td
-              class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
-            >
+            <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
               {@html abbreviateNumberWithColor(
                 title === "Gamma" ? item?.netGex : item?.netDex,
                 false,
@@ -477,9 +469,7 @@
               )}
             </td>
 
-            <td
-              class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
-            >
+            <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
               {#if item?.putCallRatio <= 1 && item?.putCallRatio !== null}
                 <span class="text-green-600 dark:text-[#00FC50]"
                   >{item?.putCallRatio?.toFixed(2)}</span

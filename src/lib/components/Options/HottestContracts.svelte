@@ -570,7 +570,7 @@
   }
 </script>
 
-<section class="w-full overflow-hidden min-h-screen pb-40">
+<section class="w-full overflow-hidden">
   <div class="w-full flex h-full overflow-hidden">
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"
@@ -612,7 +612,7 @@
                       on:click={() => handleViewData(item)}
                       on:mouseover={() =>
                         getContractHistory(item?.option_symbol)}
-                      class="px-2 sm:px-0 cursor-pointer text-[#04D9FF] sm:hover: sm:hover:underline sm:hover:underline-offset-4"
+                      class="px-2 sm:px-0 cursor-pointer text-[#3B82F6] dark:text-[#04D9FF] sm:hover: sm:hover:underline sm:hover:underline-offset-4"
                     >
                       {item?.strike_price}
 
@@ -622,7 +622,7 @@
                         xmlns="http://www.w3.org/2000/svg"
                         class="inline-block w-4 h-4 -mt-1"
                         viewBox="0 0 512 512"
-                        fill="#04D9FF"
+                        fill={$mode === "light" ? "#3B82F6" : "#04D9FF"}
                         ><path
                           d="M104 496H72a24 24 0 01-24-24V328a24 24 0 0124-24h32a24 24 0 0124 24v144a24 24 0 01-24 24zM328 496h-32a24 24 0 01-24-24V232a24 24 0 0124-24h32a24 24 0 0124 24v240a24 24 0 01-24 24zM440 496h-32a24 24 0 01-24-24V120a24 24 0 0124-24h32a24 24 0 0124 24v352a24 24 0 01-24 24zM216 496h-32a24 24 0 01-24-24V40a24 24 0 0124-24h32a24 24 0 0124 24v432a24 24 0 01-24 24z"
                         ></path></svg

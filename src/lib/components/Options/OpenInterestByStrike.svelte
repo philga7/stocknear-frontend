@@ -255,7 +255,7 @@
     Open Interest Chart
   </h2>
 
-  <div class="w-full overflow-hidden m-auto mt-3">
+  <div class="w-full overflow-hidden m-auto mt-3 shadow-sm">
     {#if config !== null}
       <div
         class="border border-gray-300 dark:border-gray-800 rounded w-full"
