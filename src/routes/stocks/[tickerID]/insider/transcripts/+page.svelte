@@ -4,7 +4,6 @@
     getCache,
     setCache,
     displayCompanyName,
-    numberOfUnreadNotification,
   } from "$lib/store";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
@@ -82,16 +81,12 @@
   description={`Get the latest Earnings Call Transcript of ${$displayCompanyName} (${$stockTicker}) for different years and quarters.`}
 />
 
-<section
-  class="w-full bg-default overflow-hidden text-white min-h-screen mb-40 sm:mb-0"
->
+<section class="w-full overflow-hidden min-h-screen mb-40 sm:mb-0">
   <div class="h-full overflow-hidden">
     <div class="relative flex justify-center items-center overflow-hidden">
       <div class="sm:p-7 w-full mt-2 sm:mt-0">
         <div class="mb-6">
-          <h1 class="text-xl sm:text-2xl text-white font-bold mb-4">
-            Transcripts
-          </h1>
+          <h1 class="text-xl sm:text-2xl font-bold mb-4">Transcripts</h1>
 
           <div class="flex w-fit sm:w-[50%] md:block md:w-auto ml-auto">
             <div class="relative inline-block text-left grow">
@@ -99,9 +94,9 @@
                 <DropdownMenu.Trigger asChild let:builder>
                   <Button
                     builders={[builder]}
-                    class="w-full border-gray-600 border bg-default sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
+                    class="w-full shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                   >
-                    <span class="truncate text-white">Year: {year}</span>
+                    <span class="truncate">Year: {year}</span>
                     <svg
                       class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
                       viewBox="0 0 20 20"
@@ -131,7 +126,7 @@
                           year = index;
                           getTranscripts();
                         }}
-                        class="cursor-pointer hover:bg-primary"
+                        class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                       >
                         {index}
                       </DropdownMenu.Item>
@@ -145,9 +140,9 @@
                 <DropdownMenu.Trigger asChild let:builder>
                   <Button
                     builders={[builder]}
-                    class="w-full border-gray-600 border bg-default sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
+                    class="w-full shadow-sm border-gray-300 dark:border-gray-600 border  sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                   >
-                    <span class="truncate text-white">Quarter: Q{quarter}</span>
+                    <span class="truncate">Quarter: Q{quarter}</span>
                     <svg
                       class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
                       viewBox="0 0 20 20"
@@ -177,7 +172,7 @@
                           quarter = index;
                           getTranscripts();
                         }}
-                        class="cursor-pointer hover:bg-primary"
+                        class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                       >
                         Q{index}
                       </DropdownMenu.Item>
@@ -192,13 +187,11 @@
         {#if isLoaded}
           {#if chats?.length !== 0}
             <div class="flex flex-col sm:flex-row items-center pt-5 pb-5">
-              <span class="text-white text-md">
+              <span class=" text-md">
                 Q{displayQuarter}
                 {displayYear} · Earnings Call Transcript
               </span>
-              <span
-                class="text-white text-opacity-80 text-md mt-2 sm:mt-0 sm:ml-auto"
-              >
+              <span class=" text-opacity-80 text-md mt-2 sm:mt-0 sm:ml-auto">
                 {new Date(date).toLocaleDateString("en-US", {
                   month: "short",
                   day: "numeric",
@@ -219,23 +212,23 @@
                       </span>
                     </div>
                     <div
-                      class="ml-2 avatar rounded-full w-8 h-8 sm:w-10 sm:h-10 relative border border-gray-600 bg-default bg-opacity-[0.6] flex items-center justify-center"
+                      class="ml-2 avatar rounded-full w-8 h-8 sm:w-10 sm:h-10 relative border border-gray-300 dark:border-gray-600 bg-opacity-[0.6] flex items-center justify-center"
                     >
                       <svg
                         class="w-6 h-6 sm:w-7 sm:h-7"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
                         ><path
-                          fill="#fff"
+                          fill="currentColor"
                           d="M12 14q-1.25 0-2.125-.875T9 11V5q0-1.25.875-2.125T12 2q1.25 0 2.125.875T15 5v6q0 1.25-.875 2.125T12 14m-1 7v-3.075q-2.6-.35-4.3-2.325T5 11h2q0 2.075 1.463 3.538T12 16q2.075 0 3.538-1.463T17 11h2q0 2.625-1.7 4.6T13 17.925V21z"
                         /></svg
                       >
                     </div>
                   </div>
                   <div
-                    class="flex flex-col w-full leading-1.5 p-4 border border-gray-600 bg-primary rounded-l-xl rounded-tr-xl"
+                    class="shadow-sm flex flex-col w-full leading-1.5 p-4 border border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-primary rounded-l-xl rounded-tr-xl"
                   >
-                    <p class="text-sm font-normal py-2.5 text-gray-200">
+                    <p class="text-sm font-normal py-2.5">
                       {@html item?.description}
                     </p>
                   </div>
@@ -244,7 +237,7 @@
                 <div class="flex flex-col items-start gap-2.5 mt-8">
                   <div class="flex flex-row items-center">
                     <div
-                      class="avatar rounded-full w-8 h-8 sm:w-10 sm:h-10 relative bg-red-600 bg-opacity-[0.6] flex items-center justify-center text-white text-sm sm:"
+                      class="avatar rounded-full w-8 h-8 sm:w-10 sm:h-10 relative bg-red-600 bg-opacity-[0.6] flex items-center justify-center text-sm sm:"
                     >
                       <span
                         class="absolute inset-0 flex items-center justify-center"
@@ -261,9 +254,9 @@
                     </div>
                   </div>
                   <div
-                    class="flex flex-col w-full leading-1.5 p-4 border border-gray-600 bg-secondary rounded-r-xl rounded-tl-xl"
+                    class="flex flex-col w-full leading-1.5 p-4 border border-gray-300 dark:border-gray-600 shadow-sm bg-gray-200 dark:bg-secondary rounded-r-xl rounded-tl-xl"
                   >
-                    <p class="text-sm font-normal py-2.5 text-gray-200">
+                    <p class="text-sm font-normal py-2.5">
                       {@html item?.description}
                     </p>
                   </div>
@@ -273,7 +266,7 @@
 
             <label
               on:click={backToTop}
-              class="w-32 py-1.5 mt-10 hover:bg-white hover:bg-opacity-[0.05] cursor-pointer m-auto flex justify-center items-center border border-gray-600 rounded-full"
+              class="w-32 py-1.5 mt-10 dark:sm:hover:bg-white hover:bg-opacity-[0.05] cursor-pointer m-auto flex justify-center items-center border border-gray-600 rounded-full"
             >
               Back to top
             </label>

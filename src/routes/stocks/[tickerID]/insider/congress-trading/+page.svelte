@@ -1,10 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import {
-    displayCompanyName,
-    numberOfUnreadNotification,
-    stockTicker,
-  } from "$lib/store";
+  import { displayCompanyName, stockTicker } from "$lib/store";
   import { getPartyForPoliticians } from "$lib/utils";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
@@ -184,16 +180,12 @@
   description={`Get the latest US congress & senate trading of ${$displayCompanyName} (${$stockTicker}) from democrates and republicans.`}
 />
 
-<section
-  class="w-full bg-default overflow-hidden min-h-screen text-white h-full"
->
+<section class="w-full overflow-hidden min-h-screen h-full">
   <div class="h-full overflow-hidden w-full">
     <div class="relative flex justify-center items-center overflow-hidden">
-      <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full mt-2 sm:mt-0">
+      <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full">
         <div class="mb-6">
-          <h1 class="text-xl sm:text-2xl text-white font-bold mb-4">
-            Congress Trading
-          </h1>
+          <h1 class="text-xl sm:text-2xl font-bold mb-4">Congress Trading</h1>
 
           {#if senateTradingList?.length !== 0}
             <!--Start Widget-->
@@ -205,14 +197,13 @@
               >
                 <!--Start Buy/Sell-->
                 <div
-                  class="flex flex-row items-center flex-wrap w-full px-3 sm:px-4 border border-gray-600 bg-primary rounded-md h-20"
+                  class="flex flex-row items-center flex-wrap w-full px-3 sm:px-4 shadow-sm border border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-primary rounded-md h-20"
                 >
                   <div class="flex flex-col items-start">
-                    <span
-                      class="font-semibold text-white text-sm sm:text-[1rem]"
+                    <span class="font-semibold text-sm sm:text-[1rem]"
                       >Buy/Sell</span
                     >
-                    <span class="text-start text-sm sm:text-[1rem] text-white">
+                    <span class="text-start text-sm sm:text-[1rem]">
                       {buySellRatio?.toFixed(3)}
                     </span>
                   </div>
@@ -229,7 +220,7 @@
                         cy="18"
                         r="16"
                         fill="none"
-                        class="stroke-current text-[#3E3E3E]"
+                        class="stroke-current text-gray-300 dark:text-[#3E3E3E]"
                         stroke-width="3"
                       ></circle>
                       <!-- Progress Circle inside a group with rotation -->
@@ -254,8 +245,7 @@
                     <div
                       class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
                     >
-                      <span
-                        class="text-center text-white text-sm sm:text-[1rem]"
+                      <span class="text-center text-sm sm:text-[1rem]"
                         >{buySellRatio?.toFixed(2)}</span
                       >
                     </div>
@@ -265,14 +255,13 @@
                 <!--End Buy/Sell-->
                 <!--Start Dem/Rep-->
                 <div
-                  class="flex flex-row items-center flex-wrap w-full px-3 sm:px-4 border border-gray-600 bg-primary rounded-md h-20"
+                  class="flex flex-row items-center flex-wrap w-full px-3 sm:px-4 shadow-sm border border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-primary rounded-md h-20"
                 >
                   <div class="flex flex-col items-start">
-                    <span
-                      class="font-semibold text-white text-sm sm:text-[1rem]"
+                    <span class="font-semibold text-sm sm:text-[1rem]"
                       >Dem/Rep</span
                     >
-                    <span class="text-start text-sm sm:text-[1rem] text-white">
+                    <span class="text-start text-sm sm:text-[1rem]">
                       {partyRatio?.toFixed(3)}
                     </span>
                   </div>
@@ -289,7 +278,7 @@
                         cy="18"
                         r="16"
                         fill="none"
-                        class="stroke-current text-[#3E3E3E]"
+                        class="stroke-current text-gray-300 dark:text-[#3E3E3E]"
                         stroke-width="3"
                       ></circle>
                       <!-- Progress Circle inside a group with rotation -->
@@ -312,8 +301,7 @@
                     <div
                       class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
                     >
-                      <span
-                        class="text-center text-white text-sm sm:text-[1rem]"
+                      <span class="text-center text-sm sm:text-[1rem]"
                         >{partyRatio?.toFixed(2)}</span
                       >
                     </div>
@@ -329,7 +317,7 @@
               class="mt-6 flex justify-start items-center w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
             >
               <table
-                class="table table-sm sm:table-md table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto"
+                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
               >
                 <thead>
                   <TableHeader {columns} {sortOrders} {sortData} />
@@ -337,7 +325,7 @@
                 <tbody>
                   {#each senateTradingList as item, index}
                     <tr
-                      class="odd:bg-odd sm:hover:bg-[#245073]/10 border-b border-gray-800 {index +
+                      class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
                         1 ===
                         rawData?.slice(0, 3)?.length &&
                       !['Pro', 'Plus']?.includes(data?.user?.tier)
@@ -345,7 +333,7 @@
                         : ''}"
                     >
                       <td
-                        class="text-white text-sm sm:text-[1rem] whitespace-nowrap pb-3"
+                        class=" text-sm sm:text-[1rem] whitespace-nowrap pb-3"
                       >
                         <div class="flex flex-row items-center">
                           <div
@@ -366,7 +354,7 @@
                           <div class="flex flex-col ml-3 font-normal">
                             <a
                               href={`/politicians/${item?.id}`}
-                              class="text-blue-500 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
+                              class="text-blue-500 sm:hover:text-muted dark:sm:hover: dark:text-blue-400"
                               >{getAbbreviatedName(
                                 item?.representative?.replace("_", " "),
                               )}</a
@@ -377,13 +365,13 @@
                       </td>
 
                       <td
-                        class="text-start text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                        class="text-start text-sm sm:text-[1rem] whitespace-nowrap"
                       >
                         {item?.party}
                       </td>
 
                       <td
-                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                       >
                         {new Date(item?.transactionDate)?.toLocaleString(
                           "en-US",
@@ -397,12 +385,12 @@
                       </td>
 
                       <td
-                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                       >
                         {item?.amount}
                       </td>
                       <td
-                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                       >
                         {#if item?.type === "Bought"}
                           <span class="text-green-600 dark:text-[#00FC50]"

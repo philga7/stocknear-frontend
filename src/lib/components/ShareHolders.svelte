@@ -63,7 +63,7 @@
         },
         opposite: true,
         gridLineWidth: 1,
-        gridLineColor: "#111827",
+        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
         labels: {
           formatter: function () {
             return this?.value + "%";
