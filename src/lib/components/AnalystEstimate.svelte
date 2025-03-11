@@ -3,6 +3,7 @@
   import { abbreviateNumber, computeGrowthSingleList } from "$lib/utils";
   import EstimationGraph from "$lib/components/EstimationGraph.svelte";
   import Lazy from "svelte-lazy";
+  import { mode } from "mode-watcher";
 
   export let data;
 
@@ -323,8 +324,8 @@
       },
       chart: {
         type: "line",
-        backgroundColor: "#09090B",
-        plotBackgroundColor: "#09090B",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
         height: 360,
         animation: false,
       },
@@ -345,14 +346,14 @@
         borderRadius: 4,
         formatter: function () {
           // Format the x value to display time in hh:mm format
-          let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]">${
+          let tooltipContent = `<span class=" m-auto  text-[1rem] font-[501]">${
             this?.x
           }</span><br>`;
 
           // Loop through each point in the shared tooltip
           this.points?.forEach((point) => {
-            tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
-          <span class="text-white font-normal text-sm" >${abbreviateNumber(
+            tooltipContent += `<span class=" font-semibold text-sm">${point.series.name}:</span> 
+          <span class=" font-normal text-sm" >${abbreviateNumber(
             point.y,
           )}</span><br>`;
           });
@@ -366,23 +367,23 @@
         endOnTick: false,
         categories: dates,
         crosshair: {
-          color: "#fff", // Set the color of the crosshair line
+          color: $mode === "light" ? "black" : "white", // Set the color of the crosshair line
           width: 1, // Adjust the line width as needed
           dashStyle: "Solid",
         },
 
         labels: {
           style: {
-            color: "#fff",
+            color: $mode === "light" ? "black" : "white",
             fontSize: "12px",
           },
         },
       },
       yAxis: {
         gridLineWidth: 1,
-        gridLineColor: "#111827",
+        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
         labels: {
-          style: { color: "white" },
+          style: { color: $mode === "light" ? "black" : "white" },
         },
         title: { text: null },
         opposite: true,
@@ -391,13 +392,13 @@
         {
           name: "Actual",
           data: valueList,
-          color: "#fff",
+          color: $mode === "light" ? "#2C6288" : "white",
           animation: false,
         },
         {
           name: "Avg",
           data: avgList,
-          color: "#fff",
+          color: $mode === "light" ? "#2C6288" : "white",
           dashStyle: "Dash", // Dashed line style
           animation: false,
           marker: {
@@ -408,14 +409,14 @@
           name: "Low",
           data: lowList,
           // If you want a dashed line with a different color, set the series color to that color.
-          color: "#c2c7cf",
+          color: $mode === "light" ? "#8AAAC0" : "#c2c7cf",
           dashStyle: "Dash",
           animation: false,
         },
         {
           name: "High",
           data: highList,
-          color: "#c2c7cf",
+          color: $mode === "light" ? "#8AAAC0" : "#c2c7cf",
           dashStyle: "Dash",
           animation: false,
         },
@@ -466,8 +467,8 @@
       },
       chart: {
         type: "column",
-        backgroundColor: "#09090B",
-        plotBackgroundColor: "#09090B",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
         height: 360,
         animation: false,
       },
@@ -481,7 +482,7 @@
         borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
         borderWidth: 1,
         style: {
-          color: "#fff",
+          color: "white",
           fontSize: "14px",
           padding: "10px",
         },
@@ -517,16 +518,16 @@
         type: "datetime",
         labels: {
           style: {
-            color: "#fff",
+            color: $mode === "light" ? "black" : "white",
             fontSize: "12px",
           },
         },
       },
       yAxis: {
         gridLineWidth: 1,
-        gridLineColor: "#111827",
+        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
         labels: {
-          style: { color: "white" },
+          style: { color: $mode === "light" ? "black" : "white" },
         },
         title: { text: null },
         opposite: true,
@@ -545,8 +546,18 @@
           data: growthList?.map((value) => ({
             y: value,
             // Set color based on the sign of the value
-            color: value >= 0 ? "#00FC50" : "#ED3333",
-            borderColor: value >= 0 ? "#00FC50" : "#ED3333",
+            color:
+              value >= 0
+                ? $mode === "light"
+                  ? "#338D73"
+                  : "#00FC50"
+                : "#ED3333",
+            borderColor:
+              value >= 0
+                ? $mode === "light"
+                  ? "#338D73"
+                  : "#00FC50"
+                : "#ED3333",
             borderRadius: "1px",
           })),
           zIndex: 5,
@@ -562,8 +573,8 @@
             // If either high or low is null/undefined, return nulls.
             return high != null && low != null ? [low, high] : [null, null];
           }),
-          color: "#fff",
-          lineWidth: 2, // Thicker lines for error bars
+          color: $mode === "light" ? "black" : "white",
+          lineWidth: 1, // Thicker lines for error bars
           whiskerLength: 10, // Adjust whisker length as needed
           zIndex: 10,
           // Disable tooltip for error bar points
@@ -740,7 +751,7 @@
   }
 
   $: {
-    if ($stockTicker && typeof window !== "undefined") {
+    if ($stockTicker || $mode) {
       isLoaded = false;
       analystEstimateList = [];
       analystEstimateList = data?.getAnalystEstimate || [];
@@ -759,7 +770,7 @@
   }
 </script>
 
-<section class="overflow-hidden text-white h-full pb-8 sm:pb-2">
+<section class="overflow-hidden h-full pb-8 sm:pb-2">
   <main class="overflow-hidden">
     <div class="w-full m-auto">
       <div class="flex flex-row items-center"></div>
@@ -767,36 +778,30 @@
       {#if isLoaded}
         {#if analystEstimateList?.length !== 0}
           <div
-            class="no-scrollbar flex justify-start items-center w-screen sm:w-full mt-6 m-auto overflow-x-auto pr-5 sm:pr-0"
+            class="no-scrollbar flex justify-start items-center w-screen sm:w-full mt-2 m-auto overflow-x-auto pr-5 sm:pr-0"
           >
             <table
-              class="table table-sm table-pin-cols table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800"
+              class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
             >
-              <thead class="">
+              <thead class="text-muted dark:text-white">
                 <tr class="">
-                  <th
-                    class="bg-primary border-b border-[#000] text-white font-semibold text-sm text-start"
-                    >Fiscal Year</th
-                  >
+                  <th class=" font-semibold text-sm text-start">Fiscal Year</th>
                   {#each xData as item}
-                    <td
-                      class="z-20 bg-primary border-b border-[#000] text-white font-semibold text-sm text-end bg-default"
+                    <td class="z-20 font-semibold text-sm text-end"
                       >{"FY" + item}</td
                     >
                   {/each}
                 </tr>
               </thead>
               <tbody>
-                <tr class="bg-primary border-b border-gray-600">
+                <tr class=" ">
                   <th
-                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start font-normal bg-primary border-b border-gray-800"
+                    class=" whitespace-nowrap text-sm sm:text-[1rem] text-start font-normal"
                   >
                     Revenue
                   </th>
                   {#each tableCombinedRevenue as item}
-                    <td
-                      class="text-white text-sm sm:text-[1rem] text-end border-b border-gray-800 bg-default"
-                    >
+                    <td class=" text-sm sm:text-[1rem] text-end">
                       {item?.val === "0.00" ||
                       item?.val === null ||
                       item?.val === 0
@@ -806,21 +811,20 @@
                   {/each}
                 </tr>
 
-                <tr class="bg-primary">
+                <tr class="bg-[#F6F7F8] dark:bg-odd">
                   <th
-                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white text-start font-normal border-b border-gray-800"
+                    class=" whitespace-nowrap text-sm sm:text-[1rem] text-start font-normal"
                   >
                     Revenue Growth
                   </th>
                   {#each computeGrowthList(tableActualRevenue, tableCombinedRevenue) as item, index}
-                    <td
-                      class="text-white text-sm sm:text-[1rem] text-end bg-default border-b border-gray-800"
-                    >
+                    <td class=" text-sm sm:text-[1rem] text-end">
                       {#if index === 0 || item?.growth === null}
                         n/a
                       {:else if tableActualRevenue[index]?.val === null}
                         <span
-                          class="text-orange-400 {item?.growth > 0
+                          class="text-orange-600 dark:text-orange-400 {item?.growth >
+                          0
                             ? "before:content-['+']"
                             : ''}"
                         >
@@ -829,9 +833,9 @@
                       {:else}
                         <span
                           class={item?.growth > 0
-                            ? "text-[#00FC50] before:content-['+']"
+                            ? "text-green-600 dark:text-[#00FC50] before:content-['+']"
                             : item?.growth < 0
-                              ? "text-[#FF2F1F]"
+                              ? "text-red-600 dark:text-[#FF2F1F]"
                               : ""}
                         >
                           {item?.growth}%
@@ -841,16 +845,14 @@
                   {/each}
                 </tr>
 
-                <tr class="bg-primary border-b-[#09090B]">
+                <tr class="">
                   <th
-                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start font-normal bg-primary border-b border-gray-800"
+                    class=" whitespace-nowrap text-sm sm:text-[1rem] text-start font-normal"
                   >
                     EPS
                   </th>
                   {#each tableCombinedEPS as item}
-                    <td
-                      class="text-white text-sm sm:text-[1rem] text-end border-b border-gray-800 bg-default"
-                    >
+                    <td class=" text-sm sm:text-[1rem] text-end">
                       {item?.val === "0.00" ||
                       item?.val === null ||
                       item?.val === 0
@@ -860,21 +862,20 @@
                   {/each}
                 </tr>
 
-                <tr class="bg-primary">
+                <tr class="bg-[#F6F7F8] dark:bg-odd">
                   <th
-                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white font-normal text-start border-b border-gray-800"
+                    class=" whitespace-nowrap text-sm sm:text-[1rem] font-normal text-start"
                   >
                     EPS Growth
                   </th>
                   {#each computeGrowthList(tableActualEPS, tableCombinedEPS) as item, index}
-                    <td
-                      class="text-white text-sm sm:text-[1rem] text-end bg-default border-b border-gray-800"
-                    >
+                    <td class=" text-sm sm:text-[1rem] text-end">
                       {#if index === 0 || item?.growth === null}
                         n/a
                       {:else if tableActualRevenue[index]?.val === null}
                         <span
-                          class="text-orange-400 {item?.growth > 0
+                          class="text-orange-600 dark:text-orange-400 {item?.growth >
+                          0
                             ? "before:content-['+']"
                             : ''}"
                         >
@@ -883,9 +884,9 @@
                       {:else}
                         <span
                           class={item?.growth > 0
-                            ? "text-[#00FC50] before:content-['+']"
+                            ? "text-green-600 dark:text-[#00FC50] before:content-['+']"
                             : item?.growth < 0
-                              ? "text-[#FF2F1F]"
+                              ? "text-red-600 dark:text-[#FF2F1F]"
                               : ""}
                         >
                           {item?.growth}%
@@ -894,16 +895,14 @@
                     </td>
                   {/each}
                 </tr>
-                <tr class="bg-primary border-b border-gray-600">
+                <tr>
                   <th
-                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start font-normal bg-primary border-b border-gray-800"
+                    class=" whitespace-nowrap text-sm sm:text-[1rem] text-start font-normal"
                   >
                     Net Income
                   </th>
                   {#each tableCombinedNetIncome as item}
-                    <td
-                      class="text-white text-sm sm:text-[1rem] text-end border-b border-gray-800 bg-default"
-                    >
+                    <td class=" text-sm sm:text-[1rem] text-end">
                       {item?.val === "0.00" ||
                       item?.val === null ||
                       item?.val === 0
@@ -913,21 +912,20 @@
                   {/each}
                 </tr>
 
-                <tr class="bg-primary">
+                <tr class="bg-[#F6F7F8] dark:bg-odd">
                   <th
-                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white font-normal text-start border-b border-gray-800"
+                    class=" whitespace-nowrap text-sm sm:text-[1rem] font-normal text-start"
                   >
                     Net Income Growth
                   </th>
                   {#each computeGrowthList(tableActualNetIncome, tableCombinedNetIncome) as item, index}
-                    <td
-                      class="text-white text-sm sm:text-[1rem] text-end bg-default border-b border-gray-800"
-                    >
+                    <td class=" text-sm sm:text-[1rem] text-end">
                       {#if index === 0 || item?.growth === null}
                         n/a
                       {:else if tableActualNetIncome[index]?.val === null}
                         <span
-                          class="text-orange-400 {item?.growth > 0
+                          class="text-orange-600 dark:text-orange-400 {item?.growth >
+                          0
                             ? "before:content-['+']"
                             : ''}"
                         >
@@ -936,9 +934,9 @@
                       {:else}
                         <span
                           class={item?.growth > 0
-                            ? "text-[#00FC50] before:content-['+']"
+                            ? "text-green-600 dark:text-[#00FC50] before:content-['+']"
                             : item?.growth < 0
-                              ? "text-[#FF2F1F]"
+                              ? "text-red-600 dark:text-[#FF2F1F]"
                               : ""}
                         >
                           {item?.growth}%
@@ -948,16 +946,14 @@
                   {/each}
                 </tr>
 
-                <tr class="bg-primary border-b border-gray-600">
+                <tr>
                   <th
-                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start font-normal bg-primary border-b border-gray-800"
+                    class=" whitespace-nowrap text-sm sm:text-[1rem] text-start font-normal"
                   >
                     EBITDA
                   </th>
                   {#each tableCombinedEbitda as item}
-                    <td
-                      class="text-white text-sm sm:text-[1rem] text-end border-b border-gray-800 bg-default"
-                    >
+                    <td class=" text-sm sm:text-[1rem] text-end">
                       {item?.val === "0.00" ||
                       item?.val === null ||
                       item?.val === 0
@@ -967,21 +963,20 @@
                   {/each}
                 </tr>
 
-                <tr class="bg-primary">
+                <tr class="bg-[#F6F7F8] dark:bg-odd">
                   <th
-                    class="bg-primary whitespace-nowrap text-sm sm:text-[1rem] text-white font-normal text-start border-b border-gray-800"
+                    class=" whitespace-nowrap text-sm sm:text-[1rem] font-normal text-start"
                   >
                     EBITDA Growth
                   </th>
                   {#each computeGrowthList(tableActualEbitda, tableCombinedEbitda) as item, index}
-                    <td
-                      class="text-white text-sm sm:text-[1rem] text-end bg-default border-b border-gray-800"
-                    >
+                    <td class=" text-sm sm:text-[1rem] text-end">
                       {#if index === 0 || item?.growth === null}
                         n/a
                       {:else if tableActualEbitda[index]?.val === null}
                         <span
-                          class="text-orange-400 {item?.growth > 0
+                          class="text-orange-600 dark:text-orange-400 {item?.growth >
+                          0
                             ? "before:content-['+']"
                             : ''}"
                         >
@@ -990,9 +985,9 @@
                       {:else}
                         <span
                           class={item?.growth > 0
-                            ? "text-[#00FC50] before:content-['+']"
+                            ? "text-green-600 dark:text-[#00FC50] before:content-['+']"
                             : item?.growth < 0
-                              ? "text-[#FF2F1F]"
+                              ? "text-red-600 dark:text-[#FF2F1F]"
                               : ""}
                         >
                           {item?.growth}%
@@ -1002,15 +997,13 @@
                   {/each}
                 </tr>
 
-                <tr class="bg-primary border-b border-gray-600">
+                <tr>
                   <th
-                    class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start font-normal bg-primary border-b border-gray-800"
+                    class=" whitespace-nowrap text-sm sm:text-[1rem] text-start font-normal"
                     >No. Analysts</th
                   >
                   {#each tableCombinedRevenue as item}
-                    <td
-                      class="text-white text-sm sm:text-[1rem] text-end border-b border-gray-800 bg-default"
-                    >
+                    <td class=" text-sm sm:text-[1rem] text-end">
                       {#if item?.FY > 24}
                         {item?.numOfAnalysts === (null || 0)
                           ? "n/a"
@@ -1024,11 +1017,11 @@
               </tbody>
             </table>
           </div>
-          <div class="text-white text-sm mt-2">
+          <div class=" text-sm mt-2">
             Historical EPS numbers are GAAP, while forecasted numbers may be
             non-GAAP.
           </div>
-          <div class="text-orange-400 text-sm mt-2">
+          <div class="text-orange-600 dark:text-orange-400 text-sm mt-2">
             &#42; This value depends on the forecast
           </div>
           <!--
