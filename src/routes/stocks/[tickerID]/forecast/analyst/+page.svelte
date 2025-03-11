@@ -375,7 +375,7 @@
                           href={item?.analystId !== null
                             ? `/analysts/${item?.analystId}`
                             : "#"}
-                          class="text-blue-500 sm:hover:text-muted dark:sm:hover: dark:text-blue-400"
+                          class="font-semibold dark:font-normal text-blue-500 sm:hover:text-muted dark:sm:hover: dark:text-blue-400"
                           >{item?.analyst_name}
                         </a>
 
@@ -494,7 +494,7 @@
                       class=" text-end text-sm sm:text-[1rem] whitespace-nowrap"
                     >
                       <div class="flex flex-col items-end">
-                        {#if !latestInfoDate(item?.date)}
+                        {#if latestInfoDate(item?.date)}
                           <label
                             class="border-gray-300 shadow-sm bg-blue-100 dark:bg-[#fff] text-black font-semibold text-xs rounded px-2 py-0.5 ml-3 mb-1"
                           >
