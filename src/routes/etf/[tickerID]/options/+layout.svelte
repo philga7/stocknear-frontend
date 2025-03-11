@@ -64,13 +64,13 @@
           <nav
             class="sm:ml-4 overflow-x-auto pt-1 text-sm sm:text-[1rem] whitespace-nowrap"
           >
-            <ul class="flex flex-row items-center w-full text-white">
+            <ul class="flex flex-row items-center w-full">
               <a
                 href={`/etf/${$etfTicker}/options`}
                 on:click={() => changeSubSection("overview")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'overview'
-                  ? 'text-white bg-primary/90'
-                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                  ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                  : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
               >
                 Overview
               </a>
@@ -79,8 +79,8 @@
                 on:click={() => changeSubSection("unusual-activity")}
                 class="p-2 px-5 cursor-pointer {displaySubSection ===
                 'unusual-activity'
-                  ? 'text-white bg-primary/90'
-                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                  ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                  : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
               >
                 Unusual Activity
               </a>
@@ -89,8 +89,8 @@
                 on:click={() => changeSubSection("hottest-contracts")}
                 class="p-2 px-5 cursor-pointer {displaySubSection ===
                 'hottest-contracts'
-                  ? 'text-white bg-primary/90'
-                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                  ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                  : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
               >
                 Hottest Contracts
               </a>
@@ -99,8 +99,8 @@
                 on:click={() => changeSubSection("volatility")}
                 class="p-2 px-5 cursor-pointer {displaySubSection ===
                 'volatility'
-                  ? 'text-white bg-primary/90'
-                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                  ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                  : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
               >
                 Volatility
               </a>
@@ -108,8 +108,8 @@
                 href={`/etf/${$etfTicker}/options/oi`}
                 on:click={() => changeSubSection("oi")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'oi'
-                  ? 'text-white bg-primary/90'
-                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                  ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                  : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
               >
                 OI
               </a>
@@ -118,8 +118,8 @@
                 href={`/etf/${$etfTicker}/options/gex`}
                 on:click={() => changeSubSection("gex")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'gex'
-                  ? 'text-white bg-primary/90'
-                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                  ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                  : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
               >
                 GEX
               </a>
@@ -127,8 +127,8 @@
                 href={`/etf/${$etfTicker}/options/dex`}
                 on:click={() => changeSubSection("dex")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'dex'
-                  ? 'text-white bg-primary/90'
-                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                  ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                  : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
               >
                 DEX
               </a>

@@ -45,7 +45,7 @@ ${paragraphs.join("\n")}
   description={`Company profile for ${$displayCompanyName} (${$stockTicker}) with a description, list of executives, contact details and other key facts.`}
 />
 
-<section class="w-full overflow-hidden text-muted dark:text-white h-full">
+<section class="w-full overflow-hidden h-full">
   <div class="w-full flex h-full overflow-hidden">
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"

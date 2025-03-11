@@ -10,9 +10,7 @@
   title="Daily Delta Exposure"
   description="Analyze daily delta exposure with historic options volume and open interest data. Save individual contracts for future reference and optimize your trading strategy."
 />
-<section
-  class="w-full bg-default overflow-hidden text-white min-h-screen pb-40"
->
+<section class="w-full overflow-hidden min-h-screen pb-40">
   <div class="w-full flex h-full overflow-hidden">
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"

@@ -63,7 +63,7 @@
           <nav
             class="sm:ml-4 pt-1 text-sm sm:text-[1rem] whitespace-nowrap overflow-x-auto whitespace-nowrap"
           >
-            <ul class="flex flex-row items-center w-full text-white">
+            <ul class="flex flex-row items-center w-full">
               {#each subsectionTitles as title}
                 {@const sectionKey = title
                   ?.toLowerCase()

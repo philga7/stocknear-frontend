@@ -53,13 +53,13 @@
           <nav
             class="sm:ml-4 overflow-x-auto pt-1 text-sm sm:text-[1rem] whitespace-nowrap"
           >
-            <ul class="flex flex-row items-center w-full text-white">
+            <ul class="flex flex-row items-center w-full">
               <a
                 href={`/etf/${$etfTicker}/options/dex`}
                 on:click={() => changeSubSection("overview")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'overview'
-                  ? 'text-white bg-primary/90'
-                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                  ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                  : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
               >
                 Overview
               </a>
@@ -68,8 +68,8 @@
                 href={`/etf/${$etfTicker}/options/dex/strike`}
                 on:click={() => changeSubSection("strike")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'strike'
-                  ? 'text-white bg-primary/90'
-                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                  ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                  : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
               >
                 By Strike
               </a>
@@ -77,8 +77,8 @@
                 href={`/etf/${$etfTicker}/options/dex/expiry`}
                 on:click={() => changeSubSection("expiry")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'expiry'
-                  ? 'text-white bg-primary/90'
-                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-primary/90'}"
+                  ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                  : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
               >
                 By Expiry
               </a>

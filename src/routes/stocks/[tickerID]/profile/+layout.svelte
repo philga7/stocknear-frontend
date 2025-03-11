@@ -35,14 +35,14 @@
   }
 </script>
 
-<section class="w-auto overflow-hidden text-muted dark:text-white h-full">
+<section class="w-auto overflow-hidden h-full">
   <div class="m-auto h-full overflow-hidden">
     <main class="w-full">
       <div class="m-auto">
         <nav
           class="mb-5 sm:mb-0 sm:ml-4 pt-1 text-sm sm:text-[1rem] whitespace-nowrap overflow-x-auto whitespace-nowrap"
         >
-          <ul class="flex flex-row items-center w-full text-white">
+          <ul class="flex flex-row items-center w-full">
             <a
               href={`/stocks/${$stockTicker}/profile`}
               on:click={() => changeSubSection("overview")}

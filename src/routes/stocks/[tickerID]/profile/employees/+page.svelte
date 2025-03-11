@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { displayCompanyName, screenWidth, stockTicker } from "$lib/store";
+  import { displayCompanyName, stockTicker } from "$lib/store";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
   import { goto } from "$app/navigation";
+  import { mode } from "mode-watcher";
 
   import highcharts from "$lib/highcharts.ts";
 
@@ -87,15 +88,15 @@
       },
       chart: {
         type: "column",
-        backgroundColor: "#09090B",
-        plotBackgroundColor: "#09090B",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
         height: 360,
         animation: false,
       },
       title: {
         text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">${removeCompanyStrings($displayCompanyName)} Employees</h3>`,
         style: {
-          color: "white",
+          color: $mode === "light" ? "black" : "white",
         },
         useHTML: true,
       },
@@ -103,7 +104,7 @@
         categories: dateList,
         labels: {
           style: {
-            color: "#fff",
+            color: $mode === "light" ? "black" : "white",
             fontSize: "12px",
           },
           rotation: 45,
@@ -112,9 +113,9 @@
       },
       yAxis: {
         gridLineWidth: 1,
-        gridLineColor: "#111827",
+        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
         labels: {
-          style: { color: "white" },
+          style: { color: $mode === "light" ? "black" : "white" },
           formatter: function () {
             if (sortBy === "Growth") {
               return this.value + "%";
@@ -138,26 +139,31 @@
         },
         borderRadius: 4,
         formatter: function () {
-          let value;
-          if (sortBy === "Growth") {
-            value = `${this.y >= 0 ? "+" : ""}${this.y.toFixed(2)}%`;
-          } else if (sortBy === "Change") {
-            value = (this.y >= 0 ? "+" : "") + this.y.toLocaleString("en-US");
-          } else {
-            value = this.y.toLocaleString("en-US");
-          }
+          // Format the x value to display time in a custom format
+          let tooltipContent = `<span class="m-auto text-[1rem] font-[501]">${new Date(
+            this?.x,
+          ).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })}</span><br>`;
 
-          return (
-            `<span class="m-auto text-white text-[1rem] font-[501]">${this.x}</span><br>` +
-            `<span class="text-white font-normal text-sm">Employees ${value}</span>`
-          );
+          // Loop through each point in the shared tooltip
+          this.points.forEach((point) => {
+            tooltipContent += `
+        <span style="display:inline-block; width:10px; height:10px; background-color:${point.color}; border-radius:50%; margin-right:5px;"></span>
+        <span class="font-semibold text-sm">${point.series.name}:</span> 
+        <span class="font-normal text-sm">${abbreviateNumber(point.y)}</span><br>`;
+          });
+
+          return tooltipContent;
         },
       },
       series: [
         {
           name: sortBy,
           data: valueList,
-          color: "#FFFFFF",
+          color: $mode === "light" ? "#2C6288" : "#fff",
           animation: false,
         },
       ],
@@ -318,7 +324,7 @@
   let htmlOutput = generateEmployeeInfoHTML();
 
   $: {
-    if (sortBy) {
+    if (sortBy || $mode) {
       config = plotData() || null;
     }
   }
@@ -329,14 +335,14 @@
   description={`Current and historical number of employees for ${$displayCompanyName} (${$stockTicker}) with related statistics, a chart and a data table.`}
 />
 
-<section class="bg-default w-full overflow-hidden text-white h-full">
+<section class="w-full overflow-hidden h-full">
   <div class="w-full flex justify-center m-auto h-full overflow-hidden">
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"
     >
       <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
         <div class="mb-6">
-          <h2 class="text-xl sm:text-2xl text-white font-bold mb-4">
+          <h2 class="text-xl sm:text-2xl font-bold mb-4">
             {removeCompanyStrings($displayCompanyName)} Employees
           </h2>
 
@@ -424,7 +430,7 @@
           class="flex flex-col sm:flex-row items-start sm:items-center w-full mt-10 mb-4"
         >
           <h1
-            class="text-xl sm:text-2xl text-white font-bold text-start mr-auto mb-4 sm:mb-0"
+            class="text-xl sm:text-2xl font-bold text-start mr-auto mb-4 sm:mb-0"
           >
             Employees Chart
           </h1>
@@ -435,9 +441,9 @@
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
                       builders={[builder]}
-                      class="w-full border-gray-600 border bg-default sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
+                      class="w-full border-gray-300 shadow-sm dark:border-gray-600 border sm:hover:bg-gray-100 dark:bg-default dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                     >
-                      <span class="truncate text-white">{sortBy}</span>
+                      <span class="truncate">{sortBy}</span>
                       <svg
                         class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
                         viewBox="0 0 20 20"
@@ -456,26 +462,26 @@
                   <DropdownMenu.Content
                     class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                   >
-                    <DropdownMenu.Label class="text-gray-400">
+                    <DropdownMenu.Label class="text-muted dark:text-gray-400">
                       Select Type
                     </DropdownMenu.Label>
                     <DropdownMenu.Separator />
                     <DropdownMenu.Group>
                       <DropdownMenu.Item
                         on:click={() => (sortBy = "Total")}
-                        class="cursor-pointer hover:bg-primary"
+                        class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                       >
                         Total
                       </DropdownMenu.Item>
                       <DropdownMenu.Item
                         on:click={() => (sortBy = "Change")}
-                        class="cursor-pointer hover:bg-primary"
+                        class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                       >
                         Change
                       </DropdownMenu.Item>
                       <DropdownMenu.Item
                         on:click={() => (sortBy = "Growth")}
-                        class="cursor-pointer hover:bg-primary"
+                        class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                       >
                         Growth
                       </DropdownMenu.Item>
@@ -485,9 +491,9 @@
               </div>
               <Button
                 on:click={() => exportData("csv")}
-                class="ml-2 w-fit border-gray-600 border bg-default sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
+                class="ml-2 w-fit border-gray-300 shadow-sm dark:border-gray-600 border sm:hover:bg-gray-100 dark:bg-default dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
               >
-                <span class="truncate text-white">Download</span>
+                <span class="truncate">Download</span>
                 <svg
                   class="{['Pro', 'Plus']?.includes(data?.user?.tier)
                     ? 'hidden'
@@ -506,38 +512,38 @@
 
         {#if historyList?.length !== 0}
           <div
-            class="chart mt-5 sm:mt-0 border border-gray-800 rounded"
+            class="chart mt-5 sm:mt-0 border border-gray-300 dark:border-gray-800 rounded"
             use:highcharts={config}
           ></div>
 
           <div class="mt-5">
-            <h3 class=" text-xl sm:text-2xl text-white font-bold mb-2 sm:mb-0">
+            <h3 class=" text-xl sm:text-2xl font-bold mb-2 sm:mb-0">
               Employees History
             </h3>
 
-            <div class="mt-5 w-full overflow-x-auto">
+            <div class=" w-full overflow-x-auto">
               <table
-                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
+                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
               >
-                <thead class="bg-default">
+                <thead class="text-muted dark:text-white dark:bg-default">
                   <tr>
                     <th
-                      class="text-start text-white text-sm whitespace-nowrap font-semibold"
+                      class="text-start text-sm whitespace-nowrap font-semibold"
                     >
                       Date
                     </th>
                     <th
-                      class="text-end text-white text-sm whitespace-nowrap font-semibold"
+                      class="text-end text-sm whitespace-nowrap font-semibold"
                     >
                       Employees
                     </th>
                     <th
-                      class="text-end text-white text-sm whitespace-nowrap font-semibold"
+                      class="text-end text-sm whitespace-nowrap font-semibold"
                     >
                       Change
                     </th>
                     <th
-                      class="text-end text-white text-sm whitespace-nowrap font-semibold"
+                      class="text-end text-sm whitespace-nowrap font-semibold"
                     >
                       Growth
                     </th>
@@ -545,9 +551,11 @@
                 </thead>
                 <tbody class="">
                   {#each historyList as item, index}
-                    <tr class="text-white odd:bg-odd border-b border-gray-800">
+                    <tr
+                      class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
+                    >
                       <td
-                        class="text-start text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                        class="text-start text-sm sm:text-[1rem] whitespace-nowrap"
                       >
                         {new Date(item?.filingDate)?.toLocaleString("en-US", {
                           month: "short",
@@ -557,14 +565,14 @@
                         })}
                       </td>
                       <td
-                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                       >
                         {new Intl.NumberFormat("en").format(
                           item?.employeeCount,
                         )}
                       </td>
                       <td
-                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                       >
                         {#if Number(item?.employeeCount - historyList[index + 1]?.employeeCount)}
                           {new Intl.NumberFormat("en").format(
@@ -576,7 +584,7 @@
                         {/if}
                       </td>
                       <td
-                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white text-end"
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-end"
                       >
                         {#if index === historyList?.length - 1}
                           n/a
@@ -612,7 +620,7 @@
           </div>
         {:else}
           <h1
-            class="text-xl m-auto flex justify-center text-white font-semibold mb-4 mt-10"
+            class="text-xl m-auto flex justify-center font-semibold mb-4 mt-10"
           >
             No history found
           </h1>
