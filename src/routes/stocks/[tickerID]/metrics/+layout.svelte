@@ -60,7 +60,9 @@
     <main class="w-full">
       <div class="m-auto">
         {#if names?.length > 0}
-          <nav class="ml-4 overflow-x-auto whitespace-nowrap">
+          <nav
+            class="sm:ml-4 pt-1 text-sm sm:text-[1rem] whitespace-nowrap overflow-x-auto whitespace-nowrap"
+          >
             <ul class="flex flex-row items-center w-full text-white">
               {#each subsectionTitles as title}
                 {@const sectionKey = title

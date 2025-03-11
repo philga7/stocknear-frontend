@@ -322,16 +322,14 @@
 />
 
 <section class=" w-full overflow-hidden h-full">
-  <div
-    class="w-full flex justify-center w-full sm-auto h-full overflow-hidden mt-4 sm:mt-0"
-  >
+  <div class="w-full flex justify-center w-full sm-auto h-full overflow-hidden">
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"
     >
       <main class="w-full">
         <div class="sm:pl-7 sm:pb-7 sm:pt-7 m-auto mt-2 sm:mt-0">
           <div
-            class="mb-3 flex flex-col sm:flex-row items-center justify-between"
+            class="mb-3 flex flex-col sm:flex-row items-start sm:items-center justify-between"
           >
             <h1 class="text-xl sm:text-2xl font-bold">
               {removeCompanyStrings($displayCompanyName)} Cash Flow Statement

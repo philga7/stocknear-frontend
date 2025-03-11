@@ -79,15 +79,15 @@
       >
         <main class="w-full lg:w-3/4 lg:pr-10">
           <nav
-            class="mb-5 sm:mb-0 sm:ml-4 pt-1 overflow-x-auto md:overflow-hidden text-sm sm:text-[1rem] whitespace-nowrap"
+            class="mb-5 sm:mb-0 sm:ml-4 pt-1 text-sm sm:text-[1rem] whitespace-nowrap overflow-x-auto whitespace-nowrap"
           >
             <ul class="flex flex-row items-center w-full text-white">
               <a
                 href={`/stocks/${$stockTicker}/insider`}
                 on:click={() => changeSubSection("insider")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'insider'
-                  ? 'text-white bg-secondary'
-                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary'}"
+                  ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                  : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
               >
                 Insider Trading
               </a>
@@ -97,8 +97,8 @@
                 on:click={() => changeSubSection("institute")}
                 class="p-2 px-5 cursor-pointer {displaySubSection ===
                 'institute'
-                  ? 'text-white bg-secondary'
-                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary'}"
+                  ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                  : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
               >
                 13F Institute
               </a>
@@ -108,8 +108,8 @@
                 on:click={() => changeSubSection("congress-trading")}
                 class="p-2 px-5 cursor-pointer {displaySubSection ===
                 'congress-trading'
-                  ? 'text-white bg-secondary'
-                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary'}"
+                  ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                  : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
               >
                 Congress Trading
               </a>
@@ -118,8 +118,8 @@
                 on:click={() => changeSubSection("transcripts")}
                 class="p-2 px-5 cursor-pointer {displaySubSection ===
                 'transcripts'
-                  ? 'text-white bg-secondary'
-                  : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary'}"
+                  ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                  : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
               >
                 Transcripts
               </a>
@@ -129,21 +129,19 @@
           <slot />
         </main>
 
-        <aside class="hidden lg:block relative fixed w-1/4 mt-3">
+        <aside class="hidden lg:block relative fixed w-1/4">
           {#if newsList?.length !== 0}
             <div
-              class="w-full sm:hover:text-white text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit"
+              class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer"
             >
               <div class="p-4 text-sm">
-                <h3 class="text-lg text-white font-semibold mb-3">
-                  {$stockTicker} News
-                </h3>
-                <ul class="text-white">
+                <h3 class="text-xl font-bold mb-3">{$stockTicker} News</h3>
+                <ul class="">
                   {#each newsList?.slice(0, 10) as item}
                     <li class="mb-3 last:mb-1">
                       {formatDate(item?.publishedDate)} ago -
                       <a
-                        class="text-blue-500 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
+                        class="sm:hover:text-muted dark:sm:hover:text-white text-blue-500 dark:text-blue-400"
                         href={item?.url}
                         target="_blank"
                         rel="noopener noreferrer nofollow">{item?.title}</a

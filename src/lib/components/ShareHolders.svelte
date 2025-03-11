@@ -10,6 +10,7 @@
   import DownloadData from "$lib/components/DownloadData.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import highcharts from "$lib/highcharts.ts";
+  import { mode } from "mode-watcher";
 
   export let data;
 
@@ -35,8 +36,8 @@
     const options = {
       chart: {
         type: "bar",
-        backgroundColor: "#09090B",
-        plotBackgroundColor: "#09090B",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
         height: 360, // Set the maximum height for the chart
         animation: false,
       },
@@ -44,19 +45,22 @@
       legend: {
         enabled: true,
         animation: false,
-        itemStyle: { color: "#fff" },
+        itemStyle: { color: $mode === "light" ? "black" : "white" },
       },
       title: {
         text: `<h3 class="mt-3 mb-1 text-center">${removeCompanyStrings($displayCompanyName)} Ownership Distribution</h3>`,
         useHTML: true,
-        style: { color: "white" },
+        style: { color: $mode === "light" ? "black" : "white" },
       },
       xAxis: {
         categories: [""],
         animation: false,
       },
       yAxis: {
-        title: { text: null, style: { color: "#fff" } },
+        title: {
+          text: null,
+          style: { color: $mode === "light" ? "black" : "white" },
+        },
         opposite: true,
         gridLineWidth: 1,
         gridLineColor: "#111827",
@@ -64,7 +68,7 @@
           formatter: function () {
             return this?.value + "%";
           },
-          style: { color: "#fff" },
+          style: { color: $mode === "light" ? "black" : "white" },
         },
         tickPositioner: function () {
           // Create custom tick positions with wider spacing
@@ -84,11 +88,11 @@
       },
       plotOptions: {
         series: {
-          color: "white",
+          color: $mode === "light" ? "black" : "white",
           animation: false,
           dataLabels: {
             enabled: false,
-            color: "white",
+            color: $mode === "light" ? "black" : "white",
             style: {
               fontSize: "13px",
               fontWeight: "bold",
@@ -130,8 +134,6 @@
     putPercentage = 0;
     putCallRatio = 0;
   }
-
-  config = plotData();
 
   let charNumber = 30;
 
@@ -233,12 +235,18 @@
     // Sort using the generic comparison function
     displayList = [...originalData].sort(compareValues)?.slice(0, 50);
   };
+
+  $: {
+    if ($mode) {
+      config = plotData();
+    }
+  }
 </script>
 
-<section class="overflow-hidden text-white h-full pb-8">
+<section class="overflow-hidden h-full pb-8">
   <main class="overflow-hidden">
     {#if shareholderList?.length !== 0}
-      <div class="text-white text-[1rem] mt-3">
+      <div class=" text-[1rem] mt-3">
         <p>
           Total Institutes of {rawData?.investorsHolding?.toLocaleString(
             "en-US",
@@ -289,11 +297,11 @@
       </div>
 
       {#if putCallRatio !== 0}
-        <h1 class="text-white font-semibold text-xl sm:text-2xl mb-3 mt-5">
+        <h1 class=" font-semibold text-xl sm:text-2xl mb-3 mt-5">
           Options Activity
         </h1>
 
-        <div class="mt-3 text-white text-md">
+        <div class="mt-3 text-md">
           Institutions are holding {callPercentage > 55
             ? "more Calls Contracts as Puts Contracts, indicating a bullish sentiment."
             : callPercentage < 45
@@ -307,11 +315,11 @@
           >
             <!--Start Put/Call-->
             <div
-              class="flex flex-row items-center flex-wrap w-full px-3 sm:px-5 border border-gray-600 bg-primary rounded-md h-20"
+              class="flex flex-row items-center flex-wrap w-full px-3 sm:px-5 shadow-sm border border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-primary rounded-md h-20"
             >
               <div class="flex flex-col items-start">
-                <span class=" text-white text-sm sm:text-[1rem]">Put/Call</span>
-                <span class="text-start text-sm sm:text-[1rem] text-white">
+                <span class="  text-sm sm:text-[1rem]">Put/Call</span>
+                <span class="text-start text-sm sm:text-[1rem]">
                   {putCallRatio?.toFixed(3)}
                 </span>
               </div>
@@ -328,7 +336,7 @@
                     cy="18"
                     r="16"
                     fill="none"
-                    class="stroke-current text-[#3E3E3E]"
+                    class="stroke-current text-gray-300 dark:text-[#3E3E3E]"
                     stroke-width="3"
                   ></circle>
                   <!-- Progress Circle inside a group with rotation -->
@@ -351,7 +359,7 @@
                 <div
                   class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
                 >
-                  <span class="text-center text-white text-sm"
+                  <span class="text-center text-sm"
                     >{putCallRatio?.toFixed(2)}</span
                   >
                 </div>
@@ -361,12 +369,11 @@
             <!--End Put/Call-->
             <!--Start Call Flow-->
             <div
-              class="flex flex-row items-center flex-wrap w-full px-3 sm:px-5 border border-gray-600 bg-primary rounded-md h-20"
+              class="flex flex-row items-center flex-wrap w-full px-3 sm:px-5 shadow-sm border border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-primary rounded-md h-20"
             >
               <div class="flex flex-col items-start">
-                <span class=" text-white text-sm sm:text-[1rem]">Call Flow</span
-                >
-                <span class="text-start text-sm sm:text-[1rem] text-white">
+                <span class="  text-sm sm:text-[1rem]">Call Flow</span>
+                <span class="text-start text-sm sm:text-[1rem]">
                   {new Intl.NumberFormat("en", {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
@@ -386,7 +393,7 @@
                     cy="18"
                     r="16"
                     fill="none"
-                    class="stroke-current text-[#3E3E3E]"
+                    class="stroke-current text-gray-300 dark:text-[#3E3E3E]"
                     stroke-width="3"
                   ></circle>
                   <!-- Progress Circle inside a group with rotation -->
@@ -407,7 +414,7 @@
                 <div
                   class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
                 >
-                  <span class="text-center text-white text-sm"
+                  <span class="text-center text-sm"
                     >{callPercentage?.toFixed(0)}%</span
                   >
                 </div>
@@ -418,11 +425,11 @@
 
             <!--Start Put Flow-->
             <div
-              class="flex flex-row items-center flex-wrap w-full px-3 sm:px-5 border border-gray-600 bg-primary rounded-md h-20"
+              class="flex flex-row items-center flex-wrap w-full px-3 sm:px-5 shadow-sm border border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-primary rounded-md h-20"
             >
               <div class="flex flex-col items-start">
-                <span class=" text-white text-sm sm:text-[1rem]">Put Flow</span>
-                <span class="text-start text-sm sm:text-[1rem] text-white">
+                <span class="  text-sm sm:text-[1rem]">Put Flow</span>
+                <span class="text-start text-sm sm:text-[1rem]">
                   {new Intl.NumberFormat("en", {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
@@ -442,7 +449,7 @@
                     cy="18"
                     r="16"
                     fill="none"
-                    class="stroke-current text-[#3E3E3E]"
+                    class="stroke-current text-gray-300 dark:text-[#3E3E3E]"
                     stroke-width="3"
                   ></circle>
                   <!-- Progress Circle inside a group with rotation -->
@@ -463,7 +470,7 @@
                 <div
                   class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
                 >
-                  <span class="text-center text-white text-sm"
+                  <span class="text-center text-sm"
                     >{putPercentage?.toFixed(0)}%</span
                   >
                 </div>
@@ -476,12 +483,10 @@
       {/if}
 
       <div class="flex flex-row items-center justify-between mb-3">
-        <h3 class="text-white font-semibold text-xl sm:text-2xl">
-          Top Shareholders
-        </h3>
+        <h3 class=" font-semibold text-xl sm:text-2xl">Top Shareholders</h3>
 
         {#if topHolders !== 0}
-          <span class="text-white text-[1rem">
+          <span class=" text-[1rem">
             The Top 10 shareholders collectively own <span class="font-semibold"
               >{topHolders <= 0.01
                 ? "< 0.01%"
@@ -504,7 +509,7 @@
         class="flex justify-start items-center w-full m-auto mt-3 overflow-x-auto"
       >
         <table
-          class="table table-sm table-compact bg-table border border-gray-800 w-full"
+          class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
         >
           <thead>
             <TableHeader {columns} {sortOrders} {sortData} />
@@ -513,7 +518,7 @@
             {#each displayList as item, index}
               {#if item?.investorName?.length > 0}
                 <tr
-                  class="border-b border-gray-800 odd:bg-odd sm:hover:bg-[#245073]/10 {index +
+                  class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
                     1 ===
                     shareholderList?.length &&
                   !['Pro', 'Plus']?.includes(data?.user?.tier)
@@ -523,7 +528,7 @@
                   <td class=" text-sm sm:text-[1rem] whitespace-nowrap">
                     <a
                       href={"/hedge-funds/" + item?.cik}
-                      class="sm:hover:underline sm:hover:underline-offset-4 text-white"
+                      class="sm:hover:underline sm:hover:underline-offset-4"
                     >
                       {item?.investorName?.length > charNumber
                         ? formatString(
@@ -534,7 +539,7 @@
                   </td>
 
                   <td
-                    class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                    class=" text-end text-sm sm:text-[1rem] whitespace-nowrap"
                   >
                     {item?.ownership <= 0.01
                       ? "< 0.01%"
@@ -542,7 +547,7 @@
                   </td>
 
                   <td
-                    class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                    class=" text-end text-sm sm:text-[1rem] whitespace-nowrap"
                   >
                     {@html item?.sharesNumber !== null
                       ? abbreviateNumber(item?.sharesNumber, false, true)
@@ -550,7 +555,7 @@
                   </td>
 
                   <td
-                    class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                    class=" text-end text-sm sm:text-[1rem] whitespace-nowrap"
                   >
                     {#if item?.changeInSharesNumberPercentage >= 0}
                       <span class="text-green-600 dark:text-[#00FC50]"
@@ -570,7 +575,7 @@
                   </td>
 
                   <td
-                    class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                    class=" text-end text-sm sm:text-[1rem] whitespace-nowrap"
                   >
                     {item?.marketValue !== null
                       ? abbreviateNumber(item?.marketValue)
@@ -578,7 +583,7 @@
                   </td>
 
                   <td
-                    class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                    class=" text-end text-sm sm:text-[1rem] whitespace-nowrap"
                   >
                     {item?.weight <= 0.01
                       ? "< 0.01%"

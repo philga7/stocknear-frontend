@@ -1,9 +1,5 @@
 <script lang="ts">
-  import {
-    displayCompanyName,
-    numberOfUnreadNotification,
-    stockTicker,
-  } from "$lib/store";
+  import { displayCompanyName, stockTicker } from "$lib/store";
   import { formatString, abbreviateNumber } from "$lib/utils";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import { onMount } from "svelte";
@@ -11,6 +7,7 @@
   import { Button } from "$lib/components/shadcn/button/index.js";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import SEO from "$lib/components/SEO.svelte";
+  import Infobox from "$lib/components/Infobox.svelte";
 
   export let data;
   let isLoaded = true;
@@ -218,33 +215,19 @@
   description={`Get the latest US congress & senate trading of ${$displayCompanyName} (${$stockTicker}) from democrates and republicans.`}
 />
 
-<section class="w-full bg-default overflow-hidden text-white h-full">
+<section class="w-full overflow-hidden h-full">
   <div class="w-full flex h-full overflow-hidden">
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"
     >
       <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
         <div class="w-full mb-6">
-          <h1 class="text-xl sm:text-2xl text-white font-bold mb-4">
-            Insider Trading
-          </h1>
+          <h1 class="text-xl sm:text-2xl font-bold mb-4">Insider Trading</h1>
           {#if insiderTradingList?.length === 0}
-            <div
-              class="w-fit text-white p-3 sm:p-5 mb-5 rounded-md sm:flex sm:flex-row sm:items-center border border-gray-600 text-sm sm:text-[1rem]"
-            >
-              <svg
-                class="w-6 h-6 shrink-0 inline-block sm:mr-2"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 256 256"
-                ><path
-                  fill="#fff"
-                  d="M128 24a104 104 0 1 0 104 104A104.11 104.11 0 0 0 128 24m-4 48a12 12 0 1 1-12 12a12 12 0 0 1 12-12m12 112a16 16 0 0 1-16-16v-40a8 8 0 0 1 0-16a16 16 0 0 1 16 16v40a8 8 0 0 1 0 16"
-                /></svg
-              >
-
-              No trading history available for {$displayCompanyName}. Likely no
-              insider trading has happened yet.
-            </div>
+            <Infobox
+              text={`No trading history available for ${$displayCompanyName}. Likely no
+              insider trading has happened yet.`}
+            />
           {/if}
         </div>
 
@@ -257,9 +240,9 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="w-full border-gray-600 border bg-default sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
+                        class="shadow-sm w-full border-gray-300 dark:border-gray-600 border sm:hover:border-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                       >
-                        <span class="truncate text-white">Year: {year}</span>
+                        <span class="truncate">Year: {year}</span>
                         <svg
                           class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
                           viewBox="0 0 20 20"
@@ -278,7 +261,7 @@
                     <DropdownMenu.Content
                       class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                     >
-                      <DropdownMenu.Label class="text-gray-400">
+                      <DropdownMenu.Label class="text-muted dark:text-gray-400">
                         Select Year
                       </DropdownMenu.Label>
                       <DropdownMenu.Separator />
@@ -286,7 +269,7 @@
                         {#each yearRange as index}
                           <DropdownMenu.Item
                             on:click={() => (year = index)}
-                            class="cursor-pointer hover:bg-primary"
+                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                           >
                             {index}
                           </DropdownMenu.Item>
@@ -300,11 +283,9 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="w-full border-gray-600 border bg-default sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
+                        class="shadow-sm w-full border-gray-300 dark:border-gray-600 border sm:hover:border-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                       >
-                        <span class="truncate text-white"
-                          >Quarter: Q{quarter}</span
-                        >
+                        <span class="truncate">Quarter: Q{quarter}</span>
                         <svg
                           class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
                           viewBox="0 0 20 20"
@@ -323,7 +304,7 @@
                     <DropdownMenu.Content
                       class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                     >
-                      <DropdownMenu.Label class="text-gray-400">
+                      <DropdownMenu.Label class="text-muted dark:text-gray-400">
                         Select Quarter
                       </DropdownMenu.Label>
                       <DropdownMenu.Separator />
@@ -331,7 +312,7 @@
                         {#each [1, 2, 3, 4] as index}
                           <DropdownMenu.Item
                             on:click={() => (quarter = index)}
-                            class="cursor-pointer hover:bg-primary"
+                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                           >
                             Q{index}
                           </DropdownMenu.Item>
@@ -342,7 +323,7 @@
                 </div>
               </div>
 
-              <h3 class="text-white text-lg font-semibold pt-5">
+              <h3 class=" text-lg font-semibold pt-5">
                 Q{statistics?.quarter}
                 {statistics?.year} Insider Statistics
               </h3>
@@ -355,15 +336,11 @@
                 >
                   <!--Start Put/Call-->
                   <div
-                    class="flex flex-row items-center flex-wrap w-full px-3 sm:px-4 border border-gray-600 bg-primary rounded-md h-20"
+                    class="flex flex-row items-center flex-wrap w-full px-3 sm:px-4 border border-gray-300 shadow-sm dark:border-gray-600 bg-gray-200 dark:bg-primary rounded-md h-20"
                   >
                     <div class="flex flex-col items-start">
-                      <span class=" text-white text-sm sm:text-[1rem]"
-                        >Buy/Sell</span
-                      >
-                      <span
-                        class="text-start text-sm sm:text-[1rem] text-white"
-                      >
+                      <span class="  text-sm sm:text-[1rem]">Buy/Sell</span>
+                      <span class="text-start text-sm sm:text-[1rem]">
                         {buySellRatio > 0
                           ? buySellRatio?.toFixed(1)
                           : buySellRatio}
@@ -382,7 +359,7 @@
                           cy="18"
                           r="16"
                           fill="none"
-                          class="stroke-current text-[#3E3E3E]"
+                          class="stroke-current text-gray-300 dark:text-[#3E3E3E]"
                           stroke-width="3"
                         ></circle>
                         <!-- Progress Circle inside a group with rotation -->
@@ -405,8 +382,7 @@
                       <div
                         class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
                       >
-                        <span
-                          class="text-center text-white text-sm sm:text-[1rem]"
+                        <span class="text-center text-sm sm:text-[1rem]"
                           >{(buySellRatio * 100)?.toFixed(0)}%</span
                         >
                       </div>
@@ -416,15 +392,12 @@
                   <!--End Put/Call-->
                   <!--Start Call Flow-->
                   <div
-                    class="flex flex-row items-center flex-wrap w-full px-3 sm:px-4 border border-gray-600 bg-primary rounded-md h-20"
+                    class="flex flex-row items-center flex-wrap w-full px-3 sm:px-4 border border-gray-300 shadow-sm dark:border-gray-600 bg-gray-200 dark:bg-primary rounded-md h-20"
                   >
                     <div class="flex flex-col items-start">
-                      <span class=" text-white text-sm sm:text-[1rem]"
-                        >Bought Shares</span
+                      <span class="  text-sm sm:text-[1rem]">Bought Shares</span
                       >
-                      <span
-                        class="text-start text-sm sm:text-[1rem] text-white"
-                      >
+                      <span class="text-start text-sm sm:text-[1rem]">
                         {new Intl.NumberFormat("en", {
                           minimumFractionDigits: 0,
                           maximumFractionDigits: 0,
@@ -444,7 +417,7 @@
                           cy="18"
                           r="16"
                           fill="none"
-                          class="stroke-current text-[#3E3E3E]"
+                          class="stroke-current text-gray-300 dark:text-[#3E3E3E]"
                           stroke-width="3"
                         ></circle>
                         <!-- Progress Circle inside a group with rotation -->
@@ -466,8 +439,7 @@
                       <div
                         class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
                       >
-                        <span
-                          class="text-center text-white text-sm sm:text-[1rem]"
+                        <span class="text-center text-sm sm:text-[1rem]"
                           >{statistics?.buySharesPercentage}%</span
                         >
                       </div>
@@ -477,15 +449,11 @@
                   <!--End Call Flow-->
                   <!--Start Put Flow-->
                   <div
-                    class="flex flex-row items-center flex-wrap w-full px-3 sm:px-4 border border-gray-600 rounded-md bg-primary h-20"
+                    class="shadow-sm flex flex-row items-center flex-wrap w-full px-3 sm:px-4 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-200 dark:bg-primary h-20"
                   >
                     <div class="flex flex-col items-start">
-                      <span class=" text-white text-sm sm:text-[1rem]"
-                        >Sold Shares</span
-                      >
-                      <span
-                        class="text-start text-sm sm:text-[1rem] text-white"
-                      >
+                      <span class="  text-sm sm:text-[1rem]">Sold Shares</span>
+                      <span class="text-start text-sm sm:text-[1rem]">
                         {new Intl.NumberFormat("en", {
                           minimumFractionDigits: 0,
                           maximumFractionDigits: 0,
@@ -505,7 +473,7 @@
                           cy="18"
                           r="16"
                           fill="none"
-                          class="stroke-current text-[#3E3E3E]"
+                          class="stroke-current text-gray-300 dark:text-[#3E3E3E]"
                           stroke-width="3"
                         ></circle>
                         <!-- Progress Circle inside a group with rotation -->
@@ -527,8 +495,7 @@
                       <div
                         class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
                       >
-                        <span
-                          class="text-center text-white text-sm sm:text-[1rem]"
+                        <span class="text-center text-sm sm:text-[1rem]"
                           >{statistics?.soldSharesPercentage}%</span
                         >
                       </div>
@@ -545,7 +512,7 @@
               class="flex justify-start items-center w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto no-scrollbar"
             >
               <table
-                class="table table-sm table-pin-rows table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto"
+                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
               >
                 <thead>
                   <TableHeader {columns} {sortOrders} {sortData} />
@@ -554,16 +521,14 @@
                   {#each insiderTradingList as item, index}
                     {#if item?.price > 0}
                       <tr
-                        class="text-white odd:bg-odd border-b border-gray-800 {index +
+                        class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
                           1 ===
                           insiderTradingList?.slice(0, 6)?.length &&
                         !['Pro', 'Plus']?.includes(data?.user?.tier)
                           ? 'opacity-[0.1]'
                           : ''}"
                       >
-                        <td
-                          class="text-white text-sm sm:text-[1rem] ] whitespace-nowrap"
-                        >
+                        <td class=" text-sm sm:text-[1rem] ] whitespace-nowrap">
                           <div class="flex flex-col">
                             <span class=""
                               >{formatString(item?.reportingName)?.replace(
@@ -571,14 +536,14 @@
                                 "",
                               )}</span
                             >
-                            <span class="text-sm text-white"
+                            <span class="text-sm"
                               >{extractOfficeInfo(item?.typeOfOwner)}</span
                             >
                           </div>
                         </td>
 
                         <td
-                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white ]"
+                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap ]"
                         >
                           {new Date(item?.transactionDate)?.toLocaleString(
                             "en-US",
@@ -592,7 +557,7 @@
                         </td>
 
                         <td
-                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white ]"
+                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap ]"
                         >
                           {@html abbreviateNumber(
                             item?.securitiesTransacted,
@@ -601,12 +566,12 @@
                           )}
                         </td>
                         <td
-                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white ]"
+                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap ]"
                         >
                           ${item?.price?.toFixed(2)}
                         </td>
                         <td
-                          class=" text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                          class=" text-end text-sm sm:text-[1rem] whitespace-nowrap"
                         >
                           {@html abbreviateNumber(item?.value, false, true)}
                         </td>
@@ -615,7 +580,7 @@
                             class="w-auto px-4 py-1 rounded-full uppercase {item?.transactionType ===
                             'Bought'
                               ? 'bg-[#75D377] text-black'
-                              : 'bg-[#cd4050] text-white'} font-semibold"
+                              : 'bg-[#cd4050] '} font-semibold"
                           >
                             {transactionStyles[item?.transactionType]}
                           </div>
@@ -630,7 +595,7 @@
             {#if rawData?.length > 5 && rawData?.length === insiderTradingList?.length && ["Pro", "Plus"]?.includes(data?.user?.tier)}
               <label
                 on:click={backToTop}
-                class="w-32 py-1.5 mt-10 hover:bg-white hover:bg-opacity-[0.05] cursor-pointer m-auto flex justify-center items-center border border-gray-600 rounded-full"
+                class="w-32 py-1.5 mt-10 hover:bg-white hover:bg-opacity-[0.05] cursor-pointer m-auto flex justify-center items-center border border-gray-300 dark:border-gray-600 rounded-full"
               >
                 Back to top
               </label>
@@ -654,21 +619,3 @@
     </div>
   </div>
 </section>
-
-<style>
-  .app {
-    height: 400px;
-    width: 100%;
-  }
-
-  @media (max-width: 560px) {
-    .app {
-      width: 100%;
-      height: 300px;
-    }
-  }
-
-  .chart {
-    width: 100%;
-  }
-</style>
