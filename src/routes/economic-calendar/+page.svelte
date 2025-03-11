@@ -1,6 +1,6 @@
 <script lang="ts">
   import { format, startOfWeek, addDays, addWeeks, subWeeks } from "date-fns";
-  import { screenWidth, numberOfUnreadNotification } from "$lib/store";
+  import { screenWidth } from "$lib/store";
   import { abbreviateNumber, listOfRelevantCountries } from "$lib/utils";
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
@@ -314,7 +314,7 @@
       >
         <main class="w-full lg:w-3/4 lg:pr-5">
           <div class="mb-6 border-b-[2px]">
-            <h1 class="mb-1 text-white text-2xl sm:text-3xl font-bold">
+            <h1 class="mb-1 text-2xl sm:text-3xl font-bold">
               Economic Calendar
             </h1>
           </div>
@@ -331,7 +331,7 @@
                   on:click={() => changeWeek("previous")}
                   class="{previousMax
                     ? 'opacity-80'
-                    : ''} hidden sm:flex h-16 w-48 cursor-pointer border m-auto flex bg-primary border border-gray-600 mb-3"
+                    : ''} hidden sm:flex h-16 w-48 cursor-pointer border m-auto flex bg-gray-200 dark:bg-primary border border-gray-300 dark:border-gray-600 mb-3"
                 >
                   <svg
                     class="w-6 h-6 m-auto rotate-180"
@@ -339,14 +339,14 @@
                     viewBox="0 0 24 24"
                   >
                     <path
-                      fill="white"
+                      fill="currentColor"
                       d="M8.025 22L6.25 20.225L14.475 12L6.25 3.775L8.025 2l10 10l-10 10Z"
                     />
                   </svg>
                 </label>
                 {#each displayWeekData as day, index (formattedWeekday[index])}
                   <div
-                    class="w-full text-white {index === selectedWeekday
+                    class="w-full {index === selectedWeekday
                       ? ''
                       : 'hidden sm:block'}"
                   >
@@ -354,8 +354,8 @@
                       on:click={() => toggleDate(index)}
                       class="m-auto w-full cursor-pointer h-16 {index ===
                       selectedWeekday
-                        ? 'bg-white text-black font-semibold'
-                        : ''} rounded sm:rounded-none flex bg-default border border-gray-600 mb-3"
+                        ? 'bg-gray-200 dark:bg-white text-black font-semibold'
+                        : ''} rounded-md sm:rounded-none flex dark:bg-default border border-gray-300 dark:border-gray-600 mb-3"
                     >
                       <div
                         class="flex flex-row justify-center items-center w-full"
@@ -406,7 +406,7 @@
                   on:click={() => changeWeek("next")}
                   class="{nextMax
                     ? 'opacity-80'
-                    : ''} hidden sm:flex h-16 w-48 cursor-pointer border m-auto flex bg-primary border border-gray-600 mb-3"
+                    : ''} hidden sm:flex h-16 w-48 cursor-pointer border m-auto flex bg-gray-200 dark:bg-primary border border-gray-300 dark:border-gray-600 mb-3"
                 >
                   <svg
                     class="w-6 h-6 m-auto"
@@ -414,7 +414,7 @@
                     viewBox="0 0 24 24"
                   >
                     <path
-                      fill="white"
+                      fill="currentColor"
                       d="M8.025 22L6.25 20.225L14.475 12L6.25 3.775L8.025 2l10 10l-10 10Z"
                     />
                   </svg>
@@ -432,9 +432,9 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="border-gray-600 border bg-default sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
+                        class="border-gray-300 dark:border-gray-600 border border-gray-300 shadow-sm sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                       >
-                        <span class="truncate text-white">Filter Country</span>
+                        <span class="truncate">Filter Country</span>
                         <svg
                           class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
                           viewBox="0 0 20 20"
@@ -462,18 +462,20 @@
                           bind:value={searchQuery}
                           on:input={handleInput}
                           autocomplete="off"
-                          class="absolute sticky w-full border-0 bg-default border-b border-gray-200 focus:border-gray-200 focus:ring-0 text-white placeholder:text-gray-300"
+                          class="absolute sticky w-full border-0 dark:bg-default border-b border-gray-200 focus:border-gray-200 focus:ring-0 placeholder-gray-500 dark:placeholder:text-gray-300"
                           type="search"
                           placeholder="Search..."
                         />
                       </div>
                       <DropdownMenu.Group>
                         {#each searchQuery.length > 0 ? testList : listOfRelevantCountries as item}
-                          <DropdownMenu.Item class="sm:hover:bg-primary">
+                          <DropdownMenu.Item
+                            class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                          >
                             <div class="flex items-center">
                               <label
                                 on:click={() => handleChangeValue(item)}
-                                class="cursor-pointer text-white"
+                                class="cursor-pointer"
                                 for={item}
                               >
                                 <input
@@ -493,11 +495,9 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="border-gray-600 border bg-default sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
+                        class="border-gray-300 dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-300 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                       >
-                        <span class="truncate text-white"
-                          >Filter Importance</span
-                        >
+                        <span class="truncate">Filter Importance</span>
                         <svg
                           class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
                           viewBox="0 0 20 20"
@@ -523,11 +523,13 @@
                       ></div>
                       <DropdownMenu.Group>
                         {#each [1, 2, 3] as i}
-                          <DropdownMenu.Item class="sm:hover:bg-primary">
+                          <DropdownMenu.Item
+                            class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                          >
                             <div class="flex items-center">
                               <label
                                 on:click={() => handleChangeValue(i)}
-                                class="flex flex-row items-center cursor-pointer text-white"
+                                class="flex flex-row items-center cursor-pointer"
                                 for={i}
                               >
                                 <input
@@ -562,7 +564,7 @@
                   {#if filterList.length !== 0}
                     <Button
                       on:click={handleReset}
-                      class="w-fit border-gray-600 border bg-default sm:hover:bg-primary ease-out flex flex-row justify-start items-center px-3 py-2 text-white rounded-md truncate"
+                      class="w-fit border-gray-300 dark:border-gray-600 border shadow-sm bg-white dark:bg-default sm:hover:bg-gray-300 dark:sm:hover:bg-primary ease-out flex flex-row justify-start items-center px-3 py-2  rounded-md truncate"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -591,7 +593,7 @@
                   {#if index === selectedWeekday}
                     {#if day?.length !== 0}
                       <div class="flex flex-row items-center mt-5">
-                        <h2 class="font-semibold text-white text-xl">
+                        <h2 class="font-semibold text-xl">
                           {formattedWeekday[index]?.split(", ")[1]} · {day?.length}
                           Events
                         </h2>
@@ -599,9 +601,9 @@
                           <div
                             class="ml-auto text-[1rem] sm:text-lg flex flex-row items-center relative block rounded-md px-2 py-1 focus:outline-hidden"
                           >
-                            <span class="text-white">Filters</span>
+                            <span class="">Filters</span>
                             <span
-                              class="ml-2 rounded-full avatar w-5 h-5 text-xs font-semibold text-white text-center shrink-0 flex items-center justify-center bg-red-500"
+                              class="ml-2 rounded-full avatar w-5 h-5 text-xs font-semibold text-center shrink-0 flex items-center justify-center bg-red-500"
                             >
                               {filterList.length}
                             </span>
@@ -611,7 +613,7 @@
 
                       <div class="w-full overflow-x-auto no-scrollbar">
                         <table
-                          class="table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto mt-4"
+                          class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
                         >
                           <thead>
                             <TableHeader {columns} {sortOrders} {sortData} />
@@ -619,9 +621,9 @@
                           <tbody>
                             {#each day as item}
                               <tr
-                                class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-oddborder border-gray-800"
+                                class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                               >
-                                <td class="text-white text-sm sm:text-[1rem]">
+                                <td class=" text-sm sm:text-[1rem]">
                                   {item?.time}
                                 </td>
                                 <td
@@ -692,26 +694,24 @@
                                       alt="{item?.country} flag"
                                     />
                                   {/if}
-                                  <span class="text-white ml-2"
-                                    >{item?.country}</span
-                                  >
+                                  <span class=" ml-2">{item?.country}</span>
                                 </td>
                                 <td
-                                  class="text-start text-white text-sm sm:text-[1rem] whitespace-nowrap"
+                                  class="text-start text-sm sm:text-[1rem] whitespace-nowrap"
                                 >
                                   {item?.event?.length > 40
                                     ? item?.event.slice(0, 40) + "..."
                                     : item?.event}
                                 </td>
                                 <td
-                                  class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                                  class=" text-end text-sm sm:text-[1rem] whitespace-nowrap"
                                 >
                                   {item?.actual !== null && item?.actual !== ""
                                     ? abbreviateNumber(item?.actual)
                                     : "-"}
                                 </td>
                                 <td
-                                  class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                                  class=" text-end text-sm sm:text-[1rem] whitespace-nowrap"
                                 >
                                   {item?.consensus !== null &&
                                   item?.consensus !== ""
@@ -719,14 +719,14 @@
                                     : "-"}
                                 </td>
                                 <td
-                                  class="text-white text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                                  class=" text-end text-sm sm:text-[1rem] whitespace-nowrap"
                                 >
                                   {item?.prior !== null && item?.prior !== ""
                                     ? abbreviateNumber(item?.prior)
                                     : "-"}
                                 </td>
                                 <td
-                                  class="text-white text-start text-sm sm:text-[1rem] whitespace-nowrap"
+                                  class=" text-start text-sm sm:text-[1rem] whitespace-nowrap"
                                 >
                                   <div
                                     class="flex flex-row items-center justify-end"
@@ -746,7 +746,7 @@
                                         </svg>
                                       {:else}
                                         <svg
-                                          class="w-4 h-4 text-gray-300 dark:text-gray-500"
+                                          class="w-4 h-4 text-gray-400 dark:text-gray-500"
                                           aria-hidden="true"
                                           xmlns="http://www.w3.org/2000/svg"
                                           fill="currentColor"
@@ -783,7 +783,7 @@
 
         <aside class="hidden lg:block relative fixed w-1/4 ml-4">
           <div
-            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-300 dark:border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href="/earnings-calendar"
@@ -793,18 +793,16 @@
                 <h2 class="text-start text-xl font-semibold ml-3">
                   Earnings Calendar
                 </h2>
-                <ArrowLogo
-                  class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
-                />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:" />
               </div>
-              <span class="text-white p-3 ml-3 mr-3"
+              <span class=" p-3 ml-3 mr-3"
                 >Get the latest Earnings of companies</span
               >
             </a>
           </div>
 
           <div
-            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-300 dark:border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href="/dividends-calendar"
@@ -814,11 +812,9 @@
                 <h2 class="text-start text-xl font-semibold ml-3">
                   Dividend Calendar
                 </h2>
-                <ArrowLogo
-                  class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
-                />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:" />
               </div>
-              <span class="text-white p-3 ml-3 mr-3"
+              <span class=" p-3 ml-3 mr-3"
                 >Get the latest dividend announcement</span
               >
             </a>

@@ -540,6 +540,7 @@
                               >Economic Calendar</a
                             >
                           </Button>
+                          <!--
                           <Button
                             builders={[builder]}
                             type="submit"
@@ -551,7 +552,7 @@
                               >Economic Indicator</a
                             >
                           </Button>
-                          <!--
+                          
 
                           <Button
                             builders={[builder]}
@@ -1063,12 +1064,13 @@
                             class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
                             >Economic Calendar</a
                           >
+                          <!--
                           <a
                             href="/economic-indicator"
                             class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
                             >Economic Indicator</a
                           >
-                          <!--
+                          
                           <a
                             href="/stock-splits-calendar"
                             class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
