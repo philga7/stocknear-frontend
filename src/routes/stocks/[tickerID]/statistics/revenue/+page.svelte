@@ -142,8 +142,8 @@
         },
         borderRadius: 4,
         formatter: function () {
-          // Format the x value to display time in hh:mm format
-          let tooltipContent = `<span class=" m-auto text-[1rem] font-[501]">${new Date(
+          // Format the x value to display time in a custom format
+          let tooltipContent = `<span class="m-auto text-[1rem] font-[501]">${new Date(
             this?.x,
           ).toLocaleDateString("en-US", {
             year: "numeric",
@@ -153,10 +153,10 @@
 
           // Loop through each point in the shared tooltip
           this.points.forEach((point) => {
-            tooltipContent += `<span class=" font-semibold text-sm">${point.series.name}:</span> 
-          <span class=" font-normal text-sm">${abbreviateNumber(
-            point.y,
-          )}</span><br>`;
+            tooltipContent += `
+        <span style="display:inline-block; width:10px; height:10px; background-color:${point.color}; border-radius:50%; margin-right:5px;"></span>
+        <span class="font-semibold text-sm">${point.series.name}:</span> 
+        <span class="font-normal text-sm">${abbreviateNumber(point.y)}</span><br>`;
           });
 
           return tooltipContent;
@@ -196,7 +196,7 @@
   }
 
   $: {
-    if ($stockTicker) {
+    if ($stockTicker || $mode) {
       changeTablePeriod(0);
       changeTimePeriod(0);
     }

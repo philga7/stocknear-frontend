@@ -72,14 +72,14 @@
   description={`View unique business metrics for ${displayCompanyName} (${$stockTicker}) stock, including revenue breakdown, operating income, revenue by geography.`}
 />
 
-<section class="bg-default overflow-hidden text-white min-h-screen w-full">
+<section class=" overflow-hidden min-h-screen w-full">
   <div class="flex justify-center m-auto h-full overflow-hidden w-full">
     <div
       class="relative flex justify-center items-center overflow-hidden w-full"
     >
       <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
         {#if revenueNames?.length !== 0 || geographicNames?.length !== 0}
-          <h2 class="mt-5 text-xl sm:text-2xl text-gray-200 font-bold mb-4">
+          <h2 class="mt-5 text-xl sm:text-2xl font-bold mb-4">
             {$displayCompanyName} Revenue Breakdown
           </h2>
 
@@ -87,17 +87,17 @@
             class="no-scrollbar flex justify-start items-center w-screen sm:w-full mt-6 m-auto overflow-x-auto pr-5 sm:pr-0"
           >
             <table
-              class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800"
+              class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
             >
-              <thead class="bg-default">
+              <thead class="text-muted dark:text-white">
                 <tr>
                   <th
-                    class=" border-b border-gray-800 text-white font-semibold text-sm sm:text-[1rem] text-start"
+                    class=" border-b border-gray-300 dark:border-gray-800 font-semibold text-sm sm:text-[1rem] text-start"
                     >Quarter</th
                   >
                   {#each xData as item}
                     <th
-                      class="z-20 border-b border-gray-800 text-white font-semibold text-sm text-center"
+                      class="z-20 border-b border-gray-300 dark:border-gray-800 font-semibold text-sm text-center"
                       >{new Date(item ?? null)?.toLocaleString("en-US", {
                         month: "short",
                         day: "numeric",
@@ -109,20 +109,20 @@
               </thead>
               <tbody class="shadow-md">
                 {#each revenueNames as name, index}
-                  <tr class="bg-table odd:bg-odd">
+                  <tr class=" odd:bg-[#F6F7F8] dark:odd:bg-odd">
                     <th
-                      class="whitespace-nowrap odd:bg-odd text-sm sm:text-[1rem] font-normal text-start border-b border-gray-800"
+                      class="whitespace-nowrap odd:bg-[#F6F7F8] dark:odd:bg-odd text-sm sm:text-[1rem] font-normal text-start border-b border-gray-300 dark:border-gray-800"
                     >
                       <a
                         href={getHref(name)}
-                        class="sm:hover:text-blue-400 cursor-pointer underline underline-offset-4"
+                        class="sm:hover:text-blue-500 dark:sm:hover:text-blue-400 cursor-pointer underline underline-offset-4"
                       >
                         {name} Revenue
                       </a>
                     </th>
                     {#each categoryValues[index] as value}
                       <td
-                        class="text-white text-sm sm:text-[1rem] text-end border-b border-gray-800"
+                        class=" text-sm sm:text-[1rem] text-end border-b border-gray-300 dark:border-gray-800"
                       >
                         {@html value !== null && value !== undefined
                           ? abbreviateNumber(value, false, true)
@@ -130,9 +130,9 @@
                       </td>
                     {/each}
                   </tr>
-                  <tr class="bg-table border-b-[#09090B]">
+                  <tr class="">
                     <td
-                      class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start bg-table border-b border-gray-800"
+                      class=" whitespace-nowrap text-sm sm:text-[1rem] text-start border-b border-gray-300 dark:border-gray-800"
                     >
                       <span class="ml-2">{name} Revenue Growth</span>
                     </td>
@@ -142,7 +142,7 @@
                           ? 'text-green-600 dark:text-[#00FC50]'
                           : growthValue < 0
                             ? 'text-red-600 dark:text-[#FF2F1F]'
-                            : 'text-white'}  border-b border-gray-800"
+                            : ''}  border-b border-gray-300 dark:border-gray-800"
                       >
                         {growthValue > 0 ? "+" : ""}{growthValue !== null &&
                         growthValue !== undefined
@@ -157,7 +157,7 @@
           </div>
 
           {#if geographicNames?.length !== 0}
-            <h2 class="mt-10 text-xl sm:text-2xl text-gray-200 font-bold mb-4">
+            <h2 class="mt-10 text-xl sm:text-2xl font-bold mb-4">
               Revenue by Geography
             </h2>
 
@@ -165,17 +165,17 @@
               class="no-scrollbar flex justify-start items-center w-screen sm:w-full mt-6 m-auto overflow-x-auto pr-5 sm:pr-0"
             >
               <table
-                class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800"
+                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
               >
-                <thead>
+                <thead class="text-muted dark:text-white">
                   <tr>
                     <th
-                      class="bg-default border-b border-gray-800 text-white font-semibold text-sm sm:text-[1rem] text-start"
+                      class="whitespace-nowrap dark:odd:bg-odd text-sm sm:text-[1rem] font-normal text-start border-b border-gray-300 dark:border-gray-800"
                       >Quarter</th
                     >
                     {#each geographicXData as item}
                       <th
-                        class="z-20 bg-default border-b border-gray-800 text-white font-semibold text-sm text-center bg-default"
+                        class="z-20 border-b border-gray-300 dark:border-gray-800 font-semibold text-sm text-center"
                         >{new Date(item ?? null)?.toLocaleString("en-US", {
                           month: "short",
                           day: "numeric",
@@ -187,14 +187,14 @@
                 </thead>
                 <tbody class="shadow-md">
                   {#each geographicNames as name, index}
-                    <tr class="bg-table border-b-[#09090B] odd:bg-odd">
+                    <tr class=" odd:bg-[#F6F7F8] dark:odd:bg-odd">
                       <th
-                        class="text-white whitespace-nowrap odd:bg-odd text-sm sm:text-[1rem] font-normal text-start border-b border-gray-800"
+                        class="whitespace-nowrap dark:odd:bg-odd text-sm sm:text-[1rem] font-normal text-start border-b border-gray-300 dark:border-gray-800"
                         >{name} Revenue</th
                       >
                       {#each geographiCategoryValues[index] as value}
                         <td
-                          class="text-white text-sm sm:text-[1rem] text-center border-b border-gray-800"
+                          class="whitespace-nowrap text-sm sm:text-[1rem] font-normal text-start border-b border-gray-300 dark:border-gray-800"
                         >
                           {@html value !== null &&
                           value !== 0 &&
@@ -204,9 +204,9 @@
                         </td>
                       {/each}
                     </tr>
-                    <tr class="bg-table border-b-[#09090B]">
+                    <tr>
                       <td
-                        class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start bg-table border-b border-gray-800"
+                        class="whitespace-nowrap text-sm sm:text-[1rem] font-normal text-start border-b border-gray-300 dark:border-gray-800"
                       >
                         <span class="ml-2">{name} Revenue Growth</span>
                       </td>
@@ -217,7 +217,7 @@
                             ? 'text-green-600 dark:text-[#00FC50]'
                             : growthValue < 0
                               ? 'text-red-600 dark:text-[#FF2F1F]'
-                              : 'text-white'}  border-b border-gray-800"
+                              : ''}  border-b border-gray-300 dark:border-gray-800"
                         >
                           {growthValue > 0 ? "+" : ""}{growthValue !== null &&
                           growthValue !== 0 &&
@@ -234,7 +234,7 @@
           {/if}
 
           {#if operatingExpensesNames?.length !== 0}
-            <h2 class="mt-10 text-xl sm:text-2xl text-gray-200 font-bold mb-4">
+            <h2 class="mt-10 text-xl sm:text-2xl font-bold mb-4">
               Operating Expense Breakdown
             </h2>
 
@@ -242,17 +242,17 @@
               class="no-scrollbar flex justify-start items-center w-screen sm:w-full mt-6 m-auto overflow-x-auto pr-5 sm:pr-0"
             >
               <table
-                class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800"
+                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
               >
-                <thead>
+                <thead class="text-muted dark:text-white">
                   <tr>
                     <th
-                      class="bg-default border-b border-gray-800 text-white font-semibold text-sm sm:text-[1rem] text-start"
+                      class=" border-b border-gray-300 dark:border-gray-800 font-semibold text-sm sm:text-[1rem] text-start"
                       >Quarter</th
                     >
                     {#each operatingExpensesXData as item}
                       <th
-                        class="z-20 bg-default border-b border-gray-800 text-white font-semibold text-sm text-center bg-default"
+                        class="z-20 border-b border-gray-300 dark:border-gray-800 font-semibold text-sm text-center"
                         >{new Date(item ?? null)?.toLocaleString("en-US", {
                           month: "short",
                           day: "numeric",
@@ -264,14 +264,14 @@
                 </thead>
                 <tbody class="shadow-md">
                   {#each operatingExpensesNames as name, index}
-                    <tr class="bg-table border-b-[#09090B] odd:bg-odd">
+                    <tr class=" odd:bg-[#F6F7F8] dark:odd:bg-odd">
                       <th
-                        class="text-white whitespace-nowrap odd:bg-odd text-sm sm:text-[1rem] font-normal text-start border-b border-gray-800"
+                        class="whitespace-nowrap odd:bg-[#F6F7F8] dark:odd:bg-odd text-sm sm:text-[1rem] font-normal text-start border-b border-gray-300 dark:border-gray-800"
                         >{name} Revenue</th
                       >
                       {#each operatingExpensesCategoryValues[index] as value}
                         <td
-                          class="text-white text-sm sm:text-[1rem] text-center border-b border-gray-800"
+                          class=" whitespace-nowrap text-sm sm:text-[1rem] text-start border-b border-gray-300 dark:border-gray-800"
                         >
                           {@html value !== null &&
                           value !== 0 &&
@@ -281,9 +281,9 @@
                         </td>
                       {/each}
                     </tr>
-                    <tr class="bg-table border-b-[#09090B]">
+                    <tr class="">
                       <td
-                        class="text-white whitespace-nowrap text-sm sm:text-[1rem] text-start bg-table border-b border-gray-800"
+                        class="whitespace-nowrap text-sm sm:text-[1rem] font-normal text-start border-b border-gray-300 dark:border-gray-800"
                       >
                         <span class="ml-2">{name} Revenue Growth</span>
                       </td>
@@ -294,7 +294,7 @@
                             ? 'text-green-600 dark:text-[#00FC50]'
                             : growthValue < 0
                               ? 'text-red-600 dark:text-[#FF2F1F]'
-                              : 'text-white'}  border-b border-gray-800"
+                              : ''}  border-b border-gray-300 dark:border-gray-800"
                         >
                           {growthValue > 0 ? "+" : ""}{growthValue !== null &&
                           growthValue !== 0 &&

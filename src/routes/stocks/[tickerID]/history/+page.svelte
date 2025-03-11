@@ -275,7 +275,7 @@
 />
 
 <section
-  class="bg-default overflow-hidden text-white h-full min-h-screen mb-20 sm:mb-0 w-full mt-2 sm:mt-0"
+  class=" overflow-hidden h-full min-h-screen mb-20 sm:mb-0 w-full mt-2 sm:mt-0"
 >
   <div class="w-full overflow-hidden m-auto mt-5">
     <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
@@ -298,11 +298,9 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="w-fit sm:w-full border-gray-600 border bg-default sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
+                        class="shadow-sm w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                       >
-                        <span class="truncate text-white px-1"
-                          >{timePeriod}</span
-                        >
+                        <span class="truncate px-1">{timePeriod}</span>
                         <svg
                           class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
                           viewBox="0 0 20 20"
@@ -321,20 +319,20 @@
                     <DropdownMenu.Content
                       class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                     >
-                      <DropdownMenu.Label class="text-gray-400">
+                      <DropdownMenu.Label class="text-muted dark:text-gray-400">
                         Select time frame
                       </DropdownMenu.Label>
                       <DropdownMenu.Separator />
                       <DropdownMenu.Group>
                         <DropdownMenu.Item
                           on:click={() => (timePeriod = "Daily")}
-                          class="cursor-pointer hover:bg-primary"
+                          class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                         >
                           Daily
                         </DropdownMenu.Item>
                         <DropdownMenu.Item
                           on:click={() => (timePeriod = "Weekly")}
-                          class="cursor-pointer hover:bg-primary"
+                          class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                         >
                           Weekly
                         </DropdownMenu.Item>
@@ -342,7 +340,7 @@
                           {#each ["Monthly", "Quarterly", "Annual"] as entry}
                             <DropdownMenu.Item
                               on:click={() => goto("/pricing")}
-                              class="cursor-pointer hover:bg-primary"
+                              class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                             >
                               {entry}
                               <svg
@@ -350,7 +348,7 @@
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
                                 ><path
-                                  fill="#A3A3A3"
+                                  fill="currentColor"
                                   d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
                                 /></svg
                               >
@@ -359,19 +357,19 @@
                         {:else}
                           <DropdownMenu.Item
                             on:click={() => (timePeriod = "Monthly")}
-                            class="cursor-pointer hover:bg-primary"
+                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                           >
                             Monthly
                           </DropdownMenu.Item>
                           <DropdownMenu.Item
                             on:click={() => (timePeriod = "Quarterly")}
-                            class="cursor-pointer hover:bg-primary"
+                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                           >
                             Quarterly
                           </DropdownMenu.Item>
                           <DropdownMenu.Item
                             on:click={() => (timePeriod = "Annual")}
-                            class="cursor-pointer hover:bg-primary"
+                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                           >
                             Annual
                           </DropdownMenu.Item>
@@ -383,9 +381,9 @@
 
                 <Button
                   on:click={() => exportData()}
-                  class="ml-2 w-fit border-gray-600 border bg-default sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
+                  class="shadow-sm ml-2 border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                 >
-                  <span class="truncate text-white">Download</span>
+                  <span class="truncate">Download</span>
                   <svg
                     class="{['Pro', 'Plus']?.includes(data?.user?.tier)
                       ? 'hidden'
@@ -393,7 +391,7 @@
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     ><path
-                      fill="#A3A3A3"
+                      fill="currentColor"
                       d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
                     /></svg
                   >
@@ -406,7 +404,7 @@
                   class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
                 >
                   <table
-                    class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto"
+                    class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
                   >
                     <thead>
                       <TableHeader {columns} {sortOrders} {sortData} />
@@ -415,7 +413,7 @@
                     <tbody>
                       {#each stockList as item, index}
                         <tr
-                          class="sm:hover:bg-[#245073]/10 border-b border-gray-800 odd:bg-odd {index +
+                          class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
                             1 ===
                             rawData?.length &&
                           !['Pro', 'Plus']?.includes(data?.user?.tier)
@@ -423,7 +421,7 @@
                             : ''}"
                         >
                           <td
-                            class="text-start text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                            class="text-start text-sm sm:text-[1rem] whitespace-nowrap"
                           >
                             {#if timePeriod === "Weekly"}
                               Week of {new Date(item?.time).toLocaleString(
@@ -445,45 +443,45 @@
                             {/if}
                           </td>
                           <td
-                            class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                            class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                           >
                             {item?.open?.toFixed(2)}
                           </td>
                           <td
-                            class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                            class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                           >
                             {item?.high?.toFixed(2)}
                           </td>
                           <td
-                            class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                            class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                           >
                             {item?.low?.toFixed(2)}
                           </td>
                           <td
-                            class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                            class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                           >
                             {item?.close?.toFixed(2)}
                           </td>
                           <td
-                            class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                            class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                           >
                             {item?.change !== null ? item?.change : "n/a"}
                           </td>
                           <td
                             class="text-sm sm:text-[1rem] {item?.changesPercentage >=
                               0 && item?.changesPercentage !== null
-                              ? "text-[#00FC50] before:content-['+'] "
+                              ? "text-green-600 dark:text-[#00FC50] before:content-['+'] "
                               : item?.changesPercentage < 0 &&
                                   item?.changesPercentage !== null
                                 ? 'text-red-600 dark:text-[#FF2F1F]'
-                                : 'text-white'} text-end"
+                                : ''} text-end"
                           >
                             {item?.changesPercentage !== null
                               ? item?.changesPercentage + "%"
                               : "n/a"}
                           </td>
                           <td
-                            class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
+                            class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                           >
                             {item?.volume?.toLocaleString("en-US")}
                           </td>
@@ -512,9 +510,7 @@
                 <h2 class="text-start text-xl font-semibold ml-3">
                   Stock Screener
                 </h2>
-                <ArrowLogo
-                  class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
-                />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:" />
               </div>
               <span class="p-3 ml-3 mr-3">
                 Filter, sort and analyze all stocks to find your next
@@ -532,9 +528,7 @@
             >
               <div class="w-full flex justify-between items-center p-3 mt-3">
                 <h2 class="text-start text-xl font-semibold ml-3">Watchlist</h2>
-                <ArrowLogo
-                  class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
-                />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:" />
               </div>
               <span class="p-3 ml-3 mr-3">
                 Keep track of your favorite stocks in real-time.

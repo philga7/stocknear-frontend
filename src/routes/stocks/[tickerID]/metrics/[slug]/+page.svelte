@@ -7,6 +7,7 @@
   } from "$lib/utils";
   import SEO from "$lib/components/SEO.svelte";
   import highcharts from "$lib/highcharts.ts";
+  import { mode } from "mode-watcher";
 
   export let data;
 
@@ -59,15 +60,15 @@
       },
       chart: {
         type: "column",
-        backgroundColor: "#09090B",
-        plotBackgroundColor: "#09090B",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
         height: 360, // Set the maximum height for the chart
         animation: false,
       },
       title: {
         text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">${removeCompanyStrings($displayCompanyName)} Revenue by ${convertToTitleCase(data?.getParams)}</h3>`,
         style: {
-          color: "white",
+          color: $mode === "light" ? "black" : "white",
           // Using inline CSS for margin-top and margin-bottom
         },
         useHTML: true, // Enable HTML to apply custom class styling
@@ -83,7 +84,7 @@
             return `${monthNames[monthIndex]} '${year}`;
           },
           style: {
-            color: "#fff",
+            color: $mode === "light" ? "black" : "white",
             fontSize: "12px",
           },
           rotation: 45, // Rotate labels for better readability
@@ -92,9 +93,9 @@
       },
       yAxis: {
         gridLineWidth: 1,
-        gridLineColor: "#111827",
+        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
         labels: {
-          style: { color: "white" },
+          style: { color: $mode === "light" ? "black" : "white" },
         },
         title: { text: null },
         opposite: true,
@@ -112,8 +113,8 @@
         },
         borderRadius: 4,
         formatter: function () {
-          // Format the x value to display time in hh:mm format
-          let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]">${new Date(
+          // Format the x value to display time in a custom format
+          let tooltipContent = `<span class="m-auto text-[1rem] font-[501]">${new Date(
             this?.x,
           ).toLocaleDateString("en-US", {
             year: "numeric",
@@ -123,10 +124,10 @@
 
           // Loop through each point in the shared tooltip
           this.points.forEach((point) => {
-            tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
-          <span class="text-white font-normal text-sm" style="color:${point.color}">${abbreviateNumber(
-            point.y,
-          )}</span><br>`;
+            tooltipContent += `
+        <span style="display:inline-block; width:10px; height:10px; background-color:${point.color}; border-radius:50%; margin-right:5px;"></span>
+        <span class="font-semibold text-sm">${point.series.name}:</span> 
+        <span class="font-normal text-sm">${abbreviateNumber(point.y)}</span><br>`;
           });
 
           return tooltipContent;
@@ -153,7 +154,7 @@
         {
           name: "Revenue",
           data: valueList,
-          color: "#fff",
+          color: $mode === "light" ? "#2C6288" : "white",
         },
       ],
       legend: {
@@ -165,7 +166,7 @@
   }
 
   $: {
-    if ($stockTicker && data?.getParams) {
+    if (($stockTicker && data?.getParams) || $mode) {
       dataset = [];
       tableList = [];
       // Find the index of the current getParams value in the names array
@@ -193,7 +194,7 @@
   description={`View unique business metrics for ${$displayCompanyName} (${$stockTicker}) stock, including revenue by segment, gross margin by type, gross profit by type.`}
 />
 
-<section class="bg-default w-full overflow-hidden text-white h-full">
+<section class=" w-full overflow-hidden h-full">
   <div class="w-full flex justify-center w-full sm-auto h-full overflow-hidden">
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"
@@ -201,48 +202,38 @@
       <main class="w-full">
         <div class="sm:pl-7 sm:pb-7 sm:pt-7 m-auto mt-2 sm:mt-0 w-full">
           <div class="mb-3">
-            <h1 class="text-2xl text-gray-200 font-bold">
+            <h1 class="text-2xl font-bold">
               {convertToTitleCase(data?.getParams)} Revenue
             </h1>
           </div>
 
           {#if rawData?.length !== 0}
             <div
-              class="chart mt-5 sm:mt-0 border border-gray-800 rounded"
+              class="chart mt-5 sm:mt-0 border border-gray-300 dark:border-gray-800 rounded"
               use:highcharts={config}
             ></div>
 
-            <h2 class="mt-5 text-xl sm:text-2xl text-white font-bold">
-              History
-            </h2>
+            <h2 class="mt-5 text-xl sm:text-2xl font-bold">History</h2>
 
             <div class="w-full overflow-x-auto">
               <table
-                class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto mt-4"
+                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
               >
-                <thead class="bg-default">
-                  <tr class="border-b border-gray-800">
-                    <th class="text-white font-semibold text-start text-sm"
-                      >Quarter</th
-                    >
-                    <th class="text-white font-semibold text-end text-sm"
-                      >Value</th
-                    >
-                    <th class="text-white font-semibold text-end text-sm">
-                      Change
-                    </th>
-                    <th class="text-white font-semibold text-end text-sm"
-                      >Growth</th
-                    >
+                <thead class="text-muted dark:text-white">
+                  <tr class="border-b border-gray-300 dark:border-gray-800">
+                    <th class=" font-semibold text-start text-sm">Quarter</th>
+                    <th class=" font-semibold text-end text-sm">Value</th>
+                    <th class=" font-semibold text-end text-sm"> Change </th>
+                    <th class=" font-semibold text-end text-sm">Growth</th>
                   </tr>
                 </thead>
                 <tbody>
                   {#each tableList as item, index}
                     <!-- row -->
-                    <tr class=" odd:bg-odd border-b border-gray-800">
-                      <td
-                        class="text-white text-sm sm:text-[1rem] whitespace-nowrap"
-                      >
+                    <tr
+                      class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
+                    >
+                      <td class=" text-sm sm:text-[1rem] whitespace-nowrap">
                         {new Date(item?.date ?? null)?.toLocaleString("en-US", {
                           month: "short",
                           day: "numeric",
@@ -251,7 +242,7 @@
                       </td>
 
                       <td
-                        class="text-white text-sm sm:text-[1rem] text-right whitespace-nowrap"
+                        class=" text-sm sm:text-[1rem] text-right whitespace-nowrap"
                       >
                         {@html item?.value !== null && item?.value !== undefined
                           ? abbreviateNumber(item?.value, false, true)
@@ -259,7 +250,7 @@
                       </td>
 
                       <td
-                        class="text-white text-sm sm:text-[1rem] text-right whitespace-nowrap"
+                        class=" text-sm sm:text-[1rem] text-right whitespace-nowrap"
                       >
                         {#if Number(item?.value - tableList[index + 1]?.value)}
                           {@html abbreviateNumber(
@@ -273,7 +264,7 @@
                       </td>
 
                       <td
-                        class="text-white text-sm sm:text-[1rem] whitespace-nowrap text-end"
+                        class=" text-sm sm:text-[1rem] whitespace-nowrap text-end"
                       >
                         {#if item?.valueGrowth > 0}
                           <span class="text-green-600 dark:text-[#00FC50]">
@@ -294,7 +285,7 @@
             </div>
           {:else}
             <h2
-              class="mt-16 flex justify-center items-center text-2xl text-white mb-5 m-auto"
+              class="mt-16 flex justify-center items-center text-2xl mb-5 m-auto"
             >
               No data available
             </h2>
