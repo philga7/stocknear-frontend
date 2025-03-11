@@ -2,7 +2,7 @@
   import InfoModal from "$lib/components/InfoModal.svelte";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
 
-  import { abbreviateNumberWithColor } from "$lib/utils";
+  import { abbreviateNumber } from "$lib/utils";
 
   export let data;
   export let rawData = [];
@@ -120,12 +120,12 @@
   };
 </script>
 
-<section class="overflow-hidden text-white h-full pb-8">
+<section class="overflow-hidden h-full pb-8">
   <main class="overflow-hidden">
     <div class="flex flex-row items-center">
       <label
         for="hottestDPTrade"
-        class="mr-1 cursor-pointer flex flex-row items-center text-white text-xl sm:text-2xl font-bold"
+        class="mr-1 cursor-pointer flex flex-row items-center text-xl sm:text-2xl font-bold"
       >
         Hottest Trades
       </label>
@@ -138,7 +138,7 @@
 
     {#if rawData?.length !== 0}
       <div class="w-full flex flex-col items-start">
-        <div class="text-white text-[1rem] mt-2 mb-2 w-full">
+        <div class=" text-[1rem] mt-2 mb-2 w-full">
           Get in realtime the latest hottest trades based on premium.
         </div>
       </div>
@@ -147,7 +147,7 @@
         class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
       >
         <table
-          class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md text-white w-full bg-table border border-gray-800 m-auto"
+          class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
         >
           <thead>
             <TableHeader {columns} {sortOrders} {sortData} />
@@ -155,36 +155,30 @@
           <tbody>
             {#each stockList as item, index}
               <tr
-                class="sm:hover:bg-[#245073]/10 border-b border-gray-800 odd:bg-odd {index +
+                class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
                   1 ===
                   rawData?.length && !['Pro']?.includes(data?.user?.tier)
                   ? 'opacity-[0.1]'
                   : ''}"
               >
-                <td
-                  class="text-start text-sm sm:text-[1rem] whitespace-nowrap text-white"
-                >
+                <td class="text-start text-sm sm:text-[1rem] whitespace-nowrap">
                   {item?.rank}
                 </td>
 
-                <td
-                  class="text-start text-sm sm:text-[1rem] whitespace-nowrap text-white"
-                >
+                <td class="text-start text-sm sm:text-[1rem] whitespace-nowrap">
                   {formatToNewYorkTime(item?.date)}
                 </td>
 
-                <td
-                  class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
-                >
+                <td class="text-end text-sm sm:text-[1rem] whitespace-nowrap">
                   {item?.price}
                 </td>
 
                 <td class="text-sm sm:text-[1rem] text-end">
-                  {@html abbreviateNumberWithColor(item?.size, false, true)}
+                  {abbreviateNumber(item?.size, false, true)}
                 </td>
 
                 <td class="text-sm sm:text-[1rem] text-end">
-                  {@html abbreviateNumberWithColor(item?.volume, false, true)}
+                  {abbreviateNumber(item?.volume, false, true)}
                 </td>
 
                 <td class="text-sm sm:text-[1rem] text-end">
@@ -195,7 +189,7 @@
                 </td>
 
                 <td class="text-sm sm:text-[1rem] text-end">
-                  {@html abbreviateNumberWithColor(item?.premium, false, true)}
+                  {abbreviateNumber(item?.premium, false, true)}
                 </td>
               </tr>
             {/each}

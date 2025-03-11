@@ -1,6 +1,7 @@
 <script lang="ts">
   import { stockTicker, etfTicker } from "$lib/store";
   import highcharts from "$lib/highcharts.ts";
+  import { mode } from "mode-watcher";
 
   export let data;
 
@@ -68,7 +69,7 @@
 
     const options = {
       chart: {
-        backgroundColor: "#09090B",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
         animation: false,
         height: 360,
       },
@@ -77,7 +78,7 @@
       title: {
         text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">Realtime Dark Pool Trades Impact</h3>`,
         useHTML: true,
-        style: { color: "white" },
+        style: { color: $mode === "light" ? "black" : "white" },
       },
       xAxis: {
         type: "datetime",
@@ -85,12 +86,12 @@
         max: endTime,
         tickLength: 0,
         crosshair: {
-          color: "#fff",
+          color: $mode === "light" ? "black" : "white",
           width: 1,
           dashStyle: "Solid",
         },
         labels: {
-          style: { color: "#fff" },
+          style: { color: $mode === "light" ? "black" : "white" },
           distance: 20,
           formatter: function () {
             const date = new Date(this?.value);
@@ -107,14 +108,17 @@
           min: yMin ?? null,
           max: yMax ?? null,
           title: { text: null },
-          labels: { style: { color: "white" } },
+          labels: { style: { color: $mode === "light" ? "black" : "white" } },
           gridLineWidth: 1,
-          gridLineColor: "#111827",
+          gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
           opposite: true,
         },
         {
-          title: { text: "Total Trades", style: { color: "#fff" } },
-          labels: { style: { color: "#fff" } },
+          title: {
+            text: "Total Trades",
+            style: { color: $mode === "light" ? "black" : "white" },
+          },
+          labels: { style: { color: $mode === "light" ? "black" : "white" } },
           gridLineWidth: 0,
           opposite: false,
         },
@@ -125,27 +129,36 @@
         backgroundColor: "rgba(0, 0, 0, 0.8)",
         borderColor: "rgba(255, 255, 255, 0.2)",
         borderWidth: 1,
-        style: { color: "#fff", fontSize: "16px", padding: "10px" },
+        style: {
+          color: "#fff",
+          fontSize: "16px",
+          padding: "10px",
+        },
         borderRadius: 4,
         formatter: function () {
+          // Create a Date object from the x value and format it as time
           const date = new Date(this?.x);
-          let formattedDate = date.toLocaleTimeString("en-US", {
+          let formattedTime = date.toLocaleTimeString("en-US", {
             hour: "2-digit",
             minute: "2-digit",
           });
 
-          let tooltipContent = `<span class="text-white m-auto text-sm">${formattedDate}</span><br>`;
+          // Build the tooltip content starting with the formatted time
+          let tooltipContent = `<span class="m-auto text-sm text-white">${formattedTime}</span><br>`;
 
+          // Loop through each point and add its details, excluding "Dark Pool Volume"
           this.points?.forEach((point) => {
-            // Exclude the column series from the tooltip
             if (point.series.name !== "Dark Pool Volume") {
-              tooltipContent += `<span style="color:${point.color}">${point.series.name}: <b>${point.y}</b></span><br>`;
+              tooltipContent += `
+          <span class="font-semibold text-sm">${point.series.name}:</span> 
+          <span class="font-normal text-sm"><b>${point.y}</b></span><br>`;
             }
           });
 
           return tooltipContent;
         },
       },
+
       plotOptions: {
         series: {
           animation: false,
@@ -174,7 +187,7 @@
           name: "Price",
           type: "line",
           data: seriesData,
-          color: "#fff",
+          color: $mode === "light" ? "blue" : "white",
           lineWidth: 1.3,
           yAxis: 0, // Use primary yAxis
           animation: false,
@@ -194,13 +207,13 @@
     return options;
   }
 
-  $: if ($stockTicker || $etfTicker) {
+  $: if ($stockTicker || $etfTicker || $mode) {
     config = null;
     config = getPlotChart() || null;
   }
 </script>
 
 <div
-  class="border border-gray-800 rounded w-full"
+  class="border border-gray-300 dark:border-gray-800 rounded w-full"
   use:highcharts={config}
 ></div>

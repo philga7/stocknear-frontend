@@ -1,8 +1,9 @@
 <script lang="ts">
   import { displayCompanyName, stockTicker, etfTicker } from "$lib/store";
-  import { abbreviateNumber, abbreviateNumberWithColor } from "$lib/utils";
+  import { abbreviateNumber } from "$lib/utils";
   import highcharts from "$lib/highcharts.ts";
   import RealtimeTrade from "$lib/components/DarkPool/RealtimeTrade.svelte";
+  import { mode } from "mode-watcher";
 
   let category = "Today's Trend";
 
@@ -21,13 +22,17 @@
 
     // Create colors array with highlighted bar
     const colors = xAxis?.map((value, index) =>
-      index === maxValueIndex ? "#3BA272" : "#e2e8f0",
+      index === maxValueIndex
+        ? "#3BA272"
+        : $mode === "light"
+          ? "#2C6288"
+          : "#e2e8f0",
     );
 
     const options = {
       chart: {
         type: "column",
-        backgroundColor: "#09090B",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
         animation: false,
         height: 360,
       },
@@ -36,19 +41,19 @@
       title: {
         text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">Dark Pool Price Levels</h3>`,
         useHTML: true,
-        style: { color: "white" },
+        style: { color: $mode === "light" ? "black" : "white" },
       },
       xAxis: {
         endonTick: false,
         categories: yAxis,
         crosshair: {
-          color: "#fff", // Set the color of the crosshair line
+          color: $mode === "light" ? "black" : "white", // Set the color of the crosshair line
           width: 1, // Adjust the line width as needed
           dashStyle: "Solid",
         },
         labels: {
           style: {
-            color: "#fff",
+            color: $mode === "light" ? "black" : "white",
           },
           distance: 10, // Increases space between label and axis
           formatter: function () {
@@ -62,7 +67,7 @@
         },
         opposite: true,
         gridLineWidth: 1,
-        gridLineColor: "#111827",
+        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
         tickPositioner: function () {
           const positions = [];
           const info = this.getExtremes();
@@ -97,12 +102,12 @@
         borderRadius: 4,
         formatter: function () {
           // Format the x value to display time in hh:mm format
-          let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]">Price Level ${this?.x}</span><br>`;
+          let tooltipContent = `<span class=" m-auto  text-[1rem] font-[501]">Price Level ${this?.x}</span><br>`;
 
           // Loop through each point in the shared tooltip
           this.points?.forEach((point) => {
-            tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
-          <span class="text-white font-normal text-sm" style="color:${point.color}">${abbreviateNumber(
+            tooltipContent += `<span class=" font-semibold text-sm">${point.series.name}:</span> 
+          <span class=" font-normal text-sm ">${abbreviateNumber(
             point.y,
           )}</span><br>`;
           });
@@ -135,25 +140,25 @@
     return options;
   }
 
-  $: if (($stockTicker || $etfTicker) && category) {
+  $: if ((($stockTicker || $etfTicker) && category) || $mode) {
     config = getBarChart() || null;
   }
 </script>
 
-<section class="overflow-hidden text-white h-full pb-8 pt-3">
+<section class="overflow-hidden h-full pb-8 pt-3">
   <main class="overflow-hidden">
     {#if rawData?.length !== 0 && Object?.keys(metrics)?.length > 0}
       <div class="w-full flex flex-col items-start">
-        <div class="text-white text-[1rem] mt-2 w-full">
-          {$displayCompanyName} has seen an average dark pool trade size of {@html abbreviateNumberWithColor(
+        <div class=" text-[1rem] mt-2 w-full">
+          {$displayCompanyName} has seen an average dark pool trade size of {abbreviateNumber(
             metrics?.avgTradeSize,
             false,
             true,
-          )} and an average premium per trade of {@html abbreviateNumberWithColor(
+          )} and an average premium per trade of {abbreviateNumber(
             metrics?.avgPremTrade,
             false,
             true,
-          )}, with a total premium of {@html abbreviateNumberWithColor(
+          )}, with a total premium of {abbreviateNumber(
             metrics?.totalPrem,
             false,
             true,
@@ -161,25 +166,26 @@
         </div>
       </div>
 
-      <div class=" rounded-md bg-default mt-5 sm:mt-0">
+      <div class=" rounded-md mt-5 sm:mt-0">
         <div class="flex justify-end mb-2 space-x-2 z-10 text-sm">
           {#each ["Today's Trend", "Price Level"] as item, index}
             {#if data?.user?.tier === "Pro" || index === 0}
               <label
                 on:click={() => (category = item)}
-                class="px-3 py-1 text-sm {category === item
-                  ? 'bg-white text-black '
-                  : 'text-white bg-table text-opacity-[0.6]'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+                class="px-3 py-1 text-sm border border-gray-300 dark:border-gray-700 {category ===
+                item
+                  ? 'bg-gray-300 shadow-sm dark:bg-white text-black '
+                  : ' shadow-sm bg-gray-100 dark:bg-table text-opacity-[0.6]'} transition ease-out duration-100 rounded cursor-pointer"
               >
                 {item}
               </label>
             {:else if data?.user?.tier !== "Pro"}
               <a
                 href="/pricing"
-                class="px-3 py-1 text-sm flex flex-row items-center border border-gray-700 {category ===
+                class="px-3 py-1 text-sm flex flex-row items-center border border-gray-300 dark:border-gray-700 {category ===
                 item
-                  ? 'bg-white text-black '
-                  : 'text-white bg-table text-opacity-[0.6]'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+                  ? 'bg-gray-300 shadow-sm dark:bg-white text-black '
+                  : ' shadow-sm bg-gray-100 dark:bg-table text-opacity-[0.6]'} transition ease-out duration-100 rounded cursor-pointer"
               >
                 {item}
                 <svg
@@ -198,7 +204,7 @@
 
         {#if category === "Price Level"}
           <div
-            class="border border-gray-800 rounded w-full"
+            class="border border-gray-300 dark:border-gray-800 rounded w-full"
             use:highcharts={config}
           ></div>
         {:else}
