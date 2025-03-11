@@ -20,13 +20,13 @@
         <aside class="hidden lg:block relative fixed w-1/4 mt-3">
           {#if newsList?.length !== 0}
             <div
-              class="w-full sm:hover:text-white text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit"
+              class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit"
             >
               <div class="p-4 text-sm">
-                <h3 class="text-lg text-white font-semibold mb-3">
+                <h3 class="text-lg font-semibold mb-3">
                   {$etfTicker} News
                 </h3>
-                <ul class="text-white">
+                <ul class="">
                   {#each newsList?.slice(0, 10) as item}
                     <li class="mb-3 last:mb-1">
                       {formatDate(item?.publishedDate)} &#183;

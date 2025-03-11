@@ -19,7 +19,7 @@
   description={`Explore exclusive dark pool trading data for ${$displayCompanyName} (${$etfTicker}). Get insights into hidden market activity, stock price movements, institutional trades, financials, and key statistics.`}
 />
 
-<section class="w-full bg-default overflow-hidden text-white h-full">
+<section class="w-full overflow-hidden h-full">
   <div class="w-full flex h-full overflow-hidden">
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"
@@ -34,7 +34,7 @@
             <div class="flex flex-row items-center mb-4 sm:mb-0">
               <label
                 for="darkPoolInfo"
-                class="mr-1 cursor-pointer flex flex-row items-center text-white text-xl sm:text-2xl font-bold"
+                class="mr-1 cursor-pointer flex flex-row items-center text-xl sm:text-2xl font-bold"
               >
                 Dark Pool Data
               </label>
@@ -59,6 +59,7 @@
         {#if hottestTrades?.length > 0}
           <HottestTrades {data} rawData={hottestTrades} />
         {/if}
+
         {#if historicalDarkPool?.length > 10}
           <HistoricalVolume {data} rawData={historicalDarkPool} />
         {/if}

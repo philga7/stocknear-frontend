@@ -1,9 +1,5 @@
 <script lang="ts">
-  import {
-    etfTicker,
-    numberOfUnreadNotification,
-    displayCompanyName,
-  } from "$lib/store";
+  import { stockTicker, displayCompanyName } from "$lib/store";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
@@ -11,11 +7,9 @@
   import { goto } from "$app/navigation";
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
   import SEO from "$lib/components/SEO.svelte";
-
   import { onMount } from "svelte";
 
   export let data;
-  let isLoaded = false;
   let timePeriod = "Daily";
   let rawData = data?.getData || [];
   let originalData = [];
@@ -253,7 +247,7 @@
       const a = document.createElement("a");
       a.setAttribute("hidden", "");
       a.setAttribute("href", url);
-      a.setAttribute("download", `${$etfTicker}_price_history.csv`);
+      a.setAttribute("download", `${$stockTicker}_price_history.csv`);
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -263,36 +257,34 @@
   }
 
   $: {
-    if (timePeriod && typeof window !== "undefined") {
-      isLoaded = false;
+    if (timePeriod) {
       rawData = prepareDataset(data?.getData, timePeriod);
       originalData = rawData;
       stockList = rawData?.slice(0, 50);
-      isLoaded = true;
     }
   }
 </script>
 
 <SEO
-  title={`${$displayCompanyName} (${$etfTicker}) Stock Price History`}
-  description={`Get a complete stock price history for ${$displayCompanyName} (${$etfTicker}), starting from its first trading day. Includes open, high, low, close and volume.`}
+  title={`${$displayCompanyName} (${$stockTicker}) Stock Price History · Stocknear`}
+  description={`Get a complete stock price history for ${$displayCompanyName} (${$stockTicker}), starting from its first trading day. Includes open, high, low, close and volume.`}
 />
 
 <section
-  class="bg-default overflow-hidden text-white h-full min-h-screen mb-20 sm:mb-0 w-full mt-2 sm:mt-0"
+  class=" overflow-hidden h-full min-h-screen mb-20 sm:mb-0 w-full mt-2 sm:mt-0"
 >
   <div class="w-full overflow-hidden m-auto mt-5">
     <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
       <div
         class="relative flex justify-center items-start overflow-hidden w-full"
       >
-        <main class="w-full lg:w-3/4">
+        <main class="w-full lg:w-3/4 lg:pr-10">
           <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto">
             <div
               class="flex flex-col sm:flex-row items-start w-full sm:justify-between md:space-x-4 md:border-0 w-full mb-5"
             >
               <h1 class="text-xl sm:text-2xl font-bold mb-3 sm:mb-0">
-                {$etfTicker} Stock Price History
+                {$stockTicker} Stock Price History
               </h1>
               <div
                 class="flex flex-row items-center ml-auto w-fit mt-2 sm:mt-0"
@@ -302,11 +294,9 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="w-fit sm:w-full border-gray-600 border bg-default sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
+                        class="shadow-sm w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                       >
-                        <span class="truncate text-white px-1"
-                          >{timePeriod}</span
-                        >
+                        <span class="truncate px-1">{timePeriod}</span>
                         <svg
                           class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
                           viewBox="0 0 20 20"
@@ -325,20 +315,20 @@
                     <DropdownMenu.Content
                       class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                     >
-                      <DropdownMenu.Label class="text-gray-400">
+                      <DropdownMenu.Label class="text-muted dark:text-gray-400">
                         Select time frame
                       </DropdownMenu.Label>
                       <DropdownMenu.Separator />
                       <DropdownMenu.Group>
                         <DropdownMenu.Item
                           on:click={() => (timePeriod = "Daily")}
-                          class="cursor-pointer hover:bg-primary"
+                          class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                         >
                           Daily
                         </DropdownMenu.Item>
                         <DropdownMenu.Item
                           on:click={() => (timePeriod = "Weekly")}
-                          class="cursor-pointer hover:bg-primary"
+                          class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                         >
                           Weekly
                         </DropdownMenu.Item>
@@ -346,7 +336,7 @@
                           {#each ["Monthly", "Quarterly", "Annual"] as entry}
                             <DropdownMenu.Item
                               on:click={() => goto("/pricing")}
-                              class="cursor-pointer hover:bg-primary"
+                              class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                             >
                               {entry}
                               <svg
@@ -354,7 +344,7 @@
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
                                 ><path
-                                  fill="#A3A3A3"
+                                  fill="currentColor"
                                   d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
                                 /></svg
                               >
@@ -363,19 +353,19 @@
                         {:else}
                           <DropdownMenu.Item
                             on:click={() => (timePeriod = "Monthly")}
-                            class="cursor-pointer hover:bg-primary"
+                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                           >
                             Monthly
                           </DropdownMenu.Item>
                           <DropdownMenu.Item
                             on:click={() => (timePeriod = "Quarterly")}
-                            class="cursor-pointer hover:bg-primary"
+                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                           >
                             Quarterly
                           </DropdownMenu.Item>
                           <DropdownMenu.Item
                             on:click={() => (timePeriod = "Annual")}
-                            class="cursor-pointer hover:bg-primary"
+                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                           >
                             Annual
                           </DropdownMenu.Item>
@@ -387,9 +377,9 @@
 
                 <Button
                   on:click={() => exportData()}
-                  class="ml-2 w-fit border-gray-600 border bg-default sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 text-white rounded-md truncate"
+                  class="shadow-sm ml-2 border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                 >
-                  <span class="truncate text-white">Download</span>
+                  <span class="truncate">Download</span>
                   <svg
                     class="{['Pro', 'Plus']?.includes(data?.user?.tier)
                       ? 'hidden'
@@ -397,128 +387,114 @@
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     ><path
-                      fill="#A3A3A3"
+                      fill="currentColor"
                       d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
                     /></svg
                   >
                 </Button>
               </div>
             </div>
-            {#if isLoaded}
-              {#if rawData?.length !== 0}
-                <div class="w-full m-auto mt-2">
-                  <div
-                    class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
+            {#if rawData?.length !== 0}
+              <div class="w-full m-auto mt-2">
+                <div
+                  class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
+                >
+                  <table
+                    class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
                   >
-                    <table
-                      class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto"
-                    >
-                      <thead>
-                        <TableHeader {columns} {sortOrders} {sortData} />
-                      </thead>
+                    <thead>
+                      <TableHeader {columns} {sortOrders} {sortData} />
+                    </thead>
 
-                      <tbody>
-                        {#each stockList as item, index}
-                          <tr
-                            class="sm:hover:bg-[#245073]/10 border-b border-gray-800 odd:bg-odd {index +
-                              1 ===
-                              rawData?.length &&
-                            !['Pro', 'Plus']?.includes(data?.user?.tier)
-                              ? 'opacity-[0.1]'
-                              : ''}"
+                    <tbody>
+                      {#each stockList as item, index}
+                        <tr
+                          class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
+                            1 ===
+                            rawData?.length &&
+                          !['Pro', 'Plus']?.includes(data?.user?.tier)
+                            ? 'opacity-[0.1]'
+                            : ''}"
+                        >
+                          <td
+                            class="text-start text-sm sm:text-[1rem] whitespace-nowrap"
                           >
-                            <td
-                              class="text-start text-sm sm:text-[1rem] whitespace-nowrap text-white"
-                            >
-                              {#if timePeriod === "Weekly"}
-                                Week of {new Date(item?.time).toLocaleString(
-                                  "en-US",
-                                  {
-                                    month: "short",
-                                    day: "numeric",
-                                    year: "numeric",
-                                    daySuffix: "2-digit",
-                                  },
-                                )}
-                              {:else}
-                                {new Date(item?.time).toLocaleString("en-US", {
+                            {#if timePeriod === "Weekly"}
+                              Week of {new Date(item?.time).toLocaleString(
+                                "en-US",
+                                {
                                   month: "short",
                                   day: "numeric",
                                   year: "numeric",
-                                  daySuffix: "2-digit",
-                                })}
-                              {/if}
-                            </td>
-                            <td
-                              class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
-                            >
-                              {item?.open?.toFixed(2)}
-                            </td>
-                            <td
-                              class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
-                            >
-                              {item?.high?.toFixed(2)}
-                            </td>
-                            <td
-                              class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
-                            >
-                              {item?.low?.toFixed(2)}
-                            </td>
-                            <td
-                              class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
-                            >
-                              {item?.close?.toFixed(2)}
-                            </td>
-                            <td
-                              class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
-                            >
-                              {item?.change !== null ? item?.change : "n/a"}
-                            </td>
-                            <td
-                              class="text-sm sm:text-[1rem] {item?.changesPercentage >=
-                                0 && item?.changesPercentage !== null
-                                ? "text-[#00FC50] before:content-['+'] "
-                                : item?.changesPercentage < 0 &&
-                                    item?.changesPercentage !== null
-                                  ? 'text-red-600 dark:text-[#FF2F1F]'
-                                  : 'text-white'} text-end"
-                            >
-                              {item?.changesPercentage !== null
-                                ? item?.changesPercentage + "%"
-                                : "n/a"}
-                            </td>
-                            <td
-                              class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-white"
-                            >
-                              {item?.volume?.toLocaleString("en-US")}
-                            </td>
-                          </tr>
-                        {/each}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              {:else}
-                <Infobox
-                  text={`No price history are available for ${$displayCompanyName}.`}
-                />
-              {/if}
-            {:else}
-              <div class="flex justify-center items-center h-80">
-                <div class="relative">
-                  <label
-                    class="bg-secondary rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                  >
-                    <span
-                      class="loading loading-spinner loading-md text-gray-400"
-                    ></span>
-                  </label>
+                                  timeZone: "Europe/Berlin",
+                                },
+                              )}
+                            {:else}
+                              {new Date(item?.time).toLocaleString("en-US", {
+                                month: "short",
+                                day: "numeric",
+                                year: "numeric",
+                                timeZone: "Europe/Berlin",
+                              })}
+                            {/if}
+                          </td>
+                          <td
+                            class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                          >
+                            {item?.open?.toFixed(2)}
+                          </td>
+                          <td
+                            class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                          >
+                            {item?.high?.toFixed(2)}
+                          </td>
+                          <td
+                            class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                          >
+                            {item?.low?.toFixed(2)}
+                          </td>
+                          <td
+                            class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                          >
+                            {item?.close?.toFixed(2)}
+                          </td>
+                          <td
+                            class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                          >
+                            {item?.change !== null ? item?.change : "n/a"}
+                          </td>
+                          <td
+                            class="text-sm sm:text-[1rem] {item?.changesPercentage >=
+                              0 && item?.changesPercentage !== null
+                              ? "text-green-600 dark:text-[#00FC50] before:content-['+'] "
+                              : item?.changesPercentage < 0 &&
+                                  item?.changesPercentage !== null
+                                ? 'text-red-600 dark:text-[#FF2F1F]'
+                                : ''} text-end"
+                          >
+                            {item?.changesPercentage !== null
+                              ? item?.changesPercentage + "%"
+                              : "n/a"}
+                          </td>
+                          <td
+                            class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                          >
+                            {item?.volume?.toLocaleString("en-US")}
+                          </td>
+                        </tr>
+                      {/each}
+                    </tbody>
+                  </table>
                 </div>
               </div>
+            {:else}
+              <Infobox
+                text={`No price history are available for ${$displayCompanyName}.`}
+              />
             {/if}
           </div>
         </main>
-        <aside class="hidden lg:block relative fixed w-1/4 ml-4">
+        <aside class="hidden lg:block relative fixed w-1/4 mt-3">
           <div
             class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
@@ -530,9 +506,7 @@
                 <h2 class="text-start text-xl font-semibold ml-3">
                   Stock Screener
                 </h2>
-                <ArrowLogo
-                  class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
-                />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:" />
               </div>
               <span class="p-3 ml-3 mr-3">
                 Filter, sort and analyze all stocks to find your next
@@ -550,9 +524,7 @@
             >
               <div class="w-full flex justify-between items-center p-3 mt-3">
                 <h2 class="text-start text-xl font-semibold ml-3">Watchlist</h2>
-                <ArrowLogo
-                  class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
-                />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:" />
               </div>
               <span class="p-3 ml-3 mr-3">
                 Keep track of your favorite stocks in real-time.

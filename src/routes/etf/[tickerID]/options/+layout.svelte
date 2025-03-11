@@ -20,8 +20,10 @@
 
     if (state !== "overview" && subSectionMap[state]) {
       displaySubSection = state;
+      //goto(`/etf/${$etfTicker}${subSectionMap[state]}`);
     } else {
       displaySubSection = state;
+      //goto(`/etf/${$etfTicker}/statistics`);
     }
   }
 
@@ -56,13 +58,9 @@
       <div
         class="relative flex justify-center items-start overflow-hidden w-full"
       >
-        <main
-          class="w-full {displaySubSection === 'overview'
-            ? ''
-            : 'lg:w-3/4 lg:pr-10'}"
-        >
+        <main class="w-full lg:w-3/4 lg:pr-10">
           <nav
-            class="sm:ml-4 overflow-x-auto pt-1 text-sm sm:text-[1rem] whitespace-nowrap"
+            class="sm:ml-4 pt-1 text-sm sm:text-[1rem] whitespace-nowrap overflow-x-auto whitespace-nowrap"
           >
             <ul class="flex flex-row items-center w-full">
               <a
@@ -139,11 +137,7 @@
           </div>
         </main>
 
-        <aside
-          class="{displaySubSection === 'overview'
-            ? 'hidden'
-            : 'hidden lg:block'} relative fixed w-1/4 ml-4"
-        >
+        <aside class="hidden lg:block relative fixed w-1/4 ml-4">
           <div
             class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
@@ -159,7 +153,7 @@
                   class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
                 />
               </div>
-              <span class="p-3 ml-3 mr-3">
+              <span class=" p-3 ml-3 mr-3">
                 Get realtime options flow and customize your screener
               </span>
             </a>
@@ -180,7 +174,7 @@
                   class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
                 />
               </div>
-              <span class="p-3 ml-3 mr-3">
+              <span class=" p-3 ml-3 mr-3">
                 Build your Stock Screener to find profitable stocks.
               </span>
             </a>

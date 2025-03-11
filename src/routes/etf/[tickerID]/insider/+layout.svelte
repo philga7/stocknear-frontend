@@ -1,11 +1,74 @@
 <script lang="ts">
   import { etfTicker } from "$lib/store";
-  import ArrowLogo from "lucide-svelte/icons/move-up-right";
-  import { formatDate } from "$lib/utils";
+
+  import { page } from "$app/stores";
 
   export let data;
 
   let newsList = data?.getNews ?? [];
+
+  const formatDate = (dateString) => {
+    // Create a date object for the input dateString
+    const inputDate = new Date(dateString);
+
+    // Create a date object for the current time in New York City
+    const nycTime = new Date().toLocaleString("en-US", {
+      timeZone: "America/New_York",
+    });
+    const currentNYCDate = new Date(nycTime);
+
+    // Calculate the difference in milliseconds
+    const difference = inputDate.getTime() - currentNYCDate.getTime();
+
+    // Convert the difference to minutes
+    const minutes = Math.abs(Math.round(difference / (1000 * 60)));
+
+    if (minutes < 60) {
+      return `${minutes} minutes`;
+    } else if (minutes < 1440) {
+      const hours = Math.round(minutes / 60);
+      return `${hours} hour${hours !== 1 ? "s" : ""}`;
+    } else {
+      const days = Math.round(minutes / 1440);
+      return `${days} day${days !== 1 ? "s" : ""}`;
+    }
+  };
+
+  let displaySubSection = "";
+
+  if (!displaySubSection || displaySubSection.length === 0) {
+    const parts = $page?.url?.pathname.split("/");
+    const sectionMap = {
+      institute: "institute",
+      "congress-trading": "congress-trading",
+      transcripts: "transcripts",
+    };
+
+    const foundSection = parts?.find((part) =>
+      Object?.values(sectionMap)?.includes(part),
+    );
+
+    displaySubSection =
+      Object?.keys(sectionMap)?.find(
+        (key) => sectionMap[key] === foundSection,
+      ) || "insider";
+  }
+
+  function changeSubSection(state) {
+    const subSectionMap = {
+      "congress-trading": "/insider/congress-trading",
+      institute: "/insider/institute",
+      transcripts: "/insider/transcripts",
+    };
+
+    if (state !== "insider" && subSectionMap[state]) {
+      displaySubSection = state;
+      //goto(`/stocks/${$etfTicker}${subSectionMap[state]}`);
+    } else {
+      displaySubSection = state;
+      //goto(`/stocks/${$etfTicker}/insider`);
+    }
+  }
 </script>
 
 <section class="w-auto overflow-hidden">
@@ -18,21 +81,19 @@
           <slot />
         </main>
 
-        <aside class="hidden lg:block relative fixed w-1/4 mt-3">
+        <aside class="hidden lg:block relative fixed w-1/4">
           {#if newsList?.length !== 0}
             <div
-              class="w-full sm:hover:text-white text-white border border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit"
+              class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer"
             >
               <div class="p-4 text-sm">
-                <h3 class="text-lg text-white font-semibold mb-3">
-                  {$etfTicker} News
-                </h3>
-                <ul class="text-white">
+                <h3 class="text-xl font-bold mb-3">{$etfTicker} News</h3>
+                <ul class="">
                   {#each newsList?.slice(0, 10) as item}
                     <li class="mb-3 last:mb-1">
-                      {formatDate(item?.publishedDate)} &#183;
+                      {formatDate(item?.publishedDate)} ago -
                       <a
-                        class="text-blue-500 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
+                        class="sm:hover:text-muted dark:sm:hover:text-white text-blue-500 dark:text-blue-400"
                         href={item?.url}
                         target="_blank"
                         rel="noopener noreferrer nofollow">{item?.title}</a

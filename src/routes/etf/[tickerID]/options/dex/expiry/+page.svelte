@@ -10,8 +10,8 @@
 </script>
 
 <SEO
-  title="Delta Exposure By Expiry"
-  description={`Analyze delta exposure for ${$displayCompanyName} (${$etfTicker}) by expiry. Access historical volume, open interest trends, and save options contracts for detailed analysis and insights.`}
+  title="Delta Exposure by Expiry"
+  description={`Analyze Delta Exposure by expiry for ${$displayCompanyName} (${$etfTicker}). Access historical volume, open interest trends, and save options contracts for detailed analysis and insights.`}
 />
 
 <section class="w-full overflow-hidden min-h-screen pb-40">

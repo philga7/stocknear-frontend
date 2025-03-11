@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { etfTicker, displayCompanyName } from "$lib/store";
   import Infobox from "$lib/components/Infobox.svelte";
   import GreekExposure from "$lib/components/Options/GreekExposure.svelte";
   import SEO from "$lib/components/SEO.svelte";
@@ -8,10 +7,9 @@
 </script>
 
 <SEO
-  title="Daily Gamma Exposure"
-  description={`Analyze daily gamma exposure for ${$displayCompanyName} (${$etfTicker}). Access historical volume, open interest trends, and save options contracts for detailed analysis and insights.`}
+  title="Daily Delta Exposure"
+  description="Analyze daily delta exposure with historic options volume and open interest data. Save individual contracts for future reference and optimize your trading strategy."
 />
-
 <section class="w-full overflow-hidden min-h-screen pb-40">
   <div class="w-full flex h-full overflow-hidden">
     <div

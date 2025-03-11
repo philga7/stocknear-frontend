@@ -14,10 +14,10 @@
 
     if (state !== "overview" && subSectionMap[state]) {
       displaySubSection = state;
-      //goto(`/stocks/${$etfTicker}${subSectionMap[state]}`);
+      //goto(`/etf/${$etfTicker}${subSectionMap[state]}`);
     } else {
       displaySubSection = state;
-      //goto(`/stocks/${$etfTicker}/statistics`);
+      //goto(`/etf/${$etfTicker}/statistics`);
     }
   }
 
@@ -49,7 +49,7 @@
       >
         <main class="w-full">
           <nav
-            class="sm:ml-4 overflow-x-auto pt-1 text-sm sm:text-[1rem] whitespace-nowrap"
+            class="mb-5 sm:mb-0 sm:ml-4 pt-1 text-sm sm:text-[1rem] whitespace-nowrap overflow-x-auto whitespace-nowrap"
           >
             <ul class="flex flex-row items-center w-full">
               <a

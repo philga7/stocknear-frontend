@@ -1,18 +1,54 @@
 <script lang="ts">
-  import { etfTicker, displayCompanyName } from "$lib/store";
+  import {
+    etfTicker,
+    numberOfUnreadNotification,
+    displayCompanyName,
+  } from "$lib/store";
 
   import Infobox from "$lib/components/Infobox.svelte";
-  import SEO from "$lib/components/SEO.svelte";
 
   import GreekByStrike from "$lib/components/Options/GreekByStrike.svelte";
 
   export let data;
 </script>
 
-<SEO
-  title="Delta Exposure By Strike Price"
-  description={`Analyze delta exposure for ${$displayCompanyName} (${$etfTicker}) by strike price. Access historical volume, open interest trends, and save options contracts for detailed analysis and insights.`}
-/>
+<svelte:head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>
+    {$numberOfUnreadNotification > 0 ? `(${$numberOfUnreadNotification})` : ""}
+    {$displayCompanyName} ({$etfTicker}) Delta Exposure by Strike Price ·
+    Stocknear
+  </title>
+  <meta
+    name="description"
+    content={`Discover detailed Delta Exposure analysis by strike price for ${$displayCompanyName} (${$etfTicker}). Explore historical volume, open interest, and save individual options contracts for in-depth insights.`}
+  />
+
+  <!-- Other meta tags -->
+  <meta
+    property="og:title"
+    content={`${$displayCompanyName} (${$etfTicker}) Delta Exposure by Strike Price · Stocknear`}
+  />
+  <meta
+    property="og:description"
+    content={`Discover detailed Delta Exposure analysis by strike price for ${$displayCompanyName} (${$etfTicker}). Explore historical volume, open interest, and save individual options contracts for in-depth insights.`}
+  />
+  <meta property="og:type" content="website" />
+  <!-- Add more Open Graph meta tags as needed -->
+
+  <!-- Twitter specific meta tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta
+    name="twitter:title"
+    content={`${$displayCompanyName} (${$etfTicker}) Delta Exposure by Strike Price · Stocknear`}
+  />
+  <meta
+    name="twitter:description"
+    content={`Discover detailed Delta Exposure analysis by strike price for ${$displayCompanyName} (${$etfTicker}). Explore historical volume, open interest, and save individual options contracts for in-depth insights.`}
+  />
+  <!-- Add more Twitter meta tags as needed -->
+</svelte:head>
 
 <section class="w-full overflow-hidden min-h-screen pb-40">
   <div class="w-full flex h-full overflow-hidden">

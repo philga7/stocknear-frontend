@@ -15,10 +15,10 @@
 
     if (state !== "overview" && subSectionMap[state]) {
       displaySubSection = state;
-      //goto(`/stocks/${$etfTicker}${subSectionMap[state]}`);
+      //goto(`/etf/${$etfTicker}${subSectionMap[state]}`);
     } else {
       displaySubSection = state;
-      //goto(`/stocks/${$etfTicker}/statistics`);
+      //goto(`/etf/${$etfTicker}/statistics`);
     }
   }
 

@@ -850,11 +850,11 @@
       </p>
       <button class="cursor-pointer text-[1.8rem] focus:outline-hidden">
         <svg
-          class="w-8 h-8"
+          class="w-8 h-8 text-muted dark:text-white"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           ><path
-            fill="white"
+            fill="currentColor"
             d="m6.4 18.308l-.708-.708l5.6-5.6l-5.6-5.6l.708-.708l5.6 5.6l5.6-5.6l.708.708l-5.6 5.6l5.6 5.6l-.708.708l-5.6-5.6z"
           />
         </svg>

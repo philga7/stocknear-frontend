@@ -364,7 +364,7 @@
 <svelte:window bind:scrollY={y} />
 
 <body
-  class="bg-default w-full max-w-screen sm:max-w-[1250px] min-h-screen overflow-hidden"
+  class="w-full max-w-screen sm:max-w-[1250px] min-h-screen overflow-hidden"
 >
   <!-- Page wrapper -->
   <div class="mt-5 flex flex-col w-full relative w-full">
@@ -373,7 +373,7 @@
         <div class="w-full">
           <div class="sm:flex sm:justify-start w-full sm:max-w-[1250px]">
             <!--Start Mobile Navbar-->
-            <div class="fixed top-0 left-0 right-0 z-20 bg-default sm:hidden">
+            <div class="fixed top-0 left-0 right-0 z-20 sm:hidden">
               <div class="navbar w-full px-4 py-2">
                 <div
                   class="{isScrolled
@@ -590,7 +590,7 @@
                           <div class="flex flex-col ml-auto mr-2">
                             {#if userWatchList?.length !== 0}
                               <div
-                                class="shrink-0 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
+                                class="shrink-0 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative flex items-center justify-center"
                               >
                                 <label
                                   for="addWatchListModal"
@@ -621,7 +621,7 @@
                               </div>
                             {:else if userWatchList?.length === 0}
                               <div
-                                class="shrink-0 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
+                                class="shrink-0 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative flex items-center justify-center"
                               >
                                 <label
                                   on:click={() =>
@@ -655,7 +655,7 @@
                           </div>
                         {:else}
                           <div
-                            class="shrink-0 ml-auto mr-2 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
+                            class="shrink-0 ml-auto mr-2 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative flex items-center justify-center"
                           >
                             <label
                               for="userLogin"
@@ -678,7 +678,7 @@
                         <!--Start Price Alert -->
 
                         <div
-                          class="shrink-0 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
+                          class="shrink-0 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative flex items-center justify-center"
                         >
                           <label
                             on:click={() => ($openPriceAlert = true)}

@@ -24,9 +24,6 @@ export const load = async ({ locals, params }) => {
   }; 
 
 
-
-  
-
   // Make sure to return a promise
   return {
     getData: await getData(),

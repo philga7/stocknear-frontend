@@ -1,9 +1,5 @@
 <script lang="ts">
-  import {
-    etfTicker,
-    numberOfUnreadNotification,
-    displayCompanyName,
-  } from "$lib/store";
+  import { etfTicker, displayCompanyName } from "$lib/store";
   import { formatString } from "$lib/utils";
   import Table from "$lib/components/Table/Table.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
@@ -64,7 +60,7 @@
 />
 
 <section
-  class="bg-default overflow-hidden text-white h-full min-h-screen mb-20 sm:mb-0 w-full mt-2 sm:mt-0"
+  class=" overflow-hidden h-full min-h-screen mb-20 sm:mb-0 w-full mt-2 sm:mt-0"
 >
   <div class="flex justify-center m-auto h-full overflow-hidden w-full">
     <div
@@ -83,7 +79,7 @@
             </div>
           {/if}
         </div>
-        <div class="mt-5 mb-10">
+        <div class="mt-5">
           <Infobox text={htmlOutput} />
         </div>
 
