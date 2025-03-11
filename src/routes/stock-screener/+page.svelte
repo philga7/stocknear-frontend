@@ -3291,7 +3291,7 @@ const handleKeyDown = (event) => {
               <span
                 class="ml-2 rounded-full avatar w-5 h-5 text-xs font-semibold text-center shrink-0 flex items-center justify-center {ruleOfList?.length !==
                 0
-                  ? 'bg-red-500'
+                  ? 'text-white bg-red-500'
                   : 'bg-gray-200 dark:bg-gray-600'}"
               >
                 {ruleOfList?.length}
@@ -3403,7 +3403,7 @@ const handleKeyDown = (event) => {
       {:else if displayTableTab === "filters"}
         <div class="w-full rounded-md overflow-x-auto">
           <table
-            class="table table-sm table-compact w-full bg-table border border-gray-800"
+            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
           >
             <thead>
               <TableHeader {columns} {sortOrders} {sortData} />
@@ -3411,7 +3411,7 @@ const handleKeyDown = (event) => {
             <tbody>
               {#each displayResults as item (item?.symbol)}
                 <tr
-                  class="sm:hover:bg-[#245073]/10 border-b border-gray-800 odd:bg-odd"
+                  class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                 >
                   <td class=" whitespace-nowrap">
                     <a
@@ -3449,7 +3449,7 @@ const handleKeyDown = (event) => {
       {:else if displayTableTab === "performance"}
         <div class="w-full rounded-md overflow-x-auto">
           <table
-            class="table table-sm table-compact w-full bg-table border border-gray-800"
+            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
           >
             <thead>
               <TableHeader {columns} {sortOrders} {sortData} />
@@ -3457,7 +3457,7 @@ const handleKeyDown = (event) => {
             <tbody>
               {#each displayResults as item (item?.symbol)}
                 <tr
-                  class="sm:hover:bg-[#245073]/10 border-b border-gray-800 odd:bg-odd"
+                  class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                 >
                   <td class=" whitespace-nowrap">
                     <a
@@ -3503,7 +3503,7 @@ const handleKeyDown = (event) => {
       {:else if displayTableTab === "analysts"}
         <div class="w-full rounded-md overflow-x-auto">
           <table
-            class="table table-sm table-compact w-full bg-table border border-gray-800"
+            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
           >
             <thead>
               <TableHeader {columns} {sortOrders} {sortData} />
@@ -3511,7 +3511,7 @@ const handleKeyDown = (event) => {
             <tbody>
               {#each displayResults as item (item?.symbol)}
                 <tr
-                  class="sm:hover:bg-[#245073]/10 border-b border-gray-800 odd:bg-odd"
+                  class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                 >
                   <td class=" whitespace-nowrap">
                     <a
