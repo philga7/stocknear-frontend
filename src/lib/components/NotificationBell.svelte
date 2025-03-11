@@ -19,10 +19,10 @@
   >
     <Bell class="h-[20px] w-[20px] " />
 
-    {#if hasUnreadElement}
+    {#if hasUnreadElement && $numberOfUnreadNotification > 0}
       <div class="absolute top-2 -right-2 flex">
         <div
-          class="relative inline-flex text-xs text-black font-bold w-[18px] h-[18px] bg-white border-[1px] border-gray-800 rounded-full -top-2 right-2"
+          class="relative inline-flex text-xs text-white dark:text-black font-bold w-[18px] h-[18px] bg-default dark:bg-white border-[1px] dark:border-gray-800 rounded-full -top-2 right-2"
         >
           <span class="m-auto"
             >{$numberOfUnreadNotification <= 9
