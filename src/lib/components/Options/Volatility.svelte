@@ -1,14 +1,11 @@
 <script lang="ts">
-  import {
-    removeCompanyStrings,
-    abbreviateNumberWithColor,
-    abbreviateNumber,
-  } from "$lib/utils";
+  import { removeCompanyStrings, abbreviateNumber } from "$lib/utils";
   import { displayCompanyName } from "$lib/store";
   import { onMount } from "svelte";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import highcharts from "$lib/highcharts.ts";
+  import { mode } from "mode-watcher";
 
   export let data;
 
@@ -96,7 +93,7 @@
 
     const options = {
       chart: {
-        backgroundColor: "#09090B",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
         animation: false,
         height: 360,
       },
@@ -105,7 +102,7 @@
       title: {
         text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">Volatiltiy Exposure</h3>`,
         useHTML: true,
-        style: { color: "white" },
+        style: { color: $mode === "light" ? "black" : "white" },
       },
       // Disable markers globally on hover for all series
       xAxis: {
@@ -113,13 +110,13 @@
         endOnTick: false,
         categories: dateList,
         crosshair: {
-          color: "#fff", // Set the color of the crosshair line
+          color: $mode === "light" ? "black" : "white", // Set the color of the crosshair line
           width: 1, // Adjust the line width as needed
           dashStyle: "Solid",
         },
         labels: {
           style: {
-            color: "#fff",
+            color: $mode === "light" ? "black" : "white",
           },
           distance: 20, // Increases space between label and axis
           formatter: function () {
@@ -146,9 +143,9 @@
       yAxis: [
         {
           gridLineWidth: 1,
-          gridLineColor: "#111827",
+          gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
           labels: {
-            style: { color: "white" },
+            style: { color: $mode === "light" ? "black" : "white" },
           },
           title: { text: null },
           opposite: true,
@@ -179,8 +176,8 @@
         },
         borderRadius: 4,
         formatter: function () {
-          // Format the x value to display time in hh:mm format
-          let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]">${new Date(
+          // Format the x value to display time in a custom format
+          let tooltipContent = `<span class="m-auto text-[1rem] font-[501]">${new Date(
             this?.x,
           ).toLocaleDateString("en-US", {
             year: "numeric",
@@ -190,10 +187,10 @@
 
           // Loop through each point in the shared tooltip
           this.points.forEach((point) => {
-            tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span> 
-          <span class="text-white font-normal text-sm" style="color:${point.color}">${abbreviateNumber(
-            point.y,
-          )}</span><br>`;
+            tooltipContent += `
+        <span style="display:inline-block; width:10px; height:10px; background-color:${point.color}; border-radius:50%; margin-right:5px;"></span>
+        <span class="font-semibold text-sm">${point.series.name}:</span> 
+        <span class="font-normal text-sm">${abbreviateNumber(point.y)}</span><br>`;
           });
 
           return tooltipContent;
@@ -210,7 +207,7 @@
               },
             },
           },
-          color: "white",
+          color: $mode === "light" ? "black" : "white",
           animation: false, // Disable series animation
           states: {
             hover: {
@@ -226,7 +223,7 @@
           data: priceList,
           yAxis: 1,
           lineWidth: 2,
-          color: "#fff",
+          color: $mode === "light" ? "black" : "white",
           animation: false,
         },
         {
@@ -235,7 +232,7 @@
           data: impliedVolatility,
           lineWidth: 2,
           yAxis: 0,
-          color: "#FAD776",
+          color: $mode === "light" ? "#C69307" : "#FAD776",
           animation: false,
         },
         {
@@ -404,16 +401,14 @@
   };
 
   $: {
-    if (timePeriod) {
+    if (timePeriod || $mode) {
       config = plotData();
     }
   }
 </script>
 
 <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
-  <h2
-    class=" flex flex-row items-center text-white text-xl sm:text-2xl font-bold w-fit"
-  >
+  <h2 class=" flex flex-row items-center text-xl sm:text-2xl font-bold w-fit">
     Volatility Exposure
   </h2>
   <div class="w-full mt-2">
@@ -430,19 +425,20 @@
           {#if data?.user?.tier === "Pro" || index === 0}
             <label
               on:click={() => (timePeriod = item)}
-              class="px-3 py-1 text-sm {timePeriod === item
-                ? 'bg-white text-black '
-                : 'text-white bg-table text-opacity-[0.6]'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+              class="px-3 py-1 text-sm shadow-sm border-gray-300 {timePeriod ===
+              item
+                ? 'bg-gray-300 dark:bg-white text-black '
+                : ' bg-gray-100 dark:bg-table text-opacity-[0.6]'} transition ease-out duration-100 rounded-md cursor-pointer"
             >
               {item}
             </label>
           {:else if data?.user?.tier !== "Pro"}
             <a
               href="/pricing"
-              class="px-3 py-1 text-sm flex flex-row items-center border border-gray-700 {timePeriod ===
+              class="px-3 py-1 text-sm flex flex-row items-center border border-gray-300 {timePeriod ===
               item
-                ? 'bg-white text-black '
-                : 'text-white bg-table text-opacity-[0.6]'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+                ? 'bg-gray-300 dark:bg-white text-black '
+                : ' bg-gray-100 dark:bg-table text-opacity-[0.6]'} transition ease-out duration-100 rounded-md cursor-pointer"
             >
               {item}
               <svg
@@ -460,18 +456,18 @@
       </div>
 
       <div
-        class="border border-gray-800 rounded w-full"
+        class="border border-gray-300 dark:border-gray-800 rounded w-full"
         use:highcharts={config}
       ></div>
     {/if}
   </div>
 
-  <h3 class="mt-5 text-xl sm:text-2xl text-white font-bold mb-2 sm:mb-0">
+  <h3 class="mt-5 text-xl sm:text-2xl font-bold mb-2 sm:mb-0">
     Volatility History
   </h3>
-  <div class="w-full overflow-x-auto text-white mt-5">
+  <div class="w-full overflow-x-auto mt-5">
     <table
-      class="w-full table table-sm table-compact bg-table border border-gray-800 rounded-none sm:rounded-md m-auto overflow-x-auto"
+      class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
     >
       <thead>
         <TableHeader {columns} {sortOrders} {sortData} />
@@ -479,30 +475,28 @@
       <tbody>
         {#each data?.user?.tier === "Pro" ? displayList : displayList?.slice(0, 3) as item, index}
           <tr
-            class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-oddborder-b border-gray-800 {index +
+            class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
               1 ===
               displayList?.slice(0, 3)?.length &&
             !['Pro']?.includes(data?.user?.tier)
               ? 'opacity-[0.1]'
               : ''}"
           >
-            <td
-              class="text-white text-sm sm:text-[1rem] text-start whitespace-nowrap"
-            >
+            <td class=" text-sm sm:text-[1rem] text-start whitespace-nowrap">
               {formatDate(item?.date)}
             </td>
 
-            <td class="text-white text-sm sm:text-[1rem] text-end">
+            <td class=" text-sm sm:text-[1rem] text-end">
               {#if item?.changesPercentage >= 0 && item?.changesPercentage !== null}
                 <span class="text-green-600 dark:text-[#00FC50]"
                   >+{item?.changesPercentage >= 1000
-                    ? abbreviateNumberWithColor(item?.changesPercentage)
+                    ? abbreviateNumber(item?.changesPercentage)
                     : item?.changesPercentage?.toFixed(2)}%</span
                 >
               {:else if item?.changesPercentage < 0 && item?.changesPercentage !== null}
                 <span class="text-red-600 dark:text-[#FF2F1F]"
                   >{item?.changesPercentage <= -1000
-                    ? abbreviateNumberWithColor(item?.changesPercentage)
+                    ? abbreviateNumber(item?.changesPercentage)
                     : item?.changesPercentage?.toFixed(2)}%
                 </span>
               {:else}
@@ -510,50 +504,40 @@
               {/if}
             </td>
 
-            <td class="text-sm sm:text-[1rem] text-end text-white">
+            <td class="text-sm sm:text-[1rem] text-end">
               {item?.putCallRatio}
             </td>
 
-            <td class="text-sm sm:text-[1rem] text-end text-white">
-              {@html abbreviateNumberWithColor(
-                item?.total_open_interest,
-                false,
-                true,
-              )}
+            <td class="text-sm sm:text-[1rem] text-end">
+              {@html abbreviateNumber(item?.total_open_interest, false, true)}
             </td>
 
-            <td class="text-white text-sm sm:text-[1rem] text-end">
+            <td class=" text-sm sm:text-[1rem] text-end">
               {#if item?.changesPercentageOI >= 0 && item?.changesPercentageOI !== null}
                 <span class="text-green-600 dark:text-[#00FC50]"
                   >+{item?.changesPercentageOI >= 1000
-                    ? abbreviateNumberWithColor(item?.changesPercentageOI)
+                    ? abbreviateNumber(item?.changesPercentageOI)
                     : item?.changesPercentageOI?.toFixed(2)}%</span
                 >
               {:else if item?.changesPercentageOI < 0 && item?.changesPercentageOI !== null}
                 <span class="text-red-600 dark:text-[#FF2F1F]"
                   >{item?.changesPercentageOI <= -1000
-                    ? abbreviateNumberWithColor(item?.changesPercentageOI)
+                    ? abbreviateNumber(item?.changesPercentageOI)
                     : item?.changesPercentageOI?.toFixed(2)}%
                 </span>
               {:else}
-                <span class="text-white"> n/a </span>
+                <span class=""> n/a </span>
               {/if}
             </td>
 
-            <td
-              class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
-            >
+            <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
               {item?.iv}
             </td>
-            <td
-              class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
-            >
+            <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
               {item?.rv ?? "n/a"}
             </td>
 
-            <td
-              class="text-white text-sm sm:text-[1rem] text-end whitespace-nowrap"
-            >
+            <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
               {item?.volatilitySpread ?? "n/a"}
             </td>
           </tr>

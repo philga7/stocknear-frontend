@@ -96,7 +96,7 @@
                   <!-- svelte-ignore a11y-click-events-have-key-events -->
                   <div
                     class="border-b border-gray-300 dark:border-gray-800 pb-3 sm:p-3 mb-6 sm:mb-3 w-full {!item?.readed
-                      ? 'bg-[#F9AB00]/10'
+                      ? 'bg-blue-100 dark:bg-[#F9AB00]/10'
                       : ''} "
                   >
                     <div class="flex flex-row items-center w-full">
@@ -146,7 +146,7 @@
                   <!-- svelte-ignore a11y-click-events-have-key-events -->
                   <div
                     class="border-b border-gray-300 dark:border-gray-800 pb-3 sm:p-3 mb-6 sm:mb-3 w-full {!item?.readed
-                      ? 'bg-[#F9AB00]/10'
+                      ? 'bg-blue-100 dark:bg-[#F9AB00]/10'
                       : ''} "
                   >
                     <div class="flex flex-row items-center w-full">
@@ -192,7 +192,7 @@
                 {:else if item?.notifyType === "topAnalyst"}
                   <div
                     class="border-b border-gray-300 dark:border-gray-800 pb-3 sm:p-3 mb-6 sm:mb-3 w-full {!item?.readed
-                      ? 'bg-[#F9AB00]/10'
+                      ? 'bg-blue-100 dark:bg-[#F9AB00]/10'
                       : ''} "
                   >
                     <div class="flex flex-row items-center w-full">
@@ -243,7 +243,7 @@
                 {:else if item?.notifyType === "earningsSurprise"}
                   <div
                     class="border-b border-gray-300 dark:border-gray-800 pb-3 sm:p-3 mb-6 sm:mb-3 w-full {!item?.readed
-                      ? 'bg-[#F9AB00]/10'
+                      ? 'bg-blue-100 dark:bg-[#F9AB00]/10'
                       : ''} "
                   >
                     <div class="flex flex-row items-center w-full">
