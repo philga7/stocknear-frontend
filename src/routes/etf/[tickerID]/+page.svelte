@@ -1,5 +1,6 @@
 <script lang="ts">
   import highcharts from "$lib/highcharts.ts";
+  import { mode } from "mode-watcher";
 
   import {
     getCache,
@@ -83,13 +84,17 @@
         ? data?.getStockQuote?.changesPercentage < 0
         : change < 0;
 
-    const lineColor = isNegative ? "#CC261A" : "#00FC50";
+    const lineColor = isNegative
+      ? "#CC261A"
+      : $mode === "light"
+        ? "#047857"
+        : "#00FC50";
     const fillColorStart = isNegative
       ? "rgba(204, 38, 26, 0.3)"
-      : "rgba(0, 252, 80, 0.3)";
+      : "rgb(4, 120, 87, 0.3)"; //"rgba(0, 252, 80, 0.3)";
     const fillColorEnd = isNegative
       ? "rgba(204, 38, 26, 0.004)"
-      : "rgba(0, 252, 80, 0.004)";
+      : "rgb(4, 120, 87, 0.004)"; //"rgba(0, 252, 80, 0.004)";
 
     const baseDate =
       rawData && rawData?.length ? new Date(rawData?.at(0)?.time) : new Date();
@@ -112,8 +117,9 @@
 
     const options = {
       chart: {
-        backgroundColor: "#09090B",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
         height: 360,
+        animation: false,
         events: {
           // Add touch event handling to hide tooltip on mobile
           load: function () {
@@ -148,7 +154,7 @@
         borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
         borderWidth: 1,
         style: {
-          color: "#fff",
+          color: $mode === "light" ? "black" : "white",
           fontSize: "16px",
           padding: "10px",
         },
@@ -182,11 +188,11 @@
 
           // Loop through each point in the shared tooltip
           this.points?.forEach((point) => {
-            tooltipContent += `<span class="text-white text-[1rem] font-[501]">${point.series.name}: ${point.y}</span><br>`;
+            tooltipContent += `<span class=" text-[1rem] font-[501]">${point.series.name}: ${point.y}</span><br>`;
           });
 
           // Append the formatted date at the end
-          tooltipContent += `<span class="text-white m-auto text-black text-sm font-normal">${formattedDate}</span><br>`;
+          tooltipContent += `<span class=" m-auto text-black text-sm font-normal">${formattedDate}</span><br>`;
 
           return tooltipContent;
         },
@@ -199,12 +205,12 @@
         tickLength: 0,
         categories: displayData === "1D" ? null : dateList,
         crosshair: {
-          color: "#fff",
+          color: $mode === "light" ? "black" : "white",
           width: 1,
           dashStyle: "Solid",
         },
         labels: {
-          style: { color: "#fff" },
+          style: { color: $mode === "light" ? "black" : "white" },
           distance: 20,
           formatter: function () {
             const date = new Date(this?.value);
@@ -249,10 +255,10 @@
         startOnTick: false,
         endOnTick: false,
         gridLineWidth: 1,
-        gridLineColor: "#111827",
+        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
         title: { text: null },
         labels: {
-          style: { color: "white" },
+          style: { color: $mode === "light" ? "black" : "white" },
         },
         opposite: true,
         // Add a dashed plot line at the previous close value
@@ -634,7 +640,7 @@
   }
 
   $: {
-    if ($etfTicker) {
+    if ($etfTicker || $mode) {
       // add a check to see if running on client-side
       shouldUpdatePriceChart.set(false);
       oneDayPrice = [];
@@ -656,7 +662,7 @@
   description={`Get a real-time ${data?.companyName} (${$etfTicker}) stock chart, price quote with breaking news, financials, statistics, charts and more.`}
 />
 
-<section class="bg-default min-h-screen pb-40 overflow-hidden w-full">
+<section class="text-muted dark: min-h-screen pb-40 overflow-hidden w-full">
   <div class="w-full m-auto overflow-hidden">
     <div
       class="md:flex md:justify-between md:divide-x md:divide-slate-800 w-full"
@@ -670,7 +676,7 @@
           <div class="sm:pl-7 mt-4 mb-5 lg:flex lg:flex-row lg:gap-x-4 w-full">
             {#if dataMapping[displayData]?.length === 0}
               <div
-                class="order-1 lg:order-5 m-auto grow overflow-hidden border-gray-800 py-0.5 xs:py-1 sm:px-0.5 sm:pb-3 sm:pt-2.5 lg:mb-0 lg:border-0 lg:border-l lg:border-sharp lg:px-0 lg:py-0 lg:pl-5 md:mb-4 md:border-b"
+                class="order-1 lg:order-5 m-auto grow overflow-hidden border-gray-300 dark:border-gray-300 dark:border-gray-800 py-0.5 xs:py-1 sm:px-0.5 sm:pb-3 sm:pt-2.5 lg:mb-0 lg:border-0 lg:border-l lg:border-sharp lg:px-0 lg:py-0 lg:pl-5 md:mb-4 md:border-b"
               >
                 <div class="flex items-center justify-between py-1 sm:pt-0.5">
                   <div class="hide-scroll overflow-x-auto">
@@ -685,8 +691,9 @@
                           >
                             <span
                               class="block {displayData === interval
-                                ? 'text-white'
-                                : 'text-gray-400'}">{interval}</span
+                                ? 'text-muted dark:'
+                                : 'text-muted dark:text-gray-400'}"
+                              >{interval}</span
                             >
                             <div
                               class="{displayData === interval
@@ -699,13 +706,11 @@
                     </ul>
                   </div>
                 </div>
-                <div class="h-[250px] sm:h-[350px]">
+                <div class="h-[360px]">
                   <div
-                    class="flex h-full w-full flex-col items-center justify-center rounded-sm border border-gray-800 p-6 text-center md:p-12"
+                    class="flex h-full w-full flex-col items-center justify-center rounded-sm border border-gray-300 dark:border-gray-300 dark:border-gray-800 p-6 text-center md:p-12"
                   >
-                    <div
-                      class="mb-4 text-white text-[1rem] sm:text-xl font-semibold"
-                    >
+                    <div class="mb-4 text-[1rem] sm:text-xl font-semibold">
                       No {displayData} chart data available
                     </div>
                   </div>
@@ -713,7 +718,7 @@
               </div>
             {:else}
               <div
-                class="order-1 lg:order-5 grow overflow-hidden border-gray-800 py-0.5 xs:py-1 sm:px-0.5 sm:pb-3 sm:pt-2.5 lg:mb-0 lg:border-0 lg:border-l lg:border-sharp lg:px-0 lg:py-0 lg:pl-5 md:mb-4 md:border-b"
+                class="order-1 lg:order-5 grow overflow-hidden border-gray-300 dark:border-gray-300 dark:border-gray-800 py-0.5 xs:py-1 sm:px-0.5 sm:pb-3 sm:pt-2.5 lg:mb-0 lg:border-0 lg:border-l lg:border-sharp lg:px-0 lg:py-0 lg:pl-5 md:mb-4 md:border-b"
               >
                 <div class="flex items-center justify-between py-1 sm:pt-0.5">
                   <div class="hide-scroll overflow-x-auto">
@@ -728,13 +733,14 @@
                           >
                             <span
                               class="block {displayData === interval
-                                ? 'text-white'
-                                : 'text-gray-400'}">{interval}</span
+                                ? 'text-muted dark:text-white'
+                                : 'text-muted dark:text-gray-400'}"
+                              >{interval}</span
                             >
                             <div
                               class="{displayData === interval
                                 ? `bg-[${displayLegend?.graphChange < 0 ? '#FF2F1F' : '#00FC50'}] `
-                                : 'bg-default'} mt-1 h-[3px] w-[1.5rem] m-auto rounded-full"
+                                : 'bg-white dark:bg-default'} mt-1 h-[3px] w-[1.5rem] m-auto rounded-full"
                             />
                           </button>
                         </li>
@@ -752,7 +758,7 @@
                       {displayLegend?.graphChange ??
                         data?.getStockQuote?.changesPercentage?.toFixed(2)}%
                     </span>
-                    <span class="hidden text-gray-200 sm:block"
+                    <span class="hidden text-muted dark:text-gray-200 sm:block"
                       >({displayData})</span
                     >
                   </div>
@@ -779,14 +785,12 @@
             {/if}
 
             <div
-              class="mt-10 lg:mt-0 order-5 lg:order-1 flex flex-row space-x-2 sm:space-x-3 xs:space-x-4"
+              class="mt-10 lg:mt-0 order-5 lg:order-1 flex flex-row space-x-2 sm:space-x-3 xs:space-x-4 text-muted dark:text-white"
             >
-              <table
-                class="w-[50%] text-sm text-white sm:text-[1rem] lg:min-w-[250px]"
-              >
+              <table class="w-[50%] text-sm sm:text-[1rem] lg:min-w-[250px]">
                 <tbody
                   ><tr
-                    class="flex flex-col border-b border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-sm"
                       >Bid</td
@@ -799,7 +803,7 @@
                     ></tr
                   >
                   <tr
-                    class="flex flex-col border-b border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-sm"
                       >Market Cap</td
@@ -810,7 +814,7 @@
                     ></tr
                   >
                   <tr
-                    class="flex flex-col border-b border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-sm"
                       >AUM</td
@@ -823,7 +827,7 @@
                     ></tr
                   >
                   <tr
-                    class="flex flex-col border-b border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-sm"
                       >NAV</td
@@ -837,7 +841,7 @@
                   >
 
                   <tr
-                    class="flex flex-col border-b border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-sm"
                       >EPS (ttm)</td
@@ -850,7 +854,7 @@
                     ></tr
                   >
                   <tr
-                    class="flex flex-col border-b border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-sm"
                       >PE Ratio (ttm)</td
@@ -864,7 +868,7 @@
                   >
 
                   <tr
-                    class="flex flex-col border-b border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-sm"
                       >Shares Out
@@ -879,7 +883,7 @@
                     ></tr
                   >
                   <tr
-                    class="flex flex-col border-b border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-sm"
                       >Inception Date</td
@@ -901,10 +905,10 @@
                   >
                 </tbody>
               </table>
-              <table class="w-[50%] text-sm text-white lg:min-w-[250px]">
+              <table class="w-[50%] text-sm lg:min-w-[250px]">
                 <tbody
                   ><tr
-                    class="flex flex-col border-b border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-sm"
                       >Ask</td
@@ -917,7 +921,7 @@
                     ></tr
                   >
                   <tr
-                    class="flex flex-col border-b border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-sm"
                       >Volume</td
@@ -928,7 +932,7 @@
                     ></tr
                   >
                   <tr
-                    class="flex flex-col border-b border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-sm"
                       >Open</td
@@ -939,7 +943,7 @@
                     ></tr
                   >
                   <tr
-                    class="flex flex-col border-b border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-sm"
                       >Previous Close</td
@@ -950,7 +954,7 @@
                     ></tr
                   >
                   <tr
-                    class="flex flex-col border-b border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-sm"
                       >Day's Range</td
@@ -963,7 +967,7 @@
                     ></tr
                   >
                   <tr
-                    class="flex flex-col border-b border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-sm"
                       >52-Week Range</td
@@ -977,7 +981,7 @@
                   >
 
                   <tr
-                    class="flex flex-col border-b border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-sm"
                       >Holdings
@@ -990,7 +994,7 @@
                     ></tr
                   >
                   <tr
-                    class="flex flex-col border-b border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-sm"
                       >Expense Ratio</td
