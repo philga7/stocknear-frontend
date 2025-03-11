@@ -2865,7 +2865,7 @@ const handleKeyDown = (event) => {
                     role="tooltip"
                   >
                     <span
-                      class="absolute -right-[15px] -top-[3px] cursor-pointer p-1 text-gray-300 sm:hover:"
+                      class="absolute -right-[15px] -top-[3px] cursor-pointer p-1 text-gray-500 dark:text-gray-300 dark:sm:hover:text-white"
                     >
                       <svg
                         class="h-[10.5px] w-[10.5px]"
@@ -2884,7 +2884,7 @@ const handleKeyDown = (event) => {
               <div class="flex items-center">
                 <button
                   on:click={() => handleDeleteRule(row?.rule)}
-                  class="mr-1.5 cursor-pointer text-gray-300 sm:hover:text-red-500 focus:outline-hidden"
+                  class="mr-1.5 cursor-pointer text-gray-500 dark:text-gray-300 sm:hover:text-red-500 focus:outline-hidden"
                   title="Remove filter"
                   >{#if ruleOfList?.find((item) => item.name === row?.rule)?.value !== "any"}
                     <svg
@@ -2905,7 +2905,7 @@ const handleKeyDown = (event) => {
                       class="w-6 h-6"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke="CurrentColor"
+                      stroke="currentColor"
                       style="max-width:40px"
                     >
                       <path
@@ -2922,7 +2922,7 @@ const handleKeyDown = (event) => {
                       <DropdownMenu.Trigger asChild let:builder>
                         <Button
                           builders={[builder]}
-                          class="bg-[#000] h-[40px] flex flex-row justify-between items-center w-[150px] xs:w-[140px] sm:w-[150px] px-3  rounded-md truncate"
+                          class="border-gray-300 dark:border-none shadow-sm bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center w-[140px] xs:w-[130px] sm:w-[140px] px-3  rounded-md truncate"
                         >
                           <span class="truncate ml-2 text-sm sm:text-[1rem]">
                             {#if valueMappings[row?.rule] === "any"}
@@ -2959,7 +2959,7 @@ const handleKeyDown = (event) => {
                       >
                         {#if !["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber", "analystRating", "topAnalystRating", "halalStocks", "score", "sector", "industry", "country"]?.includes(row?.rule)}
                           <DropdownMenu.Label
-                            class="absolute mt-2 h-11 border-gray-800 border-b -top-1 z-20 fixed sticky bg-default"
+                            class="absolute mt-2 h-11 border-gray-300 dark:border-gray-800 border-b -top-1 z-20 fixed sticky bg-white dark:bg-default"
                           >
                             <div
                               class="flex items-center justify-start gap-x-1"
@@ -2972,7 +2972,7 @@ const handleKeyDown = (event) => {
                                   <DropdownMenu.Trigger asChild let:builder
                                     ><Button
                                       builders={[builder]}
-                                      class="w-fit -mt-1 -ml-2 bg-default flex flex-row justify-between items-center "
+                                      class="w-fit -mt-1 -ml-2  flex flex-row justify-between items-center "
                                     >
                                       <span
                                         class="truncate ml-2 text-sm sm:text-[1rem]"
@@ -3027,7 +3027,7 @@ const handleKeyDown = (event) => {
                                       : ""}
                                     on:input={(e) =>
                                       handleValueInput(e, row?.rule, 0)}
-                                    class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder:text-gray-200 font-normal p-1 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-secondary"
+                                    class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder-gray-500 dark:placeholder:text-gray-200 font-normal p-1 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-white dark:bg-secondary"
                                   />
                                   <span class=" text-[1rem] font-normal mt-1">
                                     &
@@ -3042,7 +3042,7 @@ const handleKeyDown = (event) => {
                                       : ""}
                                     on:input={(e) =>
                                       handleValueInput(e, row?.rule, 1)}
-                                    class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder:text-gray-200 font-normal p-1 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-secondary"
+                                    class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder-gray-500 dark:placeholder:text-gray-200 font-normal p-1 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-white dark:bg-secondary"
                                   />
                                 </div>
                               {:else}
@@ -3054,7 +3054,7 @@ const handleKeyDown = (event) => {
                                     : ""}
                                   on:input={(e) =>
                                     handleValueInput(e, row?.rule)}
-                                  class="ios-zoom-fix block max-w-[4.8rem] rounded-sm placeholder:text-gray-200 font-normal p-1 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-secondary"
+                                  class="ios-zoom-fix block max-w-[4.8rem] rounded-sm placeholder-gray-500 dark:placeholder:text-gray-200 font-normal p-1 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-white dark:bg-secondary"
                                 />
                               {/if}
 
@@ -3128,8 +3128,8 @@ const handleKeyDown = (event) => {
                                 'country',
                               ]?.includes(row?.rule)
                                 ? 'hidden'
-                                : ''} absolute fixed sticky w-full border-0 bg-default border-b border-gray-200
-                                      focus:border-gray-200 focus:ring-0 placeholder:text-gray-300"
+                                : ''} absolute fixed sticky w-full border-0 bg-white dark:bg-default border-b border-gray-200
+                                      focus:border-gray-200 focus:ring-0 placeholder:text-gray-500 dark:placeholder:text-gray-300"
                               type="search"
                               placeholder="Search..."
                             />
@@ -3141,7 +3141,7 @@ const handleKeyDown = (event) => {
                               {#if ruleCondition[row?.rule] === "between"}
                                 {#if newValue && row?.step[index + 1]}
                                   <DropdownMenu.Item
-                                    class="sm:hover:bg-primary"
+                                    class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                                   >
                                     <button
                                       on:click={() => {
@@ -3163,12 +3163,14 @@ const handleKeyDown = (event) => {
                                   </DropdownMenu.Item>
                                 {/if}
                               {:else}
-                                <DropdownMenu.Item class="sm:hover:bg-primary">
+                                <DropdownMenu.Item
+                                  class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                                >
                                   <button
                                     on:click={() => {
                                       handleChangeValue(newValue);
                                     }}
-                                    class="block w-full border-b border-gray-300 dark:border-gray-600 px-4 py-1.5 text-left text-sm sm:text-[1rem] rounded last:border-0 sm:hover:bg-primary focus:bg-blue-100 focus:text-gray-900 focus:outline-hidden"
+                                    class="cursor-pointer block w-full border-b border-gray-300 dark:border-gray-600 px-4 py-1.5 text-left text-sm sm:text-[1rem] rounded last:border-0 focus:bg-blue-100 focus:text-gray-900 focus:outline-hidden"
                                   >
                                     {ruleCondition[row?.rule]
                                       ?.replace("under", "Under")
@@ -3181,7 +3183,9 @@ const handleKeyDown = (event) => {
                             {/each}
                           {:else if ["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber"]?.includes(row?.rule)}
                             {#each row?.step as item}
-                              <DropdownMenu.Item class="sm:hover:bg-primary">
+                              <DropdownMenu.Item
+                                class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                              >
                                 <div
                                   class="flex items-center"
                                   on:click|capture={(event) =>
@@ -3206,7 +3210,9 @@ const handleKeyDown = (event) => {
                             {/each}
                           {:else}
                             {#each testList.length > 0 && searchQuery?.length > 0 ? testList : searchQuery?.length > 0 && testList?.length === 0 ? [] : row?.rule === "country" ? listOfRelevantCountries : row?.rule === "sector" ? sectorList : row?.rule === "industry" ? industryList : ["analystRating", "topAnalystRating", "score"]?.includes(ruleName) ? ["Strong Buy", "Buy", "Hold", "Sell", "Strong Sell"] : ["Compliant", "Non-Compliant"] as item}
-                              <DropdownMenu.Item class="sm:hover:bg-primary">
+                              <DropdownMenu.Item
+                                class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                              >
                                 <div
                                   class="flex items-center"
                                   on:click|capture={(event) =>
@@ -3828,12 +3834,11 @@ const handleKeyDown = (event) => {
 <input type="checkbox" id="mobileTooltip" class="modal-toggle" />
 
 <dialog id="mobileTooltip" class="modal p-3">
-  <label for="mobileTooltip" class="cursor-pointer modal-backdrop bg-[#000]/40"
-  ></label>
+  <label for="mobileTooltip" class="cursor-pointer modal-backdrop"></label>
 
   <!-- Desktop modal content -->
   <div
-    class="modal-box rounded-md border border-gray-300 dark:border-gray-600 w-full bg-secondary flex flex-col items-center"
+    class="modal-box rounded-md border border-gray-300 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
   >
     <div class=" mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">{tooltipTitle}</h3>
