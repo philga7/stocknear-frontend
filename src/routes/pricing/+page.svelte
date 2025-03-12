@@ -154,26 +154,48 @@
 
     <!--<Discount/>-->
 
-    <div class="flex flex-row items-center justify-end">
-      <span class="text-[1rem] font-semibold mr-3"> Monthly </span>
+    <div class="flex flex-row items-center justify-center lg:justify-between">
+      <div
+        class="hidden lg:inline-flex items-center px-2.5 py-1 rounded-md bg-blue-100 dark:bg-indigo-500/10 border border-blue-100 shadow-sm dark:border-indigo-500/20"
+      >
+        <svg
+          stroke="currentColor"
+          fill="currentColor"
+          stroke-width="0"
+          viewBox="0 0 576 512"
+          class="text-muted dark:text-indigo-400 mr-1.5 text-xs"
+          height="1em"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+          ><path
+            d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"
+          ></path></svg
+        ><span class="text-sm text-muted dark:text-indigo-300"
+          >Rated <span class="font-medium mx-0.5">Excellent</span> on Trustpilot</span
+        >
+      </div>
 
-      <label class="inline-flex cursor-pointer relative">
-        <input
-          on:click={toggleMode}
-          type="checkbox"
-          checked={mode}
-          value={mode}
-          class="sr-only peer"
-        />
-        <div
-          class="w-14 h-7 bg-[#09090B] border border-gray-600 rounded-full peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[0.40rem] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-blue-600 {mode ===
-          false
-            ? 'after:translate-x-[-0.2rem]'
-            : ''} "
-        ></div>
-      </label>
+      <div class="flex flex-row items-center">
+        <span class="text-[1rem] font-semibold mr-3"> Monthly </span>
 
-      <div class="ml-3 flex flex-col text-[1rem] items-start">Annually</div>
+        <label class="inline-flex cursor-pointer relative">
+          <input
+            on:click={toggleMode}
+            type="checkbox"
+            checked={mode}
+            value={mode}
+            class="sr-only peer"
+          />
+          <div
+            class="w-14 h-7 bg-[#09090B] border border-gray-600 rounded-full peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[0.40rem] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-blue-600 {mode ===
+            false
+              ? 'after:translate-x-[-0.2rem]'
+              : ''} "
+          ></div>
+        </label>
+
+        <div class="ml-3 flex flex-col text-[1rem] items-start">Annually</div>
+      </div>
     </div>
 
     <div
@@ -181,7 +203,7 @@
     >
       <div
         style="opacity: 1; transform: translateY(20px);"
-        class="flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
+        class="hidden lg:flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
       >
         <h3 class="text-3xl font-bold">Basic</h3>
         <p class="text-muted dark:text-zinc-300 text-sm mt-1">
