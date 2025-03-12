@@ -369,7 +369,7 @@
                 </p>
                 <label
                   for="installModal"
-                  class="flex-none rounded px-4 py-1.5 text-sm font-semibold text-black cursor-pointer bg-[#fff] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
+                  class="cursor-pointer border border-gray-300 shadow-sm dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
                 >
                   Install the App
                 </label>
@@ -458,7 +458,7 @@
               >
                 <label
                   for="cancelSubscriptionModal"
-                  class="cursor-pointer border border-gray-600 sm:hover:bg-primary bg-opacity-[0.5] text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
+                  class="cursor-pointer border border-gray-300 shadow-sm dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
                 >
                   Cancel Subscription
                 </label>
@@ -543,10 +543,10 @@
     method="POST"
     action="?/cancelSubscription"
     use:enhance={submitCancellation}
-    class="modal-box w-full bg-secondary flex flex-col items-center"
+    class="modal-box w-full bg-secondary border border-gray-600 flex flex-col items-center"
   >
     <div class="mx-auto mb-8 h-1.5 w-20 shrink-0 rounded-full bg-gray-500" />
-    <div class=" mb-5 text-center">
+    <div class="text-white mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">Are you sure?</h3>
       <span class=" text-[1rem] font-normal">
         You will no longer be charged for this subscription, and at the end of
@@ -558,7 +558,7 @@
       on:click={() => (isClicked = !isClicked)}
       class="{!isClicked
         ? ''
-        : 'hidden'} cursor-pointer px-7 py-2 mb-5 rounded bg-white sm:hover:bg-white/80 ease-out duration-50 text-center text-black text-[1rem] font-normal"
+        : 'hidden'} cursor-pointer px-7 py-2 mb-5 rounded bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-black text-[1rem] font-normal"
     >
       Cancel Subscription
       <input
@@ -569,7 +569,7 @@
     </button>
     {#if isClicked === true}
       <label
-        class="cursor-pointer px-7 py-2 mb-5 rounded bg-white sm:hover:bg-white/80 ease-out duration-50 text-center text-black text-[1rem] font-normal"
+        class="cursor-pointer px-7 py-2 mb-5 rounded bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-black text-[1rem] font-normal"
       >
         <div class="flex flex-row m-auto">
           <span class="loading loading-infinity"></span>
@@ -673,7 +673,9 @@
 <dialog id="installModal" class="modal overflow-hidden p-3 sm:p-0">
   <label for="installModal" class="cursor-pointer modal-backdrop"></label>
 
-  <div class="modal-box rounded w-full bg-secondary border border-gray-600">
+  <div
+    class="modal-box text-white rounded w-full bg-secondary border border-gray-600"
+  >
     <div class="flex flex-row items-center pt-5">
       <h4 class=" text-2xl font-bold text-center m-auto">Steps to install</h4>
       <label
@@ -707,7 +709,7 @@
     <div class="border-t border-gray-600 mt-2">
       <label
         for="installModal"
-        class="mt-4 font-semibold text-xl m-auto flex justify-center"
+        class="mt-4 font-semibold text-xl m-auto flex justify-center cursor-pointer"
       >
         Close
       </label>

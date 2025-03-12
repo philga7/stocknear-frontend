@@ -3,7 +3,6 @@
 
 @config '../tailwind.config.cjs';
 
-
 @layer base {
   *,
   ::after,
