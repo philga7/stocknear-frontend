@@ -1,5 +1,6 @@
 <script lang="ts">
   import { displayCompanyName, stockTicker, screenWidth } from "$lib/store";
+  import { removeCompanyStrings } from "$lib/utils";
   import Infobox from "$lib/components/Infobox.svelte";
   import highcharts from "$lib/highcharts.ts";
   import { mode } from "mode-watcher";
@@ -39,160 +40,173 @@
     consensusRating = "Hold";
   }
 
-  function getPieChart() {
-    let value;
-    // Determine the value based on the consensus rating
-    switch (consensusRating) {
-      case "Strong Sell":
-        value = 0.5;
-        break;
-      case "Sell":
-        value = 1.5;
-        break;
-      case "Hold":
-        value = 2.5;
-        break;
-      case "Buy":
-        value = 3.5;
-        break;
-      case "Strong Buy":
-        value = 4.5;
-        break;
-      default:
-        value = 0.5;
-        break;
+  function getAIScorePlot() {
+    // Assume data.getHistoricalPrice contains objects with a "time" field (e.g. "2015-01-02")
+    const historicalData = data?.getHistoricalPrice || [];
+
+    // Pre-defined backtest dates and scores
+    const backtestList = [
+      { date: "2023-03-31", yTest: 1, yPred: 1, score: 9 },
+      { date: "2023-06-30", yTest: 0, yPred: 1, score: 9 },
+      { date: "2023-09-30", yTest: 0, yPred: 1, score: 9 },
+      { date: "2023-12-31", yTest: 0, yPred: 1, score: 7 },
+      { date: "2024-03-31", yTest: 1, yPred: 1, score: 9 },
+      { date: "2024-06-30", yTest: 1, yPred: 1, score: 9 },
+      { date: "2024-09-30", yTest: 1, yPred: 1, score: 9 },
+      { date: "2024-12-31", yTest: 0, yPred: 1, score: 9 },
+    ];
+
+    // Append the latest historical date (using "time") if available. Note that this entry may not include a score.
+    if (historicalData && historicalData.length) {
+      const latest = historicalData.at(-1);
+      backtestList.push({ date: latest.time });
     }
 
+    // For each backtest entry, find the historical price with the closest available time.
+    // Then, if a score exists, attach a marker and data label based on the score.
+    const processedData = backtestList.map((item) => {
+      const dateStr = item.date;
+      const targetTime = new Date(dateStr).getTime();
+      let closestPoint = historicalData[0];
+      let minDiff = Infinity;
+
+      historicalData.forEach((point) => {
+        const pointTime = new Date(point.time).getTime();
+        const diff = Math.abs(pointTime - targetTime);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closestPoint = point;
+        }
+      });
+
+      // Base data point with x as the target date timestamp and y as the close price from the closest historical point
+      const dataPoint = { x: targetTime, y: closestPoint.close };
+
+      // If a score is provided, add marker configuration based on its value.
+      if (item.hasOwnProperty("score")) {
+        let markerColor, markerSymbol;
+        if (item.score > 6) {
+          // Bullish: green marker with an upward triangle
+          markerColor = "#2ecc71";
+          markerSymbol = "triangle-up";
+        } else if (item.score < 5) {
+          // Bearish: red marker with a downward triangle
+          markerColor = "#e74c3c";
+          markerSymbol = "triangle-down";
+        } else {
+          // Neutral (score exactly 5): yellow marker with a circle
+          markerColor = "#f1c40f";
+          markerSymbol = "circle";
+        }
+
+        dataPoint.marker = {
+          symbol: markerSymbol,
+          radius: 4,
+          fillColor: markerColor,
+          lineWidth: 2,
+          lineColor: $mode === "light" ? "black" : "white",
+        };
+
+        dataPoint.dataLabels = {
+          enabled: true,
+          format: String(item.score),
+          style: {
+            color: $mode === "light" ? "black" : "white",
+            fontWeight: "bold",
+            fontSize: "14px",
+          },
+          y: -10,
+        };
+      }
+
+      return dataPoint;
+    });
+
+    // Highcharts options for plotting the data with markers.
     const options = {
+      chart: {
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        height: 360,
+        animation: false,
+      },
+      title: {
+        text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">Historical AI Score Performance</h3>`,
+        style: {
+          color: $mode === "light" ? "black" : "white",
+          // Using inline CSS for margin-top and margin-bottom
+        },
+        useHTML: true, // Enable HTML to apply custom class styling
+      },
+      xAxis: {
+        gridLineWidth: 1,
+        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
+        type: "datetime",
+        labels: {
+          style: {
+            color: $mode === "light" ? "black" : "white",
+          },
+          formatter: function () {
+            const date = new Date(this.value);
+            return date.toLocaleDateString("en-US", {
+              month: "short",
+              year: "numeric",
+            });
+          },
+        },
+      },
+      tooltip: {
+        enabled: false,
+      },
+      yAxis: {
+        title: {
+          text: "",
+        },
+        labels: {
+          style: {
+            color: $mode === "light" ? "black" : "white",
+          },
+          formatter: function () {
+            return `$${this.value.toFixed(0)}`;
+          },
+        },
+        gridLineWidth: 1,
+        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
+      },
+      series: [
+        {
+          name: "Close Price",
+          data: processedData,
+          color: $mode === "light" ? "#007050" : "#fff",
+          animation: false,
+          marker: {
+            enabled: true,
+          },
+          lineWidth: 2,
+        },
+      ],
+      plotOptions: {
+        series: {
+          enableMouseTracking: false,
+          states: {
+            hover: {
+              enabled: false,
+            },
+          },
+          marker: {
+            states: {
+              hover: {
+                enabled: false,
+              },
+            },
+          },
+        },
+      },
       legend: {
         enabled: false,
       },
       credits: {
         enabled: false,
       },
-      chart: {
-        type: "gauge",
-        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
-        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
-        animation: false,
-      },
-      title: {
-        text: null,
-      },
-      yAxis: {
-        min: 0,
-        max: 5,
-        tickPosition: "inside",
-        tickLength: 20,
-        tickWidth: 0,
-        minorTickInterval: null,
-        lineWidth: 0,
-        // Remove numeric tick labels
-        labels: {
-          enabled: false,
-        },
-        plotBands: [
-          {
-            from: 0,
-            to: 1,
-            color: "#9E190A",
-            thickness: 40,
-            borderRadius: "0px",
-          },
-          {
-            from: 1,
-            to: 2,
-            color: "#D9220E",
-            thickness: 40,
-            borderRadius: "0px",
-          },
-          {
-            from: 2,
-            to: 3,
-            color: "#f5b700",
-            thickness: 40,
-            borderRadius: "0px",
-          },
-          {
-            from: 3,
-            to: 4,
-            color: "#31B800",
-            thickness: 40,
-            borderRadius: "0px",
-          },
-          {
-            from: 4,
-            to: 5,
-            color: "#008A00",
-            thickness: 40,
-            borderRadius: "0px",
-          },
-        ],
-      },
-      pane: {
-        startAngle: -90,
-        endAngle: 89.9,
-        background: null,
-        center: ["50%", "50%"],
-        size: "70%",
-      },
-      series: [
-        {
-          name: "Rating",
-          data: [value],
-          animation: false,
-          dataLabels: {
-            enabled: true,
-            useHTML: true,
-            borderWidth: 0,
-            backgroundColor: "transparent",
-            style: {
-              textOutline: "none",
-              fontSize: "16px",
-              fontWeight: "bold",
-            },
-            formatter: function () {
-              const rating = this.y;
-              let ratingText = "";
-              let textColor = "";
-
-              if (rating < 1) {
-                ratingText = "Strong Sell";
-                textColor = "#D9220E";
-              } else if (rating < 2) {
-                ratingText = "Sell";
-                textColor = "#D9220E";
-              } else if (rating < 3) {
-                ratingText = "Hold";
-                textColor = "#f5b700";
-              } else if (rating < 4) {
-                ratingText = "Buy";
-                textColor = "#31B800";
-              } else {
-                ratingText = "Strong Buy";
-                textColor = "#31B800";
-              }
-
-              // "Analyst Consensus:" in white, rating in color
-              return `
-          <span class="text-lg text-muted dark:text-white">Analyst Consensus: </span>
-          <span class="text-lg" style="color:${textColor};">${ratingText}</span>
-        `;
-            },
-          },
-          dial: {
-            radius: "80%",
-            backgroundColor: "#2A2E39",
-            baseWidth: 12,
-            baseLength: "0%",
-            rearLength: "0%",
-          },
-          pivot: {
-            backgroundColor: "#2A2E39",
-            radius: 8,
-          },
-        },
-      ],
     };
 
     return options;
@@ -457,13 +471,13 @@
     return options;
   }
 
-  let optionsPieChart = null;
   let config = null;
+  let configScore = null;
 
   $: {
     if ($mode) {
-      optionsPieChart = getPieChart() || null;
-      config = getPriceForecastChart() || null;
+      configScore = getAIScorePlot() || null;
+      config = getAIScorePlot() || null;
     }
   }
 </script>
@@ -473,114 +487,102 @@
   description={`Discover our AI-powered forecast for ${$displayCompanyName} (${$stockTicker}). Get in-depth analyst ratings, price targets, upgrades, and downgrades from top Wall Street experts. Stay ahead of market trends and make smarter investment decisions.`}
 />
 
-<section class="w-full overflow-hidden min-h-screen">
-  <div class="w-full flex h-full overflow-hidden">
+<section class="w-full overflow-hidden h-full">
+  <div class="w-full flex justify-center w-full sm-auto h-full overflow-hidden">
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"
     >
-      <div class="sm:pl-4 sm:pt-4 w-full m-auto mt-2 sm:mt-0">
-        <h1 class="mb-px text-xl sm:text-2xl font-bold bp:text-3xl sm:pl-1">
-          {$displayCompanyName} AI Forecast
-        </h1>
-        {#if Object?.keys(data?.getPriceAnalysis)?.length > 0}
-          <div class="w-full mb-6 mt-3">
-            <div
-              class="rounded-sm border border-gray-300 dark:border-gray-600 p-0.5 xs:p-1 md:flex md:flex-col md:space-y-4 md:divide-y md:p-4 lg:flex-row lg:space-x-4 lg:space-y-0 lg:divide-x lg:divide-y-0 divide-gray-300 dark:divide-gray-600"
-            >
-              <div
-                class="p-3 md:flex md:space-x-4 md:p-0 lg:block lg:max-w-[32%] lg:space-x-0"
-              >
-                <div>
-                  <div class="flex items-baseline justify-between">
-                    <h2 class="mb-1 text-xl font-bold">Stock Price Forecast</h2>
-                    <span></span>
-                  </div>
-                  <p>
-                    Using our AI model trained on historical data, we generated
-                    a 12‑month forecast for {$displayCompanyName}
-                    ({$stockTicker}) stock. The model estimates a median target
-                    price of {medianPriceTarget}—ranging from a low of {lowPriceTarget}
-                    to a high of {highPriceTarget}—which suggests {medianChange >
-                    0
-                      ? "an increase"
-                      : "a decrease"} of {medianChange}% compared to the current
-                    price of {price}.
-                  </p>
-                </div>
-                <div>
-                  <div>
-                    <div
-                      class="max-h-[225px]"
-                      use:highcharts={optionsPieChart}
-                    ></div>
-                  </div>
-                </div>
-              </div>
-              <div class="grow pt-2 md:pt-4 lg:pl-4 lg:pt-0">
-                <div
-                  class="chart mt-5 sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
-                  use:highcharts={config}
-                ></div>
-                <div
-                  class="hide-scroll mb-1 mt-2 overflow-x-auto px-1.5 text-center md:mb-0 md:px-0 lg:mt-2"
-                >
-                  <table class="w-full text-right text-tiny xs:text-sm">
-                    <thead
-                      ><tr
-                        class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
-                        ><th class="py-[3px] text-left font-semibold lg:py-0.5"
-                          >Target</th
-                        > <th class="font-semibold">Low</th>
-                        <th class="font-semibold">Average</th>
-                        <th class="font-semibold">Median</th>
-                        <th class="font-semibold">High</th></tr
-                      ></thead
-                    >
-                    <tbody
-                      ><tr
-                        class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
-                        ><td class="py-[3px] text-left lg:py-0.5">Price</td>
-                        <td>${lowPriceTarget}</td>
-                        <td>${avgPriceTarget}</td> <td>${medianPriceTarget}</td>
-                        <td>${highPriceTarget}</td></tr
+      <main class="w-full">
+        <div class="sm:pl-7 sm:pb-7 sm:pt-7 m-auto mt-2 sm:mt-0">
+          <div class="">
+            <h1 class="text-xl sm:text-2xl font-bold">
+              {removeCompanyStrings($displayCompanyName)} Trend Forecast
+            </h1>
+          </div>
+
+          {#if Object?.keys(data?.getPriceAnalysis)?.length > 0}
+            <div class="w-full mb-6 mt-3">
+              <Infobox
+                text={`Using our AI model trained on historical data, we generated a
+              12‑month forecast for ${$displayCompanyName}
+              (${$stockTicker}) stock. The model estimates a median target price
+              of ${medianPriceTarget}—ranging from a low of {lowPriceTarget}
+              to a high of ${highPriceTarget}—which suggests ${
+                medianChange > 0 ? "an increase" : "a decrease"
+              } of ${medianChange}% compared to the current price
+              of ${price}.`}
+              />
+
+              <div>
+                <div class="grow pt-5">
+                  <div
+                    class="chart mt-5 sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
+                    use:highcharts={config}
+                  ></div>
+
+                  <div
+                    class="hide-scroll mb-1 mt-2 overflow-x-auto px-1.5 text-center md:mb-0 md:px-0 lg:mt-5"
+                  >
+                    <table class="w-full text-right text-tiny xs:text-sm">
+                      <thead
+                        ><tr
+                          class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
+                          ><th
+                            class="py-[3px] text-left font-semibold lg:py-0.5"
+                            >Target</th
+                          > <th class="font-semibold">Low</th>
+                          <th class="font-semibold">Average</th>
+                          <th class="font-semibold">Median</th>
+                          <th class="font-semibold">High</th></tr
+                        ></thead
                       >
-                      <tr class="text-sm sm:text-[1rem]"
-                        ><td class="py-[3px] text-left lg:py-0.5">Change</td>
-                        <td
-                          class={lowChange > 0
-                            ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                            : "text-red-600 dark:text-[#FF2F1F]"}
-                          >{lowChange}%</td
+                      <tbody
+                        ><tr
+                          class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
+                          ><td class="py-[3px] text-left lg:py-0.5">Price</td>
+                          <td>${lowPriceTarget}</td>
+                          <td>${avgPriceTarget}</td>
+                          <td>${medianPriceTarget}</td>
+                          <td>${highPriceTarget}</td></tr
                         >
-                        <td
-                          class={avgChange > 0
-                            ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                            : "text-red-600 dark:text-[#FF2F1F]"}
-                          >{avgChange}%</td
-                        >
-                        <td
-                          class={medianChange > 0
-                            ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                            : "text-red-600 dark:text-[#FF2F1F]"}
-                          >{medianChange}%</td
-                        >
-                        <td
-                          class={highChange > 0
-                            ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                            : "text-red-600 dark:text-[#FF2F1F]"}
-                          >{highChange}%</td
-                        ></tr
-                      ></tbody
-                    >
-                  </table>
+                        <tr class="text-sm sm:text-[1rem]"
+                          ><td class="py-[3px] text-left lg:py-0.5">Change</td>
+                          <td
+                            class={lowChange > 0
+                              ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
+                              : "text-red-600 dark:text-[#FF2F1F]"}
+                            >{lowChange}%</td
+                          >
+                          <td
+                            class={avgChange > 0
+                              ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
+                              : "text-red-600 dark:text-[#FF2F1F]"}
+                            >{avgChange}%</td
+                          >
+                          <td
+                            class={medianChange > 0
+                              ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
+                              : "text-red-600 dark:text-[#FF2F1F]"}
+                            >{medianChange}%</td
+                          >
+                          <td
+                            class={highChange > 0
+                              ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
+                              : "text-red-600 dark:text-[#FF2F1F]"}
+                            >{highChange}%</td
+                          ></tr
+                        ></tbody
+                      >
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        {:else}
-          <Infobox text="No AI Price Forecast available right now" />
-        {/if}
-      </div>
+          {:else}
+            <Infobox text="No AI Price Forecast available right now" />
+          {/if}
+        </div>
+      </main>
     </div>
   </div>
 </section>
