@@ -338,7 +338,7 @@
                     class="w-full flex flex-row items-center mr-auto mt-5"
                   >
                     <div
-                      class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white transition-colors md:h-8 md:w-8"
+                      class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white  md:h-8 md:w-8"
                     >
                       <Home class="h-5.5 w-5.5" />
                     </div>
@@ -757,7 +757,7 @@
                   >
                     <div class="flex flex-row items-center mr-auto">
                       <div
-                        class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white transition-colors sm:hover:text-muted dark:text-white md:h-8 md:w-8"
+                        class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white  sm:hover:text-muted dark:text-white md:h-8 md:w-8"
                       >
                         <Boxes class="h-5.5 w-5.5" />
                       </div>
@@ -781,7 +781,7 @@
                   >
                     <div class="flex flex-row items-center mr-auto">
                       <div
-                        class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white transition-colors hover:text-muted dark:text-white md:h-8 md:w-8"
+                        class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white  hover:text-muted dark:text-white md:h-8 md:w-8"
                       >
                         <Newspaper class="h-5.5 w-5.5" />
                       </div>
@@ -803,7 +803,7 @@
                     >
                       <div class="flex flex-row items-center mr-auto">
                         <div
-                          class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white transition-colors hover:text-muted dark:text-white md:h-8 md:w-8"
+                          class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white  hover:text-muted dark:text-white md:h-8 md:w-8"
                         >
                           <Gem class="h-5.5 w-5.5" />
                         </div>
@@ -942,7 +942,7 @@
 
                 <a href="/" class="flex flex-row items-center ml-9 w-full">
                   <div
-                    class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white transition-colors md:h-8 md:w-8"
+                    class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white  md:h-8 md:w-8"
                   >
                     <Home class="h-5.5 w-5.5" />
                   </div>
@@ -1202,7 +1202,7 @@
                   class="flex flex-row items-center ml-9 w-full mt-3"
                 >
                   <div
-                    class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white transition-colors  md:h-8 md:w-8"
+                    class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white   md:h-8 md:w-8"
                   >
                     <Boxes class="h-5.5 w-5.5" />
                   </div>
@@ -1214,7 +1214,7 @@
                   class="flex flex-row items-center ml-9 w-full mt-3"
                 >
                   <div
-                    class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white transition-colors md:h-8 md:w-8"
+                    class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white  md:h-8 md:w-8"
                   >
                     <Newspaper class="h-5.5 w-5.5" />
                   </div>
@@ -1226,7 +1226,7 @@
                     class="flex flex-row items-center ml-9 w-full mt-3"
                   >
                     <div
-                      class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white transition-colors md:h-8 md:w-8"
+                      class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white  md:h-8 md:w-8"
                     >
                       <Gem class="h-5.5 w-5.5" />
                     </div>
@@ -1245,7 +1245,7 @@
               -->
 
               <slot />
-              <ModeWatcher defaultMode="light"/>
+              <ModeWatcher defaultMode="light" disableTransitions={false}/>
               <Toaster position="top-center" />
               {#if Cookie && $showCookieConsent === true}
                 <Cookie />

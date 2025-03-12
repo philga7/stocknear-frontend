@@ -103,7 +103,7 @@
             href="https://affiliates.lemonsqueezy.com/programs/stocknear"
             rel="noopener noreferrer"
             target="_blank"
-            class="text-white bg-[#3B82F6] sm:hover:bg-blue-700 transition-colors ease-out duration-50 px-5 py-3 text-lg font-semibold rounded-md"
+            class="text-white bg-[#3B82F6] sm:hover:bg-blue-700 ease-out duration-50 px-5 py-3 text-lg font-semibold rounded-md"
           >
             Become an affiliate
           </a>
@@ -423,7 +423,7 @@
             href="https://affiliates.lemonsqueezy.com/programs/stocknear"
             rel="noopener noreferrer"
             target="_blank"
-            class="text-white bg-[#3B82F6] sm:hover:bg-blue-600 transition-colors ease-out duration-50 px-5 py-3 text-lg font-semibold rounded-md"
+            class="text-white bg-[#3B82F6] sm:hover:bg-blue-600 ease-out duration-50 px-5 py-3 text-lg font-semibold rounded-md"
           >
             Become an affiliate
           </a>

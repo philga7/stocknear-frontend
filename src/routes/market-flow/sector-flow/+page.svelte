@@ -578,7 +578,7 @@
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6"
               >
                 <div
-                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4 transition-colors"
+                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
                 >
                   <div class=" text-sm mb-2 flex items-center">
                     <span>Volume</span>
@@ -595,7 +595,7 @@
                 </div>
 
                 <div
-                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4 transition-colors"
+                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
                 >
                   <div class=" text-sm mb-2 flex items-center">
                     <span>Net Call Prem</span>
@@ -612,7 +612,7 @@
                 </div>
 
                 <div
-                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4 transition-colors"
+                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
                 >
                   <div class=" text-sm mb-2 flex items-center">
                     <span>Net Put Prem</span>
