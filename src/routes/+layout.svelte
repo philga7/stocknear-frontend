@@ -125,6 +125,7 @@
     typeof data?.cookieConsent !== "undefined" ? false : true;
 
   onMount(async () => {
+    setMode(data.themeMode);
     if (data?.user?.id) {
       await loadWorker();
       /*
@@ -240,30 +241,20 @@
 
 
 
-async function handleModeChange() {
-		if ($mode === "light") {
-			setMode("dark");
+ async function handleModeChange() {
+    const newMode = $mode === "light" ? "dark" : "light";
+    setMode(newMode);
 
-		} else {
-			setMode("light");
-		}
-
-    const postData = {
-      mode: $mode,
-    };
-
-    const response = await fetch("/api/theme-mode", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(postData),
-    }); // make a POST request to the server with the FormData object
-
-    const output = await response.json();
-    console.log(output)
-
-	}
+    try {
+      await fetch("/api/theme-mode", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode: newMode })
+      });
+    } catch (error) {
+      console.error("Failed to update theme:", error);
+    }
+  }
 </script>
 
 <svelte:window bind:innerWidth={$screenWidth} />
