@@ -125,7 +125,6 @@
     typeof data?.cookieConsent !== "undefined" ? false : true;
 
   onMount(async () => {
-    setMode(data.themeMode);
     if (data?.user?.id) {
       await loadWorker();
       /*

@@ -279,7 +279,7 @@
   }
 </script>
 
-<div class="hidden sm:block w-full sm:max-w-[600px]">
+<div class="hidden sm:block w-full sm:max-w-[600px] shadow-sm">
   <div>
     <div class="relative flex items-center">
       <div class="absolute inset-y-0 left-0 flex items-center pl-2.5">

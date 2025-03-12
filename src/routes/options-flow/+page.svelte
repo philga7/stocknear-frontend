@@ -1381,7 +1381,7 @@
                                       on:click={() => {
                                         handleChangeValue(newValue);
                                       }}
-                                      class="block w-full bg-white dark:bg-default border-b border-gray-300 dark:border-gray-600 px-4 py-1.5 text-left text-sm sm:text-[1rem] rounded last:border-0 sm:hover:bg-gray-100 focus:bg-blue-100 focus:text-gray-900 focus:outline-hidden"
+                                      class="block w-full cursor-pointer border-b border-gray-300 dark:border-gray-600 px-4 py-1.5 text-left text-sm sm:text-[1rem] rounded last:border-0 focus:bg-blue-100 focus:text-gray-900 focus:outline-hidden"
                                     >
                                       {ruleCondition[row?.rule]
                                         ?.replace("under", "Under")

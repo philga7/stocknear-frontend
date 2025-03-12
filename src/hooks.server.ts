@@ -33,16 +33,7 @@ export const handle = sequence(async ({ event, resolve }) => {
     }
   }
 
-const theme = event.cookies.get("theme-mode") || "light";
-
-  // Process request with theme injection
-  const response = await resolve(event, {
-    transformPageChunk: ({ html }) => {
-      // Inject theme class into HTML element
-      return html.replace('<html', `<html data-theme="${theme}"`);
-    }
-  });
-
+  const response = await resolve(event);
 
   // Use a more compatible way to set the cookie
   const cookieString = event?.locals?.pb?.authStore?.exportToCookie({
