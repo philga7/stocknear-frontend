@@ -170,12 +170,12 @@
                 <thead class="text-muted dark:text-white dark:bg-default">
                   <tr>
                     <th
-                      class="whitespace-nowrap dark:odd:bg-odd text-sm sm:text-[1rem] font-normal text-start border-b border-gray-300 dark:border-gray-800"
+                      class=" border-b border-gray-300 dark:border-gray-800 font-semibold text-sm sm:text-[1rem] text-start"
                       >Quarter</th
                     >
                     {#each geographicXData as item}
                       <th
-                        class="z-20 border-b border-gray-300 dark:border-gray-800 font-semibold text-sm text-center"
+                        class="z-20 bg-default border-b border-gray-800 text-white font-semibold text-sm text-center bg-default"
                         >{new Date(item ?? null)?.toLocaleString("en-US", {
                           month: "short",
                           day: "numeric",
@@ -194,7 +194,7 @@
                       >
                       {#each geographiCategoryValues[index] as value}
                         <td
-                          class="whitespace-nowrap text-sm sm:text-[1rem] font-normal text-start border-b border-gray-300 dark:border-gray-800"
+                          class="whitespace-nowrap text-sm sm:text-[1rem] font-normal text-center border-b border-gray-300 dark:border-gray-800"
                         >
                           {@html value !== null &&
                           value !== 0 &&
@@ -271,7 +271,7 @@
                       >
                       {#each operatingExpensesCategoryValues[index] as value}
                         <td
-                          class=" whitespace-nowrap text-sm sm:text-[1rem] text-start border-b border-gray-300 dark:border-gray-800"
+                          class=" whitespace-nowrap text-sm sm:text-[1rem] text-center border-b border-gray-300 dark:border-gray-800"
                         >
                           {@html value !== null &&
                           value !== 0 &&

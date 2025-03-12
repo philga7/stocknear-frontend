@@ -33,7 +33,9 @@
 </script>
 
 {#each computedFields as { label, key, isMargin } (key)}
-  <tr class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd">
+  <tr
+    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd whitespace-nowrap"
+  >
     <td
       class="text-start border-r border-gray-300 dark:border-gray-700 text-sm sm:text-[1rem]"
     >
