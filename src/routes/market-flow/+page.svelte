@@ -210,7 +210,7 @@
       .sort(compareValues)
       ?.slice(0, 50);
   };
-  function getPlotOptions() {
+  function plotData() {
     // Determine the base date (using the first data point, or fallback to today)
     const baseDate =
       marketTideData && marketTideData.length
@@ -430,7 +430,7 @@
 
   $: {
     if ($mode) {
-      config = marketTideData ? getPlotOptions() : null;
+      config = marketTideData ? plotData() : null;
     }
   }
 </script>

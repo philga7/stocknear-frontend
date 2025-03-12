@@ -1,6 +1,8 @@
 <script lang="ts">
   import { abbreviateNumber } from "$lib/utils";
   import InfoModal from "$lib/components/InfoModal.svelte";
+  import highcharts from "$lib/highcharts.ts";
+  import { mode } from "mode-watcher";
 
   export let tickerFlow = [];
 
@@ -43,6 +45,231 @@
     var formattedDate = `${month}/${day}/${year} ${hours}:${minutes} ${ampm}`;
 
     return formattedDate;
+  }
+
+  function plotData() {
+    // Determine the base date (using the first data point, or fallback to today)
+    const baseDate =
+      tickerFlow && tickerFlow.length
+        ? new Date(tickerFlow[0].time)
+        : new Date();
+
+    // Set the fixed start and end times (9:30 and 16:10)
+    const startTime = new Date(
+      baseDate.getFullYear(),
+      baseDate.getMonth(),
+      baseDate.getDate(),
+      9,
+      30,
+    ).getTime();
+    const endTime = new Date(
+      baseDate.getFullYear(),
+      baseDate.getMonth(),
+      baseDate.getDate(),
+      16,
+      10,
+    ).getTime();
+
+    // Create series arrays with x (timestamp) and y values.
+    // This removes the need for xAxis.categories.
+    const priceSeries =
+      tickerFlow?.map((item) => ({
+        x: new Date(item.time).getTime(),
+        y: item.close,
+      })) || [];
+
+    const netCallPremSeries =
+      tickerFlow?.map((item) => ({
+        x: new Date(item.time).getTime(),
+        y: item.net_call_premium,
+      })) || [];
+
+    const netPutPremSeries =
+      tickerFlow?.map((item) => ({
+        x: new Date(item.time).getTime(),
+        y: item.net_put_premium,
+      })) || [];
+
+    const options = {
+      chart: {
+        type: "column",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        height: 360, // Set the maximum height for the chart
+        animation: false,
+      },
+
+      title: {
+        text: null,
+      },
+
+      legend: {
+        enabled: false,
+      },
+      credits: {
+        enabled: false,
+      },
+      tooltip: {
+        shared: true,
+        useHTML: true,
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
+        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        borderWidth: 1,
+        style: {
+          color: "#fff",
+          fontSize: "16px",
+          padding: "10px",
+        },
+        borderRadius: 4,
+        formatter: function () {
+          // Format the x value to display time in a custom format
+          let tooltipContent = `<span class="m-auto text-[1rem] font-[501]">${new Date(
+            this?.x,
+          ).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })}</span><br>`;
+
+          // Loop through each point in the shared tooltip
+          this.points.forEach((point) => {
+            tooltipContent += `
+        <span style="display:inline-block; width:10px; height:10px; background-color:${point.color}; border-radius:50%; margin-right:5px;"></span>
+        <span class="font-semibold text-sm">${point.series.name}:</span> 
+        <span class="font-normal text-sm">${abbreviateNumber(point.y)}</span><br>`;
+          });
+
+          return tooltipContent;
+        },
+      },
+
+      xAxis: {
+        type: "datetime",
+        min: startTime, // Force start at 9:30
+        max: endTime, // Force end at 16:10
+        crosshair: {
+          color: $mode === "light" ? "black" : "white", // Set the color of the crosshair line
+          width: 1, // Adjust the line width as needed
+          dashStyle: "Solid",
+        },
+        labels: {
+          style: { color: $mode === "light" ? "black" : "white" },
+          distance: 20, // Increases space between label and axis
+          formatter: function () {
+            return new Date(this.value).toLocaleTimeString("en-US", {
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+          },
+        },
+        tickPositioner: function () {
+          // Create custom tick positions with wider spacing
+          const positions = [];
+          const info = this.getExtremes();
+          const tickCount = 5; // Reduce number of ticks displayed
+          const interval = (info.max - info.min) / tickCount;
+
+          for (let i = 0; i <= tickCount; i++) {
+            positions.push(info.min + i * interval);
+          }
+          return positions;
+        },
+      },
+
+      yAxis: [
+        {
+          title: {
+            text: null,
+          },
+          labels: {
+            enabled: false,
+          },
+          gridLineWidth: 0,
+          opposite: false,
+        },
+        {
+          gridLineWidth: 1,
+          gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
+          labels: {
+            style: { color: $mode === "light" ? "black" : "white" },
+          },
+          title: { text: null },
+          opposite: true,
+        },
+      ],
+
+      series: [
+        {
+          name: "Price",
+          type: "spline",
+          data: priceSeries,
+          yAxis: 0,
+          color: $mode === "light" ? "#2C6288" : "#fff",
+          marker: {
+            enabled: false,
+            states: {
+              hover: {
+                enabled: false,
+              },
+            },
+          },
+          lineWidth: 2,
+          zIndex: 10,
+        },
+
+        {
+          name: "Net Call Prem",
+          type: "spline",
+          data: netCallPremSeries,
+          yAxis: 1,
+          color: $mode === "light" ? "#208646" : "#90EE90",
+          marker: {
+            enabled: false,
+            states: {
+              hover: {
+                enabled: false,
+              },
+            },
+          },
+        },
+        {
+          name: "Net Put Prem",
+          type: "spline",
+          data: netPutPremSeries,
+          yAxis: 1,
+          color: $mode === "light" ? "#DC2626" : "#FF6B6B",
+          marker: {
+            enabled: false,
+            states: {
+              hover: {
+                enabled: false,
+              },
+            },
+          },
+        },
+      ],
+
+      plotOptions: {
+        series: {
+          color: "white",
+          animation: false, // Disable series animation
+          states: {
+            hover: {
+              enabled: false, // Disable hover effect globally
+            },
+          },
+        },
+      },
+    };
+
+    return options;
+  }
+
+  let config = null;
+  $: {
+    if ($mode) {
+      config = plotData();
+    }
   }
 </script>
 
@@ -131,14 +358,13 @@
                   </div>
                 </div>
               </div>
-              <!--
-              <div>
+
+              <div class="mb-5">
                 <div
-                  class="chart border border-gray-800 rounded"
+                  class="shadow border border-gray-300 dark:border-gray-800 rounded"
                   use:highcharts={config}
                 ></div>
               </div>
-              -->
             {/if}
           </div>
         </main>
