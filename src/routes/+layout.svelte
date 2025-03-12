@@ -2,13 +2,11 @@
   import "../app.css";
   import "../app.pcss";
   import { partytownSnippet } from "@builder.io/partytown/integration";
-  //import { Toaster } from "svelte-french-toast";
   import { Toaster } from "svelte-sonner";
   import "@bprogress/core/css";
   import { BProgress } from "@bprogress/core";
-  import { ModeWatcher } from "mode-watcher";
 
-	import { setMode, mode } from "mode-watcher";
+	import { ModeWatcher, setMode, mode } from "mode-watcher";
   import { page } from "$app/stores";
 
   import Footer from "$lib/components/Footer.svelte";
@@ -241,7 +239,6 @@
   };
 
 
-setMode(data?.themeMode);
 
 async function handleModeChange() {
 		if ($mode === "light") {
