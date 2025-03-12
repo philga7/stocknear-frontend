@@ -240,12 +240,32 @@
     isAfterMarketClose.set(isAfterMarketCloseValue);
   };
 
-  	function handleModeChange() {
+
+setMode(data?.themeMode);
+
+async function handleModeChange() {
 		if ($mode === "light") {
 			setMode("dark");
+
 		} else {
 			setMode("light");
 		}
+
+    const postData = {
+      mode: $mode,
+    };
+
+    const response = await fetch("/api/theme-mode", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(postData),
+    }); // make a POST request to the server with the FormData object
+
+    const output = await response.json();
+    console.log(output)
+
 	}
 </script>
 
@@ -1238,7 +1258,7 @@
               -->
 
               <slot />
-              <ModeWatcher defaultMode={"dark"}/>
+              <ModeWatcher defaultMode="dark"/>
               <Toaster position="top-center" />
               {#if Cookie && $showCookieConsent === true}
                 <Cookie />
