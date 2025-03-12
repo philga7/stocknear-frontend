@@ -36,13 +36,14 @@
           <div
             class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4"
           >
-            <h3 class="p-2 pt-4 text-xl font-semibold">Revenue Definition</h3>
+            <h3 class="p-2 pt-4 text-xl font-semibold">AI Score Definition</h3>
             <div class=" p-2">
               Revenue, also called sales, is the amount of money a company
               receives from its business activities, such as sales of products
               or services. Revenue does not take any expenses into account and
               is therefore different from profits.
             </div>
+            <!--
             <div class="px-2">
               <a
                 href="/blog/article/revenue"
@@ -51,6 +52,31 @@
                 Full Definition
               </a>
             </div>
+            -->
+          </div>
+
+          <div
+            class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4"
+          >
+            <h3 class="p-2 pt-4 text-xl font-semibold">
+              AI Trend Forecast Definition
+            </h3>
+            <div class=" p-2">
+              Revenue, also called sales, is the amount of money a company
+              receives from its business activities, such as sales of products
+              or services. Revenue does not take any expenses into account and
+              is therefore different from profits.
+            </div>
+            <!--
+            <div class="px-2">
+              <a
+                href="/blog/article/revenue"
+                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-white dark:text-black m-auto sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 bg-[#3B82F6] dark:bg-[#fff] transition duration-100"
+              >
+                Full Definition
+              </a>
+            </div>
+            -->
           </div>
         </aside>
       </div>

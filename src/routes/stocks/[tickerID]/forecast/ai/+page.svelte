@@ -122,6 +122,9 @@
       return dataPoint;
     });
 
+    const solidData = processedData.slice(0, -1);
+    const lastTwoPoints = processedData.slice(-2); // Extract the last two points
+
     // Highcharts options for plotting the data with markers.
     const options = {
       chart: {
@@ -175,7 +178,7 @@
       series: [
         {
           name: "Close Price",
-          data: processedData,
+          data: solidData,
           color: $mode === "light" ? "#007050" : "#fff",
           animation: false,
           marker: {
@@ -183,7 +186,19 @@
           },
           lineWidth: 2,
         },
+        {
+          name: "Projected Price",
+          data: lastTwoPoints, // Include the second-last and last point
+          color: $mode === "light" ? "#007050" : "#fff",
+          animation: false,
+          marker: {
+            enabled: false,
+          },
+          lineWidth: 2,
+          dashStyle: "Dash", // Dashed line for the last part
+        },
       ],
+
       plotOptions: {
         series: {
           enableMouseTracking: false,
@@ -374,92 +389,6 @@
           },
         },
       ],
-      /*
-      annotations: [
-        {
-          labels: [
-            {
-              point: {
-                x: forecastHigh[forecastHigh.length - 1][0], // Last X (timestamp)
-                y: forecastHigh[forecastHigh.length - 1][1], // Last Y (Average value)
-                xAxis: 0,
-                yAxis: 0,
-              },
-              text: `<b>High</b><br><span class="text-sm">$${forecastHigh[forecastHigh.length - 1][1]}</span>`,
-              useHTML: true,
-              style: {
-                backgroundColor: "rgba(0, 0, 0, 0.8)",
-                borderColor: "rgba(255, 255, 255, 0.2)",
-                borderWidth: 1,
-                fontSize: "12px",
-                fontWeight: "bold",
-              },
-              align: "left",
-              verticalAlign: "middles",
-              x: -10,
-              y: 0,
-              backgroundColor: "rgba(0, 0, 0, 0.8)",
-              borderColor: "rgba(255, 255, 255, 0.2)",
-              borderWidth: 1,
-              padding: 8,
-              shape: "",
-            },
-            {
-              point: {
-                x: forecastAvg[forecastAvg.length - 1][0], // Last X (timestamp)
-                y: forecastAvg[forecastAvg.length - 1][1], // Last Y (Average value)
-                xAxis: 0,
-                yAxis: 0,
-              },
-              text: `<b>Average</b><br><span>$${forecastAvg[forecastAvg.length - 1][1]}</span>`,
-              useHTML: true,
-              style: {
-                backgroundColor: "rgba(0, 0, 0, 0.8)",
-                borderColor: "rgba(255, 255, 255, 0.2)",
-                borderWidth: 1,
-                fontSize: "12px",
-                fontWeight: "bold",
-              },
-              align: "right",
-              verticalAlign: "middle",
-              x: -10,
-              y: 30,
-              backgroundColor: "rgba(0, 0, 0, 0.8)",
-              borderColor: "rgba(255, 255, 255, 0.2)",
-              borderWidth: 1,
-              padding: 5,
-              shape: "",
-            },
-            {
-              point: {
-                x: forecastLow[forecastLow.length - 1][0], // Last X (timestamp)
-                y: forecastLow[forecastLow.length - 1][1], // Last Y (Average value)
-                xAxis: 0,
-                yAxis: 0,
-              },
-              text: `<b>Low</b><br><span>$${forecastLow[forecastLow.length - 1][1]}</span>`,
-              useHTML: true,
-              style: {
-                backgroundColor: "rgba(0, 0, 0, 0.8)",
-                borderColor: "rgba(255, 255, 255, 0.2)",
-                borderWidth: 1,
-                fontSize: "12px",
-                fontWeight: "bold",
-              },
-              align: "top",
-              verticalAlign: "middle",
-              x: -10,
-              y: -40,
-              backgroundColor: "rgba(0, 0, 0, 0.8)",
-              borderColor: "rgba(255, 255, 255, 0.2)",
-              borderWidth: 1,
-              padding: 5,
-              shape: "",
-            },
-          ],
-        },
-      ],
-      */
 
       legend: {
         enabled: false,
@@ -477,7 +406,7 @@
   $: {
     if ($mode) {
       configScore = getAIScorePlot() || null;
-      config = getAIScorePlot() || null;
+      config = getPriceForecastChart() || null;
     }
   }
 </script>
@@ -494,13 +423,100 @@
     >
       <main class="w-full">
         <div class="sm:pl-7 sm:pb-7 sm:pt-7 m-auto mt-2 sm:mt-0">
-          <div class="">
-            <h1 class="text-xl sm:text-2xl font-bold">
-              {removeCompanyStrings($displayCompanyName)} Trend Forecast
-            </h1>
-          </div>
+          {#if Object?.keys(data?.getPriceAnalysis)?.length > 0}
+            <div class="">
+              <h1 class="text-xl sm:text-2xl font-bold">
+                {removeCompanyStrings($displayCompanyName)} AI Score
+              </h1>
+            </div>
+            <div class="w-full mb-10 mt-3">
+              <Infobox
+                text={`Our AI Score Model indicates a bullish outlook on Tesla with a score of 9. Key stats: Accuracy 50%, Precision 50%, F1 Score 67%, Recall 100%, ROC AUC 50%. Backtest results show consistent bullish predictions, with scores of 9 in most periods. Despite moderate accuracy, high recall ensures no bullish signals are missed. While improvements are needed, our model suggests strong upside potential for Tesla.`}
+              />
+
+              <div>
+                <div class="grow pt-5">
+                  <div
+                    class="chart mt-5 shadow-sm sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
+                    use:highcharts={configScore}
+                  ></div>
+
+                  <div
+                    class="no-scrollbar mb-1 mt-2 overflow-x-auto px-1.5 text-center md:mb-0 md:px-0 lg:mt-5"
+                  >
+                    <table class="w-full text-right text-tiny xs:text-sm">
+                      <thead
+                        ><tr
+                          class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
+                          ><th
+                            class="py-[3px] text-left font-semibold lg:py-0.5"
+                            >Date</th
+                          > <th class="font-semibold">Q1 '23</th>
+                          <th class="font-semibold">Q2 '23</th>
+                          <th class="font-semibold">Q3 '23</th>
+                          <th class="font-semibold">Q4 '23</th></tr
+                        ></thead
+                      >
+                      <tbody
+                        ><tr
+                          class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
+                          ><td class="py-[3px] text-left lg:py-0.5">Score</td>
+                          <td>8 (Bullish)</td>
+                          <td>9 (Bullish)</td>
+                          <td>8 (Bullish)</td>
+                          <td>7 (Hold)</td></tr
+                        >
+                        <tr class="text-sm sm:text-[1rem]"
+                          ><td class="py-[3px] text-left lg:py-0.5"
+                            >QoQ Change</td
+                          >
+                          <td
+                            class={lowChange > 0
+                              ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
+                              : "text-red-600 dark:text-[#FF2F1F]"}
+                            >{lowChange}%</td
+                          >
+                          <td
+                            class={avgChange > 0
+                              ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
+                              : "text-red-600 dark:text-[#FF2F1F]"}
+                            >{avgChange}%</td
+                          >
+                          <td
+                            class={medianChange > 0
+                              ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
+                              : "text-red-600 dark:text-[#FF2F1F]"}
+                            >{medianChange}%</td
+                          >
+                          <td
+                            class={highChange > 0
+                              ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
+                              : "text-red-600 dark:text-[#FF2F1F]"}
+                            >{highChange}%</td
+                          ></tr
+                        ></tbody
+                      >
+                    </table>
+                  </div>
+
+                  <p class="mt-4">
+                    Following the AI Score for {removeCompanyStrings(
+                      $displayCompanyName,
+                    )} the model shows that the total return would be
+                    <strong>+22.2%</strong>, with a maximum drawdown of
+                    <strong>-12%</strong> based on the backtesting results.
+                  </p>
+                </div>
+              </div>
+            </div>
+          {/if}
 
           {#if Object?.keys(data?.getPriceAnalysis)?.length > 0}
+            <div class="">
+              <h1 class="text-xl sm:text-2xl font-bold">
+                {removeCompanyStrings($displayCompanyName)} Trend Forecast
+              </h1>
+            </div>
             <div class="w-full mb-6 mt-3">
               <Infobox
                 text={`Using our AI model trained on historical data, we generated a
@@ -516,7 +532,7 @@
               <div>
                 <div class="grow pt-5">
                   <div
-                    class="chart mt-5 sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
+                    class="chart mt-5 sm:mt-0 shadow-sm sm:border sm:border-gray-300 dark:border-gray-800 rounded"
                     use:highcharts={config}
                   ></div>
 

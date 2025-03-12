@@ -123,7 +123,7 @@
         fill="currentColor"
         stroke-width="0"
         viewBox="0 0 576 512"
-        class="text-yellow-400 dark:text-zinc-400 mr-2"
+        class="text-muted dark:text-indigo-400 mr-2"
         height="1em"
         width="1em"
         xmlns="http://www.w3.org/2000/svg"
@@ -1043,7 +1043,7 @@
       </div>
 
       <div
-        class="text-left w-full col-span-1 lg:col-span-3 bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-200 dark:border-zinc-600 p-6 isolate translate-y-5 opacity-100 transition-all duration-300"
+        class="text-left w-full col-span-1 lg:col-span-3 bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-200 dark:border-zinc-600 p-6 isolate translate-y-5 opacity-100"
       >
         <!-- Responsive header: stacks vertically on mobile, horizontal on md+ -->
         <div class="flex flex-row items-center justify-between">

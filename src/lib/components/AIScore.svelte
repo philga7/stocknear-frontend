@@ -29,7 +29,12 @@
           </h3>
         </div>
 
-        <div class="flex flex-row items-center justify-between">
+        <a
+          href={["Pro", "Plus"]?.includes(tier)
+            ? `/stocks/${$stockTicker}/forecast/ai`
+            : "/pricing"}
+          class="flex flex-row items-center justify-between"
+        >
           <div class="relative size-[50px] sm:size-[60px] ml-auto">
             <svg
               class="size-full w-[50px] h-[50px] sm:w-[60px] sm:h-[60px]"
@@ -78,7 +83,7 @@
                   {score}
                 </span>
               {:else}
-                <a class="block relative" href="/pricing">
+                <div class="block relative">
                   <span
                     class=" font-semibold text-blue-link blur-sm group-hover:blur-[3px]"
                   >
@@ -99,11 +104,11 @@
                       </path>
                     </svg>
                   </div>
-                </a>
+                </div>
               {/if}
             </div>
           </div>
-        </div>
+        </a>
         <h4 class="text-center text-sm mt-1 font-semibold">
           {#if ["Pro", "Plus"]?.includes(tier)}
             {#if score === 10}
