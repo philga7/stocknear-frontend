@@ -1246,7 +1246,7 @@
               -->
 
               <slot />
-              <ModeWatcher />
+              <ModeWatcher defaultMode="light"/>
               <Toaster position="top-center" />
               {#if Cookie && $showCookieConsent === true}
                 <Cookie />

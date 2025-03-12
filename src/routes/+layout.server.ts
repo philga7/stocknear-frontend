@@ -1,3 +1,6 @@
+export const ssr = true;
+
+
 export const load = ({ locals, cookies }) => {
   const { user, isUSRegion, wsURL } = locals;
   const themeMode = cookies.get("theme-mode") || "dark"; // Default to dark
