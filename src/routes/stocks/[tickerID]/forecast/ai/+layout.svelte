@@ -41,10 +41,10 @@
                 AI Score Definition
               </h3>
               <div class=" p-2">
-                Revenue, also called sales, is the amount of money a company
-                receives from its business activities, such as sales of products
-                or services. Revenue does not take any expenses into account and
-                is therefore different from profits.
+                The AI Score uses fundamental and technical indicators, along
+                with statistical data, to predict if a stock will be bullish in
+                the next quarter. It ranges from 1 to 10, with higher scores
+                indicating a greater likelihood of the prediction being correct.
               </div>
               <!--
             <div class="px-2">
@@ -67,10 +67,10 @@
                 AI Trend Forecast Definition
               </h3>
               <div class=" p-2">
-                Revenue, also called sales, is the amount of money a company
-                receives from its business activities, such as sales of products
-                or services. Revenue does not take any expenses into account and
-                is therefore different from profits.
+                The AI Trend Model forecasts stock trends by analyzing
+                historical price data. It detects patterns, seasonality, and
+                trends to predict future price movements, making it useful for
+                predicting price targets for the next 12 months.
               </div>
               <!--
             <div class="px-2">

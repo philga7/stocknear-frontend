@@ -16,128 +16,172 @@
     return `Q${quarter} '${year}`;
   };
 
-  const price = data?.getStockQuote?.price?.toFixed(2) || 0;
-
   const calculatePriceChange = (targetPrice) =>
     targetPrice && price ? ((targetPrice / price - 1) * 100)?.toFixed(2) : 0;
 
-  const avgPriceTarget = data?.getPriceAnalysis?.avgPriceTarget || 0;
-  const medianPriceTarget = data?.getPriceAnalysis?.medianPriceTarget || 0;
-  const lowPriceTarget = data?.getPriceAnalysis?.lowPriceTarget || 0;
-  const highPriceTarget = data?.getPriceAnalysis?.highPriceTarget || 0;
+  function prepareDataset() {
+    price = data?.getStockQuote?.price?.toFixed(2) || 0;
 
-  const lowChange = calculatePriceChange(lowPriceTarget);
-  const medianChange = calculatePriceChange(medianPriceTarget);
-  const avgChange = calculatePriceChange(avgPriceTarget);
-  const highChange = calculatePriceChange(highPriceTarget);
+    avgPriceTarget = data?.getPriceAnalysis?.avgPriceTarget || 0;
+    medianPriceTarget = data?.getPriceAnalysis?.medianPriceTarget || 0;
+    lowPriceTarget = data?.getPriceAnalysis?.lowPriceTarget || 0;
+    highPriceTarget = data?.getPriceAnalysis?.highPriceTarget || 0;
 
-  // Assume data.getHistoricalPrice contains objects with a "time" field (e.g. "2015-01-02")
-  const historicalData = data?.getHistoricalPrice || [];
+    lowChange = calculatePriceChange(lowPriceTarget);
+    medianChange = calculatePriceChange(medianPriceTarget);
+    avgChange = calculatePriceChange(avgPriceTarget);
+    highChange = calculatePriceChange(highPriceTarget);
 
-  const backtestList = data?.getAIScore?.backtest || [];
+    // Assume data.getHistoricalPrice contains objects with a "time" field (e.g. "2015-01-02")
+    historicalData = data?.getHistoricalPrice || [];
 
-  // Append the latest historical date (using "time") if available. Note that this entry may not include a score.
-  if (historicalData && historicalData.length) {
-    const latest = historicalData.at(-1);
-    backtestList.push({ date: latest.time });
+    backtestList = data?.getAIScore?.backtest || [];
+
+    // Append the latest historical date (using "time") if available. Note that this entry may not include a score.
+    if (historicalData && historicalData?.length) {
+      const latest = historicalData?.at(-1);
+      backtestList?.push({ date: latest.time });
+
+      const seenDates = new Set();
+      backtestList = backtestList?.filter((item) => {
+        // Check if the date is already seen
+        if (seenDates?.has(item?.date)) {
+          // If yes, skip this duplicate (delete the last one)
+          return false;
+        }
+        // Otherwise, record the date and keep the item
+        seenDates?.add(item?.date);
+        return true;
+      });
+    }
+
+    processedData = backtestList?.map((item) => {
+      const dateStr = item.date;
+      const targetTime = new Date(dateStr).getTime();
+      let closestPoint = historicalData[0];
+      let minDiff = Infinity;
+
+      historicalData.forEach((point) => {
+        const pointTime = new Date(point.time).getTime();
+        const diff = Math.abs(pointTime - targetTime);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closestPoint = point;
+        }
+      });
+
+      // Base data point with x as the target date timestamp and y as the close price from the closest historical point
+      const dataPoint = { x: targetTime, y: closestPoint.close };
+
+      // If a score is provided, add marker configuration based on its value.
+      if (item.hasOwnProperty("score")) {
+        let markerColor, markerSymbol;
+        if (item.score > 6) {
+          // Bullish: green marker with an upward triangle
+          markerColor = "#2ecc71";
+          markerSymbol = "triangle-up";
+        } else if (item.score < 5) {
+          // Bearish: red marker with a downward triangle
+          markerColor = "#e74c3c";
+          markerSymbol = "triangle-down";
+        } else {
+          // Neutral (score exactly 5): yellow marker with a circle
+          markerColor = "#f1c40f";
+          markerSymbol = "circle";
+        }
+
+        dataPoint.marker = {
+          symbol: markerSymbol,
+          radius: 4,
+          fillColor: markerColor,
+          lineWidth: 2,
+          lineColor: $mode === "light" ? "black" : "white",
+        };
+
+        dataPoint.dataLabels = {
+          enabled: true,
+          format: String(item.score),
+          style: {
+            color: $mode === "light" ? "black" : "white",
+            fontWeight: "bold",
+            fontSize: "14px",
+          },
+          y: -10,
+        };
+      }
+
+      return dataPoint;
+    });
+
+    tableDates = processedData
+      ?.slice(0, -1)
+      ?.map((item) => formatDateToQuarter(item?.x));
+
+    tableScore = processedData
+      ?.slice(0, -1)
+      ?.map((item) => item?.dataLabels?.format);
+
+    // Compute percentage change
+    tableQuarterChange = processedData
+      ?.slice(0, -1)
+      ?.map((item, index, arr) => {
+        const prevY = arr[index - 1]?.y; // Get the previous value
+        if (prevY == null || item.y == null) return null; // Handle missing values
+        const change = ((item.y - prevY) / prevY) * 100; // Calculate percentage change
+        return {
+          quarter: tableDates[index],
+          change: Number(change?.toFixed(2)), // Format to 2 decimal places
+        };
+      })
+      ?.filter(Boolean); // Remove null values
+
+    // Compute Average Return
+    returns = processedData
+      ?.slice(1) // Skip the first value since there's no previous value for it
+      ?.map((item, index) => {
+        const prevY = processedData[index]?.y;
+        if (prevY == null || item.y == null) return null;
+        const returnPercentage = ((item.y - prevY) / prevY) * 100;
+        return returnPercentage;
+      })
+      .filter(Boolean); // Remove null values
+
+    avgReturn =
+      returns?.reduce((sum, returnPercentage) => sum + returnPercentage, 0) /
+      returns?.length;
   }
+
+  let price;
+
+  let avgPriceTarget;
+  let medianPriceTarget;
+  let lowPriceTarget;
+  let highPriceTarget;
+
+  let lowChange;
+  let medianChange;
+  let avgChange;
+  let highChange;
+
+  let historicalData;
+
+  let backtestList;
 
   // For each backtest entry, find the historical price with the closest available time.
   // Then, if a score exists, attach a marker and data label based on the score.
-  const processedData = backtestList?.map((item) => {
-    const dateStr = item.date;
-    const targetTime = new Date(dateStr).getTime();
-    let closestPoint = historicalData[0];
-    let minDiff = Infinity;
+  let processedData = [];
 
-    historicalData.forEach((point) => {
-      const pointTime = new Date(point.time).getTime();
-      const diff = Math.abs(pointTime - targetTime);
-      if (diff < minDiff) {
-        minDiff = diff;
-        closestPoint = point;
-      }
-    });
+  let tableDates;
 
-    // Base data point with x as the target date timestamp and y as the close price from the closest historical point
-    const dataPoint = { x: targetTime, y: closestPoint.close };
-
-    // If a score is provided, add marker configuration based on its value.
-    if (item.hasOwnProperty("score")) {
-      let markerColor, markerSymbol;
-      if (item.score > 6) {
-        // Bullish: green marker with an upward triangle
-        markerColor = "#2ecc71";
-        markerSymbol = "triangle-up";
-      } else if (item.score < 5) {
-        // Bearish: red marker with a downward triangle
-        markerColor = "#e74c3c";
-        markerSymbol = "triangle-down";
-      } else {
-        // Neutral (score exactly 5): yellow marker with a circle
-        markerColor = "#f1c40f";
-        markerSymbol = "circle";
-      }
-
-      dataPoint.marker = {
-        symbol: markerSymbol,
-        radius: 4,
-        fillColor: markerColor,
-        lineWidth: 2,
-        lineColor: $mode === "light" ? "black" : "white",
-      };
-
-      dataPoint.dataLabels = {
-        enabled: true,
-        format: String(item.score),
-        style: {
-          color: $mode === "light" ? "black" : "white",
-          fontWeight: "bold",
-          fontSize: "14px",
-        },
-        y: -10,
-      };
-    }
-
-    return dataPoint;
-  });
-
-  const tableDates = processedData
-    ?.slice(0, -1)
-    ?.map((item) => formatDateToQuarter(item.x));
-
-  const tableScore = processedData
-    ?.slice(0, -1)
-    ?.map((item) => item?.dataLabels?.format);
+  let tableScore;
 
   // Compute percentage change
-  const tableQuarterChange = processedData
-    ?.slice(0, -1)
-    .map((item, index, arr) => {
-      const prevY = arr[index - 1]?.y; // Get the previous value
-      if (prevY == null || item.y == null) return null; // Handle missing values
-      const change = ((item.y - prevY) / prevY) * 100; // Calculate percentage change
-      return {
-        quarter: tableDates[index],
-        change: Number(change?.toFixed(2)), // Format to 2 decimal places
-      };
-    })
-    ?.filter(Boolean); // Remove null values
+  let tableQuarterChange;
 
   // Compute Average Return
-  const returns = processedData
-    ?.slice(1) // Skip the first value since there's no previous value for it
-    ?.map((item, index) => {
-      const prevY = processedData[index]?.y;
-      if (prevY == null || item.y == null) return null;
-      const returnPercentage = ((item.y - prevY) / prevY) * 100;
-      return returnPercentage;
-    })
-    .filter(Boolean); // Remove null values
+  let returns;
 
-  const avgReturn =
-    returns?.reduce((sum, returnPercentage) => sum + returnPercentage, 0) /
-    returns?.length;
+  let avgReturn;
 
   function getAIScorePlot() {
     const solidData = processedData.slice(0, -1);
@@ -422,7 +466,8 @@
   let configScore = null;
 
   $: {
-    if ($mode) {
+    if ($stockTicker || $mode) {
+      prepareDataset();
       configScore = getAIScorePlot() || null;
       config = getPriceForecastChart() || null;
     }
