@@ -102,7 +102,7 @@
       {#if data?.user}
         <Feedback {data} />
       {/if}
-
+      <!--
       <div
         class="text-center mb-10 relative w-fit flex justify-center m-auto text-white"
       >
@@ -123,6 +123,7 @@
           >
         </div>
       </div>
+      -->
 
       <h1
         class="hidden sm:block text-3xl lg:text-4xl text-muted dark:text-white font-bold text-center mb-10 relative w-fit flex justify-center m-auto"
