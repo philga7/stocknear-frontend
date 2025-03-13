@@ -102,14 +102,14 @@
       {#if data?.user}
         <Feedback {data} />
       {/if}
-      <!--
+
       <div
         class="text-center mb-10 relative w-fit flex justify-center m-auto text-white"
       >
         <div class="mb-4 flex justify-center -mt-3 lg:mb-8">
-          <a href="/stocks/NVDA/forecast/ai"
+          <a href="/stocks/AAPL/forecast/ai"
             ><div
-              class="flex items-center justify-center sm:hover:text-white text-blue-400"
+              class="flex items-center justify-center sm:hover:text-muted dark:sm:hover:text-white text-blue-600 dark:text-blue-400"
             >
               <div class="text-lg sm:text-xl font-semibold">
                 Improved AI Score
@@ -123,7 +123,6 @@
           >
         </div>
       </div>
-      -->
 
       <h1
         class="hidden sm:block text-3xl lg:text-4xl text-muted dark:text-white font-bold text-center mb-10 relative w-fit flex justify-center m-auto"

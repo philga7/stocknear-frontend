@@ -9,6 +9,8 @@
 
   export let data;
 
+  const isPro = ["Pro", "Plus"].includes(data?.user?.tier);
+
   const formatDateToQuarter = (timestamp) => {
     const date = new Date(timestamp);
     const year = date.getFullYear().toString().slice(-2); // Get last two digits of the year
@@ -518,12 +520,29 @@
                     <span>Latest Forecast</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-xl font-bold"
-                      >{[10, 9, 8, 7]?.includes(data?.getAIScore?.score)
-                        ? "Bullish"
-                        : [6, 5, 4]?.includes(data?.getAIScore?.score)
-                          ? "Hold"
-                          : "Bearish"}
+                    <span class="text-xl font-bold">
+                      {#if isPro}
+                        {[10, 9, 8, 7]?.includes(data?.getAIScore?.score)
+                          ? "Bullish"
+                          : [6, 5, 4]?.includes(data?.getAIScore?.score)
+                            ? "Hold"
+                            : "Bearish"}
+                      {:else}
+                        <a
+                          href="/pricing"
+                          class="sm:hover:text-blue-500 dark:sm:hover:text-blue-400"
+                          >Pro <svg
+                            class="w-5 h-5 mb-1 inline-block"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              fill="currentColor"
+                              d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                            />
+                          </svg></a
+                        >
+                      {/if}
                     </span>
                   </div>
                 </div>
@@ -535,22 +554,67 @@
                     <span>Avg Return</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span
-                      class="text-xl font-bold {avgReturn >= 0
-                        ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                        : 'text-red-600 dark:text-[#FF2F1F]'}"
-                      >{avgReturn?.toFixed(2)}%</span
-                    >
+                    {#if isPro}
+                      <span
+                        class="text-xl font-bold {avgReturn >= 0
+                          ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
+                          : 'text-red-600 dark:text-[#FF2F1F]'}"
+                        >{avgReturn?.toFixed(2)}%</span
+                      >
+                    {:else}
+                      <a
+                        href="/pricing"
+                        class="sm:hover:text-blue-500 dark:sm:hover:text-blue-400 text-xl font-bold"
+                      >
+                        Pro <svg
+                          class="w-5 h-5 mb-1 inline-block"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            fill="currentColor"
+                            d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                          />
+                        </svg></a
+                      >
+                    {/if}
                   </div>
                 </div>
               </div>
 
               <div>
                 <div class="grow">
-                  <div
-                    class="chart mt-5 shadow-sm sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
-                    use:highcharts={configScore}
-                  ></div>
+                  <div class="relative">
+                    <!-- Apply the blur class to the chart -->
+                    <div
+                      class="{!isPro
+                        ? 'blur-[3px]'
+                        : ''} mt-5 shadow-sm sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
+                      use:highcharts={configScore}
+                    ></div>
+                    <!-- Overlay with "Upgrade to Pro" -->
+                    {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
+                      <div
+                        class="font-bold text-lg sm:text-xl absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center text-muted dark:text-white"
+                      >
+                        <a
+                          href="/pricing"
+                          class="sm:hover:text-blue-600 dark:sm:hover:text-white dark:text-white flex flex-row items-center"
+                        >
+                          <span>Upgrade to Pro</span>
+                          <svg
+                            class="ml-1 w-5 h-5 sm:w-6 sm:h-6 inline-block"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            ><path
+                              fill="currentColor"
+                              d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                            /></svg
+                          >
+                        </a>
+                      </div>
+                    {/if}
+                  </div>
 
                   <div
                     class="no-scrollbar mb-1 mt-2 overflow-x-auto px-1.5 text-center md:mb-0 md:px-0 lg:mt-5"
@@ -558,56 +622,104 @@
                     <table
                       class="table table-sm table-compact w-full text-right text-tiny xs:text-sm"
                     >
-                      <thead
-                        ><tr
+                      <thead>
+                        <tr
                           class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem] whitespace-nowrap"
-                          ><th
+                        >
+                          <th
                             class="py-[3px] text-left font-semibold lg:py-0.5 text-muted dark:text-white"
-                            >Date</th
                           >
+                            Date
+                          </th>
                           {#each tableDates as item}
                             <th
                               class="py-[3px] text-left font-semibold lg:py-0.5 text-muted dark:text-white"
-                              >{item}</th
                             >
+                              {item}
+                            </th>
                           {/each}
-                        </tr></thead
-                      >
-                      <tbody
-                        ><tr
-                          class=" border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem] whitespace-nowrap"
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-- Score Row -->
+                        <tr
+                          class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem] whitespace-nowrap"
                         >
                           <td class="py-[3px] text-left lg:py-0.5 text-[1rem]"
                             >Score</td
                           >
-                          {#each tableScore as val}
+                          {#each tableScore as val, index}
                             <td
                               class="text-right whitespace-nowrap text-[1rem]"
                             >
-                              {val}
-                              {[10, 9, 8, 7]?.includes(Number(val))
-                                ? "(Bullish)"
-                                : [6, 5, 4]?.includes(Number(val))
-                                  ? "(Hold)"
-                                  : "(Sell)"}
+                              {#if index < 5 || isPro}
+                                {val}
+                                {[10, 9, 8, 7].includes(Number(val))
+                                  ? "(Bullish)"
+                                  : [6, 5, 4].includes(Number(val))
+                                    ? "(Hold)"
+                                    : "(Sell)"}
+                              {:else}
+                                <a
+                                  href="/pricing"
+                                  class="sm:hover:text-blue-500 dark:sm:hover:text-blue-400"
+                                >
+                                  Pro
+                                  <svg
+                                    class="w-4 h-4 mb-1 inline-block"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      fill="currentColor"
+                                      d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                                    />
+                                  </svg>
+                                </a>
+                              {/if}
                             </td>
                           {/each}
                         </tr>
+
+                        <!-- QoQ Change Row -->
                         <tr
-                          class=" font-normal text-sm sm:text-[1rem] whitespace-nowrap"
-                          ><td class="py-[3px] text-left lg:py-0.5 text-[1rem]"
+                          class="font-normal text-sm sm:text-[1rem] whitespace-nowrap"
+                        >
+                          <td class="py-[3px] text-left lg:py-0.5 text-[1rem]"
                             >QoQ Change</td
                           >
-                          {#each tableQuarterChange as item}
-                            <td
-                              class="text-[1rem] {item?.change > 0
-                                ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                                : 'text-red-600 dark:text-[#FF2F1F]'}"
-                              >{item?.change}%</td
-                            >
+                          {#each tableQuarterChange as item, index}
+                            <td class="text-[1rem]">
+                              {#if index < 5 || isPro}
+                                <span
+                                  class={item?.change > 0
+                                    ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
+                                    : "text-red-600 dark:text-[#FF2F1F]"}
+                                >
+                                  {item?.change}%
+                                </span>
+                              {:else}
+                                <a
+                                  href="/pricing"
+                                  class="sm:hover:text-blue-500 dark:sm:hover:text-blue-400"
+                                >
+                                  Pro
+                                  <svg
+                                    class="w-4 h-4 mb-1 inline-block"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      fill="currentColor"
+                                      d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                                    />
+                                  </svg>
+                                </a>
+                              {/if}
+                            </td>
                           {/each}
-                        </tr></tbody
-                      >
+                        </tr>
+                      </tbody>
                     </table>
                   </div>
 
@@ -634,16 +746,62 @@
               </h1>
             </div>
             <div class="w-full mb-6 mt-3">
-              <Infobox
-                text={`Using our AI model trained on historical seasonal data, we generated a 12-month forecast for ${removeCompanyStrings($displayCompanyName)}. The model predicts a median target price of ${medianPriceTarget}, ranging from ${lowPriceTarget} to ${highPriceTarget}, indicating a ${medianChange > 0 ? "potential increase" : "potential decrease"} of ${medianChange}% from the current price of ${price}.`}
-              />
+              {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
+                <Infobox
+                  text={`Using our AI model trained on historical seasonal data, we generated a 12-month forecast for ${removeCompanyStrings($displayCompanyName)}. The model predicts a ... Unlock content with
+          <a
+            class="inline-block ml-0.5 text-blue-500 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
+            href="/pricing"
+            >Pro Subscription <svg
+              class="w-4 h-4 mb-1 inline-block"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              ><path
+                fill="currentColor"
+                d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+              /></svg
+            ></a
+          >`}
+                />
+              {:else}
+                <Infobox
+                  text={`Using our AI model trained on historical seasonal data, we generated a 12-month forecast for ${removeCompanyStrings($displayCompanyName)}. The model predicts a median target price of ${medianPriceTarget}, ranging from ${lowPriceTarget} to ${highPriceTarget}, indicating a ${medianChange > 0 ? "potential increase" : "potential decrease"} of ${medianChange}% from the current price of ${price}.`}
+                />
+              {/if}
 
               <div>
                 <div class="grow pt-5">
-                  <div
-                    class="chart mt-5 sm:mt-0 shadow-sm sm:border sm:border-gray-300 dark:border-gray-800 rounded"
-                    use:highcharts={config}
-                  ></div>
+                  <div class="relative">
+                    <!-- Apply the blur class to the chart -->
+                    <div
+                      class="{!isPro
+                        ? 'blur-[3px]'
+                        : ''} mt-5 shadow-sm sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
+                      use:highcharts={config}
+                    ></div>
+                    <!-- Overlay with "Upgrade to Pro" -->
+                    {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
+                      <div
+                        class="font-bold text-lg sm:text-xl absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center text-muted dark:text-white"
+                      >
+                        <a
+                          href="/pricing"
+                          class="sm:hover:text-blue-600 dark:sm:hover:text-white dark:text-white flex flex-row items-center"
+                        >
+                          <span>Upgrade to Pro</span>
+                          <svg
+                            class="ml-1 w-5 h-5 sm:w-6 sm:h-6 inline-block"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            ><path
+                              fill="currentColor"
+                              d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                            /></svg
+                          >
+                        </a>
+                      </div>
+                    {/if}
+                  </div>
 
                   <div
                     class="hide-scroll mb-1 mt-2 overflow-x-auto px-1.5 text-center md:mb-0 md:px-0 lg:mt-5"
@@ -664,40 +822,178 @@
                       <tbody
                         ><tr
                           class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
-                          ><td class="py-[3px] text-left lg:py-0.5">Price</td>
-                          <td>${lowPriceTarget}</td>
-                          <td>${avgPriceTarget}</td>
-                          <td>${medianPriceTarget}</td>
-                          <td>${highPriceTarget}</td></tr
                         >
-                        <tr class="text-sm sm:text-[1rem]"
-                          ><td class="py-[3px] text-left lg:py-0.5">Change</td>
-                          <td
-                            class={lowChange > 0
-                              ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                              : "text-red-600 dark:text-[#FF2F1F]"}
-                            >{lowChange}%</td
-                          >
-                          <td
-                            class={avgChange > 0
-                              ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                              : "text-red-600 dark:text-[#FF2F1F]"}
-                            >{avgChange}%</td
-                          >
-                          <td
-                            class={medianChange > 0
-                              ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                              : "text-red-600 dark:text-[#FF2F1F]"}
-                            >{medianChange}%</td
-                          >
-                          <td
-                            class={highChange > 0
-                              ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                              : "text-red-600 dark:text-[#FF2F1F]"}
-                            >{highChange}%</td
-                          ></tr
-                        ></tbody
-                      >
+                          <td class="py-[3px] text-left lg:py-0.5">Price</td>
+                          {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
+                            <td class="whitespace-nowrap">
+                              <a
+                                href="/pricing"
+                                class="sm:hover:text-blue-500 dark:sm:hover:text-blue-400"
+                                >Pro <svg
+                                  class="w-4 h-4 mb-1 inline-block"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    fill="currentColor"
+                                    d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                                  />
+                                </svg></a
+                              >
+                            </td>
+                            <td class="whitespace-nowrap">
+                              <a
+                                href="/pricing"
+                                class="sm:hover:text-blue-500 dark:sm:hover:text-blue-400"
+                                >Pro <svg
+                                  class="w-4 h-4 mb-1 inline-block"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    fill="currentColor"
+                                    d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                                  />
+                                </svg></a
+                              >
+                            </td>
+                            <td class="whitespace-nowrap">
+                              <a
+                                href="/pricing"
+                                class="sm:hover:text-blue-500 dark:sm:hover:text-blue-400"
+                                >Pro <svg
+                                  class="w-4 h-4 mb-1 inline-block"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    fill="currentColor"
+                                    d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                                  />
+                                </svg></a
+                              >
+                            </td>
+                            <td class="whitespace-nowrap">
+                              <a
+                                href="/pricing"
+                                class="sm:hover:text-blue-500 dark:sm:hover:text-blue-400"
+                                >Pro <svg
+                                  class="w-4 h-4 mb-1 inline-block"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    fill="currentColor"
+                                    d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                                  />
+                                </svg></a
+                              >
+                            </td>
+                          {:else}
+                            <td>${lowPriceTarget}</td>
+                            <td>${avgPriceTarget}</td>
+                            <td>${medianPriceTarget}</td>
+                            <td>${highPriceTarget}</td>
+                          {/if}
+                        </tr>
+
+                        <tr class="text-sm sm:text-[1rem]">
+                          <td class="py-[3px] text-left lg:py-0.5">Change</td>
+                          {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
+                            <td class="whitespace-nowrap">
+                              <a
+                                href="/pricing"
+                                class="sm:hover:text-blue-500 dark:sm:hover:text-blue-400"
+                              >
+                                Pro
+                                <svg
+                                  class="w-4 h-4 mb-1 inline-block"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    fill="currentColor"
+                                    d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                                  />
+                                </svg>
+                              </a>
+                            </td>
+                            <td class="whitespace-nowrap"
+                              ><a
+                                href="/pricing"
+                                class="sm:hover:text-blue-500 dark:sm:hover:text-blue-400"
+                                >Pro <svg
+                                  class="w-4 h-4 mb-1 inline-block"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    fill="currentColor"
+                                    d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                                  />
+                                </svg></a
+                              ></td
+                            >
+                            <td class="whitespace-nowrap"
+                              ><a
+                                href="/pricing"
+                                class="sm:hover:text-blue-500 dark:sm:hover:text-blue-400"
+                                >Pro <svg
+                                  class="w-4 h-4 mb-1 inline-block"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    fill="currentColor"
+                                    d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                                  />
+                                </svg></a
+                              ></td
+                            >
+                            <td class="whitespace-nowrap"
+                              ><a
+                                href="/pricing"
+                                class="sm:hover:text-blue-500 dark:sm:hover:text-blue-400"
+                                >Pro <svg
+                                  class="w-4 h-4 mb-1 inline-block"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    fill="currentColor"
+                                    d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                                  />
+                                </svg></a
+                              ></td
+                            >
+                          {:else}
+                            <td
+                              class={lowChange > 0
+                                ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
+                                : "text-red-600 dark:text-[#FF2F1F]"}
+                              >{lowChange}%</td
+                            >
+                            <td
+                              class={avgChange > 0
+                                ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
+                                : "text-red-600 dark:text-[#FF2F1F]"}
+                              >{avgChange}%</td
+                            >
+                            <td
+                              class={medianChange > 0
+                                ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
+                                : "text-red-600 dark:text-[#FF2F1F]"}
+                              >{medianChange}%</td
+                            >
+                            <td
+                              class={highChange > 0
+                                ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
+                                : "text-red-600 dark:text-[#FF2F1F]"}
+                              >{highChange}%</td
+                            >
+                          {/if}
+                        </tr>
+                      </tbody>
                     </table>
                   </div>
                 </div>
