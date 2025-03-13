@@ -1043,7 +1043,7 @@
       </div>
 
       <div
-        class="text-left w-full col-span-1 lg:col-span-3 bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-200 dark:border-zinc-600 p-6 isolate translate-y-5 opacity-100"
+        class="relative min-h-[330px] lg:min-h-[240px] text-left w-full col-span-1 lg:col-span-3 bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-200 dark:border-zinc-600 p-6 isolate translate-y-5 opacity-100"
       >
         <!-- Responsive header: stacks vertically on mobile, horizontal on md+ -->
         <div class="flex flex-row items-center justify-between">
@@ -1056,8 +1056,82 @@
         <p class=" md:text-lg mt-2">
           Everything in Pro, pay once, never again!
         </p>
-        <!-- Button container: full width on mobile, 1/4 width on md+ -->
-        <div class="flex justify-end w-full md:w-1/4 ml-auto mt-4 md:mt-0">
+
+        <div class="max-w-[400px]">
+          <div class="absolute bottom-0 left-0 p-4">
+            <div class="relative flex items-center space-x-10">
+              <div
+                class="absolute top-2 left-8 right-0 h-0.5 bg-zinc-200 dark:bg-zinc-700 z-0"
+              ></div>
+              <div class="relative flex flex-col items-center">
+                <div
+                  class="h-4 w-4 rounded-full bg-zinc-300 dark:bg-gray-600 relative z-10"
+                ></div>
+                <div class="mt-2 text-center">
+                  <div class="text-lg sm:text-xl font-semibold">
+                    <span class="text-zinc-400 dark:text-zinc-500 line-through"
+                      >$399</span
+                    >
+                  </div>
+                  <div
+                    class="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400"
+                  >
+                    First 50 users
+                  </div>
+                </div>
+              </div>
+              <div class="relative flex flex-col items-center">
+                <div
+                  class="h-4 w-4 rounded-full bg-blue-500 relative z-10"
+                ></div>
+                <div class="mt-2 text-center">
+                  <div class="text-lg sm:text-xl font-semibold">
+                    <span class="text-zinc-900 dark:text-white">$599</span>
+                  </div>
+                  <div
+                    class="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300"
+                  >
+                    First 100 users
+                  </div>
+                </div>
+              </div>
+              <div class="relative flex flex-col items-center">
+                <div
+                  class="h-4 w-4 rounded-full bg-zinc-300 dark:bg-gray-600 relative z-10"
+                ></div>
+                <div class="mt-2 text-center">
+                  <div class="text-lg sm:text-xl font-semibold">
+                    <span class="text-zinc-500 dark:text-zinc-400">$899</span>
+                  </div>
+                  <div
+                    class="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400"
+                  >
+                    First 200 users
+                  </div>
+                </div>
+              </div>
+              <div class="relative flex flex-col items-center">
+                <div
+                  class="h-4 w-4 rounded-full bg-zinc-300 dark:bg-zinc-600 relative z-10"
+                ></div>
+                <div class="mt-2 text-center">
+                  <div class="text-lg sm:text-xl font-semibold">
+                    <span class="text-zinc-500 dark:text-zinc-400">$999</span>
+                  </div>
+                  <div
+                    class="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400"
+                  >
+                    Final price
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="absolute right-10 mt-10 lg:right-7 lg:bottom-10 flex justify-center lg:justify-end w-80 lg:w-1/4 ml-auto lg:mt-0"
+        >
           <label
             for={!data?.user ? "userLogin" : ""}
             on:click={() => purchasePlan("lifeTime")}
