@@ -35,7 +35,9 @@
                   class="shadow-sm sm:hover:shadow-lg flex flex-col overflow-hidden rounded border border-gray-300 dark:border-gray-700"
                 >
                   <div class="shrink-0">
-                    <a href={"/blog/article/" + convertToSlug(item?.title)}
+                    <a
+                      href={"/learning-center/article/" +
+                        convertToSlug(item?.title)}
                       ><img
                         class="h-48 w-full object-cover"
                         src={getImageURL(
@@ -53,7 +55,8 @@
                   >
                     <div class="flex-1">
                       <a
-                        href={"/blog/article/" + convertToSlug(item?.title)}
+                        href={"/learning-center/article/" +
+                          convertToSlug(item?.title)}
                         class="mt-2 block"
                         ><h2 class="text-lg sm:text-xl font-semibold">
                           {item?.title}

@@ -1,6 +1,4 @@
-import { error, fail, redirect } from "@sveltejs/kit";
-import { validateData } from "$lib/utils";
-import { loginUserSchema, registerUserSchema } from "$lib/schemas";
+
 
 export const load = async ({ locals, params }) => {
   const { apiURL, apiKey } = locals;
@@ -34,6 +32,8 @@ export const load = async ({ locals, params }) => {
     });
 
     const output = await response.json();
+
+    console.log(output)
     return output;
   };
 
