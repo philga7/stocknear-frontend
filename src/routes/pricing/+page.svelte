@@ -1053,12 +1053,12 @@
           </div>
         </div>
         <!-- Responsive paragraph text -->
-        <p class=" md:text-lg mt-2">
+        <p class=" md:text-lg mt-4 lg:mt-2">
           Everything in Pro, pay once, never again!
         </p>
 
         <div class="max-w-[400px]">
-          <div class="absolute bottom-0 left-0 p-4">
+          <div class="mt-8 lg:absolute lg:bottom-0 lg:left-0 lg:p-4">
             <div class="relative flex items-center space-x-10">
               <div
                 class="absolute top-2 left-8 right-0 h-0.5 bg-zinc-200 dark:bg-zinc-700 z-0"
@@ -1129,13 +1129,10 @@
           </div>
         </div>
 
-        <div
-          class="absolute right-10 mt-10 lg:right-7 lg:bottom-10 flex justify-center lg:justify-end w-80 lg:w-1/4 ml-auto lg:mt-0"
-        >
-          <label
-            for={!data?.user ? "userLogin" : ""}
+        <div class="mt-10 flex justify-center lg:justify-end mx-4 lg:mx-0">
+          <button
             on:click={() => purchasePlan("lifeTime")}
-            class="text-white cursor-pointer w-full py-3 px-4 bg-blue-600 rounded-lg font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
+            class="text-white cursor-pointer w-full lg:w-auto py-3 lg:mt-2 px-4 bg-blue-600 rounded-lg font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center lg:justify-end"
           >
             Get Lifetime Now
             <svg
@@ -1152,7 +1149,7 @@
                 d="M9 5l7 7-7 7"
               ></path>
             </svg>
-          </label>
+          </button>
         </div>
       </div>
     </div>
