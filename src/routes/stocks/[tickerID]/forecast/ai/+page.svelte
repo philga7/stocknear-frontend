@@ -86,7 +86,7 @@
           markerSymbol = "triangle-down";
         } else {
           // Neutral (score exactly 5): yellow marker with a circle
-          markerColor = "#f1c40f";
+          markerColor = "#2C6288";
           markerSymbol = "circle";
         }
 
@@ -518,7 +518,13 @@
                     <span>Latest Forecast</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-xl font-bold">Bullish</span>
+                    <span class="text-xl font-bold"
+                      >{[10, 9, 8, 7]?.includes(data?.getAIScore?.score)
+                        ? "Bullish"
+                        : [6, 5, 4]?.includes(data?.getAIScore?.score)
+                          ? "Hold"
+                          : "Bearish"}
+                    </span>
                   </div>
                 </div>
 
