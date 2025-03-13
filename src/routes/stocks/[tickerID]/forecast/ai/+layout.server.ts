@@ -33,7 +33,6 @@ export const load = async ({ locals, params }) => {
 
     const output = await response.json();
 
-    console.log(output)
     return output;
   };
 
