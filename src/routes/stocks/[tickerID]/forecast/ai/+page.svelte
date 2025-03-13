@@ -9,6 +9,13 @@
 
   export let data;
 
+  const formatDateToQuarter = (timestamp) => {
+    const date = new Date(timestamp);
+    const year = date.getFullYear().toString().slice(-2); // Get last two digits of the year
+    const quarter = Math.floor(date.getMonth() / 3) + 1; // Determine quarter (Q1-Q4)
+    return `Q${quarter} '${year}`;
+  };
+
   const price = data?.getStockQuote?.price?.toFixed(2) || 0;
 
   const calculatePriceChange = (targetPrice) =>
@@ -24,104 +31,115 @@
   const avgChange = calculatePriceChange(avgPriceTarget);
   const highChange = calculatePriceChange(highPriceTarget);
 
-  let consensusRating;
+  // Assume data.getHistoricalPrice contains objects with a "time" field (e.g. "2015-01-02")
+  const historicalData = data?.getHistoricalPrice || [];
 
-  if (avgChange < -20) {
-    consensusRating = "Strong Sell";
-  } else if (avgChange < -10) {
-    consensusRating = "Sell";
-  } else if (avgChange <= 15) {
-    consensusRating = "Hold";
-  } else if (avgChange >= 35) {
-    consensusRating = "Strong Buy";
-  } else if (avgChange >= 20) {
-    consensusRating = "Buy";
-  } else {
-    consensusRating = "Hold";
+  const backtestList = data?.getAIScore?.backtest || [];
+
+  // Append the latest historical date (using "time") if available. Note that this entry may not include a score.
+  if (historicalData && historicalData.length) {
+    const latest = historicalData.at(-1);
+    backtestList.push({ date: latest.time });
   }
 
-  function getAIScorePlot() {
-    // Assume data.getHistoricalPrice contains objects with a "time" field (e.g. "2015-01-02")
-    const historicalData = data?.getHistoricalPrice || [];
+  // For each backtest entry, find the historical price with the closest available time.
+  // Then, if a score exists, attach a marker and data label based on the score.
+  const processedData = backtestList?.map((item) => {
+    const dateStr = item.date;
+    const targetTime = new Date(dateStr).getTime();
+    let closestPoint = historicalData[0];
+    let minDiff = Infinity;
 
-    // Pre-defined backtest dates and scores
-    const backtestList = [
-      { date: "2023-03-31", yTest: 1, yPred: 1, score: 9 },
-      { date: "2023-06-30", yTest: 0, yPred: 1, score: 9 },
-      { date: "2023-09-30", yTest: 0, yPred: 1, score: 9 },
-      { date: "2023-12-31", yTest: 0, yPred: 1, score: 7 },
-      { date: "2024-03-31", yTest: 1, yPred: 1, score: 9 },
-      { date: "2024-06-30", yTest: 1, yPred: 1, score: 9 },
-      { date: "2024-09-30", yTest: 1, yPred: 1, score: 9 },
-      { date: "2024-12-31", yTest: 0, yPred: 1, score: 9 },
-    ];
-
-    // Append the latest historical date (using "time") if available. Note that this entry may not include a score.
-    if (historicalData && historicalData.length) {
-      const latest = historicalData.at(-1);
-      backtestList.push({ date: latest.time });
-    }
-
-    // For each backtest entry, find the historical price with the closest available time.
-    // Then, if a score exists, attach a marker and data label based on the score.
-    const processedData = backtestList.map((item) => {
-      const dateStr = item.date;
-      const targetTime = new Date(dateStr).getTime();
-      let closestPoint = historicalData[0];
-      let minDiff = Infinity;
-
-      historicalData.forEach((point) => {
-        const pointTime = new Date(point.time).getTime();
-        const diff = Math.abs(pointTime - targetTime);
-        if (diff < minDiff) {
-          minDiff = diff;
-          closestPoint = point;
-        }
-      });
-
-      // Base data point with x as the target date timestamp and y as the close price from the closest historical point
-      const dataPoint = { x: targetTime, y: closestPoint.close };
-
-      // If a score is provided, add marker configuration based on its value.
-      if (item.hasOwnProperty("score")) {
-        let markerColor, markerSymbol;
-        if (item.score > 6) {
-          // Bullish: green marker with an upward triangle
-          markerColor = "#2ecc71";
-          markerSymbol = "triangle-up";
-        } else if (item.score < 5) {
-          // Bearish: red marker with a downward triangle
-          markerColor = "#e74c3c";
-          markerSymbol = "triangle-down";
-        } else {
-          // Neutral (score exactly 5): yellow marker with a circle
-          markerColor = "#f1c40f";
-          markerSymbol = "circle";
-        }
-
-        dataPoint.marker = {
-          symbol: markerSymbol,
-          radius: 4,
-          fillColor: markerColor,
-          lineWidth: 2,
-          lineColor: $mode === "light" ? "black" : "white",
-        };
-
-        dataPoint.dataLabels = {
-          enabled: true,
-          format: String(item.score),
-          style: {
-            color: $mode === "light" ? "black" : "white",
-            fontWeight: "bold",
-            fontSize: "14px",
-          },
-          y: -10,
-        };
+    historicalData.forEach((point) => {
+      const pointTime = new Date(point.time).getTime();
+      const diff = Math.abs(pointTime - targetTime);
+      if (diff < minDiff) {
+        minDiff = diff;
+        closestPoint = point;
       }
-
-      return dataPoint;
     });
 
+    // Base data point with x as the target date timestamp and y as the close price from the closest historical point
+    const dataPoint = { x: targetTime, y: closestPoint.close };
+
+    // If a score is provided, add marker configuration based on its value.
+    if (item.hasOwnProperty("score")) {
+      let markerColor, markerSymbol;
+      if (item.score > 6) {
+        // Bullish: green marker with an upward triangle
+        markerColor = "#2ecc71";
+        markerSymbol = "triangle-up";
+      } else if (item.score < 5) {
+        // Bearish: red marker with a downward triangle
+        markerColor = "#e74c3c";
+        markerSymbol = "triangle-down";
+      } else {
+        // Neutral (score exactly 5): yellow marker with a circle
+        markerColor = "#f1c40f";
+        markerSymbol = "circle";
+      }
+
+      dataPoint.marker = {
+        symbol: markerSymbol,
+        radius: 4,
+        fillColor: markerColor,
+        lineWidth: 2,
+        lineColor: $mode === "light" ? "black" : "white",
+      };
+
+      dataPoint.dataLabels = {
+        enabled: true,
+        format: String(item.score),
+        style: {
+          color: $mode === "light" ? "black" : "white",
+          fontWeight: "bold",
+          fontSize: "14px",
+        },
+        y: -10,
+      };
+    }
+
+    return dataPoint;
+  });
+
+  const tableDates = processedData
+    ?.slice(0, -1)
+    ?.map((item) => formatDateToQuarter(item.x));
+
+  const tableScore = processedData
+    ?.slice(0, -1)
+    ?.map((item) => item?.dataLabels?.format);
+
+  // Compute percentage change
+  const tableQuarterChange = processedData
+    ?.slice(0, -1)
+    .map((item, index, arr) => {
+      const prevY = arr[index - 1]?.y; // Get the previous value
+      if (prevY == null || item.y == null) return null; // Handle missing values
+      const change = ((item.y - prevY) / prevY) * 100; // Calculate percentage change
+      return {
+        quarter: tableDates[index],
+        change: Number(change?.toFixed(2)), // Format to 2 decimal places
+      };
+    })
+    ?.filter(Boolean); // Remove null values
+
+  // Compute Average Return
+  const returns = processedData
+    ?.slice(1) // Skip the first value since there's no previous value for it
+    ?.map((item, index) => {
+      const prevY = processedData[index]?.y;
+      if (prevY == null || item.y == null) return null;
+      const returnPercentage = ((item.y - prevY) / prevY) * 100;
+      return returnPercentage;
+    })
+    .filter(Boolean); // Remove null values
+
+  const avgReturn =
+    returns?.reduce((sum, returnPercentage) => sum + returnPercentage, 0) /
+    returns?.length;
+
+  function getAIScorePlot() {
     const solidData = processedData.slice(0, -1);
     const lastTwoPoints = processedData.slice(-2); // Extract the last two points
 
@@ -423,19 +441,61 @@
     >
       <main class="w-full">
         <div class="sm:pl-7 sm:pb-7 sm:pt-7 m-auto mt-2 sm:mt-0">
-          {#if Object?.keys(data?.getPriceAnalysis)?.length > 0}
+          {#if data?.getAIScore?.backtest?.length > 0}
             <div class="">
               <h1 class="text-xl sm:text-2xl font-bold">
-                {removeCompanyStrings($displayCompanyName)} AI Score
+                {removeCompanyStrings($displayCompanyName)} AI Score Forecast
               </h1>
             </div>
             <div class="w-full mb-10 mt-3">
-              <Infobox
-                text={`Our AI Score Model indicates a bullish outlook on Tesla with a score of 9. Key stats: Accuracy 50%, Precision 50%, F1 Score 67%, Recall 100%, ROC AUC 50%. Backtest results show consistent bullish predictions, with scores of 9 in most periods. Despite moderate accuracy, high recall ensures no bullish signals are missed. While improvements are needed, our model suggests strong upside potential for Tesla.`}
-              />
+              <div
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 mt-3"
+              >
+                <div
+                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                >
+                  <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
+                    <span>Score Accuracy</span>
+                  </div>
+                  <div class="flex items-baseline">
+                    <span class="text-xl font-bold"
+                      >{data?.getAIScore?.accuracy
+                        ? data?.getAIScore?.accuracy + "%"
+                        : "n/a"}</span
+                    >
+                  </div>
+                </div>
+
+                <div
+                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                >
+                  <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
+                    <span>Latest Forecast</span>
+                  </div>
+                  <div class="flex items-baseline">
+                    <span class="text-xl font-bold">Bullish</span>
+                  </div>
+                </div>
+
+                <div
+                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                >
+                  <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
+                    <span>Avg Return</span>
+                  </div>
+                  <div class="flex items-baseline">
+                    <span
+                      class="text-xl font-bold {avgReturn >= 0
+                        ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
+                        : 'text-red-600 dark:text-[#FF2F1F]'}"
+                      >{avgReturn?.toFixed(2)}%</span
+                    >
+                  </div>
+                </div>
+              </div>
 
               <div>
-                <div class="grow pt-5">
+                <div class="grow">
                   <div
                     class="chart mt-5 shadow-sm sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
                     use:highcharts={configScore}
@@ -444,57 +504,58 @@
                   <div
                     class="no-scrollbar mb-1 mt-2 overflow-x-auto px-1.5 text-center md:mb-0 md:px-0 lg:mt-5"
                   >
-                    <table class="w-full text-right text-tiny xs:text-sm">
+                    <table
+                      class="table table-sm table-compact w-full text-right text-tiny xs:text-sm"
+                    >
                       <thead
                         ><tr
-                          class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
+                          class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem] whitespace-nowrap"
                           ><th
-                            class="py-[3px] text-left font-semibold lg:py-0.5"
+                            class="py-[3px] text-left font-semibold lg:py-0.5 text-muted dark:text-white"
                             >Date</th
-                          > <th class="font-semibold">Q1 '23</th>
-                          <th class="font-semibold">Q2 '23</th>
-                          <th class="font-semibold">Q3 '23</th>
-                          <th class="font-semibold">Q4 '23</th></tr
-                        ></thead
+                          >
+                          {#each tableDates as item}
+                            <th
+                              class="py-[3px] text-left font-semibold lg:py-0.5 text-muted dark:text-white"
+                              >{item}</th
+                            >
+                          {/each}
+                        </tr></thead
                       >
                       <tbody
                         ><tr
-                          class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
-                          ><td class="py-[3px] text-left lg:py-0.5">Score</td>
-                          <td>8 (Bullish)</td>
-                          <td>9 (Bullish)</td>
-                          <td>8 (Bullish)</td>
-                          <td>7 (Hold)</td></tr
+                          class=" border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem] whitespace-nowrap"
                         >
-                        <tr class="text-sm sm:text-[1rem]"
-                          ><td class="py-[3px] text-left lg:py-0.5"
+                          <td class="py-[3px] text-left lg:py-0.5 text-[1rem]"
+                            >Score</td
+                          >
+                          {#each tableScore as val}
+                            <td
+                              class="text-right whitespace-nowrap text-[1rem]"
+                            >
+                              {val}
+                              {[10, 9, 8, 7]?.includes(Number(val))
+                                ? "(Bullish)"
+                                : [6, 5, 4]?.includes(Number(val))
+                                  ? "(Hold)"
+                                  : "(Sell)"}
+                            </td>
+                          {/each}
+                        </tr>
+                        <tr
+                          class=" font-normal text-sm sm:text-[1rem] whitespace-nowrap"
+                          ><td class="py-[3px] text-left lg:py-0.5 text-[1rem]"
                             >QoQ Change</td
                           >
-                          <td
-                            class={lowChange > 0
-                              ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                              : "text-red-600 dark:text-[#FF2F1F]"}
-                            >{lowChange}%</td
-                          >
-                          <td
-                            class={avgChange > 0
-                              ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                              : "text-red-600 dark:text-[#FF2F1F]"}
-                            >{avgChange}%</td
-                          >
-                          <td
-                            class={medianChange > 0
-                              ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                              : "text-red-600 dark:text-[#FF2F1F]"}
-                            >{medianChange}%</td
-                          >
-                          <td
-                            class={highChange > 0
-                              ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                              : "text-red-600 dark:text-[#FF2F1F]"}
-                            >{highChange}%</td
-                          ></tr
-                        ></tbody
+                          {#each tableQuarterChange as item}
+                            <td
+                              class="text-[1rem] {item?.change > 0
+                                ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
+                                : 'text-red-600 dark:text-[#FF2F1F]'}"
+                              >{item?.change}%</td
+                            >
+                          {/each}
+                        </tr></tbody
                       >
                     </table>
                   </div>
@@ -502,9 +563,13 @@
                   <p class="mt-4">
                     Following the AI Score for {removeCompanyStrings(
                       $displayCompanyName,
-                    )} the model shows that the total return would be
-                    <strong>+22.2%</strong>, with a maximum drawdown of
-                    <strong>-12%</strong> based on the backtesting results.
+                    )} the model shows that the average return would be
+                    <span
+                      class="font-semibold {avgReturn >= 0
+                        ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
+                        : 'text-red-600 dark:text-[#FF2F1F]'}"
+                      >{avgReturn?.toFixed(2)}%</span
+                    > based on the backtesting results.
                   </p>
                 </div>
               </div>
@@ -519,14 +584,7 @@
             </div>
             <div class="w-full mb-6 mt-3">
               <Infobox
-                text={`Using our AI model trained on historical data, we generated a
-              12‑month forecast for ${$displayCompanyName}
-              (${$stockTicker}) stock. The model estimates a median target price
-              of ${medianPriceTarget}—ranging from a low of {lowPriceTarget}
-              to a high of ${highPriceTarget}—which suggests ${
-                medianChange > 0 ? "an increase" : "a decrease"
-              } of ${medianChange}% compared to the current price
-              of ${price}.`}
+                text={`Using our AI model trained on historical seasonal data, we generated a 12-month forecast for ${removeCompanyStrings($displayCompanyName)}. The model predicts a median target price of ${medianPriceTarget}, ranging from ${lowPriceTarget} to ${highPriceTarget}, indicating a ${medianChange > 0 ? "potential increase" : "potential decrease"} of ${medianChange}% from the current price of ${price}.`}
               />
 
               <div>

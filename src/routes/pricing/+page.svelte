@@ -1120,7 +1120,7 @@
                 </th>
               </tr>
             </thead>
-            <tbody class="text-sm md:">
+            <tbody class="text-sm md:text-[1rem]">
               <tr>
                 <td class="py-2 md:py-3">Full Market Access</td>
                 <td class="py-2 md:py-3 text-center">❌</td>
