@@ -129,7 +129,7 @@
         labels: {
           style: { color: $mode === "light" ? "black" : "white" },
         },
-        title: { text: "null" },
+        title: { text: null },
         opposite: true,
       },
       tooltip: {

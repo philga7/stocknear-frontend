@@ -3,7 +3,6 @@
   import highcharts from "$lib/highcharts.ts";
   import { mode } from "mode-watcher";
   import IPOChart from "$lib/components/IPOChart.svelte";
-  import Lazy from "svelte-lazy";
 
   export let data;
 
@@ -11,7 +10,7 @@
 
   let config = null;
 
-  const startYear = 2015;
+  const startYear = 2019;
   const currentYear = new Date().getFullYear();
   const yearList = Array.from(
     { length: currentYear - startYear + 1 },
@@ -204,9 +203,7 @@
             ></div>
 
             {#each yearList as year}
-              <Lazy fadeOption={{ delay: 50, duration: 50 }} keep={true}>
-                <IPOChart {data} {year} />
-              </Lazy>
+              <IPOChart {data} {year} />
             {/each}
           </div>
         </div>
