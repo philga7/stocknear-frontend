@@ -36,6 +36,10 @@
       path: "/ipos",
     },
     {
+      title: "Statistics",
+      path: "/ipos/statistics",
+    },
+    {
       title: "IPO News",
       path: "/ipos/news",
     },
@@ -46,8 +50,10 @@
   // Subscribe to the $page store to reactively update the activeIdx based on the URL
   $: if ($page.url.pathname === "/ipos") {
     activeIdx = 0;
-  } else if ($page.url.pathname.startsWith("/ipos/news")) {
+  } else if ($page.url.pathname.startsWith("/ipos/statistics")) {
     activeIdx = 1;
+  } else if ($page.url.pathname.startsWith("/ipos/news")) {
+    activeIdx = 2;
   }
 </script>
 
