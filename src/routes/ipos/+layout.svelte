@@ -74,7 +74,11 @@
       >
         <main class="w-full lg:pr-5">
           <h1 class="mb-6 text-2xl sm:text-3xl font-bold">
-            {activeIdx === 0 ? "Recent IPOs" : "IPO News"}
+            {activeIdx === 0
+              ? "Recent IPOs"
+              : activeIdx === 1
+                ? "IPO Statistics"
+                : "IPO News"}
           </h1>
 
           <nav
