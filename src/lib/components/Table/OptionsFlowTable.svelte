@@ -596,7 +596,7 @@
         class:opacity-30={index + 1 === rawData?.length &&
           data?.user?.tier !== "Pro"}
       >
-        <div class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap">
+        <div class="p-2 text-center text-sm whitespace-nowrap">
           {formatTime(displayedData[index]?.time)}
         </div>
         <div

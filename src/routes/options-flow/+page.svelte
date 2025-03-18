@@ -500,6 +500,8 @@
   let previousVolume = 0; //This is needed to play the sound only if it changes.
   let notFound = false;
   let isLoaded = false;
+  let reconnectAttempts = 0;
+
   $: modeStatus = $isOpen === true ? true : false;
 
   function toggleMode() {
@@ -512,81 +514,79 @@
         shouldLoadWorker.set(true);
       }
     } else {
-      toast.error(`Market is closed`, {
+      toast?.error(`Market is closed`, {
         style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
     }
   }
 
   async function websocketRealtimeData() {
-    if (data?.user?.tier === "Pro") {
-      newData = [];
-      try {
-        socket = new WebSocket(data?.wsURL + "/options-flow-reader");
+    if (data?.user?.tier !== "Pro") return;
 
-        socket.addEventListener("message", (event) => {
-          const totalVolume = displayCallVolume + displayPutVolume;
-          if (modeStatus === true) {
-            try {
-              newData = JSON?.parse(event.data) ?? [];
-              if (newData?.length > 0) {
-                newData?.forEach((item) => {
-                  item.dte = daysLeft(item?.date_expiration);
-                });
-
-                //calculateStats(newData);
-                //console.log(previousVolume);
-                if (
-                  newData?.length > rawData?.length &&
-                  previousVolume !== totalVolume
-                ) {
-                  //console.log(previousVolume,totalVolume,);
-                  rawData = newData;
-                  shouldLoadWorker.set(true);
-                  //console.log('loading worker')
-                  //displayedData = rawData;
-
-                  if (!muted) {
-                    audio?.play();
-                  }
-                }
-              }
-
-              /*
-          if (previousCallVolume !== displayCallVolume && !muted && audio) {
-            audio?.play();
-          }
-          */
-            } catch (e) {
-              console.error("Error processing WebSocket message:", e);
-            }
-            newData = [];
-            previousVolume = totalVolume;
-          }
-        });
-
-        socket.addEventListener("close", (event) => {
-          console.log("WebSocket connection closed:", event.reason);
-
-          // Explicitly nullify the socket and remove all event listeners
-          if (socket) {
-            socket.onmessage = null;
-            socket.onopen = null;
-            socket.onclose = null;
-            socket.onerror = null;
-            socket = null;
-          }
-        });
-
-        socket.addEventListener("error", (error) => {
-          console.error("WebSocket error:", error);
-          // Handle WebSocket errors here
-        });
-      } catch (error) {
-        console.error("WebSocket connection error:", error);
-        // Handle connection errors here
-        setTimeout(() => websocketRealtimeData(), 400);
+    // Cleanup previous connection
+    if (socket) {
+      socket.onmessage = null;
+      socket.onclose = null;
+      socket.onerror = null;
+      if (socket.readyState === WebSocket.OPEN) {
+        socket.close();
       }
+    }
+
+    try {
+      socket = new WebSocket(`${data.wsURL}/options-flow-reader`);
+
+      socket.onopen = () => {
+        console.log("WebSocket connected");
+        reconnectAttempts = 0;
+      };
+
+      socket.onmessage = (event) => {
+        const totalVolume = displayCallVolume + displayPutVolume;
+        if (!modeStatus) return;
+
+        try {
+          const newData = JSON.parse(event.data) ?? [];
+
+          if (newData.length > 0) {
+            newData.forEach((item) => {
+              item.dte = daysLeft(item?.date_expiration);
+            });
+
+            if (
+              newData.length > rawData.length &&
+              previousVolume !== totalVolume
+            ) {
+              rawData = newData;
+              shouldLoadWorker.set(true);
+
+              if (!muted && audio) {
+                audio.play().catch((error) => {
+                  console.log("Audio play failed:", error);
+                });
+              }
+            }
+          }
+          previousVolume = totalVolume;
+        } catch (e) {
+          console.error("Message processing error:", e);
+        }
+      };
+
+      socket.onclose = (event) => {
+        console.log(`WebSocket closed (${event.code}), reconnecting...`);
+        const delay = Math.min(5000, reconnectAttempts ** 2 * 500);
+        setTimeout(websocketRealtimeData, delay);
+        reconnectAttempts++;
+      };
+
+      socket.onerror = (error) => {
+        console.error("WebSocket error:", error);
+        socket.close();
+      };
+    } catch (error) {
+      console.error("WebSocket connection error:", error);
+      setTimeout(websocketRealtimeData, 1000);
     }
   }
 
