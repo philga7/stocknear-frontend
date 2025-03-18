@@ -21,13 +21,12 @@
 
 <section
   style="z-index: 9999"
-  class="shadow-lg fixed max-w-4xl md:max-w-2xl p-4 mx-auto md:gap-x-4 md:left-60 md:bottom-10 bg-gray-900 md:flex md:items-center justify-center border-gray-700 rounded-t-md md:rounded-2xl inset-x-0 md:inset-auto bottom-0"
+  class="shadow-xl fixed max-w-4xl md:max-w-2xl p-4 mx-auto md:gap-x-4 md:left-60 md:bottom-10 bg-gray-100 dark:bg-gray-900 md:flex md:items-center justify-center border-gray-300 dark:border-gray-700 rounded-t md:rounded-2xl inset-x-0 md:inset-auto bottom-0"
 >
   <div class="flex items-center gap-x-4">
-    <span class="inline-flex p-2 text-white rounded-md shrink-0 bg-gray-800">
+    <span class="inline-flex p-2 rounded shrink-0 bg-gray-300 dark:bg-gray-800">
       <svg
-        width="20"
-        height="20"
+        class="w-5 h-5 text-gray-600 dark:text-gray-300"
         viewBox="0 0 20 20"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -39,9 +38,11 @@
       </svg>
     </span>
 
-    <p class="text-sm text-gray-300">
+    <p class="text-sm">
       We use cookies to ensure that we give you the best experience on our
-      website. <a href="/privacy-policy" class="text-blue-500 hover:underline"
+      website. <a
+        href="/privacy-policy"
+        class="text-blue-500 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline"
         >Read Privacy Policy</a
       >.
     </p>
@@ -53,7 +54,7 @@
     <label
       for="cookieConsent"
       on:click={() => cookieConsent("false")}
-      class="cursor-pointer w-auto text-sm text-gray-800 underline duration-300 md:w-auto text-white hover:text-gray-400 focus:outline-hidden"
+      class="cursor-pointer w-auto text-sm underline duration-100 md:w-auto focus:outline-hidden"
     >
       Reject All
     </label>
@@ -61,7 +62,7 @@
     <label
       for="cookieConsent"
       on:click={() => cookieConsent("true")}
-      class="text-xs cursor-pointer w-auto md:w-auto bg-gray-800 rounded-md hover:bg-gray-700 text-white px-4 py-2.5 duration-300 focus:outline-hidden"
+      class="text-sm cursor-pointer w-auto md:w-auto bg-gray-300 dark:bg-gray-800 rounded px-4 py-2.5 duration-100 focus:outline-hidden"
     >
       Accept All Cookies
     </label>

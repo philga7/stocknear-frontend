@@ -127,17 +127,7 @@
   onMount(async () => {
     if (data?.user?.id) {
       await loadWorker();
-      /*
-      const permissionGranted = await requestNotificationPermission();
 
-      if (permissionGranted) {
-        const isSubscribed = (await checkSubscriptionStatus()) || false;
-
-        if (!isSubscribed) {
-          await subscribeUser();
-        }
-      }
-        */
     }
 
     await checkMarketHour();
@@ -177,7 +167,6 @@
   $: {
     if ($page.url.pathname) {
       $loginData = data?.user;
-      //data.currentPath = $page.url.pathname
     }
   }
 

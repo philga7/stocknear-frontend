@@ -528,8 +528,8 @@
       socket.onmessage = null;
       socket.onclose = null;
       socket.onerror = null;
-      if (socket.readyState === WebSocket.OPEN) {
-        socket.close();
+      if (socket?.readyState === WebSocket?.OPEN) {
+        socket?.close();
       }
     }
 
@@ -546,7 +546,7 @@
         if (!modeStatus) return;
 
         try {
-          const newData = JSON.parse(event.data) ?? [];
+          const newData = JSON?.parse(event?.data) ?? [];
 
           if (newData.length > 0) {
             newData.forEach((item) => {
@@ -561,7 +561,7 @@
               shouldLoadWorker.set(true);
 
               if (!muted && audio) {
-                audio.play().catch((error) => {
+                audio?.play()?.catch((error) => {
                   console.log("Audio play failed:", error);
                 });
               }
