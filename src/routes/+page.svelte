@@ -60,7 +60,6 @@
 <SEO
   title="Free Online Stock Analysis for Investors"
   description="Stocknear has everything you need to analyze stocks with help of AI, including detailed financial data, statistics, news and charts."
-  image=""
 />
 
 <div
