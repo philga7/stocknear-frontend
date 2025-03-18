@@ -884,7 +884,7 @@
 
                   <button on:click={handleModeChange} class="cursor-pointer w-full sm:hover:bg-gray-300 dark:sm:hover:bg-[#18181B] relative flex cursor-default select-none items-center rounded px-2 py-1.5 text-sm outline-hidden data-disabled:pointer-events-none">
  
-                    <span>{$mode === 'light' ? 'Light' : 'Dark'} Mode</span>
+                    <span>{$mode === 'light' ? 'Dark' : 'Light'} Mode</span>
                     <span class="sr-only">Toggle theme</span>
                   </button>
 
