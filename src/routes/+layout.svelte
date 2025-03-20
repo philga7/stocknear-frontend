@@ -54,6 +54,7 @@
 
   export let data;
 
+  console.log(data?.themeMode, $mode)
   let hideHeader = false;
   BProgress.configure({
     showSpinner: false,

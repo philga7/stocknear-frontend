@@ -5,17 +5,21 @@ import { serializeNonPOJOs } from "$lib/utils";
 export const handle = sequence(async ({ event, resolve }) => {
 
   // Use a ternary operator instead of the logical OR for better compatibility
-  const pbURL = import.meta.env.VITE_USEAST_POCKETBASE_URL; //isUS ? import.meta.env.VITE_USEAST_POCKETBASE_URL : import.meta.env.VITE_EU_POCKETBASE_URL;
-  const apiURL = import.meta.env.VITE_USEAST_API_URL; //isUS ? import.meta.env.VITE_USEAST_API_URL : import.meta.env.VITE_EU_API_URL;
-  const fastifyURL = import.meta.env.VITE_USEAST_FASTIFY_URL; //isUS ? import.meta.env.VITE_USEAST_FASTIFY_URL : import.meta.env.VITE_EU_FASTIFY_URL;
-  const wsURL = import.meta.env.VITE_USEAST_WS_URL; //isUS ? import.meta.env.VITE_USEAST_WS_URL : import.meta.env.VITE_EU_WS_URL;
-
+  const pbURL = import.meta.env.VITE_USEAST_POCKETBASE_URL; 
+  const apiURL = import.meta.env.VITE_USEAST_API_URL; 
+  const fastifyURL = import.meta.env.VITE_USEAST_FASTIFY_URL;
+  const wsURL = import.meta.env.VITE_USEAST_WS_URL;
+  
+  const themeMode = event?.cookies?.get("theme-mode");
+  
+  
   event.locals = {
     pb: new PocketBase(pbURL),
     apiURL,
     fastifyURL,
     wsURL,
     apiKey: import.meta.env.VITE_STOCKNEAR_API_KEY,
+    themeMode,
   };
 
   const authCookie = event?.request?.headers?.get("cookie") || "";
@@ -33,7 +37,9 @@ export const handle = sequence(async ({ event, resolve }) => {
     }
   }
 
-  const response = await resolve(event);
+  const response = await resolve(event, {
+    transformPageChunk: ({html}) => html.replace('data-theme=""', `data-theme="${themeMode}"`)
+  });
 
   // Use a more compatible way to set the cookie
   const cookieString = event?.locals?.pb?.authStore?.exportToCookie({
