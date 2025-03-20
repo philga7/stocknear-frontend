@@ -33,6 +33,7 @@ const config = {
     },
     brotliSize: true, // Enable Brotli compression
   },
+  
 
 };
 
