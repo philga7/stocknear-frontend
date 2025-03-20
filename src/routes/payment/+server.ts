@@ -112,20 +112,30 @@ export const POST = async ({ request, locals }) => {
     //console.log(tier, payload?.data?.attributes?.product_name)
     
     // Update the user and log the payment
+
     try {
-  
+      
       await locals.pb.collection("users").update(userId, {
         tier,
         freeTrial: false,
         lifetime: productName?.includes("Life Time"),
       });
 
-
       const paymentData = { user: userId, data: payload };
       await locals.pb.collection("payments").create(paymentData);
     } catch (dbError) {
       console.error("Database error:", dbError);
-      // Depending on your requirements, you might want to propagate this error.
+      
+      return new Response(
+      JSON.stringify({ error: "Pocketbase error" }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      }
+
+    );
+
+
     }
 
     return new Response(
