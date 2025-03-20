@@ -272,6 +272,10 @@
   </script>
 </svelte:head>
 
+<ModeWatcher defaultMode={data?.themeMode} />
+
+
+
 <div class="app text-muted dark:text-white {$page?.url?.pathname === '/' ? 'bg-[#000]' : ''}">
   <div class="flex min-h-screen w-full flex-col bg-white dark:bg-default">
     <div class="w-full">
@@ -1231,7 +1235,7 @@
 
 
               <slot />
-              <ModeWatcher defaultMode={data?.themeMode} disableTransitions={true}/>
+ 
               <Toaster position="top-center" />
               {#if Cookie && $showCookieConsent === true}
                 <Cookie />
