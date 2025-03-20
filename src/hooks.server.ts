@@ -10,7 +10,7 @@ export const handle = sequence(async ({ event, resolve }) => {
   const fastifyURL = import.meta.env.VITE_USEAST_FASTIFY_URL;
   const wsURL = import.meta.env.VITE_USEAST_WS_URL;
   
-  const themeMode = event?.cookies?.get("theme-mode");
+  const themeMode = event?.cookies?.get("theme-mode") || "dark";
   
   
   event.locals = {

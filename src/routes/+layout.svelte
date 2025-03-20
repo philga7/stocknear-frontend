@@ -54,7 +54,7 @@
 
   export let data;
 
-  console.log(data?.themeMode, $mode)
+
   let hideHeader = false;
   BProgress.configure({
     showSpinner: false,
@@ -1228,14 +1228,10 @@
           </div>
           <div class="w-full">
             <main class="w-full overflow-y-auto sm:p-4">
-              <!--
-              <button on:click={handleNotificationClick}>
-                Send Notification
-              </button>
-              -->
+
 
               <slot />
-              <ModeWatcher defaultMode={data?.themeMode} disableTransitions={false}/>
+              <ModeWatcher defaultMode={data?.themeMode} disableTransitions={true}/>
               <Toaster position="top-center" />
               {#if Cookie && $showCookieConsent === true}
                 <Cookie />
