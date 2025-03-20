@@ -1235,7 +1235,7 @@
               -->
 
               <slot />
-              <ModeWatcher defaultMode={$mode} disableTransitions={false}/>
+              <ModeWatcher defaultMode={data?.themeMode} disableTransitions={false}/>
               <Toaster position="top-center" />
               {#if Cookie && $showCookieConsent === true}
                 <Cookie />
