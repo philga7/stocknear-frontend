@@ -209,7 +209,7 @@
                                 </svg>
                               {:else}
                                 <svg
-                                  class="w-3.5 h-3.5 text-gray-400 dark:text-gray-500"
+                                  class="w-3.5 h-3.5 text-gray-500"
                                   aria-hidden="true"
                                   xmlns="http://www.w3.org/2000/svg"
                                   fill="currentColor"
@@ -428,7 +428,7 @@
                 <h2 class="text-start text-xl font-semibold ml-3">
                   Top Stocks Picks
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:" />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0 " />
               </div>
               <span class="p-3 ml-3 mr-3">
                 Get the latest top Wall Street analyst ratings.
@@ -447,7 +447,7 @@
                 <h2 class="text-start text-xl font-semibold ml-3">
                   Top Shorted Stocks
                 </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:" />
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0 " />
               </div>
               <span class="p-3 ml-3 mr-3">
                 Never miss out another short squeeze

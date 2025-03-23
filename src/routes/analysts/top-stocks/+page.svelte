@@ -72,7 +72,7 @@
                 <h3 class="mt-2 text-2xl font-bold tracking-tight bp:text-3xl">
                   Analyst Star Rankings
                 </h3>
-                <p class="mt-3 leading-8 text-muted dark:text-faded xl:text-lg">
+                <p class="mt-3 leading-8 xl:text-lg">
                   Our analyst star rankings are based on these four factors
                 </p>
               </div>
@@ -101,7 +101,7 @@
                       </div>
                       Success Rate
                     </dt>
-                    <dd class="mt-2 leading-7 text-muted dark:text-faded">
+                    <dd class="mt-2 leading-7">
                       The percentage of ratings that are profitable.
                     </dd>
                   </div>
@@ -126,7 +126,7 @@
                       </div>
                       Average Return
                     </dt>
-                    <dd class="mt-2 leading-7 text-muted dark:text-faded">
+                    <dd class="mt-2 leading-7">
                       The average percentage return within one year of the
                       rating.
                     </dd>
@@ -152,7 +152,7 @@
                       </div>
                       Rating Count
                     </dt>
-                    <dd class="mt-2 leading-7 text-muted dark:text-faded">
+                    <dd class="mt-2 leading-7">
                       The more ratings the analyst has provided, the higher the
                       score.
                     </dd>
@@ -178,7 +178,7 @@
                       </div>
                       Recency
                     </dt>
-                    <dd class="mt-2 leading-7 text-muted dark:text-faded">
+                    <dd class="mt-2 leading-7">
                       Ratings provided within the past year contribute to a
                       higher score.
                     </dd>

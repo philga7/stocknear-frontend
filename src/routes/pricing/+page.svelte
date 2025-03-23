@@ -77,7 +77,7 @@
 
 <SEO
   title="Pricing Plans"
-  descriptiion="Get unlimited access to all of our data and tools, including full financial history, full ETF holdings, and more."
+  description="Get unlimited access to all of our data and tools, including full financial history, full ETF holdings, and more."
 />
 
 <svelte:head>
@@ -1041,18 +1041,16 @@
           >
         </div>
       </div>
-
+      <!--
       <div
         class="relative min-h-[330px] lg:min-h-[240px] text-left w-full col-span-1 lg:col-span-3 bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-200 dark:border-zinc-600 p-6 isolate translate-y-5 opacity-100"
       >
-        <!-- Responsive header: stacks vertically on mobile, horizontal on md+ -->
         <div class="flex flex-row items-center justify-between">
           <h3 class="text-2xl md:text-3xl font-bold">Lifetime</h3>
           <div>
             <span class="text-3xl md:text-4xl font-bold">$599</span>
           </div>
         </div>
-        <!-- Responsive paragraph text -->
         <p class=" md:text-lg mt-4 lg:mt-2">
           Everything in Pro, pay once, never again!
         </p>
@@ -1152,6 +1150,7 @@
           </button>
         </div>
       </div>
+      -->
     </div>
 
     <!--Feature Table-->

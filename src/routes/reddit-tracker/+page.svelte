@@ -14,7 +14,7 @@
 
   export let data;
 
-  let timePeriod = "oneDay";
+  let timePeriod = "oneWeek";
 
   const today = new Date();
   const options = { month: "short", day: "numeric", year: "numeric" };
@@ -78,9 +78,6 @@
 
   const tabs = [
     {
-      title: "Today",
-    },
-    {
       title: "Week",
     },
     {
@@ -94,12 +91,10 @@
   function changeTimePeriod(state) {
     activeIdx = state;
     if (activeIdx === 0) {
-      timePeriod = "oneDay";
-    } else if (activeIdx === 1) {
       timePeriod = "oneWeek";
-    } else if (activeIdx === 2) {
+    } else if (activeIdx === 1) {
       timePeriod = "oneMonth";
-    } else if (activeIdx === 3) {
+    } else if (activeIdx === 2) {
       timePeriod = "threeMonths";
     }
   }
@@ -142,7 +137,7 @@
                         class="text-start text-xl w-full flex flex-row items-center mb-3"
                       >
                         <span class="font-semibold">Trending Posts</span>
-                        <span class="text-sm sm:text-[1rem] ml-auto font-normal"
+                        <span class="text-sm ml-auto font-normal italic"
                           >Updated {formattedDate}</span
                         >
                       </div>
@@ -255,7 +250,7 @@
                 >
                   <span class="font-semibold">Trending Companies</span>
                   <span
-                    class="text-sm sm:text-[1rem] mt-2 sm:mt-0 sm:ml-auto font-normal"
+                    class="text-sm mt-2 sm:mt-0 sm:ml-auto font-normal italic"
                     >Updated {formattedDate}</span
                   >
                 </div>
