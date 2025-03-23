@@ -43,6 +43,7 @@
     "flowbite-svelte": "^0.46.15",
     "got": "^14.4.2",
     "html2canvas": "^1.4.1",
+    "html2canvas-pro": "^1.5.8",
     "jsonwebtoken": "^9.0.2",
     "katex": "^0.16.11",
     "lightweight-charts": "^4.1.3",

@@ -8,8 +8,14 @@
   import avatar from "$lib/images/trump-avatar.jpeg";
   import { mode } from "mode-watcher";
   import { goto } from "$app/navigation";
+  import html2canvas from "html2canvas-pro";
 
   export let data;
+
+  let postContent = "n/a";
+  let postDate = "n/a";
+  let postUrl = "#";
+  let postTitle = "n/a";
 
   const updatedSectorList = ["S&P500", ...sectorList];
 
@@ -198,6 +204,123 @@
 
   let config = null;
 
+  async function captureScreenshot(index) {
+    const postElement = document.querySelector(`#post-${index}`);
+
+    // Clone the element to avoid modifying the original
+    const clonedElement = postElement.cloneNode(true);
+
+    // Create a temporary container for the clone with fixed dimensions and styling
+    const tempContainer = document.createElement("div");
+    tempContainer.style.position = "absolute";
+    tempContainer.style.left = "-9999px";
+    tempContainer.style.top = "0";
+    tempContainer.appendChild(clonedElement);
+    document.body.appendChild(tempContainer);
+
+    // Force light mode styling explicitly
+    clonedElement.style.cssText =
+      "background-color: white !important; color: black !important;";
+
+    // Process all elements recursively to ensure text visibility
+    function forceVisibleText(element) {
+      // Apply styles directly
+      element.style.cssText +=
+        "; color: black !important; background-color: white !important; border-color: #ccc !important;";
+
+      // For SVG elements, ensure they're visible
+      if (
+        element.tagName.toLowerCase() === "svg" ||
+        element.tagName.toLowerCase() === "path"
+      ) {
+        element.style.cssText +=
+          "; fill: #333 !important; stroke: #333 !important;";
+      }
+
+      // Remove problematic classes completely instead of just removing dark: prefix
+      if (element.classList) {
+        const classesToRemove = [];
+        element.classList.forEach((cls) => {
+          if (
+            cls.includes("dark:") ||
+            cls.includes("text-gray") ||
+            cls.includes("text-white")
+          ) {
+            classesToRemove.push(cls);
+          }
+        });
+        classesToRemove.forEach((cls) => element.classList.remove(cls));
+
+        // Add explicit light mode classes
+        element.classList.add("text-black");
+      }
+
+      // Process all child elements
+      if (element.children && element.children.length > 0) {
+        Array.from(element.children).forEach((child) =>
+          forceVisibleText(child),
+        );
+      }
+    }
+
+    // Apply the text visibility fix to all elements
+    forceVisibleText(clonedElement);
+
+    // Additional specific fixes for elements that might still have issues
+    const allTextElements = clonedElement.querySelectorAll(
+      "p, h1, h2, h3, h4, h5, span, a, div, label",
+    );
+    allTextElements.forEach((el) => {
+      el.style.color = "black";
+      el.setAttribute(
+        "style",
+        el.getAttribute("style") + "; color: black !important;",
+      );
+    });
+
+    // Convert any CSS variables that might affect color
+    const computed = window.getComputedStyle(postElement);
+    const cssText =
+      ":root { --text-color: black !important; --background-color: white !important; }";
+    const style = document.createElement("style");
+    style.textContent = cssText;
+    clonedElement.appendChild(style);
+
+    // Wait a bit to ensure styles are applied
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    // Capture screenshot
+    try {
+      const canvas = await html2canvas(clonedElement, {
+        backgroundColor: "white",
+        logging: true, // Enable logging to help debug
+        scale: 2, // Higher quality
+        useCORS: true,
+        allowTaint: true,
+        removeContainer: false, // Handle cleanup ourselves
+      });
+
+      // Convert to image
+      const image = canvas.toDataURL("image/png");
+
+      // Create a download link
+      const link = document.createElement("a");
+      link.href = image;
+      link.download = `post-${index}.png`;
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up
+      document.body.removeChild(link);
+      document.body.removeChild(tempContainer);
+
+      return image;
+    } catch (error) {
+      console.error("Screenshot capture failed:", error);
+      document.body.removeChild(tempContainer);
+      throw error;
+    }
+  }
   $: {
     if (selectedSector || $mode) {
       config = plotData() || null;
@@ -271,7 +394,7 @@
                     class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                   >
                     <DropdownMenu.Label
-                      class="text-muted dark:text-muted dark:text-gray-400"
+                      class="text-muted dark:text-muted dark:text-gray-300"
                     >
                       Select Sector
                     </DropdownMenu.Label>
@@ -411,7 +534,9 @@
                               {/if}
                             </div>
 
-                            <span class="text-sm text-muted dark:text-gray-400">
+                            <span
+                              class="text-sm sm:text-[1rem] text-muted dark:text-gray-400"
+                            >
                               {item.time_formatted}
                               {item.location !== null
                                 ? `- ${item?.location}`
@@ -419,7 +544,7 @@
                             </span>
                           </div>
 
-                          <span class="text-sm ml-7">
+                          <span class="text-sm sm:text-[1rem] ml-7">
                             {item.details}
                           </span>
                         </div>
@@ -454,140 +579,112 @@
                       <br />
 
                       {#each items as item, indexB}
+                        <!-- Card container -->
                         <div
-                          class="flex flex-col items-start space-y-1 mb-6 border-b border-gray-300 dark:border-gray-800 pb-4"
+                          class="{indexB > 0
+                            ? 'my-4'
+                            : 'my-1'} p-4 rounded-lg border border-gray-300 dark:border-gray-700 shadow-sm bg-white dark:bg-[#111315]"
                         >
+                          <!-- Top row: avatar + user info -->
                           <div class="flex items-start space-x-3">
-                            <img
+                            <a
+                              href="https://truthsocial.com/@realDonaldTrump"
+                              target="_blank"
+                              rel="noopener noreferrer"
                               class="w-10 h-10 rounded-full shrink-0"
-                              src={avatar}
-                              alt="Avatar"
-                              loading="lazy"
-                            />
+                            >
+                              <img
+                                class="rounded-full"
+                                src={avatar}
+                                alt="Trump Image"
+                                loading="lazy"
+                              />
+                            </a>
 
-                            <div class="flex flex-col w-full">
-                              <h3 class=" font-semibold">
-                                {item?.title}
-                              </h3>
-
-                              <div
-                                class={`mt-1 px-3 py-1 rounded text-xs sm:text-sm text-white w-fit
-        ${
-          item?.sentiment === "Bullish"
-            ? "bg-emerald-500 "
-            : item?.sentiment === "Bearish"
-              ? "bg-red-600 "
-              : "bg-gray-200 text-black"
-        }`}
+                            <div class="flex flex-col items-start w-full">
+                              <h3
+                                class="font-semibold text-gray-900 dark:text-white"
                               >
-                                {item?.sentiment}
-                              </div>
+                                <span>Donald J. Trump</span>
+                              </h3>
+                              <h4
+                                class="text-sm text-gray-800 dark:text-gray-400"
+                              >
+                                <div>
+                                  {item?.title}
+                                  <!-- Sentiment badge -->
+                                  <div
+                                    class={`mt-2 px-3 py-1 rounded text-white text-xs sm:text-sm w-fit
+                ${
+                  item?.sentiment === "Bullish"
+                    ? "bg-emerald-500"
+                    : item?.sentiment === "Bearish"
+                      ? "bg-red-600"
+                      : "bg-yellow-500"
+                }`}
+                                  >
+                                    {item?.sentiment}
+                                  </div>
+                                </div>
+                              </h4>
                             </div>
                           </div>
 
-                          <span class="text-md ml-14 pt-2">
-                            {#if item.description.length > 150}
-                              {expandedDescriptions[item.title]
-                                ? item.description
-                                : truncateText(item.description)}
-                              <button
-                                on:click={() =>
-                                  (expandedDescriptions[item.title] =
-                                    !expandedDescriptions[item.title])}
-                                class="cursor-pointer text-blue-500 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white ml-1"
-                              >
-                                {expandedDescriptions[item.title]
-                                  ? "Read less"
-                                  : "Read more"}
-                              </button>
-                            {:else}
-                              {item.description}
-                            {/if}
-                          </span>
-
-                          <a
-                            href={item?.link}
-                            rel="noopener noreferrer"
-                            target="_blank"
-                            class="ml-14 inline-block text-sm hover:underline"
-                          >
-                            Source
-                            <svg
-                              class="w-4 h-4 sm:w-5 sm:h-5 -mt-0.5 inline-block"
-                              fill="#fff"
-                              viewBox="0 0 64 64"
-                              version="1.1"
-                              xmlns="http://www.w3.org/2000/svg"
-                              xmlns:xlink="http://www.w3.org/1999/xlink"
-                              xml:space="preserve"
-                              xmlns:serif="http://www.serif.com/"
-                              style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
-                              ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
-                                id="SVGRepo_tracerCarrier"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              ></g><g id="SVGRepo_iconCarrier">
-                                <rect
-                                  id="Icons"
-                                  x="-896"
-                                  y="0"
-                                  width="1280"
-                                  height="800"
-                                  style="fill:none;"
-                                ></rect>
-                                <g id="Icons1" serif:id="Icons">
-                                  <g id="Strike"> </g> <g id="H1"> </g>
-                                  <g id="H2"> </g> <g id="H3"> </g>
-                                  <g id="list-ul"> </g>
-                                  <g id="hamburger-1"> </g>
-                                  <g id="hamburger-2"> </g>
-                                  <g id="list-ol"> </g>
-                                  <g id="list-task"> </g> <g id="trash"> </g>
-                                  <g id="vertical-menu"> </g>
-                                  <g id="horizontal-menu"> </g>
-                                  <g id="sidebar-2"> </g> <g id="Pen"> </g>
-                                  <g id="Pen1" serif:id="Pen"> </g>
-                                  <g id="clock"> </g>
-                                  <g id="external-link">
-                                    <path
-                                      d="M36.026,20.058l-21.092,0c-1.65,0 -2.989,1.339 -2.989,2.989l0,25.964c0,1.65 1.339,2.989 2.989,2.989l26.024,0c1.65,0 2.989,-1.339 2.989,-2.989l0,-20.953l3.999,0l0,21.948c0,3.308 -2.686,5.994 -5.995,5.995l-28.01,0c-3.309,0 -5.995,-2.687 -5.995,-5.995l0,-27.954c0,-3.309 2.686,-5.995 5.995,-5.995l22.085,0l0,4.001Z"
-                                    ></path>
-                                    <path
-                                      d="M55.925,25.32l-4.005,0l0,-10.481l-27.894,27.893l-2.832,-2.832l27.895,-27.895l-10.484,0l0,-4.005l17.318,0l0.002,0.001l0,17.319Z"
-                                    ></path>
-                                  </g> <g id="hr"> </g> <g id="info"> </g>
-                                  <g id="warning"> </g>
-                                  <g id="plus-circle"> </g>
-                                  <g id="minus-circle"> </g> <g id="vue"> </g>
-                                  <g id="cog"> </g> <g id="logo"> </g>
-                                  <g id="radio-check"> </g>
-                                  <g id="eye-slash"> </g> <g id="eye"> </g>
-                                  <g id="toggle-off"> </g>
-                                  <g id="shredder"> </g>
-                                  <g
-                                    id="spinner--loading--dots-"
-                                    serif:id="spinner [loading, dots]"
-                                  >
-                                  </g> <g id="react"> </g>
-                                  <g id="check-selected"> </g>
-                                  <g id="turn-off"> </g>
-                                  <g id="code-block"> </g>
-                                  <g id="user"> </g> <g id="coffee-bean"> </g>
-                                  <g id="coffee-beans">
-                                    <g id="coffee-bean1" serif:id="coffee-bean">
-                                    </g>
-                                  </g> <g id="coffee-bean-filled"> </g>
-                                  <g id="coffee-beans-filled">
-                                    <g id="coffee-bean2" serif:id="coffee-bean">
-                                    </g>
-                                  </g> <g id="clipboard"> </g>
-                                  <g id="clipboard-paste"> </g>
-                                  <g id="clipboard-copy"> </g>
-                                  <g id="Layer1"> </g>
-                                </g>
-                              </g></svg
+                          <!-- Description -->
+                          <div class="mt-2 w-full">
+                            <span
+                              class="text-md text-gray-800 dark:text-gray-300"
                             >
-                          </a>
+                              {item?.description?.length > 300
+                                ? item?.description?.slice(0, 300) + "..."
+                                : item?.description}
+                            </span>
+                          </div>
+
+                          <div
+                            class="border-b border-gray-300 dark:border-gray-800 mt-4 mb-4"
+                          ></div>
+
+                          <!-- Source link -->
+                          <div class="flex flex-row items-center w-full">
+                            <a
+                              href={item?.link}
+                              rel="noopener noreferrer"
+                              target="_blank"
+                            >
+                              <svg
+                                class="w-5 h-5 text-gray-600 dark:text-gray-300"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                ><g id="SVGRepo_bgCarrier" stroke-width="0"
+                                ></g><g
+                                  id="SVGRepo_tracerCarrier"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                ></g><g id="SVGRepo_iconCarrier">
+                                  <path
+                                    d="M14 12C14 14.7614 11.7614 17 9 17H7C4.23858 17 2 14.7614 2 12C2 9.23858 4.23858 7 7 7H7.5M10 12C10 9.23858 12.2386 7 15 7H17C19.7614 7 22 9.23858 22 12C22 14.7614 19.7614 17 17 17H16.5"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                  ></path>
+                                </g></svg
+                              >
+                            </a>
+                            <label
+                              for="executivePostModal"
+                              on:click={() => {
+                                postTitle = item?.title;
+                                postContent = item?.description;
+                                postDate = item?.date;
+                                postUrl = item?.link;
+                              }}
+                              class=" cursor-pointer bg-blue-600 text-white rounded px-3 py-1.5 text-sm font-semibold sm:hover:bg-blue-700 ml-auto"
+                            >
+                              Read More
+                            </label>
+                          </div>
                         </div>
                       {/each}
                     </div>
@@ -618,137 +715,148 @@
               <div
                 class="border border-gray-300 dark:border-gray-800 rounded-md p-4"
               >
-                <div class="space-y-4">
-                  {#each posts as item}
-                    <div class="my-4">
-                      <div
-                        class="flex flex-col items-start space-y-1 mb-6 border-b border-gray-300 dark:border-gray-800 pb-4"
-                      >
-                        <div class="flex items-start space-x-3">
-                          <a
-                            rel="noopener noreferrer"
-                            target="_blank"
-                            href="https://truthsocial.com/@realDonaldTrump"
-                            class="avatar w-10 h-10 rounded-full shrink-0"
-                          >
-                            <img
-                              class="rounded-full"
-                              src={avatar}
-                              alt="Avatar"
-                              loading="lazy"
-                            /></a
-                          >
-
-                          <div class="flex flex-col items-start w-full">
-                            <h3 class=" font-semibold">
-                              <a
-                                rel="noopener noreferrer"
-                                target="_blank"
-                                href="https://truthsocial.com/@realDonaldTrump"
-                                class="sm:hover:text-blue-400"
-                                >Donald J. Trump</a
-                              >
-                            </h3>
-                            <h4 class="text-sm text-muted dark:text-gray-400">
-                              <a
-                                rel="noopener noreferrer"
-                                target="_blank"
-                                href="https://truthsocial.com/@realDonaldTrump"
-                                class="sm:hover:text-blue-400"
-                                >@realDonaldTrump</a
-                              >
-                              &#183; {item?.date}
-                            </h4>
-                          </div>
-                        </div>
-
-                        <span class="text-md ml-12">
-                          {item?.content}
-                        </span>
-
+                <div class="">
+                  {#each posts as item, index}
+                    <div
+                      id="post-{index}"
+                      class="{index >= 1
+                        ? 'my-4'
+                        : 'my-1'} p-4 rounded-lg border border-gray-100 dark:border-gray-700 shadow-sm bg-gray-100 dark:bg-[#111315]"
+                    >
+                      <div class="flex items-start space-x-3">
                         <a
-                          href={item?.source}
-                          rel="noopener noreferrer"
+                          href="https://truthsocial.com/@realDonaldTrump"
                           target="_blank"
-                          class="ml-12 pt-5 inline-block text-sm sm:hover:underline"
+                          rel="noopener noreferrer"
+                          class="w-10 h-10 rounded-full shrink-0"
                         >
-                          Original Post
+                          <img
+                            class="rounded-full"
+                            src={avatar}
+                            alt="Trump Image"
+                            loading="lazy"
+                          />
+                        </a>
+
+                        <div class="flex flex-col items-start w-full">
+                          <h3
+                            class="font-semibold text-gray-900 dark:text-white"
+                          >
+                            <a
+                              href="https://truthsocial.com/@realDonaldTrump"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              class="hover:text-blue-500"
+                            >
+                              Donald J. Trump
+                            </a>
+                          </h3>
+                          <h4 class="text-sm text-gray-500 dark:text-gray-400">
+                            <a
+                              href="https://truthsocial.com/@realDonaldTrump"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              class="hover:text-blue-500"
+                            >
+                              @realDonaldTrump
+                            </a>
+                          </h4>
+                        </div>
+                      </div>
+
+                      <p class="text-md text-gray-800 dark:text-white mt-2">
+                        {item?.content?.length > 400
+                          ? item?.content?.slice(0, 400) + "..."
+                          : item?.content}
+                      </p>
+
+                      <div
+                        class="border-b border-gray-300 dark:border-gray-800 mt-4"
+                      >
+                        <span
+                          class="text-gray-600 dark:text-gray-300 mb-4 text-sm"
+                          >{item?.date}</span
+                        >
+                      </div>
+                      <div class="flex flex-row items-center mt-4 w-full">
+                        <!--
+                        <label
+                          on:click={() => captureScreenshot(index)}
+                          class="cursor-pointer"
+                        >
                           <svg
-                            class="w-4 h-4 sm:w-5 sm:h-5 -mt-0.5 inline-block"
-                            fill="currentColor"
-                            viewBox="0 0 64 64"
+                            class="w-4 h-4 mr-4 text-gray-400"
+                            viewBox="0 -2 32 32"
                             version="1.1"
                             xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink"
-                            xml:space="preserve"
-                            xmlns:serif="http://www.serif.com/"
-                            style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+                            xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"
+                            fill="#ffffff"
                             ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
                               id="SVGRepo_tracerCarrier"
                               stroke-linecap="round"
                               stroke-linejoin="round"
                             ></g><g id="SVGRepo_iconCarrier">
-                              <rect
-                                id="Icons"
-                                x="-896"
-                                y="0"
-                                width="1280"
-                                height="800"
-                                style="fill:none;"
-                              ></rect>
-                              <g id="Icons1" serif:id="Icons">
-                                <g id="Strike"> </g> <g id="H1"> </g>
-                                <g id="H2"> </g> <g id="H3"> </g>
-                                <g id="list-ul"> </g>
-                                <g id="hamburger-1"> </g>
-                                <g id="hamburger-2"> </g>
-                                <g id="list-ol"> </g>
-                                <g id="list-task"> </g> <g id="trash"> </g>
-                                <g id="vertical-menu"> </g>
-                                <g id="horizontal-menu"> </g>
-                                <g id="sidebar-2"> </g> <g id="Pen"> </g>
-                                <g id="Pen1" serif:id="Pen"> </g>
-                                <g id="clock"> </g>
-                                <g id="external-link">
-                                  <path
-                                    d="M36.026,20.058l-21.092,0c-1.65,0 -2.989,1.339 -2.989,2.989l0,25.964c0,1.65 1.339,2.989 2.989,2.989l26.024,0c1.65,0 2.989,-1.339 2.989,-2.989l0,-20.953l3.999,0l0,21.948c0,3.308 -2.686,5.994 -5.995,5.995l-28.01,0c-3.309,0 -5.995,-2.687 -5.995,-5.995l0,-27.954c0,-3.309 2.686,-5.995 5.995,-5.995l22.085,0l0,4.001Z"
-                                  ></path>
-                                  <path
-                                    d="M55.925,25.32l-4.005,0l0,-10.481l-27.894,27.893l-2.832,-2.832l27.895,-27.895l-10.484,0l0,-4.005l17.318,0l0.002,0.001l0,17.319Z"
-                                  ></path>
-                                </g> <g id="hr"> </g> <g id="info"> </g>
-                                <g id="warning"> </g>
-                                <g id="plus-circle"> </g>
-                                <g id="minus-circle"> </g> <g id="vue"> </g>
-                                <g id="cog"> </g> <g id="logo"> </g>
-                                <g id="radio-check"> </g>
-                                <g id="eye-slash"> </g> <g id="eye"> </g>
-                                <g id="toggle-off"> </g>
-                                <g id="shredder"> </g>
+                              <title>camera</title>
+                              <desc>Created with Sketch Beta.</desc>
+                              <defs> </defs>
+                              <g
+                                id="Page-1"
+                                stroke="none"
+                                stroke-width="1"
+                                fill="none"
+                                fill-rule="evenodd"
+                                sketch:type="MSPage"
+                              >
                                 <g
-                                  id="spinner--loading--dots-"
-                                  serif:id="spinner [loading, dots]"
+                                  id="Icon-Set"
+                                  sketch:type="MSLayerGroup"
+                                  transform="translate(-256.000000, -465.000000)"
+                                  fill="#000000"
                                 >
-                                </g> <g id="react"> </g>
-                                <g id="check-selected"> </g>
-                                <g id="turn-off"> </g>
-                                <g id="code-block"> </g>
-                                <g id="user"> </g> <g id="coffee-bean"> </g>
-                                <g id="coffee-beans">
-                                  <g id="coffee-bean1" serif:id="coffee-bean">
-                                  </g>
-                                </g> <g id="coffee-bean-filled"> </g>
-                                <g id="coffee-beans-filled">
-                                  <g id="coffee-bean2" serif:id="coffee-bean">
-                                  </g>
-                                </g> <g id="clipboard"> </g>
-                                <g id="clipboard-paste"> </g>
-                                <g id="clipboard-copy"> </g>
-                                <g id="Layer1"> </g>
+                                  <path
+                                    d="M272,487 C268.687,487 266,484.313 266,481 C266,477.687 268.687,475 272,475 C275.313,475 278,477.687 278,481 C278,484.313 275.313,487 272,487 L272,487 Z M272,473 C267.582,473 264,476.582 264,481 C264,485.418 267.582,489 272,489 C276.418,489 280,485.418 280,481 C280,476.582 276.418,473 272,473 L272,473 Z M286,489 C286,490.104 285.104,491 284,491 L260,491 C258.896,491 258,490.104 258,489 L258,473 C258,471.896 258.896,471 260,471 L264,471 L265,469 C265.707,467.837 265.896,467 267,467 L277,467 C278.104,467 278.293,467.837 279,469 L280,471 L284,471 C285.104,471 286,471.896 286,473 L286,489 L286,489 Z M284,469 L281,469 L280,467 C279.411,465.837 279.104,465 278,465 L266,465 C264.896,465 264.53,465.954 264,467 L263,469 L260,469 C257.791,469 256,470.791 256,473 L256,489 C256,491.209 257.791,493 260,493 L284,493 C286.209,493 288,491.209 288,489 L288,473 C288,470.791 286.209,469 284,469 L284,469 Z"
+                                    id="camera"
+                                    sketch:type="MSShapeGroup"
+                                  >
+                                  </path>
+                                </g>
                               </g>
                             </g></svg
                           >
-                        </a>
+                        </label>
+                       
+                        <label>
+                          <svg
+                            class="w-5 h-5 text-gray-600"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+                              id="SVGRepo_tracerCarrier"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></g><g id="SVGRepo_iconCarrier">
+                              <path
+                                d="M14 12C14 14.7614 11.7614 17 9 17H7C4.23858 17 2 14.7614 2 12C2 9.23858 4.23858 7 7 7H7.5M10 12C10 9.23858 12.2386 7 15 7H17C19.7614 7 22 9.23858 22 12C22 14.7614 19.7614 17 17 17H16.5"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                              ></path>
+                            </g></svg
+                          >
+                        </label>
+                         -->
+                        <label
+                          for="socialPostModal"
+                          on:click={() => {
+                            postContent = item?.content;
+                            postDate = item?.date;
+                          }}
+                          class="cursor-pointer bg-blue-600 text-white rounded px-3 py-1.5 text-sm font-semibold sm:hover:bg-blue-700 ml-auto"
+                        >
+                          Read More
+                        </label>
                       </div>
                     </div>
                   {/each}
@@ -818,20 +926,146 @@
   </div>
 </section>
 
-<style>
-  .app {
-    height: 500px;
-    width: 100%;
-  }
+<input type="checkbox" id="executivePostModal" class="modal-toggle" />
 
-  @media (max-width: 560px) {
-    .app {
-      width: 100%;
-      height: 300px;
-    }
-  }
+<dialog id="executivePostModal" class="modal modal-bottom sm:modal-middle">
+  <label
+    for="executivePostModal"
+    class="cursor-pointer modal-backdrop bg-[#000]/40"
+  ></label>
 
-  .chart {
-    width: 100%;
-  }
-</style>
+  <div
+    class="modal-box w-full max-w-sm p-6 rounded-lg shadow-lg border
+        bg-white dark:bg-secondary border border-gray-600 dark:border-gray-800"
+    style="opacity: 1; transform: none;"
+  >
+    <div class="flex items-start space-x-3">
+      <span class="w-10 h-10 rounded-full shrink-0">
+        <img
+          class="rounded-full"
+          src={avatar}
+          alt="Trump Image"
+          loading="lazy"
+        />
+      </span>
+
+      <div class="flex flex-col items-start w-full">
+        <h3 class="font-semibold text-gray-900 dark:text-white">
+          <a
+            href="https://truthsocial.com/@realDonaldTrump"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-blue-500"
+          >
+            Donald J. Trump
+          </a>
+        </h3>
+        <h4 class="text-sm text-gray-800 dark:text-gray-400">{postTitle}</h4>
+      </div>
+    </div>
+
+    <p class="text-sm mb-4 mt-4">
+      {postContent}
+    </p>
+
+    <div class="border-b border-gray-300 dark:border-gray-600">
+      <span class="text-gray-600 dark:text-gray-300 mb-4 text-sm"
+        >{new Date(postDate ?? null)?.toLocaleString("en-US", {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        })}</span
+      >
+    </div>
+
+    <div class="flex justify-end space-x-3 mt-5">
+      <label
+        for="executivePostModal"
+        class="cursor-pointer px-4 py-2 rounded-lg text-sm font-medium
+            bg-blue-600 text-white sm:hover:bg-blue-700"
+        tabindex="0">Close</label
+      >
+      <a
+        href={postUrl}
+        rel="noopener noreferrer"
+        target="_blank"
+        class="cursor-pointer px-4 py-2 rounded-lg text-sm font-medium
+            bg-blue-600 text-white sm:hover:bg-blue-700"
+        tabindex="0">Read Source</a
+      >
+    </div>
+  </div>
+</dialog>
+
+<input type="checkbox" id="socialPostModal" class="modal-toggle" />
+
+<dialog id="socialPostModal" class="modal modal-bottom sm:modal-middle">
+  <label
+    for="socialPostModal"
+    class="cursor-pointer modal-backdrop bg-[#000]/40"
+  ></label>
+
+  <div
+    class="modal-box w-full max-w-sm p-6 rounded-lg shadow-lg border
+        bg-white dark:bg-secondary border border-gray-600 dark:border-gray-800"
+    style="opacity: 1; transform: none;"
+  >
+    <div class="flex items-start space-x-3">
+      <a
+        href="https://truthsocial.com/@realDonaldTrump"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="w-10 h-10 rounded-full shrink-0"
+      >
+        <img
+          class="rounded-full"
+          src={avatar}
+          alt="Trump Image"
+          loading="lazy"
+        />
+      </a>
+
+      <div class="flex flex-col items-start w-full">
+        <h3 class="font-semibold text-gray-900 dark:text-white">
+          <a
+            href="https://truthsocial.com/@realDonaldTrump"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-blue-500"
+          >
+            Donald J. Trump
+          </a>
+        </h3>
+        <h4 class="text-sm text-gray-500 dark:text-gray-400">
+          <a
+            href="https://truthsocial.com/@realDonaldTrump"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-blue-500"
+          >
+            @realDonaldTrump
+          </a>
+        </h4>
+      </div>
+    </div>
+
+    <p class="text-sm mb-4 mt-4">
+      {postContent}
+    </p>
+
+    <div class="border-b border-gray-300 dark:border-gray-600">
+      <span class="text-gray-600 dark:text-gray-300 mb-4 text-sm"
+        >{postDate}</span
+      >
+    </div>
+
+    <div class="flex justify-end space-x-3 mt-5">
+      <label
+        for="socialPostModal"
+        class="cursor-pointer px-4 py-2 rounded-lg text-sm font-medium
+            bg-blue-600 text-white sm:hover:bg-blue-700"
+        tabindex="0">Close</label
+      >
+    </div>
+  </div>
+</dialog>
