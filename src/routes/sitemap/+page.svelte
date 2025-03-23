@@ -182,6 +182,10 @@
       link: "/data-disclaimer",
     },
     {
+      title: "FAQ",
+      link: "/faq",
+    },
+    {
       title: "Advertise with Us",
       link: "/advertise",
     },
@@ -290,16 +294,18 @@
                   <ul
                     class="list-outside list-disc space-y-1 p-1 pl-6 md:gap-x-8 md:text-lg"
                   >
-                    {#each data?.getBlogPosts as item}
-                      {#if item?.category === "term"}
-                        <li>
-                          <a
-                            href={"/blog/article/" + convertToSlug(item?.title)}
-                            class="sm:hover:underline sm:hover:underline-offset-4"
-                            title={`Visit ${item?.title} page`}>{item?.title}</a
-                          >
-                        </li>
-                      {/if}
+                    {#each data?.getBlogPosts
+                      ?.filter((item) => item?.category === "term")
+                      ?.sort( (a, b) => a?.title?.localeCompare(b?.title), ) as item}
+                      <li>
+                        <a
+                          href={"/blog/article/" + convertToSlug(item?.title)}
+                          class="sm:hover:underline sm:hover:underline-offset-4"
+                          title={`Visit ${item?.title} page`}
+                        >
+                          {item?.title}
+                        </a>
+                      </li>
                     {/each}
                   </ul>
                 </nav>

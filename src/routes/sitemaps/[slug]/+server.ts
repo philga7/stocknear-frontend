@@ -70,6 +70,7 @@ const pages = [
   { title: "/market-flow/sector-flow" },
   { title: "/affiliate-program" },
   { title: "/dark-pool-flow" },
+  { title: "/faq" },
 ];
 
 const N = 100; // Change this value as needed

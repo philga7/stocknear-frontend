@@ -150,6 +150,13 @@
               >Support Us ❤</a
             >
           </li>
+          <li class="mt-2 inline-block mr-2 md:block md:mr-0">
+            <a
+              href="/faq"
+              class="no-underline sm:hover:underline text-gray-300 sm:hover:text-white dark:text-gray-100 dark:sm:hover:text-blue-400"
+              >FAQ</a
+            >
+          </li>
         </ul>
       </div>
 
