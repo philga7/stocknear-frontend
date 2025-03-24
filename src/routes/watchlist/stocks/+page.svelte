@@ -29,6 +29,7 @@
   let searchQuery = "";
   let switchWatchlist = false;
   let editMode = false;
+  let realtimeUpdates = true;
   let numberOfChecked = 0;
   let activeIdx = 0;
   let rawTabData = [];
@@ -1046,6 +1047,38 @@
     // Sort and update the originalData and stockList
     watchList = [...originalData].sort(compareValues)?.slice(0, 50);
   };
+
+  async function downloadHistoricalData() {
+    const tickers = watchList?.map((item) => item?.symbol); // example tickers
+    if (data?.user?.credits > tickers?.length && tickers?.length > 0) {
+      data.user.credits = data?.user?.credits - tickers?.length;
+      const response = await fetch("/api/bulk-download", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tickers }),
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "historical_data.zip";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      }
+    } else if (tickers?.length === 0) {
+      toast.error("Add tickers first to your watchlist", {
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
+      });
+    } else {
+      toast.error("Not enough credits", {
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
+      });
+    }
+  }
 </script>
 
 <SEO
@@ -1064,7 +1097,7 @@
         <main class="w-full">
           {#if isLoaded}
             <div
-              class="flex w-full sm:w-[50%] md:w-auto mb-10 {!data?.user
+              class="flex w-full sm:w-[50%] md:w-auto mb-5 {!data?.user
                 ? 'hidden'
                 : 'md:block'}"
             >
@@ -1107,27 +1140,33 @@
                     <DropdownMenu.Content
                       class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                     >
-                      <DropdownMenu.Label class="text-gray-400">
+                      <DropdownMenu.Label>
                         <DropdownMenu.Trigger asChild let:builder>
                           <Button
-                            on:click={handleWatchlistModal}
                             builders={[builder]}
-                            class="p-0 -mb-2 -mt-2 text-sm inline-flex cursor-pointer items-center justify-center space-x-1 bg-white dark:bg-default whitespace-nowrap  focus:outline-hidden sm:text-smaller"
+                            class="p-0 -mb-2 -mt-2 text-sm inline-flex cursor-pointer items-center justify-center space-x-1 bg-white dark:bg-default whitespace-nowrap focus:outline-hidden"
                           >
-                            <svg
-                              class="h-4 w-4"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                              style="max-width:40px"
-                              aria-hidden="true"
+                            <label
+                              for="addWatchlist"
+                              class="flex flex-row items-center cursor-pointer"
                             >
-                              <path
-                                fill-rule="evenodd"
-                                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                                clip-rule="evenodd"
-                              ></path>
-                            </svg>
-                            <div class="text-sm text-start">New Watchlist</div>
+                              <svg
+                                class="h-4 w-4 mr-1"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                                style="max-width:40px"
+                                aria-hidden="true"
+                              >
+                                <path
+                                  fill-rule="evenodd"
+                                  d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                                  clip-rule="evenodd"
+                                ></path>
+                              </svg>
+                              <div class="text-sm text-start">
+                                New Watchlist
+                              </div>
+                            </label>
                           </Button>
                         </DropdownMenu.Trigger>
                       </DropdownMenu.Label>
@@ -1255,7 +1294,7 @@
                       </div>
                       <Combobox.Input
                         on:input={search}
-                        class="text-sm sm:text-[1rem] controls-input shadow-sm focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:/80 px-3 py-2 pl-8 xs:pl-10 grow w-full sm:min-w-56 max-w-xs"
+                        class="text-sm sm:text-[1rem] controls-input shadow-sm focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-3 py-2 pl-8 xs:pl-10 grow w-full sm:min-w-56 max-w-xs"
                         placeholder="Add new stock"
                         aria-label="Add new stock"
                       />
@@ -1294,7 +1333,7 @@
                 </div>
 
                 <div
-                  class="order-0 sm:order-4 w-full {displayWatchList?.title ===
+                  class="order-0 sm:order-4 w-full sm:mr-3 {displayWatchList?.title ===
                   undefined
                     ? 'hidden'
                     : ''}"
@@ -1459,6 +1498,87 @@
                           Select All
                         </label>
                       </div>
+                    </DropdownMenu.Content>
+                  </DropdownMenu.Root>
+                </div>
+
+                <div
+                  class="order-3 sm:order-last {displayWatchList?.title ===
+                  undefined
+                    ? 'hidden'
+                    : ''}"
+                >
+                  <DropdownMenu.Root>
+                    <DropdownMenu.Trigger asChild let:builder>
+                      <Button
+                        builders={[builder]}
+                        class="shadow-sm min-w-[110px] w-full sm:w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5  rounded truncate"
+                      >
+                        <span class="truncate text-sm sm:text-[1rem]"
+                          >Options</span
+                        >
+                        <svg
+                          class="-mr-1 ml-2 h-5 w-5 inline-block"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          style="max-width:40px"
+                          aria-hidden="true"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clip-rule="evenodd"
+                          ></path>
+                        </svg>
+                      </Button>
+                    </DropdownMenu.Trigger>
+
+                    <DropdownMenu.Content
+                      class="w-auto max-w-60 max-h-[400px] overflow-y-auto scroller relative"
+                    >
+                      <!-- Dropdown items -->
+                      <DropdownMenu.Group class="pb-2">
+                        <!-- Added padding to avoid overlapping with Reset button -->
+                        <DropdownMenu.Item
+                          class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer mt-2"
+                        >
+                          <button
+                            on:click={downloadHistoricalData}
+                            class="flex items-center cursor-pointer"
+                          >
+                            Bulk Download <span class="ml-2 text-xs"
+                              >({data?.user?.credits} Credits left)</span
+                            >
+                          </button>
+                        </DropdownMenu.Item>
+                        <DropdownMenu.Item
+                          class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary"
+                        >
+                          <label
+                            on:click|capture={(event) => {
+                              event.preventDefault();
+                              realtimeUpdates = !realtimeUpdates;
+                            }}
+                            class="inline-flex justify-between w-full items-center cursor-pointer"
+                          >
+                            <span class="mr-2 text-sm">Realtime Updates</span>
+                            <div class="relative ml-auto">
+                              <input
+                                type="checkbox"
+                                bind:checked={realtimeUpdates}
+                                class="sr-only peer"
+                              />
+                              <div
+                                class="w-9 h-5 bg-gray-400 rounded-full peer peer-checked:bg-blue-600
+      after:content-[''] after:absolute after:top-0.5 after:left-[2px]
+      after:bg-white after:border-gray-300 after:border
+      after:rounded-full after:h-4 after:w-4 after:transition-all
+      peer-checked:after:translate-x-full"
+                              ></div>
+                            </div></label
+                          >
+                        </DropdownMenu.Item>
+                      </DropdownMenu.Group>
                     </DropdownMenu.Content>
                   </DropdownMenu.Root>
                 </div>
@@ -1630,7 +1750,8 @@
                                           >{item[row?.rule]}</span
                                         >
                                       {:else if item[row?.rule] === "Hold"}
-                                        <span class="text-[#FFA838]"
+                                        <span
+                                          class="text-orange-700 dark:text-[#FFA838]"
                                           >{item[row?.rule]}</span
                                         >
                                       {/if}
