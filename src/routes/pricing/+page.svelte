@@ -259,6 +259,21 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
+            ><span class="">10 Bulk Download Credits</span>
+          </li>
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path></svg
             ><span class="">Realtime Notification</span>
           </li>
 
@@ -744,6 +759,21 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
+            ><span class="">500 Bulk Download Credits</span>
+          </li>
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path></svg
             ><span class="">Realtime Notification</span>
           </li>
 
@@ -983,6 +1013,22 @@
                 d="M5 13l4 4L19 7"
               ></path></svg
             ><span class="">Everything in Plus and ...</span>
+          </li>
+
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path></svg
+            ><span class="">1,000 Bulk Download Credits</span>
           </li>
 
           <li class="flex items-start">
@@ -1251,6 +1297,13 @@
                 <td class="py-2 md:py-3 text-center">Unlimited</td>
               </tr>
               <tr>
+                <td class="py-2 md:py-3">No. of Bulk Downloads</td><td
+                  class="py-2 md:py-3 text-center">10</td
+                >
+                <td class="py-2 md:py-3 text-center">500</td>
+                <td class="py-2 md:py-3 text-center">1,000</td>
+              </tr>
+              <tr>
                 <td class="py-2 md:py-3">No. of Price Alerts</td>
                 <td class="py-2 md:py-3 text-center">3</td>
                 <td class="py-2 md:py-3 text-center">Unlimited</td>
@@ -1304,6 +1357,29 @@
                     price. We also offer proprietary AI models for accurate
                     forecasting and timely alerts, all within a single, unified
                     platform.
+                  </p>
+                </div>
+              </details>
+            </li>
+
+            <li>
+              <details class="collapse collapse-arrow">
+                <summary
+                  class="font-semibold collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
+                >
+                  What is a Credit and How Can I Use It?
+                </summary>
+                <div class="collapse-content">
+                  <p
+                    class="text-sm sm:text-[1rem] pb-5 dark:text-gray-200 transition-all duration-300 ease-in-out"
+                  >
+                    Your monthly credit allows you to download historical price
+                    data in bulk for all the companies in your watchlist. In the
+                    future, you’ll be able to download a wide range of financial
+                    data in bulk as well. Each company download costs one
+                    credit. For example, in the Plus Tier you can download data
+                    for up to 500 companies per month, while the Pro Tier lets
+                    you download data for up to 1,000 companies.
                   </p>
                 </div>
               </details>
