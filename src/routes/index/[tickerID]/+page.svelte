@@ -38,10 +38,7 @@
   function plotData(priceData) {
     const rawData = priceData || [];
 
-    const change =
-      (rawData?.at(-1)?.close / ($realtimePrice ?? data?.getStockQuote?.price) -
-        1) *
-      100;
+    const change = (rawData?.at(-1)?.close / rawData?.at(0)?.close - 1) * 100;
 
     const priceList = rawData?.map((item) => item?.close);
     const dateList = rawData?.map((item) =>
@@ -70,9 +67,10 @@
     let minValue = Math?.min(...rawData?.map((item) => item?.close));
     let maxValue = Math?.max(...rawData?.map((item) => item?.close));
 
-    if (minValue - 0 < 1 && displayData === "1D") {
+    if (displayData === "1D") {
       //don't delete this sometimes 1D can't find minValue
       minValue = data?.getStockQuote?.dayLow;
+      maxValue = data?.getStockQuote?.dayHigh;
     }
 
     let padding = 0.015;
@@ -84,13 +82,17 @@
         ? data?.getStockQuote?.changesPercentage < 0
         : change < 0;
 
-    const lineColor = isNegative ? "#CC261A" : "#00FC50";
+    const lineColor = isNegative
+      ? "#CC261A"
+      : $mode === "light"
+        ? "#047857"
+        : "#00FC50";
     const fillColorStart = isNegative
       ? "rgba(204, 38, 26, 0.3)"
-      : "rgba(0, 252, 80, 0.3)";
+      : "rgb(4, 120, 87, 0.3)"; //"rgba(0, 252, 80, 0.3)";
     const fillColorEnd = isNegative
       ? "rgba(204, 38, 26, 0.004)"
-      : "rgba(0, 252, 80, 0.004)";
+      : "rgb(4, 120, 87, 0.004)"; //"rgba(0, 252, 80, 0.004)";
 
     const baseDate =
       rawData && rawData?.length ? new Date(rawData?.at(0)?.time) : new Date();
@@ -113,8 +115,9 @@
 
     const options = {
       chart: {
-        backgroundColor: "#09090B",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
         height: 360,
+        animation: false,
         events: {
           // Add touch event handling to hide tooltip on mobile
           load: function () {
@@ -149,7 +152,7 @@
         borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
         borderWidth: 1,
         style: {
-          color: "#fff",
+          color: $mode === "light" ? "black" : "white",
           fontSize: "16px",
           padding: "10px",
         },
@@ -200,12 +203,12 @@
         tickLength: 0,
         categories: displayData === "1D" ? null : dateList,
         crosshair: {
-          color: "#fff",
+          color: $mode === "light" ? "black" : "white",
           width: 1,
           dashStyle: "Solid",
         },
         labels: {
-          style: { color: "#fff" },
+          style: { color: $mode === "light" ? "black" : "white" },
           distance: 20,
           formatter: function () {
             const date = new Date(this?.value);
@@ -250,10 +253,10 @@
         startOnTick: false,
         endOnTick: false,
         gridLineWidth: 1,
-        gridLineColor: "#111827",
+        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
         title: { text: null },
         labels: {
-          style: { color: "white" },
+          style: { color: $mode === "light" ? "black" : "white" },
         },
         opposite: true,
         // Add a dashed plot line at the previous close value
