@@ -35,8 +35,8 @@
 
           <div class="w-full m-auto">
             <div>
-              <h2 class="mb-1 text-2xl sm:text-3xl font-bold">
-                Is there a guide on how to use Stocknear’s features?
+              <h2 class="mb-1 text-xl sm:text-2xl font-bold">
+                1. Is there a guide on how to use Stocknear’s features?
               </h2>
               <p class="mb-10 mt-5 text-[1rem] sm:text-lg">
                 Yes! We've created the
@@ -49,16 +49,16 @@
                 so check back often for new content.
               </p>
 
-              <h2 class="mb-1 text-2xl sm:text-3xl font-bold">
-                How long does it take to see earnings releases?
+              <h2 class="mb-1 text-xl sm:text-2xl font-bold">
+                2. How long does it take to see earnings releases?
               </h2>
               <p class="mb-10 mt-5 text-[1rem] sm:text-lg">
                 Earnings reports are available on Stocknear within 1-5 minutes
                 after they go live.
               </p>
 
-              <h2 class="mb-1 text-2xl sm:text-3xl font-bold">
-                Why is your data different from other finance sites?
+              <h2 class="mb-1 text-xl sm:text-2xl font-bold">
+                3. Why is your data different from other finance sites?
               </h2>
               <p class="mb-10 mt-5 text-[1rem] sm:text-lg">
                 Like other platforms, we source data from third-party providers.
@@ -78,8 +78,8 @@
                 >.
               </p>
 
-              <h2 class="mb-1 text-2xl sm:text-3xl font-bold">
-                Is the options data real-time or delayed?
+              <h2 class="mb-1 text-xl sm:text-2xl font-bold">
+                4. Is the Options data real-time or delayed?
               </h2>
               <p class="mb-10 mt-5 text-[1rem] sm:text-lg">
                 Our <a
@@ -89,8 +89,9 @@
                 > feature provides real-time options data from Benzinga without delays.
               </p>
 
-              <h2 class="mb-1 text-2xl sm:text-3xl font-bold">
-                Why do other platforms show options data that Stocknear doesn’t?
+              <h2 class="mb-1 text-xl sm:text-2xl font-bold">
+                5. Why do other platforms show options data that Stocknear
+                doesn’t?
               </h2>
               <p class="mb-10 mt-5 text-[1rem] sm:text-lg">
                 We focus on unusual options activity from hedge funds and
@@ -98,8 +99,8 @@
                 eliminate noise and highlight significant market moves.
               </p>
 
-              <h2 class="mb-1 text-2xl sm:text-3xl font-bold">
-                Is Dark Pool data real-time or delayed?
+              <h2 class="mb-1 text-xl sm:text-2xl font-bold">
+                6. Is Dark Pool data real-time or delayed?
               </h2>
               <p class="mb-10 mt-5 text-[1rem] sm:text-lg">
                 Dark Pool data is delayed by 15 minutes. We partner with major
@@ -107,8 +108,8 @@
                 reserved for institutional traders.
               </p>
 
-              <h2 class="mb-1 text-2xl sm:text-3xl font-bold">
-                I found an error in the data. What should I do?
+              <h2 class="mb-1 text-xl sm:text-2xl font-bold">
+                7. I found an error in the data. What should I do?
               </h2>
               <p class="mb-10 mt-5 text-[1rem] sm:text-lg">
                 Please email <a
@@ -122,8 +123,8 @@
                 providers to ensure corrections are made at the source.
               </p>
 
-              <h2 class="mb-1 text-2xl sm:text-3xl font-bold">
-                Can I request new features? How can I contact you?
+              <h2 class="mb-1 text-xl sm:text-2xl font-bold">
+                8. Can I request new features? How can I contact you?
               </h2>
               <p class="mb-10 mt-5 text-[1rem] sm:text-lg">
                 Absolutely! Email us or join our <a
@@ -136,8 +137,8 @@
                 ideas to improve the platform.
               </p>
 
-              <h2 class="mb-1 text-2xl sm:text-3xl font-bold">
-                Do you offer an API?
+              <h2 class="mb-1 text-xl sm:text-2xl font-bold">
+                9. Do you offer an API?
               </h2>
               <p class="mb-10 mt-5 text-[1rem] sm:text-lg">
                 Not at the moment. We license data from third-party providers
