@@ -10,7 +10,7 @@ export const load = async ({locals}) => {
         sort: "-created",
       }) || [];
 
-    return output?.slice(0,10);
+    return output;
   };
 
       const getTutorialPost = async () => {
@@ -21,7 +21,7 @@ export const load = async ({locals}) => {
         sort: "-created",
       }) || [];
 
-    return output?.slice(0,10);
+    return output;
   };
 
   // Make sure to return a promise
