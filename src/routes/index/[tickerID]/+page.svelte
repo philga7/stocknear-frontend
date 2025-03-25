@@ -20,6 +20,7 @@
   import IndexSidecard from "$lib/components/IndexSidecard.svelte";
 
   import { convertTimestamp, abbreviateNumber } from "$lib/utils";
+  import { mode } from "mode-watcher";
 
   export let data;
   export let form;
@@ -678,25 +679,21 @@
               >
                 <div class="flex items-center justify-between py-1 sm:pt-0.5">
                   <div class="hide-scroll overflow-x-auto">
-                    <ul
-                      class="flex space-x-[3px] whitespace-nowrap pl-0.5 xs:space-x-1"
-                    >
+                    <ul class="flex sm:space-x-2">
                       {#each intervals as interval}
                         <li>
                           <button
                             on:click={() => changeData(interval)}
-                            class="px-1 py-1 text-sm sm:text-[1rem] xs:px-[3px] bp:px-1.5 sm:px-2 xxxl:px-3"
+                            class="cursor-pointer focus:outline-none"
                           >
                             <span
-                              class="block {displayData === interval
-                                ? 'text-white'
-                                : 'text-gray-400'}">{interval}</span
+                              class="block px-3 py-1 rounded duration-100 ease-in-out
+          {displayData === interval
+                                ? 'bg-blue-50 text-blue-700 dark:bg-primary dark:text-white font-semibold'
+                                : 'bg-transparent text-muted dark:text-gray-400 dark:sm:hover:text-white sm:hover:bg-gray-100 dark:sm:hover:bg-primary'}"
                             >
-                            <div
-                              class="{displayData === interval
-                                ? `bg-[${displayLegend?.graphChange < 0 ? '#FF2F1F' : '#00FC50'}] `
-                                : 'bg-default'} mt-1 h-[3px] w-[1.5rem] m-auto rounded-full"
-                            />
+                              {interval}
+                            </span>
                           </button>
                         </li>
                       {/each}

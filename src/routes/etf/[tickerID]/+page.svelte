@@ -691,7 +691,7 @@
                             class="block px-3 py-1 rounded duration-100 ease-in-out
           {displayData === interval
                               ? 'bg-blue-50 text-blue-700 dark:bg-primary dark:text-white font-semibold'
-                              : 'bg-transparent text-gray-600 dark:sm:hover:text-white sm:hover:bg-gray-100 dark:sm:hover:bg-primary'}"
+                              : 'bg-transparent text-muted dark:text-gray-400 dark:sm:hover:text-white sm:hover:bg-gray-100 dark:sm:hover:bg-primary'}"
                           >
                             {interval}
                           </span>
