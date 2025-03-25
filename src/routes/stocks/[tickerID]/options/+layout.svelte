@@ -12,6 +12,7 @@
       overview: "/options",
       "hottest-contracts": "/options/hottest-contracts",
       "unusual-activity": "/options/unusual-activity",
+      "contract-lookup": "/options/contract-lookup",
       volatility: "/options/volatility",
       gex: "/options/gex",
       dex: "/options/dex",
@@ -34,6 +35,7 @@
         overview: "overview",
         "hottest-contracts": "hottest-contracts",
         "unusual-activity": "unusual-activity",
+        "contract-lookup": "contract-lookup",
         volatility: "volatility",
         gex: "gex",
         dex: "dex",
@@ -71,6 +73,16 @@
                   : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
               >
                 Overview
+              </a>
+              <a
+                href={`/stocks/${$stockTicker}/options/contract-lookup`}
+                on:click={() => changeSubSection("contract-lookup")}
+                class="p-2 px-5 cursor-pointer {displaySubSection ===
+                'contract-lookup'
+                  ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                  : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+              >
+                Contract Lookup
               </a>
               <a
                 href={`/stocks/${$stockTicker}/options/unusual-activity`}
