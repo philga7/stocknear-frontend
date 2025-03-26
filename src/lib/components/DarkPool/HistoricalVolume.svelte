@@ -2,6 +2,8 @@
   import { displayCompanyName, stockTicker, etfTicker } from "$lib/store";
   import InfoModal from "$lib/components/InfoModal.svelte";
   import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
+  import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
+
   import highcharts from "$lib/highcharts.ts";
   import { goto } from "$app/navigation";
   import { mode } from "mode-watcher";
@@ -273,10 +275,41 @@
         </div>
       </div>
 
-      <div
-        class="chart mt-5 sm:mt-0 border border-gray-300 dark:border-gray-800 rounded"
-        use:highcharts={config}
-      ></div>
+      <div>
+        <div class="grow">
+          <div class="relative">
+            <!-- Apply the blur class to the chart -->
+            <div
+              class="{!['Pro']?.includes(data?.user?.tier)
+                ? 'blur-[3px]'
+                : ''} mt-5 shadow-sm sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
+              use:highcharts={config}
+            ></div>
+            <!-- Overlay with "Upgrade to Pro" -->
+            {#if !["Pro"]?.includes(data?.user?.tier)}
+              <div
+                class="font-bold text-lg sm:text-xl absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center text-muted dark:text-white"
+              >
+                <a
+                  href="/pricing"
+                  class="sm:hover:text-blue-600 dark:sm:hover:text-white dark:text-white flex flex-row items-center"
+                >
+                  <span>Upgrade to Pro</span>
+                  <svg
+                    class="ml-1 w-5 h-5 sm:w-6 sm:h-6 inline-block"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    ><path
+                      fill="currentColor"
+                      d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                    /></svg
+                  >
+                </a>
+              </div>
+            {/if}
+          </div>
+        </div>
+      </div>
 
       <div
         class="mt-5 flex flex-col sm:flex-row items-start sm:items-center w-full justify-between sm:border-y border-gray-300 dark:border-gray-800 sm:pt-2 sm:pb-2"
@@ -351,10 +384,15 @@
             </tr>
           </thead>
           <tbody>
-            {#each tableList as item, index}
+            {#each data?.user?.tier === "Pro" ? tableList : tableList?.slice(0, 3) as item, index}
               <!-- row -->
               <tr
-                class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
+                class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
+                  1 ===
+                  tableList?.slice(0, 3)?.length &&
+                !['Pro']?.includes(data?.user?.tier)
+                  ? 'opacity-[0.1]'
+                  : ''}"
               >
                 <td class=" text-sm sm:text-[1rem] whitespace-nowrap">
                   {new Date(item?.date)?.toLocaleDateString("en-US", {
@@ -407,6 +445,7 @@
           </tbody>
         </table>
       </div>
+      <UpgradeToPro {data} display={true} />
     {/if}
   </main>
 </section>

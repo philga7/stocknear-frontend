@@ -106,12 +106,12 @@
         class="text-center mb-10 relative w-fit flex justify-center m-auto text-white"
       >
         <div class="mb-4 flex justify-center -mt-3 lg:mb-8">
-          <a href="/stocks/AAPL/forecast/ai"
+          <a href="/stocks/AAPL/options/contract-lookup"
             ><div
               class="flex items-center justify-center sm:hover:text-muted dark:sm:hover:text-white text-blue-600 dark:text-blue-400"
             >
               <div class="text-lg sm:text-xl font-semibold">
-                Improved AI Score
+                Option Contract Lookup
               </div>
               <div
                 class="-mt-2 ml-1 -rotate-6 rounded-lg bg-red-500 px-1 py-0.5 text-xs font-semibold text-white"
