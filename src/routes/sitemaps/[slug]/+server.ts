@@ -65,6 +65,7 @@ const pages = [
   { title: "/politicians/flow-data" },
   { title: "/analysts" },
   { title: "/analysts/top-stocks" },
+  { title: "/analysts/analyst-flow" },
   { title: "/heatmap" },
   { title: "/market-flow" },
   { title: "/market-flow/sector-flow" },

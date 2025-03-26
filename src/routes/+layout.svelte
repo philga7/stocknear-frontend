@@ -44,6 +44,7 @@
   import Menu from "lucide-svelte/icons/menu";
   import Stock from "lucide-svelte/icons/chart-candlestick";
   import Calendar from "lucide-svelte/icons/calendar";
+  import Analyst from "lucide-svelte/icons/chart-no-axes-column";
   import Flow from "lucide-svelte/icons/tornado";
   import HandShake from "lucide-svelte/icons/handshake";
   import Layers from "lucide-svelte/icons/layers";
@@ -353,29 +354,9 @@
                     >
                       <Sheet.Close asChild let:builder>
                         <div class="flex flex-col items-start">
-                          <Button
-                            builders={[builder]}
-                            type="submit"
-                            class="w-full dark:bg-[#18181B]"
-                          >
-                            <a
-                              href="/analysts"
-                              class="text-start w-full text-[1rem] text-muted dark:text-white ml-4 mt-2"
-                              >Top Analyst</a
-                            >
-                          </Button>
+                         
 
-                          <Button
-                            builders={[builder]}
-                            type="submit"
-                            class="w-full dark:bg-[#18181B]"
-                          >
-                            <a
-                              href="/analysts/top-stocks"
-                              class="text-start w-full text-[1rem] text-muted dark:text-white ml-4 mt-4"
-                              >Top Analyst Stocks</a
-                            >
-                          </Button>
+                         
 
                           <Button
                             builders={[builder]}
@@ -483,6 +464,61 @@
                 </Accordion.Root>
               </div>
 
+               <div class="flex flex-row items-center w-full">
+                <Accordion.Root class="w-full">
+                  <Accordion.Item value="item-1">
+                    <Accordion.Trigger class="">
+                      <Analyst class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1" />
+                      <span class="text-muted dark:text-white ml-1 mr-auto">Analyst</span>
+                    </Accordion.Trigger>
+                    <Accordion.Content
+                      class="border-l border-gray-500 ml-2 mt-5"
+                    >
+                      <Sheet.Close asChild let:builder>
+                        <div class="flex flex-col items-start">
+                          <Button
+                            builders={[builder]}
+                            type="submit"
+                            class="w-full dark:bg-[#18181B]"
+                          >
+                            <a
+                              href="/analysts"
+                              class="text-start w-full text-[1rem] text-muted dark:text-white ml-4 mt-2"
+                              >Top Analysts</a
+                            >
+                          </Button>
+                          <Button
+                            builders={[builder]}
+                            type="submit"
+                            class="w-full dark:bg-[#18181B]"
+                          >
+                            <a
+                              href="/analysts/top-stocks"
+                              class="text-start w-full text-[1rem] text-muted dark:text-white ml-4 mt-4"
+                              >Top Analyst Stocks</a
+                            >
+                          </Button>
+
+                          <Button
+                            builders={[builder]}
+                            type="submit"
+                            class="w-full dark:bg-[#18181B]"
+                          >
+                            <a
+                              href="/analysts/analyst-flow"
+                              class="text-start w-full text-[1rem] text-muted dark:text-white ml-4 mt-4"
+                              >Analyst Live Flow</a
+                            >
+                          </Button>
+
+                       
+                        </div>
+                      </Sheet.Close>
+                    </Accordion.Content>
+                  </Accordion.Item>
+                </Accordion.Root>
+              </div>
+
               <div class="flex flex-row items-center w-full">
                 <Accordion.Root class="w-full">
                   <Accordion.Item value="item-1">
@@ -574,6 +610,7 @@
                   </Accordion.Item>
                 </Accordion.Root>
               </div>
+              
 
               <div class="flex flex-row items-center w-full">
                 <Accordion.Root class="w-full">
@@ -1026,6 +1063,43 @@
                   </Accordion.Root>
                 </div>
 
+                  <div class="flex flex-row items-center ml-9 w-full mt-3">
+                  <Accordion.Root class="w-full">
+                    <Accordion.Item value="item-1">
+                      <Accordion.Trigger class="">
+                        <Analyst class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1" />
+                        <span class="text-muted dark:text-white ml-1 mr-auto">Analyst</span>
+                      </Accordion.Trigger>
+                      <Accordion.Content
+                        class="border-l border-gray-500 ml-2 mt-5"
+                      >
+                        <div class="flex flex-col items-start">
+                          <a
+                            href="/analysts"
+                            class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
+                            >Top Analysts</a
+                          >
+                          <a
+                            href="/analysts/top-stocks"
+                            class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
+                            >Top Analyst Stocks</a
+                          >
+                         
+
+                          <a
+                            href="/analysts/analyst-flow"
+                            class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
+                            >Analyst Live Flow</a
+                          >
+                         
+    
+                        </div>
+                      </Accordion.Content>
+                    </Accordion.Item>
+                  </Accordion.Root>
+                </div>
+
+
                 <div class="flex flex-row items-center ml-9 w-full mt-3">
                   <Accordion.Root class="w-full">
                     <Accordion.Item value="item-1">
@@ -1065,19 +1139,7 @@
                             class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
                             >Economic Calendar</a
                           >
-                          <!--
-                          <a
-                            href="/economic-indicator"
-                            class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
-                            >Economic Indicator</a
-                          >
-                          
-                          <a
-                            href="/stock-splits-calendar"
-                            class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
-                            >Stock Splits Calendar</a
-                          >
-                            -->
+    
                         </div>
                       </Accordion.Content>
                     </Accordion.Item>
