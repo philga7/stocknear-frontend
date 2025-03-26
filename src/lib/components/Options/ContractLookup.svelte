@@ -4,6 +4,7 @@
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
   import Infobox from "$lib/components/Infobox.svelte";
+  import { onMount } from "svelte";
 
   import highcharts from "$lib/highcharts.ts";
   import { mode } from "mode-watcher";
@@ -23,15 +24,15 @@
   let strikeList = optionData[selectedDate] || [];
 
   let selectedStrike = strikeList?.at(0) || [];
+  let optionSymbol = buildOptionSymbol(
+    selectedDate,
+    selectedOptionType,
+    selectedStrike,
+  );
 
-  let optionHistoryList = [];
+  let displayList = [];
   let selectGraphType = "Vol/OI";
-  let container;
   let rawDataHistory = [];
-  let strikePrice;
-  let optionType;
-  let dateExpiration;
-  let otmPercentage;
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -41,47 +42,24 @@
       year: "numeric",
     });
   };
-  function computeOTM(strikePrice, optionType) {
-    // Get the current stock price
-    const currentPrice = data?.getStockQuote?.price;
 
-    let otmPercentage = 0;
+  function buildOptionSymbol(dateExpiration, optionType, strikePrice) {
+    // Format the expiration date as YYMMDD
+    const date = new Date(dateExpiration);
+    const year = date.getFullYear() % 100; // Last two digits of the year
+    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are 0-indexed
+    const day = date.getDate().toString().padStart(2, "0");
+    const expirationStr = `${year}${month}${day}`;
 
-    if (optionType === "C") {
-      // Call option: OTM is positive if strike > currentPrice, negative (ITM) otherwise
-      otmPercentage = (
-        ((strikePrice - currentPrice) / currentPrice) *
-        100
-      )?.toFixed(2);
-    } else if (optionType === "P") {
-      // Put option: OTM is positive if strike < currentPrice, negative (ITM) otherwise
-      otmPercentage = (
-        ((currentPrice - strikePrice) / currentPrice) *
-        100
-      )?.toFixed(2);
-    } else {
-      otmPercentage = "n/a";
-    }
+    // Convert option type to a single uppercase letter (C for Call, P for Put)
+    const optionTypeChar = optionType.charAt(0).toUpperCase();
 
-    return otmPercentage; // Return the percentage rounded to two decimal places
-  }
+    // Format strike price as 8 digits (multiply by 1000 and pad with leading zeros)
+    const strikePriceScaled = Math.round(strikePrice * 1000);
+    const strikeStr = strikePriceScaled.toString().padStart(8, "0");
 
-  function getScroll() {
-    const scrollThreshold = container.scrollHeight * 0.8; // 80% of the container height
-
-    // Check if the user has scrolled to the bottom based on the threshold
-    const isBottom =
-      container.scrollTop + container.clientHeight >= scrollThreshold;
-
-    // Only load more data if at the bottom and there is still data to load
-    if (isBottom && optionHistoryList?.length !== rawDataHistory?.length) {
-      const nextIndex = optionHistoryList.length; // Ensure optionHistoryList is defined
-      const filteredNewResults = rawDataHistory.slice(
-        nextIndex,
-        nextIndex + 25,
-      ); // Ensure rawData is defined
-      optionHistoryList = [...optionHistoryList, ...filteredNewResults];
-    }
+    // Combine all components into the final option symbol
+    return `${ticker}${expirationStr}${optionTypeChar}${strikeStr}`;
   }
 
   const currentTime = new Date(
@@ -115,20 +93,7 @@
     });
   }
 
-  let rawDataVolume = data?.getData?.volume?.map((item) => ({
-    ...item,
-    dte: daysLeft(item?.date_expiration),
-    otm: computeOTM(item?.strike_price, item?.option_type),
-  }));
-
-  let rawDataOI = data?.getData?.openInterest?.map((item) => ({
-    ...item,
-    dte: daysLeft(item?.date_expiration),
-    otm: computeOTM(item?.strike_price, item?.option_type),
-  }));
-
-  function plotContractHistory() {
-    // Ensure rawDataHistory exists and sort it by date
+  function plotData() {
     const sortedData =
       rawDataHistory?.sort((a, b) => new Date(a?.date) - new Date(b?.date)) ||
       [];
@@ -173,20 +138,20 @@
             new Date(item.date).getTime(),
             item.mark,
           ]),
-          color: "#FAD776",
+          color: "#FF0006",
           yAxis: 2,
           animation: false,
           marker: { enabled: false },
         },
         {
-          name: "Price",
+          name: "Stock Price",
           type: "spline",
           yAxis: 1,
           data: filteredData.map((item) => [
             new Date(item.date).getTime(),
             item.price,
           ]),
-          color: "#fff",
+          color: $mode === "light" ? "#005AFF" : "white",
           lineWidth: 1,
           marker: { enabled: false },
           animation: false,
@@ -213,21 +178,21 @@
             new Date(item.date).getTime(),
             item.mark,
           ]),
-          color: "#FAD776",
+          color: "#FF0006",
           yAxis: 2,
           lineWidth: 1,
           animation: false,
           marker: { enabled: false },
         },
         {
-          name: "Price",
+          name: "Stock Price",
           type: "spline",
           yAxis: 1,
           data: filteredData.map((item) => [
             new Date(item.date).getTime(),
             item.price,
           ]),
-          color: "#fff",
+          color: $mode === "light" ? "#005AFF" : "white",
           lineWidth: 1,
           marker: { enabled: false },
           animation: false,
@@ -242,16 +207,31 @@
         animation: false,
         height: 360,
       },
+      legend: {
+        enabled: true,
+        align: "left", // Positions legend at the left edge
+        verticalAlign: "top", // Positions legend at the top
+        layout: "horizontal", // Align items horizontally (use 'vertical' if preferred)
+        itemStyle: {
+          color: $mode === "light" ? "black" : "white",
+        },
+        symbolWidth: 16, // Controls the width of the legend symbol
+        symbolRadius: 8, // Creates circular symbols (adjust radius as needed)
+        squareSymbol: false, // Ensures symbols are circular, not square
+      },
       credits: { enabled: false },
       title: {
-        text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">Contract History</h3>`,
+        text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">${ticker}
+          ${formatDate(selectedDate)}
+          ${selectedStrike}
+          ${selectedOptionType}</h3>`,
         useHTML: true,
-        style: { color: "white" },
+        style: { color: $mode === "light" ? "black" : "white" },
       },
       // Disable markers globally on hover for all series
       plotOptions: {
         series: {
-          color: "white",
+          color: $mode === "light" ? "black" : "white",
           animation: false, // Disable series animation
           states: {
             hover: {
@@ -264,12 +244,12 @@
         type: "datetime",
         endOnTick: false,
         crosshair: {
-          color: "#fff",
+          color: $mode === "light" ? "black" : "white",
           width: 1,
           dashStyle: "Solid",
         },
         labels: {
-          style: { color: "#fff" },
+          style: { color: $mode === "light" ? "black" : "white" },
           distance: 20,
           formatter: function () {
             return new Date(this.value).toLocaleDateString("en-US", {
@@ -293,8 +273,8 @@
       yAxis: [
         {
           gridLineWidth: 1,
-          gridLineColor: "#111827",
-          labels: { style: { color: "white" } },
+          gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
+          labels: { style: { color: $mode === "light" ? "black" : "white" } },
           title: { text: null },
           opposite: true,
         },
@@ -327,7 +307,7 @@
         },
         borderRadius: 4,
         formatter: function () {
-          let tooltipContent = `<span class=" m-auto text-black text-[1rem] font-[501]">${new Date(
+          let tooltipContent = `<span class=" m-auto  text-[1rem] font-[501]">${new Date(
             this.x,
           ).toLocaleDateString("en-US", {
             year: "numeric",
@@ -337,14 +317,13 @@
 
           this.points.forEach((point) => {
             tooltipContent += `<span class=" font-semibold text-sm">${point.series.name}:</span> 
-          <span class=" font-normal text-sm" style="color:${point.color}">${abbreviateNumber(
+          <span class=" font-normal text-sm" >${abbreviateNumber(
             point.y,
           )}</span><br>`;
           });
           return tooltipContent;
         },
       },
-      legend: { enabled: false },
       series: series,
     };
 
@@ -379,54 +358,54 @@
     return output;
   };
 
-  async function handleViewData(item) {
-    isLoaded = false;
-    selectGraphType = "Vol/OI";
-    optionDetailsDesktopModal?.showModal();
+  async function handleScroll() {
+    const scrollThreshold = document.body.offsetHeight * 0.8; // 80% of the website height
+    const isBottom = window.innerHeight + window.scrollY >= scrollThreshold;
 
-    strikePrice = item?.strike_price;
-    optionType = item?.option_type;
-    dateExpiration = item?.date_expiration;
-    otmPercentage = item?.otm;
-
-    const output = await getContractHistory(item?.option_symbol);
-    rawDataHistory = output?.history;
-
-    if (rawDataHistory?.length > 0) {
-      rawDataHistory.forEach((entry) => {
-        const matchingData = data?.getHistoricalPrice?.find(
-          (d) => d?.time === entry?.date,
-        );
-        if (matchingData) {
-          entry.price = matchingData?.close;
-        }
-      });
-
-      rawDataHistory = calculateDTE(rawDataHistory, dateExpiration);
-      config = plotContractHistory();
-      rawDataHistory = rawDataHistory?.sort(
-        (a, b) => new Date(b?.date) - new Date(a?.date),
+    if (isBottom && displayList?.length !== rawDataHistory?.length) {
+      const nextIndex = displayList?.length;
+      const filteredNewResults = rawDataHistory?.slice(
+        nextIndex,
+        nextIndex + 50,
       );
-      optionHistoryList = rawDataHistory?.slice(0, 20);
-    } else {
-      config = null;
+      displayList = [...displayList, ...filteredNewResults];
     }
-
-    isLoaded = true;
   }
 
-  $: {
+  onMount(async () => {
     if (selectGraphType) {
       isLoaded = false;
+
+      const output = await getContractHistory(optionSymbol);
+      rawDataHistory = output?.history;
       if (rawDataHistory?.length > 0) {
-        config = plotContractHistory();
+        rawDataHistory.forEach((entry) => {
+          const matchingData = data?.getHistoricalPrice?.find(
+            (d) => d?.time === entry?.date,
+          );
+          if (matchingData) {
+            entry.price = matchingData?.close;
+          }
+        });
+
+        rawDataHistory = calculateDTE(rawDataHistory, selectedDate);
+        config = plotData();
+        rawDataHistory = rawDataHistory?.sort(
+          (a, b) => new Date(b?.date) - new Date(a?.date),
+        );
+        displayList = rawDataHistory?.slice(0, 20);
       } else {
         config = null;
       }
 
       isLoaded = true;
     }
-  }
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  });
 </script>
 
 <section class="w-full overflow-hidden">
@@ -454,9 +433,9 @@
             >
               <!--Start Added Rules-->
               <div
-                class="flex items-center justify-between space-x-2 px-1 py-1.5 text-smaller leading-tight sm:border-none py-3 sm:py-0 border-b border-gray-300 dark:border-gray-600"
+                class="flex items-center justify-between space-x-2 px-1 py-1.5 leading-tight sm:py-0 border-b border-gray-300 dark:border-gray-600"
               >
-                <div class="hide-scroll">
+                <div class="hide-scroll mb-1">
                   Date Expiration
                   <span class="relative" role="tooltip"
                     ><label for="mobileTooltip" class="relative" role="tooltip">
@@ -480,7 +459,7 @@
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
                       builders={[builder]}
-                      class="border-gray-300 dark:border-none shadow-sm bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
+                      class="mb-1 border-gray-300 dark:border-none shadow-sm bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
                     >
                       <span class="truncate text-sm"
                         >{formatDate(selectedDate)}</span
@@ -519,9 +498,9 @@
                 </DropdownMenu.Root>
               </div>
               <div
-                class="flex items-center justify-between space-x-2 px-1 py-1.5 text-smaller leading-tight sm:border-none py-3 sm:py-0 border-b border-gray-300 dark:border-gray-600"
+                class="flex items-center justify-between space-x-2 px-1 py-1.5 leading-tight sm:py-0 border-b border-gray-300 dark:border-gray-600"
               >
-                <div class="hide-scroll">
+                <div class="hide-scroll mb-1">
                   Strike Price
                   <span class="relative" role="tooltip"
                     ><label for="mobileTooltip" class="relative" role="tooltip">
@@ -545,7 +524,7 @@
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
                       builders={[builder]}
-                      class="border-gray-300 dark:border-none shadow-sm bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
+                      class="mb-1 border-gray-300 dark:border-none shadow-sm bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
                     >
                       <span class="truncate text-sm">{selectedStrike}</span>
                       <svg
@@ -583,9 +562,9 @@
                 </DropdownMenu.Root>
               </div>
               <div
-                class="flex items-center justify-between space-x-2 px-1 py-1.5 text-smaller leading-tight sm:border-none py-3 sm:py-0 border-b border-gray-300 dark:border-gray-600"
+                class="flex items-center justify-between space-x-2 px-1 py-1.5 leading-tight sm:py-0 border-b border-gray-300 dark:border-gray-600"
               >
-                <div class="hide-scroll">
+                <div class="hide-scroll mb-1">
                   Option Type
                   <span class="relative" role="tooltip"
                     ><label for="mobileTooltip" class="relative" role="tooltip">
@@ -609,7 +588,7 @@
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
                       builders={[builder]}
-                      class="border-gray-300 dark:border-none shadow-sm bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
+                      class="mb-1 border-gray-300 dark:border-none shadow-sm bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
                     >
                       <span class="truncate text-sm">{selectedOptionType}</span>
                       <svg
@@ -653,12 +632,15 @@
         <h3
           class=" flex flex-row items-center text-xl sm:text-xl font-bold mt-10"
         >
-          {ticker} Mar 28, 2025 50.0 Call
+          {ticker}
+          {formatDate(selectedDate)}
+          {selectedStrike}
+          {selectedOptionType}
         </h3>
         <h3
           class="text-gray-500 dark:text-gray-400 flex flex-row items-center text-sm sm:text-[1rem] mb-2 sm:mb-0"
         >
-          NVDA250328C00050000
+          {optionSymbol}
         </h3>
 
         <div
@@ -674,7 +656,7 @@
                 >
                 <td
                   class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                  >n/a</td
+                  >{rawDataHistory?.at(0)?.close || "n/a"}</td
                 ></tr
               >
 
@@ -686,7 +668,7 @@
                 >
                 <td
                   class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                  >n/a</td
+                  >{rawDataHistory?.at(0)?.high || "n/a"}</td
                 ></tr
               >
 
@@ -698,7 +680,7 @@
                 >
                 <td
                   class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                  >n/a</td
+                  >{rawDataHistory?.at(0)?.low || "n/a"}</td
                 ></tr
               >
 
@@ -706,11 +688,11 @@
                 class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
                 ><td
                   class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
-                  >Mid
+                  >Open
                 </td>
                 <td
                   class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                  >n/a</td
+                  >{rawDataHistory?.at(0)?.open || "n/a"}</td
                 ></tr
               >
               <tr
@@ -721,7 +703,7 @@
                 </td>
                 <td
                   class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                  >n/a</td
+                  >{rawDataHistory?.at(0)?.volume || "n/a"}</td
                 ></tr
               >
               <tr
@@ -732,7 +714,7 @@
                 </td>
                 <td
                   class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                  >n/a</td
+                  >{rawDataHistory?.at(0)?.open_interest || "n/a"}</td
                 ></tr
               >
             </tbody>
@@ -747,7 +729,7 @@
                 >
                 <td
                   class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                  >n/a</td
+                  >{rawDataHistory?.at(0)?.implied_volatility || "n/a"}</td
                 ></tr
               >
 
@@ -759,7 +741,7 @@
                 >
                 <td
                   class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                  >n/a</td
+                  >{rawDataHistory?.at(0)?.delta || "n/a"}</td
                 ></tr
               >
 
@@ -771,7 +753,7 @@
                 >
                 <td
                   class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                  >n/a</td
+                  >{rawDataHistory?.at(0)?.gamma || "n/a"}</td
                 ></tr
               >
 
@@ -784,7 +766,7 @@
                 <td
                   class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
                 >
-                  n/a
+                  {rawDataHistory?.at(0)?.theta || "n/a"}
                 </td></tr
               >
               <tr
@@ -796,125 +778,47 @@
                 <td
                   class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
                 >
-                  n/a
+                  {rawDataHistory?.at(0)?.vega || "n/a"}
                 </td></tr
               >
               <tr class="flex flex-col py-1 sm:table-row sm:py-0"
                 ><td
                   class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem] invisible"
-                  >Vega</td
+                  >XXX</td
                 >
                 <td
                   class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem] invisible"
                 >
-                  n/a
+                  XXX
                 </td></tr
               >
             </tbody>
           </table>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<dialog
-  id="optionDetailsDesktopModal"
-  class="modal {$screenWidth < 640 ? 'modal-bottom ' : ''} bg-[#000]/40 sm:px-5"
->
-  <div
-    class="modal-box bg-white dark:bg-default w-full {rawDataHistory?.length > 0
-      ? 'max-w-7xl'
-      : 'w-full'} rounded-md border-t sm:border border-gray-300 dark:border-gray-800 min-h-48 h-auto"
-  >
-    <form
-      method="dialog"
-      class="modal-backdrop backdrop-blur-[4px] flex flex-row items-center w-full justify-between"
-    >
-      <p
-        class="text-muted dark:text-white text-[1rem] sm:text-xl font-semibold cursor-text"
-      >
-        Contract: <span
-          class={optionType === "Calls"
-            ? "text-green-600 dark:text-[#00FC50]"
-            : "text-red-600 dark:text-[#FF2F1F]"}
-          >{ticker}
-          {strikePrice}
-          {optionType}
-          {dateExpiration} ({daysLeft(dateExpiration)})
-        </span>
-      </p>
-      <button class="cursor-pointer text-[1.8rem] focus:outline-hidden">
-        <svg
-          class="w-8 h-8 text-muted dark:text-white"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          ><path
-            fill="currentColor"
-            d="m6.4 18.308l-.708-.708l5.6-5.6l-5.6-5.6l.708-.708l5.6 5.6l5.6-5.6l.708.708l-5.6 5.6l5.6 5.6l-.708.708l-5.6-5.6z"
-          />
-        </svg>
-      </button>
-    </form>
-    {#if rawDataHistory?.length > 0}
-      <div
-        class="border-b border-gray-300 dark:border-gray-800 w-full mt-2 mb-2 sm:mb-3 sm:mt-3"
-      ></div>
+        <div class="pb-8 sm:pb-2 rounded-md overflow-hidden">
+          <div
+            class="flex flex-row items-center justify-between gap-x-2 ml-auto w-fit mt-2"
+          >
+            {#each ["Vol/OI", "IV"] as item}
+              <label
+                on:click={() => (selectGraphType = item)}
+                class="px-3 py-1.5 {selectGraphType === item
+                  ? 'shadow-sm bg-gray-100 dark:bg-white text-black '
+                  : 'shadow-sm text-opacity-[0.6] border border-gray-300 dark:border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+              >
+                {item}
+              </label>
+            {/each}
+          </div>
+          {#if config}
+            <div
+              class="mt-2 border border-gray-300 dark:border-gray-800 rounded"
+              use:highcharts={config}
+            ></div>
+          {/if}
+        </div>
 
-      <div class="hidden sm:flex flex-wrap pb-2">
-        <div class="mr-3 whitespace-nowrap">
-          {formatDate(optionHistoryList?.at(0)?.date)}:
-        </div>
-        <div class="mr-3 whitespace-nowrap">
-          <span class="text-[var(--light-text-color)] font-normal">Vol:</span>
-          {optionHistoryList?.at(0)?.volume?.toLocaleString("en-US")}
-        </div>
-        <div class="mr-3 whitespace-nowrap">
-          <span class="text-[var(--light-text-color)] font-normal">OI:</span>
-          {optionHistoryList?.at(0)?.open_interest?.toLocaleString("en-US")}
-        </div>
-        <div class="mr-3 whitespace-nowrap">
-          <span class="text-[var(--light-text-color)] font-normal">Avg:</span>
-          ${optionHistoryList?.at(0)?.mark}
-        </div>
-        <div class="mr-3 whitespace-nowrap">
-          <span class="text-[var(--light-text-color)] font-normal">Prem:</span>
-          {abbreviateNumber(optionHistoryList?.at(0)?.total_premium, true)}
-        </div>
-        <div class="mr-3 whitespace-nowrap">
-          <span class="text-[var(--light-text-color)] font-normal">IV:</span>
-          {(optionHistoryList?.at(0)?.implied_volatility * 100)?.toLocaleString(
-            "en-US",
-          )}%
-        </div>
-      </div>
-
-      <div class="pb-8 sm:pb-2 rounded-md overflow-hidden">
-        <div
-          class="flex flex-row items-center justify-between gap-x-2 ml-auto w-fit mt-2"
-        >
-          {#each ["Vol/OI", "IV"] as item}
-            <label
-              on:click={() => (selectGraphType = item)}
-              class="px-3 py-1.5 {selectGraphType === item
-                ? 'shadow-sm bg-gray-100 dark:bg-white text-black '
-                : 'shadow-sm text-opacity-[0.6] border border-gray-300 dark:border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
-            >
-              {item}
-            </label>
-          {/each}
-        </div>
-        <div
-          class="mt-2 border border-gray-300 dark:border-gray-800 rounded"
-          use:highcharts={config}
-        ></div>
-      </div>
-
-      <div
-        bind:this={container}
-        on:scroll={getScroll}
-        class="h-full max-h-[500px] overflow-y-auto overflow-x-auto"
-      >
         <div class="flex justify-start items-center m-auto cursor-normal">
           {#if isLoaded}
             <table
@@ -936,12 +840,14 @@
                 </tr>
               </thead>
               <tbody>
-                {#each optionHistoryList as item}
+                {#each displayList as item}
                   <!-- row -->
                   <tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                   >
-                    <td class="text-sm sm:text-[1rem] text-start">
+                    <td
+                      class="text-sm sm:text-[1rem] text-start whitespace-nowrap"
+                    >
                       {formatDate(item?.date)}
                     </td>
 
@@ -1027,15 +933,6 @@
           {/if}
         </div>
       </div>
-    {:else}
-      <div
-        class="mt-10 flex justify-center sm:justify-start items-center w-full"
-      >
-        No historical data available yet for the given contract
-      </div>
-    {/if}
+    </div>
   </div>
-  <form method="dialog" class="modal-backdrop">
-    <button>close</button>
-  </form>
-</dialog>
+</section>
