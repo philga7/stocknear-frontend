@@ -29,6 +29,8 @@
   let displayList = [];
   let selectGraphType = "Vol/OI";
   let rawDataHistory = [];
+  let infoText = {};
+  let tooltipTitle;
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -205,7 +207,7 @@
       },
       legend: {
         enabled: true,
-        align: "left", // Positions legend at the left edge
+        align: $screenWidth < 640 ? "center" : "left", // Positions legend at the left edge
         verticalAlign: "top", // Positions legend at the top
         layout: "horizontal", // Align items horizontally (use 'vertical' if preferred)
         itemStyle: {
@@ -250,6 +252,7 @@
           formatter: function () {
             return new Date(this.value).toLocaleDateString("en-US", {
               month: "short",
+              day: "numeric",
               year: "numeric",
             });
           },
@@ -257,7 +260,7 @@
         tickPositioner: function () {
           const positions = [];
           const info = this.getExtremes();
-          const tickCount = 5; // Reduce number of ticks displayed
+          const tickCount = 3; // Reduce number of ticks displayed
           const interval = Math.floor((info.max - info.min) / tickCount);
 
           for (let i = 0; i <= tickCount; i++) {
@@ -368,13 +371,17 @@
     }
   }
 
-  async function loadData() {
+  async function loadData(state: string) {
     isLoaded = false;
     optionData = data?.getData[selectedOptionType];
 
     dateList = [...Object?.keys(optionData)];
 
     strikeList = [...optionData[selectedDate]];
+
+    if (!strikeList?.includes(selectedStrike)) {
+      selectedStrike = strikeList?.at(0); // Set to first element if not found
+    }
 
     displayList = [];
     rawDataHistory = [];
@@ -409,8 +416,28 @@
     isLoaded = true;
   }
 
+  async function getInfoText(parameter, title) {
+    tooltipTitle = title;
+    const cachedData = getCache(parameter, "getInfoText");
+    if (cachedData) {
+      infoText = cachedData;
+    } else {
+      const postData = { parameter };
+      const response = await fetch("/api/info-text", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postData),
+      });
+
+      infoText = await response.json();
+      setCache(parameter, infoText, "getInfoText");
+    }
+  }
+
   onMount(async () => {
-    await loadData();
+    await loadData("default");
 
     window.addEventListener("scroll", handleScroll);
     return () => {
@@ -449,7 +476,13 @@
                 <div class="hide-scroll mb-1">
                   Date Expiration
                   <span class="relative" role="tooltip"
-                    ><label for="mobileTooltip" class="relative" role="tooltip">
+                    ><label
+                      for="mobileTooltip"
+                      on:click={() =>
+                        getInfoText("dateExpiration", "Date Expiration")}
+                      class="relative"
+                      role="tooltip"
+                    >
                       <span
                         class="absolute -right-[15px] -top-[3px] cursor-pointer p-1 text-gray-500 dark:text-gray-300 dark:sm:hover:text-white"
                       >
@@ -500,7 +533,7 @@
                         <DropdownMenu.Item
                           on:click={() => {
                             selectedDate = item;
-                            loadData();
+                            loadData("default");
                           }}
                           class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
                         >
@@ -517,7 +550,13 @@
                 <div class="hide-scroll mb-1">
                   Strike Price
                   <span class="relative" role="tooltip"
-                    ><label for="mobileTooltip" class="relative" role="tooltip">
+                    ><label
+                      for="mobileTooltip"
+                      on:click={() =>
+                        getInfoText("strikePrice", "Strike Price")}
+                      class="relative"
+                      role="tooltip"
+                    >
                       <span
                         class="absolute -right-[15px] -top-[3px] cursor-pointer p-1 text-gray-500 dark:text-gray-300 dark:sm:hover:text-white"
                       >
@@ -567,7 +606,7 @@
                         <DropdownMenu.Item
                           on:click={() => {
                             selectedStrike = item;
-                            loadData();
+                            loadData("default");
                           }}
                           class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
                         >
@@ -584,7 +623,12 @@
                 <div class="hide-scroll mb-1">
                   Option Type
                   <span class="relative" role="tooltip"
-                    ><label for="mobileTooltip" class="relative" role="tooltip">
+                    ><label
+                      for="mobileTooltip"
+                      on:click={() => getInfoText("optionType", "Option Type")}
+                      class="relative"
+                      role="tooltip"
+                    >
                       <span
                         class="absolute -right-[15px] -top-[3px] cursor-pointer p-1 text-gray-500 dark:text-gray-300 dark:sm:hover:text-white"
                       >
@@ -633,7 +677,7 @@
                         <DropdownMenu.Item
                           on:click={() => {
                             selectedOptionType = item;
-                            loadData();
+                            loadData("optionType");
                           }}
                           class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
                         >
@@ -829,7 +873,7 @@
               <label
                 on:click={() => {
                   selectGraphType = item;
-                  loadData();
+                  loadData("default");
                 }}
                 class="px-3 py-1.5 {selectGraphType === item
                   ? 'shadow-sm bg-gray-100 dark:bg-white text-black '
@@ -955,3 +999,34 @@
     </div>
   </div>
 </section>
+
+<input type="checkbox" id="mobileTooltip" class="modal-toggle" />
+
+<dialog id="mobileTooltip" class="modal p-3">
+  <label for="mobileTooltip" class="cursor-pointer modal-backdrop"></label>
+
+  <!-- Desktop modal content -->
+  <div
+    class="modal-box rounded-md border border-gray-300 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
+  >
+    <div class=" mb-5 text-center">
+      <h3 class="font-bold text-2xl mb-5">{tooltipTitle}</h3>
+      <span class=" text-[1rem] font-normal">{infoText?.text ?? "n/a"}</span>
+      {#if infoText?.equation !== undefined}
+        <div class="w-5/6 m-auto mt-5"></div>
+        <div class="text-[1rem] w-full pt-3 pb-3 m-auto">
+          {infoText?.equation}
+        </div>
+      {/if}
+    </div>
+
+    <div class="border-t border-gray-300 dark:border-gray-600 mt-2 w-full">
+      <label
+        for="mobileTooltip"
+        class="cursor-pointer mt-4 font-semibold text-xl m-auto flex justify-center"
+      >
+        Close
+      </label>
+    </div>
+  </div>
+</dialog>
