@@ -752,7 +752,9 @@
                 >
                 <td
                   class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                  >{rawDataHistory?.at(0)?.implied_volatility || "n/a"}</td
+                  >{Math.floor(
+                    rawDataHistory?.at(0)?.implied_volatility * 100,
+                  ) + "%" || "n/a"}</td
                 ></tr
               >
 
@@ -825,7 +827,10 @@
           >
             {#each ["Vol/OI", "IV"] as item}
               <label
-                on:click={() => (selectGraphType = item)}
+                on:click={() => {
+                  selectGraphType = item;
+                  loadData();
+                }}
                 class="px-3 py-1.5 {selectGraphType === item
                   ? 'shadow-sm bg-gray-100 dark:bg-white text-black '
                   : 'shadow-sm text-opacity-[0.6] border border-gray-300 dark:border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
@@ -843,7 +848,9 @@
         </div>
 
         {#if isLoaded && displayList?.length > 0}
-          <div class="flex justify-start items-center m-auto cursor-normal">
+          <div
+            class="flex justify-start items-center m-auto overflow-x-auto cursor-normal"
+          >
             <table
               class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
             >
@@ -930,13 +937,13 @@
                     </td>
 
                     <td class="text-sm sm:text-[1rem] text-end">
-                      {abbreviateNumber(item?.total_premium, false, true)}
+                      {abbreviateNumber(item?.total_premium)}
                     </td>
                     <td class="text-sm sm:text-[1rem] text-end">
-                      {abbreviateNumber(item?.gex, false, true)}
+                      {abbreviateNumber(item?.gex?.toFixed(2))}
                     </td>
                     <td class="text-sm sm:text-[1rem] text-end">
-                      {abbreviateNumber(item?.dex, false, true)}
+                      {abbreviateNumber(item?.dex?.toFixed(2))}
                     </td>
                   </tr>
                 {/each}
