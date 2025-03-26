@@ -25,7 +25,7 @@ export const load = async ({ locals, params }) => {
 
 
    const getHistoricalPrice = async () => {
-     const postData = { ticker: params.tickerID, timePeriod: "max" };
+     const postData = { ticker: params.tickerID, timePeriod: "six-months" };
   const response = await fetch(apiURL + "/historical-price", {
     method: "POST",
     headers: {

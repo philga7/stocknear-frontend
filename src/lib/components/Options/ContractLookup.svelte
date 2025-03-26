@@ -24,11 +24,7 @@
   let strikeList = optionData[selectedDate] || [];
 
   let selectedStrike = strikeList?.at(0) || [];
-  let optionSymbol = buildOptionSymbol(
-    selectedDate,
-    selectedOptionType,
-    selectedStrike,
-  );
+  let optionSymbol = "n/a";
 
   let displayList = [];
   let selectGraphType = "Vol/OI";
@@ -372,34 +368,49 @@
     }
   }
 
-  onMount(async () => {
-    if (selectGraphType) {
-      isLoaded = false;
+  async function loadData() {
+    isLoaded = false;
+    optionData = data?.getData[selectedOptionType];
 
-      const output = await getContractHistory(optionSymbol);
-      rawDataHistory = output?.history;
-      if (rawDataHistory?.length > 0) {
-        rawDataHistory.forEach((entry) => {
-          const matchingData = data?.getHistoricalPrice?.find(
-            (d) => d?.time === entry?.date,
-          );
-          if (matchingData) {
-            entry.price = matchingData?.close;
-          }
-        });
+    dateList = [...Object?.keys(optionData)];
 
-        rawDataHistory = calculateDTE(rawDataHistory, selectedDate);
-        config = plotData();
-        rawDataHistory = rawDataHistory?.sort(
-          (a, b) => new Date(b?.date) - new Date(a?.date),
+    strikeList = [...optionData[selectedDate]];
+
+    displayList = [];
+    rawDataHistory = [];
+
+    optionSymbol = buildOptionSymbol(
+      selectedDate,
+      selectedOptionType,
+      selectedStrike,
+    );
+    const output = await getContractHistory(optionSymbol);
+    rawDataHistory = output?.history;
+
+    if (rawDataHistory?.length > 0) {
+      rawDataHistory.forEach((entry) => {
+        const matchingData = data?.getHistoricalPrice?.find(
+          (d) => d?.time === entry?.date,
         );
-        displayList = rawDataHistory?.slice(0, 20);
-      } else {
-        config = null;
-      }
+        if (matchingData) {
+          entry.price = matchingData?.close;
+        }
+      });
 
-      isLoaded = true;
+      rawDataHistory = calculateDTE(rawDataHistory, selectedDate);
+      config = plotData();
+      rawDataHistory = rawDataHistory?.sort(
+        (a, b) => new Date(b?.date) - new Date(a?.date),
+      );
+      displayList = rawDataHistory?.slice(0, 20);
+    } else {
+      config = null;
     }
+    isLoaded = true;
+  }
+
+  onMount(async () => {
+    await loadData();
 
     window.addEventListener("scroll", handleScroll);
     return () => {
@@ -487,7 +498,10 @@
                     <DropdownMenu.Group class="pb-2"
                       >{#each dateList as item}
                         <DropdownMenu.Item
-                          on:click={() => (selectedDate = item)}
+                          on:click={() => {
+                            selectedDate = item;
+                            loadData();
+                          }}
                           class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
                         >
                           {formatDate(item)}
@@ -551,7 +565,10 @@
                       <!-- Added padding to avoid overlapping with Reset button -->
                       {#each strikeList as item}
                         <DropdownMenu.Item
-                          on:click={() => (selectedStrike = item)}
+                          on:click={() => {
+                            selectedStrike = item;
+                            loadData();
+                          }}
                           class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
                         >
                           {item}
@@ -614,7 +631,10 @@
                     <DropdownMenu.Group class="pb-2"
                       >{#each ["Call", "Put"] as item}
                         <DropdownMenu.Item
-                          on:click={() => (selectedOptionType = item)}
+                          on:click={() => {
+                            selectedOptionType = item;
+                            loadData();
+                          }}
                           class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
                         >
                           {item}
@@ -703,7 +723,8 @@
                 </td>
                 <td
                   class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                  >{rawDataHistory?.at(0)?.volume || "n/a"}</td
+                  >{rawDataHistory?.at(0)?.volume?.toLocaleString("en-US") ||
+                    "n/a"}</td
                 ></tr
               >
               <tr
@@ -714,7 +735,9 @@
                 </td>
                 <td
                   class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                  >{rawDataHistory?.at(0)?.open_interest || "n/a"}</td
+                  >{rawDataHistory
+                    ?.at(0)
+                    ?.open_interest?.toLocaleString("en-US") || "n/a"}</td
                 ></tr
               >
             </tbody>
@@ -819,8 +842,8 @@
           {/if}
         </div>
 
-        <div class="flex justify-start items-center m-auto cursor-normal">
-          {#if isLoaded}
+        {#if isLoaded && displayList?.length > 0}
+          <div class="flex justify-start items-center m-auto cursor-normal">
             <table
               class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
             >
@@ -919,19 +942,8 @@
                 {/each}
               </tbody>
             </table>
-          {:else}
-            <div class="m-auto flex justify-center items-center h-80">
-              <div class="relative">
-                <label
-                  class="bg-[#272727] rounded-xl h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                >
-                  <span class="loading loading-spinner loading-md text-gray-400"
-                  ></span>
-                </label>
-              </div>
-            </div>
-          {/if}
-        </div>
+          </div>
+        {/if}
       </div>
     </div>
   </div>
