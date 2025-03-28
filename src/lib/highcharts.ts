@@ -1,3 +1,4 @@
+
 import Highcharts from 'highcharts';
 import HighchartsMore from 'highcharts/highcharts-more'; // Add this import
 //import HighchartsAnnotations from 'highcharts/modules/annotations';
@@ -63,14 +64,16 @@ export default (node, config) => {
   createChart();
 
   // Resize observer remains the same
-  const resizeObserver = new ResizeObserver(() => {
-    if (chart) {
-      const newWidth = node.clientWidth;
-      const newHeight = 360;
-      chart?.setSize(newWidth, newHeight, false);
-    }
-  });
-  resizeObserver.observe(node);
+const resizeObserver = new ResizeObserver(() => {
+  if (chart) {
+    const newWidth = node.clientWidth;
+    // Set height based on viewport width: 300 for mobile, 360 for desktop
+    const newHeight = (node.clientWidth < 768) ? 300 : 360;
+    chart?.setSize(newWidth, newHeight, false);
+  }
+});
+resizeObserver.observe(node);
+
 
   return {
     update(newConfig) {

@@ -18,7 +18,7 @@
   <div class="shadow-sm">
     <h2 class="mb-2 text-xl font-bold">{title} Forecast</h2>
     <div class="rounded-sm border p-2 border-gray-300 dark:border-gray-600">
-      <div class="h-[360px] w-full">
+      <div class="w-full">
         {#if config !== null}
           <div use:highcharts={config}></div>
         {/if}
@@ -121,7 +121,7 @@
   <div class="shadow-sm">
     <h2 class="mb-2 text-xl font-bold">{title}</h2>
     <div class="rounded-sm border p-2 border-gray-300 dark:border-gray-600">
-      <div class="h-[360px] w-full">
+      <div class="w-full">
         {#if config !== null}
           <div use:highcharts={config}></div>
         {/if}

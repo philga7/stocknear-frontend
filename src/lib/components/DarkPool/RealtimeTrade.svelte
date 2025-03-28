@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { stockTicker, etfTicker } from "$lib/store";
+  import { stockTicker, etfTicker, screenWidth } from "$lib/store";
   import highcharts from "$lib/highcharts.ts";
   import { mode } from "mode-watcher";
 
@@ -115,7 +115,7 @@
         },
         {
           title: {
-            text: "Total Trades",
+            text: $screenWidth < 640 ? null : "Total Trades",
             style: { color: $mode === "light" ? "black" : "white" },
           },
           labels: { style: { color: $mode === "light" ? "black" : "white" } },
@@ -220,7 +220,7 @@
       <div
         class="{!['Pro']?.includes(data?.user?.tier)
           ? 'blur-[3px]'
-          : ''} mt-5 shadow-sm sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
+          : ''} mt-5 shadow-sm sm:mt-0 border border-gray-300 dark:border-gray-800 rounded"
         use:highcharts={config}
       ></div>
       <!-- Overlay with "Upgrade to Pro" -->

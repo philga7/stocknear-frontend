@@ -964,7 +964,7 @@
       </div>
     </div>
 
-    <p class="text-sm mb-4 mt-4">
+    <p class="text-sm sm:text-[1rem] mb-4 mt-4">
       {postContent}
     </p>
 
@@ -981,7 +981,7 @@
     <div class="flex justify-end space-x-3 mt-5">
       <label
         for="executivePostModal"
-        class="cursor-pointer px-4 py-2 rounded-lg text-sm font-medium
+        class="cursor-pointer px-4 py-1.5 rounded text-sm font-medium
             bg-blue-600 text-white sm:hover:bg-blue-700"
         tabindex="0">Close</label
       >
@@ -989,7 +989,7 @@
         href={postUrl}
         rel="noopener noreferrer"
         target="_blank"
-        class="cursor-pointer px-4 py-2 rounded-lg text-sm font-medium
+        class="cursor-pointer px-4 py-1.5 rounded text-sm font-medium
             bg-blue-600 text-white sm:hover:bg-blue-700"
         tabindex="0">Read Source</a
       >
@@ -1049,7 +1049,7 @@
       </div>
     </div>
 
-    <p class="text-sm mb-4 mt-4">
+    <p class="text-sm sm:text-[1rem] mb-4 mt-4">
       {postContent}
     </p>
 
@@ -1062,7 +1062,7 @@
     <div class="flex justify-end space-x-3 mt-5">
       <label
         for="socialPostModal"
-        class="cursor-pointer px-4 py-2 rounded-lg text-sm font-medium
+        class="cursor-pointer px-4 py-1.5 rounded text-sm font-medium
             bg-blue-600 text-white sm:hover:bg-blue-700"
         tabindex="0">Close</label
       >
