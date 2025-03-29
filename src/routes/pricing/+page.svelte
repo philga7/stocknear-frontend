@@ -88,7 +88,7 @@
 </svelte:head>
 
 <section
-  class=" min-h-screen mb-40 w-full max-w-3xl sm:max-w-5xl m-auto text-muted dark:text-white"
+  class=" min-h-screen mb-40 w-full max-w-3xl sm:max-w-6xl m-auto text-muted dark:text-white"
 >
   <div
     class="flex flex-col sm:flex-row w-full mx-auto justify-center items-center sm:space-x-8 text-sm relative pt-5 pb-20"
@@ -1400,7 +1400,7 @@
                     of it for you.
                     <a
                       href={`mailto:${emailAddress}`}
-                      class="text-blue-500 dark:text-blue-400 underline"
+                      class="text-blue-600 dark:text-blue-400 underline"
                     >
                       {emailAddress}
                     </a>
@@ -1441,7 +1441,7 @@
                     We offer a 30 day money back guarantee, no questions asked.
                     Just send an email to <a
                       href={`mailto:${emailAddress}`}
-                      class="text-blue-500 dark:text-blue-400 underline"
+                      class="text-blue-600 dark:text-blue-400 underline"
                       >{emailAddress}</a
                     > and you will get a full refund.
                   </p>

@@ -115,7 +115,7 @@
                     >
                       <a
                         href={getHref(name)}
-                        class="sm:hover:text-blue-500 dark:sm:hover:text-blue-400 cursor-pointer underline underline-offset-4"
+                        class="sm:hover:text-blue-600 dark:sm:hover:text-blue-400 cursor-pointer underline underline-offset-4"
                       >
                         {name} Revenue
                       </a>

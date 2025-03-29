@@ -85,7 +85,7 @@
                     <div class="w-full h-full">
                       <div class="flex flex-col items-start">
                         <div class="flex flex-row items-start w-full">
-                          <span class=" text-sm"
+                          <span class=" text-[1rem]"
                             >{formatDate(item?.date)}
                             <!--
                             &#183;
@@ -103,74 +103,19 @@
                               >New</label
                             >
                           {/if}
-                          <div class=" text-sm sm:text-[1rem] ml-auto">
+                          <div
+                            class=" text-sm sm:text-[1rem] ml-auto font-semibold"
+                          >
                             {#if item?.changesPercentage >= 0}
                               <span
                                 class="text-green-600 dark:text-[#00FC50] inline-block"
                                 >+{item?.changesPercentage}%</span
                               >
-                              <svg
-                                class="w-5 h-5 hidden sm:inline-block"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                                transform="rotate(180)matrix(-1, 0, 0, 1, 0, 0)"
-                                ><g id="SVGRepo_bgCarrier" stroke-width="0"
-                                ></g><g
-                                  id="SVGRepo_tracerCarrier"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                ></g><g id="SVGRepo_iconCarrier">
-                                  <g clip-path="url(#clip0_1076_36065)">
-                                    <path
-                                      d="M1.70711 5.29289C1.31658 4.90237 0.683417 4.90237 0.292893 5.29289C-0.0976311 5.68342 -0.0976311 6.31658 0.292893 6.70711L7.79289 14.2071C8.18342 14.5976 8.81658 14.5976 9.20711 14.2071L13.5 9.91421L20.5858 17H17C16.4477 17 16 17.4477 16 18C16 18.5523 16.4477 19 17 19H22.9993L23.003 19C23.1375 18.9996 23.2657 18.9727 23.3828 18.9241C23.5007 18.8753 23.6112 18.803 23.7071 18.7071C23.8902 18.524 23.9874 18.2877 23.9989 18.048C23.9996 18.032 24 18.016 24 18V12C24 11.4477 23.5523 11 23 11C22.4477 11 22 11.4477 22 12V15.5858L14.2071 7.79289C13.8166 7.40237 13.1834 7.40237 12.7929 7.79289L8.5 12.0858L1.70711 5.29289Z"
-                                      fill="#00FC50"
-                                    ></path>
-                                  </g>
-                                  <defs>
-                                    <clipPath id="clip0_1076_36065">
-                                      <rect
-                                        width="24"
-                                        height="24"
-                                        fill="#00FC50"
-                                      ></rect>
-                                    </clipPath>
-                                  </defs>
-                                </g></svg
-                              >
                             {:else if item?.changesPercentage < 0}
                               <span
-                                class="text-red-600 dark:text-[#FF2F1F] inline-block"
+                                class="text-red-600 dark:text-[#FF2F1F] inline-block font-semibold"
                                 >{item?.changesPercentage}%
                               </span>
-                              <svg
-                                class="w-5 h-5 hidden sm:inline-block"
-                                viewBox="0 0 24 24"
-                                fill="#FF2F1F"
-                                xmlns="http://www.w3.org/2000/svg"
-                                ><g id="SVGRepo_bgCarrier" stroke-width="0"
-                                ></g><g
-                                  id="SVGRepo_tracerCarrier"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                ></g><g id="SVGRepo_iconCarrier">
-                                  <g clip-path="url(#clip0_1076_36065)">
-                                    <path
-                                      d="M1.70711 5.29289C1.31658 4.90237 0.683417 4.90237 0.292893 5.29289C-0.0976311 5.68342 -0.0976311 6.31658 0.292893 6.70711L7.79289 14.2071C8.18342 14.5976 8.81658 14.5976 9.20711 14.2071L13.5 9.91421L20.5858 17H17C16.4477 17 16 17.4477 16 18C16 18.5523 16.4477 19 17 19H22.9993L23.003 19C23.1375 18.9996 23.2657 18.9727 23.3828 18.9241C23.5007 18.8753 23.6112 18.803 23.7071 18.7071C23.8902 18.524 23.9874 18.2877 23.9989 18.048C23.9996 18.032 24 18.016 24 18V12C24 11.4477 23.5523 11 23 11C22.4477 11 22 11.4477 22 12V15.5858L14.2071 7.79289C13.8166 7.40237 13.1834 7.40237 12.7929 7.79289L8.5 12.0858L1.70711 5.29289Z"
-                                      fill="#FF2F1F"
-                                    ></path>
-                                  </g>
-                                  <defs>
-                                    <clipPath id="clip0_1076_36065">
-                                      <rect
-                                        width="24"
-                                        height="24"
-                                        fill="#FF2F1F"
-                                      ></rect>
-                                    </clipPath>
-                                  </defs>
-                                </g></svg
-                              >
                             {/if}
                           </div>
                         </div>
@@ -181,7 +126,7 @@
                               {item?.text?.slice(0, 50) + "..."}
                               Unlock content with
                               <a
-                                class="inline-block ml-0.5 text-blue-500 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
+                                class="inline-block ml-0.5 text-blue-600 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
                                 href="/pricing"
                                 >Pro Subscription <svg
                                   class="w-4 h-4 mb-1 inline-block"

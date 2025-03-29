@@ -216,7 +216,7 @@
             </div>
             <a
               href="/update-password"
-              class="sm:hover:text-muted dark:sm:hover:text-white text-blue-500 dark:text-blue-400"
+              class="sm:hover:text-muted dark:sm:hover:text-white text-blue-600 dark:text-blue-400"
               >Update Password</a
             >
           </div>
@@ -477,7 +477,7 @@
             {:else if subscriptionData?.first_order_item?.product_name?.includes("Life Time")}{:else}
               <a
                 href="/pricing"
-                class="sm:hover:text-muted dark:sm:hover:text-white text-blue-500 dark:text-blue-400"
+                class="sm:hover:text-muted dark:sm:hover:text-white text-blue-600 dark:text-blue-400"
               >
                 Get Full Access with Pro Subscription.
               </a>
@@ -496,7 +496,7 @@
                 <li>
                   Send an email to <a
                     href={`mailto:${emailAddress}`}
-                    class="sm:hover:text-muted dark:sm:hover:text-white text-blue-500 dark:text-blue-400"
+                    class="sm:hover:text-muted dark:sm:hover:text-white text-blue-600 dark:text-blue-400"
                     >{emailAddress}</a
                   >
                 </li>
@@ -506,7 +506,7 @@
                     rel="noopener noreferrer"
                     target="_blank"
                     href="https://www.reddit.com/r/stocknear/"
-                    class="sm:hover:text-muted dark:sm:hover:text-white text-blue-500 dark:text-blue-400"
+                    class="sm:hover:text-muted dark:sm:hover:text-white text-blue-600 dark:text-blue-400"
                   >
                     r/stocknear</a
                   >.
@@ -516,7 +516,7 @@
                     rel="noopener noreferrer"
                     target="_blank"
                     href="https://discord.com/invite/hCwZMMZ2MT"
-                    class="sm:hover:text-muted dark:sm:hover:text-white text-blue-500 dark:text-blue-400"
+                    class="sm:hover:text-muted dark:sm:hover:text-white text-blue-600 dark:text-blue-400"
                     >Discord Channel</a
                   >.
                 </li>

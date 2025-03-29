@@ -93,8 +93,8 @@
         ? "#047857"
         : "#00FC50";
     const fillColorStart = isNegative
-      ? "rgba(204, 38, 26, 0.3)"
-      : "rgb(4, 120, 87, 0.3)"; //"rgba(0, 252, 80, 0.3)";
+      ? "rgba(204, 38, 26, 0.55)"
+      : "rgb(4, 120, 87, 0.55)"; //"rgba(0, 252, 80, 0.3)";
     const fillColorEnd = isNegative
       ? "rgba(204, 38, 26, 0.004)"
       : "rgb(4, 120, 87, 0.004)"; //"rgba(0, 252, 80, 0.004)";
@@ -121,8 +121,8 @@
     const options = {
       chart: {
         backgroundColor: $mode === "light" ? "#fff" : "#09090B",
-        height: 360,
         animation: false,
+        height: 360,
         events: {
           // Add touch event handling to hide tooltip on mobile
           load: function () {
@@ -214,26 +214,29 @@
         },
         labels: {
           style: { color: $mode === "light" ? "black" : "white" },
-          distance: 20,
+          distance: 10,
           formatter: function () {
             const date = new Date(this?.value);
             if (displayData === "1D") {
-              return date?.toLocaleTimeString("en-US", {
-                hour: "2-digit",
-                minute: "2-digit",
+              const timeString = date?.toLocaleTimeString("en-US", {
+                hour: "numeric",
+                hour12: true,
               });
+              return `<span class="font-[501] text-xs">${timeString.replace(/\s/g, " ")}</span>`;
             } else if (["1W", "1M"].includes(displayData)) {
-              return date?.toLocaleDateString("en-US", {
+              const timeString = date?.toLocaleDateString("en-US", {
                 month: "short",
                 day: "numeric",
                 timeZone: "UTC",
               });
+              return `<span class="font-[501] text-xs">${timeString}</span>`;
             } else {
-              return date?.toLocaleDateString("en-US", {
+              const timeString = date?.toLocaleDateString("en-US", {
                 year: "2-digit",
                 month: "short",
                 timeZone: "UTC",
               });
+              return `<span class="font-[501] text-xs">${timeString}</span>`;
             }
           },
         },
@@ -258,7 +261,7 @@
         startOnTick: false,
         endOnTick: false,
         gridLineWidth: 1,
-        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
+        gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
         title: { text: null },
         labels: {
           style: { color: $mode === "light" ? "black" : "white" },
@@ -292,7 +295,7 @@
           data: displayData === "1D" ? seriesData : priceList,
           animation: false,
           color: lineColor,
-          lineWidth: 1.3,
+          lineWidth: 1.8,
           marker: {
             enabled: false,
           },
@@ -696,7 +699,7 @@
                           <span
                             class="block px-3 py-1 rounded duration-100 ease-in-out
           {displayData === interval
-                              ? 'bg-blue-50 text-blue-700 dark:bg-primary dark:text-white font-semibold'
+                              ? 'bg-gray-200 text-muted dark:bg-primary dark:text-white font-semibold'
                               : 'bg-transparent text-muted dark:text-gray-400 dark:sm:hover:text-white sm:hover:bg-gray-100 dark:sm:hover:bg-primary'}"
                           >
                             {interval}
@@ -727,7 +730,7 @@
                 <div use:highcharts={config}></div>
               {:else}
                 <div
-                  class="flex justify-center w-full sm:w-[650px] h-[360px] items-center"
+                  class="flex justify-center w-full sm:w-[650px] h-[300px] sm:h-[360px] items-center"
                 >
                   <div class="relative">
                     <label
@@ -743,18 +746,18 @@
             </div>
 
             <div
-              class="mt-10 lg:mt-0 order-5 lg:order-1 flex flex-row space-x-2 sm:space-x-3 xs:space-x-4"
+              class="mt-5 lg:mt-0 order-5 lg:order-1 flex flex-row space-x-2 sm:space-x-3 xs:space-x-4"
             >
               <table class="w-[50%] text-sm sm:text-[1rem] lg:min-w-[250px]">
                 <tbody
                   ><tr
                     class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm"
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Bid</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
                       >{$wsBidPrice !== 0 && $wsBidPrice !== null
                         ? $wsBidPrice
                         : ((data?.getStockQuote?.bid !== 0
@@ -765,15 +768,15 @@
                   <tr
                     class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm"
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       ><a
                         href={`/stocks/${$stockTicker}/statistics/market-cap`}
-                        class="sm:hover:text-blue-400 underline underline-offset-4"
+                        class="sm:hover:text-muted dark:sm:hover:text-blue-400 underline underline-offset-4"
                         >Market Cap</a
                       ></td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-[1rem] font-semibold xs:px-1 sm:text-right"
                       >{@html abbreviateNumber(
                         data?.getStockQuote?.marketCap,
                         false,
@@ -784,11 +787,11 @@
                   <tr
                     class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm"
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Revenue (ttm)</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
                       >{@html stockDeck?.revenueTTM !== null &&
                       stockDeck?.revenueTTM !== 0
                         ? abbreviateNumber(stockDeck?.revenueTTM, false, true)
@@ -798,11 +801,11 @@
                   <tr
                     class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm"
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Net Income (ttm)</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
                       >{@html stockDeck?.netIncomeTTM !== null
                         ? abbreviateNumber(stockDeck?.netIncomeTTM, false, true)
                         : "n/a"}</td
@@ -812,40 +815,40 @@
                   <tr
                     class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm"
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >EPS (ttm)</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
                       >{data?.getStockQuote?.eps ?? "n/a"}</td
                     ></tr
                   >
                   <tr
                     class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm"
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >PE Ratio (ttm)</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
                       >{data?.getStockQuote?.pe ?? "n/a"}</td
                     ></tr
                   >
                   <tr
                     class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm"
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Forward PE</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
                       >{stockDeck?.forwardPE ?? "n/a"}</td
                     ></tr
                   >
                   <tr
                     class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm"
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       ><a
                         href={data?.getAnalystSummary?.consensusRating !==
                         undefined
@@ -858,7 +861,7 @@
                       >
                     </td>
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
                       >{data?.getAnalystSummary?.consensusRating !== null &&
                       data?.getAnalystSummary?.consensusRating !== "n/a" &&
                       data?.getAnalystSummary?.consensusRating !== undefined
@@ -873,11 +876,11 @@
                   ><tr
                     class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm"
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Ask</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
                       >{$wsAskPrice !== 0 && $wsAskPrice !== null
                         ? $wsAskPrice
                         : ((data?.getStockQuote?.ask !== 0
@@ -888,11 +891,11 @@
                   <tr
                     class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm"
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Volume</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
                       >{data?.getStockQuote?.volume?.toLocaleString(
                         "en-us",
                       )}</td
@@ -901,11 +904,11 @@
                   <tr
                     class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm"
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Avg. Volume (20D)</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
                       >{data?.getStockQuote?.avgVolume !== undefined
                         ? data?.getStockQuote?.avgVolume?.toLocaleString(
                             "en-us",
@@ -916,33 +919,33 @@
                   <tr
                     class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm"
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Open</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
                       >{data?.getStockQuote?.open?.toFixed(2)}</td
                     ></tr
                   >
                   <tr
                     class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm"
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Previous Close</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
                       >{data?.getStockQuote?.previousClose?.toFixed(2)}</td
                     ></tr
                   >
                   <tr
                     class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm"
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Day's Range</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
                       >{data?.getStockQuote?.dayLow?.toFixed(2)} - {data?.getStockQuote?.dayHigh?.toFixed(
                         2,
                       )}</td
@@ -951,11 +954,11 @@
                   <tr
                     class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm"
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >52-Week Range</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
                       >{data?.getStockQuote?.yearLow?.toFixed(2)} - {data?.getStockQuote?.yearHigh?.toFixed(
                         2,
                       )}</td
@@ -964,11 +967,11 @@
                   <tr
                     class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm"
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Beta</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
                       >{stockDeck?.beta?.toFixed(2)}</td
                     ></tr
                   >

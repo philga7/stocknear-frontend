@@ -294,7 +294,7 @@
                             cy="18"
                             r="16"
                             fill="none"
-                            class="stroke-current text-blue-500"
+                            class="stroke-current text-blue-600"
                             stroke-width="3"
                             stroke-dasharray="100"
                             stroke-dashoffset={100 - partyRatio * 100 >= 0
@@ -355,7 +355,7 @@
                             <div class="flex flex-col ml-3 font-normal">
                               <a
                                 href={`/politicians/${item?.id}`}
-                                class="text-blue-500 sm:hover:text-muted dark:sm:hover: dark:text-blue-400"
+                                class="text-blue-600 sm:hover:text-muted dark:sm:hover: dark:text-blue-400"
                                 >{getAbbreviatedName(
                                   item?.representative?.replace("_", " "),
                                 )}</a

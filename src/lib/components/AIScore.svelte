@@ -61,7 +61,7 @@
                   class="stroke-current {score >= 7
                     ? 'text-green-600 dark:text-[#00FC50]'
                     : score >= 4
-                      ? 'text-blue-900 dark:text-[#fff]'
+                      ? 'text-blue-600 dark:text-[#fff]'
                       : 'text-red-600 dark:text-[#FF2F1F]'}"
                   stroke-width="3"
                   stroke-dasharray="100.48"

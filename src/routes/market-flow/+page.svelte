@@ -464,7 +464,7 @@
                 premiums and net put premiums, providing a real-time snapshot of
                 market sentiment and momentum. <a
                   href="/learning-center/article/market-sentiment-through-options-activity-riding-the-tide"
-                  class="text-blue-500 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
+                  class="text-blue-600 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
                   >Learn more here.</a
                 >
               </p>

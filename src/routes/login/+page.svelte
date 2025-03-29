@@ -114,7 +114,7 @@
         <div class="w-full max-w-lg">
           <a
             href="/reset-password"
-            class="text-sm text-blue-500 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline"
+            class="text-sm text-blue-600 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline"
             >Forgot Password?</a
           >
         </div>
@@ -759,7 +759,7 @@
           You don't have an account?
           <a
             href="/register"
-            class="text-blue-500 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400 sm:hover:underline ml-1"
+            class="text-blue-600 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400 sm:hover:underline ml-1"
             >Sign up</a
           >
         </p>

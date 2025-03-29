@@ -388,7 +388,7 @@
                         >
                           <div class="flex flex-col items-start">
                             <span
-                              class="text-sm text-blue-500 dark:text-blue-400"
+                              class="text-sm text-blue-600 dark:text-blue-400"
                               >{item?.symbol}</span
                             >
                             <span
@@ -450,7 +450,7 @@
                           />
                           {#if editMode}
                             <label
-                              class="sm:hover:text-muted text-blue-500 dark:text-blue-400 dark:sm:hover:text-white cursor-pointer"
+                              class="sm:hover:text-muted text-blue-600 dark:text-blue-400 dark:sm:hover:text-white cursor-pointer"
                             >
                               {item?.symbol}
                             </label>

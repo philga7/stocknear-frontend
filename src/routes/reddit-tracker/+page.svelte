@@ -153,7 +153,7 @@
                         href={"https://www.reddit.com" + item?.permalink}
                         rel="noopener noreferrer"
                         target="_blank"
-                        class="text-[1rem] sm:text-xl font-semibold mb-3 transition duration-100 sm:hover:text-blue-500 dark:sm:hover:text-blue-400"
+                        class="text-[1rem] sm:text-xl font-semibold mb-3 transition duration-100 sm:hover:text-blue-600 dark:sm:hover:text-blue-400"
                       >
                         {item?.title}
                       </a>
@@ -222,7 +222,7 @@
                           href={"https://www.reddit.com/user/" + item?.author}
                           rel="noopener noreferrer"
                           target="_blank"
-                          class="hidden sm:inline-block text-sm sm:hover:text-blue-500 dark:sm:hover:text-blue-400"
+                          class="hidden sm:inline-block text-sm sm:hover:text-blue-600 dark:sm:hover:text-blue-400"
                         >
                           Posted by {item?.author}
                         </a>
@@ -230,7 +230,7 @@
                           href={"https://www.reddit.com" + item?.permalink}
                           rel="noopener noreferrer"
                           target="_blank"
-                          class="mt-2 sm:mt-0 text-sm sm:hover:text-blue-500 dark:sm:hover:text-blue-400"
+                          class="mt-2 sm:mt-0 text-sm sm:hover:text-blue-600 dark:sm:hover:text-blue-400"
                         >
                           {formatUtcTimestamp(item?.created_utc)}
                           <Link
@@ -266,7 +266,7 @@
                           on:click={() => changeTimePeriod(index)}
                           class="p-2 px-5 cursor-pointer {activeIdx === index
                             ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
-                            : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+                            : 'text-blue-600 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
                         >
                           {item.title}
                         </label>
@@ -276,7 +276,7 @@
                           class="p-2 px-5 cursor-pointer flex flex-row items-center {activeIdx ===
                           index
                             ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
-                            : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+                            : 'text-blue-600 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
                         >
                           <span class="">{item.title}</span>
                           <svg

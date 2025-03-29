@@ -43,7 +43,7 @@
                 Email:
                 <a
                   href={`mailto:${emailAddress}`}
-                  class="text-blue-500 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline"
+                  class="text-blue-600 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline"
                   >{emailAddress}</a
                 >.
                 <br />

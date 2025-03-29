@@ -188,7 +188,7 @@
                       >
                         <a
                           href={`/analysts/${item?.analystId}`}
-                          class="underline underline-offset-4 sm:hover:text-blue-500 dark:sm:hover:text-blue-400"
+                          class="underline underline-offset-4 sm:hover:text-blue-600 dark:sm:hover:text-blue-400"
                           >{item?.analystName}</a
                         >
                       </td>
@@ -198,7 +198,7 @@
                       >
                         <a
                           href={`/stocks/${item?.symbol}`}
-                          class="text-blue-500 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
+                          class="text-blue-600 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
                           >{item?.symbol}</a
                         >
                       </td>

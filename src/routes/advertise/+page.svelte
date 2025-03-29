@@ -79,7 +79,7 @@
                 audience?
                 <br />Contact us today at
                 <a
-                  class="text-blue-500 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline"
+                  class="text-blue-600 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline"
                   href="mailto:contact@stocknear.com">contact@stocknear.com</a
                 >. We’d love to discuss how we can help your business grow.
               </p>

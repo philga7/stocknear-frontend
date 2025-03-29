@@ -202,11 +202,11 @@
   }
 </script>
 
-<div class="space-y-3 text-muted dark:text-white">
+<div class="space-y-3">
   <div class="h-auto w-full">
     <!--Start Content-->
     <div class="w-auto lg:w-full flex flex-col m-auto">
-      <h2 class="mb-2 text-2xl font-semibold">
+      <h2 class="mb-2 text-2xl font-bold text-black dark:text-white">
         About {$stockTicker}
       </h2>
       <p class="dark:text-gray-200">
@@ -215,9 +215,9 @@
       <div class="inline-block">
         <a
           href={`/stocks/${$stockTicker}/profile`}
-          class="w-full text-md mt-1 cursor-pointer sm:hover:text-muted dark:sm:hover:text-white text-blue-500 dark:text-blue-400 sm:hover:underline"
+          class="w-full text-md mt-1 cursor-pointer sm:hover:text-muted dark:sm:hover:text-white text-blue-600 dark:text-blue-400 sm:hover:underline"
         >
-          [Show more]
+          [Read more]
         </a>
       </div>
 
@@ -226,7 +226,7 @@
           <span class="block font-semibold">Industry</span>
           <a
             href={getIndustryHref(industry)}
-            class="sm:hover:text-blue-500 dark:sm:hover:text-blue-400 underline underline-offset-4"
+            class="sm:hover:text-blue-600 dark:sm:hover:text-blue-400 underline underline-offset-4"
             >{industry}</a
           >
         </div>
@@ -235,7 +235,7 @@
           <a
             href={sectorNavigation?.find((item) => item?.title === sector)
               ?.link}
-            class="sm:hover:text-blue-500 dark:sm:hover:text-blue-400 underline underline-offset-4"
+            class="sm:hover:text-blue-600 dark:sm:hover:text-blue-400 underline underline-offset-4"
             >{sector}</a
           >
         </div>
@@ -247,7 +247,7 @@
           <span class="block font-semibold">Employees</span>
           <a
             href={`/stocks/${$stockTicker}/profile/employees`}
-            class="sm:hover:text-blue-500 dark:sm:hover:text-blue-400 underline underline-offset-4"
+            class="sm:hover:text-blue-600 dark:sm:hover:text-blue-400 underline underline-offset-4"
             >{new Intl.NumberFormat("en")?.format(employees)}</a
           >
         </div>
@@ -264,7 +264,7 @@
             <span class="block font-semibold">Website</span>
             <a
               href={website}
-              class="sm:hover:text-muted dark:sm:hover:text-white truncate text-blue-500 dark:text-blue-400"
+              class="sm:hover:text-muted dark:sm:hover:text-white truncate text-blue-600 dark:text-blue-400"
               target="_blank">{website}</a
             >
           </div>

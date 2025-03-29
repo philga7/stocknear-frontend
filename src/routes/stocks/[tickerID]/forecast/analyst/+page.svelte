@@ -273,7 +273,7 @@
         </div>
 
         <div
-          class="mb-4 grid grid-cols-2 grid-rows-2 divide-contrast rounded-md border border-gray-300 dark:border-gray-600 md:grid-cols-4 md:grid-rows-1 md:divide-x"
+          class="shadow-sm mb-4 grid grid-cols-2 grid-rows-2 divide-contrast rounded-md border border-gray-300 dark:border-gray-600 md:grid-cols-4 md:grid-rows-1 md:divide-x"
         >
           <div
             class="p-4 bp:p-5 sm:p-6 border-r border-gray-300 dark:border-gray-600"
@@ -346,13 +346,28 @@
             >
               <thead class="text-muted dark:text-white dark:bg-default">
                 <tr>
-                  <td class=" font-semibold text-sm text-start">Analyst</td>
-                  <td class=" font-semibold text-sm text-start">Firm</td>
-                  <td class=" font-semibold text-sm text-end">Rating</td>
-                  <td class=" font-semibold text-sm text-end">Action</td>
-                  <td class=" font-semibold text-sm text-end">Price Target</td>
+                  <td class=" font-semibold text-sm sm:text-[1rem] text-start"
+                    >Analyst</td
+                  >
+                  <td class=" font-semibold text-sm sm:text-[1rem] text-start"
+                    >Firm</td
+                  >
+                  <td class=" font-semibold text-sm sm:text-[1rem] text-end"
+                    >Rating</td
+                  >
+                  <td class=" font-semibold text-sm sm:text-[1rem] text-end"
+                    >Action</td
+                  >
+                  <td class=" font-semibold text-sm sm:text-[1rem] text-end"
+                    >Price Target</td
+                  >
+                  <td class=" font-semibold text-sm sm:text-[1rem] text-end"
+                    >Upside</td
+                  >
 
-                  <td class=" font-semibold text-sm text-end">Date</td>
+                  <td class=" font-semibold text-sm sm:text-[1rem] text-end"
+                    >Date</td
+                  >
                 </tr>
               </thead>
               <tbody>
@@ -375,15 +390,35 @@
                           href={item?.analystId !== null
                             ? `/analysts/${item?.analystId}`
                             : "#"}
-                          class="font-semibold dark:font-normal text-blue-500 sm:hover:text-muted dark:sm:hover: dark:text-blue-400"
+                          class="font-semibold dark:font-normal text-blue-600 sm:hover:text-muted dark:sm:hover: dark:text-blue-400"
                           >{item?.analyst_name}
                         </a>
 
                         <div class="flex flex-row items-center mt-1">
                           {#each Array.from({ length: 5 }) as _, i}
-                            {#if i < Math.floor(item?.analystScore)}
+                            {#if item?.analystScore === 0 && i === 0}
+                              <!-- Render a half-filled star when analystScore is 0 -->
                               <svg
-                                class="w-3 h-3 text-[#FBCE3C]"
+                                class="w-4 h-4"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 22 20"
+                              >
+                                <defs>
+                                  <linearGradient id="halfGradient">
+                                    <stop offset="30%" stop-color="#FBCE3C" />
+                                    <stop offset="30%" stop-color="gray" />
+                                  </linearGradient>
+                                </defs>
+                                <path
+                                  fill="url(#halfGradient)"
+                                  d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"
+                                />
+                              </svg>
+                            {:else if i < Math.floor(item?.analystScore)}
+                              <!-- Render a full star -->
+                              <svg
+                                class="w-4 h-4 text-[#FBCE3C]"
                                 aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="currentColor"
@@ -394,8 +429,9 @@
                                 />
                               </svg>
                             {:else}
+                              <!-- Render an empty star -->
                               <svg
-                                class="w-3 h-3 text-gray-400 dark:text-gray-500"
+                                class="w-4 h-4 text-gray-400 dark:text-gray-500"
                                 aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="currentColor"
@@ -407,12 +443,6 @@
                               </svg>
                             {/if}
                           {/each}
-
-                          <span class="ml-1 text-sm">
-                            ({item?.analystScore !== null
-                              ? item?.analystScore
-                              : 0})
-                          </span>
                         </div>
                       </div>
                     </td>
@@ -426,23 +456,20 @@
                     </td>
 
                     <td
-                      class="text-sm sm:text-[1rem] whitespace-nowrap text-end"
+                      class="text-sm sm:text-[1rem] whitespace-nowrap text-end {[
+                        'Strong Buy',
+                        'Buy',
+                      ]?.includes(item?.rating_current)
+                        ? ' text-green-600 dark:text-[#00FC50] '
+                        : item?.rating_current === 'Hold'
+                          ? '"text-red-600 dark:text-[#FF7070]"'
+                          : ['Strong Sell', 'Sell']?.includes(
+                                item?.rating_current,
+                              )
+                            ? 'text-red-600 dark:text-[#FF2F1F]'
+                            : ''}"
                     >
-                      <span
-                        class=" {['Strong Buy', 'Buy']?.includes(
-                          item?.rating_current,
-                        )
-                          ? 'text-green-600 dark:text-[#00FC50]'
-                          : item?.rating_current === 'Hold'
-                            ? '"text-red-600 dark:text-[#FF7070]"'
-                            : ['Strong Sell', 'Sell']?.includes(
-                                  item?.rating_current,
-                                )
-                              ? 'text-red-600 dark:text-[#FF2F1F]'
-                              : ''}"
-                      >
-                        {item?.rating_current}
-                      </span>
+                      {item?.rating_current}
                     </td>
 
                     <td
@@ -491,6 +518,35 @@
                     </td>
 
                     <td
+                      class="text-sm sm:text-[1rem] whitespace-nowrap text-end font-semibold"
+                    >
+                      {#if Math?.ceil(item?.adjusted_pt_current) !== 0}
+                        <span
+                          class="text-sm sm:text-[1rem] whitespace-nowrap text-end {item?.adjusted_pt_current /
+                            data?.getStockQuote?.price -
+                            1 >=
+                          0
+                            ? 'text-green-600 dark:text-[#00FC50] '
+                            : item?.adjusted_pt_current /
+                                  data?.getStockQuote?.price -
+                                  1 <
+                                0
+                              ? 'text-red-600 dark:text-[#FF2F1F]'
+                              : ''}"
+                        >
+                          {(
+                            (item?.adjusted_pt_current /
+                              data?.getStockQuote?.price -
+                              1) *
+                            100
+                          )?.toFixed(2)}%
+                        </span>
+                      {:else}
+                        <span class="">n/a</span>
+                      {/if}
+                    </td>
+
+                    <td
                       class=" text-end text-sm sm:text-[1rem] whitespace-nowrap"
                     >
                       <div class="flex flex-col items-end">
@@ -515,23 +571,10 @@
             </table>
           </div>
         {:else if activeIdx === 1}
-          <div class="w-full flex justify-start items-center m-auto mt-10 mb-6">
-            <div
-              class="text-center w-fit text-gray-100 text-sm sm:text-[1rem] rounded-md h-auto border border-gray-300 dark:border-gray-600 p-4"
-            >
-              <svg
-                class="w-5 h-5 inline-block sm:mr-1 shrink-0"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 256 256"
-                ><path
-                  fill="#fff"
-                  d="M128 24a104 104 0 1 0 104 104A104.11 104.11 0 0 0 128 24m-4 48a12 12 0 1 1-12 12a12 12 0 0 1 12-12m12 112a16 16 0 0 1-16-16v-40a8 8 0 0 1 0-16a16 16 0 0 1 16 16v40a8 8 0 0 1 0 16"
-                /></svg
-              >
-              There are no top analyst ratings available for the past 12 months for
-              {$displayCompanyName}
-            </div>
-          </div>
+          <Infobox
+            text={`There are no top analyst ratings available for the past 12 months for
+              ${removeCompanyStrings($displayCompanyName)}`}
+          />
         {/if}
 
         {#if rawData?.length !== 0}

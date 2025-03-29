@@ -369,7 +369,7 @@
                             cy="18"
                             r="16"
                             fill="none"
-                            class="stroke-current text-blue-500"
+                            class="stroke-current text-blue-600"
                             stroke-width="3"
                             stroke-dasharray="100"
                             stroke-dashoffset={buySellRatio >= 1

@@ -87,7 +87,7 @@
                 on:click={() => changeSubSection("insider")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'insider'
                   ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
-                  : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+                  : 'text-blue-600 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
               >
                 Insider Trading
               </a>
@@ -98,7 +98,7 @@
                 class="p-2 px-5 cursor-pointer {displaySubSection ===
                 'institute'
                   ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
-                  : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+                  : 'text-blue-600 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
               >
                 13F Institute
               </a>
@@ -109,7 +109,7 @@
                 class="p-2 px-5 cursor-pointer {displaySubSection ===
                 'congress-trading'
                   ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
-                  : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+                  : 'text-blue-600 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
               >
                 Congress Trading
               </a>
@@ -119,7 +119,7 @@
                 class="p-2 px-5 cursor-pointer {displaySubSection ===
                 'transcripts'
                   ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
-                  : 'text-blue-500 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+                  : 'text-blue-600 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
               >
                 Transcripts
               </a>
@@ -141,7 +141,7 @@
                     <li class="mb-3 last:mb-1">
                       {formatDate(item?.publishedDate)} ago -
                       <a
-                        class="sm:hover:text-muted dark:sm:hover:text-white text-blue-500 dark:text-blue-400"
+                        class="sm:hover:text-muted dark:sm:hover:text-white text-blue-600 dark:text-blue-400"
                         href={item?.url}
                         target="_blank"
                         rel="noopener noreferrer nofollow">{item?.title}</a

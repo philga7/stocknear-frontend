@@ -42,7 +42,7 @@
       We use cookies to ensure that we give you the best experience on our
       website. <a
         href="/privacy-policy"
-        class="text-blue-500 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline"
+        class="text-blue-600 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline"
         >Read Privacy Policy</a
       >.
     </p>

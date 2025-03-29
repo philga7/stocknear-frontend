@@ -65,10 +65,11 @@ export default (node, config) => {
 
   // Resize observer remains the same
 const resizeObserver = new ResizeObserver(() => {
-  if (chart) {
+  if (chart && browser) {
     const newWidth = node.clientWidth;
     // Set height based on viewport width: 300 for mobile, 360 for desktop
-    const newHeight = (node.clientWidth < 768) ? 300 : 360;
+    const newHeight = (node.clientWidth < 600) ? 300 : 360;
+
     chart?.setSize(newWidth, newHeight, false);
   }
 });

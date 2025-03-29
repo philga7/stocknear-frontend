@@ -69,7 +69,7 @@
         {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
           ... Unlock content with
           <a
-            class="inline-block ml-0.5 text-blue-500 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
+            class="inline-block ml-0.5 text-blue-600 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
             href="/pricing"
             >Pro Subscription <svg
               class="w-4 h-4 mb-1 inline-block"
@@ -90,7 +90,7 @@
               ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
               : revenueRatio < 0 && revenueRatio !== 'Infinity'
                 ? 'text-red-600 dark:text-[#FF2F1F]'
-                : 'text-muted dark:text-white'} "
+                : 'text-muted dark:text-white'} font-semibold"
             >{revenueRatio !== "Infinity"
               ? abbreviateNumber(revenueRatio) + "%"
               : "n/a"}</span
@@ -106,7 +106,8 @@
             <span
               class="{epsRatio > 0
                 ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                : 'text-retext-[#FF2F1F]'} ">{epsRatio}%</span
+                : 'text-red-600 dark:text-[#FF2F1F]'} font-semibold"
+              >{epsRatio}%</span
             >
             {epsRatio > 0 ? "increase" : epsRatio < 0 ? "decrease" : ""} YoY.
           {:else}
