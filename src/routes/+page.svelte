@@ -54,7 +54,7 @@
     }
   });
 
-  $: charNumber = $screenWidth < 640 ? 20 : 15;
+  $: charNumber = $screenWidth < 640 ? 20 : 30;
 </script>
 
 <SEO
@@ -105,7 +105,7 @@
       <div
         class="text-center mb-10 relative w-fit flex justify-center m-auto text-white"
       >
-        <div class="mb-4 flex justify-center -mt-3 lg:mb-8">
+        <div class="mb-4 flex justify-center -mt-3 lg:mb-3">
           <a href="/analysts/analyst-flow"
             ><div
               class="flex items-center justify-center sm:hover:text-muted dark:sm:hover:text-white text-blue-600 dark:text-blue-400"
@@ -129,16 +129,10 @@
         Clear & <span class="italic">Simple</span> Market Insight.
       </h1>
 
-      <h2
-        class="text-muted dark:text-white text-2xl font-semibold text-start w-full pb-4 sm:pl-4 sm:pb-2"
-      >
-        Dashboard
-      </h2>
-
       <main class="flex flex-1 flex-col gap-4 sm:p-4 md:gap-8">
         <div class="grid gap-4 md:gap-8 grid-cols-1 lg:grid-cols-2 text-start">
           <Card.Root
-            class=" order-1 sm:order-2 overflow-x-auto overflow-hidden overflow-y-auto no-scrollbar max-h-[450px]"
+            class=" order-1 sm:order-2 overflow-x-auto overflow-hidden overflow-y-auto no-scrollbar "
           >
             <Card.Header class="flex flex-row items-center">
               <div class="flex flex-col items-start w-full">
@@ -175,20 +169,28 @@
                 <Table.Root class="overflow-x-auto w-full">
                   <Table.Header>
                     <Table.Row>
-                      <Table.Head class=" font-semibold">Symbol</Table.Head>
-                      <Table.Head class="hidden sm:table-cell  font-semibold"
+                      <Table.Head
+                        class=" text-left sm:text-[1rem] font-bold dark:font-semibold"
+                        >Symbol</Table.Head
+                      >
+                      <Table.Head
+                        class="hidden sm:table-cell sm:text-[1rem] font-bold dark:font-semibold"
                         >Name</Table.Head
                       >
-                      <Table.Head class=" text-right font-semibold"
+                      <Table.Head
+                        class=" text-right sm:text-[1rem] font-bold dark:font-semibold"
                         >Price</Table.Head
                       >
-                      <Table.Head class=" text-right font-semibold"
+                      <Table.Head
+                        class=" text-right sm:text-[1rem] font-bold dark:font-semibold"
                         >Change</Table.Head
                       >
+                      <!--
                       <Table.Head
                         class=" text-right font-semibold whitespace-nowrap"
                         >Market Cap</Table.Head
                       >
+                        -->
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>
@@ -211,7 +213,7 @@
                         <Table.Cell
                           class="text-right xl:table.-column text-sm sm:text-[1rem]"
                         >
-                          {item?.price?.toFixed(2)}
+                          ${item?.price?.toFixed(2)}
                         </Table.Cell>
                         <Table.Cell
                           class="text-right md:table.-cell xl:table.-column text-sm sm:text-[1rem] text-white"
@@ -230,11 +232,13 @@
                             </span>
                           {/if}
                         </Table.Cell>
+                        <!--
                         <Table.Cell
                           class="text-right xl:table.-column text-sm sm:text-[1rem]"
                         >
                           {abbreviateNumber(item?.marketCap)}
                         </Table.Cell>
+                        -->
                       </Table.Row>
                     {/each}
                   </Table.Body>
@@ -247,7 +251,7 @@
             </Card.Content>
           </Card.Root>
           <Card.Root
-            class="order-1 sm:order-2 overflow-x-auto overflow-hidden overflow-y-auto no-scrollbar max-h-[450px]"
+            class="order-1 sm:order-2 overflow-x-auto overflow-hidden overflow-y-auto no-scrollbar"
           >
             <Card.Header class="flex flex-row items-center">
               <div class="flex flex-col items-start w-full">
@@ -284,20 +288,28 @@
                 <Table.Root class="overflow-x-auto w-full">
                   <Table.Header>
                     <Table.Row>
-                      <Table.Head class=" font-semibold">Symbol</Table.Head>
-                      <Table.Head class="hidden sm:table-cell  font-semibold"
+                      <Table.Head
+                        class=" text-left sm:text-[1rem] font-bold dark:font-semibold"
+                        >Symbol</Table.Head
+                      >
+                      <Table.Head
+                        class="hidden sm:table-cell sm:text-[1rem] font-bold dark:font-semibold"
                         >Name</Table.Head
                       >
-                      <Table.Head class=" text-right font-semibold"
+                      <Table.Head
+                        class=" text-right sm:text-[1rem] font-bold dark:font-semibold"
                         >Price</Table.Head
                       >
-                      <Table.Head class=" text-right font-semibold"
+                      <Table.Head
+                        class=" text-right sm:text-[1rem] font-bold dark:font-semibold"
                         >Change</Table.Head
                       >
+                      <!--
                       <Table.Head
                         class=" text-right font-semibold whitespace-nowrap"
                         >Market Cap</Table.Head
                       >
+                        -->
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>
@@ -320,7 +332,7 @@
                         <Table.Cell
                           class="text-right xl:table.-column text-sm sm:text-[1rem]"
                         >
-                          {item?.price?.toFixed(2)}
+                          ${item?.price?.toFixed(2)}
                         </Table.Cell>
                         <Table.Cell
                           class="text-right md:table.-cell xl:table.-column text-sm sm:text-[1rem] text-white"
@@ -339,11 +351,13 @@
                             </span>
                           {/if}
                         </Table.Cell>
+                        <!--
                         <Table.Cell
                           class="text-right xl:table.-column text-sm sm:text-[1rem]"
                         >
                           {abbreviateNumber(item?.marketCap)}
                         </Table.Cell>
+                        -->
                       </Table.Row>
                     {/each}
                   </Table.Body>
