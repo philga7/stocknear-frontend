@@ -218,7 +218,7 @@
             </div>
             <a
               href="/update-password"
-              class="sm:hover:text-muted dark:sm:hover:text-white text-blue-600 dark:text-blue-400"
+              class="sm:hover:text-muted dark:sm:hover:text-white text-blue-700 dark:text-blue-400"
               >Update Password</a
             >
           </div>
@@ -479,7 +479,7 @@
             {:else if subscriptionData?.first_order_item?.product_name?.includes("Life Time")}{:else}
               <a
                 href="/pricing"
-                class="sm:hover:text-muted dark:sm:hover:text-white text-blue-600 dark:text-blue-400"
+                class="sm:hover:text-muted dark:sm:hover:text-white text-blue-700 dark:text-blue-400"
               >
                 Get Full Access with Pro Subscription.
               </a>
@@ -498,7 +498,7 @@
                 <li>
                   Send an email to <a
                     href={`mailto:${emailAddress}`}
-                    class="sm:hover:text-muted dark:sm:hover:text-white text-blue-600 dark:text-blue-400"
+                    class="sm:hover:text-muted dark:sm:hover:text-white text-blue-700 dark:text-blue-400"
                     >{emailAddress}</a
                   >
                 </li>
@@ -508,7 +508,7 @@
                     rel="noopener noreferrer"
                     target="_blank"
                     href="https://www.reddit.com/r/stocknear/"
-                    class="sm:hover:text-muted dark:sm:hover:text-white text-blue-600 dark:text-blue-400"
+                    class="sm:hover:text-muted dark:sm:hover:text-white text-blue-700 dark:text-blue-400"
                   >
                     r/stocknear</a
                   >.
@@ -518,7 +518,7 @@
                     rel="noopener noreferrer"
                     target="_blank"
                     href="https://discord.com/invite/hCwZMMZ2MT"
-                    class="sm:hover:text-muted dark:sm:hover:text-white text-blue-600 dark:text-blue-400"
+                    class="sm:hover:text-muted dark:sm:hover:text-white text-blue-700 dark:text-blue-400"
                     >Discord Channel</a
                   >.
                 </li>
@@ -676,7 +676,7 @@
   <label for="installModal" class="cursor-pointer modal-backdrop"></label>
 
   <div
-    class="modal-box text-white rounded w-full bg-secondary shadow-sm border border-gray-300 dark:border-gray-600"
+    class="modal-box rounded w-full bg-white dark:bg-secondary shadow-sm border border-gray-300 dark:border-gray-600"
   >
     <div class="flex flex-row items-center pt-5">
       <h4 class=" text-2xl font-bold text-center m-auto">Steps to install</h4>
@@ -689,7 +689,7 @@
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           ><path
-            fill="white"
+            fill="currentColor"
             d="m6.4 18.308l-.708-.708l5.6-5.6l-5.6-5.6l.708-.708l5.6 5.6l5.6-5.6l.708.708l-5.6 5.6l5.6 5.6l-.708.708l-5.6-5.6z"
           /></svg
         >
@@ -708,7 +708,7 @@
       </ul>
     </div>
 
-    <div class="boshadow-sm rder-t border-gray-300 dark:border-gray-600 mt-2">
+    <div class=" border-t border-gray-300 dark:border-gray-600 mt-2">
       <label
         for="installModal"
         class="mt-4 font-semibold text-xl m-auto flex justify-center cursor-pointer"

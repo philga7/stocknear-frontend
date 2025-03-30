@@ -99,14 +99,12 @@
         fill="currentColor"
         stroke-width="0"
         viewBox="0 0 640 512"
-        class="text-muted dark:text-zinc-400 mr-2"
-        height="1em"
-        width="1em"
+        class="mr-2 w-4 h-4 sm:w-5 sm:h-5"
         xmlns="http://www.w3.org/2000/svg"
         ><path
           d="M96 224c35.3 0 64-28.7 64-64s-28.7-64-64-64-64 28.7-64 64 28.7 64 64 64zm448 0c35.3 0 64-28.7 64-64s-28.7-64-64-64-64 28.7-64 64 28.7 64 64 64zm32 32h-64c-17.6 0-33.5 7.1-45.1 18.6 40.3 22.1 68.9 62 75.1 109.4h66c17.7 0 32-14.3 32-32v-32c0-35.3-28.7-64-64-64zm-256 0c61.9 0 112-50.1 112-112S381.9 32 320 32 208 82.1 208 144s50.1 112 112 112zm76.8 32h-8.3c-20.8 10-43.9 16-68.5 16s-47.6-6-68.5-16h-8.3C179.6 288 128 339.6 128 403.2V432c0 26.5 21.5 48 48 48h288c26.5 0 48-21.5 48-48v-28.8c0-63.6-51.6-115.2-115.2-115.2zm-223.7-13.4C161.5 263.1 145.6 256 128 256H64c-35.3 0-64 28.7-64 64v32c0 17.7 14.3 32 32 32h65.9c6.3-47.4 34.9-87.3 75.2-109.4z"
         ></path></svg
-      ><span class="font-medium text-muted dark:text-zinc-300 text-lg"
+      ><span class="font-medium text-sm sm:text-lg"
         >Trusted by <span class="font-semibold">5,000</span>+ Traders</span
       >
     </div>
@@ -114,7 +112,7 @@
       class="hidden sm:inline-block text-zinc-600"
       style="opacity: 1; transform: none;">|</span
     >
-    <div class="mt-2 sm:mt-0 flex items-center text-lg">
+    <div class="mt-2 sm:mt-0 flex items-center text-sm sm:text-lg">
       <svg
         stroke="currentColor"
         fill="currentColor"
@@ -127,9 +125,8 @@
         ><path
           d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"
         ></path></svg
-      ><span class="ml-1 mr-2 font-bold text-muted dark:text-zinc-300"
-        ><span>4.4</span>/5</span
-      ><span class="font-medium text-muted dark:text-zinc-300"
+      ><span class="ml-1 mr-2 font-bold"><span>4.4</span>/5</span><span
+        class="font-medium"
         >Rated "Excellent" on <a
           rel="noopener noreferrer"
           target="_blank"
@@ -145,34 +142,14 @@
   <div class="px-3">
     <div class="mx-auto text-center mb-8">
       <h1 class="text-4xl sm:text-5xl font-bold pb-4">
-        Save Time & Maximize Profits
+        Clear Insights, Smart Trades.
       </h1>
     </div>
 
     <!--<Discount/>-->
 
-    <div class="flex flex-row items-center justify-center lg:justify-between">
-      <div
-        class="hidden lg:inline-flex items-center px-2.5 py-1 rounded-md bg-blue-100 dark:bg-indigo-500/10 border border-blue-100 shadow-sm dark:border-indigo-500/20"
-      >
-        <svg
-          stroke="currentColor"
-          fill="currentColor"
-          stroke-width="0"
-          viewBox="0 0 576 512"
-          class="text-muted dark:text-indigo-400 mr-1.5 text-xs"
-          height="1em"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-          ><path
-            d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"
-          ></path></svg
-        ><span class="text-sm text-muted dark:text-indigo-300"
-          >Rated <span class="font-medium mx-0.5">Excellent</span> on Trustpilot</span
-        >
-      </div>
-
-      <div class="flex flex-row items-center">
+    <div class="flex flex-row items-center justify-center mb-5 sm:mb-0">
+      <div class="flex flex-row items-center ml-auto">
         <span class="text-[1rem] font-semibold mr-3"> Monthly </span>
 
         <label class="inline-flex cursor-pointer relative">
@@ -676,8 +653,21 @@
       </div>
       <div
         style="opacity: 1; transform: translateY(20px);"
-        class="flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
+        class="relative flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
       >
+        <div
+          class="w-fit absolute -top-[20px] left-1/2 transform -translate-x-1/2 whitespace-nowrap m-auto px-4 py-1.5 rounded-md text-sm font-medium backdrop-blur-xl
+                  bg-blue-600 text-white shadow-sm"
+        >
+          <span class="flex items-center gap-1.5"
+            ><svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"
+              ><path
+                d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"
+              ></path></svg
+            >Most Popular</span
+          >
+        </div>
+
         <h3 class="text-3xl font-bold">Plus</h3>
         <p class="text-muted dark:text-zinc-300 text-sm mt-1">
           Best for Intermediate Traders
@@ -1063,6 +1053,13 @@
             <span class="">Realtime Dark Pool Trades</span>
           </li>
         </ul>
+        {#if !["Pro", "Plus"]?.includes(data?.user?.tier) || data?.user?.freeTrial === true}
+          <div class="mt-3 items-center text-[1rem] font-medium mb-5">
+            Promo Code: <strong>SPRINGSALE</strong>
+            <br class="mb-2" />
+            Get <strong>50% OFF</strong> on Pro Annual Membership!
+          </div>
+        {/if}
         <div class="mt-auto pt-6 border-t border-zinc-700 mx-4">
           <label
             for={!data?.user ? "userLogin" : ""}
@@ -1084,6 +1081,7 @@
           >
         </div>
       </div>
+
       <!--
       <div
         class="relative min-h-[330px] lg:min-h-[240px] text-left w-full col-span-1 lg:col-span-3 bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-200 dark:border-zinc-600 p-6 isolate translate-y-5 opacity-100"

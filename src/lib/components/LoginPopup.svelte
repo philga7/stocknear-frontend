@@ -154,14 +154,14 @@ const output = await response.json();
   ></label>
 
   <div
-    class="modal-box w-full bg-[#18181B] sm:border sm:border-gray-600 rounded-none sm:rounded-lg {$screenWidth <
+    class="modal-box w-full bg-white shadow-sm dark:bg-[#18181B] sm:border sm:border-gray-600 rounded-none sm:rounded-lg {$screenWidth <
     640
       ? 'min-h-screen'
       : ''}"
   >
     <label
       for="userLogin"
-      class="cursor-pointer absolute right-3 top-2 text-xl text-white"
+      class="cursor-pointer absolute right-3 top-2 text-xl"
     >
       <svg
         class="h-8 w-8"
@@ -175,7 +175,7 @@ const output = await response.json();
         ></g><g id="SVGRepo_iconCarrier">
           <path
             d="M6.96967 16.4697C6.67678 16.7626 6.67678 17.2374 6.96967 17.5303C7.26256 17.8232 7.73744 17.8232 8.03033 17.5303L6.96967 16.4697ZM13.0303 12.5303C13.3232 12.2374 13.3232 11.7626 13.0303 11.4697C12.7374 11.1768 12.2626 11.1768 11.9697 11.4697L13.0303 12.5303ZM11.9697 11.4697C11.6768 11.7626 11.6768 12.2374 11.9697 12.5303C12.2626 12.8232 12.7374 12.8232 13.0303 12.5303L11.9697 11.4697ZM18.0303 7.53033C18.3232 7.23744 18.3232 6.76256 18.0303 6.46967C17.7374 6.17678 17.2626 6.17678 16.9697 6.46967L18.0303 7.53033ZM13.0303 11.4697C12.7374 11.1768 12.2626 11.1768 11.9697 11.4697C11.6768 11.7626 11.6768 12.2374 11.9697 12.5303L13.0303 11.4697ZM16.9697 17.5303C17.2626 17.8232 17.7374 17.8232 18.0303 17.5303C18.3232 17.2374 18.3232 16.7626 18.0303 16.4697L16.9697 17.5303ZM11.9697 12.5303C12.2626 12.8232 12.7374 12.8232 13.0303 12.5303C13.3232 12.2374 13.3232 11.7626 13.0303 11.4697L11.9697 12.5303ZM8.03033 6.46967C7.73744 6.17678 7.26256 6.17678 6.96967 6.46967C6.67678 6.76256 6.67678 7.23744 6.96967 7.53033L8.03033 6.46967ZM8.03033 17.5303L13.0303 12.5303L11.9697 11.4697L6.96967 16.4697L8.03033 17.5303ZM13.0303 12.5303L18.0303 7.53033L16.9697 6.46967L11.9697 11.4697L13.0303 12.5303ZM11.9697 12.5303L16.9697 17.5303L18.0303 16.4697L13.0303 11.4697L11.9697 12.5303ZM13.0303 11.4697L8.03033 6.46967L6.96967 7.53033L11.9697 12.5303L13.0303 11.4697Z"
-            fill="#fff"
+            fill="currentColor"
           ></path>
         </g></svg
       >
@@ -184,12 +184,12 @@ const output = await response.json();
     {#if displaySection === "login"}
       <div class="grid grid-cols-1 animate-fade-in-once">
         <div class="relative">
-          <h2 class="text-center text-white text-2xl pt-10 sm:pt-4 font-bold">
-            Sign In
-          </h2>
+          <h2 class="text-center text-2xl pt-10 sm:pt-4 font-bold">Sign In</h2>
         </div>
 
-        <span class="text-gray-400 text-center pb-4"> Welcome back! </span>
+        <span class="text-gray-600 dark:text-gray-400 text-center pb-4">
+          Welcome back!
+        </span>
 
         <div class="relative">
           <form
@@ -214,7 +214,7 @@ const output = await response.json();
             <div class="text-start w-full max-w-lg">
               <a
                 href="/reset-password"
-                class="text-start text-sm font-semibold text-[#FB6A67] hover:cursor-pointer hover:underline"
+                class="text-start text-sm font-semibold text-blue-700 dark:text-blue-400 cursor-pointer sm:hover:underline"
                 >Forgot Password?</a
               >
             </div>
@@ -222,13 +222,13 @@ const output = await response.json();
               {#if !loading && !isClicked}
                 <button
                   type="submit"
-                  class="btn bg-[#fff] border border-gray-600 sm:hover:bg-gray-300 transition duration-100 text-black btn-md w-full rounded-md m-auto font-semibold text-[1rem]"
+                  class="cursor-pointer py-2.5 bg-[#3B82F6] dark:bg-[#fff] border-none sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 transition duration-100 btn-md w-full rounded-md m-auto text-white dark:text-black font-semibold text-[1rem]"
                 >
                   <span>Login</span>
                 </button>
               {:else}
                 <label
-                  class="cursor-not-allowed btn bg-[#fff] opacity-[0.5] border border-gray-600 sm:hover:bg-gray-300 transition duration-100 text-black btn-md w-full rounded-md m-auto text-black font-semibold text-[1rem]"
+                  class="cursor-not-allowed btn bg-[#3B82F6] dark:bg-[#fff] opacity-[0.5] border border-gray-600 sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 transition duration-100 btn-md w-full rounded-md m-auto text-white dark:text-black font-semibold text-[1rem]"
                 >
                   <div class="flex flex-row m-auto items-center">
                     <span class="loading loading-infinity"></span>
@@ -238,8 +238,8 @@ const output = await response.json();
               {/if}
             </div>
 
-            <div class="divider divider-[#fff] pt-10 pb-10">
-              <span class="text-white text-[1rem] z-10">Or login using</span>
+            <div class="divider divider-[#fff] dark:pt-10 pb-10">
+              <span class=" text-[1rem] z-10">Or login using</span>
             </div>
 
             <div class="flex flex-row items-center gap-x-5 pb-6">
@@ -249,7 +249,7 @@ const output = await response.json();
                   on:click={() => (oauthLoading = !oauthLoading)}
                   on:mouseenter={handleHoverGoogle}
                   on:mouseleave={handleHoverGoogle}
-                  class="cursor-pointer shrink-0 rounded-full w-12 h-12 relative bg-default flex items-center justify-center border border-gray-600 sm:hover:bg-secondary text-white"
+                  class="cursor-pointer shrink-0 rounded-full w-12 h-12 relative bg-default flex items-center justify-center border border-gray-600 sm:hover:bg-secondary"
                 >
                   <svg
                     class="{isHoveredGoogle
@@ -298,7 +298,7 @@ const output = await response.json();
                   on:click={() => (oauthLoading = !oauthLoading)}
                   on:mouseenter={handleHoverDiscord}
                   on:mouseleave={handleHoverDiscord}
-                  class="cursor-pointer shrink-0 rounded-full w-12 h-12 relative bg-default flex items-center justify-center border border-gray-600 sm:hover:bg-secondary text-white"
+                  class="cursor-pointer shrink-0 rounded-full w-12 h-12 relative bg-default flex items-center justify-center border border-gray-600 sm:hover:bg-secondary"
                 >
                   <svg
                     class="{isHoveredDiscord
@@ -832,7 +832,7 @@ const output = await response.json();
                   on:click={() => (oauthLoading = !oauthLoading)}
                   on:mouseenter={handleHoverGithub}
                   on:mouseleave={handleHoverGithub}
-                  class="cursor-pointer shrink-0 rounded-full w-12 h-12 relative bg-default flex items-center justify-center border border-gray-600 sm:hover:bg-secondary text-white"
+                  class="cursor-pointer shrink-0 rounded-full w-12 h-12 relative bg-default flex items-center justify-center border border-gray-600 sm:hover:bg-secondary"
                 >
                   <svg
                     class="{isHoveredGithub
@@ -850,12 +850,12 @@ const output = await response.json();
             </div>
 
             <p
-              class="pb-1 text-sm w-full max-w-lg text-gray-300 flex justify-center items-center"
+              class="pb-1 text-sm w-full max-w-lg flex justify-center items-center"
             >
               You don't have an account?
               <label
                 on:click={() => (displaySection = "register")}
-                class="text-blue-400 sm:hover:underline ml-1 cursor-pointer"
+                class="text-blue-700 dark:text-blue-400 sm:hover:underline ml-1 cursor-pointer"
                 >Sign up</label
               >
             </p>
@@ -863,14 +863,14 @@ const output = await response.json();
         </div>
       </div>
     {:else if displaySection === "register"}
-      <div class="grid grid-cols-1 gap-4text-white animate-fade-in-once">
+      <div class="grid grid-cols-1 gap-4 animate-fade-in-once">
         <div class="relative">
-          <h2 class="text-center text-white text-2xl pt-10 sm:pt-4 font-bold">
+          <h2 class="text-center text-2xl pt-10 sm:pt-4 font-bold">
             Getting Started
           </h2>
         </div>
 
-        <span class="text-gray-400 text-center pb-4">
+        <span class="text-gray-600 dark:text-gray-400 text-center pb-4">
           Create an account to get started
         </span>
 
@@ -912,13 +912,13 @@ const output = await response.json();
               {#if !loading && !isClicked}
                 <button
                   type="submit"
-                  class="btn bg-[#fff] border border-gray-600 sm:hover:bg-gray-300 transition duration-100 text-black btn-md w-full rounded-md m-auto font-semibold text-[1rem]"
+                  class="cursor-pointer py-2.5 bg-[#3B82F6] dark:bg-[#fff] border-none sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 transition duration-100 btn-md w-full rounded-md m-auto text-white dark:text-black font-semibold text-[1rem]"
                 >
                   <span>Register</span>
                 </button>
               {:else}
                 <label
-                  class="cursor-not-allowed btn bg-[#fff] opacity-[0.5] border border-gray-600 sm:hover:bg-gray-300 transition duration-100 text-black btn-md w-full rounded-md m-auto font-semibold text-[1rem]"
+                  class="cursor-not-allowed btn bg-[#3B82F6] dark:bg-[#fff] opacity-[0.5] border border-gray-600 sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 transition duration-100 btn-md w-full rounded-md m-auto text-white dark:text-black font-semibold text-[1rem]"
                 >
                   <div class="flex flex-row m-auto items-center">
                     <span class="loading loading-infinity"></span>
@@ -929,7 +929,7 @@ const output = await response.json();
             </div>
 
             <div class="divider divider-[#fff] pt-10 pb-10">
-              <span class="text-white text-[1rem] z-10">Or register using</span>
+              <span class=" text-[1rem] z-10">Or register using</span>
             </div>
 
             <div class="flex flex-row items-center gap-x-5 pb-6">
@@ -939,7 +939,7 @@ const output = await response.json();
                   on:click={() => (oauthLoading = !oauthLoading)}
                   on:mouseenter={handleHoverGoogle}
                   on:mouseleave={handleHoverGoogle}
-                  class="cursor-pointer shrink-0 rounded-full w-12 h-12 relative bg-default flex items-center justify-center border border-gray-600 sm:hover:bg-secondary text-white"
+                  class="cursor-pointer shrink-0 rounded-full w-12 h-12 relative bg-default flex items-center justify-center border border-gray-600 sm:hover:bg-secondary"
                 >
                   <svg
                     class="{isHoveredGoogle
@@ -988,7 +988,7 @@ const output = await response.json();
                   on:click={() => (oauthLoading = !oauthLoading)}
                   on:mouseenter={handleHoverDiscord}
                   on:mouseleave={handleHoverDiscord}
-                  class="cursor-pointer shrink-0 rounded-full w-12 h-12 relative bg-default flex items-center justify-center border border-gray-600 sm:hover:bg-secondary text-white"
+                  class="cursor-pointer shrink-0 rounded-full w-12 h-12 relative bg-default flex items-center justify-center border border-gray-600 sm:hover:bg-secondary"
                 >
                   <svg
                     class="{isHoveredDiscord
@@ -1522,7 +1522,7 @@ const output = await response.json();
                   on:click={() => (oauthLoading = !oauthLoading)}
                   on:mouseenter={handleHoverGithub}
                   on:mouseleave={handleHoverGithub}
-                  class="cursor-pointer shrink-0 rounded-full w-12 h-12 relative bg-default flex items-center justify-center border border-gray-600 sm:hover:bg-secondary text-white"
+                  class="cursor-pointer shrink-0 rounded-full w-12 h-12 relative bg-default flex items-center justify-center border border-gray-600 sm:hover:bg-secondary"
                 >
                   <svg
                     class="{isHoveredGithub
@@ -1539,24 +1539,28 @@ const output = await response.json();
               </form>
             </div>
 
-            <p class="pb-1 text-xs text-gray-300 text-center">
-              By registering you agree to stocknear's
-              <a href="/terms-of-use" class="text-blue-400 hover:underline"
+            <p class="pb-1 text-xs text-center">
+              By registering you agree to Stocknear's
+              <a
+                href="/terms-of-use"
+                class="text-blue-700 dark:text-blue-400 sm:hover:underline"
                 >Terms of Use</a
               >
               and acknowledge that you've read our
-              <a href="/privacy-policy" class="text-blue-400 hover:underline"
+              <a
+                href="/privacy-policy"
+                class="text-blue-700 dark:text-blue-400 sm:hover:underline"
                 >Privacy Policy</a
               >.
             </p>
 
             <p
-              class="pt-3 pb-1 text-sm w-full max-w-lg text-gray-300 flex justify-center items-center"
+              class="pt-3 pb-1 text-sm w-full max-w-lg flex justify-center items-center"
             >
               You already have an account?
               <label
                 on:click={() => (displaySection = "login")}
-                class="text-blue-400 hover:underline ml-1 cursor-pointer"
+                class="text-blue-700 dark:text-blue-400 sm:hover:underline ml-1 cursor-pointer"
                 >Sign in</label
               >
             </p>
