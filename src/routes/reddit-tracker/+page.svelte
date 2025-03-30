@@ -153,7 +153,7 @@
                         href={"https://www.reddit.com" + item?.permalink}
                         rel="noopener noreferrer"
                         target="_blank"
-                        class="text-[1rem] sm:text-xl font-semibold mb-3 transition duration-100 sm:hover:text-blue-600 dark:sm:hover:text-blue-400"
+                        class="text-[1rem] sm:text-xl font-semibold mb-3 transition duration-100 sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
                       >
                         {item?.title}
                       </a>
@@ -222,7 +222,7 @@
                           href={"https://www.reddit.com/user/" + item?.author}
                           rel="noopener noreferrer"
                           target="_blank"
-                          class="hidden sm:inline-block text-sm sm:hover:text-blue-600 dark:sm:hover:text-blue-400"
+                          class="hidden sm:inline-block text-sm sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
                         >
                           Posted by {item?.author}
                         </a>
@@ -230,7 +230,7 @@
                           href={"https://www.reddit.com" + item?.permalink}
                           rel="noopener noreferrer"
                           target="_blank"
-                          class="mt-2 sm:mt-0 text-sm sm:hover:text-blue-600 dark:sm:hover:text-blue-400"
+                          class="mt-2 sm:mt-0 text-sm sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
                         >
                           {formatUtcTimestamp(item?.created_utc)}
                           <Link
@@ -266,7 +266,7 @@
                           on:click={() => changeTimePeriod(index)}
                           class="p-2 px-5 cursor-pointer {activeIdx === index
                             ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
-                            : 'text-blue-600 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+                            : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
                         >
                           {item.title}
                         </label>
@@ -276,7 +276,7 @@
                           class="p-2 px-5 cursor-pointer flex flex-row items-center {activeIdx ===
                           index
                             ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
-                            : 'text-blue-600 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+                            : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
                         >
                           <span class="">{item.title}</span>
                           <svg
@@ -346,19 +346,19 @@
                           >{item?.count}</Table.Cell
                         >
                         <Table.Cell
-                          class="text-right text-[1rem] text-green-600 dark:text-[#00FC50]"
+                          class="text-right text-[1rem] text-green-700 dark:text-[#00FC50]"
                           >{item?.call}</Table.Cell
                         >
                         <Table.Cell
-                          class="text-right text-[1rem] text-red-600 dark:text-[#FF2F1F]"
+                          class="text-right text-[1rem] text-red-700 dark:text-[#FF2F1F]"
                           >{item?.put}</Table.Cell
                         >
                         <Table.Cell
                           class="text-right text-[1rem] {item?.avgSentiment >
                           0.4
-                            ? 'text-green-600 dark:text-[#00FC50]'
+                            ? 'text-green-700 dark:text-[#00FC50]'
                             : item?.avgSentiment < -0.1
-                              ? 'text-red-600 dark:text-[#FF2F1F]'
+                              ? 'text-red-700 dark:text-[#FF2F1F]'
                               : 'text-[#C6A755]'} "
                           >{item?.avgSentiment > 0.4
                             ? "Bullish"
@@ -374,8 +374,8 @@
                         <Table.Cell class="text-right text-[1rem] ">
                           <span
                             class="{item?.changesPercentage > 0
-                              ? 'text-green-600 dark:text-[#00FC50]'
-                              : 'text-red-600 dark:text-[#FF2F1F]'} text-end"
+                              ? 'text-green-700 dark:text-[#00FC50]'
+                              : 'text-red-700 dark:text-[#FF2F1F]'} text-end"
                           >
                             {#if item?.changesPercentage > 0}
                               +{item?.changesPercentage?.toFixed(2)}%

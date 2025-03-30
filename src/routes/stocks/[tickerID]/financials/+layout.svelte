@@ -62,7 +62,7 @@
                   on:click={() => changeSubSection("income")}
                   class="p-2 px-5 cursor-pointer {displaySubSection === 'income'
                     ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
-                    : 'text-blue-600 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+                    : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
                 >
                   Income
                 </a>
@@ -73,7 +73,7 @@
                   class="p-2 px-5 cursor-pointer {displaySubSection ===
                   'balance-sheet'
                     ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
-                    : 'text-blue-600 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+                    : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
                 >
                   Balance Sheet
                 </a>
@@ -83,7 +83,7 @@
                   class="p-2 px-5 cursor-pointer {displaySubSection ===
                   'cash-flow'
                     ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
-                    : 'text-blue-600 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+                    : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
                 >
                   Cashflow
                 </a>
@@ -92,7 +92,7 @@
                   on:click={() => changeSubSection("ratios")}
                   class="p-2 px-5 cursor-pointer {displaySubSection === 'ratios'
                     ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
-                    : 'text-blue-600 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+                    : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
                 >
                   Ratios
                 </a>

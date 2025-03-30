@@ -903,7 +903,7 @@
                     >
                       <a
                         href="/pricing"
-                        class="sm:hover:text-blue-600 dark:sm:hover:text-white dark:text-white flex flex-row items-center"
+                        class="sm:hover:text-blue-700 dark:sm:hover:text-white dark:text-white flex flex-row items-center"
                       >
                         <span>Upgrade to Pro</span>
                         <svg

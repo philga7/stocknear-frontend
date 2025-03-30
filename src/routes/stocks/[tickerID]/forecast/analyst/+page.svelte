@@ -407,7 +407,7 @@
                           href={item?.analystId !== null
                             ? `/analysts/${item?.analystId}`
                             : "#"}
-                          class="font-semibold dark:font-normal text-blue-600 sm:hover:text-muted dark:sm:hover: dark:text-blue-400"
+                          class="font-semibold dark:font-normal text-blue-700 sm:hover:text-muted dark:sm:hover: dark:text-blue-400"
                           >{item?.analyst_name}
                         </a>
 

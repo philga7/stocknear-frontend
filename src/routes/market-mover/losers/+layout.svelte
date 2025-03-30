@@ -54,7 +54,7 @@
               href="/market-mover/losers"
               class="p-2 px-5 cursor-pointer {timePeriod === 'losers'
                 ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
-                : 'text-blue-600 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+                : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
             >
               Today
             </a>
@@ -62,7 +62,7 @@
               href="/market-mover/losers/week"
               class="p-2 px-5 cursor-pointer {timePeriod === 'week'
                 ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
-                : 'text-blue-600 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+                : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
             >
               Week
             </a>
@@ -70,7 +70,7 @@
               href="/market-mover/losers/month"
               class="p-2 px-5 cursor-pointer {timePeriod === 'month'
                 ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
-                : 'text-blue-600 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+                : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
             >
               Month
             </a>
@@ -78,7 +78,7 @@
               href="/market-mover/losers/year"
               class="p-2 px-5 cursor-pointer {timePeriod === 'year'
                 ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
-                : 'text-blue-600 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+                : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
             >
               Year
             </a>
@@ -86,7 +86,7 @@
               href="/market-mover/losers/3Y"
               class="p-2 px-5 cursor-pointer {timePeriod === '3Y'
                 ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
-                : 'text-blue-600 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+                : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
             >
               3 Years
             </a>
@@ -94,7 +94,7 @@
               href="/market-mover/losers/5Y"
               class="p-2 px-5 cursor-pointer {timePeriod === '5Y'
                 ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
-                : 'text-blue-600 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+                : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
             >
               5 Years
             </a>

@@ -69,9 +69,9 @@
         animation: false,
       },
       title: {
-        text: `<div class="text-muted dark:text-gray-200 mt-3  text-center font-normal text-2xl">Price Target: <span class="${changesPercentage >= 0 ? "text-green-600 dark:text-[#00FC50]" : "text-[#FF2F1F]"}">$${priceTarget}</span></div>
+        text: `<div class="text-muted dark:text-gray-200 mt-3  text-center font-normal text-2xl">Price Target: <span class="${changesPercentage >= 0 ? "text-green-700 dark:text-[#00FC50]" : "text-[#FF2F1F]"}">$${priceTarget}</span></div>
         <div class="text-muted dark:text-gray-200  mb-2 text-center font-normal text-xl">(${changesPercentage}% ${changesPercentage >= 0 ? "upside" : "downside"})</div>
-        <div class="text-muted dark:text-gray-200 text-center font-normal text-xl flex justify-center items-center">Analyst Consensus: <span class="ml-1 ${consensusRating === "Buy" ? "text-green-600 dark:text-[#00FC50]" : consensusRating === "Sell" ? "text-red-500 dark:text-[#FF2F1F]" : consensusRating === "Hold" ? "text-orange-500 dark:text-[#D5AB31]" : "text-muted dark:text-white"}">${consensusRating ?? "n/a"}</span></div>`,
+        <div class="text-muted dark:text-gray-200 text-center font-normal text-xl flex justify-center items-center">Analyst Consensus: <span class="ml-1 ${consensusRating === "Buy" ? "text-green-700 dark:text-[#00FC50]" : consensusRating === "Sell" ? "text-red-500 dark:text-[#FF2F1F]" : consensusRating === "Hold" ? "text-orange-500 dark:text-[#D5AB31]" : "text-muted dark:text-white"}">${consensusRating ?? "n/a"}</span></div>`,
         style: {
           color: "white",
           // Using inline CSS for margin-top and margin-bottom
@@ -215,7 +215,7 @@
       <div class="inline-block">
         <a
           href={`/stocks/${$stockTicker}/profile`}
-          class="w-full text-md mt-1 cursor-pointer sm:hover:text-muted dark:sm:hover:text-white text-blue-600 dark:text-blue-400 sm:hover:underline"
+          class="w-full text-md mt-1 cursor-pointer sm:hover:text-muted dark:sm:hover:text-white text-blue-700 dark:text-blue-400 sm:hover:underline"
         >
           [Read more]
         </a>
@@ -226,7 +226,7 @@
           <span class="block font-semibold">Industry</span>
           <a
             href={getIndustryHref(industry)}
-            class="sm:hover:text-blue-600 dark:sm:hover:text-blue-400 underline underline-offset-4"
+            class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400 underline underline-offset-4"
             >{industry}</a
           >
         </div>
@@ -235,7 +235,7 @@
           <a
             href={sectorNavigation?.find((item) => item?.title === sector)
               ?.link}
-            class="sm:hover:text-blue-600 dark:sm:hover:text-blue-400 underline underline-offset-4"
+            class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400 underline underline-offset-4"
             >{sector}</a
           >
         </div>
@@ -247,7 +247,7 @@
           <span class="block font-semibold">Employees</span>
           <a
             href={`/stocks/${$stockTicker}/profile/employees`}
-            class="sm:hover:text-blue-600 dark:sm:hover:text-blue-400 underline underline-offset-4"
+            class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400 underline underline-offset-4"
             >{new Intl.NumberFormat("en")?.format(employees)}</a
           >
         </div>
@@ -264,7 +264,7 @@
             <span class="block font-semibold">Website</span>
             <a
               href={website}
-              class="sm:hover:text-muted dark:sm:hover:text-white truncate text-blue-600 dark:text-blue-400"
+              class="sm:hover:text-muted dark:sm:hover:text-white truncate text-blue-700 dark:text-blue-400"
               target="_blank">{website}</a
             >
           </div>

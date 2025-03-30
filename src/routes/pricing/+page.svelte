@@ -142,7 +142,7 @@
   <div class="px-3">
     <div class="mx-auto text-center mb-8">
       <h1 class="text-4xl sm:text-5xl font-bold pb-4">
-        Clear Insights, Smart Trades.
+        Trade Smarter, Not Harder
       </h1>
     </div>
 
@@ -1336,10 +1336,10 @@
 
           <!-- Faqs -->
           <ul class="mx-auto divide-y divide-gray-800">
-            <li>
+            <li class="border-b border-gray-400 dark:border-gray-800">
               <details class="collapse collapse-arrow">
                 <summary
-                  class="font-semibold collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
+                  class="font-semibold collapse-title text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
                   >What are the advantages of Stocknear Service?</summary
                 >
                 <div class="collapse-content">
@@ -1357,10 +1357,10 @@
               </details>
             </li>
 
-            <li>
+            <li class="border-b border-gray-400 dark:border-gray-800">
               <details class="collapse collapse-arrow">
                 <summary
-                  class="font-semibold collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
+                  class="font-semibold collapse-title text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
                 >
                   What is a Credit and How Can I Use It?
                 </summary>
@@ -1380,10 +1380,10 @@
               </details>
             </li>
 
-            <li>
+            <li class="border-b border-gray-400 dark:border-gray-800">
               <details class="collapse collapse-arrow">
                 <summary
-                  class="font-semibold collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
+                  class="font-semibold collapse-title text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
                 >
                   Can I change my plan at any time?
                 </summary>
@@ -1395,7 +1395,7 @@
                     of it for you.
                     <a
                       href={`mailto:${emailAddress}`}
-                      class="text-blue-600 dark:text-blue-400 underline"
+                      class="text-blue-700 dark:text-blue-400 underline"
                     >
                       {emailAddress}
                     </a>
@@ -1404,10 +1404,10 @@
               </details>
             </li>
 
-            <li>
+            <li class="border-b border-gray-400 dark:border-gray-800">
               <details class="collapse collapse-arrow">
                 <summary
-                  class="font-semibold collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
+                  class="font-semibold collapse-title text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
                 >
                   Are there any commissions in addition to the subscription
                   plans?
@@ -1422,10 +1422,10 @@
                 </div>
               </details>
             </li>
-            <li>
+            <li class="border-b border-gray-400 dark:border-gray-800">
               <details class="collapse collapse-arrow">
                 <summary
-                  class="font-semibold collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
+                  class="font-semibold collapse-title text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
                 >
                   Can I request a refund?
                 </summary>
@@ -1436,7 +1436,7 @@
                     We offer a 30 day money back guarantee, no questions asked.
                     Just send an email to <a
                       href={`mailto:${emailAddress}`}
-                      class="text-blue-600 dark:text-blue-400 underline"
+                      class="text-blue-700 dark:text-blue-400 underline"
                       >{emailAddress}</a
                     > and you will get a full refund.
                   </p>
@@ -1444,10 +1444,10 @@
               </details>
             </li>
 
-            <li>
+            <li class="border-b border-gray-400 dark:border-gray-800">
               <details class="collapse collapse-arrow">
                 <summary
-                  class="font-semibold collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
+                  class="font-semibold collapse-title text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
                 >
                   What are my payment options?
                 </summary>
@@ -1461,10 +1461,10 @@
               </details>
             </li>
 
-            <li>
+            <li class="border-b border-gray-400 dark:border-gray-800">
               <details class="collapse collapse-arrow">
                 <summary
-                  class="font-semibold collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
+                  class="font-semibold collapse-title text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
                 >
                   Can I cancel at any time?
                 </summary>
@@ -1479,10 +1479,10 @@
                 </div>
               </details>
             </li>
-            <li>
+            <li class="border-b border-gray-400 dark:border-gray-800">
               <details class="collapse collapse-arrow">
                 <summary
-                  class="font-semibold collapse-title text-[1rem] sm:text-xl flex sm:hover:underline sm:hover:underline-offset-4 items-center justify-between w-full text-left py-5"
+                  class="font-semibold collapse-title text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
                 >
                   Why is Stocknear so much cheaper than other platforms?
                 </summary>

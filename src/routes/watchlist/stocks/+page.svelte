@@ -1313,7 +1313,7 @@
                           >
                             <div class="flex flex-col items-start">
                               <span
-                                class="text-sm text-blue-600 dark:text-blue-400"
+                                class="text-sm text-blue-700 dark:text-blue-400"
                                 >{item?.symbol}</span
                               >
                               <span
@@ -1646,7 +1646,7 @@
                           >
                             <td
                               on:click={() => handleFilter(item?.symbol)}
-                              class="text-blue-600 dark:text-blue-400 text-sm sm:text-[1rem] whitespace-nowrap text-start flex flex-row items-center"
+                              class="text-blue-700 dark:text-blue-400 text-sm sm:text-[1rem] whitespace-nowrap text-start flex flex-row items-center"
                             >
                               <input
                                 type="checkbox"
@@ -1659,7 +1659,7 @@
                               />
                               {#if editMode}
                                 <label
-                                  class="text-blue-600 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white cursor-pointer"
+                                  class="text-blue-700 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white cursor-pointer"
                                 >
                                   {item?.symbol}
                                 </label>
@@ -1857,7 +1857,7 @@
                                     href={items[0].url}
                                     target="_blank"
                                     rel="nofollow noopener noreferrer"
-                                    class="sm:hover:text-blue-600 dark:sm:hover:text-blue-400"
+                                    class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
                                   >
                                     <h4
                                       class="text-sm font-semibold lg:text-[1rem]"
@@ -1885,7 +1885,7 @@
                                       {#each symbols as symbol}
                                         <a
                                           href={`/${items[0].type}/${symbol}`}
-                                          class="text-blue-600 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
+                                          class="text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
                                         >
                                           {symbol}
                                         </a>

@@ -81,7 +81,7 @@
                         ><td class="text-left px-2"
                           ><a
                             href={`/stocks/${item?.symbol}/profile/employees`}
-                            class="text-[1rem] text-blue-600 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
+                            class="text-[1rem] text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
                             >{item?.name?.length > 30
                               ? item?.name?.slice(0, 30) + "..."
                               : item?.name}</a
@@ -128,7 +128,7 @@
                     <li class="mb-3 last:mb-1">
                       {formatDate(item?.publishedDate)} ago -
                       <a
-                        class="text-blue-600 sm:hover:text-muted dark:sm:hover: dark:text-blue-400"
+                        class="text-blue-700 sm:hover:text-muted dark:sm:hover: dark:text-blue-400"
                         href={item?.url}
                         target="_blank"
                         rel="noopener noreferrer nofollow">{item?.title}</a

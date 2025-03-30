@@ -820,7 +820,7 @@
                           class="text-sm sm:text-[1rem] {item?.changesPercentage >=
                           0
                             ? "text-[#00FC50] before:content-['+'] "
-                            : 'text-red-600 dark:text-[#FF2F1F]'} text-end"
+                            : 'text-red-700 dark:text-[#FF2F1F]'} text-end"
                         >
                           {item?.changesPercentage}%
                         </td>

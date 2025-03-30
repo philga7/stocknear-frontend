@@ -160,7 +160,7 @@
                                     <div class="flex flex-col ml-3 font-normal">
                                       <a
                                         href={`/politicians/${item?.id}`}
-                                        class="text-blue-600 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
+                                        class="text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
                                         >{getAbbreviatedName(
                                           item?.representative?.replace(
                                             "_",
@@ -223,12 +223,12 @@
                                 <td class="text-sm sm:text-[1rem] text-end">
                                   {#if item?.type === "Bought"}
                                     <span
-                                      class="text-green-600 dark:text-[#00FC50]"
+                                      class="text-green-700 dark:text-[#00FC50]"
                                       >Bought</span
                                     >
                                   {:else if item?.type === "Sold"}
                                     <span
-                                      class="text-red-600 dark:text-[#FF2F1F]"
+                                      class="text-red-700 dark:text-[#FF2F1F]"
                                       >Sold</span
                                     >
                                   {/if}

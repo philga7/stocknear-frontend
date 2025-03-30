@@ -106,7 +106,7 @@
         <div class="mb-4 flex justify-center -mt-3 lg:mb-3">
           <a href="/analysts/analyst-flow"
             ><div
-              class="flex items-center justify-center sm:hover:text-muted dark:sm:hover:text-white text-blue-600 dark:text-blue-400"
+              class="flex items-center justify-center sm:hover:text-muted dark:sm:hover:text-white text-blue-700 dark:text-blue-400"
             >
               <div class="text-lg sm:text-xl font-semibold">
                 Analysts Realtime Flow
@@ -197,7 +197,7 @@
                         <Table.Cell class="text-sm sm:text-[1rem]">
                           <a
                             href={`/stocks/${item?.symbol}`}
-                            class="text-blue-600 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white cursor-pointer"
+                            class="text-blue-700 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white cursor-pointer"
                             >{item?.symbol}</a
                           >
                         </Table.Cell>
@@ -217,13 +217,13 @@
                           class="text-right md:table.-cell xl:table.-column text-sm sm:text-[1rem] text-white"
                         >
                           {#if item?.changesPercentage >= 0}
-                            <span class="text-[#208646] dark:text-[#00FC50]"
+                            <span class="text-green-700 dark:text-[#00FC50]"
                               >+{item?.changesPercentage >= 1000
                                 ? abbreviateNumber(item?.changesPercentage)
                                 : item?.changesPercentage?.toFixed(2)}%</span
                             >
                           {:else}
-                            <span class="text-[#DC2626] dark:text-[#FF2F1F]"
+                            <span class="text-red-700 dark:text-[#FF2F1F]"
                               >{item?.changesPercentage <= -1000
                                 ? abbreviateNumber(item?.changesPercentage)
                                 : item?.changesPercentage?.toFixed(2)}%
@@ -316,7 +316,7 @@
                         <Table.Cell class="text-sm sm:text-[1rem]">
                           <a
                             href={`/stocks/${item?.symbol}`}
-                            class="text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted cursor-pointer"
+                            class="text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted cursor-pointer"
                             >{item?.symbol}</a
                           >
                         </Table.Cell>
@@ -336,13 +336,13 @@
                           class="text-right md:table.-cell xl:table.-column text-sm sm:text-[1rem] text-white"
                         >
                           {#if item?.changesPercentage >= 0}
-                            <span class="text-[#208646] dark:text-[#00FC50]"
+                            <span class="text-green-700 dark:text-[#00FC50]"
                               >+{item?.changesPercentage >= 1000
                                 ? abbreviateNumber(item?.changesPercentage)
                                 : item?.changesPercentage?.toFixed(2)}%</span
                             >
                           {:else}
-                            <span class="text-[#DC2626] dark:text-[#FF2F1F]"
+                            <span class="text-red-700 dark:text-[#FF2F1F]"
                               >{item?.changesPercentage <= -1000
                                 ? abbreviateNumber(item?.changesPercentage)
                                 : item?.changesPercentage?.toFixed(2)}%
@@ -414,7 +414,7 @@
 
                         <a
                           href={`/stocks/${item?.ticker}`}
-                          class="inline-block badge bg-blue-50 dark:bg-primary duration-0 rounded-sm ml-1 px-2 m-auto text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted"
+                          class="inline-block badge bg-blue-50 dark:bg-primary duration-0 rounded-sm ml-1 px-2 m-auto text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted"
                           >{item?.ticker}</a
                         >
                       </li>
@@ -427,7 +427,7 @@
 
                         <a
                           href={`/stocks/${item?.ticker}`}
-                          class="inline-block badge duration-0 bg-blue-50 dark:bg-primary font-semibold dark:font-normal rounded-sm ml-1 px-2 m-auto text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted"
+                          class="inline-block badge duration-0 bg-blue-50 dark:bg-primary font-semibold dark:font-normal rounded-sm ml-1 px-2 m-auto text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted"
                           >{item?.ticker}</a
                         >
                       </li>
@@ -476,7 +476,7 @@
                   average rating for
                   <a
                     href={`/stocks/${analystReport?.symbol}`}
-                    class="text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted cursor-pointer"
+                    class="text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted cursor-pointer"
                     >{analystReport?.symbol}</a
                   >
                   stock is "{analystReport?.consensusRating}" The 12-month stock
@@ -489,7 +489,7 @@
                 <table class="w-full text-right xs:text-sm sm: mt-5">
                   <thead
                     ><tr
-                      class="border-b border-gray-600 font-normal text-sm sm:text-[1rem]"
+                      class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
                       ><th class="py-[3px] text-left font-semibold lg:py-0.5"
                         >Target</th
                       > <th class="font-semibold">Low</th>
@@ -500,7 +500,7 @@
                   >
                   <tbody
                     ><tr
-                      class="border-b border-gray-600 font-normal text-sm sm:text-[1rem]"
+                      class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
                       ><td class="py-[3px] text-left lg:py-0.5">Price</td>
                       <td>${analystReport?.lowPriceTarget}</td>
                       <td>${analystReport?.avgPriceTarget}</td>
@@ -511,26 +511,26 @@
                       ><td class="py-[3px] text-left lg:py-0.5">Change</td>
                       <td
                         class={analystReport?.lowPriceChange > 0
-                          ? "before:content-['+'] text-[#208646] dark:text-[#00FC50]"
-                          : "text-[#DC2626] dark:text-[#FF2F1F]"}
+                          ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
+                          : "text-red-700 dark:text-[#FF2F1F]"}
                         >{analystReport?.lowPriceChange}%</td
                       >
                       <td
                         class={analystReport?.avgPriceChange > 0
-                          ? "before:content-['+'] text-[#208646] dark:text-[#00FC50]"
-                          : "text-[#DC2626] dark:text-[#FF2F1F]"}
+                          ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
+                          : "text-red-700 dark:text-[#FF2F1F]"}
                         >{analystReport?.avgPriceChange}%</td
                       >
                       <td
                         class={analystReport?.medianPriceChange > 0
-                          ? "before:content-['+'] text-[#208646] dark:text-[#00FC50]"
-                          : "text-[#DC2626] dark:text-[#FF2F1F]"}
+                          ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
+                          : "text-red-700 dark:text-[#FF2F1F]"}
                         >{analystReport?.medianPriceChange}%</td
                       >
                       <td
                         class={analystReport?.highPriceChange > 0
-                          ? "before:content-['+'] text-[#208646] dark:text-[#00FC50]"
-                          : "text-[#DC2626] dark:text-[#FF2F1F]"}
+                          ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
+                          : "text-red-700 dark:text-[#FF2F1F]"}
                         >{analystReport?.highPriceChange}%</td
                       ></tr
                     ></tbody
@@ -577,7 +577,7 @@
                       >
                         <strong>{item?.name}</strong> (<a
                           href={`/stocks/${item?.symbol}`}
-                          class="text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted cursor-pointer"
+                          class="text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted cursor-pointer"
                           >{item?.symbol}</a
                         >)
                         {item?.isToday === true
@@ -633,7 +633,7 @@
                       >
                         <strong>{item?.name}</strong> (<a
                           href={`/stocks/${item?.symbol}`}
-                          class="text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted cursor-pointer"
+                          class="text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted cursor-pointer"
                           >{item?.symbol}</a
                         >)
                         {item?.isToday === true
@@ -704,7 +704,7 @@
                   {#each data?.getDashboard?.recentEarnings as item}
                     <strong>{item?.name}</strong> (<a
                       href={`/stocks/${item?.symbol}`}
-                      class="text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted cursor-pointer"
+                      class="text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted cursor-pointer"
                       >{item?.symbol}</a
                     >) has released its quarterly earnings at {formatTime(
                       item?.time,

@@ -157,7 +157,9 @@
         });
     }
 
-    // Create Highcharts options
+    const fillColorStart = "rgb(70, 129, 244,0.5)";
+    const fillColorEnd = "rgb(70, 129, 244,0.001)";
+
     const options = {
       chart: {
         backgroundColor: $mode === "light" ? "#fff" : "#09090B",
@@ -268,17 +270,17 @@
               : value;
           }),
           type: "area",
-          color: $mode === "light" ? "#2C6288" : "white",
-          lineWidth: 1,
+          lineWidth: 1.3,
           animation: false,
           zIndex: 10,
           fillColor: {
             linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
             stops: [
-              [0, "rgba(255, 255, 255, 0.1)"],
-              [1, "rgba(255, 255, 255, 0.001)"],
+              [0, fillColorStart],
+              [1, fillColorEnd],
             ],
           },
+          color: "#4681f4",
         },
         {
           name: "Ratings",
@@ -330,7 +332,7 @@
                 href="/pricing"
                 class="px-3 py-1 flex flex-row items-center {timePeriod === item
                   ? 'bg-white text-muted'
-                  : 'text-muted dark:text-white bg-table text-opacity-[0.6]'} border border-gray-200 dark:border-gray-700 transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+                  : 'text-muted dark:text-white bg-gray-100 dark:bg-table text-opacity-[0.6]'} border border-gray-200 dark:border-gray-700 transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
               >
                 {item}
                 <svg

@@ -1476,7 +1476,9 @@
       const closePopup = document.getElementById("addStrategy");
       closePopup?.dispatchEvent(new MouseEvent("click"));
     } else {
-      goto("/pricing");
+      toast.info("Available only to Plus & Pro Member", {
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
+      });
     }
   }
 
@@ -3351,7 +3353,7 @@ const handleKeyDown = (event) => {
                   <td class=" whitespace-nowrap">
                     <a
                       href={"/stocks/" + item?.symbol}
-                      class="text-blue-600 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400 text-sm sm:text-[1rem]"
+                      class="text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400 text-sm sm:text-[1rem]"
                       >{item?.symbol}</a
                     >
                   </td>
@@ -3374,13 +3376,13 @@ const handleKeyDown = (event) => {
 
                   <td class=" text-end text-sm sm:text-[1rem]">
                     {#if item?.changesPercentage >= 0}
-                      <span class="text-green-600 dark:text-[#00FC50]"
+                      <span class="text-green-700 dark:text-[#00FC50]"
                         >+{item?.changesPercentage >= 1000
                           ? abbreviateNumber(item?.changesPercentage)
                           : item?.changesPercentage?.toFixed(2)}%</span
                       >
                     {:else}
-                      <span class="text-red-600 dark:text-[#FF2F1F]"
+                      <span class="text-red-700 dark:text-[#FF2F1F]"
                         >{item?.changesPercentage <= -1000
                           ? abbreviateNumber(item?.changesPercentage)
                           : item?.changesPercentage?.toFixed(2)}%
@@ -3479,13 +3481,13 @@ const handleKeyDown = (event) => {
                       {#if row?.rule === "marketCap"}
                         {abbreviateNumber(item[row?.rule])}
                       {:else if item[row?.rule] > 0}
-                        <span class="text-green-600 dark:text-[#00FC50]"
+                        <span class="text-green-700 dark:text-[#00FC50]"
                           >+{abbreviateNumber(
                             item[row?.rule]?.toFixed(2),
                           )}%</span
                         >
                       {:else if item[row?.rule] < 0}
-                        <span class="text-red-600 dark:text-[#FF2F1F]"
+                        <span class="text-red-700 dark:text-[#FF2F1F]"
                           >{abbreviateNumber(
                             item[row?.rule]?.toFixed(2),
                           )}%</span
@@ -3537,11 +3539,11 @@ const handleKeyDown = (event) => {
                         >
                       {:else if row?.rule === "upside"}
                         {#if item[row?.rule] > 0}
-                          <span class="text-green-600 dark:text-[#00FC50]"
+                          <span class="text-green-700 dark:text-[#00FC50]"
                             >+{item[row?.rule]?.toFixed(2)}%</span
                           >
                         {:else if item[row?.rule] < 0}
-                          <span class="text-red-600 dark:text-[#FF2F1F]"
+                          <span class="text-red-700 dark:text-[#FF2F1F]"
                             >{item[row?.rule]?.toFixed(2)}%</span
                           >
                         {:else}
@@ -3549,11 +3551,11 @@ const handleKeyDown = (event) => {
                         {/if}
                       {:else if ["analystRating", "topAnalystRating"]?.includes(row?.rule)}
                         {#if ["Strong Buy", "Buy"].includes(item[row?.rule])}
-                          <span class="text-green-600 dark:text-[#00FC50]"
+                          <span class="text-green-700 dark:text-[#00FC50]"
                             >{item[row?.rule]}</span
                           >
                         {:else if ["Strong Sell", "Sell"].includes(item[row?.rule])}
-                          <span class="text-red-600 dark:text-[#FF2F1F]"
+                          <span class="text-red-700 dark:text-[#FF2F1F]"
                             >{item[row?.rule]}</span
                           >
                         {:else if item[row?.rule] === "Hold"}
@@ -3721,7 +3723,7 @@ const handleKeyDown = (event) => {
                 {#if ["gexRatio", "ivRank", "iv30d", "totalOI", "changeOI", "netCallPrem", "netPutPrem", "callVolume", "putVolume", "pcRatio", "topAnalystRating", "topAnalystCounter", "topAnalystPriceTarget", "topAnalystUpside", "score"]?.includes(row?.rule) && !["Pro", "Plus"]?.includes(data?.user?.tier)}
                   <label id={row?.rule} on:click={() => changeRule(row?.rule)}>
                     <svg
-                      class="w-4 h-4 mb-1 inline-block text-[#A3A3A3] sm:hover: cursor-pointer"
+                      class="w-4 h-4 mb-1 inline-block cursor-pointer"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       ><path

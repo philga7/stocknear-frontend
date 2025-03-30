@@ -289,9 +289,9 @@
                   <div class="text-2xl font-bold tracking-tight">
                     <span
                       class={successRate >= 0 && successRate !== undefined
-                        ? "before:content-['+'] text-[#36D984]"
+                        ? "before:content-['+'] text-green-700 dark:text-[#36D984]"
                         : successRate < 0 && successRate !== undefined
-                          ? "text-[#EF4444]"
+                          ? "text-red-700 dark:text-[#EF4444]"
                           : ""}
                       >{successRate !== undefined
                         ? successRate?.toFixed(2) + "%"
@@ -310,9 +310,9 @@
                   <div class="text-2xl font-bold tracking-tight">
                     <span
                       class={avgReturn >= 0 && avgReturn !== undefined
-                        ? "before:content-['+'] text-[#36D984]"
+                        ? "before:content-['+'] text-green-700 dark:text-[#36D984]"
                         : avgReturn < 0 && avgReturn !== undefined
-                          ? "text-[#EF4444]"
+                          ? "text-red-700 dark:text-[#EF4444]"
                           : ""}
                       >{avgReturn !== undefined
                         ? avgReturn?.toFixed(2) + "%"
@@ -341,7 +341,7 @@
                           href={sectorNavigation?.find(
                             (listItem) => listItem?.title === item,
                           )?.link}
-                          class="inline-block badge bg-blue-50 dark:bg-primary duration-0 rounded-sm ml-1 px-3 m-auto text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted text-[1rem]"
+                          class="inline-block badge bg-blue-50 dark:bg-primary duration-0 rounded-sm ml-1 px-3 m-auto text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted text-[1rem]"
                         >
                           {item}
                         </a>
@@ -356,7 +356,7 @@
                       {#each data?.getAnalystStats?.mainIndustries as item}
                         <a
                           href={`/list/industry/${item?.replace(/ /g, "-")?.replace(/&/g, "and")?.replace(/-{2,}/g, "-")?.toLowerCase()}`}
-                          class="inline-block badge bg-blue-50 dark:bg-primary duration-0 rounded-sm ml-1 px-3 m-auto text-blue-600 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted text-[1rem]"
+                          class="inline-block badge bg-blue-50 dark:bg-primary duration-0 rounded-sm ml-1 px-3 m-auto text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted text-[1rem]"
                         >
                           {item}
                         </a>
@@ -466,21 +466,21 @@
                             <div class="flex flex-col sm:flex-row items-start">
                               <span class="mr-1">{item?.action_company}:</span>
                               <span
-                                class=" {[
+                                class="font-semibold {[
                                   'Strong Buy',
                                   'Buy',
                                   'Outperform',
                                 ]?.includes(item?.rating_current)
-                                  ? 'text-green-600 dark:text-[#00FC50]'
+                                  ? 'text-green-700 dark:text-[#00FC50] '
                                   : item?.rating_current === 'Hold'
-                                    ? '"text-red-600 dark:text-[#FF7070]"'
+                                    ? '"text-red-700 dark:text-[#FF7070] "'
                                     : [
                                           'Strong Sell',
                                           'Sell',
                                           'Underperform',
                                         ]?.includes(item?.rating_current)
-                                      ? 'text-red-600 dark:text-[#FF2F1F]'
-                                      : 'text-gray-300'}"
+                                      ? 'text-red-700 dark:text-[#FF2F1F] '
+                                      : 'text-muted dark:text-gray-300 '}"
                               >
                                 {item?.rating_current}
                               </span>
@@ -528,9 +528,9 @@
 
                           <td
                             class="{item?.upside >= 0 && item?.upside !== null
-                              ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
+                              ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
                               : item?.upside < 0 && item?.upside !== null
-                                ? 'text-red-600 dark:text-[#FF2F1F]'
+                                ? 'text-red-700 dark:text-[#FF2F1F]'
                                 : ''} text-end text-sm sm:text-[1rem] whitespace-nowrap"
                           >
                             {item?.upside !== null ? item?.upside + "%" : "n/a"}

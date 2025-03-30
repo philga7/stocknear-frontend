@@ -533,7 +533,7 @@
                       {:else}
                         <a
                           href="/pricing"
-                          class="sm:hover:text-blue-600 dark:sm:hover:text-blue-400"
+                          class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
                           >Pro <svg
                             class="w-5 h-5 mb-1 inline-block"
                             xmlns="http://www.w3.org/2000/svg"
@@ -567,7 +567,7 @@
                     {:else}
                       <a
                         href="/pricing"
-                        class="sm:hover:text-blue-600 dark:sm:hover:text-blue-400 text-xl font-bold"
+                        class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400 text-xl font-bold"
                       >
                         Pro <svg
                           class="w-5 h-5 mb-1 inline-block"
@@ -602,7 +602,7 @@
                       >
                         <a
                           href="/pricing"
-                          class="sm:hover:text-blue-600 dark:sm:hover:text-white dark:text-white flex flex-row items-center"
+                          class="sm:hover:text-blue-700 dark:sm:hover:text-white dark:text-white flex flex-row items-center"
                         >
                           <span>Upgrade to Pro</span>
                           <svg
@@ -665,7 +665,7 @@
                               {:else}
                                 <a
                                   href="/pricing"
-                                  class="sm:hover:text-blue-600 dark:sm:hover:text-blue-400"
+                                  class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
                                 >
                                   Pro
                                   <svg
@@ -704,7 +704,7 @@
                               {:else}
                                 <a
                                   href="/pricing"
-                                  class="sm:hover:text-blue-600 dark:sm:hover:text-blue-400"
+                                  class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
                                 >
                                   Pro
                                   <svg
@@ -753,7 +753,7 @@
                 <Infobox
                   text={`Using our AI model trained on historical seasonal data, we generated a 12-month forecast for ${removeCompanyStrings($displayCompanyName)}. The model predicts a ... Unlock content with
           <a
-            class="inline-block ml-0.5 text-blue-600 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
+            class="inline-block ml-0.5 text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
             href="/pricing"
             >Pro Subscription <svg
               class="w-4 h-4 mb-1 inline-block"
@@ -789,7 +789,7 @@
                       >
                         <a
                           href="/pricing"
-                          class="sm:hover:text-blue-600 dark:sm:hover:text-white dark:text-white flex flex-row items-center"
+                          class="sm:hover:text-blue-700 dark:sm:hover:text-white dark:text-white flex flex-row items-center"
                         >
                           <span>Upgrade to Pro</span>
                           <svg
@@ -831,7 +831,7 @@
                             <td class="whitespace-nowrap">
                               <a
                                 href="/pricing"
-                                class="sm:hover:text-blue-600 dark:sm:hover:text-blue-400"
+                                class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
                                 >Pro <svg
                                   class="w-4 h-4 mb-1 inline-block"
                                   xmlns="http://www.w3.org/2000/svg"
@@ -847,7 +847,7 @@
                             <td class="whitespace-nowrap">
                               <a
                                 href="/pricing"
-                                class="sm:hover:text-blue-600 dark:sm:hover:text-blue-400"
+                                class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
                                 >Pro <svg
                                   class="w-4 h-4 mb-1 inline-block"
                                   xmlns="http://www.w3.org/2000/svg"
@@ -863,7 +863,7 @@
                             <td class="whitespace-nowrap">
                               <a
                                 href="/pricing"
-                                class="sm:hover:text-blue-600 dark:sm:hover:text-blue-400"
+                                class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
                                 >Pro <svg
                                   class="w-4 h-4 mb-1 inline-block"
                                   xmlns="http://www.w3.org/2000/svg"
@@ -879,7 +879,7 @@
                             <td class="whitespace-nowrap">
                               <a
                                 href="/pricing"
-                                class="sm:hover:text-blue-600 dark:sm:hover:text-blue-400"
+                                class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
                                 >Pro <svg
                                   class="w-4 h-4 mb-1 inline-block"
                                   xmlns="http://www.w3.org/2000/svg"
@@ -906,7 +906,7 @@
                             <td class="whitespace-nowrap">
                               <a
                                 href="/pricing"
-                                class="sm:hover:text-blue-600 dark:sm:hover:text-blue-400"
+                                class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
                               >
                                 Pro
                                 <svg
@@ -924,7 +924,7 @@
                             <td class="whitespace-nowrap"
                               ><a
                                 href="/pricing"
-                                class="sm:hover:text-blue-600 dark:sm:hover:text-blue-400"
+                                class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
                                 >Pro <svg
                                   class="w-4 h-4 mb-1 inline-block"
                                   xmlns="http://www.w3.org/2000/svg"
@@ -940,7 +940,7 @@
                             <td class="whitespace-nowrap"
                               ><a
                                 href="/pricing"
-                                class="sm:hover:text-blue-600 dark:sm:hover:text-blue-400"
+                                class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
                                 >Pro <svg
                                   class="w-4 h-4 mb-1 inline-block"
                                   xmlns="http://www.w3.org/2000/svg"
@@ -956,7 +956,7 @@
                             <td class="whitespace-nowrap"
                               ><a
                                 href="/pricing"
-                                class="sm:hover:text-blue-600 dark:sm:hover:text-blue-400"
+                                class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
                                 >Pro <svg
                                   class="w-4 h-4 mb-1 inline-block"
                                   xmlns="http://www.w3.org/2000/svg"
