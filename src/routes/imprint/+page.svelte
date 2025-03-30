@@ -33,7 +33,7 @@
                 According to § 5 Telemediengesetz (TMG) ‍
               </p>
 
-              <p class=" mb-10">
+              <p class=" mb-5">
                 Stocknear GmbH
                 <br />
                 Am Lohgraben 30
@@ -46,25 +46,25 @@
                   class="text-blue-700 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline"
                   >{emailAddress}</a
                 >.
-                <br />
-                <br />
+                <br class="mb-3" />
+
                 Managing Director (<span class="italic">Geschäftsführer</span>):
                 Muslem Rahimi
-                <br />
-                <br />
-                Registered in the commercial register at the local court at Siegen
-                under: HRB 13800
+                <br class="mb-3" />
+
+                Registered in the commercial register at the local court at
+                Siegen under: HRB 13800
                 <br />
                 VAT ID: DE366905061
               </p>
 
-              <p class=" mb-10">
+              <p class="mb-5">
                 Responsible for the content according § 55 Abs. 2 RStV
                 <br />
                 Notice according to the Online Dispute Settlement Regulation
               </p>
 
-              <p class=" mb-10">
+              <p class="mb-5">
                 Under applicable law, we are required to inform consumers of the
                 existence of the European Online Dispute Resolution platform,
                 which can be used to resolve disputes without having to go to
@@ -86,7 +86,7 @@
                 (VSBG)
               </h2>
 
-              <p class=" mb-10">
+              <p class=" mb-5">
                 We are not willing and obliged to participate in dispute
                 resolution proceedings before a consumer arbitration board.
               </p>

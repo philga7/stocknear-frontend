@@ -252,6 +252,9 @@
   function plotData() {
     const filteredData = filterDataByTimePeriod(rawData, timePeriod);
 
+    const fillColorStart = "rgb(70, 129, 244,0.5)";
+    const fillColorEnd = "rgb(70, 129, 244,0.001)";
+
     const options = {
       credits: {
         enabled: false,
@@ -262,7 +265,7 @@
         height: 360, // Set the maximum height for the chart
       },
       title: {
-        text: `<h3 class="mt-3 mb-1 ">${$stockTicker} Market Cap</h3>`,
+        text: `<h3 class="mt-3 mb-1 ">${removeCompanyStrings($displayCompanyName)} Market Cap</h3>`,
         style: {
           color: $mode === "light" ? "black" : "white",
           // Using inline CSS for margin-top and margin-bottom
@@ -282,7 +285,7 @@
           style: {
             color: $mode === "light" ? "#545454" : "white",
           },
-          distance: 20, // Increases space between label and axis
+          distance: 10, // Increases space between label and axis
           formatter: function () {
             const date = new Date(this.value);
             return date.toLocaleDateString("en-US", {
@@ -308,7 +311,7 @@
         gridLineWidth: 1,
         gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
         labels: {
-          style: { color: $mode === "light" ? "black" : "white" },
+          style: { color: $mode === "light" ? "#545454" : "white" },
         },
         title: { text: null },
         opposite: true,
@@ -338,7 +341,6 @@
           // Loop through each point in the shared tooltip
           this.points.forEach((point) => {
             tooltipContent += `
-        <span style="display:inline-block; width:10px; height:10px; background-color:${point.color}; border-radius:50%; margin-right:5px;"></span>
         <span class="font-semibold text-sm">${point.series.name}:</span> 
         <span class="font-normal text-sm">${abbreviateNumber(point.y)}</span><br>`;
           });
@@ -366,16 +368,16 @@
           name: "Mkt Cap",
           type: "area",
           data: filteredData?.marketCapList,
-          color: $mode === "light" ? "blue" : "white",
-          lineWidth: 1,
+          color: "#4681f4",
+          lineWidth: 1.3,
           marker: {
             enabled: false,
           },
           fillColor: {
             linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
             stops: [
-              [0, "rgba(255, 255, 255, 0.1)"],
-              [1, "rgba(255, 255, 255, 0.001)"],
+              [0, fillColorStart],
+              [1, fillColorEnd],
             ],
           },
         },
@@ -521,10 +523,10 @@
                       <span
                         class="text-sm {changePercentageYearAgo >= 0 &&
                         changePercentageYearAgo !== null
-                          ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
+                          ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
                           : changePercentageYearAgo < 0 &&
                               changePercentageYearAgo !== null
-                            ? 'text-red-600 dark:text-[#FF2F1F]'
+                            ? 'text-red-700 dark:text-[#FF2F1F]'
                             : ''}"
                       >
                         {changePercentageYearAgo >= 0 ? "Positive" : "Negative"}
@@ -713,14 +715,20 @@
 
               <div class="w-full overflow-x-auto">
                 <table
-                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
+                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-2"
                 >
                   <thead class="text-muted dark:text-white dark:bg-default">
                     <tr>
-                      <th class=" font-semibold text-start text-sm">Date</th>
-                      <th class=" font-semibold text-end text-sm">Market Cap</th
+                      <th
+                        class=" font-semibold text-start text-sm sm:text-[1rem]"
+                        >Date</th
                       >
-                      <th class=" font-semibold text-end text-sm">% Change</th>
+                      <th class=" font-semibold text-end text-sm sm:text-[1rem]"
+                        >Market Cap</th
+                      >
+                      <th class=" font-semibold text-end text-sm sm:text-[1rem]"
+                        >% Change</th
+                      >
                     </tr>
                   </thead>
                   <tbody>
@@ -749,7 +757,7 @@
                           {#if index === tableList?.length - 1}
                             n/a
                           {:else if item?.marketCap > tableList[index + 1]?.marketCap}
-                            <span class="text-green-600 dark:text-[#00FC50]">
+                            <span class="text-green-700 dark:text-[#00FC50]">
                               +{(
                                 ((item?.marketCap -
                                   tableList[index + 1]?.marketCap) /
@@ -758,7 +766,7 @@
                               )?.toFixed(2)}%
                             </span>
                           {:else if item?.marketCap < tableList[index + 1]?.marketCap}
-                            <span class="text-red-600 dark:text-[#FF2F1F]">
+                            <span class="text-red-700 dark:text-[#FF2F1F]">
                               -{(
                                 Math.abs(
                                   (item?.marketCap -

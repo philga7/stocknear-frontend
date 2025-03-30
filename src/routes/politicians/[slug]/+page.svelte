@@ -340,11 +340,13 @@
                       >
                         <span class="">
                           {#if item?.type === "Bought"}
-                            <span class="text-green-600 dark:text-[#00FC50]"
+                            <span
+                              class="text-green-700 dark:text-[#00FC50] font-semibold dark:font-normal"
                               >{item?.type}</span
                             >
                           {:else if item?.type === "Sold"}
-                            <span class="text-red-600 dark:text-[#FF2F1F]"
+                            <span
+                              class="text-red-700 dark:text-[#FF2F1F] font-semibold dark:font-normal"
                               >{item?.type}</span
                             >
                           {:else if item?.type === "Exchange"}

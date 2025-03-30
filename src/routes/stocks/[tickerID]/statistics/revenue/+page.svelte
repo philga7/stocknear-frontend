@@ -114,7 +114,7 @@
         categories: dates,
         gridLineWidth: 0,
         labels: {
-          style: { color: $mode === "light" ? "black" : "white" },
+          style: { color: $mode === "light" ? "#545454" : "white" },
           formatter: function () {
             return timeIdx === 0 ? this?.value?.substring(0, 4) : this?.value;
           },
@@ -124,7 +124,7 @@
         gridLineWidth: 1,
         gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
         labels: {
-          style: { color: $mode === "light" ? "black" : "white" },
+          style: { color: $mode === "light" ? "#545454" : "white" },
         },
         title: { text: null },
         opposite: true,
@@ -420,13 +420,18 @@
                 >
                   <thead class="text-muted dark:text-white dark:bg-default">
                     <tr>
-                      <th class=" font-semibold text-start text-sm"
+                      <th
+                        class=" font-semibold text-start text-sm sm:text-[1rem]"
                         >{activeIdx === 0
                           ? "Fiscal Year End"
                           : "Quarter Ended"}</th
                       >
-                      <th class=" font-semibold text-end text-sm">Revenue</th>
-                      <th class=" font-semibold text-end text-sm">% Change</th>
+                      <th class=" font-semibold text-end text-sm sm:text-[1rem]"
+                        >Revenue</th
+                      >
+                      <th class=" font-semibold text-end text-sm sm:text-[1rem]"
+                        >% Change</th
+                      >
                     </tr>
                   </thead>
                   <tbody>
@@ -455,7 +460,7 @@
                           {#if index === tableList?.length - 1}
                             n/a
                           {:else if item?.revenue > tableList[index + 1]?.revenue}
-                            <span class="text-green-600 dark:text-[#00FC50]">
+                            <span class="text-green-700 dark:text-[#00FC50]">
                               +{(
                                 ((item?.revenue -
                                   tableList[index + 1]?.revenue) /
@@ -464,7 +469,7 @@
                               )?.toFixed(2)}%
                             </span>
                           {:else if item?.revenue < tableList[index + 1]?.revenue}
-                            <span class="text-red-600 dark:text-[#FF2F1F]">
+                            <span class="text-red-700 dark:text-[#FF2F1F]">
                               -{(
                                 Math.abs(
                                   (item?.revenue -

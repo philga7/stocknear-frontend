@@ -342,7 +342,7 @@
                             </span>
                           </div>
                         </Table.Cell>
-                        <Table.Cell class="text-right text-[1rem]"
+                        <Table.Cell class="text-right text-[1rem] "
                           >{item?.count}</Table.Cell
                         >
                         <Table.Cell
@@ -354,12 +354,12 @@
                           >{item?.put}</Table.Cell
                         >
                         <Table.Cell
-                          class="text-right text-[1rem] {item?.avgSentiment >
+                          class="text-right text-[1rem]  {item?.avgSentiment >
                           0.4
                             ? 'text-green-700 dark:text-[#00FC50]'
                             : item?.avgSentiment < -0.1
                               ? 'text-red-700 dark:text-[#FF2F1F]'
-                              : 'text-[#C6A755]'} "
+                              : 'text-yellow-600 dark:text-[#C6A755]'} "
                           >{item?.avgSentiment > 0.4
                             ? "Bullish"
                             : item?.avgSentiment <= -0.1

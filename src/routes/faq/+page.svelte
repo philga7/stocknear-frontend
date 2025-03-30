@@ -38,7 +38,7 @@
               <h2 class="mb-1 text-xl sm:text-2xl font-bold">
                 1. Is there a guide on how to use Stocknear’s features?
               </h2>
-              <p class="mb-10 mt-5 text-[1rem] sm:text-lg">
+              <p class="mb-5 mt-5 text-[1rem] sm:text-lg">
                 Yes! We've created the
                 <a
                   href="/learning-center"
@@ -52,7 +52,7 @@
               <h2 class="mb-1 text-xl sm:text-2xl font-bold">
                 2. How long does it take to see earnings releases?
               </h2>
-              <p class="mb-10 mt-5 text-[1rem] sm:text-lg">
+              <p class="mb-5 mt-5 text-[1rem] sm:text-lg">
                 Earnings reports are available on Stocknear within 1-5 minutes
                 after they go live.
               </p>
@@ -60,17 +60,17 @@
               <h2 class="mb-1 text-xl sm:text-2xl font-bold">
                 3. Why is your data different from other finance sites?
               </h2>
-              <p class="mb-10 mt-5 text-[1rem] sm:text-lg">
+              <p class="mb-5 mt-5 text-[1rem] sm:text-lg">
                 Like other platforms, we source data from third-party providers.
                 With thousands of stocks and funds worldwide, manual data
                 collection is impractical.
               </p>
-              <p class="mb-10 mt-5 text-[1rem] sm:text-lg">
+              <p class="mb-5 mt-5 text-[1rem] sm:text-lg">
                 Data providers rely on automated methods, which can lead to
                 variations between platforms. Differences in definitions and
                 collection techniques can cause slight discrepancies.
               </p>
-              <p class="mb-10 mt-5 text-[1rem] sm:text-lg">
+              <p class="mb-5 mt-5 text-[1rem] sm:text-lg">
                 If you notice an inaccuracy, please contact us at <a
                   href={`mailto:${emailAddress}`}
                   class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
@@ -81,7 +81,7 @@
               <h2 class="mb-1 text-xl sm:text-2xl font-bold">
                 4. Is the Options data real-time or delayed?
               </h2>
-              <p class="mb-10 mt-5 text-[1rem] sm:text-lg">
+              <p class="mb-5 mt-5 text-[1rem] sm:text-lg">
                 Our <a
                   href="/options-flow"
                   class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
@@ -93,7 +93,7 @@
                 5. Why do other platforms show options data that Stocknear
                 doesn’t?
               </h2>
-              <p class="mb-10 mt-5 text-[1rem] sm:text-lg">
+              <p class="mb-5 mt-5 text-[1rem] sm:text-lg">
                 We focus on unusual options activity from hedge funds and
                 institutional traders. Retail investor contracts are excluded to
                 eliminate noise and highlight significant market moves.
@@ -102,7 +102,7 @@
               <h2 class="mb-1 text-xl sm:text-2xl font-bold">
                 6. Is Dark Pool data real-time or delayed?
               </h2>
-              <p class="mb-10 mt-5 text-[1rem] sm:text-lg">
+              <p class="mb-5 mt-5 text-[1rem] sm:text-lg">
                 Dark Pool data is delayed by 15 minutes. We partner with major
                 exchanges to provide exclusive Wall Street insights typically
                 reserved for institutional traders.
@@ -111,14 +111,14 @@
               <h2 class="mb-1 text-xl sm:text-2xl font-bold">
                 7. I found an error in the data. What should I do?
               </h2>
-              <p class="mb-10 mt-5 text-[1rem] sm:text-lg">
+              <p class="mb-5 mt-5 text-[1rem] sm:text-lg">
                 Please email <a
                   href={`mailto:${emailAddress}`}
                   class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
                   >{emailAddress}</a
                 >, and we’ll investigate immediately.
               </p>
-              <p class="mb-10 mt-5 text-[1rem] sm:text-lg">
+              <p class="mb-5 mt-5 text-[1rem] sm:text-lg">
                 We manually verify every error report and work with data
                 providers to ensure corrections are made at the source.
               </p>
@@ -126,7 +126,7 @@
               <h2 class="mb-1 text-xl sm:text-2xl font-bold">
                 8. Can I request new features? How can I contact you?
               </h2>
-              <p class="mb-10 mt-5 text-[1rem] sm:text-lg">
+              <p class="mb-5 mt-5 text-[1rem] sm:text-lg">
                 Absolutely! Email us or join our <a
                   href={discordURL}
                   rel="noopener noreferrer"
@@ -140,7 +140,7 @@
               <h2 class="mb-1 text-xl sm:text-2xl font-bold">
                 9. Do you offer an API?
               </h2>
-              <p class="mb-10 mt-5 text-[1rem] sm:text-lg">
+              <p class="mb-5 mt-5 text-[1rem] sm:text-lg">
                 Not at the moment. We license data from third-party providers
                 and don’t have redistribution rights. However, we plan to offer
                 an API in the future.

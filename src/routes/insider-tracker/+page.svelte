@@ -12,10 +12,8 @@
 
   export let data;
 
-  let isLoaded = true;
   let rawData = processTickerData(data?.getInsiderTracker) ?? [];
   let stockList = rawData?.slice(0, 50) ?? [];
-  isLoaded = true;
 
   function processTickerData(data) {
     const symbolMap = new Map();
@@ -186,176 +184,163 @@
             <h1 class="mb-1 text-2xl sm:text-3xl font-bold">Insider Tracker</h1>
           </div>
 
-          {#if isLoaded}
-            <Infobox
-              text="We update our data in real time to bring you the latest
+          <Infobox
+            text="We update our data in real time to bring you the latest
                       insights on unusual insider trading, sourced from SEC
                       filings with a minimum transaction value of $100,000."
-            />
+          />
 
-            <div class="w-full m-auto mt-20 sm:mt-10">
-              <div
-                class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto sm:overflow-hidden"
+          <div class="w-full m-auto mt-20 sm:mt-10">
+            <div
+              class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto sm:overflow-hidden"
+            >
+              <table
+                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
               >
-                <table
-                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
-                >
-                  <thead>
-                    <TableHeader {columns} {sortOrders} {sortData} />
-                  </thead>
-                  <tbody>
-                    {#each stockList as item, index}
-                      <tr
-                        class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
-                          1 ===
-                          stockList?.length &&
-                        !['Pro', 'Plus']?.includes(data?.user?.tier)
-                          ? 'opacity-[0.1]'
-                          : ''}"
+                <thead>
+                  <TableHeader {columns} {sortOrders} {sortData} />
+                </thead>
+                <tbody>
+                  {#each stockList as item, index}
+                    <tr
+                      class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
+                        1 ===
+                        stockList?.length &&
+                      !['Pro', 'Plus']?.includes(data?.user?.tier)
+                        ? 'opacity-[0.1]'
+                        : ''}"
+                    >
+                      <td class="hidden lg:table-cell"
+                        ><button
+                          on:click={() => openGraph(item?.symbol)}
+                          class="cursor-pointer h-full pl-2 pr-2 align-middle lg:pl-3"
+                          ><svg
+                            class="w-5 h-5 text-icon {checkedSymbol ===
+                            item?.symbol
+                              ? 'rotate-180'
+                              : ''}"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                            style="max-width:40px"
+                            ><path
+                              fill-rule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clip-rule="evenodd"
+                            ></path></svg
+                          ></button
+                        ></td
                       >
-                        <td class="hidden lg:table-cell"
-                          ><button
-                            on:click={() => openGraph(item?.symbol)}
-                            class="cursor-pointer h-full pl-2 pr-2 align-middle lg:pl-3"
-                            ><svg
-                              class="w-5 h-5 text-icon {checkedSymbol ===
-                              item?.symbol
-                                ? 'rotate-180'
-                                : ''}"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                              style="max-width:40px"
-                              ><path
-                                fill-rule="evenodd"
-                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                clip-rule="evenodd"
-                              ></path></svg
-                            ></button
-                          ></td
-                        >
 
-                        <td class="text-sm sm:text-[1rem] text-start">
-                          <HoverStockChart symbol={item?.symbol} />
-                        </td>
-                        <td
-                          class="whitespace-nowrap text-sm sm:text-[1rem] text-start"
-                        >
-                          {item?.name?.length > charNumber
-                            ? item?.name?.slice(0, charNumber) + "..."
-                            : item?.name}
-                        </td>
+                      <td class="text-sm sm:text-[1rem] text-start">
+                        <HoverStockChart symbol={item?.symbol} />
+                      </td>
+                      <td
+                        class="whitespace-nowrap text-sm sm:text-[1rem] text-start"
+                      >
+                        {item?.name?.length > charNumber
+                          ? item?.name?.slice(0, charNumber) + "..."
+                          : item?.name}
+                      </td>
 
-                        <td
-                          class="whitespace-nowrap text-sm sm:text-[1rem] text-start"
-                        >
-                          {item?.reportingName?.length > charNumber
-                            ? item?.reportingName?.slice(0, charNumber) + "..."
-                            : item?.reportingName}
-                        </td>
+                      <td
+                        class="whitespace-nowrap text-sm sm:text-[1rem] text-start"
+                      >
+                        {item?.reportingName?.length > charNumber
+                          ? item?.reportingName?.slice(0, charNumber) + "..."
+                          : item?.reportingName}
+                      </td>
 
-                        <td
-                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
-                        >
-                          {abbreviateNumber(item?.marketCap)}
-                        </td>
+                      <td
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                      >
+                        {abbreviateNumber(item?.marketCap)}
+                      </td>
 
-                        <td
-                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
-                        >
-                          {item?.price}
-                        </td>
+                      <td
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                      >
+                        {item?.price}
+                      </td>
 
-                        <td
-                          class="text-sm sm:text-[1rem] whitespace-nowrap text-end {item?.changesPercentage >=
-                          0
-                            ? 'text-green-600 dark:text-[#00FC50]'
-                            : 'text-red-600 dark:text-[#FF2F1F]'}"
-                        >
-                          {item?.changesPercentage > 0
-                            ? "+"
-                            : ""}{item?.changesPercentage}%
-                        </td>
+                      <td
+                        class="text-sm sm:text-[1rem] whitespace-nowrap text-end {item?.changesPercentage >=
+                        0
+                          ? 'text-green-700 dark:text-[#00FC50]'
+                          : 'text-red-700 dark:text-[#FF2F1F]'}"
+                      >
+                        {item?.changesPercentage > 0
+                          ? "+"
+                          : ""}{item?.changesPercentage}%
+                      </td>
 
-                        <td
-                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
-                        >
-                          {abbreviateNumber(item?.totalShares)}
-                        </td>
+                      <td
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                      >
+                        {abbreviateNumber(item?.totalShares)}
+                      </td>
 
-                        <td
-                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap {item?.transactionType ===
-                          'Buy'
-                            ? 'text-green-600 dark:text-[#00FC50]'
-                            : item?.transactionType === 'Sell'
-                              ? 'text-red-600 dark:text-[#FF2F1F]'
-                              : 'text-[#E57C34]'}"
-                        >
-                          <div class="flex flex-row items-center justify-end">
-                            <div class="">
-                              {abbreviateNumber(item?.avgValue)}
-                            </div>
-                            <div
-                              class="ml-2 px-1.5 py-1.5 border text-center rounded-md text-xs font-semibold"
-                            >
-                              {item?.transactionType}
-                            </div>
+                      <td
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap {item?.transactionType ===
+                        'Buy'
+                          ? 'text-green-700 dark:text-[#00FC50]'
+                          : item?.transactionType === 'Sell'
+                            ? 'text-red-700 dark:text-[#FF2F1F]'
+                            : 'text-[#E57C34]'}"
+                      >
+                        <div class="flex flex-row items-center justify-end">
+                          <div class="">
+                            {abbreviateNumber(item?.avgValue)}
                           </div>
-                        </td>
-                      </tr>
-                      {#if checkedSymbol === item?.symbol}
-                        <tr class=""
-                          ><td colspan="9" class="px-0" style=""
-                            ><div class="-mt-0.5 px-0 pb-2">
-                              <div class="relative h-[400px]">
-                                <div class="absolute top-0 w-full">
+                          <div
+                            class="ml-2 px-1.5 py-1.5 border text-center rounded-md text-xs font-semibold"
+                          >
+                            {item?.transactionType}
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    {#if checkedSymbol === item?.symbol}
+                      <tr class=""
+                        ><td colspan="9" class="px-0" style=""
+                          ><div class="-mt-0.5 px-0 pb-2">
+                            <div class="relative h-[400px]">
+                              <div class="absolute top-0 w-full">
+                                <div
+                                  class="h-[250px] w-full xs:h-[300px] sm:h-[400px]"
+                                  style="overflow: hidden;"
+                                >
                                   <div
-                                    class="h-[250px] w-full xs:h-[300px] sm:h-[400px]"
-                                    style="overflow: hidden;"
+                                    style="position: relative; height: 0px; z-index: 1;"
                                   >
-                                    <div
-                                      style="position: relative; height: 0px; z-index: 1;"
-                                    >
-                                      <RatingsChart
-                                        ratingsList={data?.getInsiderTracker?.map(
-                                          (item) => ({
-                                            ...item,
-                                            type: item?.transactionType,
-                                            date: item?.filingDate,
-                                            ticker: item?.symbol,
-                                          }),
-                                        )}
-                                        symbol={item?.symbol}
-                                        numOfRatings={item?.ratings}
-                                        title={"Insider Trading"}
-                                        addToLast={true}
-                                        {data}
-                                      />
-                                    </div>
+                                    <RatingsChart
+                                      ratingsList={data?.getInsiderTracker?.map(
+                                        (item) => ({
+                                          ...item,
+                                          type: item?.transactionType,
+                                          date: item?.filingDate,
+                                          ticker: item?.symbol,
+                                        }),
+                                      )}
+                                      symbol={item?.symbol}
+                                      numOfRatings={item?.ratings}
+                                      title={"Insider Trading"}
+                                      addToLast={true}
+                                      {data}
+                                    />
                                   </div>
                                 </div>
                               </div>
-                            </div></td
-                          >
-                        </tr>
-                      {/if}
-                    {/each}
-                  </tbody>
-                </table>
-              </div>
-              <UpgradeToPro {data} />
+                            </div>
+                          </div></td
+                        >
+                      </tr>
+                    {/if}
+                  {/each}
+                </tbody>
+              </table>
             </div>
-          {:else}
-            <div class="flex justify-center items-center h-80">
-              <div class="relative">
-                <label
-                  class="bg-secondary rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                >
-                  <span class="loading loading-spinner loading-md text-gray-400"
-                  ></span>
-                </label>
-              </div>
-            </div>
-          {/if}
+            <UpgradeToPro {data} />
+          </div>
         </main>
       </div>
     </div>

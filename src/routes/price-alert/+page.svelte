@@ -418,16 +418,30 @@
                   <!-- head -->
                   <thead class="text-muted dark:text-white dark:bg-default">
                     <tr class="">
-                      <th class=" font-semibold text-sm">Symbol</th>
-                      <th class=" font-semibold text-sm">Company</th>
+                      <th class=" font-semibold text-sm sm:text-[1rem]"
+                        >Symbol</th
+                      >
+                      <th class=" font-semibold text-sm sm:text-[1rem]"
+                        >Company</th
+                      >
 
-                      <th class=" font-semibold text-end text-sm"
+                      <th class=" font-semibold text-end text-sm sm:text-[1rem]"
                         >Price Target</th
                       >
-                      <th class=" font-semibold text-end text-sm">Condition</th>
-                      <th class=" font-semibold text-end text-sm"> Price</th>
-                      <th class=" font-semibold text-end text-sm">% Change</th>
-                      <th class=" font-semibold text-end text-sm">Volume</th>
+                      <th class=" font-semibold text-end text-sm sm:text-[1rem]"
+                        >Condition</th
+                      >
+                      <th
+                        class=" font-semibold text-end text-sm sm:text-[1rem]"
+                      >
+                        Price</th
+                      >
+                      <th class=" font-semibold text-end text-sm sm:text-[1rem]"
+                        >% Change</th
+                      >
+                      <th class=" font-semibold text-end text-sm sm:text-[1rem]"
+                        >Volume</th
+                      >
                     </tr>
                   </thead>
                   <tbody class="p-3">
@@ -490,11 +504,11 @@
                           class=" text-sm sm:text-[1rem] whitespace-nowrap text-end"
                         >
                           {#if item?.changesPercentage >= 0}
-                            <span class="text-green-600 dark:text-[#00FC50]"
+                            <span class="text-green-700 dark:text-[#00FC50]"
                               >+{item?.changesPercentage?.toFixed(2)}%</span
                             >
                           {:else}
-                            <span class="text-red-600 dark:text-[#FF2F1F]"
+                            <span class="text-red-700 dark:text-[#FF2F1F]"
                               >{item?.changesPercentage?.toFixed(2)}%
                             </span>
                           {/if}
@@ -536,7 +550,7 @@
                               xmlns="http://www.w3.org/2000/svg"
                               viewBox="0 0 24 24"
                               ><path
-                                fill="#A3A3A3"
+                                fill="currentColor"
                                 d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
                               /></svg
                             >
