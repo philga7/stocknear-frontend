@@ -6,6 +6,7 @@
 
   export let data;
   export let rawData = [];
+  export let ticker;
 
   let stockList = rawData || [];
 
@@ -134,6 +135,13 @@
         content={"Real-time hottest trades highlight significant premium flows, revealing where big players are active and hinting at market trends or sentiment."}
         id={"hottestDPTrade"}
       />
+
+      <a
+        href={`/dark-pool-flow?query=${ticker}`}
+        class="ml-auto rounded text-xs sm:text-sm px-2 sm:px-3 py-2 font-semibold bg-blue-100 dark:bg-[#fff] text-black"
+      >
+        View All
+      </a>
     </div>
 
     {#if rawData?.length !== 0}

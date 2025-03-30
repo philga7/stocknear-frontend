@@ -298,7 +298,7 @@
           </div>
         {/if}
 
-        {#if tickerFlow?.length > 0}
+        {#if tickerFlow?.length > 0 && data?.getStockQuote?.marketCap > 500 * 10 ** 9}
           <div class="w-full">
             <TickerFlow {tickerFlow} />
           </div>

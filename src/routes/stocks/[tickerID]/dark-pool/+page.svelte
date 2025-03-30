@@ -57,7 +57,7 @@
           />
         {/if}
         {#if hottestTrades?.length > 0}
-          <HottestTrades {data} rawData={hottestTrades} />
+          <HottestTrades {data} rawData={hottestTrades} ticker={$stockTicker} />
         {/if}
 
         {#if historicalDarkPool?.length > 10}

@@ -101,7 +101,7 @@
         max: endTime,
         tickLength: 0,
         crosshair: {
-          color: $mode === "light" ? "black" : "white",
+          color: $mode === "light" ? "#545454" : "white",
           width: 1,
           dashStyle: "Solid",
         },

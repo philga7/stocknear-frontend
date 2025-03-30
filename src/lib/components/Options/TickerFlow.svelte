@@ -104,7 +104,7 @@
       },
       legend: {
         enabled: true,
-        align: "left", // Positions legend at the left edge
+        align: "center", // Positions legend at the left edge
         verticalAlign: "top", // Positions legend at the top
         layout: "horizontal", // Align items horizontally (use 'vertical' if preferred)
         itemStyle: {
@@ -131,13 +131,7 @@
         borderRadius: 4,
         formatter: function () {
           // Format the x value to display time in a custom format
-          let tooltipContent = `<span class="m-auto text-[1rem] font-[501]">${new Date(
-            this?.x,
-          ).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-          })}</span><br>`;
+          let tooltipContent = "";
 
           // Loop through each point in the shared tooltip
           this.points.forEach((point) => {
@@ -153,37 +147,26 @@
 
       xAxis: {
         type: "datetime",
-        min: startTime, // Force start at 9:30
-        max: endTime, // Force end at 16:10
+        min: startTime,
+        max: endTime,
+        tickLength: 0,
         crosshair: {
-          color: $mode === "light" ? "black" : "white", // Set the color of the crosshair line
-          width: 1, // Adjust the line width as needed
+          color: $mode === "light" ? "#545454" : "white",
+          width: 1,
           dashStyle: "Solid",
         },
         labels: {
-          style: { color: $mode === "light" ? "black" : "white" },
-          distance: 20, // Increases space between label and axis
+          style: { color: $mode === "light" ? "#545454" : "white" },
+          distance: 10,
           formatter: function () {
-            return new Date(this.value).toLocaleTimeString("en-US", {
+            const date = new Date(this?.value);
+            return date?.toLocaleTimeString("en-US", {
               hour: "2-digit",
               minute: "2-digit",
             });
           },
         },
-        tickPositioner: function () {
-          // Create custom tick positions with wider spacing
-          const positions = [];
-          const info = this.getExtremes();
-          const tickCount = 5; // Reduce number of ticks displayed
-          const interval = (info.max - info.min) / tickCount;
-
-          for (let i = 0; i <= tickCount; i++) {
-            positions.push(info.min + i * interval);
-          }
-          return positions;
-        },
       },
-
       yAxis: [
         {
           title: {
@@ -199,7 +182,7 @@
           gridLineWidth: 1,
           gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
           labels: {
-            style: { color: $mode === "light" ? "black" : "white" },
+            style: { color: $mode === "light" ? "#545454" : "white" },
           },
           title: { text: null },
           opposite: true,
