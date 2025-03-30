@@ -1,6 +1,6 @@
 <script lang="ts">
   import { displayCompanyName, stockTicker, etfTicker } from "$lib/store";
-  import { abbreviateNumber } from "$lib/utils";
+  import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
   import highcharts from "$lib/highcharts.ts";
   import RealtimeTrade from "$lib/components/DarkPool/RealtimeTrade.svelte";
   import { mode } from "mode-watcher";
@@ -47,7 +47,7 @@
         endonTick: false,
         categories: yAxis,
         crosshair: {
-          color: $mode === "light" ? "black" : "white", // Set the color of the crosshair line
+          color: $mode === "light" ? "#545454" : "white", // Set the color of the crosshair line
           width: 1, // Adjust the line width as needed
           dashStyle: "Solid",
         },
@@ -84,7 +84,7 @@
             return abbreviateNumber(this?.value);
           },
           style: {
-            color: "#fff",
+            color: $mode === "light" ? "#545454" : "white",
           },
         },
       },
@@ -102,7 +102,7 @@
         borderRadius: 4,
         formatter: function () {
           // Format the x value to display time in hh:mm format
-          let tooltipContent = `<span class=" m-auto  text-[1rem] font-[501]">Price Level ${this?.x}</span><br>`;
+          let tooltipContent = `<span class=" m-auto  text-sm font-[501]">Price Level ${this?.x}</span><br>`;
 
           // Loop through each point in the shared tooltip
           this.points?.forEach((point) => {
@@ -150,19 +150,17 @@
     {#if rawData?.length !== 0 && Object?.keys(metrics)?.length > 0}
       <div class="w-full flex flex-col items-start">
         <div class=" text-[1rem] mt-2 w-full">
-          {$displayCompanyName} has seen an average dark pool trade size of {abbreviateNumber(
-            metrics?.avgTradeSize,
-            false,
-            true,
-          )} and an average premium per trade of {abbreviateNumber(
-            metrics?.avgPremTrade,
-            false,
-            true,
-          )}, with a total premium of {abbreviateNumber(
-            metrics?.totalPrem,
-            false,
-            true,
-          )}.
+          {removeCompanyStrings($displayCompanyName)} has seen an average dark pool
+          trade size of
+          <strong
+            >{Math.floor(metrics?.avgTradeSize)?.toLocaleString(
+              "en-US",
+            )}</strong
+          >
+          and an average premium per trade of
+          <strong>${abbreviateNumber(metrics?.avgPremTrade)}</strong>, with a
+          total premium of
+          <strong>${abbreviateNumber(metrics?.totalPrem)}</strong>.
         </div>
       </div>
 

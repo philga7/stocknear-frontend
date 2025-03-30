@@ -1,5 +1,6 @@
 <script lang="ts">
   import { stockTicker, etfTicker, screenWidth } from "$lib/store";
+  import { abbreviateNumber } from "$lib/utils";
   import highcharts from "$lib/highcharts.ts";
   import { mode } from "mode-watcher";
 
@@ -67,6 +68,9 @@
     let yMin = minValue * (1 - padding) === 0 ? null : minValue * (1 - padding);
     let yMax = maxValue * (1 + padding) === 0 ? null : maxValue * (1 + padding);
 
+    const fillColorStart = "rgb(70, 129, 244,0.5)";
+    const fillColorEnd = "rgb(70, 129, 244,0.001)";
+
     const options = {
       chart: {
         backgroundColor: $mode === "light" ? "#fff" : "#09090B",
@@ -74,9 +78,20 @@
         height: 360,
       },
       credits: { enabled: false },
-      legend: { enabled: false },
+      legend: {
+        enabled: true,
+        align: "center", // Positions legend at the left edge
+        verticalAlign: "top", // Positions legend at the top
+        layout: "horizontal", // Align items horizontally (use 'vertical' if preferred)
+        itemStyle: {
+          color: $mode === "light" ? "black" : "white",
+        },
+        symbolWidth: 16, // Controls the width of the legend symbol
+        symbolRadius: 8, // Creates circular symbols (adjust radius as needed)
+        squareSymbol: false, // Ensures symbols are circular, not square
+      },
       title: {
-        text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">Realtime Dark Pool Trades Impact</h3>`,
+        text: `<h3 class="mt-3 -mb-3 text-[1rem] sm:text-lg">Realtime Dark Pool Trades Impact</h3>`,
         useHTML: true,
         style: { color: $mode === "light" ? "black" : "white" },
       },
@@ -91,7 +106,7 @@
           dashStyle: "Solid",
         },
         labels: {
-          style: { color: $mode === "light" ? "black" : "white" },
+          style: { color: $mode === "light" ? "#545454" : "white" },
           distance: 20,
           formatter: function () {
             const date = new Date(this?.value);
@@ -108,7 +123,7 @@
           min: yMin ?? null,
           max: yMax ?? null,
           title: { text: null },
-          labels: { style: { color: $mode === "light" ? "black" : "white" } },
+          labels: { style: { color: $mode === "light" ? "#545454" : "white" } },
           gridLineWidth: 1,
           gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
           opposite: true,
@@ -116,9 +131,9 @@
         {
           title: {
             text: $screenWidth < 640 ? null : "Total Trades",
-            style: { color: $mode === "light" ? "black" : "white" },
+            style: { color: $mode === "light" ? "#545454" : "white" },
           },
-          labels: { style: { color: $mode === "light" ? "black" : "white" } },
+          labels: { style: { color: $mode === "light" ? "#545454" : "white" } },
           gridLineWidth: 0,
           opposite: false,
         },
@@ -126,39 +141,32 @@
       tooltip: {
         shared: true,
         useHTML: true,
-        backgroundColor: "rgba(0, 0, 0, 0.8)",
-        borderColor: "rgba(255, 255, 255, 0.2)",
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
+        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
         borderWidth: 1,
         style: {
-          color: "#fff",
+          color: $mode === "light" ? "black" : "white",
           fontSize: "16px",
           padding: "10px",
         },
         borderRadius: 4,
         formatter: function () {
-          // Create a Date object from the x value and format it as time
           const date = new Date(this?.x);
-          let formattedTime = date.toLocaleTimeString("en-US", {
+          let formattedDate = date?.toLocaleTimeString("en-US", {
             hour: "2-digit",
             minute: "2-digit",
           });
 
-          // Build the tooltip content starting with the formatted time
-          let tooltipContent = `<span class="m-auto text-sm text-white">${formattedTime}</span><br>`;
+          let tooltipContent = `<span class="text-white m-auto text-black text-sm font-normal">${formattedDate}</span><br>`;
 
-          // Loop through each point and add its details, excluding "Dark Pool Volume"
+          // Loop through each point in the shared tooltip
           this.points?.forEach((point) => {
-            if (point.series.name !== "Dark Pool Volume") {
-              tooltipContent += `
-          <span class="font-semibold text-sm">${point.series.name}:</span> 
-          <span class="font-normal text-sm"><b>${point.y}</b></span><br>`;
-            }
+            tooltipContent += `<span class="text-white text-sm font-[501]">${point.series.name}: ${abbreviateNumber(point.y)}</span><br>`;
           });
 
           return tooltipContent;
         },
       },
-
       plotOptions: {
         series: {
           animation: false,
@@ -185,19 +193,25 @@
       series: [
         {
           name: "Price",
-          type: "line",
+          type: "area",
           data: seriesData,
-          color: $mode === "light" ? "blue" : "white",
+          fillColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+              [0, fillColorStart],
+              [1, fillColorEnd],
+            ],
+          },
+          color: "#4681f4",
           lineWidth: 1.3,
           yAxis: 0, // Use primary yAxis
           animation: false,
         },
         {
-          name: "Dark Pool Volume",
+          name: "DP Volume",
           type: "column",
           data: darkPoolSeries,
-          color:
-            data?.getStockQuote?.changesPercentage >= 0 ? "#04D347" : "#E11D48",
+          color: "#F21C64",
           yAxis: 1, // Use secondary yAxis
           animation: false,
         },
@@ -220,7 +234,7 @@
       <div
         class="{!['Pro']?.includes(data?.user?.tier)
           ? 'blur-[3px]'
-          : ''} mt-5 shadow-sm sm:mt-0 border border-gray-300 dark:border-gray-800 rounded"
+          : ''} mt-5 sm:mt-0 border border-gray-300 dark:border-gray-800 rounded"
         use:highcharts={config}
       ></div>
       <!-- Overlay with "Upgrade to Pro" -->

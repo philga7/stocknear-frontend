@@ -85,14 +85,23 @@
         animation: false,
       },
       title: {
-        text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">${removeCompanyStrings($displayCompanyName)} Historical Chart</h3>`,
+        text: `<h3 class="mt-3 -mb-3 text-[1rem] sm:text-lg">${removeCompanyStrings($displayCompanyName)} Historical Chart</h3>`,
         style: {
           color: $mode === "light" ? "black" : "white",
         },
         useHTML: true,
       },
       legend: {
-        enabled: false,
+        enabled: true,
+        align: "center", // Positions legend at the left edge
+        verticalAlign: "top", // Positions legend at the top
+        layout: "horizontal", // Align items horizontally (use 'vertical' if preferred)
+        itemStyle: {
+          color: $mode === "light" ? "black" : "white",
+        },
+        symbolWidth: 16, // Controls the width of the legend symbol
+        symbolRadius: 8, // Creates circular symbols (adjust radius as needed)
+        squareSymbol: false, // Ensures symbols are circular, not square
       },
       xAxis: {
         type: "datetime",

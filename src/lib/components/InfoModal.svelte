@@ -7,12 +7,12 @@
 <div class="relative">
   <label
     for={id}
-    class="absolute -bottom-1 left-0 cursor-pointer p-1 text-gray-800 sm:hover:text-white"
+    class="absolute -bottom-1 left-0 cursor-pointer p-1 text-gray-500 dark:text-gray-300 dark:sm:hover:text-white"
   >
     <svg
       class="h-[10.5px] w-[10.5px]"
       viewBox="0 0 4 16"
-      fill="white"
+      fill="currentColor"
       style="max-width:20px"
     >
       <path
@@ -30,18 +30,18 @@
 
   <!-- Desktop modal content -->
   <div
-    class="modal-box rounded-md border border-gray-600 w-full bg-secondary flex flex-col items-center"
+    class="modal-box rounded-md border border-gray-300 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
   >
     <div class="mx-auto h-1.5 w-20 shrink-0 rounded-full" />
-    <div class="text-white mb-5 text-center">
+    <div class=" mb-5 text-center">
       <h3 class="font-bold text-xl sm:text-2xl mb-5">{title}</h3>
-      <span class="text-white text-[1rem] font-normal">{@html content}</span>
+      <span class=" text-[1rem] font-normal">{@html content}</span>
     </div>
 
-    <div class="border-t border-gray-600 mt-2 w-full">
+    <div class="border-t border-gray-300 dark:border-gray-600 mt-2 w-full">
       <label
         for={id}
-        class="mt-4 font-semibold text-white text-xl m-auto flex justify-center cursor-pointer"
+        class="mt-4 font-semibold text-xl m-auto flex justify-center cursor-pointer"
       >
         Close
       </label>
