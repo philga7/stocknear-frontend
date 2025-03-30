@@ -367,14 +367,14 @@
         endOnTick: false,
         categories: dates,
         crosshair: {
-          color: $mode === "light" ? "black" : "white", // Set the color of the crosshair line
+          color: $mode === "light" ? "#545454" : "white", // Set the color of the crosshair line
           width: 1, // Adjust the line width as needed
           dashStyle: "Solid",
         },
 
         labels: {
           style: {
-            color: $mode === "light" ? "black" : "white",
+            color: $mode === "light" ? "#545454" : "white",
             fontSize: "12px",
           },
         },
@@ -383,7 +383,7 @@
         gridLineWidth: 1,
         gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
         labels: {
-          style: { color: $mode === "light" ? "black" : "white" },
+          style: { color: $mode === "light" ? "#545454" : "white" },
         },
         title: { text: null },
         opposite: true,
@@ -394,6 +394,7 @@
           data: valueList,
           color: $mode === "light" ? "#2C6288" : "white",
           animation: false,
+          lineWidth: 2.5,
         },
         {
           name: "Avg",
@@ -404,6 +405,7 @@
           marker: {
             enabled: false,
           },
+          lineWidth: 2.5,
         },
         {
           name: "Low",
@@ -412,6 +414,7 @@
           color: $mode === "light" ? "#8AAAC0" : "#c2c7cf",
           dashStyle: "Dash",
           animation: false,
+          lineWidth: 2.5,
         },
         {
           name: "High",
@@ -419,6 +422,7 @@
           color: $mode === "light" ? "#8AAAC0" : "#c2c7cf",
           dashStyle: "Dash",
           animation: false,
+          lineWidth: 2.5,
         },
       ],
     };
@@ -518,7 +522,7 @@
         type: "datetime",
         labels: {
           style: {
-            color: $mode === "light" ? "black" : "white",
+            color: $mode === "light" ? "#545454" : "white",
             fontSize: "12px",
           },
         },
@@ -527,7 +531,7 @@
         gridLineWidth: 1,
         gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
         labels: {
-          style: { color: $mode === "light" ? "black" : "white" },
+          style: { color: $mode === "light" ? "#545454" : "white" },
         },
         title: { text: null },
         opposite: true,
@@ -573,7 +577,7 @@
             // If either high or low is null/undefined, return nulls.
             return high != null && low != null ? [low, high] : [null, null];
           }),
-          color: $mode === "light" ? "black" : "white",
+          color: $mode === "light" ? "#545454" : "white",
           lineWidth: 1, // Thicker lines for error bars
           whiskerLength: 10, // Adjust whisker length as needed
           zIndex: 10,

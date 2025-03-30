@@ -91,7 +91,7 @@
       categories = ["Strong Buy", "Buy", "Hold", "Sell", "Strong Sell"];
     }
 
-    optionsBarChart = getPlotOptions() || null;
+    optionsBarChart = getBarChart() || null;
     optionsPieChart = getPieChart() || null;
     config = getPriceForecastChart() || null;
   }
@@ -199,7 +199,7 @@
         categories: xCategories,
         labels: {
           style: {
-            color: "#fff",
+            color: $mode === "light" ? "#545454" : "white",
           },
         },
       },
@@ -210,22 +210,22 @@
         borderColor: "rgba(255, 255, 255, 0.2)",
         borderWidth: 1,
         style: {
-          color: "#fff",
+          color: $mode === "light" ? "#545454" : "white",
           fontSize: "16px",
           padding: "10px",
         },
         borderRadius: 4,
         headerFormat:
-          '<span class="font-semibold text-[1rem]">{point.key}</span><br/>',
+          '<span class="font-semibold text-[1rem] text-white">{point.key}</span><br/>',
         pointFormat:
           '<span style="color:{point.color}">\u25CF</span> ' +
-          "<span class='text-sm'>{series.name}: <b>{point.originalValue}</b><br/></span>",
+          "<span class='text-sm text-white'>{series.name}: <b>{point.originalValue}</b><br/></span>",
       },
       yAxis: {
         gridLineWidth: 1,
         gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
         labels: {
-          style: { color: "white" },
+          style: { color: $mode === "light" ? "#545454" : "white" },
         },
         title: { text: null },
       },
@@ -1290,46 +1290,26 @@
 <!--Start Create Watchlist Modal-->
 <input type="checkbox" id="topAnalystModal" class="modal-toggle" />
 
-<dialog id="topAnalystModal" class="modal overflow-hidden p-3 sm:p-0">
+<dialog id="topAnalystModal" class="modal p-3">
   <label for="topAnalystModal" class="cursor-pointer modal-backdrop"></label>
 
+  <!-- Desktop modal content -->
   <div
-    class="modal-box text-white rounded w-full bg-secondary shadow-sm border border-gray-300 dark:border-gray-600"
+    class="modal-box rounded-md border border-gray-300 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
   >
-    <div class="flex flex-row items-center pt-5">
-      <h4 class=" text-2xl font-bold text-center m-auto">Steps to install</h4>
-      <label
-        for="topAnalystModal"
-        class="inline-block cursor-pointer absolute right-3 top-3 text-[1.3rem] sm:text-[1.8rem]"
+    <div class=" mb-5 text-center">
+      <h3 class="font-bold text-2xl mb-5">Top Analyst</h3>
+      <span class=" text-[1rem] font-normal"
+        >Filter by only analysts with 4+ stars based on their success rate and
+        average return per rating. 4+ star analysts have a high accuracy and
+        high average return per rating.</span
       >
-        <svg
-          class="w-6 h-6 sm:w-8 sm:h-8"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          ><path
-            fill="white"
-            d="m6.4 18.308l-.708-.708l5.6-5.6l-5.6-5.6l.708-.708l5.6 5.6l5.6-5.6l.708.708l-5.6 5.6l5.6 5.6l-.708.708l-5.6-5.6z"
-          /></svg
-        >
-      </label>
     </div>
 
-    <div class=" flex flex-col justify-center items-center text-xl h-full">
-      <ul class="list-decimal list-inside text-left mt-5">
-        <li class="mb-2">Tap on the Safari share button.</li>
-        <li class="mb-2">Tap on "Add to Home Screen."</li>
-        <li class="mb-4">Tap on "Add."</li>
-
-        <p class="text-lg mb-4">
-          Note that web apps on iOS can only be installed using Safari.
-        </p>
-      </ul>
-    </div>
-
-    <div class="boshadow-sm rder-t border-gray-300 dark:border-gray-600 mt-2">
+    <div class="border-t border-gray-300 dark:border-gray-600 mt-2 w-full">
       <label
         for="topAnalystModal"
-        class="mt-4 font-semibold text-xl m-auto flex justify-center cursor-pointer"
+        class="cursor-pointer mt-4 font-semibold text-xl m-auto flex justify-center"
       >
         Close
       </label>

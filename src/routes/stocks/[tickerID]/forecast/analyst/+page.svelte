@@ -217,55 +217,72 @@
                   id={"topAnalystsInfo"}
                 />
               </div>
-              <div
-                class="inline-flex justify-center w-full rounded-md sm:w-auto"
-              >
-                <div
-                  class="bg-gray-300 dark:bg-secondary w-full sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1 mt-4"
+              <div class="flex flex-col w-full sm:w-fit items-end justify-end">
+                <label
+                  for="topAnalystModal"
+                  class="ml-auto mb-1 hidden sm:inline-block"
+                  ><svg
+                    class="size-[18px] text-gray-400 dark:text-dark-400 dark:hover:text-dark-300 sm:hover:text-gray-700 cursor-pointer"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    style="max-width:40px"
+                    ><path
+                      fill-rule="evenodd"
+                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
+                      clip-rule="evenodd"
+                    ></path></svg
+                  ></label
                 >
-                  {#each tabs as item, i}
-                    {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}
-                      <button
-                        on:click={() => goto("/pricing")}
-                        class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
-                      >
-                        <span class="relative text-sm block font-semibold">
-                          {item.title}
-                          <svg
-                            class="inline-block ml-0.5 -mt-1 w-3.5 h-3.5"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            ><path
-                              fill="currentColor"
-                              d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                            /></svg
-                          >
-                        </span>
-                      </button>
-                    {:else}
-                      <button
-                        on:click={() => changeTab(i)}
-                        class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
-                        i
-                          ? 'z-0'
-                          : ''} "
-                      >
-                        {#if activeIdx === i}
-                          <div
-                            class="absolute inset-0 rounded-md bg-[#fff]"
-                          ></div>
-                        {/if}
-                        <span
-                          class="relative text-sm block font-semibold whitespace-nowrap {activeIdx ===
-                          i
-                            ? 'text-black'
-                            : ''}"
+                <div
+                  class="inline-flex justify-center w-full rounded-md sm:w-auto"
+                >
+                  <div
+                    class="bg-gray-300 dark:bg-secondary w-full sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1"
+                  >
+                    {#each tabs as item, i}
+                      {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}
+                        <button
+                          on:click={() => goto("/pricing")}
+                          class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
                         >
-                          {item.title}
-                        </span>
-                      </button>
-                    {/if}
-                  {/each}
+                          <span class="relative text-sm block font-semibold">
+                            {item.title}
+                            <svg
+                              class="inline-block ml-0.5 -mt-1 w-3.5 h-3.5"
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              ><path
+                                fill="currentColor"
+                                d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                              /></svg
+                            >
+                          </span>
+                        </button>
+                      {:else}
+                        <button
+                          on:click={() => changeTab(i)}
+                          class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
+                          i
+                            ? 'z-0'
+                            : ''} "
+                        >
+                          {#if activeIdx === i}
+                            <div
+                              class="absolute inset-0 rounded-md bg-[#fff]"
+                            ></div>
+                          {/if}
+                          <span
+                            class="relative text-sm block font-semibold whitespace-nowrap {activeIdx ===
+                            i
+                              ? 'text-black'
+                              : ''}"
+                          >
+                            {item.title}
+                          </span>
+                        </button>
+                      {/if}
+                    {/each}
+                  </div>
                 </div>
               </div>
             </div>
@@ -707,3 +724,33 @@
     </div>
   </div>
 </section>
+
+<!--Start Create Watchlist Modal-->
+<input type="checkbox" id="topAnalystModal" class="modal-toggle" />
+
+<dialog id="topAnalystModal" class="modal p-3">
+  <label for="topAnalystModal" class="cursor-pointer modal-backdrop"></label>
+
+  <!-- Desktop modal content -->
+  <div
+    class="modal-box rounded-md border border-gray-300 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
+  >
+    <div class=" mb-5 text-center">
+      <h3 class="font-bold text-2xl mb-5">Top Analyst</h3>
+      <span class=" text-[1rem] font-normal"
+        >Filter by only analysts with 4+ stars based on their success rate and
+        average return per rating. 4+ star analysts have a high accuracy and
+        high average return per rating.</span
+      >
+    </div>
+
+    <div class="border-t border-gray-300 dark:border-gray-600 mt-2 w-full">
+      <label
+        for="topAnalystModal"
+        class="cursor-pointer mt-4 font-semibold text-xl m-auto flex justify-center"
+      >
+        Close
+      </label>
+    </div>
+  </div>
+</dialog>
