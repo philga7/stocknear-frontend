@@ -22,7 +22,7 @@
   {#each columns as column}
     <th
       on:click={() => sortData(column.key)}
-      class="cursor-pointer select-none font-semibold text-sm whitespace-nowrap {column.align ===
+      class="cursor-pointer select-none font-semibold text-sm sm:text-[1rem] whitespace-nowrap {column.align ===
       'right'
         ? 'text-end'
         : 'text-start'}"

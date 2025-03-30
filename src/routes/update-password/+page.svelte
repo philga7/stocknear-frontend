@@ -7,22 +7,22 @@
 
   export let data;
   export let form;
-  let loading = false;
+  let isUpdating = false;
 
   const submitUpdatePassword = () => {
-    loading = true;
+    isUpdating = true;
     return async ({ result, update }) => {
       if (result.success) {
         toast.success("Password updated!", {
           style: "border-radius: 200px; background: #2A2E39; color: #fff;",
         });
-      } else if (result.error || result.errors) {
+      } else {
         toast.error("Invalid credentials", {
           style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
         });
       }
       await update();
-      loading = false;
+      isUpdating = false;
     };
   };
 </script>
@@ -30,7 +30,7 @@
 <SEO title="Update Password" description="Update your account password" />
 
 <section
-  class="flex flex-col items-center min-h-screen w-full max-w-3xl m-auto"
+  class="flex flex-col items-center min-h-screen w-full max-w-3xl m-auto px-3 sm:px-0 mt-10"
 >
   <div class="w-full overflow-hidden m-auto mt-5">
     <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
@@ -44,9 +44,7 @@
             use:enhance={submitUpdatePassword}
             class="flex flex-col space-y-2 w-full max-w-lg m-auto"
           >
-            <h1
-              class="mb-1 text-white text-2xl sm:text-3xl font-bold mb-6 text-center"
-            >
+            <h1 class="mb-1 text-2xl sm:text-3xl font-bold mb-6 text-center">
               Reset Your Password
             </h1>
 
@@ -76,12 +74,23 @@
             />
 
             <div class="w-full max-w-lg pt-3">
-              <button
-                type="submit"
-                class="py-2.5 cursor-pointer rounded bg-[#fff] text-black font-semibold sm:hover:bg-gray-300 w-full max-w-lg normal-case text-md"
-              >
-                {loading ? "Updating..." : "Update Password"}
-              </button>
+              {#if !isUpdating}
+                <button
+                  type="submit"
+                  class="cursor-pointer py-2.5 bg-[#3B82F6] dark:bg-[#fff] border-none sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 transition duration-100 btn-md w-full rounded-md m-auto text-white dark:text-black font-semibold text-[1rem]"
+                >
+                  <span>Update Password</span>
+                </button>
+              {:else}
+                <label
+                  class="cursor-not-allowed btn bg-[#3B82F6] dark:bg-[#fff] opacity-[0.5] border border-gray-600 sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 transition duration-100 btn-md w-full rounded-md m-auto text-white dark:text-black font-semibold text-[1rem]"
+                >
+                  <div class="flex flex-row m-auto items-center">
+                    <span class="loading loading-infinity"></span>
+                    <span class=" ml-1.5">Processing</span>
+                  </div>
+                </label>
+              {/if}
             </div>
           </form>
         </main>

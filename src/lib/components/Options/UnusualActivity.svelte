@@ -188,7 +188,7 @@
         },
         labels: {
           style: {
-            color: $mode === "light" ? "black" : "white",
+            color: $mode === "light" ? "#545454" : "white",
           },
           formatter: function () {
             const date = new Date(this.value);
@@ -213,7 +213,7 @@
       yAxis: [
         {
           gridLineWidth: 1,
-          gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
+          gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
           labels: {
             style: { color: $mode === "light" ? "black" : "white" },
           },
@@ -498,7 +498,7 @@
       yAxis: [
         {
           gridLineWidth: 1,
-          gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
+          gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
           labels: { style: { color: $mode === "light" ? "black" : "white" } },
           title: { text: null },
           opposite: true,

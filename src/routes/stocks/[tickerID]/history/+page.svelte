@@ -1,9 +1,5 @@
 <script lang="ts">
-  import {
-    stockTicker,
-    numberOfUnreadNotification,
-    displayCompanyName,
-  } from "$lib/store";
+  import { stockTicker, displayCompanyName } from "$lib/store";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
@@ -12,6 +8,7 @@
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
   import SEO from "$lib/components/SEO.svelte";
   import { onMount } from "svelte";
+  import { removeCompanyStrings } from "$lib/utils";
 
   export let data;
   let timePeriod = "Daily";
@@ -285,10 +282,10 @@
         <main class="w-full lg:w-3/4 lg:pr-10">
           <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto">
             <div
-              class="flex flex-col sm:flex-row items-start w-full sm:justify-between md:space-x-4 md:border-0 w-full mb-5"
+              class="flex flex-col sm:flex-row items-start w-full sm:justify-between md:space-x-4 md:border-0 w-full mb-3"
             >
               <h1 class="text-xl sm:text-2xl font-bold mb-3 sm:mb-0">
-                {$stockTicker} Stock Price History
+                {removeCompanyStrings($displayCompanyName)} Stock Price History
               </h1>
               <div
                 class="flex flex-row items-center ml-auto w-fit mt-2 sm:mt-0"
@@ -399,7 +396,7 @@
               </div>
             </div>
             {#if rawData?.length !== 0}
-              <div class="w-full m-auto mt-2">
+              <div class="w-full m-auto">
                 <div
                   class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
                 >

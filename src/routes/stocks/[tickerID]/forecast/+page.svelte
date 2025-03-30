@@ -223,7 +223,7 @@
       },
       yAxis: {
         gridLineWidth: 1,
-        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
+        gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
         labels: {
           style: { color: "white" },
         },
@@ -371,7 +371,7 @@
                 textColor = "#D9220E";
               } else if (rating < 3) {
                 ratingText = "Hold";
-                textColor = "#f5b700";
+                textColor = "#C19000";
               } else if (rating < 4) {
                 ratingText = "Buy";
                 textColor = "#31B800";
@@ -518,12 +518,12 @@
       },
       xAxis: {
         gridLineWidth: 1,
-        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
+        gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
         type: "datetime",
         endOnTick: false,
         labels: {
           style: {
-            color: $mode === "light" ? "black" : "white",
+            color: $mode === "light" ? "#545454" : "white",
           },
           formatter: function () {
             const date = new Date(this.value);
@@ -540,14 +540,14 @@
         },
         labels: {
           style: {
-            color: $mode === "light" ? "black" : "white",
+            color: $mode === "light" ? "#545454" : "white",
           },
           formatter: function () {
             return `$${this.value.toFixed(0)}`;
           },
         },
         gridLineWidth: 1,
-        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
+        gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
       },
 
       series: [
@@ -561,7 +561,7 @@
             symbol: "circle",
             radius: 4,
           },
-          lineWidth: 2,
+          lineWidth: 3,
         },
         {
           animation: false,
@@ -733,66 +733,84 @@
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"
     >
-      <div class="sm:pl-4 sm:pt-4 w-full m-auto mt-2 sm:mt-0">
+      <div class="sm:pl-4 w-full m-auto">
         <div
           class="flex flex-col sm:flex-row items-start sm:items-center sm:justify-between"
         >
           <h1 class="mb-px text-xl sm:text-2xl font-bold bp:text-3xl sm:pl-1">
-            {removeCompanyStrings($displayCompanyName)} Forecast
+            {removeCompanyStrings($displayCompanyName)} Stock Forecast
           </h1>
-
-          <div class="inline-flex justify-center w-full rounded-md sm:w-auto">
-            <div
-              class="bg-gray-300 dark:bg-secondary w-full sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1 mt-4"
+          <div class="flex flex-col w-full sm:w-fit items-end justify-end">
+            <label
+              for="topAnalystModal"
+              class="ml-auto mb-1 hidden sm:inline-block"
+              ><svg
+                class="size-[18px] text-gray-400 dark:text-dark-400 dark:hover:text-dark-300 sm:hover:text-gray-700 cursor-pointer"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                style="max-width:40px"
+                ><path
+                  fill-rule="evenodd"
+                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
+                  clip-rule="evenodd"
+                ></path></svg
+              ></label
             >
-              {#each tabs as item, i}
-                {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}
-                  <button
-                    on:click={() => goto("/pricing")}
-                    class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
-                  >
-                    <span class="relative text-sm block font-semibold">
-                      {item.title}
-                      <svg
-                        class="inline-block ml-0.5 -mt-1 w-3.5 h-3.5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        ><path
-                          fill="currentColor"
-                          d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                        /></svg
-                      >
-                    </span>
-                  </button>
-                {:else}
-                  <button
-                    on:click={() => changeTab(i)}
-                    class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
-                    i
-                      ? 'z-0'
-                      : ''} "
-                  >
-                    {#if activeIdx === i}
-                      <div class="absolute inset-0 rounded-md bg-[#fff]"></div>
-                    {/if}
-                    <span
-                      class="relative text-sm block font-semibold whitespace-nowrap {activeIdx ===
-                      i
-                        ? 'text-black'
-                        : ''}"
+            <div class="inline-flex justify-center w-full rounded-md sm:w-auto">
+              <div
+                class="bg-gray-300 dark:bg-secondary w-full sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1"
+              >
+                {#each tabs as item, i}
+                  {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}
+                    <button
+                      on:click={() => goto("/pricing")}
+                      class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
                     >
-                      {item.title}
-                    </span>
-                  </button>
-                {/if}
-              {/each}
+                      <span class="relative text-sm block font-semibold">
+                        {item.title}
+                        <svg
+                          class="inline-block ml-0.5 -mt-1 w-3.5 h-3.5"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          ><path
+                            fill="currentColor"
+                            d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                          /></svg
+                        >
+                      </span>
+                    </button>
+                  {:else}
+                    <button
+                      on:click={() => changeTab(i)}
+                      class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
+                      i
+                        ? 'z-0'
+                        : ''} "
+                    >
+                      {#if activeIdx === i}
+                        <div
+                          class="absolute inset-0 rounded-md bg-[#fff]"
+                        ></div>
+                      {/if}
+                      <span
+                        class="relative text-sm block font-semibold whitespace-nowrap {activeIdx ===
+                        i
+                          ? 'text-black'
+                          : ''}"
+                      >
+                        {item.title}
+                      </span>
+                    </button>
+                  {/if}
+                {/each}
+              </div>
             </div>
           </div>
         </div>
 
         <div class="w-full mb-6 mt-3">
           <div
-            class="rounded-sm border border-gray-300 dark:border-gray-600 p-0.5 xs:p-1 md:flex md:flex-col md:space-y-4 md:divide-y md:p-4 lg:flex-row lg:space-x-4 lg:space-y-0 lg:divide-x lg:divide-y-0 divide-gray-300 dark:divide-gray-600"
+            class="rounded shadow-sm border border-gray-300 dark:border-gray-600 p-0.5 xs:p-1 md:flex md:flex-col md:space-y-4 md:divide-y md:p-4 lg:flex-row lg:space-x-4 lg:space-y-0 lg:divide-x lg:divide-y-0 divide-gray-300 dark:divide-gray-600"
           >
             <div
               class="p-3 md:flex md:space-x-4 md:p-0 lg:block lg:max-w-[32%] lg:space-x-0"
@@ -814,9 +832,9 @@
               </div>
               <div class="max-h-[225px]" use:highcharts={optionsPieChart}></div>
             </div>
-            <div class="grow pt-2 md:pt-4 lg:pl-4 lg:pt-0">
+            <div class="grow md:pt-4 lg:pl-4 lg:pt-0">
               <div
-                class="chart mt-5 sm:mt-0 border-l border-r sm:border border-gray-800 rounded"
+                class="sm:shadow-sm sm:border border-gray-300 dark:border-gray-800 rounded"
                 use:highcharts={config}
               ></div>
               <div
@@ -846,23 +864,25 @@
                       ><td class="py-[3px] text-left lg:py-0.5">Change</td>
                       <td
                         class={lowChange > 0
-                          ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                          : "text-[#FF2F1F]"}>{lowChange}%</td
+                          ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
+                          : "text-red-700 dark:text-[#FF2F1F]"}>{lowChange}%</td
                       >
                       <td
                         class={avgChange > 0
-                          ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                          : "text-[#FF2F1F]"}>{avgChange}%</td
+                          ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
+                          : "text-red-700 dark:text-[#FF2F1F]"}>{avgChange}%</td
                       >
                       <td
                         class={medianChange > 0
-                          ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                          : "text-[#FF2F1F]"}>{medianChange}%</td
+                          ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
+                          : "text-red-700 dark:text-[#FF2F1F]"}
+                        >{medianChange}%</td
                       >
                       <td
                         class={highChange > 0
-                          ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                          : "text-[#FF2F1F]"}>{highChange}%</td
+                          ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
+                          : "text-red-700 dark:text-[#FF2F1F]"}
+                        >{highChange}%</td
                       ></tr
                     ></tbody
                   >
@@ -872,7 +892,7 @@
           </div>
 
           <div
-            class="w-full rounded-sm border border-gray-300 dark:border-gray-600 mt-8 p-3 divide-gray-300 dark:divide-gray-600 lg:flex lg:space-x-4 lg:divide-x"
+            class="w-full shadow-sm rounded-sm border border-gray-300 dark:border-gray-600 mt-8 p-3 divide-gray-300 dark:divide-gray-600 lg:flex lg:space-x-4 lg:divide-x"
           >
             <div class="flex flex-col justify-between p-1 lg:max-w-[32%]">
               <div>
@@ -939,7 +959,7 @@
             <div class="grow pt-2 md:pt-4 lg:pl-4 lg:pt-0">
               {#if optionsBarChart !== null}
                 <div
-                  class="border border-gray-800 rounded"
+                  class="shadow-sm border border-gray-300 dark:border-gray-800 rounded"
                   use:highcharts={optionsBarChart}
                 ></div>
               {/if}
@@ -1008,7 +1028,7 @@
           </h2>
           {#if data?.getAnalystEstimate?.length !== 0}
             <div
-              class="mb-4 grid grid-cols-1 overflow-hidden rounded-md border divide-gray-300 dark:divide-gray-600 border-gray-300 dark:border-gray-600 md:grid-cols-2 lg:grid-cols-4"
+              class="mb-4 shadow-sm grid grid-cols-1 overflow-hidden rounded-md border divide-gray-300 dark:divide-gray-600 border-gray-300 dark:border-gray-600 md:grid-cols-2 lg:grid-cols-4"
             >
               <div
                 class="border-b px-3 py-5 last:border-b-0 xs:px-4 sm:p-6 md:border-b lg:border-b-0 border-gray-300 dark:border-gray-600"
@@ -1267,19 +1287,52 @@
   </div>
 </section>
 
-<style>
-  .app {
-    height: 300px;
-    max-width: 100%; /* Ensure chart width doesn't exceed the container */
-  }
+<!--Start Create Watchlist Modal-->
+<input type="checkbox" id="topAnalystModal" class="modal-toggle" />
 
-  @media (max-width: 640px) {
-    .app {
-      height: 300px;
-    }
-  }
+<dialog id="topAnalystModal" class="modal overflow-hidden p-3 sm:p-0">
+  <label for="topAnalystModal" class="cursor-pointer modal-backdrop"></label>
 
-  .chart {
-    width: 100%;
-  }
-</style>
+  <div
+    class="modal-box text-white rounded w-full bg-secondary shadow-sm border border-gray-300 dark:border-gray-600"
+  >
+    <div class="flex flex-row items-center pt-5">
+      <h4 class=" text-2xl font-bold text-center m-auto">Steps to install</h4>
+      <label
+        for="topAnalystModal"
+        class="inline-block cursor-pointer absolute right-3 top-3 text-[1.3rem] sm:text-[1.8rem]"
+      >
+        <svg
+          class="w-6 h-6 sm:w-8 sm:h-8"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          ><path
+            fill="white"
+            d="m6.4 18.308l-.708-.708l5.6-5.6l-5.6-5.6l.708-.708l5.6 5.6l5.6-5.6l.708.708l-5.6 5.6l5.6 5.6l-.708.708l-5.6-5.6z"
+          /></svg
+        >
+      </label>
+    </div>
+
+    <div class=" flex flex-col justify-center items-center text-xl h-full">
+      <ul class="list-decimal list-inside text-left mt-5">
+        <li class="mb-2">Tap on the Safari share button.</li>
+        <li class="mb-2">Tap on "Add to Home Screen."</li>
+        <li class="mb-4">Tap on "Add."</li>
+
+        <p class="text-lg mb-4">
+          Note that web apps on iOS can only be installed using Safari.
+        </p>
+      </ul>
+    </div>
+
+    <div class="boshadow-sm rder-t border-gray-300 dark:border-gray-600 mt-2">
+      <label
+        for="topAnalystModal"
+        class="mt-4 font-semibold text-xl m-auto flex justify-center cursor-pointer"
+      >
+        Close
+      </label>
+    </div>
+  </div>
+</dialog>

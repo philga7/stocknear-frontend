@@ -254,7 +254,7 @@
         startOnTick: false,
         endOnTick: false,
         gridLineWidth: 1,
-        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
+        gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
         title: { text: null },
         labels: {
           style: { color: $mode === "light" ? "black" : "white" },

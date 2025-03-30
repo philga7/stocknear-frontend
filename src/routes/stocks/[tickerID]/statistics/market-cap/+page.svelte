@@ -280,7 +280,7 @@
         },
         labels: {
           style: {
-            color: $mode === "light" ? "black" : "white",
+            color: $mode === "light" ? "#545454" : "white",
           },
           distance: 20, // Increases space between label and axis
           formatter: function () {
@@ -306,7 +306,7 @@
       },
       yAxis: {
         gridLineWidth: 1,
-        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
+        gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
         labels: {
           style: { color: $mode === "light" ? "black" : "white" },
         },

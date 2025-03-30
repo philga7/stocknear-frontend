@@ -113,7 +113,7 @@
       },
       yAxis: {
         gridLineWidth: 1,
-        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
+        gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
         labels: {
           style: { color: $mode === "light" ? "black" : "white" },
           formatter: function () {
@@ -528,22 +528,22 @@
                 <thead class="text-muted dark:text-white dark:bg-default">
                   <tr>
                     <th
-                      class="text-start text-sm whitespace-nowrap font-semibold"
+                      class="text-start text-sm sm:text-[1rem] whitespace-nowrap font-semibold"
                     >
                       Date
                     </th>
                     <th
-                      class="text-end text-sm whitespace-nowrap font-semibold"
+                      class="text-end text-sm sm:text-[1rem] whitespace-nowrap font-semibold"
                     >
                       Employees
                     </th>
                     <th
-                      class="text-end text-sm whitespace-nowrap font-semibold"
+                      class="text-end text-sm sm:text-[1rem] whitespace-nowrap font-semibold"
                     >
                       Change
                     </th>
                     <th
-                      class="text-end text-sm whitespace-nowrap font-semibold"
+                      class="text-end text-sm sm:text-[1rem] whitespace-nowrap font-semibold"
                     >
                       Growth
                     </th>
@@ -589,7 +589,7 @@
                         {#if index === historyList?.length - 1}
                           n/a
                         {:else if item?.employeeCount > historyList[index + 1]?.employeeCount}
-                          <span class="text-green-600 dark:text-[#00FC50]">
+                          <span class="text-green-700 dark:text-[#00FC50]">
                             +{(
                               ((item?.employeeCount -
                                 historyList[index + 1]?.employeeCount) /
@@ -598,7 +598,7 @@
                             ).toFixed(2)}%
                           </span>
                         {:else if item?.employeeCount < historyList[index + 1]?.employeeCount}
-                          <span class="text-red-600 dark:text-[#FF2F1F]">
+                          <span class="text-red-700 dark:text-[#FF2F1F]">
                             -{(
                               (Math.abs(
                                 item?.employeeCount -
@@ -629,21 +629,3 @@
     </div>
   </div>
 </section>
-
-<style>
-  .app {
-    height: 400px;
-    width: 100%;
-  }
-
-  @media (max-width: 560px) {
-    .app {
-      width: 100%;
-      height: 300px;
-    }
-  }
-
-  .chart {
-    width: 100%;
-  }
-</style>

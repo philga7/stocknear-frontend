@@ -80,15 +80,15 @@
         let markerColor, markerSymbol;
         if (item.score > 6) {
           // Bullish: green marker with an upward triangle
-          markerColor = "#2ecc71";
-          markerSymbol = "triangle-up";
+          markerColor = "#007050";
+          markerSymbol = "circle";
         } else if (item.score < 5) {
           // Bearish: red marker with a downward triangle
-          markerColor = "#e74c3c";
-          markerSymbol = "triangle-down";
+          markerColor = "#007050";
+          markerSymbol = "circle";
         } else {
           // Neutral (score exactly 5): yellow marker with a circle
-          markerColor = "#2C6288";
+          markerColor = "#007050";
           markerSymbol = "circle";
         }
 
@@ -206,11 +206,11 @@
       },
       xAxis: {
         gridLineWidth: 1,
-        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
+        gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
         type: "datetime",
         labels: {
           style: {
-            color: $mode === "light" ? "black" : "white",
+            color: $mode === "light" ? "#545454" : "white",
           },
           formatter: function () {
             const date = new Date(this.value);
@@ -230,14 +230,14 @@
         },
         labels: {
           style: {
-            color: $mode === "light" ? "black" : "white",
+            color: $mode === "light" ? "#545454" : "white",
           },
           formatter: function () {
             return `$${this.value.toFixed(0)}`;
           },
         },
         gridLineWidth: 1,
-        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
+        gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
       },
       series: [
         {
@@ -248,7 +248,7 @@
           marker: {
             enabled: true,
           },
-          lineWidth: 2,
+          lineWidth: 3,
         },
         {
           name: "Projected Price",
@@ -258,7 +258,7 @@
           marker: {
             enabled: false,
           },
-          lineWidth: 2,
+          lineWidth: 2.5,
           dashStyle: "Dash", // Dashed line for the last part
         },
       ],
@@ -377,12 +377,12 @@
       },
       xAxis: {
         gridLineWidth: 1,
-        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
+        gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
         type: "datetime",
         endOnTick: false,
         labels: {
           style: {
-            color: $mode === "light" ? "black" : "white",
+            color: $mode === "light" ? "#545454" : "white",
           },
           formatter: function () {
             const date = new Date(this.value);
@@ -399,14 +399,14 @@
         },
         labels: {
           style: {
-            color: $mode === "light" ? "black" : "white",
+            color: $mode === "light" ? "#545454" : "white",
           },
           formatter: function () {
             return `$${this.value.toFixed(0)}`;
           },
         },
         gridLineWidth: 1,
-        gridLineColor: $mode === "light" ? "#d1d5dc" : "#111827",
+        gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
       },
 
       series: [
@@ -420,7 +420,7 @@
             symbol: "circle",
             radius: 4,
           },
-          lineWidth: 2,
+          lineWidth: 3,
         },
         {
           animation: false,
@@ -431,6 +431,7 @@
           marker: {
             enabled: false,
           },
+          lineWidth: 2.5,
         },
         {
           animation: false,
@@ -441,6 +442,7 @@
           marker: {
             enabled: false,
           },
+          lineWidth: 2.5,
         },
         {
           animation: false,
@@ -451,6 +453,7 @@
           marker: {
             enabled: false,
           },
+          lineWidth: 2.5,
         },
       ],
 
@@ -557,8 +560,8 @@
                     {#if isPro}
                       <span
                         class="text-xl font-bold {avgReturn >= 0
-                          ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                          : 'text-red-600 dark:text-[#FF2F1F]'}"
+                          ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
+                          : 'text-red-700 dark:text-[#FF2F1F]'}"
                         >{avgReturn?.toFixed(2)}%</span
                       >
                     {:else}
@@ -693,8 +696,8 @@
                               {#if index < 5 || isPro}
                                 <span
                                   class={item?.change > 0
-                                    ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                                    : "text-red-600 dark:text-[#FF2F1F]"}
+                                    ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
+                                    : "text-red-700 dark:text-[#FF2F1F]"}
                                 >
                                   {item?.change}%
                                 </span>
@@ -729,8 +732,8 @@
                     )} the model shows that the average return would be
                     <span
                       class="font-semibold {avgReturn >= 0
-                        ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                        : 'text-red-600 dark:text-[#FF2F1F]'}"
+                        ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
+                        : 'text-red-700 dark:text-[#FF2F1F]'}"
                       >{avgReturn?.toFixed(2)}%</span
                     > based on the backtesting results.
                   </p>
@@ -969,26 +972,26 @@
                           {:else}
                             <td
                               class={lowChange > 0
-                                ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                                : "text-red-600 dark:text-[#FF2F1F]"}
+                                ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
+                                : "text-red-700 dark:text-[#FF2F1F]"}
                               >{lowChange}%</td
                             >
                             <td
                               class={avgChange > 0
-                                ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                                : "text-red-600 dark:text-[#FF2F1F]"}
+                                ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
+                                : "text-red-700 dark:text-[#FF2F1F]"}
                               >{avgChange}%</td
                             >
                             <td
                               class={medianChange > 0
-                                ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                                : "text-red-600 dark:text-[#FF2F1F]"}
+                                ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
+                                : "text-red-700 dark:text-[#FF2F1F]"}
                               >{medianChange}%</td
                             >
                             <td
                               class={highChange > 0
-                                ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                                : "text-red-600 dark:text-[#FF2F1F]"}
+                                ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
+                                : "text-red-700 dark:text-[#FF2F1F]"}
                               >{highChange}%</td
                             >
                           {/if}
