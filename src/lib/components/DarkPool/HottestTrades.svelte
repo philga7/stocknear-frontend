@@ -135,10 +135,10 @@
         content={"Real-time hottest trades highlight significant premium flows, revealing where big players are active and hinting at market trends or sentiment."}
         id={"hottestDPTrade"}
       />
-
       <a
         href={`/dark-pool-flow?query=${ticker}`}
-        class="ml-auto rounded text-xs sm:text-sm px-2 sm:px-3 py-2 font-semibold bg-blue-100 dark:bg-[#fff] text-black"
+        class="sm:hidden ml-auto px-3 py-1 text-sm border border-gray-300 dark:border-gray-700 bg-gray-100 shadow-sm dark:bg-white text-black '
+                   transition ease-out duration-100 rounded cursor-pointer"
       >
         View All
       </a>
@@ -146,8 +146,19 @@
 
     {#if rawData?.length !== 0}
       <div class="w-full flex flex-col items-start">
-        <div class=" text-[1rem] mt-2 mb-2 w-full">
-          Get in realtime the latest hottest trades based on premium.
+        <div
+          class="flex flex-row items-end justify-between w-full mt-2 sm:mt-0 mb-2"
+        >
+          <div class="text-[1rem]">
+            Get in realtime the latest hottest trades based on premium.
+          </div>
+          <a
+            href={`/dark-pool-flow?query=${ticker}`}
+            class="hidden sm:inline-block ml-auto px-3 py-1 text-sm border border-gray-300 dark:border-gray-700 bg-gray-100 shadow-sm dark:bg-white text-black '
+                   transition ease-out duration-100 rounded cursor-pointer"
+          >
+            View All
+          </a>
         </div>
       </div>
 

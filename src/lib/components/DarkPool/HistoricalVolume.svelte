@@ -384,10 +384,16 @@
         >
           <thead class="text-muted dark:text-white dark:bg-default">
             <tr>
-              <th class=" font-semibold text-start text-sm">Date</th>
-              <th class=" font-semibold text-end text-sm">Total Volume</th>
-              <th class=" font-semibold text-end text-sm">Short Volume</th>
-              <th class=" font-semibold text-end text-sm"
+              <th class=" font-semibold text-start text-sm sm:text-[1rem]"
+                >Date</th
+              >
+              <th class=" font-semibold text-end text-sm sm:text-[1rem]"
+                >Total Volume</th
+              >
+              <th class=" font-semibold text-end text-sm sm:text-[1rem]"
+                >Short Volume</th
+              >
+              <th class=" font-semibold text-end text-sm sm:text-[1rem]"
                 >% Short Volume Change</th
               >
             </tr>
