@@ -168,7 +168,7 @@
                 <DropdownMenu.Trigger asChild let:builder>
                   <Button
                     builders={[builder]}
-                    class="shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-gray-300 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                    class=" border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-gray-300 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 shadow-sm rounded"
                     disabled={isLoading}
                   >
                     <span class="truncate">Time Period</span>
@@ -199,16 +199,10 @@
                   <DropdownMenu.Group>
                     {#each ["1D", "1W", "1M", "3M", "6M", "1Y", "3Y"] as item}
                       <DropdownMenu.Item
-                        class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                        on:click={() => getHeatMap(item)}
+                        class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary cursor-pointer"
                       >
-                        <div class="flex items-center">
-                          <button
-                            on:click={() => getHeatMap(item)}
-                            class="cursor-pointer"
-                          >
-                            <span class="mr-8">{item}</span>
-                          </button>
-                        </div>
+                        <span class="mr-8">{item}</span>
                       </DropdownMenu.Item>
                     {/each}
                   </DropdownMenu.Group>

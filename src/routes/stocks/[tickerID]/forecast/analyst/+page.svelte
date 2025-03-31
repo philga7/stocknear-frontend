@@ -210,13 +210,6 @@
               {removeCompanyStrings($displayCompanyName)} Analyst Ratings
             </h1>
             <div>
-              <div class="pr-4 hidden justify-end md:flex">
-                <InfoModal
-                  title={"Top Analysts"}
-                  content={"Filter for analysts rated 4+ stars focusing on their win rate and average return per rating. Analysts with 4+ stars typically exhibit both high accuracy and high return per rating."}
-                  id={"topAnalystsInfo"}
-                />
-              </div>
               <div class="flex flex-col w-full sm:w-fit items-end justify-end">
                 <label
                   for="topAnalystModal"
@@ -332,9 +325,9 @@
             <div
               class="mt-1 break-words font-semibold leading-8 text-xl sm:text-2xl {changesPercentage >=
               0
-                ? "before:content-['+'] after:content-['%'] text-green-600 dark:text-[#00FC50]"
+                ? "before:content-['+'] after:content-['%'] text-green-700 dark:text-[#00FC50]"
                 : changesPercentage < 0
-                  ? "after:content-['%'] text-red-600 dark:text-[#FF2F1F]"
+                  ? "after:content-['%'] text-red-700 dark:text-[#FF2F1F]"
                   : ''}"
             >
               {changesPercentage}
@@ -477,13 +470,13 @@
                         'Strong Buy',
                         'Buy',
                       ]?.includes(item?.rating_current)
-                        ? ' text-green-600 dark:text-[#00FC50] '
+                        ? ' text-green-700 dark:text-[#00FC50] '
                         : item?.rating_current === 'Hold'
-                          ? '"text-red-600 dark:text-[#FF7070]"'
+                          ? '"text-red-700 dark:text-[#FF7070]"'
                           : ['Strong Sell', 'Sell']?.includes(
                                 item?.rating_current,
                               )
-                            ? 'text-red-600 dark:text-[#FF2F1F]'
+                            ? 'text-red-700 dark:text-[#FF2F1F]'
                             : ''}"
                     >
                       {item?.rating_current}
@@ -543,12 +536,12 @@
                             data?.getStockQuote?.price -
                             1 >=
                           0
-                            ? 'text-green-600 dark:text-[#00FC50] '
+                            ? 'text-green-700 dark:text-[#00FC50] '
                             : item?.adjusted_pt_current /
                                   data?.getStockQuote?.price -
                                   1 <
                                 0
-                              ? 'text-red-600 dark:text-[#FF2F1F]'
+                              ? 'text-red-700 dark:text-[#FF2F1F]'
                               : ''}"
                         >
                           {(
