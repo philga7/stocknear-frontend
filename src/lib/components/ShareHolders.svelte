@@ -291,7 +291,7 @@
         </p>
 
         <div
-          class="border border-gray-800 rounded w-full mt-3"
+          class="border border-gray-300 dark:border-gray-800 rounded w-full mt-3 shadow-sm"
           use:highcharts={config}
         ></div>
       </div>
@@ -558,13 +558,13 @@
                     class=" text-end text-sm sm:text-[1rem] whitespace-nowrap"
                   >
                     {#if item?.changeInSharesNumberPercentage >= 0}
-                      <span class="text-green-600 dark:text-[#00FC50]"
+                      <span class="text-green-700 dark:text-[#00FC50]"
                         >+{abbreviateNumber(
                           item?.changeInSharesNumberPercentage?.toFixed(2),
                         )}%</span
                       >
                     {:else if item?.changeInSharesNumberPercentage < 0}
-                      <span class="text-red-600 dark:text-[#FF2F1F]"
+                      <span class="text-red-700 dark:text-[#FF2F1F]"
                         >{abbreviateNumber(
                           item?.changeInSharesNumberPercentage?.toFixed(2),
                         )}%</span

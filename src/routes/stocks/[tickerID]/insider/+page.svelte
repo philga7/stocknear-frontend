@@ -3,8 +3,7 @@
   import { formatString, abbreviateNumber } from "$lib/utils";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import { onMount } from "svelte";
-  import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
-  import { Button } from "$lib/components/shadcn/button/index.js";
+
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import SEO from "$lib/components/SEO.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
@@ -21,65 +20,6 @@
     window.scrollTo({
       top: 0,
     });
-  }
-
-  let statistics = {};
-  let buySellRatio = 0;
-  const now = new Date();
-  let year = now.getFullYear();
-  let quarter = Math.floor(now.getMonth() / 3) + 1;
-  let yearRange = Array.from(
-    new Set(
-      rawData?.map((item) => new Date(item?.transactionDate)?.getFullYear()),
-    ),
-  )?.sort((a, b) => b - a);
-  if (yearRange?.length > 0) {
-    year = yearRange?.slice(0)?.at(0);
-  }
-
-  function calculateInsiderTradingStatistics(data, year, quarter) {
-    // Helper function to check if the transaction date is within the current quarter
-    const isInCurrentQuarter = (transactionDate) => {
-      const date = new Date(transactionDate);
-      return (
-        date.getFullYear() === year &&
-        Math.floor(date.getMonth() / 3) + 1 === quarter
-      );
-    };
-
-    // Initialize statistics object
-    let statistics = {
-      soldShares: 0,
-      buyShares: 0,
-      buySharesPercentage: 0,
-      soldSharesPercentage: 0,
-      quarter: quarter,
-      year: year,
-    };
-
-    // Summing up bought and sold shares efficiently in a single loop
-    data.forEach(
-      ({ transactionType, securitiesTransacted, price, transactionDate }) => {
-        if (price > 0 && isInCurrentQuarter(transactionDate)) {
-          if (transactionType === "Sold") {
-            statistics.soldShares += securitiesTransacted;
-          } else if (transactionType === "Bought") {
-            statistics.buyShares += securitiesTransacted;
-          }
-        }
-      },
-    );
-
-    const totalShares = statistics.buyShares + statistics.soldShares;
-
-    if (totalShares > 0) {
-      statistics.buySharesPercentage = Math.floor(
-        (statistics.buyShares / totalShares) * 100,
-      );
-      statistics.soldSharesPercentage = 100 - statistics.buySharesPercentage;
-    }
-
-    return statistics;
   }
 
   function extractOfficeInfo(inputString) {
@@ -114,14 +54,6 @@
       window.removeEventListener("scroll", handleScroll);
     };
   });
-
-  const transactionStyles = {
-    Bought: "P - Purchase",
-    Grant: "G - Grant",
-    Sold: "S - Sale",
-    Exercise: "E - Exercise",
-    "n/a": { text: "n/a", class: "text-gray-300" },
-  };
 
   let columns = [
     { key: "reportingName", label: "Name", align: "left" },
@@ -198,16 +130,6 @@
     // Sort using the generic comparison function
     insiderTradingList = [...originalData].sort(compareValues)?.slice(0, 50);
   };
-
-  $: {
-    if ((year || quarter) && typeof window !== "undefined") {
-      statistics = calculateInsiderTradingStatistics(rawData, year, quarter);
-      buySellRatio =
-        statistics?.soldShares !== 0
-          ? statistics?.buyShares / statistics?.soldShares
-          : 0;
-    }
-  }
 </script>
 
 <SEO
@@ -233,283 +155,8 @@
 
         {#if isLoaded}
           {#if insiderTradingList?.length !== 0}
-            {#if Object?.keys(statistics)?.length !== 0}
-              <div class="flex w-fit sm:w-[50%] md:block md:w-auto ml-auto">
-                <div class="relative inline-block text-left grow">
-                  <DropdownMenu.Root>
-                    <DropdownMenu.Trigger asChild let:builder>
-                      <Button
-                        builders={[builder]}
-                        class="shadow-sm w-full border-gray-300 dark:border-gray-600 border sm:hover:border-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
-                      >
-                        <span class="truncate">Year: {year}</span>
-                        <svg
-                          class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          style="max-width:40px"
-                          aria-hidden="true"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clip-rule="evenodd"
-                          ></path>
-                        </svg>
-                      </Button>
-                    </DropdownMenu.Trigger>
-                    <DropdownMenu.Content
-                      class="w-56 h-fit max-h-72 overflow-y-auto scroller"
-                    >
-                      <DropdownMenu.Label class="text-muted dark:text-gray-400">
-                        Select Year
-                      </DropdownMenu.Label>
-                      <DropdownMenu.Separator />
-                      <DropdownMenu.Group>
-                        {#each yearRange as index}
-                          <DropdownMenu.Item
-                            on:click={() => (year = index)}
-                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
-                          >
-                            {index}
-                          </DropdownMenu.Item>
-                        {/each}
-                      </DropdownMenu.Group>
-                    </DropdownMenu.Content>
-                  </DropdownMenu.Root>
-                </div>
-                <div class="relative inline-block text-left grow ml-3">
-                  <DropdownMenu.Root>
-                    <DropdownMenu.Trigger asChild let:builder>
-                      <Button
-                        builders={[builder]}
-                        class="shadow-sm w-full border-gray-300 dark:border-gray-600 border sm:hover:border-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
-                      >
-                        <span class="truncate">Quarter: Q{quarter}</span>
-                        <svg
-                          class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          style="max-width:40px"
-                          aria-hidden="true"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clip-rule="evenodd"
-                          ></path>
-                        </svg>
-                      </Button>
-                    </DropdownMenu.Trigger>
-                    <DropdownMenu.Content
-                      class="w-56 h-fit max-h-72 overflow-y-auto scroller"
-                    >
-                      <DropdownMenu.Label class="text-muted dark:text-gray-400">
-                        Select Quarter
-                      </DropdownMenu.Label>
-                      <DropdownMenu.Separator />
-                      <DropdownMenu.Group>
-                        {#each [1, 2, 3, 4] as index}
-                          <DropdownMenu.Item
-                            on:click={() => (quarter = index)}
-                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
-                          >
-                            Q{index}
-                          </DropdownMenu.Item>
-                        {/each}
-                      </DropdownMenu.Group>
-                    </DropdownMenu.Content>
-                  </DropdownMenu.Root>
-                </div>
-              </div>
-
-              <h3 class=" text-lg font-semibold pt-5">
-                Q{statistics?.quarter}
-                {statistics?.year} Insider Statistics
-              </h3>
-              <!--Start Widget-->
-              <div
-                class="w-full mt-5 mb-10 m-auto flex justify-center items-center p-1"
-              >
-                <div
-                  class="w-full grid grid-cols-2 lg:grid-cols-4 gap-y-3 lg:gap-y-3 gap-x-3"
-                >
-                  <!--Start Put/Call-->
-                  <div
-                    class="flex flex-row items-center flex-wrap w-full px-3 sm:px-4 border border-gray-300 shadow-sm dark:border-gray-600 bg-gray-200 dark:bg-primary rounded-md h-20"
-                  >
-                    <div class="flex flex-col items-start">
-                      <span class="  text-sm sm:text-[1rem]">Buy/Sell</span>
-                      <span class="text-start text-sm sm:text-[1rem]">
-                        {buySellRatio > 0
-                          ? buySellRatio?.toFixed(1)
-                          : buySellRatio}
-                      </span>
-                    </div>
-                    <!-- Circular Progress -->
-                    <div class="relative size-12 sm:size-14 ml-auto">
-                      <svg
-                        class="size-full w-12 h-12 sm:w-14 sm:h-14"
-                        viewBox="0 0 36 36"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <!-- Background Circle -->
-                        <circle
-                          cx="18"
-                          cy="18"
-                          r="16"
-                          fill="none"
-                          class="stroke-current text-gray-300 dark:text-[#3E3E3E]"
-                          stroke-width="3"
-                        ></circle>
-                        <!-- Progress Circle inside a group with rotation -->
-                        <g class="origin-center -rotate-90 transform">
-                          <circle
-                            cx="18"
-                            cy="18"
-                            r="16"
-                            fill="none"
-                            class="stroke-current text-blue-700"
-                            stroke-width="3"
-                            stroke-dasharray="100"
-                            stroke-dashoffset={buySellRatio >= 1
-                              ? 0
-                              : 100 - (buySellRatio * 100)?.toFixed(2)}
-                          ></circle>
-                        </g>
-                      </svg>
-                      <!-- Percentage Text -->
-                      <div
-                        class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
-                      >
-                        <span class="text-center text-sm sm:text-[1rem]"
-                          >{(buySellRatio * 100)?.toFixed(0)}%</span
-                        >
-                      </div>
-                    </div>
-                    <!-- End Circular Progress -->
-                  </div>
-                  <!--End Put/Call-->
-                  <!--Start Call Flow-->
-                  <div
-                    class="flex flex-row items-center flex-wrap w-full px-3 sm:px-4 border border-gray-300 shadow-sm dark:border-gray-600 bg-gray-200 dark:bg-primary rounded-md h-20"
-                  >
-                    <div class="flex flex-col items-start">
-                      <span class="  text-sm sm:text-[1rem]">Bought Shares</span
-                      >
-                      <span class="text-start text-sm sm:text-[1rem]">
-                        {new Intl.NumberFormat("en", {
-                          minimumFractionDigits: 0,
-                          maximumFractionDigits: 0,
-                        }).format(statistics?.buyShares)}
-                      </span>
-                    </div>
-                    <!-- Circular Progress -->
-                    <div class="relative size-12 sm:size-14 ml-auto">
-                      <svg
-                        class="size-full w-12 h-12 sm:w-14 sm:h-14"
-                        viewBox="0 0 36 36"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <!-- Background Circle -->
-                        <circle
-                          cx="18"
-                          cy="18"
-                          r="16"
-                          fill="none"
-                          class="stroke-current text-gray-300 dark:text-[#3E3E3E]"
-                          stroke-width="3"
-                        ></circle>
-                        <!-- Progress Circle inside a group with rotation -->
-                        <g class="origin-center -rotate-90 transform">
-                          <circle
-                            cx="18"
-                            cy="18"
-                            r="16"
-                            fill="none"
-                            class="stroke-current text-[#00FC50]"
-                            stroke-width="3"
-                            stroke-dasharray="100"
-                            stroke-dashoffset={100 -
-                              statistics?.buySharesPercentage}
-                          ></circle>
-                        </g>
-                      </svg>
-                      <!-- Percentage Text -->
-                      <div
-                        class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
-                      >
-                        <span class="text-center text-sm sm:text-[1rem]"
-                          >{statistics?.buySharesPercentage}%</span
-                        >
-                      </div>
-                    </div>
-                    <!-- End Circular Progress -->
-                  </div>
-                  <!--End Call Flow-->
-                  <!--Start Put Flow-->
-                  <div
-                    class="shadow-sm flex flex-row items-center flex-wrap w-full px-3 sm:px-4 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-200 dark:bg-primary h-20"
-                  >
-                    <div class="flex flex-col items-start">
-                      <span class="  text-sm sm:text-[1rem]">Sold Shares</span>
-                      <span class="text-start text-sm sm:text-[1rem]">
-                        {new Intl.NumberFormat("en", {
-                          minimumFractionDigits: 0,
-                          maximumFractionDigits: 0,
-                        }).format(statistics?.soldShares)}
-                      </span>
-                    </div>
-                    <!-- Circular Progress -->
-                    <div class="relative size-12 sm:size-14 ml-auto">
-                      <svg
-                        class="size-full w-12 h-12 sm:w-14 sm:h-14"
-                        viewBox="0 0 36 36"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <!-- Background Circle -->
-                        <circle
-                          cx="18"
-                          cy="18"
-                          r="16"
-                          fill="none"
-                          class="stroke-current text-gray-300 dark:text-[#3E3E3E]"
-                          stroke-width="3"
-                        ></circle>
-                        <!-- Progress Circle inside a group with rotation -->
-                        <g class="origin-center -rotate-90 transform">
-                          <circle
-                            cx="18"
-                            cy="18"
-                            r="16"
-                            fill="none"
-                            class="stroke-current text-[#EE5365]"
-                            stroke-width="3"
-                            stroke-dasharray="100"
-                            stroke-dashoffset={100 -
-                              statistics?.soldSharesPercentage}
-                          ></circle>
-                        </g>
-                      </svg>
-                      <!-- Percentage Text -->
-                      <div
-                        class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
-                      >
-                        <span class="text-center text-sm sm:text-[1rem]"
-                          >{statistics?.soldSharesPercentage}%</span
-                        >
-                      </div>
-                    </div>
-                    <!-- End Circular Progress -->
-                  </div>
-                  <!--End Put Flow-->
-                </div>
-              </div>
-              <!--End Widget-->
-            {/if}
-
             <div
-              class="flex justify-start items-center w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto no-scrollbar"
+              class="mt-5 flex justify-start items-center w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto no-scrollbar"
             >
               <table
                 class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
@@ -559,11 +206,7 @@
                         <td
                           class="text-end text-sm sm:text-[1rem] whitespace-nowrap ]"
                         >
-                          {@html abbreviateNumber(
-                            item?.securitiesTransacted,
-                            false,
-                            true,
-                          )}
+                          {item?.securitiesTransacted?.toLocaleString("en-US")}
                         </td>
                         <td
                           class="text-end text-sm sm:text-[1rem] whitespace-nowrap ]"
@@ -573,16 +216,16 @@
                         <td
                           class=" text-end text-sm sm:text-[1rem] whitespace-nowrap"
                         >
-                          {@html abbreviateNumber(item?.value, false, true)}
+                          ${abbreviateNumber(item?.value)}
                         </td>
                         <td class="text-end flex justify-end whitespace-nowrap">
                           <div
                             class="w-auto px-4 py-1 rounded-full uppercase {item?.transactionType ===
                             'Bought'
-                              ? 'bg-[#75D377] text-black'
+                              ? 'bg-[#75D377] text-muted'
                               : 'bg-[#cd4050] '} font-semibold"
                           >
-                            {transactionStyles[item?.transactionType]}
+                            {item?.transactionType}
                           </div>
                         </td>
                       </tr>

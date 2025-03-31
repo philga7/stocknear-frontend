@@ -188,131 +188,6 @@
           <h1 class="text-xl sm:text-2xl font-bold mb-4">Congress Trading</h1>
 
           {#if senateTradingList?.length !== 0}
-            <!--Start Widget-->
-            <div
-              class="w-full mt-5 mb-10 m-auto flex justify-center items-center"
-            >
-              <div
-                class="w-full grid grid-cols-2 lg:grid-cols-4 gap-y-3 lg:gap-y-3 gap-x-3"
-              >
-                <!--Start Buy/Sell-->
-                <div
-                  class="flex flex-row items-center flex-wrap w-full px-3 sm:px-4 shadow-sm border border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-primary rounded-md h-20"
-                >
-                  <div class="flex flex-col items-start">
-                    <span class="font-semibold text-sm sm:text-[1rem]"
-                      >Buy/Sell</span
-                    >
-                    <span class="text-start text-sm sm:text-[1rem]">
-                      {buySellRatio?.toFixed(3)}
-                    </span>
-                  </div>
-                  <!-- Circular Progress -->
-                  <div class="relative size-14 ml-auto">
-                    <svg
-                      class="size-full w-14 h-14"
-                      viewBox="0 0 36 36"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <!-- Background Circle -->
-                      <circle
-                        cx="18"
-                        cy="18"
-                        r="16"
-                        fill="none"
-                        class="stroke-current text-gray-300 dark:text-[#3E3E3E]"
-                        stroke-width="3"
-                      ></circle>
-                      <!-- Progress Circle inside a group with rotation -->
-                      <g class="origin-center -rotate-90 transform">
-                        <circle
-                          cx="18"
-                          cy="18"
-                          r="16"
-                          fill="none"
-                          class="stroke-current {buySellRatio >= 0.5
-                            ? 'text-green-600 dark:text-[#00FC50]'
-                            : 'text-[#EE5365]'} "
-                          stroke-width="3"
-                          stroke-dasharray="100"
-                          stroke-dashoffset={100 - buySellRatio * 100 >= 0
-                            ? 100 - (buySellRatio * 100)?.toFixed(2)
-                            : 0}
-                        ></circle>
-                      </g>
-                    </svg>
-                    <!-- Percentage Text -->
-                    <div
-                      class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
-                    >
-                      <span class="text-center text-sm sm:text-[1rem]"
-                        >{buySellRatio?.toFixed(2)}</span
-                      >
-                    </div>
-                  </div>
-                  <!-- End Circular Progress -->
-                </div>
-                <!--End Buy/Sell-->
-                <!--Start Dem/Rep-->
-                <div
-                  class="flex flex-row items-center flex-wrap w-full px-3 sm:px-4 shadow-sm border border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-primary rounded-md h-20"
-                >
-                  <div class="flex flex-col items-start">
-                    <span class="font-semibold text-sm sm:text-[1rem]"
-                      >Dem/Rep</span
-                    >
-                    <span class="text-start text-sm sm:text-[1rem]">
-                      {partyRatio?.toFixed(3)}
-                    </span>
-                  </div>
-                  <!-- Circular Progress -->
-                  <div class="relative size-14 ml-auto">
-                    <svg
-                      class="size-full w-14 h-14"
-                      viewBox="0 0 36 36"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <!-- Background Circle -->
-                      <circle
-                        cx="18"
-                        cy="18"
-                        r="16"
-                        fill="none"
-                        class="stroke-current text-gray-300 dark:text-[#3E3E3E]"
-                        stroke-width="3"
-                      ></circle>
-                      <!-- Progress Circle inside a group with rotation -->
-                      <g class="origin-center -rotate-90 transform">
-                        <circle
-                          cx="18"
-                          cy="18"
-                          r="16"
-                          fill="none"
-                          class="stroke-current text-blue-700"
-                          stroke-width="3"
-                          stroke-dasharray="100"
-                          stroke-dashoffset={100 - partyRatio * 100 >= 0
-                            ? 100 - (partyRatio * 100)?.toFixed(2)
-                            : 0}
-                        ></circle>
-                      </g>
-                    </svg>
-                    <!-- Percentage Text -->
-                    <div
-                      class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
-                    >
-                      <span class="text-center text-sm sm:text-[1rem]"
-                        >{partyRatio?.toFixed(2)}</span
-                      >
-                    </div>
-                  </div>
-                  <!-- End Circular Progress -->
-                </div>
-                <!--End Put/Call-->
-              </div>
-            </div>
-            <!--End Widget-->
-
             <div
               class="mt-6 flex justify-start items-center w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
             >
@@ -393,11 +268,11 @@
                         class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                       >
                         {#if item?.type === "Bought"}
-                          <span class="text-green-600 dark:text-[#00FC50]"
+                          <span class="text-green-700 dark:text-[#00FC50]"
                             >Bought</span
                           >
                         {:else if item?.type === "Sold"}
-                          <span class="text-red-600 dark:text-[#FF2F1F]"
+                          <span class="text-red-700 dark:text-[#FF2F1F]"
                             >Sold</span
                           >
                         {:else if item?.type === "Exchange"}

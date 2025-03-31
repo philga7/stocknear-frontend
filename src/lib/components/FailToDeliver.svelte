@@ -21,23 +21,24 @@
   let activeIdx = 0;
   const tabs = [
     {
-      title: "Daily",
+      title: "Monthly",
     },
     {
       title: "Quarterly",
     },
   ];
 
-  let tableList = rawData?.sort(
-    (a, b) => new Date(b?.date) - new Date(a?.date),
-  );
-
+  let tableList;
   function changeTimePeriod(i) {
     activeIdx = i;
     tableList = rawData?.sort((a, b) => new Date(b?.date) - new Date(a?.date));
 
     if (activeIdx === 1) {
+      // Quarterly filter as before
       tableList = filterByPeriod([...tableList]);
+    } else if (activeIdx === 0) {
+      // New monthly filter: one result per month at the beginning of each month
+      tableList = filterByMonth([...tableList]);
     }
   }
 
@@ -59,7 +60,25 @@
     });
   }
 
-  function getPlotOptions() {
+  function filterByMonth(data) {
+    if (!Array.isArray(data) || data.length === 0) return [];
+
+    // Monthly: one result per month.
+    const seenMonths = new Set();
+    return data.filter((item) => {
+      const dt = new Date(item.date);
+      const year = dt.getFullYear();
+      const month = dt.getMonth(); // Month as a number (0-11)
+      const key = `${year}-${month}`;
+      if (!seenMonths.has(key)) {
+        seenMonths.add(key);
+        return true;
+      }
+      return false;
+    });
+  }
+
+  function plotData() {
     let dates = [];
     let priceList = [];
     let failToDeliverList = [];
@@ -149,7 +168,7 @@
 
         labels: {
           style: { color: $mode === "light" ? "black" : "white" },
-          distance: 20, // Increases space between label and axis
+          distance: 10, // Increases space between label and axis
           formatter: function () {
             return new Date(this.value).toLocaleDateString("en-US", {
               day: "2-digit", // Include day number
@@ -233,7 +252,8 @@
               data?.getStockQuote?.avgVolume) *
             100
           )?.toFixed(2);
-          config = getPlotOptions();
+          config = plotData();
+          changeTimePeriod(0);
         }
       }
     }
@@ -323,10 +343,18 @@
         >
           <thead class="text-muted dark:text-white dark:bg-default">
             <tr>
-              <th class=" font-semibold text-start text-sm">Date</th>
-              <th class=" font-semibold text-end text-sm">Price</th>
-              <th class=" font-semibold text-end text-sm">FTD Shares</th>
-              <th class=" font-semibold text-end text-sm">% Change</th>
+              <th class=" font-semibold text-start text-sm sm:text-[1rem]"
+                >Date</th
+              >
+              <th class=" font-semibold text-end text-sm sm:text-[1rem]"
+                >Price</th
+              >
+              <th class=" font-semibold text-end text-sm sm:text-[1rem]"
+                >FTD Shares</th
+              >
+              <th class=" font-semibold text-end text-sm sm:text-[1rem]"
+                >% Change</th
+              >
             </tr>
           </thead>
           <tbody>
@@ -359,7 +387,7 @@
                   {#if index === tableList?.length - 1}
                     n/a
                   {:else if item?.failToDeliver > tableList[index + 1]?.failToDeliver}
-                    <span class="text-green-600 dark:text-[#00FC50]">
+                    <span class="text-green-700 dark:text-[#00FC50]">
                       +{(
                         ((item?.failToDeliver -
                           tableList[index + 1]?.failToDeliver) /
@@ -368,7 +396,7 @@
                       )?.toFixed(2)}%
                     </span>
                   {:else if item?.failToDeliver < tableList[index + 1]?.failToDeliver}
-                    <span class="text-red-600 dark:text-[#FF2F1F]">
+                    <span class="text-red-700 dark:text-[#FF2F1F]">
                       -{(
                         Math.abs(
                           (item?.failToDeliver -

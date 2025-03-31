@@ -8,14 +8,14 @@ const transactionTypeMap = {
   "A-Award": "Grant",
   "D-Return": "Grant",
   "G-Gift": "Grant",
-  "S-Sale": "Sold",
+  "S-Sale": "Sale",
   "M-Exempt": "Exercise",
   "X-InTheMoney": "Exercise",
   "C-Conversion": "Exercise",
-  "F-InKind": "Sold",
+  "F-InKind": "Sale",
   "J-Other": (item) => {
     if (item.acquistionOrDisposition === "D") {
-      return "Sold";
+      return "Sale";
     } else if (item.acquistionOrDisposition === "A") {
       return "Bought";
     } else {
@@ -46,15 +46,15 @@ export const load = async ({ locals, params }) => {
     let output = await response.json();
 
     output = user?.tier !== "Pro" ? output?.slice(0, 6) : output;
-
+  
     output = output?.reduce((acc, item) => {
       const newTransactionType =
         typeof transactionTypeMap[item?.transactionType] === "function"
           ? transactionTypeMap[item?.transactionType](item)
           : transactionTypeMap[item?.transactionType];
 
-      // Only include items with 'Bought' or 'Sold'
-      if (newTransactionType === "Bought" || newTransactionType === "Sold") {
+      // Only include items with 'Bought' or 'Sale'
+      if (newTransactionType === "Bought" || newTransactionType === "Sale") {
         const value = item?.securitiesTransacted * item?.price;
         if (value > 0) {
           acc.push({
@@ -67,6 +67,7 @@ export const load = async ({ locals, params }) => {
 
       return acc;
     }, []);
+  
     return output;
   };
 

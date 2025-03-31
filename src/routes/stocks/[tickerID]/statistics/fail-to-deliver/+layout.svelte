@@ -1,6 +1,5 @@
 <script lang="ts">
   import { abbreviateNumber } from "$lib/utils";
-  import ArrowLogo from "lucide-svelte/icons/move-up-right";
 
   export let data;
   const similarStocks = data?.getSimilarStocks?.sort(
@@ -49,7 +48,7 @@
                           ><a
                             href={`/stocks/${item?.symbol}`}
                             class="text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
-                            >{item?.symbol}</a
+                            >{item?.name}</a
                           ></td
                         >
                         <td class="text-right text-[1rem] px-2"
