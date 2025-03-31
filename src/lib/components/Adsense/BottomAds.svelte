@@ -2,7 +2,16 @@
   import { onMount } from "svelte";
 
   onMount(() => {
-    // Load the Google AdSense script if it hasn't been added yet.
+    // Set up Google Consent Mode before loading AdSense
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      window.dataLayer.push(arguments);
+    }
+    gtag("consent", "default", {
+      ad_storage: "denied",
+      analytics_storage: "denied",
+    });
+
     if (
       !document.querySelector(
         'script[src*="googlesyndication.com/pagead/js/adsbygoogle.js"]',
@@ -16,8 +25,6 @@
       document.head.appendChild(script);
     }
 
-    // Push to adsbygoogle after the script has loaded
-    // You might need a small delay if the script isn't immediately ready.
     const loadAds = () => {
       try {
         (window.adsbygoogle = window.adsbygoogle || []).push({});
@@ -26,11 +33,9 @@
       }
     };
 
-    // Check if the ads script is loaded, then load the ads.
     if (window.adsbygoogle) {
       loadAds();
     } else {
-      // If not, add an event listener to load ads once the script loads.
       window.addEventListener("load", loadAds);
     }
   });
