@@ -1,7 +1,6 @@
 <script>
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
   import SEO from "$lib/components/SEO.svelte";
-  import BottomAds from "$lib/components/Adsense/BottomAds.svelte";
 
   export let data;
   let discordURL = import.meta.env.VITE_DISCORD_URL;
@@ -148,10 +147,6 @@
                 an API in the future.
               </p>
             </div>
-
-            {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
-              <BottomAds />
-            {/if}
           </div>
         </main>
 
