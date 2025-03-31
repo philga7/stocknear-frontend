@@ -504,7 +504,7 @@
                                       <span class="ml-1"></span>
                                     {:else if item?.revenueEst / item?.revenuePrior - 1 >= 0}
                                       <span
-                                        class="ml-1 text-green-600 dark:text-[#00FC50]"
+                                        class="ml-1 text-green-700 dark:text-[#00FC50]"
                                       >
                                         +{(
                                           (item?.revenueEst /
@@ -515,7 +515,7 @@
                                       </span>
                                     {:else}
                                       <span
-                                        class="ml-1 text-red-600 dark:text-[#FF2F1F]"
+                                        class="ml-1 text-red-700 dark:text-[#FF2F1F]"
                                       >
                                         {(
                                           (item?.revenueEst /
@@ -541,7 +541,7 @@
                                   {#if item?.epsEst !== null && item?.epsPrior !== null && item?.epsPrior !== 0}
                                     {#if item?.epsEst / item?.epsPrior - 1 >= 0}
                                       <span
-                                        class="ml-1 text-green-600 dark:text-[#00FC50]"
+                                        class="ml-1 text-green-700 dark:text-[#00FC50]"
                                       >
                                         +{(
                                           (item?.epsEst / item?.epsPrior - 1) *
@@ -550,7 +550,7 @@
                                       </span>
                                     {:else}
                                       <span
-                                        class="ml-1 text-red-600 dark:text-[#FF2F1F]"
+                                        class="ml-1 text-red-700 dark:text-[#FF2F1F]"
                                       >
                                         {(
                                           (item?.epsEst / item?.epsPrior - 1) *

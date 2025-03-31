@@ -69,6 +69,7 @@
     <svelte:component this={AppInstalled} />
   {/if}
 
+  <!--
   {#if !["Pro", "Plus"]?.includes(data?.user?.tier) || data?.user?.freeTrial === true}
     <div class="flex justify-center mb-5">
       <a
@@ -93,6 +94,7 @@
       </a>
     </div>
   {/if}
+  -->
 
   <div class="flex flex-col m-auto justify-center items-center">
     <div class="text-center mb-10 w-full px-4 sm:px-3 mt-10">
