@@ -256,8 +256,8 @@
         changeRate >= 0 && changeRate !== null ? "increased" : "decreased";
       const growthRateClass =
         changeRate >= 0 && changeRate !== null
-          ? "text-[#00FC50]"
-          : "text-[#FF2F1F]";
+          ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
+          : "text-red-700 dark:text-[#FF2F1F]";
 
       return `
       <span>
@@ -509,7 +509,7 @@
 
         {#if historyList?.length !== 0}
           <div
-            class="chart mt-5 sm:mt-0 border border-gray-300 dark:border-gray-800 rounded"
+            class="shadow-sm border border-gray-300 dark:border-gray-800 rounded"
             use:highcharts={config}
           ></div>
 
