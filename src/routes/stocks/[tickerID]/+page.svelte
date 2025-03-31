@@ -93,8 +93,8 @@
         ? "#047857"
         : "#00FC50";
     const fillColorStart = isNegative
-      ? "rgba(204, 38, 26, 0.5)"
-      : "rgb(4, 120, 87, 0.5)"; //"rgba(0, 252, 80, 0.3)";
+      ? "rgba(204, 38, 26, 0.4)"
+      : "rgb(4, 120, 87, 0.4)"; //"rgba(0, 252, 80, 0.3)";
     const fillColorEnd = isNegative
       ? "rgba(204, 38, 26, 0.004)"
       : "rgb(4, 120, 87, 0.004)"; //"rgba(0, 252, 80, 0.004)";
@@ -295,7 +295,7 @@
           data: displayData === "1D" ? seriesData : priceList,
           animation: false,
           color: lineColor,
-          lineWidth: 1.8,
+          lineWidth: 1.5,
           marker: {
             enabled: false,
           },
@@ -757,7 +757,7 @@
                       >Bid</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
                       >{$wsBidPrice !== 0 && $wsBidPrice !== null
                         ? $wsBidPrice
                         : ((data?.getStockQuote?.bid !== 0
@@ -791,7 +791,7 @@
                       >Revenue (ttm)</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
                       >{@html stockDeck?.revenueTTM !== null &&
                       stockDeck?.revenueTTM !== 0
                         ? abbreviateNumber(stockDeck?.revenueTTM, false, true)
@@ -805,7 +805,7 @@
                       >Net Income (ttm)</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
                       >{@html stockDeck?.netIncomeTTM !== null
                         ? abbreviateNumber(stockDeck?.netIncomeTTM, false, true)
                         : "n/a"}</td
@@ -819,7 +819,7 @@
                       >EPS (ttm)</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
                       >{data?.getStockQuote?.eps ?? "n/a"}</td
                     ></tr
                   >
@@ -830,7 +830,7 @@
                       >PE Ratio (ttm)</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
                       >{data?.getStockQuote?.pe ?? "n/a"}</td
                     ></tr
                   >
@@ -841,7 +841,7 @@
                       >Forward PE</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
                       >{stockDeck?.forwardPE ?? "n/a"}</td
                     ></tr
                   >
@@ -861,7 +861,7 @@
                       >
                     </td>
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
                       >{data?.getAnalystSummary?.consensusRating !== null &&
                       data?.getAnalystSummary?.consensusRating !== "n/a" &&
                       data?.getAnalystSummary?.consensusRating !== undefined
@@ -880,7 +880,7 @@
                       >Ask</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
                       >{$wsAskPrice !== 0 && $wsAskPrice !== null
                         ? $wsAskPrice
                         : ((data?.getStockQuote?.ask !== 0
@@ -895,7 +895,7 @@
                       >Volume</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
                       >{data?.getStockQuote?.volume?.toLocaleString(
                         "en-us",
                       )}</td
@@ -908,7 +908,7 @@
                       >Avg. Volume (20D)</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
                       >{data?.getStockQuote?.avgVolume !== undefined
                         ? data?.getStockQuote?.avgVolume?.toLocaleString(
                             "en-us",
@@ -923,7 +923,7 @@
                       >Open</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
                       >{data?.getStockQuote?.open?.toFixed(2)}</td
                     ></tr
                   >
@@ -934,7 +934,7 @@
                       >Previous Close</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
                       >{data?.getStockQuote?.previousClose?.toFixed(2)}</td
                     ></tr
                   >
@@ -945,7 +945,7 @@
                       >Day's Range</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
                       >{data?.getStockQuote?.dayLow?.toFixed(2)} - {data?.getStockQuote?.dayHigh?.toFixed(
                         2,
                       )}</td
@@ -958,7 +958,7 @@
                       >52-Week Range</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
                       >{data?.getStockQuote?.yearLow?.toFixed(2)} - {data?.getStockQuote?.yearHigh?.toFixed(
                         2,
                       )}</td
@@ -971,7 +971,7 @@
                       >Beta</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
                       >{stockDeck?.beta?.toFixed(2)}</td
                     ></tr
                   >

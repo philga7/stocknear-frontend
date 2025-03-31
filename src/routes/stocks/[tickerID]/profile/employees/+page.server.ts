@@ -6,7 +6,7 @@ export const load = async ({ locals, params }) => {
     };
 
     // make the POST request to the endpoint
-    const response = await fetch(apiURL + "/history-employees", {
+    const response = await fetch(apiURL + "/historical-employees", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

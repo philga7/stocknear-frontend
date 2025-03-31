@@ -89,8 +89,8 @@
         ? "#047857"
         : "#00FC50";
     const fillColorStart = isNegative
-      ? "rgba(204, 38, 26, 0.3)"
-      : "rgb(4, 120, 87, 0.3)"; //"rgba(0, 252, 80, 0.3)";
+      ? "rgba(204, 38, 26, 0.4)"
+      : "rgb(4, 120, 87, 0.4)"; //"rgba(0, 252, 80, 0.3)";
     const fillColorEnd = isNegative
       ? "rgba(204, 38, 26, 0.004)"
       : "rgb(4, 120, 87, 0.004)"; //"rgba(0, 252, 80, 0.004)";
@@ -117,8 +117,8 @@
     const options = {
       chart: {
         backgroundColor: $mode === "light" ? "#fff" : "#09090B",
-        height: 360,
         animation: false,
+        height: 360,
         events: {
           // Add touch event handling to hide tooltip on mobile
           load: function () {
@@ -210,26 +210,29 @@
         },
         labels: {
           style: { color: $mode === "light" ? "black" : "white" },
-          distance: 20,
+          distance: 10,
           formatter: function () {
             const date = new Date(this?.value);
             if (displayData === "1D") {
-              return date?.toLocaleTimeString("en-US", {
-                hour: "2-digit",
-                minute: "2-digit",
+              const timeString = date?.toLocaleTimeString("en-US", {
+                hour: "numeric",
+                hour12: true,
               });
+              return `<span class="font-[501] text-xs">${timeString.replace(/\s/g, " ")}</span>`;
             } else if (["1W", "1M"].includes(displayData)) {
-              return date?.toLocaleDateString("en-US", {
+              const timeString = date?.toLocaleDateString("en-US", {
                 month: "short",
                 day: "numeric",
                 timeZone: "UTC",
               });
+              return `<span class="font-[501] text-xs">${timeString}</span>`;
             } else {
-              return date?.toLocaleDateString("en-US", {
+              const timeString = date?.toLocaleDateString("en-US", {
                 year: "2-digit",
                 month: "short",
                 timeZone: "UTC",
               });
+              return `<span class="font-[501] text-xs">${timeString}</span>`;
             }
           },
         },
@@ -288,7 +291,7 @@
           data: displayData === "1D" ? seriesData : priceList,
           animation: false,
           color: lineColor,
-          lineWidth: 1.3,
+          lineWidth: 1.5,
           marker: {
             enabled: false,
           },

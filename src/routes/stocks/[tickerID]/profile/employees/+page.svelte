@@ -39,7 +39,7 @@
   function sortByDate(liste) {
     //Slice copies the list otherwise employeesHistory will reverse too
     return liste?.slice()?.sort(function (a, b) {
-      return new Date(b?.filingDate) - new Date(a?.filingDate);
+      return new Date(b?.date) - new Date(a?.date);
     });
   }
 
@@ -49,12 +49,12 @@
 
     // Create a sorted copy of the employee history from oldest to newest
     const sortedHistory = [...employeeHistory].sort(
-      (a, b) => new Date(a.filingDate) - new Date(b.filingDate),
+      (a, b) => new Date(a.date) - new Date(b.date),
     );
 
     if (sortBy === "Total") {
       sortedHistory.forEach((record) => {
-        dateList.push(record.filingDate.slice(0, 4));
+        dateList.push(record.date.slice(0, 4));
         valueList.push(record.employeeCount);
       });
     } else if (sortBy === "Change") {
@@ -64,7 +64,7 @@
         const change = next - current;
 
         // Push the later date since the change happens between current and next
-        dateList.push(sortedHistory[i + 1].filingDate.slice(0, 4));
+        dateList.push(sortedHistory[i + 1].date.slice(0, 4));
         valueList.push(change);
       }
     } else if (sortBy === "Growth") {
@@ -78,7 +78,7 @@
         } else {
           valueList.push(0);
         }
-        dateList.push(sortedHistory[i + 1].filingDate.slice(0, 4));
+        dateList.push(sortedHistory[i + 1].date.slice(0, 4));
       }
     }
 
@@ -140,20 +140,17 @@
         borderRadius: 4,
         formatter: function () {
           // Format the x value to display time in a custom format
-          let tooltipContent = `<span class="m-auto text-[1rem] font-[501]">${new Date(
+          let tooltipContent = `<span class="m-auto text-[1rem] font-[501]">Year ${new Date(
             this?.x,
           ).toLocaleDateString("en-US", {
             year: "numeric",
-            month: "short",
-            day: "numeric",
           })}</span><br>`;
 
           // Loop through each point in the shared tooltip
           this.points.forEach((point) => {
             tooltipContent += `
-        <span style="display:inline-block; width:10px; height:10px; background-color:${point.color}; border-radius:50%; margin-right:5px;"></span>
         <span class="font-semibold text-sm">${point.series.name}:</span> 
-        <span class="font-normal text-sm">${abbreviateNumber(point.y)}</span><br>`;
+        <span class="font-normal text-sm mt-1">${point?.y?.toLocaleString("en-US")}</span><br>`;
           });
 
           return tooltipContent;
@@ -161,7 +158,7 @@
       },
       series: [
         {
-          name: sortBy,
+          name: "Employees",
           data: valueList,
           color: $mode === "light" ? "#2C6288" : "#fff",
           animation: false,
@@ -169,7 +166,7 @@
       ],
       plotOptions: {
         column: {
-          borderRadius: 2,
+          borderRadius: 1,
         },
       },
       legend: {
@@ -193,7 +190,7 @@
 
       // Add data rows
       historyList.forEach((item, index) => {
-        const date = new Date(item.filingDate).toLocaleString("en-US", {
+        const date = new Date(item.date).toLocaleString("en-US", {
           month: "short",
           day: "numeric",
           year: "numeric",
@@ -244,8 +241,8 @@
   function generateEmployeeInfoHTML() {
     if (employeeHistory?.length !== 0 && !dateDistance) {
       const formattedEmployees = new Intl.NumberFormat("en").format(employees);
-      const latestFilingDate = new Date(
-        employeeHistory[employeeHistory.length - 1]["filingDate"],
+      const latestdate = new Date(
+        employeeHistory[employeeHistory.length - 1]["date"],
       ).toLocaleString("en-US", {
         month: "short",
         day: "numeric",
@@ -263,7 +260,7 @@
 
       return `
       <span>
-        ${$displayCompanyName} had ${formattedEmployees} employees on ${latestFilingDate}. The number of employees ${changeDirection}
+        ${$displayCompanyName} had ${formattedEmployees} employees on ${latestdate}. The number of employees ${changeDirection}
         by ${formattedChangeRate} or
         <span class="${growthRateClass}">
           ${growthRate}%
@@ -273,8 +270,8 @@
     `;
     } else if (employeeHistory?.length !== 0 && dateDistance) {
       const abbreviatedEmployees = abbreviateNumber(employees);
-      const latestFilingDate = new Date(
-        employeeHistory[employeeHistory.length - 1]["filingDate"],
+      const latestdate = new Date(
+        employeeHistory[employeeHistory.length - 1]["date"],
       ).toLocaleString("en-US", {
         month: "short",
         day: "numeric",
@@ -283,7 +280,7 @@
 
       return `
       <span>
-        ${$displayCompanyName} had ${abbreviatedEmployees} employees on ${latestFilingDate}. Since then, the company has not submitted any additional employee data for more than a year.
+        ${$displayCompanyName} had ${abbreviatedEmployees} employees on ${latestdate}. Since then, the company has not submitted any additional employee data for more than a year.
       </span>
     `;
     } else {
@@ -305,7 +302,7 @@
       changeRate = employees - employeeHistory?.at(-2)?.employeeCount;
 
       dateDistance =
-        new Date(employeeHistory[employeeHistory?.length - 1]["filingDate"]) <
+        new Date(employeeHistory[employeeHistory?.length - 1]["date"]) <
         new Date(new Date().setFullYear(new Date().getFullYear() - 1))
           ? true
           : false;
@@ -331,7 +328,7 @@
 </script>
 
 <SEO
-  title={`${$displayCompanyName} (${$stockTicker}) Number of Employees ${historyList?.at(-1)?.filingDate?.slice(0, 4)} - ${historyList?.at(0)?.filingDate?.slice(0, 4)} · Stocknear`}
+  title={`${$displayCompanyName} (${$stockTicker}) Number of Employees ${historyList?.at(-1)?.date?.slice(0, 4)} - ${historyList?.at(0)?.date?.slice(0, 4)} · Stocknear`}
   description={`Current and historical number of employees for ${$displayCompanyName} (${$stockTicker}) with related statistics, a chart and a data table.`}
 />
 
@@ -557,7 +554,7 @@
                       <td
                         class="text-start text-sm sm:text-[1rem] whitespace-nowrap"
                       >
-                        {new Date(item?.filingDate)?.toLocaleString("en-US", {
+                        {new Date(item?.date)?.toLocaleString("en-US", {
                           month: "short",
                           day: "numeric",
                           year: "numeric",
