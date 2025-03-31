@@ -51,25 +51,6 @@
                 financial analysis.
                 <br />
                 <br />
-                Here's what makes Stocknear unique:
-                <ul style="padding-left: 5px; padding-top:10px;">
-                  <li
-                    style="margin-left: 15px; line-height: 22px; margin-bottom: 10px; list-style-type: disc;"
-                  >
-                    100% open-source culture
-                  </li>
-
-                  <li
-                    style="margin-left: 15px; line-height: 22px; margin-bottom: 10px; list-style-type: disc;"
-                  >
-                    No advertisements
-                  </li>
-                  <li
-                    style="margin-left: 15px; line-height: 22px; margin-bottom: 30px; list-style-type: disc;"
-                  >
-                    No hidden fees or "shady" practices
-                  </li>
-                </ul>
 
                 Your support will directly contribute to:
                 <ul style="padding-left: 5px; padding-top:10px;">
@@ -103,15 +84,15 @@
                 <br />
                 <br />
                 <iframe
-                  class="w-full border border-gray-600 rounded-md"
+                  class="shadow-sm w-full border border-gray-300 dark:border-gray-800 rounded"
                   src="https://github.com/sponsors/stocknear/card"
                   title="Sponsor Stocknear"
                   height={$screenWidth < 640 ? "300" : "auto"}
                 ></iframe>
                 <br />
-                <br />
-                Your support means the world to me and helps keep Stocknear running
-                smoothly.
+
+                Your support means the world to me and helps keep Stocknear
+                running smoothly.
               </p>
             </div>
           </div>
