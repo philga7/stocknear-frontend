@@ -837,9 +837,9 @@
                       {:else}
                         <span
                           class={item?.growth > 0
-                            ? "text-green-600 dark:text-[#00FC50] before:content-['+']"
+                            ? "text-green-700 dark:text-[#00FC50] before:content-['+']"
                             : item?.growth < 0
-                              ? "text-red-600 dark:text-[#FF2F1F]"
+                              ? "text-red-700 dark:text-[#FF2F1F]"
                               : ""}
                         >
                           {item?.growth}%
@@ -888,9 +888,9 @@
                       {:else}
                         <span
                           class={item?.growth > 0
-                            ? "text-green-600 dark:text-[#00FC50] before:content-['+']"
+                            ? "text-green-700 dark:text-[#00FC50] before:content-['+']"
                             : item?.growth < 0
-                              ? "text-red-600 dark:text-[#FF2F1F]"
+                              ? "text-red-700 dark:text-[#FF2F1F]"
                               : ""}
                         >
                           {item?.growth}%
@@ -938,9 +938,9 @@
                       {:else}
                         <span
                           class={item?.growth > 0
-                            ? "text-green-600 dark:text-[#00FC50] before:content-['+']"
+                            ? "text-green-700 dark:text-[#00FC50] before:content-['+']"
                             : item?.growth < 0
-                              ? "text-red-600 dark:text-[#FF2F1F]"
+                              ? "text-red-700 dark:text-[#FF2F1F]"
                               : ""}
                         >
                           {item?.growth}%
@@ -989,9 +989,9 @@
                       {:else}
                         <span
                           class={item?.growth > 0
-                            ? "text-green-600 dark:text-[#00FC50] before:content-['+']"
+                            ? "text-green-700 dark:text-[#00FC50] before:content-['+']"
                             : item?.growth < 0
-                              ? "text-red-600 dark:text-[#FF2F1F]"
+                              ? "text-red-700 dark:text-[#FF2F1F]"
                               : ""}
                         >
                           {item?.growth}%

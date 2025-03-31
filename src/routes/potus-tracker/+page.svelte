@@ -361,7 +361,7 @@
             <div class="mt-5 mb-5">
               <Infobox
                 text={`Since the inauguration of Donald J. Trump on January 20, 2025, the 
-  ${selectedSector} has ${data?.getData?.marketPerformance[sectorDict[selectedSector]]["Inauguration"] >= 0 ? "grown" : "declined"} by <span class="${data?.getData?.marketPerformance[sectorDict[selectedSector]]["Inauguration"] >= 0 ? "text-green-600 dark:text-[#00FC50] before:content-['+']" : "text-red-600 dark:text-[#FF2F1F]"}">
+  ${selectedSector} has ${data?.getData?.marketPerformance[sectorDict[selectedSector]]["Inauguration"] >= 0 ? "grown" : "declined"} by <span class="${data?.getData?.marketPerformance[sectorDict[selectedSector]]["Inauguration"] >= 0 ? "text-green-700 dark:text-[#00FC50] before:content-['+']" : "text-red-700 dark:text-[#FF2F1F]"}">
   ${data?.getData?.marketPerformance[sectorDict[selectedSector]]["Inauguration"] ?? "n/a"}%</span>.`}
               />
             </div>
@@ -481,8 +481,8 @@
                             <span class="inline-block">S&P500</span>
                             <span
                               class="{items?.at(0)?.changesPercentage > 0
-                                ? "text-green-600 dark:text-[#00FC50] before:content-['+']"
-                                : 'text-red-600 dark:text-[#FF2F1F]'} "
+                                ? "text-green-700 dark:text-[#00FC50] before:content-['+']"
+                                : 'text-red-700 dark:text-[#FF2F1F]'} "
                               >{items.length > 0
                                 ? items?.at(0)?.changesPercentage
                                 : "n/a"}%</span

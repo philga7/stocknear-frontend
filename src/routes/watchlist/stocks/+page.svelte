@@ -1729,24 +1729,24 @@
                                     {:else if row?.type === "percentSign"}
                                       {#if item[row?.rule] >= 0}
                                         <span
-                                          class="text-green-600 dark:text-[#00FC50]"
+                                          class="text-green-700 dark:text-[#00FC50]"
                                           >+{item[row?.rule]?.toFixed(2)}%</span
                                         >
                                       {:else}
                                         <span
-                                          class="text-red-600 dark:text-[#FF2F1F]"
+                                          class="text-red-700 dark:text-[#FF2F1F]"
                                           >{item[row?.rule]?.toFixed(2)}%</span
                                         >
                                       {/if}
                                     {:else if row?.type === "rating"}
                                       {#if ["Strong Buy", "Buy"].includes(item[row?.rule])}
                                         <span
-                                          class="text-green-600 dark:text-[#00FC50]"
+                                          class="text-green-700 dark:text-[#00FC50]"
                                           >{item[row?.rule]}</span
                                         >
                                       {:else if ["Strong Sell", "Sell"].includes(item[row?.rule])}
                                         <span
-                                          class="text-red-600 dark:text-[#FF2F1F]"
+                                          class="text-red-700 dark:text-[#FF2F1F]"
                                           >{item[row?.rule]}</span
                                         >
                                       {:else if item[row?.rule] === "Hold"}

@@ -650,7 +650,7 @@
           class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap {displayedData[
             index
           ]?.put_call === 'Calls'
-            ? 'text-green-600 dark:text-[#00FC50]'
+            ? 'text-green-700 dark:text-[#00FC50]'
             : 'text-[#c44536]'} "
         >
           {displayedData[index]?.put_call}
@@ -660,9 +660,9 @@
           class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap {displayedData[
             index
           ]?.sentiment === 'Bullish'
-            ? 'text-green-600 dark:text-[#00FC50]'
+            ? 'text-green-700 dark:text-[#00FC50]'
             : displayedData[index]?.sentiment === 'Bearish'
-              ? 'text-red-600 dark:text-[#FF2F1F]'
+              ? 'text-red-700 dark:text-[#FF2F1F]'
               : 'text-[#C6A755]'} "
         >
           {displayedData[index]?.sentiment}

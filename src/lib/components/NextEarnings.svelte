@@ -87,9 +87,9 @@
           >, reflecting a
           <span
             class="{revenueRatio >= 0 && revenueRatio !== 'Infinity'
-              ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
+              ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
               : revenueRatio < 0 && revenueRatio !== 'Infinity'
-                ? 'text-red-600 dark:text-[#FF2F1F]'
+                ? 'text-red-700 dark:text-[#FF2F1F]'
                 : 'text-muted dark:text-white'} font-semibold"
             >{revenueRatio !== "Infinity"
               ? abbreviateNumber(revenueRatio) + "%"
@@ -105,8 +105,8 @@
             <span class="font-semibold">{rawData?.epsEst}</span>, making a
             <span
               class="{epsRatio > 0
-                ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                : 'text-red-600 dark:text-[#FF2F1F]'} font-semibold"
+                ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
+                : 'text-red-700 dark:text-[#FF2F1F]'} font-semibold"
               >{epsRatio}%</span
             >
             {epsRatio > 0 ? "increase" : epsRatio < 0 ? "decrease" : ""} YoY.

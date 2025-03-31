@@ -432,7 +432,7 @@
 
                       <td class="text-white text-sm sm:text-[1rem] text-end">
                         {#if item?.changesPercentage >= 0 && item?.changesPercentage !== null}
-                          <span class="text-green-600 dark:text-[#00FC50]"
+                          <span class="text-green-700 dark:text-[#00FC50]"
                             >+{item?.changesPercentage >= 1000
                               ? abbreviateNumberWithColor(
                                   item?.changesPercentage,
@@ -440,7 +440,7 @@
                               : item?.changesPercentage?.toFixed(2)}%</span
                           >
                         {:else if item?.changesPercentage < 0 && item?.changesPercentage !== null}
-                          <span class="text-red-600 dark:text-[#FF2F1F]"
+                          <span class="text-red-700 dark:text-[#FF2F1F]"
                             >{item?.changesPercentage <= -1000
                               ? abbreviateNumberWithColor(
                                   item?.changesPercentage,
@@ -560,11 +560,11 @@
 
                       <td class="text-white text-sm sm:text-[1rem] text-end">
                         {#if item?.changeOI >= 0}
-                          <span class="text-green-600 dark:text-[#00FC50]"
+                          <span class="text-green-700 dark:text-[#00FC50]"
                             >+{item?.changeOI?.toLocaleString("en-US")}</span
                           >
                         {:else if item?.changeOI < 0}
-                          <span class="text-red-600 dark:text-[#FF2F1F]"
+                          <span class="text-red-700 dark:text-[#FF2F1F]"
                             >{item?.changeOI?.toLocaleString("en-US")}
                           </span>
                         {:else}
@@ -574,7 +574,7 @@
 
                       <td class="text-white text-sm sm:text-[1rem] text-end">
                         {#if item?.changesPercentageOI >= 0}
-                          <span class="text-green-600 dark:text-[#00FC50]"
+                          <span class="text-green-700 dark:text-[#00FC50]"
                             >+{item?.changesPercentageOI >= 1000
                               ? abbreviateNumberWithColor(
                                   item?.changesPercentageOI,
@@ -582,7 +582,7 @@
                               : item?.changesPercentageOI?.toFixed(2)}%</span
                           >
                         {:else if item?.changesPercentageOI < 0}
-                          <span class="text-red-600 dark:text-[#FF2F1F]"
+                          <span class="text-red-700 dark:text-[#FF2F1F]"
                             >{item?.changesPercentageOI <= -1000
                               ? abbreviateNumberWithColor(
                                   item?.changesPercentageOI,

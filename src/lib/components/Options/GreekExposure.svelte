@@ -471,11 +471,11 @@
 
             <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
               {#if item?.putCallRatio <= 1 && item?.putCallRatio !== null}
-                <span class="text-green-600 dark:text-[#00FC50]"
+                <span class="text-green-700 dark:text-[#00FC50]"
                   >{item?.putCallRatio?.toFixed(2)}</span
                 >
               {:else if item?.putCallRatio >= 0 && item?.putCallRatio !== null}
-                <span class="text-red-600 dark:text-[#FF2F1F]"
+                <span class="text-red-700 dark:text-[#FF2F1F]"
                   >{item?.putCallRatio?.toFixed(2)}</span
                 >
               {:else}

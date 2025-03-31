@@ -756,7 +756,7 @@
                                 >
                                   <span
                                     class={displayLegend?.change >= 0
-                                      ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
+                                      ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
                                       : "text-[#FF2F1F]"}
                                   >
                                     {displayLegend?.change}
@@ -800,8 +800,8 @@
                                   <div
                                     class="mt-1.5 block text-sm xs: sm:mt-0 sm:inline sm:text-lg {prePostData?.changesPercentage >=
                                     0
-                                      ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                                      : 'text-red-600 dark:text-[#FF2F1F]'}"
+                                      ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
+                                      : 'text-red-700 dark:text-[#FF2F1F]'}"
                                   >
                                     {prePostData?.changesPercentage?.toFixed(
                                       2,

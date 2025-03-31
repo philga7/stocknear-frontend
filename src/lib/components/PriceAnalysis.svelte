@@ -170,7 +170,7 @@
                   class="text-start text-[1rem] sm:text-lg font-semibold {priceSentiment ===
                   'Bullish'
                     ? 'text-[#37C97D]'
-                    : 'text-red-600 dark:text-[#FF2F1F]'}"
+                    : 'text-red-700 dark:text-[#FF2F1F]'}"
                   >{priceSentiment}</span
                 >
               </div>
@@ -213,10 +213,10 @@
                       r="16"
                       fill="none"
                       class="stroke-current {r2Score >= 65
-                        ? 'text-green-600 dark:text-[#00FC50]'
+                        ? 'text-green-700 dark:text-[#00FC50]'
                         : r2Score >= 50
                           ? 'text-[#F8901E]'
-                          : 'text-red-600 dark:text-[#FF2F1F]'}"
+                          : 'text-red-700 dark:text-[#FF2F1F]'}"
                       stroke-width="3"
                       stroke-dasharray="100"
                       stroke-dashoffset={100 - r2Score}
@@ -268,10 +268,10 @@
                       r="16"
                       fill="none"
                       class="stroke-current {mape <= 15
-                        ? 'text-green-600 dark:text-[#00FC50]'
+                        ? 'text-green-700 dark:text-[#00FC50]'
                         : mape <= 35
                           ? 'text-[#F8901E]'
-                          : 'text-red-600 dark:text-[#FF2F1F]'}"
+                          : 'text-red-700 dark:text-[#FF2F1F]'}"
                       stroke-width="3"
                       stroke-dasharray="100"
                       stroke-dashoffset={100 - mape > 0 ? 100 - mape : 1}
@@ -300,7 +300,7 @@
           <span
             class="font-semibold {priceSentiment === 'Bullish'
               ? 'text-[#37C97D]'
-              : 'text-red-600 dark:text-[#FF2F1F]'}">{priceSentiment}</span
+              : 'text-red-700 dark:text-[#FF2F1F]'}">{priceSentiment}</span
           >
           trend, suggesting that the future price is expected to {priceSentiment ===
           "Bullish"

@@ -77,9 +77,9 @@
                     r="16"
                     fill="none"
                     class="stroke-current {oneYearResult > 5
-                      ? 'text-green-600 dark:text-[#00FC50]'
+                      ? 'text-green-700 dark:text-[#00FC50]'
                       : oneYearResult < 5
-                        ? 'text-red-600 dark:text-[#FF2F1F]'
+                        ? 'text-red-700 dark:text-[#FF2F1F]'
                         : 'text-white'} text-opacity-[0.7]"
                     stroke-width="3.5"
                     stroke-dasharray="100"
@@ -114,9 +114,9 @@
                         r="16"
                         fill="none"
                         class="stroke-current {oneMonthResult > 5
-                          ? 'text-green-600 dark:text-[#00FC50]'
+                          ? 'text-green-700 dark:text-[#00FC50]'
                           : oneMonthResult < 5
-                            ? 'text-red-600 dark:text-[#FF2F1F]'
+                            ? 'text-red-700 dark:text-[#FF2F1F]'
                             : 'text-white'} "
                         stroke-width="4"
                         stroke-dasharray="100"

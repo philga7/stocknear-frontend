@@ -127,7 +127,7 @@
                       >{`${earningsData?.positiveRevenueSurprises}/${earningsData?.totalReports}`}
                       quarters</span
                     >
-                    <span class="text-xs text-red-600 dark:text-red-400">
+                    <span class="text-xs text-red-700 dark:text-red-400">
                       {earningsData?.positiveRevenueSurprises >
                       earningsData?.totalReports / 2
                         ? "Above Average"
@@ -401,8 +401,8 @@
                         ><span
                           class="w-full text-sm sm:text-[1rem] items-baseline justify-end whitespace-nowrap {item?.backward_2_days_change_percent >=
                           0
-                            ? "text-green-600 dark:text-positive before:content-['+']"
-                            : 'text-red-600 dark:text-negative'}"
+                            ? "text-green-700 dark:text-positive before:content-['+']"
+                            : 'text-red-700 dark:text-negative'}"
                           >{item?.backward_2_days_change_percent}%<span
                             class="w-0 text-center"
                           ></span></span
@@ -412,8 +412,8 @@
                         ><span
                           class="w-full text-sm sm:text-[1rem] items-baseline justify-end whitespace-nowrap {item?.backward_1_days_change_percent >=
                           0
-                            ? "text-green-600 dark:text-positive before:content-['+']"
-                            : 'text-red-600 dark:text-negative'}"
+                            ? "text-green-700 dark:text-positive before:content-['+']"
+                            : 'text-red-700 dark:text-negative'}"
                           >{item?.backward_1_days_change_percent?.toFixed(
                             2,
                           )}%<span class="w-0 text-center"></span></span
@@ -423,8 +423,8 @@
                         ><span
                           class="w-full text-sm sm:text-[1rem] items-baseline justify-end whitespace-nowrap {item?.backward_1_days_change_percent >=
                           0
-                            ? "text-green-600 dark:text-positive before:content-['+']"
-                            : 'text-red-600 dark:text-negative'}"
+                            ? "text-green-700 dark:text-positive before:content-['+']"
+                            : 'text-red-700 dark:text-negative'}"
                           >{item?.backward_1_days_change_percent?.toFixed(
                             2,
                           )}%<span class="w-0 text-center"></span></span
@@ -478,9 +478,9 @@
                         ><span
                           class="w-full text-sm sm:text-[1rem] items-baseline justify-end whitespace-nowrap {item?.forward_2_days_change_percent >=
                           0
-                            ? "text-green-600 dark:text-positive before:content-['+']"
+                            ? "text-green-700 dark:text-positive before:content-['+']"
                             : item?.forward_2_days_change_percent < 0
-                              ? 'text-red-600 dark:text-negative'
+                              ? 'text-red-700 dark:text-negative'
                               : ''}"
                           >{item?.forward_2_days_change_percent !== undefined
                             ? item?.forward_2_days_change_percent + "%"
@@ -491,9 +491,9 @@
                         ><span
                           class="w-full text-sm sm:text-[1rem] items-baseline justify-end whitespace-nowrap {item?.forward_3_days_change_percent >=
                           0
-                            ? "text-green-600 dark:text-positive before:content-['+']"
+                            ? "text-green-700 dark:text-positive before:content-['+']"
                             : item?.forward_3_days_change_percent < 0
-                              ? 'text-red-600 dark:text-negative'
+                              ? 'text-red-700 dark:text-negative'
                               : ''}"
                           >{item?.forward_3_days_change_percent !== undefined
                             ? item?.forward_3_days_change_percent + "%"
@@ -504,9 +504,9 @@
                         ><span
                           class="w-full text-sm sm:text-[1rem] items-baseline justify-end whitespace-nowrap {item?.forward_4_days_change_percent >=
                           0
-                            ? "text-green-600 dark:text-positive before:content-['+']"
+                            ? "text-green-700 dark:text-positive before:content-['+']"
                             : item?.forward_4_days_change_percent < 0
-                              ? 'text-red-600 dark:text-negative'
+                              ? 'text-red-700 dark:text-negative'
                               : ''}"
                           >{item?.forward_4_days_change_percent !== undefined
                             ? item?.forward_4_days_change_percent + "%"
@@ -517,9 +517,9 @@
                         ><span
                           class="w-full text-sm sm:text-[1rem] items-baseline justify-end whitespace-nowrap {item?.forward_6_days_change_percent >=
                           0
-                            ? "text-green-600 dark:text-positive before:content-['+']"
+                            ? "text-green-700 dark:text-positive before:content-['+']"
                             : item?.forward_6_days_change_percent < 0
-                              ? 'text-red-600 dark:text-negative'
+                              ? 'text-red-700 dark:text-negative'
                               : ''}"
                           >{item?.forward_6_days_change_percent !== undefined
                             ? item?.forward_6_days_change_percent + "%"
@@ -530,8 +530,8 @@
                         ><span
                           class="w-full text-sm sm:text-[1rem] items-baseline justify-end whitespace-nowrap {item?.backward_4_days_change_percent >=
                           0
-                            ? "text-green-600 dark:text-positive before:content-['+']"
-                            : 'text-red-600 dark:text-negative'}"
+                            ? "text-green-700 dark:text-positive before:content-['+']"
+                            : 'text-red-700 dark:text-negative'}"
                           >{item?.backward_4_days_change_percent?.toFixed(
                             2,
                           )}%<span class="w-0 text-center"></span></span

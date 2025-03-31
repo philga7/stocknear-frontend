@@ -194,7 +194,7 @@
             <div class="sm:mt-10">
               The Options activity signals a
               {#if signal === "Bullish"}
-                <span class="text-green-600 dark:text-[#00FC50]">
+                <span class="text-green-700 dark:text-[#00FC50]">
                   <svg
                     class="w-6 h-6 sm:w-7 sm:h-7 inline-block"
                     xmlns="http://www.w3.org/2000/svg"
@@ -224,7 +224,7 @@
                   {signal}
                 </span>
               {:else}
-                <span class="text-red-600 dark:text-[#FF2F1F]">
+                <span class="text-red-700 dark:text-[#FF2F1F]">
                   <svg
                     class="w-6 h-6 sm:w-7 sm:h-7 inline-block"
                     xmlns="http://www.w3.org/2000/svg"

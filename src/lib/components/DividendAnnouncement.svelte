@@ -83,8 +83,8 @@
                   rawData?.dividendPrior -
                   1 >
                 0
-                  ? "before:content-['+'] text-green-600 dark:text-[#00FC50]"
-                  : 'text-red-600 dark:text-[#FF2F1F]'}"
+                  ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
+                  : 'text-red-700 dark:text-[#FF2F1F]'}"
               >
                 {(
                   (rawData?.dividend / rawData?.dividendPrior - 1) *

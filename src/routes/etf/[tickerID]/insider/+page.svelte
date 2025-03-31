@@ -237,7 +237,7 @@
                             r="16"
                             fill="none"
                             class="stroke-current {buySellRatio >= 0.5
-                              ? 'text-green-600 dark:text-[#00FC50]'
+                              ? 'text-green-700 dark:text-[#00FC50]'
                               : 'text-[#EE5365]'} "
                             stroke-width="3"
                             stroke-dasharray="100"
@@ -394,11 +394,11 @@
                           class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                         >
                           {#if item?.type === "Bought"}
-                            <span class="text-green-600 dark:text-[#00FC50]"
+                            <span class="text-green-700 dark:text-[#00FC50]"
                               >Bought</span
                             >
                           {:else if item?.type === "Sold"}
-                            <span class="text-red-600 dark:text-[#FF2F1F]"
+                            <span class="text-red-700 dark:text-[#FF2F1F]"
                               >Sold</span
                             >
                           {:else if item?.type === "Exchange"}

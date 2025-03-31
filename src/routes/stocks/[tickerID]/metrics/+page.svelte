@@ -139,9 +139,9 @@
                     {#each growthValues[index] as growthValue}
                       <td
                         class="text-sm sm:text-[1rem] text-end {growthValue > 0
-                          ? 'text-green-600 dark:text-[#00FC50]'
+                          ? 'text-green-700 dark:text-[#00FC50]'
                           : growthValue < 0
-                            ? 'text-red-600 dark:text-[#FF2F1F]'
+                            ? 'text-red-700 dark:text-[#FF2F1F]'
                             : ''}  border-b border-gray-300 dark:border-gray-800"
                       >
                         {growthValue > 0 ? "+" : ""}{growthValue !== null &&
@@ -214,9 +214,9 @@
                         <td
                           class="text-sm sm:text-[1rem] text-center {growthValue >
                           0
-                            ? 'text-green-600 dark:text-[#00FC50]'
+                            ? 'text-green-700 dark:text-[#00FC50]'
                             : growthValue < 0
-                              ? 'text-red-600 dark:text-[#FF2F1F]'
+                              ? 'text-red-700 dark:text-[#FF2F1F]'
                               : ''}  border-b border-gray-300 dark:border-gray-800"
                         >
                           {growthValue > 0 ? "+" : ""}{growthValue !== null &&
@@ -291,9 +291,9 @@
                         <td
                           class="text-sm sm:text-[1rem] text-center {growthValue >
                           0
-                            ? 'text-green-600 dark:text-[#00FC50]'
+                            ? 'text-green-700 dark:text-[#00FC50]'
                             : growthValue < 0
-                              ? 'text-red-600 dark:text-[#FF2F1F]'
+                              ? 'text-red-700 dark:text-[#FF2F1F]'
                               : ''}  border-b border-gray-300 dark:border-gray-800"
                         >
                           {growthValue > 0 ? "+" : ""}{growthValue !== null &&
