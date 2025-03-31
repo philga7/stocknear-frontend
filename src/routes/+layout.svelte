@@ -272,7 +272,6 @@
     gtag("config", "G-CLFNW10SND");
   </script>
 
-  <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"></script>
 </svelte:head>
 
 <ModeWatcher defaultMode={data?.themeMode} />
