@@ -241,13 +241,14 @@
   function generateEmployeeInfoHTML() {
     if (employeeHistory?.length !== 0 && !dateDistance) {
       const formattedEmployees = new Intl.NumberFormat("en").format(employees);
-      const latestdate = new Date(
-        employeeHistory[employeeHistory.length - 1]["date"],
-      ).toLocaleString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      });
+      const latestdate = new Date(employeeHistory?.at(0)?.date).toLocaleString(
+        "en-US",
+        {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        },
+      );
       const formattedChangeRate = new Intl.NumberFormat("en").format(
         changeRate,
       );
@@ -270,13 +271,14 @@
     `;
     } else if (employeeHistory?.length !== 0 && dateDistance) {
       const abbreviatedEmployees = abbreviateNumber(employees);
-      const latestdate = new Date(
-        employeeHistory[employeeHistory.length - 1]["date"],
-      ).toLocaleString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      });
+      const latestdate = new Date(employeeHistory?.at(0)?.date).toLocaleString(
+        "en-US",
+        {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        },
+      );
 
       return `
       <span>
@@ -297,19 +299,19 @@
       employeeHistory = data?.getHistoryEmployee ?? [];
       historyList = sortByDate(employeeHistory);
 
-      employees = employeeHistory?.at(-1)?.employeeCount;
+      employees = employeeHistory?.at(0)?.employeeCount;
 
-      changeRate = employees - employeeHistory?.at(-2)?.employeeCount;
+      changeRate = employees - employeeHistory?.at(1)?.employeeCount;
 
       dateDistance =
-        new Date(employeeHistory[employeeHistory?.length - 1]["date"]) <
+        new Date(employeeHistory?.at(0)["date"]) <
         new Date(new Date().setFullYear(new Date().getFullYear() - 1))
           ? true
           : false;
 
       growthRate = (
-        (employeeHistory[employeeHistory?.length - 1]?.employeeCount /
-          employeeHistory[employeeHistory?.length - 2]?.employeeCount -
+        (employeeHistory?.at(0)?.employeeCount /
+          employeeHistory?.at(1)?.employeeCount -
           1) *
         100
       )?.toFixed(2);
@@ -328,7 +330,7 @@
 </script>
 
 <SEO
-  title={`${$displayCompanyName} (${$stockTicker}) Number of Employees ${historyList?.at(-1)?.date?.slice(0, 4)} - ${historyList?.at(0)?.date?.slice(0, 4)} · Stocknear`}
+  title={`${$displayCompanyName} (${$stockTicker}) Number of Employees ${historyList?.at(-1)?.date?.slice(0, 4)} - ${historyList?.at(0)?.date?.slice(0, 4)}`}
   description={`Current and historical number of employees for ${$displayCompanyName} (${$stockTicker}) with related statistics, a chart and a data table.`}
 />
 
@@ -368,9 +370,7 @@
               {#if dateDistance}
                 n/a
               {:else}
-                {changeRate !== null
-                  ? new Intl.NumberFormat("en")?.format(changeRate)
-                  : "n/a"}
+                {changeRate !== null ? changeRate : "n/a"}
               {/if}
             </div>
           </div>
