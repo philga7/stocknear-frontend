@@ -326,12 +326,14 @@
         },
         labels: {
           style: { color: $mode === "light" ? "black" : "white" },
-          distance: 20, // Increases space between label and axis
+          distance: 10, // Increases space between label and axis
           formatter: function () {
-            return new Date(this.value).toLocaleTimeString("en-US", {
-              hour: "2-digit",
-              minute: "2-digit",
+            const date = new Date(this?.value);
+            const timeString = date?.toLocaleTimeString("en-US", {
+              hour: "numeric",
+              hour12: true,
             });
+            return `<span class="text-xs">${timeString.replace(/\s/g, " ")}</span>`;
           },
         },
         tickPositioner: function () {

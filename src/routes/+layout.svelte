@@ -653,6 +653,7 @@
                 </Accordion.Root>
               </div>
 
+              <!--
               <div class="flex flex-row items-center w-full">
                 <Accordion.Root class="w-full">
                   <Accordion.Item value="item-1">
@@ -703,25 +704,14 @@
                             >
                           </Button>
 
-                          <!--
-                          <Button
-                            builders={[builder]}
-                            type="submit"
-                            class="w-full dark:bg-[#18181B]"
-                          >
-                            <a
-                              href="/sentiment-tracker"
-                              class="text-start w-full text-[1rem] text-muted dark:text-white ml-4 mt-4"
-                              >Sentiment Tracker</a
-                            >
-                          </Button>
-                          -->
+        
                         </div>
                       </Sheet.Close>
                     </Accordion.Content>
                   </Accordion.Item>
                 </Accordion.Root>
               </div>
+              -->
 
               <div class="flex flex-row items-center w-full">
                 <Accordion.Root class="w-full">
@@ -1166,6 +1156,7 @@
                   </Accordion.Root>
                 </div>
 
+                <!--
                 <div class="flex flex-row items-center ml-9 w-full mt-3">
                   <Accordion.Root class="w-full">
                     <Accordion.Item value="item-1">
@@ -1197,18 +1188,13 @@
                             >POTUS Tracker</a
                           >
 
-                          <!--
-                          <a
-                            href="/sentiment-tracker"
-                            class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
-                            >Sentiment Tracker</a
-                          >
-                            -->
+                        
                         </div>
                       </Accordion.Content>
                     </Accordion.Item>
                   </Accordion.Root>
                 </div>
+                -->
 
                 <div class="flex flex-row items-center ml-9 w-full mt-3">
                   <Accordion.Root class="w-full">
