@@ -2,16 +2,6 @@
   import { onMount } from "svelte";
 
   onMount(() => {
-    // Set up Google Consent Mode before loading AdSense
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      window.dataLayer.push(arguments);
-    }
-    gtag("consent", "default", {
-      ad_storage: "denied",
-      analytics_storage: "denied",
-    });
-
     if (
       !document.querySelector(
         'script[src*="googlesyndication.com/pagead/js/adsbygoogle.js"]',
@@ -22,6 +12,7 @@
         "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7722951169931877";
       script.async = true;
       script.crossOrigin = "anonymous";
+      script.setAttribute("data-enable-consent-mode", "false"); // ⬅️ Prevents consent banner
       document.head.appendChild(script);
     }
 
