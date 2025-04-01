@@ -37,12 +37,12 @@
 
   const statementConfig = [
     {
-      propertyName: "priceEarningsRatio",
+      propertyName: "priceToEarningsRatio",
       label: "PE Ratio",
       text: "The price-to-earnings (P/E) ratio is a valuation metric that shows how expensive a stock is relative to earnings.",
     },
     {
-      propertyName: "priceEarningsToGrowthRatio",
+      propertyName: "priceToEarningsGrowthRatio",
       label: "PEG Ratio",
       text: "The price-to-earnings (P/E) ratio is a valuation metric that shows how expensive a stock is relative to earnings.",
     },
@@ -57,12 +57,12 @@
       text: "The price-to-book (P/B) ratio measures a stock's price relative to book value. Book value is also called Shareholders' equity.",
     },
     {
-      propertyName: "priceToFreeCashFlowsRatio",
+      propertyName: "priceToFreeCashFlowRatio",
       label: "P/FCF Ratio",
       text: "The price to free cash flow (P/FCF) ratio is similar to the P/E ratio, except it uses free cash flow instead of accounting earnings.",
     },
     {
-      propertyName: "priceToOperatingCashFlowsRatio",
+      propertyName: "priceToOperatingCashFlowRatio",
       label: "P/OCF Ratio",
       text: "The price to operating cash flow (P/OCF) ratio measures the price of a stock relative to operating cash flow.",
     },
@@ -72,7 +72,7 @@
       text: "The operating cash flow to sales (OCF/S) Ratio assesses how well sales convert to cash. It's the operating cash flow divided by net sales, indicating cash efficiency.",
     },
     {
-      propertyName: "debtEquityRatio",
+      propertyName: "debtToEquityRatio",
       label: "Debt / Equity Ratio",
       text: "The debt-to-equity ratio measures a company's debt levels relative to its shareholders' equity or book value. A high ratio implies that a company has a lot of debt.",
     },
@@ -92,7 +92,7 @@
       text: "The asset turnover ratio measures the amount of sales relative to a company's assets. It indicates how efficiently the company uses its assets to generate revenue.",
     },
     {
-      propertyName: "interestCoverage",
+      propertyName: "interestCoverageRatio",
       label: "Interest Coverage",
       text: "The interest coverage ratio is a measure of the ability of a company to pay its interest expenses. It is calculated by dividing the company's Earnings Before Interest and Taxes (EBIT) by its interest expenses.",
     },
@@ -117,7 +117,7 @@
       text: "The dividend yield is how much a stock pays in dividends each year, as a percentage of the stock price.",
     },
     {
-      propertyName: "payoutRatio",
+      propertyName: "dividendPayoutRatio",
       label: "Payout Ratio",
       text: "The dividend payout ratio is the percentage of a company's profits that are paid out as dividends. A high ratio implies that the dividend payments may not be sustainable.",
     },

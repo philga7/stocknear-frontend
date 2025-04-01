@@ -189,11 +189,11 @@
             <div>
               <h2 class="mb-2 px-0.5 text-xl font-bold">Valuation Ratios</h2>
               <p class="mb-4 px-0.5 xs:text-[1.05rem] lg:leading-normal">
-                The PE ratio is {rawData?.priceEarningsRatio} and the forward PE
+                The PE ratio is {rawData?.priceToEarningsRatio} and the forward PE
                 ratio is {rawData?.forwardPE}.
-                {rawData?.priceEarningsToGrowthRatio !== null
+                {rawData?.priceToEarningsGrowthRatio !== null
                   ? `${companyName}'s PEG ratio is
-                ${rawData?.priceEarningsToGrowthRatio}.`
+                ${rawData?.priceToEarningsGrowthRatio}.`
                   : ""}
               </p>
 
@@ -207,7 +207,7 @@
                       ><span>PE Ratio</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.priceEarningsRatio}</td
+                      >{rawData?.priceToEarningsRatio}</td
                     >
                   </tr><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -247,7 +247,7 @@
                       ><span>P/FCF Ratio</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.priceToFreeCashFlowsRatio}</td
+                      >{rawData?.priceToFreeCashFlowRatio}</td
                     >
                   </tr><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -255,8 +255,8 @@
                       ><span>PEG Ratio</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.priceEarningsToGrowthRatio !== null
-                        ? rawData?.priceEarningsToGrowthRatio
+                      >{rawData?.priceToEarningsGrowthRatio !== null
+                        ? rawData?.priceToEarningsGrowthRatio
                         : "n/a"}</td
                     >
                   </tr></tbody
@@ -335,7 +335,7 @@
               <h2 class="mb-2 px-0.5 text-xl font-bold">Financial Position</h2>
               <p class="mb-4 px-0.5 xs:text-[1.05rem] lg:leading-normal">
                 The company has a current ratio of {rawData?.currentRatio}, with
-                a Debt / Equity ratio of {rawData?.debtEquityRatio}.
+                a Debt / Equity ratio of {rawData?.debtToEquityRatio}.
               </p>
               <table
                 class="w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800"
@@ -363,7 +363,7 @@
                       ><span>Debt / Equity</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.debtEquityRatio}</td
+                      >{rawData?.debtToEquityRatio}</td
                     >
                   </tr><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -390,7 +390,7 @@
                       ><span>Interest Coverage</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.interestCoverage}</td
+                      >{rawData?.interestCoverageRatio}</td
                     >
                   </tr></tbody
                 >

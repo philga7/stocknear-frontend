@@ -690,7 +690,7 @@
       defaultValue: "any",
       category: "Valuation & Ratios",
     },
-    priceEarningsToGrowthRatio: {
+    priceToEarningsGrowthRatio: {
       label: "PEG Ratio",
       step: [100, 10, 5, 3, 1, 0.5, 0],
       defaultCondition: "over",
@@ -777,7 +777,7 @@
       defaultCondition: "over",
       defaultValue: "any",
     },
-    debtEquityRatio: {
+    debtToEquityRatio: {
       label: "Debt / Equity",
       step: [50, 40, 30, 20, 10, 5, 1],
 
@@ -880,7 +880,7 @@
       defaultValue: "any",
       category: "Valuation & Ratios",
     },
-    priceToFreeCashFlowsRatio: {
+    priceToFreeCashFlowRatio: {
       label: "Price / FCF",
       step: [50, 20, 10, 5, 1, 0, -1, -5, -10, -20, -50],
 
@@ -888,7 +888,7 @@
       defaultValue: "any",
       category: "Cash Flow",
     },
-    interestCoverage: {
+    interestCoverageRatio: {
       label: "Interest Coverage",
       step: [10, 5, 3, 2, 1, 0],
 
@@ -1058,7 +1058,7 @@
       defaultValue: "any",
       category: "Valuation & Ratios",
     },
-    priceEarningsRatio: {
+    priceToEarningsRatio: {
       label: "Price / Earnings",
       step: [100, 50, 20, 10, 5, 0],
 
@@ -2238,7 +2238,7 @@ const handleKeyDown = (event) => {
         name: "Undervalued Stocks",
         rules: [
           { condition: "under", name: "marketCap", value: "100M" },
-          { condition: "over", name: "debtEquityRatio", value: 1 },
+          { condition: "over", name: "debtToEquityRatio", value: 1 },
           { condition: "over", name: "debtRatio", value: -0.5 },
           { condition: "over", name: "eps", value: 0 },
         ],

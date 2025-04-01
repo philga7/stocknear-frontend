@@ -125,7 +125,7 @@
     { name: "FCF Yield", rule: "freeCashFlowYield", type: "percent" },
     { name: "Employees", rule: "employees", type: "decimal" },
     { name: "Debt Ratio", rule: "debtRatio", type: "float" },
-    { name: "Debt / Equity", rule: "debtEquityRatio", type: "int" },
+    { name: "Debt / Equity", rule: "debtToEquityRatio", type: "int" },
     { name: "Profit Margin", rule: "netProfitMargin", type: "percent" },
     { name: "FTD Shares", rule: "failToDeliver", type: "int" },
     { name: "Relative FTD", rule: "relativeFTD", type: "percent" },
