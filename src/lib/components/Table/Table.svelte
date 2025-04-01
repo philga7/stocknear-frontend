@@ -948,19 +948,7 @@
                   <span>{item[column.key]?.toFixed(2)}%</span>
                 {/if}
               {:else if column?.type === "rating"}
-                {#if ["Strong Buy", "Buy"].includes(item[column.key])}
-                  <span class="text-green-700 dark:text-[#00FC50]"
-                    >{item[column.key]}</span
-                  >
-                {:else if ["Strong Sell", "Sell"].includes(item[column.key])}
-                  <span class="text-red-700 dark:text-[#FF2F1F]"
-                    >{item[column.key]}</span
-                  >
-                {:else if item[column.key] === "Hold"}
-                  <span class="text-[#FFA838]">{item[column.key]}</span>
-                {:else}
-                  n/a
-                {/if}
+                {item[column.key]}
               {:else if column.type === "sentiment"}
                 <div
                   class={item[column.key] >= 55

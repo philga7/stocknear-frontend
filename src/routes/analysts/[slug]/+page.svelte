@@ -451,7 +451,9 @@
                               <div class="flex flex-col items-start">
                                 <HoverStockChart symbol={item?.ticker} />
 
-                                <span class="">
+                                <span
+                                  class="text-sm text-gray-800 dark:text-gray-200"
+                                >
                                   {item?.name?.length > charNumber
                                     ? item?.name?.slice(0, charNumber) + "..."
                                     : item?.name}
@@ -465,23 +467,7 @@
                           >
                             <div class="flex flex-col sm:flex-row items-start">
                               <span class="mr-1">{item?.action_company}:</span>
-                              <span
-                                class="font-semibold {[
-                                  'Strong Buy',
-                                  'Buy',
-                                  'Outperform',
-                                ]?.includes(item?.rating_current)
-                                  ? 'text-green-700 dark:text-[#00FC50] '
-                                  : item?.rating_current === 'Hold'
-                                    ? '"text-red-700 dark:text-[#FF7070] "'
-                                    : [
-                                          'Strong Sell',
-                                          'Sell',
-                                          'Underperform',
-                                        ]?.includes(item?.rating_current)
-                                      ? 'text-red-700 dark:text-[#FF2F1F] '
-                                      : 'text-muted dark:text-gray-300 '}"
-                              >
+                              <span>
                                 {item?.rating_current}
                               </span>
                             </div>

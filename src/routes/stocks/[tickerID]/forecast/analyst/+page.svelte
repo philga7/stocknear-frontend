@@ -428,7 +428,7 @@
                             {:else if i < Math.floor(item?.analystScore)}
                               <!-- Render a full star -->
                               <svg
-                                class="w-4 h-4 text-[#FBCE3C]"
+                                class="w-4 h-4 text-[#FFA500] dark:text-[#FBCE3C]"
                                 aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="currentColor"
@@ -466,18 +466,7 @@
                     </td>
 
                     <td
-                      class="text-sm sm:text-[1rem] whitespace-nowrap text-end {[
-                        'Strong Buy',
-                        'Buy',
-                      ]?.includes(item?.rating_current)
-                        ? ' text-green-700 dark:text-[#00FC50] '
-                        : item?.rating_current === 'Hold'
-                          ? '"text-red-700 dark:text-[#FF7070]"'
-                          : ['Strong Sell', 'Sell']?.includes(
-                                item?.rating_current,
-                              )
-                            ? 'text-red-700 dark:text-[#FF2F1F]'
-                            : ''}"
+                      class="text-sm sm:text-[1rem] whitespace-nowrap text-end"
                     >
                       {item?.rating_current}
                     </td>
@@ -497,7 +486,7 @@
                       <div class="flex flex-col items-end">
                         <div class="flex flex-row items-center">
                           {#if Math?.ceil(item?.adjusted_pt_prior) !== 0}
-                            <span class="text-gray-100 font-normal"
+                            <span class=" font-normal"
                               >{Math?.ceil(item?.adjusted_pt_prior)}</span
                             >
                             <svg
@@ -506,7 +495,7 @@
                               viewBox="0 0 24 24"
                               ><path
                                 fill="none"
-                                stroke="white"
+                                stroke="currentColor"
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
                                 stroke-width="2.5"
@@ -536,7 +525,7 @@
                             data?.getStockQuote?.price -
                             1 >=
                           0
-                            ? 'text-green-700 dark:text-[#00FC50] '
+                            ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
                             : item?.adjusted_pt_current /
                                   data?.getStockQuote?.price -
                                   1 <
@@ -562,7 +551,7 @@
                       <div class="flex flex-col items-end">
                         {#if latestInfoDate(item?.date)}
                           <label
-                            class="border-gray-300 shadow-sm bg-blue-100 dark:bg-[#fff] text-black font-semibold text-xs rounded px-2 py-0.5 ml-3 mb-1"
+                            class="border-gray-300 shadow-md bg-[#fff] text-black font-semibold text-xs rounded px-2 py-0.5 ml-3 mb-1"
                           >
                             New
                           </label>

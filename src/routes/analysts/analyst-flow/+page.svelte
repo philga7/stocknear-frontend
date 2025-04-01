@@ -218,23 +218,7 @@
                       >
                         <div class="flex flex-col sm:flex-row items-start">
                           <span class="mr-1">{item?.action}:</span>
-                          <span
-                            class=" {[
-                              'Strong Buy',
-                              'Buy',
-                              'Outperform',
-                            ]?.includes(item?.rating_current)
-                              ? 'text-green-700 dark:text-[#00FC50]'
-                              : item?.rating_current === 'Hold'
-                                ? '"text-red-700 dark:text-[#FF7070]"'
-                                : [
-                                      'Strong Sell',
-                                      'Sell',
-                                      'Underperform',
-                                    ]?.includes(item?.rating_current)
-                                  ? 'text-red-700 dark:text-[#FF2F1F]'
-                                  : 'text-muted dark:text-gray-300'}"
-                          >
+                          <span>
                             {item?.rating_current}
                           </span>
                         </div>
