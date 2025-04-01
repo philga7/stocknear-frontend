@@ -617,7 +617,9 @@
             displayedData[index]?.id,
           )
             ? 'text-[#FFA500]'
-            : ''}"
+            : $mode === 'light'
+              ? 'text-[#4B5563]'
+              : 'text-[#fff]'}"
         >
           <svg
             class="{displayedData[index]?.id === animationId
@@ -626,7 +628,7 @@
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
             ><path
-              fill={$mode === "light" ? "#4B5563" : "#fff"}
+              fill="currentColor"
               d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327l4.898.696c.441.062.612.636.282.95l-3.522 3.356l.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
             /></svg
           >
@@ -650,8 +652,8 @@
           class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap {displayedData[
             index
           ]?.put_call === 'Calls'
-            ? 'text-green-700 dark:text-[#00FC50]'
-            : 'text-[#c44536]'} "
+            ? 'text-green-800 dark:text-[#00FC50]'
+            : 'text-red-800 dark:text-[#c44536]'} "
         >
           {displayedData[index]?.put_call}
         </div>
@@ -660,10 +662,10 @@
           class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap {displayedData[
             index
           ]?.sentiment === 'Bullish'
-            ? 'text-green-700 dark:text-[#00FC50]'
+            ? 'text-green-800 dark:text-[#00FC50]'
             : displayedData[index]?.sentiment === 'Bearish'
-              ? 'text-red-700 dark:text-[#FF2F1F]'
-              : 'text-[#C6A755]'} "
+              ? 'text-red-800 dark:text-[#FF2F1F]'
+              : 'text-orange-800 dark:text-[#C6A755]'} "
         >
           {displayedData[index]?.sentiment}
         </div>
@@ -688,8 +690,8 @@
           class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap uppercase {displayedData[
             index
           ]?.option_activity_type === 'Sweep'
-            ? 'text-[#9E8135] dark:text-[#C6A755]'
-            : 'text-[#754A96] dark:text-[#976DB7]'}"
+            ? 'text-muted dark:text-[#C6A755]'
+            : 'text-muted dark:text-[#976DB7]'}"
         >
           {displayedData[index]?.option_activity_type}
         </div>
@@ -699,12 +701,12 @@
             'At Ask',
             'Above Ask',
           ]?.includes(displayedData[index]?.execution_estimate)
-            ? 'text-[#C8A32D]'
+            ? 'text-muted dark:text-[#C8A32D]'
             : ['At Bid', 'Below Bid']?.includes(
                   displayedData[index]?.execution_estimate,
                 )
-              ? 'text-[#8F82FE]'
-              : 'text-[#A98184]'}"
+              ? 'text-muted dark:text-[#8F82FE]'
+              : 'text-muted dark:text-[#A98184]'}"
         >
           {displayedData[index]?.execution_estimate
             ?.replace("At", "")
