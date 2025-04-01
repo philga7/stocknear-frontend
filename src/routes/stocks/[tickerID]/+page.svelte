@@ -788,11 +788,16 @@
                     class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
-                      >Revenue (ttm)</td
+                      ><a
+                        href={`/stocks/${$stockTicker}/statistics/revenue`}
+                        class="sm:hover:text-muted dark:sm:hover:text-blue-400 underline underline-offset-4"
+                        >Revenue (ttm)</a
+                      ></td
                     >
                     <td
                       class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
-                      >{@html stockDeck?.revenueTTM !== null &&
+                    >
+                      {@html stockDeck?.revenueTTM !== null &&
                       stockDeck?.revenueTTM !== 0
                         ? abbreviateNumber(stockDeck?.revenueTTM, false, true)
                         : "n/a"}</td

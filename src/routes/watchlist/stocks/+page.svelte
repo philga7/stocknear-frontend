@@ -1377,9 +1377,9 @@
                             on:input={handleInput}
                             autocomplete="off"
                             autofocus=""
-                            class="text-sm w-full bg-white dark:bg-default border-0 focus:border-gray-200 focus:ring-0 placeholder:text-gray-300 pr-8"
+                            class="text-sm w-full bg-white dark:bg-default border-0 focus:border-gray-200 focus:ring-0 focus:outline-none placeholder:text-gray-400 dark:placeholder:text-gray-600 pr-8"
                             type="text"
-                            placeholder=""
+                            placeholder="Search indicators..."
                           />
 
                           <!-- Clear Button - Shown only when searchQuery has input -->

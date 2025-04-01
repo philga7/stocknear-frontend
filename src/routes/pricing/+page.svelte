@@ -1166,7 +1166,7 @@
         <div class="flex flex-row items-center justify-between">
           <h3 class="text-2xl md:text-3xl font-bold">Lifetime</h3>
           <div>
-            <span class="text-3xl md:text-4xl font-bold">$599</span>
+            <span class="text-3xl md:text-4xl font-bold">$799</span>
           </div>
         </div>
         <p class=" md:text-lg mt-4 lg:mt-2">
@@ -1198,22 +1198,28 @@
               </div>
               <div class="relative flex flex-col items-center">
                 <div
-                  class="h-4 w-4 rounded-full bg-blue-500 relative z-10"
-                ></div>
-                <div class="mt-2 text-center">
-                  <div class="text-lg sm:text-xl font-semibold">
-                    <span class="text-zinc-900 dark:text-white">$599</span>
-                  </div>
-                  <div class="text-xs sm:text-sm">First 100 users</div>
-                </div>
-              </div>
-              <div class="relative flex flex-col items-center">
-                <div
                   class="h-4 w-4 rounded-full bg-zinc-500 dark:bg-gray-600 relative z-10"
                 ></div>
                 <div class="mt-2 text-center">
                   <div class="text-lg sm:text-xl font-semibold">
-                    <span class="text-zinc-500 dark:text-zinc-400">$799</span>
+                    <span class="text-gray-800 dark:text-gray-300 line-through"
+                      >$599</span
+                    >
+                  </div>
+                  <div
+                    class="text-xs sm:text-sm text-gray-800 dark:text-gray-300"
+                  >
+                    First 100 users
+                  </div>
+                </div>
+              </div>
+              <div class="relative flex flex-col items-center">
+                <div
+                  class="h-4 w-4 rounded-full bg-blue-500 relative z-10"
+                ></div>
+                <div class="mt-2 text-center">
+                  <div class="text-lg sm:text-xl font-semibold">
+                    <span class="">$799</span>
                   </div>
                   <div
                     class="text-xs sm:text-sm text-gray-800 dark:text-gray-300"

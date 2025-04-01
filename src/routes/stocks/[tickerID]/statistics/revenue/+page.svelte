@@ -237,7 +237,7 @@
                     <span>Revenue (ttm)</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-xl font-bold">
+                    <span class="text-xl font-semibold">
                       {abbreviateNumber(rawData?.revenue, true)}</span
                     >
                   </div>
@@ -250,7 +250,7 @@
                     <span>Revenue Growth</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-xl font-bold"
+                    <span class="text-xl font-semibold"
                       >{rawData?.growthRevenue}%</span
                     >
                   </div>
@@ -263,7 +263,7 @@
                     <span>Price / Sales Ratio</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-xl font-bold"
+                    <span class="text-xl font-semibold"
                       >{rawData?.priceToSalesRatio}</span
                     >
                   </div>
@@ -276,7 +276,7 @@
                     <span>Revenue / Employee </span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-xl font-bold"
+                    <span class="text-xl font-semibold"
                       >{abbreviateNumber(
                         rawData?.revenuePerEmployee,
                         true,
@@ -292,7 +292,7 @@
                     <span>Employees </span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-xl font-bold"
+                    <span class="text-xl font-semibold"
                       >{rawData?.employees?.toLocaleString("en-US")}</span
                     >
                   </div>
@@ -304,7 +304,7 @@
                     <span>Market Cap </span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-xl font-bold"
+                    <span class="text-xl font-semibold"
                       >{abbreviateNumber(data?.getStockQuote?.marketCap)}</span
                     >
                   </div>

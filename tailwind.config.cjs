@@ -5,7 +5,6 @@ module.exports = {
   safelist: ["dark"],
   content: [
     "./src/**/*.{html,js,svelte,ts}",
-    "./node_modules/flowbite-svelte/**/*.{html,js,svelte,ts}",
   ],
   theme: {
     container: {
@@ -194,5 +193,4 @@ module.exports = {
       },
     },
   },
-  plugins: [require("flowbite/plugin")],
 };
