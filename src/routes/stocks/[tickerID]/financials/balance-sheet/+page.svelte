@@ -217,11 +217,11 @@
     switch (timeFrame) {
       case "5Y":
         return fullStatement?.filter(
-          (item) => currentYear - parseInt(item?.calendarYear) < 5,
+          (item) => currentYear - parseInt(item?.fiscalYear) < 5,
         );
       case "10Y":
         return fullStatement?.filter(
-          (item) => currentYear - parseInt(item?.calendarYear) < 10,
+          (item) => currentYear - parseInt(item?.fiscalYear) < 10,
         );
       default:
         return fullStatement;
@@ -240,7 +240,7 @@
 
       let properties = [
         {
-          key: filterRule === "annual" ? "calendarYear" : "date",
+          key: filterRule === "annual" ? "fiscalYear" : "date",
           label: filterRule === "annual" ? "Year" : "Quarter",
         },
       ];
@@ -300,7 +300,7 @@
     const xList = [];
     for (let i = financialData.length - 1; i >= 0; i--) {
       const statement = financialData[i];
-      const year = statement.calendarYear.slice(-2);
+      const year = statement.fiscalYear.slice(-2);
       const quarter = statement.period;
       xList.push(
         filterRule === "annual" ? "FY" + year : "FY" + year + " " + quarter,
@@ -550,12 +550,12 @@
                         {#each financialData as cash}
                           {#if filterRule === "annual"}
                             <td class=" font-semibold text-sm text-end">
-                              {"FY" + cash?.calendarYear?.slice(-2)}
+                              {"FY" + cash?.fiscalYear?.slice(-2)}
                             </td>
                           {:else}
                             <td class=" font-semibold text-sm text-end">
                               {"FY" +
-                                cash?.calendarYear?.slice(-2) +
+                                cash?.fiscalYear?.slice(-2) +
                                 " " +
                                 cash?.period}
                             </td>
