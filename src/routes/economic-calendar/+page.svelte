@@ -540,7 +540,7 @@
                                   {#if i > 0}
                                     {#each Array(i) as _}
                                       <svg
-                                        class="w-4 h-4 text-[#FBCE3C]"
+                                        class="w-4 h-4 text-[#FFA500]"
                                         aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="currentColor"
@@ -734,7 +734,7 @@
                                     {#each Array.from({ length: 3 }) as _, i}
                                       {#if i < Math.floor(item?.importance)}
                                         <svg
-                                          class="w-4 h-4 text-[#FBCE3C]"
+                                          class="w-4 h-4 text-[#FFA500]"
                                           aria-hidden="true"
                                           xmlns="http://www.w3.org/2000/svg"
                                           fill="currentColor"

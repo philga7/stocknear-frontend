@@ -246,7 +246,7 @@
                           on:click|stopPropagation={(event) =>
                             addToFavorite(event, item?.id)}
                           class=" {favoriteList?.includes(item?.id)
-                            ? 'text-[#FBCE3C]'
+                            ? 'text-[#FFA500]'
                             : ''} absolute top-0 right-5 z-20"
                         >
                           <svg

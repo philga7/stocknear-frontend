@@ -416,7 +416,7 @@
                               >
                                 <defs>
                                   <linearGradient id="halfGradient">
-                                    <stop offset="30%" stop-color="#FBCE3C" />
+                                    <stop offset="30%" stop-color="#FFA500" />
                                     <stop offset="30%" stop-color="gray" />
                                   </linearGradient>
                                 </defs>
@@ -428,7 +428,7 @@
                             {:else if i < Math.floor(item?.analystScore)}
                               <!-- Render a full star -->
                               <svg
-                                class="w-4 h-4 text-[#FFA500] dark:text-[#FBCE3C]"
+                                class="w-4 h-4 text-[#FFA500] dark:text-[#FFA500]"
                                 aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="currentColor"

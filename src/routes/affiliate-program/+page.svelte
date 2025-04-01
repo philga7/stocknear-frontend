@@ -85,7 +85,7 @@
           loading="lazy"
         />
         <h1 class="mt-1 text-4xl font-bold sm:text-5xl lg:text-6xl">
-          Affiliate Program
+          Referral Program
         </h1>
         <p
           class="mx-auto mt-5 max-w-3xl text-xl leading-normal md:mt-7 md:text-2xl"

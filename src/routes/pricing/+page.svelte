@@ -177,7 +177,7 @@
     >
       <div
         style="opacity: 1; transform: translateY(20px);"
-        class="hidden lg:flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
+        class="hidden lg:flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
       >
         <h3 class="text-3xl font-bold">Basic</h3>
         <p class="text-muted dark:text-zinc-300 text-sm mt-1">
@@ -694,7 +694,7 @@
           {#if !data?.user}
             <label
               for="userLogin"
-              class="text-white cursor-pointer w-full py-3 px-4 bg-blue-600 rounded-lg font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
+              class="text-white cursor-pointer w-full py-3 px-4 bg-blue-600 rounded font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
               >Get Registered Now<svg
                 class="w-5 h-5 ml-2"
                 fill="none"
@@ -714,7 +714,7 @@
       </div>
       <div
         style="opacity: 1; transform: translateY(20px);"
-        class="relative flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
+        class="relative flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
       >
         <div
           class="w-fit absolute -top-[20px] left-1/2 transform -translate-x-1/2 whitespace-nowrap m-auto px-4 py-1.5 rounded-md text-sm font-medium backdrop-blur-xl
@@ -1025,7 +1025,7 @@
           <label
             for={!data?.user ? "userLogin" : ""}
             on:click={() => purchasePlan("plus")}
-            class="text-white cursor-pointer w-full py-3 px-4 bg-blue-600 rounded-lg font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
+            class="text-white cursor-pointer w-full py-3 px-4 bg-blue-600 rounded font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
             >Unlock Plus Access Now<svg
               class="w-5 h-5 ml-2"
               fill="none"
@@ -1044,7 +1044,7 @@
       </div>
       <div
         style="opacity: 1; transform: translateY(20px);"
-        class="flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
+        class="flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
       >
         <h3 class="text-3xl font-bold">Pro</h3>
         <p class="text-muted dark:text-zinc-300 text-sm mt-1">
@@ -1142,7 +1142,7 @@
           <label
             for={!data?.user ? "userLogin" : ""}
             on:click={() => purchasePlan("pro")}
-            class="text-white cursor-pointer w-full py-3 px-4 bg-blue-600 rounded-lg font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
+            class="text-white cursor-pointer w-full py-3 px-4 bg-blue-600 rounded font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
             >Unlock Pro Access Now<svg
               class="w-5 h-5 ml-2"
               fill="none"
@@ -1161,18 +1161,18 @@
       </div>
 
       <div
-        class="relative min-h-[330px] lg:min-h-[240px] text-left w-full col-span-1 lg:col-span-3 bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-xl overflow-visible border border-zinc-200 dark:border-zinc-600 p-6 isolate translate-y-5 opacity-100"
+        class="relative text-left w-full col-span-1 lg:col-span-3 bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-200 dark:border-zinc-600 p-6 isolate translate-y-5 opacity-100"
       >
         <div class="flex flex-row items-center justify-between">
           <h3 class="text-2xl md:text-3xl font-bold">Lifetime</h3>
           <div>
-            <span class="text-3xl md:text-4xl font-bold">$599</span>
+            <span class="text-3xl md:text-4xl font-bold">$999</span>
           </div>
         </div>
         <p class=" md:text-lg mt-4 lg:mt-2">
           Everything in Pro, pay once, never again!
         </p>
-
+        <!--
         <div class="max-w-[400px]">
           <div class="mt-8 lg:absolute lg:bottom-0 lg:left-0 lg:p-4">
             <div class="relative flex items-center space-x-10">
@@ -1244,11 +1244,12 @@
             </div>
           </div>
         </div>
+        -->
 
         <div class="mt-10 flex justify-center lg:justify-end mx-4 lg:mx-0">
           <button
             on:click={() => purchasePlan("lifeTime")}
-            class="text-white cursor-pointer w-full lg:w-auto py-3 lg:mt-2 px-4 bg-blue-600 rounded-lg font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center lg:justify-end"
+            class="text-white cursor-pointer w-full lg:w-auto py-3 lg:mt-2 px-4 bg-blue-600 rounded font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center lg:justify-end"
           >
             Get Lifetime Now
             <svg

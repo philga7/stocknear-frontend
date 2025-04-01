@@ -350,7 +350,7 @@
           dashStyle: "Solid",
         },
         labels: {
-          style: { color: $mode === "light" ? "black" : "white" },
+          style: { color: $mode === "light" ? "#545454" : "white" },
           distance: 10, // Increases space between label and axis
           formatter: function () {
             const date = new Date(this?.value);
@@ -390,7 +390,7 @@
           gridLineWidth: 1,
           gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
           labels: {
-            style: { color: $mode === "light" ? "black" : "white" },
+            style: { color: $mode === "light" ? "#545454" : "white" },
           },
           title: { text: null },
           opposite: true,
@@ -503,9 +503,8 @@
           <div class="w-full m-auto">
             {#if config !== null}
               <p class="mt-4">
-                <strong>{selectedSector}</strong> Flow tracks sector stocks, net
-                call/put premiums, and price movements to gauge market sentiment
-                and momentum in real time.
+                Sector Flow monitors constituent stocks representing the sector,
+                net call/put premiums and price movements in real time.
               </p>
 
               <div
@@ -716,8 +715,8 @@
                         <td
                           class="text-sm sm:text-[1rem] {item?.changesPercentage >=
                           0
-                            ? "text-[#208646] dark:text-[#00FC50] before:content-['+'] "
-                            : 'text-[#DC2626] dark:text-[#FF2F1F]'} text-end"
+                            ? "text-green-700 dark:text-[#00FC50] before:content-['+'] "
+                            : 'text-red-700 dark:text-[#FF2F1F]'} text-end"
                         >
                           {item?.changesPercentage?.toFixed(2)}%
                         </td>

@@ -325,7 +325,7 @@
           dashStyle: "Solid",
         },
         labels: {
-          style: { color: $mode === "light" ? "black" : "white" },
+          style: { color: $mode === "light" ? "#545454" : "white" },
           distance: 10, // Increases space between label and axis
           formatter: function () {
             const date = new Date(this?.value);
@@ -365,7 +365,7 @@
           gridLineWidth: 1,
           gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
           labels: {
-            style: { color: $mode === "light" ? "black" : "white" },
+            style: { color: $mode === "light" ? "#545454" : "white" },
           },
           title: { text: null },
           opposite: true,
@@ -613,32 +613,20 @@
                         <td
                           class="text-sm sm:text-[1rem] {item?.changesPercentage >=
                           0
-                            ? "text-[#208646] dark:text-[#00FC50] before:content-['+'] "
-                            : 'text-[#DC2626] dark:text-[#FF2F1F]'} text-end"
+                            ? "text-green-700 dark:text-[#00FC50] before:content-['+'] "
+                            : 'text-red-700 dark:text-[#FF2F1F]'} text-end"
                         >
                           {item?.changesPercentage?.toFixed(2)}%
                         </td>
 
                         <td class="text-sm sm:text-[1rem] text-end">
-                          {@html abbreviateNumber(
-                            item?.net_premium,
-                            false,
-                            true,
-                          )}
+                          {@html abbreviateNumber(item?.net_premium)}
                         </td>
                         <td class="text-sm sm:text-[1rem] text-end">
-                          {@html abbreviateNumber(
-                            item?.net_call_premium,
-                            false,
-                            true,
-                          )}
+                          {@html abbreviateNumber(item?.net_call_premium)}
                         </td>
                         <td class="text-sm sm:text-[1rem] text-end">
-                          {@html abbreviateNumber(
-                            item?.net_put_premium,
-                            false,
-                            true,
-                          )}
+                          {@html abbreviateNumber(item?.net_put_premium)}
                         </td>
 
                         <td class="text-sm sm:text-[1rem] text-end">
@@ -717,7 +705,7 @@
                         <td
                           class="text-sm sm:text-[1rem] {item?.changesPercentage >=
                           0
-                            ? "text-[#00FC50] before:content-['+'] "
+                            ? "text-green-700 dark:text-[#00FC50] before:content-['+'] "
                             : 'text-red-700 dark:text-[#FF2F1F]'} text-end"
                         >
                           {item?.changesPercentage}%

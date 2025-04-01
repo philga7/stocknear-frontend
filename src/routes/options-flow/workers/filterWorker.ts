@@ -202,6 +202,8 @@ if (ruleName === 'sizeoiratio') {
   
   return (item) => {
     const expirationDate = new Date(item[rule.name]);
+
+
     if (isNaN(expirationDate)) return false; // Handle invalid dates
 
     const daysDiff = Math?.ceil((expirationDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));

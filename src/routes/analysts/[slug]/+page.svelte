@@ -227,7 +227,7 @@
                       {#each Array.from({ length: 5 }) as _, i}
                         {#if i < Math?.floor(analystScore)}
                           <svg
-                            class="w-5 h-5 text-[#FBCE3C]"
+                            class="w-5 h-5 text-[#FFA500]"
                             aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="currentColor"

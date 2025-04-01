@@ -616,7 +616,7 @@
           class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap {optionsWatchlist.optionsId?.includes(
             displayedData[index]?.id,
           )
-            ? 'text-[#FBCE3C]'
+            ? 'text-[#FFA500]'
             : ''}"
         >
           <svg

@@ -196,7 +196,7 @@
             <a
               href="/affiliate-program"
               class="no-underline sm:hover:underline text-gray-300 sm:hover:text-white dark:text-gray-100 dark:sm:hover:text-blue-400"
-              >Affiliate Program</a
+              >Referral Program</a
             >
           </li>
         </ul>
