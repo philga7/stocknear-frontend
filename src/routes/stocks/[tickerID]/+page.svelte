@@ -222,21 +222,21 @@
                 hour: "numeric",
                 hour12: true,
               });
-              return `<span class="font-[501] text-xs">${timeString.replace(/\s/g, " ")}</span>`;
+              return `<span class=" text-xs">${timeString.replace(/\s/g, " ")}</span>`;
             } else if (["1W", "1M"].includes(displayData)) {
               const timeString = date?.toLocaleDateString("en-US", {
                 month: "short",
                 day: "numeric",
                 timeZone: "UTC",
               });
-              return `<span class="font-[501] text-xs">${timeString}</span>`;
+              return `<span class=" text-xs">${timeString}</span>`;
             } else {
               const timeString = date?.toLocaleDateString("en-US", {
                 year: "2-digit",
                 month: "short",
                 timeZone: "UTC",
               });
-              return `<span class="font-[501] text-xs">${timeString}</span>`;
+              return `<span class=" text-xs">${timeString}</span>`;
             }
           },
         },
@@ -776,7 +776,7 @@
                       ></td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-[1rem] font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
                       >{@html abbreviateNumber(
                         data?.getStockQuote?.marketCap,
                         false,

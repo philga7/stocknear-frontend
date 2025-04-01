@@ -149,7 +149,6 @@
           // Loop through each point in the shared tooltip
           this.points.forEach((point) => {
             tooltipContent += `
-        <span class="font-semibold text-sm">${point.series.name}:</span> 
         <span class="font-normal text-sm mt-1">${point?.y?.toLocaleString("en-US")}</span><br>`;
           });
 
@@ -353,9 +352,7 @@
         >
           <div>
             Employees
-            <div
-              class="mt-0.5 text-lg font-semibold bp:text-xl sm:mt-1.5 sm:text-2xl"
-            >
+            <div class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl">
               {#if Number(employees)}
                 {new Intl.NumberFormat("en")?.format(employees)}
               {:else}
@@ -365,7 +362,7 @@
           </div>
           <div>
             Change (1Y) <div
-              class="mt-0.5 text-lg font-semibold bp:text-xl sm:mt-1.5 sm:text-2xl"
+              class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl"
             >
               {#if dateDistance}
                 n/a
@@ -385,9 +382,7 @@
           </div>
           <div>
             Revenue / Employee
-            <div
-              class="mt-0.5 text-lg font-semibold bp:text-xl sm:mt-1.5 sm:text-2xl"
-            >
+            <div class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl">
               {#if Number(data?.getStockDeck?.revenuePerEmployee)}
                 ${new Intl.NumberFormat("en")?.format(
                   data?.getStockDeck?.revenuePerEmployee,
@@ -399,9 +394,7 @@
           </div>
           <div>
             Profits / Employee
-            <div
-              class="mt-0.5 text-lg font-semibold bp:text-xl sm:mt-1.5 sm:text-2xl"
-            >
+            <div class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl">
               {#if Number(data?.getStockDeck?.profitPerEmployee)}
                 {formatWithDollarSign(data?.getStockDeck?.profitPerEmployee)}
               {:else}
@@ -411,9 +404,7 @@
           </div>
           <div>
             Market Cap
-            <div
-              class="mt-0.5 text-lg font-semibold bp:text-xl sm:mt-1.5 sm:text-2xl"
-            >
+            <div class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl">
               {@html abbreviateNumber(
                 data?.getStockQuote?.marketCap,
                 false,
