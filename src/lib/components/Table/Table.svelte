@@ -736,9 +736,9 @@
             on:input={handleInput}
             autocomplete="off"
             autofocus=""
-            class="text-sm w-full border-0 bg-white dark:bg-default focus:border-gray-200 focus:ring-0 placeholder:text-muted dark:text-gray-300 pr-8"
+            class="text-sm w-full border-0 bg-white dark:bg-default focus:border-gray-200 focus:ring-0 focus:outline-none placeholder:text-gray-600 dark:placeholder:text-gray-400 dark:text-gray-300 pr-8"
             type="text"
-            placeholder=""
+            placeholder="Search indicators..."
           />
 
           <!-- Clear Button - Shown only when searchQuery has input -->
