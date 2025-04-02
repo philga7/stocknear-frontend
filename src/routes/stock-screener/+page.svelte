@@ -1291,12 +1291,14 @@
       defaultValue: "any",
       category: "Forecasts, Analysts & Price Targets",
     },
+    /*
     halalStocks: {
       label: "Halal Stocks",
       step: ["Compliant", "Non-Compliant"],
       defaultCondition: "",
       defaultValue: "any",
     },
+    */
     score: {
       label: "AI Score",
       step: ["Strong Buy", "Buy", "Hold", "Sell", "Strong Sell"],
@@ -3671,7 +3673,7 @@ const handleKeyDown = (event) => {
               autocomplete="off"
               type="search"
               id="search"
-              class="placeholder-gray-800 dark:placeholder-gray-300 block w-full p-2 ps-10 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-100 dark:bg-secondary border border-blue-500"
+              class="focus:outline-none placeholder-gray-800 dark:placeholder-gray-300 block w-full p-2 ps-10 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-100 dark:bg-secondary border border-blue-500"
               placeholder="Search..."
               bind:value={searchTerm}
             />

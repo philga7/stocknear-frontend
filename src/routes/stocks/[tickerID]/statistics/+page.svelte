@@ -360,10 +360,22 @@
                   </tr><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                     ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Total Debt / Capitalization</span>
+                      ><span>Debt / EBITDA</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{abbreviateNumber(rawData?.debtToMarketCap, false)}</td
+                      >{abbreviateNumber(rawData?.debtToEBITDARatio, false)}</td
+                    >
+                  </tr>
+                  <tr
+                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
+                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
+                      ><span>Debt / FCF</span>
+                    </td>
+                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
+                      >{abbreviateNumber(
+                        rawData?.debtToFreeCashFlowRatio,
+                        false,
+                      )}</td
                     >
                   </tr><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -382,8 +394,13 @@
                 Financial Efficiency
               </h2>
               <p class="mb-4 px-0.5 xs:text-[1.05rem] lg:leading-normal">
-                Return on equity (ROE) is {rawData?.returnOnEquity}% and return
-                on capital (ROIC) is {rawData?.returnOnInvestedCapital}%.
+                Return on Equity is {checkValue(
+                  rawData?.returnOnEquity,
+                  "percent",
+                )} and Return on Invested Capital is {checkValue(
+                  rawData?.returnOnInvestedCapital,
+                  "percent",
+                )}.
               </p>
               <table
                 class="w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800"
@@ -395,7 +412,7 @@
                       ><span>Return on Equity</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.returnOnEquity}</td
+                      >{checkValue(rawData?.returnOnEquity, "percent")}</td
                     >
                   </tr><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -403,15 +420,18 @@
                       ><span>Return on Assets</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.returnOnAssets}</td
+                      >{checkValue(rawData?.returnOnAssets, "percent")}</td
                     >
                   </tr><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                     ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Return on Capital</span>
+                      ><span>Return on Invested Capital</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.returnOnInvestedCapital}</td
+                      >{checkValue(
+                        rawData?.returnOnInvestedCapital,
+                        "percent",
+                      )}</td
                     >
                   </tr><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -419,9 +439,7 @@
                       ><span>Revenue Per Employee</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >${rawData?.revenuePerEmployee?.toLocaleString(
-                        "en-US",
-                      )}</td
+                      >${abbreviateNumber(rawData?.revenuePerEmployee)}</td
                     >
                   </tr><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -429,9 +447,7 @@
                       ><span>Profits Per Employee</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >${rawData?.profitPerEmployee?.toLocaleString(
-                        "en-US",
-                      )}</td
+                      >${abbreviateNumber(rawData?.profitPerEmployee)}</td
                     >
                   </tr><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -485,7 +501,7 @@
                       ><span>Effective Tax Rate</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.effectiveTaxRate}</td
+                      >{checkValue(rawData?.effectiveTaxRate, "percent")}</td
                     >
                   </tr></tbody
                 >
@@ -799,11 +815,11 @@
                 {#if rawData?.grossProfitMargin !== 0 && rawData?.grossProfitMargin !== null}
                   Gross margin is {checkValue(
                     rawData?.grossProfitMargin,
-                    "int",
+                    "percent",
                   )}, with operating and profit margins of {checkValue(
                     rawData?.operatingProfitMargin,
-                    "int",
-                  )} and {checkValue(rawData?.netProfitMargin, "int")}.
+                    "percent",
+                  )} and {checkValue(rawData?.netProfitMargin, "percent")}.
                 {/if}
               </p>
               <table
@@ -818,7 +834,7 @@
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
                       >{rawData?.grossProfitMargin !== 0 &&
                       rawData?.grossProfitMargin !== null
-                        ? checkValue(rawData?.grossProfitMargin, "int")
+                        ? checkValue(rawData?.grossProfitMargin, "percent")
                         : "n/a"}</td
                     >
                   </tr><tr
@@ -829,7 +845,7 @@
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
                       >{rawData?.operatingProfitMargin !== 0 &&
                       rawData?.operatingProfitMargin !== null
-                        ? checkValue(rawData?.operatingProfitMargin, "int")
+                        ? checkValue(rawData?.operatingProfitMargin, "percent")
                         : "n/a"}</td
                     >
                   </tr><tr
@@ -840,7 +856,7 @@
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
                       >{rawData?.pretaxProfitMargin !== 0 &&
                       rawData?.pretaxProfitMargin !== null
-                        ? checkValue(rawData?.pretaxProfitMargin, "int")
+                        ? checkValue(rawData?.pretaxProfitMargin, "percent")
                         : "n/a"}</td
                     >
                   </tr><tr
@@ -851,7 +867,7 @@
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
                       >{rawData?.netProfitMargin !== 0 &&
                       rawData?.netProfitMargin !== null
-                        ? checkValue(rawData?.netProfitMargin, "int")
+                        ? checkValue(rawData?.netProfitMargin, "percent")
                         : "n/a"}</td
                     >
                   </tr><tr
@@ -862,7 +878,7 @@
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
                       >{rawData?.ebitdaMargin !== 0 &&
                       rawData?.ebitdaMargin !== null
-                        ? checkValue(rawData?.ebitdaMargin, "int")
+                        ? checkValue(rawData?.ebitdaMargin, "percent")
                         : "n/a"}</td
                     >
                   </tr><tr
@@ -873,7 +889,7 @@
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
                       >{rawData?.ebitMargin !== 0 &&
                       rawData?.ebitMargin !== null
-                        ? checkValue(rawData?.ebitMargin, "int")
+                        ? checkValue(rawData?.ebitMargin, "percent")
                         : "n/a"}</td
                     >
                   </tr><tr
@@ -884,7 +900,7 @@
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
                       >{rawData?.freeCashFlowMargin !== 0 &&
                       rawData?.freeCashFlowMargin !== null
-                        ? checkValue(rawData?.freeCashFlowMargin, "int")
+                        ? checkValue(rawData?.freeCashFlowMargin, "percent")
                         : "n/a"}</td
                     >
                   </tr></tbody
@@ -963,7 +979,7 @@
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
                       >{rawData?.earningsYield !== null
-                        ? rawData?.earningsYield
+                        ? checkValue(rawData?.earningsYield, "percent")
                         : "n/a"}</td
                     >
                   </tr><tr
@@ -975,7 +991,7 @@
                       class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
                       title="0.578%"
                       >{rawData?.freeCashFlowYield !== null
-                        ? rawData?.freeCashFlowYield
+                        ? checkValue(rawData?.freeCashFlowYield, "percent")
                         : "n/a"}</td
                     >
                   </tr></tbody
