@@ -963,7 +963,7 @@
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
                       >{rawData?.earningsYield !== null
-                        ? (rawData?.earningsYield * 100)?.toFixed(2) + "%"
+                        ? rawData?.earningsYield
                         : "n/a"}</td
                     >
                   </tr><tr
@@ -975,7 +975,7 @@
                       class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
                       title="0.578%"
                       >{rawData?.freeCashFlowYield !== null
-                        ? (rawData?.freeCashFlowYield * 100)?.toFixed(2) + "%"
+                        ? rawData?.freeCashFlowYield
                         : "n/a"}</td
                     >
                   </tr></tbody
