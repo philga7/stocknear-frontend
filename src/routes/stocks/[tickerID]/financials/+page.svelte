@@ -145,7 +145,7 @@
       text: "Earnings per share is the portion of a company's profit that is allocated to each individual stock. EPS is calculated by dividing net income by shares outstanding.",
     },
     {
-      propertyName: "epsdiluted",
+      propertyName: "epsDiluted",
       growthPropertyName: "growthEPSDiluted",
       label: "EPS (Diluted)",
       text: `Earnings per share is the portion of a company's profit that is allocated to each individual stock. Diluted EPS is calculated by dividing net income by "diluted" shares outstanding.`,
