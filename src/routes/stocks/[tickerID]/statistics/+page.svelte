@@ -800,10 +800,10 @@
                   Gross margin is {checkValue(
                     rawData?.grossProfitMargin,
                     "int",
-                  )}%, with operating and profit margins of {checkValue(
+                  )}, with operating and profit margins of {checkValue(
                     rawData?.operatingProfitMargin,
                     "int",
-                  )}% and {checkValue(rawData?.netProfitMargin, "int")}%.
+                  )} and {checkValue(rawData?.netProfitMargin, "int")}.
                 {/if}
               </p>
               <table
@@ -818,7 +818,7 @@
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
                       >{rawData?.grossProfitMargin !== 0 &&
                       rawData?.grossProfitMargin !== null
-                        ? checkValue(rawData?.grossProfitMargin, "int") + "%"
+                        ? checkValue(rawData?.grossProfitMargin, "int")
                         : "n/a"}</td
                     >
                   </tr><tr
@@ -829,8 +829,7 @@
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
                       >{rawData?.operatingProfitMargin !== 0 &&
                       rawData?.operatingProfitMargin !== null
-                        ? checkValue(rawData?.operatingProfitMargin, "int") +
-                          "%"
+                        ? checkValue(rawData?.operatingProfitMargin, "int")
                         : "n/a"}</td
                     >
                   </tr><tr
@@ -841,7 +840,7 @@
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
                       >{rawData?.pretaxProfitMargin !== 0 &&
                       rawData?.pretaxProfitMargin !== null
-                        ? checkValue(rawData?.pretaxProfitMargin, "int") + "%"
+                        ? checkValue(rawData?.pretaxProfitMargin, "int")
                         : "n/a"}</td
                     >
                   </tr><tr
@@ -852,7 +851,7 @@
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
                       >{rawData?.netProfitMargin !== 0 &&
                       rawData?.netProfitMargin !== null
-                        ? checkValue(rawData?.netProfitMargin, "int") + "%"
+                        ? checkValue(rawData?.netProfitMargin, "int")
                         : "n/a"}</td
                     >
                   </tr><tr
@@ -863,7 +862,7 @@
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
                       >{rawData?.ebitdaMargin !== 0 &&
                       rawData?.ebitdaMargin !== null
-                        ? checkValue(rawData?.ebitdaMargin, "int") + "%"
+                        ? checkValue(rawData?.ebitdaMargin, "int")
                         : "n/a"}</td
                     >
                   </tr><tr
@@ -874,7 +873,7 @@
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
                       >{rawData?.ebitMargin !== 0 &&
                       rawData?.ebitMargin !== null
-                        ? checkValue(rawData?.ebitMargin, "int") + "%"
+                        ? checkValue(rawData?.ebitMargin, "int")
                         : "n/a"}</td
                     >
                   </tr><tr
@@ -885,7 +884,7 @@
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
                       >{rawData?.freeCashFlowMargin !== 0 &&
                       rawData?.freeCashFlowMargin !== null
-                        ? checkValue(rawData?.freeCashFlowMargin, "int") + "%"
+                        ? checkValue(rawData?.freeCashFlowMargin, "int")
                         : "n/a"}</td
                     >
                   </tr></tbody
