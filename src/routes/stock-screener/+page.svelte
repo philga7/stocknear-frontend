@@ -662,8 +662,7 @@
     },
     returnOnInvestedCapital: {
       label: "Return On Invested Capital",
-      step: ["1", "0.5", "0.2", "0.1", "0.05", "0.01"],
-
+      step: ["80%", "50%", "20%", "10%", "5%", "0%"],
       defaultCondition: "over",
       defaultValue: "any",
     },
@@ -794,22 +793,19 @@
     },
     returnOnAssets: {
       label: "Return on Assets",
-      step: [1, 0.8, 0.6, 0.4, 0.2, 0.1, 0],
-
+      step: ["80%", "50%", "20%", "10%", "5%"],
       defaultCondition: "over",
       defaultValue: "any",
     },
     returnOnEquity: {
       label: "Return on Equity",
-      step: [10, 8, 6, 4, 2, 1, 0, -2, -4, -6, -8, -10],
-
+      step: ["80%", "50%", "20%", "10%", "5%"],
       defaultCondition: "over",
       defaultValue: "any",
     },
     returnOnTangibleAssets: {
       label: "Return on Tangible Assets",
-      step: [10, 8, 6, 4, 2, 1, 0, -2, -4, -6, -8, -10],
-
+      step: ["80%", "50%", "20%", "10%", "5%"],
       defaultCondition: "over",
       defaultValue: "any",
     },
@@ -996,19 +992,7 @@
 
     freeCashFlowMargin: {
       label: "FCF Margin",
-      step: [
-        "80%",
-        "50%",
-        "20%",
-        "10%",
-        "5%",
-        "0%",
-        "-5%",
-        "-10%",
-        "-20%",
-        "-50%",
-      ],
-
+      step: ["80%", "50%", "20%", "10%", "5%"],
       defaultCondition: "over",
       defaultValue: "any",
       category: "Margins",
@@ -1017,13 +1001,6 @@
       label: "Total Debt",
       step: ["200B", "100B", "50B", "10B", "1B", "100M", "10M", "1M"],
 
-      defaultCondition: "over",
-      defaultValue: "any",
-      category: "Debt",
-    },
-    cashFlowToDebtRatio: {
-      label: "Cash Flow / Debt",
-      step: [50, 40, 30, 20, 10, 5, 1],
       defaultCondition: "over",
       defaultValue: "any",
       category: "Debt",
