@@ -237,7 +237,7 @@
                       >
                         {#if Number(item?.successRate) >= 0}
                           <span
-                            class="font-semibold dark:font-normal text-green-700 dark:text-[#00FC50]"
+                            class="font-semibold dark:font-normal text-green-800 dark:text-[#00FC50]"
                             >+{Number(item?.successRate)?.toFixed(2)}%</span
                           >
                         {/if}
@@ -248,7 +248,7 @@
                       >
                         {#if Number(item?.avgReturn) >= 0}
                           <span
-                            class="font-semibold dark:font-normal text-green-700 dark:text-[#00FC50]"
+                            class="font-semibold dark:font-normal text-green-800 dark:text-[#00FC50]"
                             >+{Number(item?.avgReturn)?.toFixed(2)}%</span
                           >
                         {:else}

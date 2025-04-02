@@ -59,10 +59,10 @@
                   r="16"
                   fill="none"
                   class="stroke-current {score >= 7
-                    ? 'text-green-700 dark:text-[#00FC50]'
+                    ? 'text-green-800 dark:text-[#00FC50]'
                     : score >= 4
                       ? 'text-blue-700 dark:text-[#fff]'
-                      : 'text-red-700 dark:text-[#FF2F1F]'}"
+                      : 'text-red-800 dark:text-[#FF2F1F]'}"
                   stroke-width="3"
                   stroke-dasharray="100.48"
                   stroke-dashoffset={100.48 -

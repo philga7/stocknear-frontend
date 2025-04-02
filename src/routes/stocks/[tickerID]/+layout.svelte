@@ -796,15 +796,15 @@
                                 >
                                   <span
                                     class={displayLegend?.change >= 0
-                                      ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
-                                      : "text-red-700 dark:text-[#FF2F1F]"}
+                                      ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
+                                      : "text-red-800 dark:text-[#FF2F1F]"}
                                   >
                                     {displayLegend?.change}
                                   </span>
                                   <span
                                     class={displayLegend?.changesPercentage >= 0
-                                      ? "text-green-700 dark:text-[#00FC50]"
-                                      : "text-red-700 dark:text-[#FF2F1F]"}
+                                      ? "text-green-800 dark:text-[#00FC50]"
+                                      : "text-red-800 dark:text-[#FF2F1F]"}
                                   >
                                     ({displayLegend?.changesPercentage}%)
                                   </span>
@@ -840,8 +840,8 @@
                                   <div
                                     class="mt-1.5 block text-sm sm:mt-0 sm:inline sm:text-lg {prePostData?.changesPercentage >=
                                     0
-                                      ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
-                                      : 'text-red-700 dark:text-[#FF2F1F]'}"
+                                      ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
+                                      : 'text-red-800 dark:text-[#FF2F1F]'}"
                                   >
                                     {prePostData?.changesPercentage?.toFixed(
                                       2,

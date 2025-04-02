@@ -117,7 +117,7 @@
                         : "n/a"}</span
                   >
                   <div class="flex flex-col ml-2">
-                    <span class="text-sm text-red-700 dark:text-red-400">
+                    <span class="text-sm text-red-800 dark:text-red-400">
                       {relativeFTD > 20 ? "High Impact" : "Low Impact"}
                     </span>
                   </div>
@@ -140,10 +140,10 @@
                     <span
                       class="text-sm {changePercentageYearAgo >= 0 &&
                       changePercentageYearAgo !== null
-                        ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
+                        ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
                         : changePercentageYearAgo < 0 &&
                             changePercentageYearAgo !== null
-                          ? 'text-red-700 dark:text-[#FF2F1F]'
+                          ? 'text-red-800 dark:text-[#FF2F1F]'
                           : ''}"
                     >
                       {changePercentageYearAgo >= 0 ? "Positive" : "Negative"} Trend

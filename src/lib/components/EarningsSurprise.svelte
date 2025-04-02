@@ -92,8 +92,8 @@
         )}, with
         <span
           class=" {revenueRatio > 0
-            ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
-            : 'text-red-700 dark:text-[#FF2F1F]'}">{revenueRatio}%</span
+            ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
+            : 'text-red-800 dark:text-[#FF2F1F]'}">{revenueRatio}%</span
         >
         YoY {revenueRatio < 0 ? "decline" : "growth"}.
       </li>
@@ -109,8 +109,8 @@
           class=" {epsRatio === null
             ? ''
             : epsRatio > 0
-              ? 'text-green-700 dark:text-[#00FC50]'
-              : 'text-red-700 dark:text-[#FF2F1F]'}"
+              ? 'text-green-800 dark:text-[#00FC50]'
+              : 'text-red-800 dark:text-[#FF2F1F]'}"
         >
           {epsRatio === null ? "n/a" : `${epsRatio}%`}
         </span>

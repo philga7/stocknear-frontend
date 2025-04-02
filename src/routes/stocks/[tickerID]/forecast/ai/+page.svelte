@@ -560,8 +560,8 @@
                     {#if isPro}
                       <span
                         class="text-xl font-bold {avgReturn >= 0
-                          ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
-                          : 'text-red-700 dark:text-[#FF2F1F]'}"
+                          ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
+                          : 'text-red-800 dark:text-[#FF2F1F]'}"
                         >{avgReturn?.toFixed(2)}%</span
                       >
                     {:else}
@@ -696,8 +696,8 @@
                               {#if index < 5 || isPro}
                                 <span
                                   class={item?.change > 0
-                                    ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
-                                    : "text-red-700 dark:text-[#FF2F1F]"}
+                                    ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
+                                    : "text-red-800 dark:text-[#FF2F1F]"}
                                 >
                                   {item?.change}%
                                 </span>
@@ -732,8 +732,8 @@
                     )} the model shows that the average return would be
                     <span
                       class="font-semibold {avgReturn >= 0
-                        ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
-                        : 'text-red-700 dark:text-[#FF2F1F]'}"
+                        ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
+                        : 'text-red-800 dark:text-[#FF2F1F]'}"
                       >{avgReturn?.toFixed(2)}%</span
                     > based on the backtesting results.
                   </p>
@@ -972,26 +972,26 @@
                           {:else}
                             <td
                               class={lowChange > 0
-                                ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
-                                : "text-red-700 dark:text-[#FF2F1F]"}
+                                ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
+                                : "text-red-800 dark:text-[#FF2F1F]"}
                               >{lowChange}%</td
                             >
                             <td
                               class={avgChange > 0
-                                ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
-                                : "text-red-700 dark:text-[#FF2F1F]"}
+                                ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
+                                : "text-red-800 dark:text-[#FF2F1F]"}
                               >{avgChange}%</td
                             >
                             <td
                               class={medianChange > 0
-                                ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
-                                : "text-red-700 dark:text-[#FF2F1F]"}
+                                ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
+                                : "text-red-800 dark:text-[#FF2F1F]"}
                               >{medianChange}%</td
                             >
                             <td
                               class={highChange > 0
-                                ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
-                                : "text-red-700 dark:text-[#FF2F1F]"}
+                                ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
+                                : "text-red-800 dark:text-[#FF2F1F]"}
                               >{highChange}%</td
                             >
                           {/if}

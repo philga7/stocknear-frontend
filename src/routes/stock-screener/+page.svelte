@@ -662,7 +662,7 @@
     },
     returnOnInvestedCapital: {
       label: "Return On Invested Capital",
-      step: ["100%", "50%", "20%", "10%", "5%", "1%"],
+      step: ["1", "0.5", "0.2", "0.1", "0.05", "0.01"],
 
       defaultCondition: "over",
       defaultValue: "any",
@@ -785,14 +785,6 @@
       defaultValue: "any",
       category: "Debt",
     },
-    debtRatio: {
-      label: "Debt Ratio",
-      step: [1, 0.5, 0, -0.5, -1],
-
-      defaultCondition: "over",
-      defaultValue: -0.5,
-      category: "Debt",
-    },
     inventoryTurnover: {
       label: "Inventory Turnover",
       step: [200, 100, 50, 20, 10, 5, 3, 2, 1, 0],
@@ -802,7 +794,7 @@
     },
     returnOnAssets: {
       label: "Return on Assets",
-      step: [10, 8, 6, 4, 2, 1, 0, -2, -4, -6, -8, -10],
+      step: [1, 0.8, 0.6, 0.4, 0.2, 0.1, 0],
 
       defaultCondition: "over",
       defaultValue: "any",
@@ -829,35 +821,28 @@
       defaultValue: "any",
       category: "Valuation & Ratios",
     },
-    evSales: {
+    evToSales: {
       label: "EV / Sales",
       step: [50, 20, 10, 5, 1, 0],
       defaultCondition: "over",
       defaultValue: "any",
       category: "Valuation & Ratios",
     },
-    evEarnings: {
-      label: "EV / Earnings",
-      step: [50, 20, 10, 5, 1, 0],
-      defaultCondition: "over",
-      defaultValue: "any",
-      category: "Valuation & Ratios",
-    },
-    evEBITDA: {
+    evToEBITDA: {
       label: "EV / EBITDA",
       step: [50, 20, 10, 5, 1, 0],
       defaultCondition: "over",
       defaultValue: "any",
       category: "Valuation & Ratios",
     },
-    evEBIT: {
+    evToEBIT: {
       label: "EV / EBIT",
       step: [50, 20, 10, 5, 1, 0],
       defaultCondition: "over",
       defaultValue: "any",
       category: "Valuation & Ratios",
     },
-    evFCF: {
+    evToFCF: {
       label: "EV / FCF",
       step: [50, 20, 10, 5, 1, 0],
       defaultCondition: "over",
@@ -1051,7 +1036,7 @@
       defaultValue: "any",
       category: "Valuation & Ratios",
     },
-    priceCashFlowRatio: {
+    priceToOperatingCashFlowRatio: {
       label: "Price / Cash Flow",
       step: [20, 15, 10, 5, 3, 1, 0],
       defaultCondition: "over",
@@ -1144,22 +1129,6 @@
       defaultCondition: "over",
       defaultValue: "any",
       category: "Margins",
-    },
-    longTermDebtToCapitalization: {
-      label: "Long Term Debt / Market Cap",
-      step: ["80%", "60%", "50%", "30%", "20%", "10%", "5%", "1%", "0.5%"],
-
-      defaultCondition: "over",
-      defaultValue: "any",
-      category: "Debt",
-    },
-    shortTermDebtToCapitalization: {
-      label: "Short Term Debt / Market Cap",
-      step: ["80%", "60%", "50%", "30%", "20%", "10%", "5%", "1%", "0.5%"],
-
-      defaultCondition: "over",
-      defaultValue: "any",
-      category: "Debt",
     },
     interestIncomeToCapitalization: {
       label: "Interest Income / Market Cap",
@@ -3376,13 +3345,13 @@ const handleKeyDown = (event) => {
 
                   <td class=" text-end text-sm sm:text-[1rem]">
                     {#if item?.changesPercentage >= 0}
-                      <span class="text-green-700 dark:text-[#00FC50]"
+                      <span class="text-green-800 dark:text-[#00FC50]"
                         >+{item?.changesPercentage >= 1000
                           ? abbreviateNumber(item?.changesPercentage)
                           : item?.changesPercentage?.toFixed(2)}%</span
                       >
                     {:else}
-                      <span class="text-red-700 dark:text-[#FF2F1F]"
+                      <span class="text-red-800 dark:text-[#FF2F1F]"
                         >{item?.changesPercentage <= -1000
                           ? abbreviateNumber(item?.changesPercentage)
                           : item?.changesPercentage?.toFixed(2)}%
@@ -3418,7 +3387,7 @@ const handleKeyDown = (event) => {
                   <td class=" whitespace-nowrap">
                     <a
                       href={"/stocks/" + item?.symbol}
-                      class="sm:hover: text-blue-400 text-sm sm:text-[1rem]"
+                      class="text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400 text-sm sm:text-[1rem]"
                       >{item?.symbol}</a
                     >
                   </td>
@@ -3481,13 +3450,13 @@ const handleKeyDown = (event) => {
                       {#if row?.rule === "marketCap"}
                         {abbreviateNumber(item[row?.rule])}
                       {:else if item[row?.rule] > 0}
-                        <span class="text-green-700 dark:text-[#00FC50]"
+                        <span class="text-green-800 dark:text-[#00FC50]"
                           >+{abbreviateNumber(
                             item[row?.rule]?.toFixed(2),
                           )}%</span
                         >
                       {:else if item[row?.rule] < 0}
-                        <span class="text-red-700 dark:text-[#FF2F1F]"
+                        <span class="text-red-800 dark:text-[#FF2F1F]"
                           >{abbreviateNumber(
                             item[row?.rule]?.toFixed(2),
                           )}%</span
@@ -3539,11 +3508,11 @@ const handleKeyDown = (event) => {
                         >
                       {:else if row?.rule === "upside"}
                         {#if item[row?.rule] > 0}
-                          <span class="text-green-700 dark:text-[#00FC50]"
+                          <span class="text-green-800 dark:text-[#00FC50]"
                             >+{item[row?.rule]?.toFixed(2)}%</span
                           >
                         {:else if item[row?.rule] < 0}
-                          <span class="text-red-700 dark:text-[#FF2F1F]"
+                          <span class="text-red-800 dark:text-[#FF2F1F]"
                             >{item[row?.rule]?.toFixed(2)}%</span
                           >
                         {:else}
@@ -3551,11 +3520,11 @@ const handleKeyDown = (event) => {
                         {/if}
                       {:else if ["analystRating", "topAnalystRating"]?.includes(row?.rule)}
                         {#if ["Strong Buy", "Buy"].includes(item[row?.rule])}
-                          <span class="text-green-700 dark:text-[#00FC50]"
+                          <span class="text-green-800 dark:text-[#00FC50]"
                             >{item[row?.rule]}</span
                           >
                         {:else if ["Strong Sell", "Sell"].includes(item[row?.rule])}
-                          <span class="text-red-700 dark:text-[#FF2F1F]"
+                          <span class="text-red-800 dark:text-[#FF2F1F]"
                             >{item[row?.rule]}</span
                           >
                         {:else if item[row?.rule] === "Hold"}
@@ -3702,8 +3671,8 @@ const handleKeyDown = (event) => {
               autocomplete="off"
               type="search"
               id="search"
-              class="placeholder-gray-600 dark:placeholder-gray-300 block w-full p-2 ps-10 text-sm text-gray-200 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-100 dark:bg-secondary border border-blue-500"
-              placeholder="Search"
+              class="placeholder-gray-800 dark:placeholder-gray-300 block w-full p-2 ps-10 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-100 dark:bg-secondary border border-blue-500"
+              placeholder="Search..."
               bind:value={searchTerm}
             />
           </div>
@@ -3804,29 +3773,55 @@ const handleKeyDown = (event) => {
 <!--Start Delete Strategy Modal-->
 <input type="checkbox" id="deleteStrategy" class="modal-toggle" />
 
-<dialog id="deleteStrategy" class="modal modal-bottom sm:modal-middle">
+<dialog id="deleteStrategy" class="modal modal-middle p-3 sm:p-0">
   <label for="deleteStrategy" class="cursor-pointer modal-backdrop bg-[#000]/40"
   ></label>
 
   <div
-    class="modal-box w-full bg-white dark:bg-secondary border border-gray-300 dark:border-gray-600 overflow-hidden"
+    class="modal-box w-full p-6 rounded shadow-sm border
+        bg-white dark:bg-[#17181C] border border-gray-300 dark:border-gray-800"
   >
-    <h3
-      class="font-semibold text-md sm:text-lg flex justify-center items-center mt-10 text-center"
-    >
-      Are you sure you want to delete the strategy?
-    </h3>
-
-    <div
-      class=" modal-action w-full m-auto p-5 flex flex-col sm:flex-row items-center"
-    >
+    <h3 class="text-lg font-medium mb-2">Delete Watchlist</h3>
+    <p class="text-sm mb-6">
+      Are you sure you want to delete this watchlist? This action cannot be
+      undone.
+    </p>
+    <div class="flex justify-end space-x-3">
       <label
         for="deleteStrategy"
+        class="cursor-pointer px-4 py-2 rounded text-sm font-medium
+            transition-colors duration-200
+            bg-zinc-800 text-zinc-300 hover:bg-zinc-700"
+        tabindex="0">Cancel</label
+      ><label
+        for="deleteStrategy"
         on:click={handleDeleteStrategy}
-        class="cursor-pointer py-2.5 text-center bg-blue-500 sm:hover:bg-blue-600 dark:bg-[#fff] dark:sm:hover:bg-gray-300 w-full rounded-md m-auto text-white dark:text-black font-semibold text-md"
+        class="cursor-pointer px-4 py-2 rounded text-sm font-medium
+            transition-colors duration-100 flex items-center
+            bg-red-600 text-white
+            "
+        tabindex="0"
+        ><svg
+          stroke="currentColor"
+          fill="none"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="w-4 h-4 mr-2"
+          height="1em"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+          ><polyline points="3 6 5 6 21 6"></polyline><path
+            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+          ></path><line x1="10" y1="11" x2="10" y2="17"></line><line
+            x1="14"
+            y1="11"
+            x2="14"
+            y2="17"
+          ></line></svg
+        >Delete Watchlist</label
       >
-        Proceed
-      </label>
     </div>
   </div>
 </dialog>

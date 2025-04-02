@@ -346,19 +346,19 @@
                           >{item?.count}</Table.Cell
                         >
                         <Table.Cell
-                          class="text-right text-[1rem] text-green-700 dark:text-[#00FC50]"
+                          class="text-right text-[1rem] text-green-800 dark:text-[#00FC50]"
                           >{item?.call}</Table.Cell
                         >
                         <Table.Cell
-                          class="text-right text-[1rem] text-red-700 dark:text-[#FF2F1F]"
+                          class="text-right text-[1rem] text-red-800 dark:text-[#FF2F1F]"
                           >{item?.put}</Table.Cell
                         >
                         <Table.Cell
                           class="text-right text-[1rem]  {item?.avgSentiment >
                           0.4
-                            ? 'text-green-700 dark:text-[#00FC50]'
+                            ? 'text-green-800 dark:text-[#00FC50]'
                             : item?.avgSentiment < -0.1
-                              ? 'text-red-700 dark:text-[#FF2F1F]'
+                              ? 'text-red-800 dark:text-[#FF2F1F]'
                               : 'text-yellow-600 dark:text-[#C6A755]'} "
                           >{item?.avgSentiment > 0.4
                             ? "Bullish"
@@ -374,8 +374,8 @@
                         <Table.Cell class="text-right text-[1rem] ">
                           <span
                             class="{item?.changesPercentage > 0
-                              ? 'text-green-700 dark:text-[#00FC50]'
-                              : 'text-red-700 dark:text-[#FF2F1F]'} text-end"
+                              ? 'text-green-800 dark:text-[#00FC50]'
+                              : 'text-red-800 dark:text-[#FF2F1F]'} text-end"
                           >
                             {#if item?.changesPercentage > 0}
                               +{item?.changesPercentage?.toFixed(2)}%

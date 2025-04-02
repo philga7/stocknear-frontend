@@ -265,8 +265,8 @@
                       <td
                         class="text-sm sm:text-[1rem] whitespace-nowrap text-end {item?.changesPercentage >=
                         0
-                          ? 'text-green-700 dark:text-[#00FC50]'
-                          : 'text-red-700 dark:text-[#FF2F1F]'}"
+                          ? 'text-green-800 dark:text-[#00FC50]'
+                          : 'text-red-800 dark:text-[#FF2F1F]'}"
                       >
                         {item?.changesPercentage > 0
                           ? "+"
@@ -282,9 +282,9 @@
                       <td
                         class="text-end text-sm sm:text-[1rem] whitespace-nowrap {item?.transactionType ===
                         'Buy'
-                          ? 'text-green-700 dark:text-[#00FC50]'
+                          ? 'text-green-800 dark:text-[#00FC50]'
                           : item?.transactionType === 'Sell'
-                            ? 'text-red-700 dark:text-[#FF2F1F]'
+                            ? 'text-red-800 dark:text-[#FF2F1F]'
                             : 'text-[#E57C34]'}"
                       >
                         <div class="flex flex-row items-center justify-end">

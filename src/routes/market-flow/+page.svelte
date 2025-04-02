@@ -613,8 +613,8 @@
                         <td
                           class="text-sm sm:text-[1rem] {item?.changesPercentage >=
                           0
-                            ? "text-green-700 dark:text-[#00FC50] before:content-['+'] "
-                            : 'text-red-700 dark:text-[#FF2F1F]'} text-end"
+                            ? "text-green-800 dark:text-[#00FC50] before:content-['+'] "
+                            : 'text-red-800 dark:text-[#FF2F1F]'} text-end"
                         >
                           {item?.changesPercentage?.toFixed(2)}%
                         </td>
@@ -705,8 +705,8 @@
                         <td
                           class="text-sm sm:text-[1rem] {item?.changesPercentage >=
                           0
-                            ? "text-green-700 dark:text-[#00FC50] before:content-['+'] "
-                            : 'text-red-700 dark:text-[#FF2F1F]'} text-end"
+                            ? "text-green-800 dark:text-[#00FC50] before:content-['+'] "
+                            : 'text-red-800 dark:text-[#FF2F1F]'} text-end"
                         >
                           {item?.changesPercentage}%
                         </td>

@@ -325,9 +325,9 @@
             <div
               class="mt-1 break-words font-semibold leading-8 text-xl sm:text-2xl {changesPercentage >=
               0
-                ? "before:content-['+'] after:content-['%'] text-green-700 dark:text-[#00FC50]"
+                ? "before:content-['+'] after:content-['%'] text-green-800 dark:text-[#00FC50]"
                 : changesPercentage < 0
-                  ? "after:content-['%'] text-red-700 dark:text-[#FF2F1F]"
+                  ? "after:content-['%'] text-red-800 dark:text-[#FF2F1F]"
                   : ''}"
             >
               {changesPercentage}
@@ -525,12 +525,12 @@
                             data?.getStockQuote?.price -
                             1 >=
                           0
-                            ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
+                            ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
                             : item?.adjusted_pt_current /
                                   data?.getStockQuote?.price -
                                   1 <
                                 0
-                              ? 'text-red-700 dark:text-[#FF2F1F]'
+                              ? 'text-red-800 dark:text-[#FF2F1F]'
                               : ''}"
                         >
                           {(

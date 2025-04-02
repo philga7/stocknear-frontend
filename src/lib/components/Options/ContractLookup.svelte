@@ -975,11 +975,11 @@
                     </td>
                     <td class="text-sm sm:text-[1rem] text-end">
                       {#if item?.changeOI >= 0 && item?.changeOI !== null}
-                        <span class="text-green-700 dark:text-[#00FC50]"
+                        <span class="text-green-800 dark:text-[#00FC50]"
                           >+{item?.changeOI?.toLocaleString("en-US")}</span
                         >
                       {:else if item?.changeOI < 0 && item?.changeOI !== null}
-                        <span class="text-red-700 dark:text-[#FF2F1F]"
+                        <span class="text-red-800 dark:text-[#FF2F1F]"
                           >{item?.changeOI?.toLocaleString("en-US")}</span
                         >
                       {:else}
@@ -989,11 +989,11 @@
 
                     <td class="text-sm sm:text-[1rem] text-end">
                       {#if item?.changesPercentageOI > 0 && item?.changesPercentageOI !== undefined}
-                        <span class="text-green-700 dark:text-[#00FC50]"
+                        <span class="text-green-800 dark:text-[#00FC50]"
                           >+{item?.changesPercentageOI + "%"}</span
                         >
                       {:else if item?.changesPercentageOI < 0 && item?.changesPercentageOI !== undefined}
-                        <span class="text-red-700 dark:text-[#FF2F1F]"
+                        <span class="text-red-800 dark:text-[#FF2F1F]"
                           >{item?.changesPercentageOI + "%"}</span
                         >
                       {:else if item?.changesPercentageOI === 0 && item?.changesPercentageOI !== undefined}

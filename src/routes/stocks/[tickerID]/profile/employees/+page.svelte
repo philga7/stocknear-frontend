@@ -255,8 +255,8 @@
         changeRate >= 0 && changeRate !== null ? "increased" : "decreased";
       const growthRateClass =
         changeRate >= 0 && changeRate !== null
-          ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
-          : "text-red-700 dark:text-[#FF2F1F]";
+          ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
+          : "text-red-800 dark:text-[#FF2F1F]";
 
       return `
       <span>
@@ -577,7 +577,7 @@
                         {#if index === historyList?.length - 1}
                           n/a
                         {:else if item?.employeeCount > historyList[index + 1]?.employeeCount}
-                          <span class="text-green-700 dark:text-[#00FC50]">
+                          <span class="text-green-800 dark:text-[#00FC50]">
                             +{(
                               ((item?.employeeCount -
                                 historyList[index + 1]?.employeeCount) /
@@ -586,7 +586,7 @@
                             ).toFixed(2)}%
                           </span>
                         {:else if item?.employeeCount < historyList[index + 1]?.employeeCount}
-                          <span class="text-red-700 dark:text-[#FF2F1F]">
+                          <span class="text-red-800 dark:text-[#FF2F1F]">
                             -{(
                               (Math.abs(
                                 item?.employeeCount -

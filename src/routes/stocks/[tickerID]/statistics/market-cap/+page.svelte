@@ -523,10 +523,10 @@
                       <span
                         class="text-sm {changePercentageYearAgo >= 0 &&
                         changePercentageYearAgo !== null
-                          ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
+                          ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
                           : changePercentageYearAgo < 0 &&
                               changePercentageYearAgo !== null
-                            ? 'text-red-700 dark:text-[#FF2F1F]'
+                            ? 'text-red-800 dark:text-[#FF2F1F]'
                             : ''}"
                       >
                         {changePercentageYearAgo >= 0 ? "Positive" : "Negative"}
@@ -757,7 +757,7 @@
                           {#if index === tableList?.length - 1}
                             n/a
                           {:else if item?.marketCap > tableList[index + 1]?.marketCap}
-                            <span class="text-green-700 dark:text-[#00FC50]">
+                            <span class="text-green-800 dark:text-[#00FC50]">
                               +{(
                                 ((item?.marketCap -
                                   tableList[index + 1]?.marketCap) /
@@ -766,7 +766,7 @@
                               )?.toFixed(2)}%
                             </span>
                           {:else if item?.marketCap < tableList[index + 1]?.marketCap}
-                            <span class="text-red-700 dark:text-[#FF2F1F]">
+                            <span class="text-red-800 dark:text-[#FF2F1F]">
                               -{(
                                 Math.abs(
                                   (item?.marketCap -

@@ -327,12 +327,12 @@
             <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
               {#if item?.put_call_ratio <= 1 && item?.put_call_ratio !== null}
                 <span
-                  class="font-semibold dark:font-normal text-green-700 dark:text-[#00FC50]"
+                  class="font-semibold dark:font-normal text-green-800 dark:text-[#00FC50]"
                   >{item?.put_call_ratio?.toFixed(2)}</span
                 >
               {:else if item?.put_call_ratio > 1 && item?.put_call_ratio !== null}
                 <span
-                  class="font-semibold dark:font-normal text-red-700 dark:text-[#FF2F1F]"
+                  class="font-semibold dark:font-normal text-red-800 dark:text-[#FF2F1F]"
                   >{item?.put_call_ratio?.toFixed(2)}</span
                 >
               {:else}

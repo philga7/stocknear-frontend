@@ -224,13 +224,13 @@
                     class=" text-sm sm:text-[1rem] whitespace-nowrap text-end"
                   >
                     {#if item?.changesPercentage >= 0}
-                      <span class="text-green-700 dark:text-[#00FC50]"
+                      <span class="text-green-800 dark:text-[#00FC50]"
                         >+{item?.changesPercentage >= 1000
                           ? abbreviateNumber(item?.changesPercentage)
                           : item?.changesPercentage?.toFixed(2)}%</span
                       >
                     {:else if item?.changesPercentage < 0}
-                      <span class="text-red-700 dark:text-[#FF2F1F]"
+                      <span class="text-red-800 dark:text-[#FF2F1F]"
                         >{item?.changesPercentage <= -1000
                           ? abbreviateNumber(item?.changesPercentage)
                           : item?.changesPercentage?.toFixed(2)}%

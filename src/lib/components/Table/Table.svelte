@@ -901,11 +901,11 @@
                 {item[column.key]?.toLocaleString("en-US")}
               {:else if column?.type === "decimalSign"}
                 {#if item[column.key] >= 0}
-                  <span class="text-green-700 dark:text-[#00FC50]"
+                  <span class="text-green-800 dark:text-[#00FC50]"
                     >+{item[column.key]?.toLocaleString("en-US")}</span
                   >
                 {:else if item[column.key] < 0}
-                  <span class="text-red-700 dark:text-[#FF2F1F]"
+                  <span class="text-red-800 dark:text-[#FF2F1F]"
                     >{item[column.key]?.toLocaleString("en-US")}</span
                   >
                 {/if}
@@ -937,11 +937,11 @@
                   : "< 0.01%"}
               {:else if column.type === "percentSign"}
                 {#if item[column.key] > 0}
-                  <span class="text-green-700 dark:text-[#00FC50]"
+                  <span class="text-green-800 dark:text-[#00FC50]"
                     >+{abbreviateNumber(item[column.key]?.toFixed(2))}%</span
                   >
                 {:else if item[column.key] < 0}
-                  <span class="text-red-700 dark:text-[#FF2F1F]"
+                  <span class="text-red-800 dark:text-[#FF2F1F]"
                     >{abbreviateNumber(item[column.key]?.toFixed(2))}%</span
                   >
                 {:else}
@@ -952,10 +952,10 @@
               {:else if column.type === "sentiment"}
                 <div
                   class={item[column.key] >= 55
-                    ? "text-green-700 dark:text-[#00FC50]"
+                    ? "text-green-800 dark:text-[#00FC50]"
                     : item[column.key] >= 50
                       ? "text-[#E57C34]"
-                      : "text-red-700 dark:text-[#FF2F1F]"}
+                      : "text-red-800 dark:text-[#FF2F1F]"}
                 >
                   <div class="flex flex-row items-center justify-end">
                     <div class="">

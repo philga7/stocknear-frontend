@@ -558,13 +558,13 @@
                     class=" text-end text-sm sm:text-[1rem] whitespace-nowrap"
                   >
                     {#if item?.changeInSharesNumberPercentage >= 0}
-                      <span class="text-green-700 dark:text-[#00FC50]"
+                      <span class="text-green-800 dark:text-[#00FC50]"
                         >+{abbreviateNumber(
                           item?.changeInSharesNumberPercentage?.toFixed(2),
                         )}%</span
                       >
                     {:else if item?.changeInSharesNumberPercentage < 0}
-                      <span class="text-red-700 dark:text-[#FF2F1F]"
+                      <span class="text-red-800 dark:text-[#FF2F1F]"
                         >{abbreviateNumber(
                           item?.changeInSharesNumberPercentage?.toFixed(2),
                         )}%</span

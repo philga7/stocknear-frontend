@@ -132,12 +132,12 @@
                       >
                         {#if item?.return >= 0 && item?.return !== null}
                           <span
-                            class="inline-block text-green-700 dark:text-[#00FC50] text-sm sm:text-[1rem] whitespace-nowrap"
+                            class="inline-block text-green-800 dark:text-[#00FC50] text-sm sm:text-[1rem] whitespace-nowrap"
                             >+{abbreviateNumber(item?.return)}%</span
                           >
                         {:else if item?.return < 0 && item?.return !== null}
                           <span
-                            class="inline-block text-red-700 dark:text-[#FF2F1F] text-sm sm:text-[1rem] whitespace-nowrap"
+                            class="inline-block text-red-800 dark:text-[#FF2F1F] text-sm sm:text-[1rem] whitespace-nowrap"
                             >{abbreviateNumber(item?.return)}%
                           </span>
                         {:else}

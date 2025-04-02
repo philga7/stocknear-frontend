@@ -289,9 +289,9 @@
                   <div class="text-2xl font-bold tracking-tight">
                     <span
                       class={successRate >= 0 && successRate !== undefined
-                        ? "before:content-['+'] text-green-700 dark:text-[#36D984]"
+                        ? "before:content-['+'] text-green-800 dark:text-[#36D984]"
                         : successRate < 0 && successRate !== undefined
-                          ? "text-red-700 dark:text-[#EF4444]"
+                          ? "text-red-800 dark:text-[#EF4444]"
                           : ""}
                       >{successRate !== undefined
                         ? successRate?.toFixed(2) + "%"
@@ -310,9 +310,9 @@
                   <div class="text-2xl font-bold tracking-tight">
                     <span
                       class={avgReturn >= 0 && avgReturn !== undefined
-                        ? "before:content-['+'] text-green-700 dark:text-[#36D984]"
+                        ? "before:content-['+'] text-green-800 dark:text-[#36D984]"
                         : avgReturn < 0 && avgReturn !== undefined
-                          ? "text-red-700 dark:text-[#EF4444]"
+                          ? "text-red-800 dark:text-[#EF4444]"
                           : ""}
                       >{avgReturn !== undefined
                         ? avgReturn?.toFixed(2) + "%"
@@ -514,9 +514,9 @@
 
                           <td
                             class="{item?.upside >= 0 && item?.upside !== null
-                              ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
+                              ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
                               : item?.upside < 0 && item?.upside !== null
-                                ? 'text-red-700 dark:text-[#FF2F1F]'
+                                ? 'text-red-800 dark:text-[#FF2F1F]'
                                 : ''} text-end text-sm sm:text-[1rem] whitespace-nowrap"
                           >
                             {item?.upside !== null ? item?.upside + "%" : "n/a"}

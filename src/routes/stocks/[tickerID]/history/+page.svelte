@@ -467,10 +467,10 @@
                           <td
                             class="text-sm sm:text-[1rem] {item?.changesPercentage >=
                               0 && item?.changesPercentage !== null
-                              ? "text-green-700 dark:text-[#00FC50] before:content-['+'] "
+                              ? "text-green-800 dark:text-[#00FC50] before:content-['+'] "
                               : item?.changesPercentage < 0 &&
                                   item?.changesPercentage !== null
-                                ? 'text-red-700 dark:text-[#FF2F1F]'
+                                ? 'text-red-800 dark:text-[#FF2F1F]'
                                 : ''} text-end"
                           >
                             {item?.changesPercentage !== null

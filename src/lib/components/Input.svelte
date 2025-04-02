@@ -62,7 +62,7 @@
 
   {#if errors}
     <label for={id} class=" py-0 pt-1 text-xs">
-      <span class="text-red-700 font-semibold dark:font-normal dark:text-error">
+      <span class="text-red-800 font-semibold dark:font-normal dark:text-error">
         {errors}
       </span>
     </label>

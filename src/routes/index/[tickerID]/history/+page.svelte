@@ -476,7 +476,7 @@
                                 ? "text-[#00FC50] before:content-['+'] "
                                 : item?.changesPercentage < 0 &&
                                     item?.changesPercentage !== null
-                                  ? 'text-red-700 dark:text-[#FF2F1F]'
+                                  ? 'text-red-800 dark:text-[#FF2F1F]'
                                   : 'text-white'} text-end"
                             >
                               {item?.changesPercentage !== null

@@ -219,13 +219,13 @@
                           class="text-right md:table.-cell xl:table.-column text-sm sm:text-[1rem] text-white"
                         >
                           {#if item?.changesPercentage >= 0}
-                            <span class="text-green-700 dark:text-[#00FC50]"
+                            <span class="text-green-800 dark:text-[#00FC50]"
                               >+{item?.changesPercentage >= 1000
                                 ? abbreviateNumber(item?.changesPercentage)
                                 : item?.changesPercentage?.toFixed(2)}%</span
                             >
                           {:else}
-                            <span class="text-red-700 dark:text-[#FF2F1F]"
+                            <span class="text-red-800 dark:text-[#FF2F1F]"
                               >{item?.changesPercentage <= -1000
                                 ? abbreviateNumber(item?.changesPercentage)
                                 : item?.changesPercentage?.toFixed(2)}%
@@ -338,13 +338,13 @@
                           class="text-right md:table.-cell xl:table.-column text-sm sm:text-[1rem] text-white"
                         >
                           {#if item?.changesPercentage >= 0}
-                            <span class="text-green-700 dark:text-[#00FC50]"
+                            <span class="text-green-800 dark:text-[#00FC50]"
                               >+{item?.changesPercentage >= 1000
                                 ? abbreviateNumber(item?.changesPercentage)
                                 : item?.changesPercentage?.toFixed(2)}%</span
                             >
                           {:else}
-                            <span class="text-red-700 dark:text-[#FF2F1F]"
+                            <span class="text-red-800 dark:text-[#FF2F1F]"
                               >{item?.changesPercentage <= -1000
                                 ? abbreviateNumber(item?.changesPercentage)
                                 : item?.changesPercentage?.toFixed(2)}%
@@ -513,26 +513,26 @@
                       ><td class="py-[3px] text-left lg:py-0.5">Change</td>
                       <td
                         class={analystReport?.lowPriceChange > 0
-                          ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
-                          : "text-red-700 dark:text-[#FF2F1F]"}
+                          ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
+                          : "text-red-800 dark:text-[#FF2F1F]"}
                         >{analystReport?.lowPriceChange}%</td
                       >
                       <td
                         class={analystReport?.avgPriceChange > 0
-                          ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
-                          : "text-red-700 dark:text-[#FF2F1F]"}
+                          ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
+                          : "text-red-800 dark:text-[#FF2F1F]"}
                         >{analystReport?.avgPriceChange}%</td
                       >
                       <td
                         class={analystReport?.medianPriceChange > 0
-                          ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
-                          : "text-red-700 dark:text-[#FF2F1F]"}
+                          ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
+                          : "text-red-800 dark:text-[#FF2F1F]"}
                         >{analystReport?.medianPriceChange}%</td
                       >
                       <td
                         class={analystReport?.highPriceChange > 0
-                          ? "before:content-['+'] text-green-700 dark:text-[#00FC50]"
-                          : "text-red-700 dark:text-[#FF2F1F]"}
+                          ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
+                          : "text-red-800 dark:text-[#FF2F1F]"}
                         >{analystReport?.highPriceChange}%</td
                       ></tr
                     ></tbody

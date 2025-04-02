@@ -1729,24 +1729,24 @@
                                     {:else if row?.type === "percentSign"}
                                       {#if item[row?.rule] >= 0}
                                         <span
-                                          class="text-green-700 dark:text-[#00FC50]"
+                                          class="text-green-800 dark:text-[#00FC50]"
                                           >+{item[row?.rule]?.toFixed(2)}%</span
                                         >
                                       {:else}
                                         <span
-                                          class="text-red-700 dark:text-[#FF2F1F]"
+                                          class="text-red-800 dark:text-[#FF2F1F]"
                                           >{item[row?.rule]?.toFixed(2)}%</span
                                         >
                                       {/if}
                                     {:else if row?.type === "rating"}
                                       {#if ["Strong Buy", "Buy"].includes(item[row?.rule])}
                                         <span
-                                          class="text-green-700 dark:text-[#00FC50]"
+                                          class="text-green-800 dark:text-[#00FC50]"
                                           >{item[row?.rule]}</span
                                         >
                                       {:else if ["Strong Sell", "Sell"].includes(item[row?.rule])}
                                         <span
-                                          class="text-red-700 dark:text-[#FF2F1F]"
+                                          class="text-red-800 dark:text-[#FF2F1F]"
                                           >{item[row?.rule]}</span
                                         >
                                       {:else if item[row?.rule] === "Hold"}
@@ -2055,31 +2055,57 @@
 <!--Start Delete Strategy Modal-->
 <input type="checkbox" id="deleteWatchlist" class="modal-toggle" />
 
-<dialog id="deleteWatchlist" class="modal modal-bottom sm:modal-middle">
+<dialog id="deleteWatchlist" class="modal modal-middle p-3 sm:p-0">
   <label
     for="deleteWatchlist"
     class="cursor-pointer modal-backdrop bg-[#000]/40"
   ></label>
 
   <div
-    class="modal-box w-full bg-secondary border border-gray-300 dark:border-gray-600 overflow-hidden"
+    class="modal-box w-full p-6 rounded shadow-sm border
+        bg-white dark:bg-[#17181C] border border-gray-300 dark:border-gray-800"
   >
-    <h3
-      class="font-bold text-[1rem] text-center sm:text-lg flex justify-center items-center mt-10 text-white"
-    >
-      Are you sure you want to delete the watchlist?
-    </h3>
-
-    <div
-      class="modal-action w-full m-auto p-5 flex flex-col sm:flex-row items-center"
-    >
+    <h3 class="text-lg font-medium mb-2">Delete Watchlist</h3>
+    <p class="text-sm mb-6">
+      Are you sure you want to delete this watchlist? This action cannot be
+      undone.
+    </p>
+    <div class="flex justify-end space-x-3">
       <label
         for="deleteWatchlist"
+        class="cursor-pointer px-4 py-2 rounded text-sm font-medium
+            transition-colors duration-200
+            bg-zinc-800 text-zinc-300 hover:bg-zinc-700"
+        tabindex="0">Cancel</label
+      ><label
+        for="deleteWatchlist"
         on:click={deleteWatchlist}
-        class="cursor-pointer mt-2 py-2.5 text-center bg-[#fff] sm:hover:bg-gray-200 btn-md w-full rounded m-auto text-black font-semibold text-md"
+        class="cursor-pointer px-4 py-2 rounded text-sm font-medium
+            transition-colors duration-100 flex items-center
+            bg-red-600 text-white
+            "
+        tabindex="0"
+        ><svg
+          stroke="currentColor"
+          fill="none"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="w-4 h-4 mr-2"
+          height="1em"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+          ><polyline points="3 6 5 6 21 6"></polyline><path
+            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+          ></path><line x1="10" y1="11" x2="10" y2="17"></line><line
+            x1="14"
+            y1="11"
+            x2="14"
+            y2="17"
+          ></line></svg
+        >Delete Watchlist</label
       >
-        Proceed
-      </label>
     </div>
   </div>
 </dialog>

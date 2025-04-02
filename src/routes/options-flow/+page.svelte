@@ -1448,9 +1448,9 @@
                 <span
                   class="text-start text-[1rem] font-semibold {flowSentiment ===
                   'Bullish'
-                    ? 'text-green-700 dark:text-[#00FC50]'
+                    ? 'text-green-800 dark:text-[#00FC50]'
                     : flowSentiment === 'Bearish'
-                      ? 'text-red-700 dark:text-[#FF2F1F]'
+                      ? 'text-red-800 dark:text-[#FF2F1F]'
                       : flowSentiment === 'Neutral'
                         ? 'text-[#fff]'
                         : ''}">{flowSentiment}</span
@@ -1554,7 +1554,7 @@
                       cy="18"
                       r="16"
                       fill="none"
-                      class="stroke-current text-green-700 dark:text-[#00FC50]"
+                      class="stroke-current text-green-800 dark:text-[#00FC50]"
                       stroke-width="3"
                       stroke-dasharray="100"
                       stroke-dashoffset={100 - callPercentage?.toFixed(2)}

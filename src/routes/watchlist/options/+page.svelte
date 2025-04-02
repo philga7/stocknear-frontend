@@ -313,8 +313,8 @@
                         <td
                           class="text-sm sm:text-[1rem] {item?.put_call ===
                           'Calls'
-                            ? 'text-green-700 dark:text-[#00FC50]'
-                            : 'text-red-700 dark:text-[#FF2F1F]'} text-start"
+                            ? 'text-green-800 dark:text-[#00FC50]'
+                            : 'text-red-800 dark:text-[#FF2F1F]'} text-start"
                         >
                           {item?.put_call}
                         </td>
@@ -322,9 +322,9 @@
                         <td
                           class="text-sm sm:text-[1rem] {item?.sentiment ===
                           'Bullish'
-                            ? 'text-green-700 dark:text-[#00FC50]'
+                            ? 'text-green-800 dark:text-[#00FC50]'
                             : item?.sentiment === 'Bearish'
-                              ? 'text-red-700 dark:text-[#FF2F1F]'
+                              ? 'text-red-800 dark:text-[#FF2F1F]'
                               : 'text-[#C6A755]'} text-start"
                         >
                           {item?.sentiment}

@@ -163,9 +163,9 @@
                     {:else}
                       <span
                         class={item?.growth !== null && item?.growth > 0
-                          ? "text-green-700 dark:text-[#00FC50] before:content-['+']"
+                          ? "text-green-800 dark:text-[#00FC50] before:content-['+']"
                           : item?.growth < 0
-                            ? "text-red-700 dark:text-[#FF2F1F]"
+                            ? "text-red-800 dark:text-[#FF2F1F]"
                             : ""}
                       >
                         {item?.growth !== null && Math.abs(item?.growth - 0) > 0
@@ -197,9 +197,9 @@
                     {:else}
                       <span
                         class={item?.growth !== null && item?.growth > 0
-                          ? "text-green-700 dark:text-[#00FC50] before:content-['+']"
+                          ? "text-green-800 dark:text-[#00FC50] before:content-['+']"
                           : item?.growth < 0
-                            ? "text-red-700 dark:text-[#FF2F1F]"
+                            ? "text-red-800 dark:text-[#FF2F1F]"
                             : ""}
                       >
                         {item?.growth !== null && Math.abs(item?.growth - 0) > 0
@@ -231,9 +231,9 @@
                     {:else}
                       <span
                         class={item?.growth !== null && item?.growth > 0
-                          ? "text-green-700 dark:text-[#00FC50] before:content-['+']"
+                          ? "text-green-800 dark:text-[#00FC50] before:content-['+']"
                           : item?.growth < 0
-                            ? "text-red-700 dark:text-[#FF2F1F]"
+                            ? "text-red-800 dark:text-[#FF2F1F]"
                             : ""}
                       >
                         {item?.growth !== null && Math.abs(item?.growth - 0) > 0

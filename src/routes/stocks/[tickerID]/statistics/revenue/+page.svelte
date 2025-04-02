@@ -460,7 +460,7 @@
                           {#if index === tableList?.length - 1}
                             n/a
                           {:else if item?.revenue > tableList[index + 1]?.revenue}
-                            <span class="text-green-700 dark:text-[#00FC50]">
+                            <span class="text-green-800 dark:text-[#00FC50]">
                               +{(
                                 ((item?.revenue -
                                   tableList[index + 1]?.revenue) /
@@ -469,7 +469,7 @@
                               )?.toFixed(2)}%
                             </span>
                           {:else if item?.revenue < tableList[index + 1]?.revenue}
-                            <span class="text-red-700 dark:text-[#FF2F1F]">
+                            <span class="text-red-800 dark:text-[#FF2F1F]">
                               -{(
                                 Math.abs(
                                   (item?.revenue -
