@@ -50,7 +50,7 @@
   import Layers from "lucide-svelte/icons/layers";
   import Boxes from "lucide-svelte/icons/boxes";
   import Newspaper from "lucide-svelte/icons/newspaper";
-  import AudioLine from "lucide-svelte/icons/audio-lines";
+  import Tools from "lucide-svelte/icons/wrench";
   import Gem from "lucide-svelte/icons/gem";
 
   export let data;
@@ -654,65 +654,9 @@
                 </Accordion.Root>
               </div>
 
-              <!--
-              <div class="flex flex-row items-center w-full">
-                <Accordion.Root class="w-full">
-                  <Accordion.Item value="item-1">
-                    <Accordion.Trigger class="">
-                      <AudioLine class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1" />
-                      <span class="text-muted dark:text-white ml-1 mr-auto"
-                        >Tracker Datasets</span
-                      >
-                    </Accordion.Trigger>
-                    <Accordion.Content
-                      class="border-l border-gray-500 ml-2 mt-5"
-                    >
-                      <Sheet.Close asChild let:builder>
-                        <div class="flex flex-col items-start">
-                          <Button
-                            builders={[builder]}
-                            type="submit"
-                            class="w-full dark:bg-[#18181B]"
-                          >
-                            <a
-                              href="/insider-tracker"
-                              class="text-start w-full text-[1rem] text-muted dark:text-white ml-4 mt-4"
-                              >Insider Tracker</a
-                            >
-                          </Button>
-
-                          <Button
-                            builders={[builder]}
-                            type="submit"
-                            class="w-full dark:bg-[#18181B]"
-                          >
-                            <a
-                              href="/reddit-tracker"
-                              class="text-start w-full text-[1rem] text-muted dark:text-white ml-4 mt-4"
-                              >Reddit Tracker</a
-                            >
-                          </Button>
-
-                          <Button
-                            builders={[builder]}
-                            type="submit"
-                            class="w-full dark:bg-[#18181B]"
-                          >
-                            <a
-                              href="/potus-tracker"
-                              class="text-start w-full text-[1rem] text-muted dark:text-white ml-4 mt-4"
-                              >POTUS Tracker</a
-                            >
-                          </Button>
-
-        
-                        </div>
-                      </Sheet.Close>
-                    </Accordion.Content>
-                  </Accordion.Item>
-                </Accordion.Root>
-              </div>
-              -->
+              
+           
+            
 
               <div class="flex flex-row items-center w-full">
                 <Accordion.Root class="w-full">
@@ -760,6 +704,41 @@
                               >Dark Pool Flow</a
                             >
                           </Button>
+                        </div>
+                      </Sheet.Close>
+                    </Accordion.Content>
+                  </Accordion.Item>
+                </Accordion.Root>
+              </div>
+
+                 <div class="flex flex-row items-center w-full">
+                <Accordion.Root class="w-full">
+                  <Accordion.Item value="item-1">
+                    <Accordion.Trigger class="">
+                      <Tools class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1" />
+                      <span class="text-muted dark:text-white ml-1 mr-auto"
+                        >Tools</span
+                      >
+                    </Accordion.Trigger>
+                    <Accordion.Content
+                      class="border-l border-gray-500 ml-2 mt-5"
+                    >
+                      <Sheet.Close asChild let:builder>
+                        <div class="flex flex-col items-start">
+
+                          <Button
+                            builders={[builder]}
+                            type="submit"
+                            class="w-full dark:bg-[#18181B]"
+                          >
+                            <a
+                              href="/potus-tracker"
+                              class="text-start w-full text-[1rem] text-muted dark:text-white ml-4 mt-4"
+                              >POTUS Tracker</a
+                            >
+                          </Button>
+
+        
                         </div>
                       </Sheet.Close>
                     </Accordion.Content>
@@ -1157,45 +1136,8 @@
                   </Accordion.Root>
                 </div>
 
-                <!--
-                <div class="flex flex-row items-center ml-9 w-full mt-3">
-                  <Accordion.Root class="w-full">
-                    <Accordion.Item value="item-1">
-                      <Accordion.Trigger class="">
-                        <AudioLine class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1" />
-                        <span class="text-muted dark:text-white ml-1 mr-auto"
-                          >Tracker Datasets</span
-                        >
-                      </Accordion.Trigger>
-                      <Accordion.Content
-                        class="border-l border-gray-500 ml-2 mt-5"
-                      >
-                        <div class="flex flex-col items-start">
-                          <a
-                            href="/insider-tracker"
-                            class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
-                            >Insider Tracker</a
-                          >
-
-                          <a
-                            href="/reddit-tracker"
-                            class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
-                            >Reddit Tracker</a
-                          >
-
-                          <a
-                            href="/potus-tracker"
-                            class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
-                            >POTUS Tracker</a
-                          >
-
-                        
-                        </div>
-                      </Accordion.Content>
-                    </Accordion.Item>
-                  </Accordion.Root>
-                </div>
-                -->
+                
+              
 
                 <div class="flex flex-row items-center ml-9 w-full mt-3">
                   <Accordion.Root class="w-full">
@@ -1229,6 +1171,35 @@
                     </Accordion.Item>
                   </Accordion.Root>
                 </div>
+
+                  <div class="flex flex-row items-center ml-9 w-full mt-3">
+                  <Accordion.Root class="w-full">
+                    <Accordion.Item value="item-1">
+                      <Accordion.Trigger class="">
+                        <Tools class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1" />
+                        <span class="text-muted dark:text-white ml-1 mr-auto"
+                          >Tools</span
+                        >
+                      </Accordion.Trigger>
+                      <Accordion.Content
+                        class="border-l border-gray-500 ml-2 mt-5"
+                      >
+                        <div class="flex flex-col items-start">
+                  
+
+                          <a
+                            href="/potus-tracker"
+                            class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
+                            >POTUS Tracker</a
+                          >
+
+                        
+                        </div>
+                      </Accordion.Content>
+                    </Accordion.Item>
+                  </Accordion.Root>
+                </div>
+                
 
                 <a
                   href="/hedge-funds"
