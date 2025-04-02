@@ -157,6 +157,12 @@
       text: `EBITDA stands for "Earnings Before Interest, Taxes, Depreciation and Amortization." It is a commonly used measure of profitability.`,
     },
     {
+      propertyName: "ebit",
+      growthPropertyName: "growthEBIT",
+      label: "EBIT",
+      text: ``,
+    },
+    {
       propertyName: "depreciationAndAmortization",
       growthPropertyName: "growthDepreciationAndAmortization",
       label: "Depreciation & Amortization",

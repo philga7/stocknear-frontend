@@ -275,12 +275,12 @@
               </h2>
               <p class="mb-4 px-0.5 xs:text-[1.05rem] lg:leading-normal">
                 {#if rawData?.enterpriseValue !== null}
-                  {$displayCompanyName} has an Enterprise Value (EV) of {abbreviateNumber(
+                  {companyName} has an Enterprise Value (EV) of {abbreviateNumber(
                     rawData?.enterpriseValue,
                     false,
                   )}.
                 {:else}
-                  Currently the Enterprise Value (EV) is not available for {$displayCompanyName}.
+                  Currently the Enterprise Value (EV) is not available for {companyName}.
                 {/if}
               </p>
               <table
@@ -290,18 +290,10 @@
                   ><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                     ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>EV / Earnings</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.evEarnings ?? "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
                       ><span>EV / Sales</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.evSales ?? "n/a"}</td
+                      >{rawData?.evToSales ?? "n/a"}</td
                     >
                   </tr><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -309,7 +301,7 @@
                       ><span>EV / EBITDA</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.evEBITDA ?? "n/a"}</td
+                      >{rawData?.evToEBITDA ?? "n/a"}</td
                     >
                   </tr><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -317,7 +309,7 @@
                       ><span>EV / EBIT</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.evEBIT ?? "n/a"}</td
+                      >{rawData?.evToOperatingCashFlow ?? "n/a"}</td
                     >
                   </tr><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -325,7 +317,7 @@
                       ><span>EV / FCF</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.evFCF ?? "n/a"}</td
+                      >{rawData?.evToFreeCashFlow ?? "n/a"}</td
                     >
                   </tr></tbody
                 >
@@ -371,18 +363,7 @@
                       ><span>Total Debt / Capitalization</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{abbreviateNumber(
-                        rawData?.totalDebtToCapitalization,
-                        false,
-                      )}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Cash Flow / Debt</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.cashFlowToDebtRatio}</td
+                      >{abbreviateNumber(rawData?.debtToMarketCap, false)}</td
                     >
                   </tr><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -411,26 +392,26 @@
                   ><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                     ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Return on Equity (ROE)</span>
+                      ><span>Return on Equity</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.returnOnEquity}%</td
+                      >{rawData?.returnOnEquity}</td
                     >
                   </tr><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                     ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Return on Assets (ROA)</span>
+                      ><span>Return on Assets</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.returnOnAssets}%</td
+                      >{rawData?.returnOnAssets}</td
                     >
                   </tr><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                     ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Return on Capital (ROIC)</span>
+                      ><span>Return on Capital</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.returnOnInvestedCapital}%</td
+                      >{rawData?.returnOnInvestedCapital}</td
                     >
                   </tr><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -983,7 +964,7 @@
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
                       >{rawData?.earningsYield !== null
-                        ? rawData?.earningsYield + "%"
+                        ? (rawData?.earningsYield * 100)?.toFixed(2) + "%"
                         : "n/a"}</td
                     >
                   </tr><tr
@@ -995,7 +976,7 @@
                       class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
                       title="0.578%"
                       >{rawData?.freeCashFlowYield !== null
-                        ? rawData?.freeCashFlowYield + "%"
+                        ? (rawData?.freeCashFlowYield * 100)?.toFixed(2) + "%"
                         : "n/a"}</td
                     >
                   </tr></tbody
