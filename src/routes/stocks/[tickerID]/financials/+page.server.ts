@@ -2,15 +2,15 @@ import { error, fail, redirect } from "@sveltejs/kit";
 import { validateData } from "$lib/utils";
 import { loginUserSchema, registerUserSchema } from "$lib/schemas";
 
-
-
 export const load = async ({ locals, params }) => {
-  const getData = async () => {
-    const { apiKey, apiURL } = locals;
+   const { apiKey, apiURL } = locals;
     const postData = {
       ticker: params.tickerID,
     };
 
+
+  const getData = async () => {
+   
     // make the POST request to the endpoint
     const response = await fetch(apiURL + "/stock-income", {
       method: "POST",
@@ -25,6 +25,8 @@ export const load = async ({ locals, params }) => {
 
     return output;
   };
+
+
 
   // Make sure to return a promise
   return {

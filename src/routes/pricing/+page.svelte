@@ -7,7 +7,7 @@
   export let data;
   export let form;
 
-  let mode = false;
+  let mode = true;
   const emailAddress = "support@stocknear.com";
 
   function toggleMode() {

@@ -422,7 +422,7 @@
           <div class="grid grid-cols-1 gap-2">
             {#if financialData?.length > 0}
               <div
-                class="mb-2 flex flex-row items-center w-full justify-end sm:justify-center"
+                class="flex flex-row items-center w-full justify-end sm:justify-center"
               >
                 <label
                   class="inline-flex mt-2 sm:mt-0 cursor-pointer relative mr-auto"
@@ -445,14 +445,35 @@
                 </label>
 
                 <div class="flex flex-row items-center w-fit sm:ml-auto">
-                  <div class="relative inline-block text-left grow">
+                  <!--
+                  <div class="ml-2 relative inline-block text-left">
+                    <Button
+                      class="shadow-sm w-full border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-5 rounded-md truncate"
+                    >
+                      <svg
+                        class="w-4 h-4 bp:w-5 bp:h-5 pointer-events-none"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        style="max-width:40px"
+                        ><path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                        ></path></svg
+                      >
+                    </Button>
+                  </div>
+
+                  <div class="ml-2 relative inline-block text-left grow">
                     <DropdownMenu.Root>
                       <DropdownMenu.Trigger asChild let:builder>
                         <Button
                           builders={[builder]}
-                          class="shadow-sm w-full border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                          class="shadow-sm w-full border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-1.5  rounded-md truncate"
                         >
-                          <span class="truncate">{$timeFrame}</span>
+                          <span class="truncate">Raw</span>
                           <svg
                             class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
                             viewBox="0 0 20 20"
@@ -471,52 +492,30 @@
                       <DropdownMenu.Content
                         class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                       >
-                        <DropdownMenu.Label
-                          class="text-muted dark:text-gray-400"
-                        >
-                          Select time frame
-                        </DropdownMenu.Label>
-                        <DropdownMenu.Separator />
                         <DropdownMenu.Group>
                           <DropdownMenu.Item
                             on:click={() => ($timeFrame = "5Y")}
                             class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                           >
-                            5 years
+                            Billions
                           </DropdownMenu.Item>
                           <DropdownMenu.Item
                             on:click={() => ($timeFrame = "10Y")}
                             class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                           >
-                            10 years
+                            Millions
                           </DropdownMenu.Item>
                           <DropdownMenu.Item
                             on:click={() => ($timeFrame = "MAX")}
                             class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                           >
-                            Max
+                            Raw
                           </DropdownMenu.Item>
                         </DropdownMenu.Group>
                       </DropdownMenu.Content>
                     </DropdownMenu.Root>
                   </div>
-                  <Button
-                    on:click={() => exportFundamentalData("csv")}
-                    class="shadow-sm ml-2 w-fit border-gray-300 dark:border-gray-600 border  sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
-                  >
-                    <span class="truncate">Download</span>
-                    <svg
-                      class="{['Pro', 'Plus']?.includes(data?.user?.tier)
-                        ? 'hidden'
-                        : ''} ml-1 -mt-0.5 w-3.5 h-3.5"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      ><path
-                        fill="currentColor"
-                        d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                      /></svg
-                    >
-                  </Button>
+                  -->
                 </div>
               </div>
 
@@ -537,29 +536,129 @@
                 </div>
               {:else}
                 <div
+                  class="flex flex-col sm:flex-row items-start sm:items-center sm:justify-between"
+                >
+                  <span
+                    class="text-sm order-1 sm:order-0 mt-5 sm:mt-0 text-gray-600 dark:text-gray-400 w-full"
+                  >
+                    Financials in {data?.getProfileData?.currency}. Fiscal year
+                    is
+                    {data?.getProfileData?.fiscalYearRange}.
+                  </span>
+                  <div class="flex flex-row items-center justify-end w-full">
+                    <div class="sm:ml-auto relative inline-block">
+                      <DropdownMenu.Root>
+                        <DropdownMenu.Trigger asChild let:builder>
+                          <Button
+                            builders={[builder]}
+                            class="shadow-sm w-full sm:w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-1.5  rounded-md truncate"
+                          >
+                            <span class="truncate">{$timeFrame}</span>
+                            <svg
+                              class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                              style="max-width:40px"
+                              aria-hidden="true"
+                            >
+                              <path
+                                fill-rule="evenodd"
+                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                clip-rule="evenodd"
+                              ></path>
+                            </svg>
+                          </Button>
+                        </DropdownMenu.Trigger>
+                        <DropdownMenu.Content
+                          class="w-56 h-fit max-h-72 overflow-y-auto scroller"
+                        >
+                          <DropdownMenu.Label
+                            class="text-muted dark:text-gray-400"
+                          >
+                            Select time frame
+                          </DropdownMenu.Label>
+                          <DropdownMenu.Separator />
+                          <DropdownMenu.Group>
+                            <DropdownMenu.Item
+                              on:click={() => ($timeFrame = "5Y")}
+                              class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                            >
+                              5 years
+                            </DropdownMenu.Item>
+                            <DropdownMenu.Item
+                              on:click={() => ($timeFrame = "10Y")}
+                              class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                            >
+                              10 years
+                            </DropdownMenu.Item>
+                            <DropdownMenu.Item
+                              on:click={() => ($timeFrame = "MAX")}
+                              class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                            >
+                              Max
+                            </DropdownMenu.Item>
+                          </DropdownMenu.Group>
+                        </DropdownMenu.Content>
+                      </DropdownMenu.Root>
+                    </div>
+                    <Button
+                      on:click={() => exportFundamentalData("csv")}
+                      class="shadow-sm ml-2 w-fit border-gray-300 dark:border-gray-600 border  sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-1.5  rounded-md truncate"
+                    >
+                      <span class="truncate">Download</span>
+                      <svg
+                        class="{['Pro', 'Plus']?.includes(data?.user?.tier)
+                          ? 'hidden'
+                          : ''} ml-1 -mt-0.5 w-3.5 h-3.5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        ><path
+                          fill="currentColor"
+                          d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                        /></svg
+                      >
+                    </Button>
+                  </div>
+                </div>
+                <div
                   class="w-full rounded-none sm:rounded-md m-auto overflow-x-auto no-scrollbar"
                 >
                   <table
                     class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
                   >
                     <thead class="text-muted dark:text-white dark:bg-default">
-                      <tr class="">
+                      <tr class="border min-w-[250px]">
                         <td class="text-start text-sm font-semibold pr-10"
-                          >Year</td
+                          >Fiscal Year</td
                         >
-                        {#each financialData as cash}
+                        {#each financialData as item}
                           {#if filterRule === "annual"}
-                            <td class=" font-semibold text-sm text-end">
-                              {"FY" + cash?.fiscalYear?.slice(-2)}
+                            <td
+                              class=" font-semibold text-sm text-end border-l border-gray-300 dark:border-gray-800"
+                            >
+                              {"FY" + " " + item?.fiscalYear}
                             </td>
                           {:else}
                             <td class=" font-semibold text-sm text-end">
-                              {"FY" +
-                                cash?.fiscalYear?.slice(-2) +
-                                " " +
-                                cash?.period}
+                              {item?.period + " " + item?.fiscalYear}
                             </td>
                           {/if}
+                        {/each}
+                      </tr>
+                      <tr class="border min-w-[250px]">
+                        <td class="text-start text-sm font-semibold"
+                          >Period Ending</td
+                        >
+                        {#each financialData as item}
+                          <td
+                            class=" font-semibold text-sm text-end border-l border-gray-300 dark:border-gray-800"
+                          >
+                            {new Date(item?.date).toLocaleDateString("en-US", {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric",
+                            })}
+                          </td>
                         {/each}
                       </tr>
                     </thead>

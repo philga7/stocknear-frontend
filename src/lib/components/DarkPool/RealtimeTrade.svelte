@@ -97,24 +97,36 @@
       },
       xAxis: {
         type: "datetime",
-        min: startTime,
-        max: endTime,
-        tickLength: 0,
+        min: startTime, // Force start at 9:30
+        max: endTime, // Force end at 16:10
         crosshair: {
-          color: $mode === "light" ? "#545454" : "white",
-          width: 1,
+          color: $mode === "light" ? "black" : "white", // Set the color of the crosshair line
+          width: 1, // Adjust the line width as needed
           dashStyle: "Solid",
         },
         labels: {
           style: { color: $mode === "light" ? "#545454" : "white" },
-          distance: 20,
+          distance: 10, // Increases space between label and axis
           formatter: function () {
             const date = new Date(this?.value);
-            return date?.toLocaleTimeString("en-US", {
-              hour: "2-digit",
-              minute: "2-digit",
+            const timeString = date?.toLocaleTimeString("en-US", {
+              hour: "numeric",
+              hour12: true,
             });
+            return `<span class="text-xs">${timeString.replace(/\s/g, " ")}</span>`;
           },
+        },
+        tickPositioner: function () {
+          // Create custom tick positions with wider spacing
+          const positions = [];
+          const info = this.getExtremes();
+          const tickCount = 5; // Reduce number of ticks displayed
+          const interval = (info.max - info.min) / tickCount;
+
+          for (let i = 0; i <= tickCount; i++) {
+            positions.push(info.min + i * interval);
+          }
+          return positions;
         },
       },
       yAxis: [
@@ -203,6 +215,7 @@
             ],
           },
           color: "#4681f4",
+          borderColor: "4681f4",
           lineWidth: 1.3,
           yAxis: 0, // Use primary yAxis
           animation: false,

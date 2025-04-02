@@ -5,7 +5,6 @@ import { loginUserSchema, registerUserSchema } from "$lib/schemas";
 
 export const load = async ({ params, locals }) => {
   const getData = async () => {
-    let newsList;
 
     const { apiURL, apiKey } = locals;
 
@@ -23,9 +22,9 @@ export const load = async ({ params, locals }) => {
       body: JSON.stringify(postData),
     });
 
-    newsList = await response.json();
+    const output = await response.json();
 
-    return newsList;
+    return  output;
   };
 
   // Make sure to return a promise
