@@ -1,10 +1,18 @@
 <script lang="ts">
   import { stockTicker } from "$lib/store";
-  import { formatDate } from "$lib/utils";
+  import { formatDate, removeCompanyStrings } from "$lib/utils";
 
   export let data;
 
-  let newsList = data?.getNews ?? [];
+  let newsList = [];
+  let similarStocks = [];
+
+  $: {
+    if ($stockTicker) {
+      newsList = data?.getNews || [];
+      similarStocks = data?.getSimilarStocks;
+    }
+  }
 </script>
 
 <section class="w-auto overflow-hidden min-h-screen">
@@ -18,6 +26,60 @@
         </main>
 
         <aside class="hidden lg:block relative fixed w-1/4 mt-3">
+          {#if similarStocks?.length > 0}
+            <div
+              class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4"
+            >
+              <h3 class="p-2 pt-4 text-xl font-semibold">Related Stocks</h3>
+              <table class="table table-sm table-compact w-full">
+                <thead class="text-muted dark:text-white"
+                  ><tr
+                    ><th
+                      class="whitespace-nowrap border-b border-gray-300 dark:border-gray-600 font-semibold text-[1rem] text-left px-2"
+                      >Company</th
+                    >
+                    <th
+                      class="whitespace-nowrap border-b border-gray-300 dark:border-gray-600 font-semibold text-[1rem] text-right px-2"
+                      >Dividend Yield</th
+                    ></tr
+                  ></thead
+                >
+                <tbody>
+                  {#each similarStocks?.slice(0, 8) as item, index}
+                    {#if item?.dividendYield > 0}
+                      <tr
+                        class="border-gray-300 dark:border-gray-800 text-[1rem] {index !==
+                        similarStocks?.slice(0, 8).length - 1
+                          ? 'border-b'
+                          : ''}"
+                        ><td class="text-left text-[1rem] px-2"
+                          ><a
+                            href={`/stocks/${item?.symbol}/dividends`}
+                            class="text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
+                            >{removeCompanyStrings(item?.name)}</a
+                          ></td
+                        >
+                        <td class="text-right cursor-normal text-[1rem] px-2"
+                          >{item?.dividendYield
+                            ? item?.dividendYield + "%"
+                            : "n/a"}</td
+                        >
+                      </tr>
+                    {/if}
+                  {/each}
+                </tbody>
+              </table>
+              <div class="px-2">
+                <a
+                  href="/list/top-rated-dividend-stocks"
+                  class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-white dark:text-black m-auto sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 bg-[#3B82F6] dark:bg-[#fff] transition duration-100"
+                >
+                  Dividend Rankings
+                </a>
+              </div>
+            </div>
+          {/if}
+
           {#if newsList?.length !== 0}
             <div
               class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit"

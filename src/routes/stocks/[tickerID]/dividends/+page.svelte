@@ -5,14 +5,13 @@
 
   export let data;
   let dateDistance;
-  let rawData = data?.getStockDividend;
-
-  let exDividendDate = rawData?.history?.at(0)?.date;
-  let dividendYield = rawData?.dividendYield;
-  let annualDividend = rawData?.annualDividend;
-  let payoutFrequency = rawData?.payoutFrequency;
-  let payoutRatio = rawData?.payoutRatio;
-  let dividendGrowth = rawData?.dividendGrowth;
+  let rawData;
+  let exDividendDate;
+  let dividendYield;
+  let annualDividend;
+  let payoutFrequency;
+  let payoutRatio;
+  let dividendGrowth;
 
   function generateDividendInfoHTML() {
     const history = rawData?.history || [];
@@ -60,7 +59,22 @@
     }
   }
 
-  const htmlOutput = generateDividendInfoHTML();
+  let htmlOutput;
+
+  $: {
+    if ($stockTicker) {
+      rawData = data?.getStockDividend;
+
+      exDividendDate = rawData?.history?.at(0)?.date;
+      dividendYield = rawData?.dividendYield;
+      annualDividend = rawData?.annualDividend;
+      payoutFrequency = rawData?.payoutFrequency;
+      payoutRatio = rawData?.payoutRatio;
+      dividendGrowth = rawData?.dividendGrowth;
+
+      htmlOutput = generateDividendInfoHTML();
+    }
+  }
 </script>
 
 <SEO
