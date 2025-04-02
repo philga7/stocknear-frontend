@@ -98,17 +98,17 @@
     },
     {
       propertyName: "returnOnEquity",
-      label: "Return on Equity (ROE)",
+      label: "Return on Equity",
       text: `Return on equity (ROE) is a profitability metric that shows how efficient a company is at using its equity (or "net" assets) to generate profits. It is calculated by dividing the company's net income by the average shareholders' equity during the past 12 months.`,
     },
     {
       propertyName: "returnOnAssets",
-      label: "Return on Assets (ROA)",
+      label: "Return on Assets",
       text: `Return on assets (ROA) is a metric that measures how much profit a company is able to generate using its assets. It is calculated by dividing net income by the average total assets for the past 12 months.`,
     },
     {
-      propertyName: "returnOnCapitalEmployed",
-      label: "Return on Capital (ROIC)",
+      propertyName: "returnOnInvestedCapital",
+      label: "Return on Invested Capital",
       text: `Return on invested capital (ROIC) measures how effective a company is at investing its capital in order to increase profits. It is calculated by dividing the NOPAT (Net Operating Profit After Tax) by the invested capital.`,
     },
     {

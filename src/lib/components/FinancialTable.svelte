@@ -5,12 +5,14 @@
 
   // Use a Set for fast margin lookup
   const marginKeys = new Set([
+    /*
     "pretaxProfitMargin",
     "freeCashFlowMargin",
     "grossProfitMargin",
     "netProfitMargin",
     "operatingProfitMargin",
     "ebitdaMargin",
+    */
   ]);
 
   // Precompute fields with an additional flag
