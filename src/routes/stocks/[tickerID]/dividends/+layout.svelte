@@ -98,7 +98,7 @@
                           ><a
                             href={`/stocks/${item?.symbol}/dividends`}
                             class="text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
-                            >{removeCompanyStrings(item?.name)}</a
+                            >{item?.name}</a
                           ></td
                         >
                         <td class="text-right cursor-normal text-[1rem] px-2"
