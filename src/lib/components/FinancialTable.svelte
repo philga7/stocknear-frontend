@@ -9,6 +9,13 @@
 
   let config = null;
 
+  let modalLabel;
+  let highestValue;
+  let highestValueDate;
+  let lowestValueDate;
+  let lowestValue;
+  let fiveYearsGrowth;
+
   const marginKeys = new Set([
     /*
     "pretaxProfitMargin",
@@ -48,11 +55,28 @@
 
     const valueList = rawData?.map((item) => item[key]);
 
+    // Calculate highest and lowest value
+    highestValue = Math.max(...valueList);
+    lowestValue = Math.min(...valueList);
+    let highestValueIndex = valueList.indexOf(highestValue);
+    let lowestValueIndex = valueList.indexOf(lowestValue);
+
+    highestValueDate = dateList[highestValueIndex] || null;
+    lowestValueDate = dateList[lowestValueIndex] || null;
+
+    // Calculate last 5 years growth
+    fiveYearsGrowth = null;
+    if (valueList?.length >= 5) {
+      let firstValue = valueList[valueList.length - 5];
+      let lastValue = valueList[valueList.length - 1];
+      fiveYearsGrowth = ((lastValue - firstValue) / Math.abs(firstValue)) * 100;
+    }
+
     const options = {
       chart: {
         type: "column",
-        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
-        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        backgroundColor: $mode === "light" ? "#fff" : "#2A2E39",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#2A2E39",
         height: 360,
         animation: false,
       },
@@ -98,7 +122,7 @@
       },
       yAxis: {
         gridLineWidth: 1,
-        gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
+        gridLineColor: $mode === "light" ? "#e5e7eb" : "#404657",
         labels: {
           style: { color: $mode === "light" ? "black" : "white" },
           formatter: function () {
@@ -125,7 +149,7 @@
           this.points.forEach((point) => {
             tooltipContent += `<span class="text-white font-semibold text-sm">${point.series.name}:</span>
           <span class="text-white font-normal text-sm">${abbreviateNumber(
-            point.y,
+            point.y?.toFixed(2),
           )}</span><br>`;
           });
           return tooltipContent;
@@ -146,6 +170,7 @@
   }
 
   async function handleChart(label, key) {
+    modalLabel = label;
     config = plotData(label, key);
   }
 </script>
@@ -157,7 +182,7 @@
     <td
       class="text-start min-w-[220px] sm:min-w-[320px] border-r border-gray-300 dark:border-gray-700 text-sm sm:text-[1rem] w-full flex flex-row items-center justify-between"
     >
-      <span class="truncate w-fit max-w-40 sm:max-w-fit">{label}</span>
+      <span class="truncate w-fit max-w-40 sm:max-w-64">{label}</span>
       <label
         for="financialPlotModal"
         on:click={() => handleChart(label, key)}
@@ -200,24 +225,27 @@
   <label for="financialPlotModal" class="cursor-pointer modal-backdrop"></label>
 
   <div
-    class="modal-box bg-white relative dark:bg-default w-full max-w-3xl rounded-md border-t sm:border border-gray-300 dark:border-gray-700 min-h-48 h-auto"
+    class="modal-box w-full p-6 rounded shadow-lg border
+        bg-white dark:bg-secondary border border-gray-600 dark:border-gray-800"
   >
-    <label
-      for="financialPlotModal"
-      class="cursor-pointer text-[1.8rem] focus:outline-hidden absolute top-2 right-3"
-    >
-      <svg
-        class="w-8 h-8 text-muted dark:text-white"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        ><path
-          fill="currentColor"
-          d="m6.4 18.308l-.708-.708l5.6-5.6l-5.6-5.6l.708-.708l5.6 5.6l5.6-5.6l.708.708l-5.6 5.6l5.6 5.6l-.708.708l-5.6-5.6z"
-        />
-      </svg>
-    </label>
     {#if config}
       <div class="mt-2" use:highcharts={config}></div>
     {/if}
+    <p class="text-sm mb-6">
+      Revenue peaked at {abbreviateNumber(highestValue?.toFixed(2))} in {highestValueDate}
+      and hit its lowest at {abbreviateNumber(lowestValue?.toFixed(2))} in {lowestValueDate}.
+      Over the past five years, it has {fiveYearsGrowth >= 0
+        ? "grown"
+        : "declined"} by {fiveYearsGrowth?.toFixed(2)}%.
+    </p>
+
+    <div class="border-t border-gray-300 dark:border-gray-600 mt-2 w-full">
+      <label
+        for="financialPlotModal"
+        class="mt-4 font-semibold text-xl m-auto flex justify-center cursor-pointer"
+      >
+        Close
+      </label>
+    </div>
   </div>
 </dialog>

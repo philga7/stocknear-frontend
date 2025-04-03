@@ -22,7 +22,6 @@
   let financialData = [];
   let fullStatement = [];
   let filterRule = "annual";
-  let displayStatement = "revenue";
 
   let activeIdx = 0;
 
@@ -38,135 +37,92 @@
   const statementConfig = [
     {
       propertyName: "revenue",
-      growthPropertyName: "growthRevenue",
       label: "Revenue",
-      text: "Revenue, also called sales, is the amount of money a company receives from its business activities, such as sales of products or services. Revenue does not take any expenses into account and is therefore different from profits.",
     },
     {
       propertyName: "costOfRevenue",
-      growthPropertyName: "growthCostOfRevenue",
       label: "Cost of Revenue",
-      text: "Cost of revenue is also called cost of goods sold (COGS). It is the variable cost related to the company's production of products and services.",
     },
     {
       propertyName: "grossProfit",
-      growthPropertyName: "growthGrossProfit",
       label: "Gross Profit",
-      text: "Gross profit is a company’s profit after subtracting the costs directly linked to making and delivering its products and services.",
     },
     {
       propertyName: "operatingIncome",
-      growthPropertyName: "growthOperatingIncome",
       label: "Operating Income",
-      text: "Gross profit is a company’s profit after subtracting the costs directly linked to making and delivering its products and services.",
     },
     {
       propertyName: "interestIncome",
-      growthPropertyName: "growthInterestIncome",
       label: "Interest Income",
-      text: "Gross profit is a company’s profit after subtracting the costs directly linked to making and delivering its products and services.",
     },
     {
       propertyName: "incomeBeforeTax",
-      growthPropertyName: "growthIncomeBeforeTax",
       label: "Pretax Income",
-      text: "Pretax income is a company's profits before accounting for income taxes.",
     },
     {
       propertyName: "netIncome",
-      growthPropertyName: "growthNetIncome",
       label: "Net Income",
-      text: `Net income is a company's accounting profits after subtracting all costs and expenses from the revenue. It is also called earnings, profits or "the bottom line."`,
     },
     {
       propertyName: "sellingGeneralAndAdministrativeExpenses",
-      growthPropertyName: "growthSellingGeneralAndAdministrativeExpenses",
       label: "Selling & General & Admin",
-      text: "Selling, general and administrative (SG&A) is an operating expense. It involves various company expenses that are not related to production.",
     },
     {
       propertyName: "researchAndDevelopmentExpenses",
-      growthPropertyName: "growthResearchAndDevelopmentExpenses",
       label: "Research & Development",
-      text: "Research and development (R&D) is an operating expense. It is the amount of money a company spends on researching and developing new products and services, or improving existing ones.",
     },
     {
       propertyName: "otherExpenses",
-      growthPropertyName: "growthOtherExpenses",
       label: "Other Expenses",
-      text: "Other expenses typically refer to costs that are not directly related to the primary operations of the business. These can include a wide variety of things, such as interest expense, taxes, depreciation and amortization, losses from investments, legal fees and restructuring costs.",
     },
     {
       propertyName: "operatingExpenses",
-      growthPropertyName: "growthOperatingExpenses",
       label: "Operating Expenses",
-      text: "Operating expenses are a company's fixed costs that a company incurs during its ongoing business operations. It can include SG&A, R&D and other expenses.",
     },
     {
       propertyName: "interestExpense",
-      growthPropertyName: "growthInterestExpense",
       label: "Interest Expense",
-      text: "Interest expense is the amount that the company paid or received in interest. A positive number indicates a net expense, while a negative number implies that the company had more interest income from its cash reserves than it paid for interest on debt.",
     },
     {
       propertyName: "sellingAndMarketingExpenses",
-      growthPropertyName: "growthSellingAndMarketingExpenses",
       label: "Selling & Marketing Expenses",
-      text: "Revenue, also called sales, is the amount of money a company receives from its business activities, such as sales of products or services. Revenue does not take any expenses into account and is therefore different from profits.",
     },
     {
       propertyName: "costAndExpenses",
-      growthPropertyName: "growthCostAndExpensess",
       label: "Cost & Expenses",
-      text: "Revenue, also called sales, is the amount of money a company receives from its business activities, such as sales of products or services. Revenue does not take any expenses into account and is therefore different from profits.",
     },
     {
       propertyName: "incomeTaxExpense",
-      growthPropertyName: "growthIncomeTaxExpense",
       label: "Income Tax",
-      text: "Income tax is the amount of corporate income tax that the company has incurred during the fiscal period.",
     },
     {
       propertyName: "weightedAverageShsOut",
-      growthPropertyName: "growthWeightedAverageShsOut",
       label: "Shares Outstanding (Basic)",
-      text: "Basic shares outstanding is the total amount of common stock held by all of a company's shareholders.",
     },
     {
       propertyName: "weightedAverageShsOutDil",
-      growthPropertyName: "growthWeightedAverageShsOutDil",
       label: "Shares Outstanding (Diluted)",
-      text: "Diluted shares outstanding is the total amount of common stock that will be outstanding if all stock options, warrants and convertible securities are exercised.",
     },
     {
       propertyName: "eps",
       growthPropertyName: "growthEPS",
       label: "EPS (Basic)",
-      text: "Earnings per share is the portion of a company's profit that is allocated to each individual stock. EPS is calculated by dividing net income by shares outstanding.",
     },
     {
       propertyName: "epsDiluted",
-      growthPropertyName: "growthEPSDiluted",
       label: "EPS (Diluted)",
-      text: `Earnings per share is the portion of a company's profit that is allocated to each individual stock. Diluted EPS is calculated by dividing net income by "diluted" shares outstanding.`,
     },
     {
       propertyName: "ebitda",
-      growthPropertyName: "growthEBITDA",
       label: "EBITDA",
-      text: `EBITDA stands for "Earnings Before Interest, Taxes, Depreciation and Amortization." It is a commonly used measure of profitability.`,
     },
     {
       propertyName: "ebit",
-      growthPropertyName: "growthEBIT",
       label: "EBIT",
-      text: ``,
     },
     {
       propertyName: "depreciationAndAmortization",
-      growthPropertyName: "growthDepreciationAndAmortization",
       label: "Depreciation & Amortization",
-      text: "Depreciation and amortization are accounting methods for calculating how the value of a business's assets change over time. Depreciation refers to physical assets, while amortization refers to intangible assets.",
     },
   ];
 
@@ -198,7 +154,6 @@
   };
 
   fullStatement = data?.getData;
-  displayStatement = "revenue";
 
   const exportFundamentalData = (format = "csv") => {
     if (["Pro", "Plus"]?.includes(data?.user?.tier)) {
@@ -326,7 +281,7 @@
 
 <SEO
   title={`${$displayCompanyName} (${$stockTicker}) Financials - Income Statement`}
-  description={`Detailed annual and timeFramely income statement for ${$displayCompanyName} (${$stockTicker}). See many years of revenue, expenses and profits or losses.`}
+  description={`Detailed annual and quarter income statement for ${$displayCompanyName} (${$stockTicker}). See many years of revenue, expenses and profits or losses.`}
 />
 
 <section class=" w-full overflow-hidden h-full">
@@ -506,10 +461,10 @@
                 </div>
               {:else}
                 <div
-                  class="flex flex-col sm:flex-row items-start sm:items-center sm:justify-between"
+                  class="flex flex-col sm:flex-row items-start sm:items-end sm:justify-between"
                 >
                   <span
-                    class="text-sm order-1 sm:order-0 mt-5 sm:mt-0 text-gray-600 dark:text-gray-400 w-full"
+                    class="text-xs sm:text-sm order-1 sm:order-0 mt-5 sm:mt-0 text-gray-600 dark:text-gray-400 w-full"
                   >
                     Financials in {data?.getProfileData?.currency}. Fiscal year
                     is
