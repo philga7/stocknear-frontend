@@ -69,7 +69,9 @@
     const volatilitySpread = filteredData?.map((item) =>
       item?.volatilitySpread ? Number(item?.volatilitySpread) : null,
     );
-    const priceList = filteredData?.map((item) => item.price);
+    const priceList = filteredData
+      .map((item) => item.price)
+      .filter((price) => price != null); // Filter out null/undefined
 
     return {
       dateList,
