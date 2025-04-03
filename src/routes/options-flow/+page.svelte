@@ -831,7 +831,7 @@
   description="Explore unusual options from big institutional traders and hedge funds."
 />
 
-<body class="overflow-y-auto text-muted dark:text-white">
+<body class="overflow-y-auto">
   <section
     class="w-full max-w-screen sm:max-w-7xl sm:max-w-[1400px] flex justify-center items-center pb-20 10 p-3 sm:p-0"
   >

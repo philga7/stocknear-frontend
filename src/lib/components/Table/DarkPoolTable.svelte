@@ -352,7 +352,7 @@
         {style}
         class="grid grid-cols-10 gap-0"
         class:bg-[#fff]={index % 2 === 0 && $mode === "light"}
-        class:bg-[#19191F]={index % 2 === 0 && $mode !== "light"}
+        class:bg-[#09090B]={index % 2 === 0 && $mode !== "light"}
         class:bg-[#121217]={index % 2 !== 0 && $mode !== "light"}
         class:bg-[#F6F7F8]={index % 2 !== 0 && $mode == "light"}
         class:opacity-30={index + 1 === rawData?.length &&

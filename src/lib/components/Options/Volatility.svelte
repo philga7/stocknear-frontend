@@ -91,6 +91,9 @@
       priceList,
     } = filterDataByPeriod(data, timePeriod);
 
+    const fillColorStart = "rgb(70, 129, 244,0.5)";
+    const fillColorEnd = "rgb(70, 129, 244,0.001)";
+
     const options = {
       chart: {
         backgroundColor: $mode === "light" ? "#fff" : "#09090B",
@@ -98,9 +101,20 @@
         height: 360,
       },
       credits: { enabled: false },
-      legend: { enabled: false },
+      legend: {
+        enabled: true,
+        align: "center", // Positions legend at the left edge
+        verticalAlign: "top", // Positions legend at the top
+        layout: "horizontal", // Align items horizontally (use 'vertical' if preferred)
+        itemStyle: {
+          color: $mode === "light" ? "black" : "white",
+        },
+        symbolWidth: 16, // Controls the width of the legend symbol
+        symbolRadius: 8, // Creates circular symbols (adjust radius as needed)
+        squareSymbol: false, // Ensures symbols are circular, not square
+      },
       title: {
-        text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">Volatiltiy Exposure</h3>`,
+        text: `<h3 class="mt-3 -mb-2 text-[1rem] sm:text-lg">Volatiltiy Exposure</h3>`,
         useHTML: true,
         style: { color: $mode === "light" ? "black" : "white" },
       },
@@ -219,11 +233,19 @@
       series: [
         {
           name: "Stock Price",
-          type: "spline", // smooth line
+          type: "area", // smooth line
           data: priceList,
           yAxis: 1,
-          lineWidth: 2,
-          color: $mode === "light" ? "black" : "white",
+          fillColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+              [0, fillColorStart],
+              [1, fillColorEnd],
+            ],
+          },
+          color: "#4681f4",
+          borderColor: "4681f4",
+          lineWidth: 1.3,
           animation: false,
         },
         {

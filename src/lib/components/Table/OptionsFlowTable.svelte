@@ -234,12 +234,12 @@
   }
 </script>
 
-<div class="w-full overflow-x-auto text-muted dark:text-white">
+<div class="w-full overflow-x-auto">
   <!-- Set a min-width on smaller screens so the grid can show all columns -->
   <div class="min-w-[1000px]">
     <!-- Header row using grid -->
     <div
-      class="grid grid-cols-16 sticky top-0 z-10 border border-gray-300 dark:border-gray-800 bg-white dark:bg-default font-bold text-xs uppercase"
+      class="grid grid-cols-16 sticky top-0 z-10 border border-gray-300 dark:border-gray-800 font-bold text-xs uppercase"
     >
       <div
         on:click={() => sortData("time")}
@@ -590,7 +590,7 @@
         {style}
         class="grid grid-cols-16 gap-0"
         class:bg-[#fff]={index % 2 === 0 && $mode === "light"}
-        class:bg-[#19191F]={index % 2 === 0 && $mode !== "light"}
+        class:bg-[#09090B]={index % 2 === 0 && $mode !== "light"}
         class:bg-[#121217]={index % 2 !== 0 && $mode !== "light"}
         class:bg-[#F6F7F8]={index % 2 !== 0 && $mode == "light"}
         class:opacity-30={index + 1 === rawData?.length &&

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { abbreviateNumberWithColor, abbreviateNumber } from "$lib/utils";
+  import { abbreviateNumber } from "$lib/utils";
   import { onMount } from "svelte";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
@@ -99,6 +99,9 @@
       timePeriod,
     );
 
+    const fillColorStart = "rgb(70, 129, 244,0.5)";
+    const fillColorEnd = "rgb(70, 129, 244,0.001)";
+
     const options = {
       credits: {
         enabled: false,
@@ -110,7 +113,7 @@
         animation: false,
       },
       title: {
-        text: `<h3 class="mt-3 mb-1 ">${title === "Gamma" ? "GEX" : "DEX"} Chart</h3>`,
+        text: `<h3 class="mt-3 -mb-2 ">${title === "Gamma" ? "GEX" : "DEX"} Chart</h3>`,
         style: {
           color: $mode === "light" ? "black" : "white",
           // Using inline CSS for margin-top and margin-bottom
@@ -209,6 +212,25 @@
       ],
       series: [
         {
+          name: "Stock Price",
+          type: "area",
+          data: priceList,
+          yAxis: 1,
+          fillColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+              [0, fillColorStart],
+              [1, fillColorEnd],
+            ],
+          },
+          color: "#4681f4",
+          borderColor: "4681f4",
+          lineWidth: 1.3,
+          zIndex: 10,
+          marker: { enabled: false },
+          animation: false,
+        },
+        {
           name: title,
           type: "column",
           data: dataList,
@@ -217,19 +239,19 @@
           borderRadius: "1px",
           animation: false,
         },
-        {
-          name: "Price",
-          type: "line",
-          data: priceList,
-          yAxis: 1,
-          color: $mode === "light" ? "#3B82F6" : "white",
-          lineWidth: 2,
-          zIndex: 10,
-          marker: { enabled: false },
-          animation: false,
-        },
       ],
-      legend: { enabled: false },
+      legend: {
+        enabled: true,
+        align: "center", // Positions legend at the left edge
+        verticalAlign: "top", // Positions legend at the top
+        layout: "horizontal", // Align items horizontally (use 'vertical' if preferred)
+        itemStyle: {
+          color: $mode === "light" ? "black" : "white",
+        },
+        symbolWidth: 16, // Controls the width of the legend symbol
+        symbolRadius: 8, // Creates circular symbols (adjust radius as needed)
+        squareSymbol: false, // Ensures symbols are circular, not square
+      },
       plotOptions: {
         series: {
           animation: false,
@@ -447,35 +469,29 @@
               {formatDate(item?.date)}
             </td>
             <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
-              {@html abbreviateNumberWithColor(
+              {abbreviateNumber(
                 title === "Gamma" ? item?.call_gex : item?.call_dex,
-                false,
-                true,
               )}
             </td>
             <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
-              {@html abbreviateNumberWithColor(
+              {abbreviateNumber(
                 title === "Gamma" ? item?.put_gex : item?.put_dex,
-                false,
-                true,
               )}
             </td>
 
             <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
-              {@html abbreviateNumberWithColor(
+              {abbreviateNumber(
                 title === "Gamma" ? item?.netGex : item?.netDex,
-                false,
-                true,
               )}
             </td>
 
             <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
               {#if item?.putCallRatio <= 1 && item?.putCallRatio !== null}
-                <span class="text-green-800 dark:text-[#00FC50]"
+                <span class="dark:text-[#00FC50]"
                   >{item?.putCallRatio?.toFixed(2)}</span
                 >
               {:else if item?.putCallRatio >= 0 && item?.putCallRatio !== null}
-                <span class="text-red-800 dark:text-[#FF2F1F]"
+                <span class=" dark:text-[#FF2F1F]"
                   >{item?.putCallRatio?.toFixed(2)}</span
                 >
               {:else}
