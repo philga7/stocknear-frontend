@@ -1131,6 +1131,7 @@
             <span class="">Realtime Dark Pool Trades</span>
           </li>
         </ul>
+        <!--
         {#if !["Pro", "Plus"]?.includes(data?.user?.tier) || data?.user?.freeTrial === true}
           <div class="mt-3 items-center text-[1rem] font-medium mb-5">
             Promo Code: <strong>SPRINGSALE</strong>
@@ -1138,6 +1139,7 @@
             Get <strong>50% OFF</strong> on Pro Annual Membership!
           </div>
         {/if}
+        -->
         <div class="mt-auto pt-6 border-t border-zinc-700 mx-4">
           <label
             for={!data?.user ? "userLogin" : ""}

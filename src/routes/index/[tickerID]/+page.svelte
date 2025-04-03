@@ -19,7 +19,11 @@
   import News from "$lib/components/News.svelte";
   import IndexSidecard from "$lib/components/IndexSidecard.svelte";
 
-  import { convertTimestamp, abbreviateNumber } from "$lib/utils";
+  import {
+    convertTimestamp,
+    abbreviateNumber,
+    convertPeriodString,
+  } from "$lib/utils";
   import { mode } from "mode-watcher";
 
   export let data;
@@ -29,7 +33,7 @@
 
   $: previousClose = data?.getStockQuote?.previousClose;
   //============================================//
-  const intervals = ["1D", "1W", "1M", "6M", "1Y", "MAX"];
+  const intervals = ["1D", "1W", "1M", "YTD", "6M", "1Y", "MAX"];
 
   let config = null;
   let output = null;
@@ -336,6 +340,11 @@
           graphBaseClose = oneMonthPrice?.at(0)?.close;
           config = plotData(oneMonthPrice) || null;
           break;
+        case "ytd":
+          currentDataRow = ytdPrice?.at(-1);
+          graphBaseClose = ytdPrice?.at(0)?.close;
+          config = plotData(ytdPrice) || null;
+          break;
 
         case "6M":
           currentDataRow = sixMonthPrice?.at(-1);
@@ -459,7 +468,17 @@
           lastValue = null;
         }
         break;
-
+      case "ytd":
+        displayData = "ytd";
+        await historicalPrice("ytd");
+        if (ytdPrice?.length !== 0) {
+          displayLastLogicalRangeValue = ytdPrice?.at(0)?.close;
+          lastValue = ytdPrice.slice(-1)?.at(0)?.close;
+        } else {
+          displayLastLogicalRangeValue = null;
+          lastValue = null;
+        }
+        break;
       case "6M":
         displayData = "6M";
         await historicalPrice("six-months");
@@ -504,6 +523,7 @@
   let oneDayPrice = [];
   let oneWeekPrice = [];
   let oneMonthPrice = [];
+  let ytdPrice = [];
   let sixMonthPrice = [];
 
   let oneYearPrice = [];
@@ -518,6 +538,9 @@
           break;
         case "one-month":
           oneMonthPrice = cachedData;
+          break;
+        case "ytd":
+          ytdPrice = cachedData;
           break;
         case "six-months":
           sixMonthPrice = cachedData;
@@ -557,6 +580,9 @@
             break;
           case "one-month":
             oneMonthPrice = output;
+            break;
+          case "ytd":
+            ytdPrice = output;
             break;
           case "six-months":
             sixMonthPrice = output;
@@ -630,6 +656,7 @@
     "1D": oneDayPrice,
     "1W": oneWeekPrice,
     "1M": oneMonthPrice,
+    ytd: ytdPrice,
     "6M": sixMonthPrice,
     "1Y": oneYearPrice,
     MAX: maxPrice,
@@ -648,6 +675,7 @@
       oneDayPrice = [];
       oneWeekPrice = [];
       oneMonthPrice = [];
+      ytdPrice = [];
       oneYearPrice = [];
       maxPrice = [];
       output = null;
@@ -701,15 +729,17 @@
                         <li>
                           <button
                             on:click={() => changeData(interval)}
-                            class="cursor-pointer focus:outline-none"
+                            class="cursor-pointer"
                           >
                             <span
-                              class="block px-3 py-1 rounded duration-100 ease-in-out
+                              class="block px-3 sm:px-2 py-1 text-sm sm:text-[1rem] rounded duration-100 ease-in-out
           {displayData === interval
-                                ? 'bg-gray-200 text-muted dark:bg-primary dark: font-semibold'
-                                : 'bg-transparent text-muted dark:text-gray-400 dark:sm:hover: sm:hover:bg-gray-100 dark:sm:hover:bg-primary'}"
+                                ? 'bg-gray-100 text-muted dark:bg-primary dark:text-white font-semibold'
+                                : 'bg-transparent text-muted dark:text-gray-400 dark:sm:hover:text-white sm:hover:bg-gray-100 dark:sm:hover:bg-primary'}"
                             >
-                              {interval}
+                              {$screenWidth < 640
+                                ? interval
+                                : convertPeriodString(interval)}
                             </span>
                           </button>
                         </li>

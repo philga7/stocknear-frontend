@@ -1009,6 +1009,21 @@ function convertNYTimeToLocalTime(nyTimeString) {
     return localFormattedTime;
 }
 */
+export function convertPeriodString(interval) {
+  const mapping = {
+    "1D": "1 Day",
+    "1W": "5 Days", // Assuming "1W" means a trading week (5 days)
+    "1M": "1 Month",
+    "YTD": "YTD",
+    "3M": "3 Months",
+    "6M": "6 Months",
+    "1Y": "1 Year",
+    "5Y": "5 Years",
+    "MAX": "Max",
+  };
+
+  return mapping[interval] || interval; // Return original if no match
+}
 
 export function getPartyForPoliticians(name) {
   // Predefined list of senators and their parties
