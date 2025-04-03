@@ -105,6 +105,9 @@
     let priceList = [];
     let totalPremiums = [];
 
+    const fillColorStart = "rgb(70, 129, 244,0.5)";
+    const fillColorEnd = "rgb(70, 129, 244,0.001)";
+
     // Sort history by date
     const history = rawData?.sort(
       (a, b) => new Date(a?.date) - new Date(b?.date),
@@ -215,7 +218,7 @@
           gridLineWidth: 1,
           gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
           labels: {
-            style: { color: $mode === "light" ? "black" : "white" },
+            style: { color: $mode === "light" ? "#545454" : "white" },
           },
           title: { text: null },
           opposite: true,
@@ -265,6 +268,26 @@
       },
       series: [
         {
+          name: "Stock Price",
+          type: "area",
+          yAxis: 1,
+          data: priceList,
+          marker: {
+            enabled: false,
+          },
+          animation: false,
+          fillColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+              [0, fillColorStart],
+              [1, fillColorEnd],
+            ],
+          },
+          color: "#4681f4",
+          borderColor: "4681f4",
+          lineWidth: 1.3,
+        },
+        {
           name: "Call",
           type: "column",
           data: callData,
@@ -287,25 +310,6 @@
             enabled: false,
           },
           animation: false,
-        },
-        {
-          name: "Stock Price",
-          type: "area",
-          yAxis: 1,
-          data: priceList,
-          color: $mode === "light" ? "#3B82F6" : "white",
-          lineWidth: 1,
-          marker: {
-            enabled: false,
-          },
-          animation: false,
-          fillColor: {
-            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-            stops: [
-              [0, "rgba(255, 255, 255, 0.1)"],
-              [1, "rgba(255, 255, 255, 0.001)"],
-            ],
-          },
         },
       ],
       legend: {

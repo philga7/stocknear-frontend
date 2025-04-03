@@ -103,8 +103,45 @@
 
     // Build series based on the selected graph type, using filteredData
     let series = [];
+    const fillColorStart = "rgb(70, 129, 244,0.5)";
+    const fillColorEnd = "rgb(70, 129, 244,0.001)";
+
     if (selectGraphType == "Vol/OI") {
       series = [
+        {
+          name: "Stock Price",
+          type: "area",
+          yAxis: 1,
+          data: filteredData.map((item) => [
+            new Date(item.date).getTime(),
+            item.price,
+          ]),
+          fillColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+              [0, fillColorStart],
+              [1, fillColorEnd],
+            ],
+          },
+          color: "#4681f4",
+          borderColor: "4681f4",
+          lineWidth: 1.3,
+          marker: { enabled: false },
+          animation: false,
+        },
+        {
+          name: "Avg Fill",
+          type: "spline", // smooth line
+          data: filteredData.map((item) => [
+            new Date(item.date).getTime(),
+            item.mark,
+          ]),
+          color: "#F21C64",
+          yAxis: 2,
+          lineWidth: 1.3,
+          animation: false,
+          marker: { enabled: false },
+        },
         {
           name: "Volume",
           type: "column",
@@ -131,71 +168,54 @@
           yAxis: 0,
           animation: false,
         },
-        {
-          name: "Avg Fill",
-          type: "spline", // smooth line
-          data: filteredData.map((item) => [
-            new Date(item.date).getTime(),
-            item.mark,
-          ]),
-          color: "#FF0006",
-          yAxis: 2,
-          animation: false,
-          marker: { enabled: false },
-        },
-        {
-          name: "Stock Price",
-          type: "spline",
-          yAxis: 1,
-          data: filteredData.map((item) => [
-            new Date(item.date).getTime(),
-            item.price,
-          ]),
-          color: $mode === "light" ? "#005AFF" : "white",
-          lineWidth: 1,
-          marker: { enabled: false },
-          animation: false,
-        },
       ];
     } else {
       series = [
         {
-          name: "IV",
-          type: "spline",
-          data: filteredData.map((item) => [
-            new Date(item.date).getTime(),
-            Math.floor(item.implied_volatility * 100),
-          ]),
-          color: "#B24BF3",
-          yAxis: 0,
-          animation: false,
-          marker: { enabled: false },
-        },
-        {
-          name: "Avg Fill",
-          type: "spline",
-          data: filteredData.map((item) => [
-            new Date(item.date).getTime(),
-            item.mark,
-          ]),
-          color: "#FF0006",
-          yAxis: 2,
-          lineWidth: 1,
-          animation: false,
-          marker: { enabled: false },
-        },
-        {
           name: "Stock Price",
-          type: "spline",
+          type: "area",
           yAxis: 1,
           data: filteredData.map((item) => [
             new Date(item.date).getTime(),
             item.price,
           ]),
-          color: $mode === "light" ? "#005AFF" : "white",
-          lineWidth: 1,
+          fillColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+              [0, fillColorStart],
+              [1, fillColorEnd],
+            ],
+          },
+          color: "#4681f4",
+          borderColor: "4681f4",
+          lineWidth: 1.3,
           marker: { enabled: false },
           animation: false,
+        },
+        {
+          name: "Avg Fill",
+          type: "spline", // smooth line
+          data: filteredData?.map((item) => [
+            new Date(item.date).getTime(),
+            item.mark,
+          ]),
+          color: "#F21C64",
+          yAxis: 2,
+          lineWidth: 1.3,
+          animation: false,
+          marker: { enabled: false },
+        },
+        {
+          name: "IV",
+          type: "spline",
+          data: filteredData?.map((item) => [
+            new Date(item.date).getTime(),
+            Math.floor(item.implied_volatility * 100),
+          ]),
+          color: $mode === "light" ? "black" : "white",
+          yAxis: 0,
+          animation: false,
+          marker: { enabled: false },
         },
       ];
     }
@@ -207,24 +227,9 @@
         animation: false,
         height: 360,
       },
-      legend: {
-        enabled: true,
-        align: $screenWidth < 640 ? "center" : "left", // Positions legend at the left edge
-        verticalAlign: "top", // Positions legend at the top
-        layout: "horizontal", // Align items horizontally (use 'vertical' if preferred)
-        itemStyle: {
-          color: $mode === "light" ? "black" : "white",
-        },
-        symbolWidth: 16, // Controls the width of the legend symbol
-        symbolRadius: 8, // Creates circular symbols (adjust radius as needed)
-        squareSymbol: false, // Ensures symbols are circular, not square
-      },
       credits: { enabled: false },
       title: {
-        text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">${ticker}
-          ${formatDate(selectedDate)}
-          ${selectedStrike}
-          ${selectedOptionType}</h3>`,
+        text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">Contract History</h3>`,
         useHTML: true,
         style: { color: $mode === "light" ? "black" : "white" },
       },
@@ -244,17 +249,16 @@
         type: "datetime",
         endOnTick: false,
         crosshair: {
-          color: $mode === "light" ? "black" : "white",
+          color: "#fff",
           width: 1,
           dashStyle: "Solid",
         },
         labels: {
-          style: { color: $mode === "light" ? "black" : "white" },
+          style: { color: $mode === "light" ? "#545454" : "white" },
           distance: 20,
           formatter: function () {
             return new Date(this.value).toLocaleDateString("en-US", {
               month: "short",
-              day: "numeric",
               year: "numeric",
             });
           },
@@ -262,7 +266,7 @@
         tickPositioner: function () {
           const positions = [];
           const info = this.getExtremes();
-          const tickCount = 3; // Reduce number of ticks displayed
+          const tickCount = 5; // Reduce number of ticks displayed
           const interval = Math.floor((info.max - info.min) / tickCount);
 
           for (let i = 0; i <= tickCount; i++) {
@@ -275,7 +279,9 @@
         {
           gridLineWidth: 1,
           gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
-          labels: { style: { color: $mode === "light" ? "black" : "white" } },
+          labels: {
+            style: { color: $mode === "light" ? "#545454" : "white" },
+          },
           title: { text: null },
           opposite: true,
         },
@@ -298,8 +304,8 @@
       tooltip: {
         shared: true,
         useHTML: true,
-        backgroundColor: "rgba(0, 0, 0, 0.8)",
-        borderColor: "rgba(255, 255, 255, 0.2)",
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
+        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
         borderWidth: 1,
         style: {
           color: "#fff",
@@ -308,22 +314,37 @@
         },
         borderRadius: 4,
         formatter: function () {
-          let tooltipContent = `<span class=" m-auto  text-[1rem] font-[501]">${new Date(
-            this.x,
+          // Format the x value to display time in a custom format
+          let tooltipContent = `<span class="m-auto text-[1rem] font-[501]">${new Date(
+            this?.x,
           ).toLocaleDateString("en-US", {
             year: "numeric",
             month: "short",
             day: "numeric",
           })}</span><br>`;
 
+          // Loop through each point in the shared tooltip
           this.points.forEach((point) => {
-            tooltipContent += `<span class=" font-semibold text-sm">${point.series.name}:</span> 
-          <span class=" font-normal text-sm" >${abbreviateNumber(
-            point.y,
-          )}</span><br>`;
+            tooltipContent += `
+        <span class="font-semibold text-sm">${point.series.name}:</span> 
+        <span class="font-normal text-sm">${abbreviateNumber(point.y)}</span><br>`;
           });
+
           return tooltipContent;
         },
+      },
+
+      legend: {
+        enabled: true,
+        align: "center", // Positions legend at the left edge
+        verticalAlign: "top", // Positions legend at the top
+        layout: "horizontal", // Align items horizontally (use 'vertical' if preferred)
+        itemStyle: {
+          color: $mode === "light" ? "black" : "white",
+        },
+        symbolWidth: 16, // Controls the width of the legend symbol
+        symbolRadius: 8, // Creates circular symbols (adjust radius as needed)
+        squareSymbol: false, // Ensures symbols are circular, not square
       },
       series: series,
     };
