@@ -113,11 +113,9 @@
         style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
     } else {
-      optionsWatchlist = optionsWatchlist?.filter(
-        (item) => !deleteOptionsId?.includes(item?.id),
-      );
+      rawData = rawData?.filter((item) => !deleteOptionsId?.includes(item?.id));
 
-      optionsWatchlist = [...optionsWatchlist];
+      rawData = [...rawData];
 
       const postData = {
         itemIdList: deleteOptionsId,
@@ -167,8 +165,6 @@
         ticker: ticker,
         contract: optionSymbol,
       };
-
-      console.log(postData);
 
       // make the POST request to the endpoint
       const response = await fetch("/api/options-contract-history", {
@@ -221,18 +217,17 @@
     optionDetailsDesktopModal?.showModal();
 
     strikePrice = item?.strike_price;
-    optionType = item?.option_type;
+    optionType = item?.put_call;
     ticker = item?.ticker;
     dateExpiration = item?.date_expiration;
     optionSymbol = item?.option_symbol;
     const output = await getContractHistory();
     const historicalPrice = await getHistoricalPrice();
 
-    console.log(historicalPrice);
     rawDataHistory = output?.history;
 
     if (rawDataHistory?.length > 0) {
-      rawDataHistory.forEach((entry) => {
+      rawDataHistory?.forEach((entry) => {
         const matchingData = historicalPrice?.find(
           (d) => d?.time === entry?.date,
         );
@@ -264,8 +259,44 @@
 
     // Build series based on the selected graph type, using filteredData
     let series = [];
+    const fillColorStart = "rgb(70, 129, 244,0.5)";
+    const fillColorEnd = "rgb(70, 129, 244,0.001)";
     if (selectGraphType == "Vol/OI") {
       series = [
+        {
+          name: "Stock Price",
+          type: "area",
+          yAxis: 1,
+          data: filteredData.map((item) => [
+            new Date(item.date).getTime(),
+            item.price,
+          ]),
+          fillColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+              [0, fillColorStart],
+              [1, fillColorEnd],
+            ],
+          },
+          color: "#4681f4",
+          borderColor: "4681f4",
+          lineWidth: 1.3,
+          marker: { enabled: false },
+          animation: false,
+        },
+        {
+          name: "Avg Fill",
+          type: "spline", // smooth line
+          data: filteredData.map((item) => [
+            new Date(item.date).getTime(),
+            item.mark,
+          ]),
+          color: "#F21C64",
+          yAxis: 2,
+          lineWidth: 1.3,
+          animation: false,
+          marker: { enabled: false },
+        },
         {
           name: "Volume",
           type: "column",
@@ -292,71 +323,54 @@
           yAxis: 0,
           animation: false,
         },
-        {
-          name: "Avg Fill",
-          type: "spline", // smooth line
-          data: filteredData.map((item) => [
-            new Date(item.date).getTime(),
-            item.mark,
-          ]),
-          color: "#FAD776",
-          yAxis: 2,
-          animation: false,
-          marker: { enabled: false },
-        },
-        {
-          name: "Price",
-          type: "spline",
-          yAxis: 1,
-          data: filteredData.map((item) => [
-            new Date(item.date).getTime(),
-            item.price,
-          ]),
-          color: $mode === "light" ? "#3B82F6" : "white",
-          lineWidth: 1,
-          marker: { enabled: false },
-          animation: false,
-        },
       ];
     } else {
       series = [
         {
-          name: "IV",
-          type: "spline",
-          data: filteredData.map((item) => [
-            new Date(item.date).getTime(),
-            Math.floor(item.implied_volatility * 100),
-          ]),
-          color: "#B24BF3",
-          yAxis: 0,
-          animation: false,
-          marker: { enabled: false },
-        },
-        {
-          name: "Avg Fill",
-          type: "spline",
-          data: filteredData.map((item) => [
-            new Date(item.date).getTime(),
-            item.mark,
-          ]),
-          color: "#FAD776",
-          yAxis: 2,
-          lineWidth: 1,
-          animation: false,
-          marker: { enabled: false },
-        },
-        {
-          name: "Price",
-          type: "spline",
+          name: "Stock Price",
+          type: "area",
           yAxis: 1,
           data: filteredData.map((item) => [
             new Date(item.date).getTime(),
             item.price,
           ]),
-          color: $mode === "light" ? "black" : "white",
-          lineWidth: 1,
+          fillColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+              [0, fillColorStart],
+              [1, fillColorEnd],
+            ],
+          },
+          color: "#4681f4",
+          borderColor: "4681f4",
+          lineWidth: 1.3,
           marker: { enabled: false },
           animation: false,
+        },
+        {
+          name: "Avg Fill",
+          type: "spline", // smooth line
+          data: filteredData?.map((item) => [
+            new Date(item.date).getTime(),
+            item.mark,
+          ]),
+          color: "#F21C64",
+          yAxis: 2,
+          lineWidth: 1.3,
+          animation: false,
+          marker: { enabled: false },
+        },
+        {
+          name: "IV",
+          type: "spline",
+          data: filteredData?.map((item) => [
+            new Date(item.date).getTime(),
+            Math.floor(item.implied_volatility * 100),
+          ]),
+          color: $mode === "light" ? "black" : "white",
+          yAxis: 0,
+          animation: false,
+          marker: { enabled: false },
         },
       ];
     }
@@ -395,7 +409,7 @@
           dashStyle: "Solid",
         },
         labels: {
-          style: { color: "#fff" },
+          style: { color: $mode === "light" ? "#545454" : "white" },
           distance: 20,
           formatter: function () {
             return new Date(this.value).toLocaleDateString("en-US", {
@@ -420,7 +434,9 @@
         {
           gridLineWidth: 1,
           gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
-          labels: { style: { color: $mode === "light" ? "black" : "white" } },
+          labels: {
+            style: { color: $mode === "light" ? "#545454" : "white" },
+          },
           title: { text: null },
           opposite: true,
         },
@@ -465,7 +481,6 @@
           // Loop through each point in the shared tooltip
           this.points.forEach((point) => {
             tooltipContent += `
-        <span style="display:inline-block; width:10px; height:10px; background-color:${point.color}; border-radius:50%; margin-right:5px;"></span>
         <span class="font-semibold text-sm">${point.series.name}:</span> 
         <span class="font-normal text-sm">${abbreviateNumber(point.y)}</span><br>`;
           });
@@ -473,7 +488,19 @@
           return tooltipContent;
         },
       },
-      legend: { enabled: false },
+
+      legend: {
+        enabled: true,
+        align: "center", // Positions legend at the left edge
+        verticalAlign: "top", // Positions legend at the top
+        layout: "horizontal", // Align items horizontally (use 'vertical' if preferred)
+        itemStyle: {
+          color: $mode === "light" ? "black" : "white",
+        },
+        symbolWidth: 16, // Controls the width of the legend symbol
+        symbolRadius: 8, // Creates circular symbols (adjust radius as needed)
+        squareSymbol: false, // Ensures symbols are circular, not square
+      },
       series: series,
     };
 
@@ -1065,13 +1092,13 @@
                     </td>
 
                     <td class="text-sm sm:text-[1rem] text-end">
-                      {abbreviateNumber(item?.total_premium, false, true)}
+                      {abbreviateNumber(item?.total_premium)}
                     </td>
                     <td class="text-sm sm:text-[1rem] text-end">
-                      {abbreviateNumber(item?.gex, false, true)}
+                      {abbreviateNumber(item?.gex?.toFixed(2))}
                     </td>
                     <td class="text-sm sm:text-[1rem] text-end">
-                      {abbreviateNumber(item?.dex, false, true)}
+                      {abbreviateNumber(item?.dex?.toFixed(2))}
                     </td>
                   </tr>
                 {/each}

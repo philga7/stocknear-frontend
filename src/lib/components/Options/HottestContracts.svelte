@@ -425,7 +425,7 @@
         type: "datetime",
         endOnTick: false,
         crosshair: {
-          color: "#fff",
+          color: $mode === "light" ? "black" : "white",
           width: 1,
           dashStyle: "Solid",
         },
