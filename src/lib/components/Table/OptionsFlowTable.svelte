@@ -596,7 +596,7 @@
         class:opacity-30={index + 1 === rawData?.length &&
           data?.user?.tier !== "Pro"}
       >
-        <div class="p-2 text-center text-sm whitespace-nowrap">
+        <div class="p-2 text-center text-xs sm:text-sm whitespace-nowrap">
           {formatTime(displayedData[index]?.time)}
         </div>
         <div
@@ -618,7 +618,7 @@
           )
             ? 'text-[#FFA500]'
             : $mode === 'light'
-              ? 'text-[#4B5563]'
+              ? 'text-gray-400'
               : 'text-[#fff]'}"
         >
           <svg

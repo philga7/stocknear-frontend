@@ -863,7 +863,7 @@
     <tbody>
       {#each stockList as item, index}
         <tr
-          class="sdark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
+          class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
             1 ===
             rawData?.length &&
           !['Pro', 'Plus']?.includes(data?.user?.tier) &&

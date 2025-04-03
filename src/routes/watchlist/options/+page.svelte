@@ -156,14 +156,14 @@
                 {#if editMode}
                   <label
                     on:click={handleDelete}
-                    class="border text-sm border-gray-300 dark:border-gray-600 ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2 pl-3 pr-4 font-semibold shadow-xs bg-default sm:hover:bg-default/60 ease-out"
+                    class="border shadow-sm text-sm border-gray-300 dark:border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 pl-3 pr-4 font-semibold sm:hover:bg-gray-200 dark:sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
                   >
                     <svg
                       class="inline-block w-5 h-5"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       ><path
-                        fill="white"
+                        fill="currentColor"
                         d="M10 5h4a2 2 0 1 0-4 0M8.5 5a3.5 3.5 0 1 1 7 0h5.75a.75.75 0 0 1 0 1.5h-1.32l-1.17 12.111A3.75 3.75 0 0 1 15.026 22H8.974a3.75 3.75 0 0 1-3.733-3.389L4.07 6.5H2.75a.75.75 0 0 1 0-1.5zm2 4.75a.75.75 0 0 0-1.5 0v7.5a.75.75 0 0 0 1.5 0zM14.25 9a.75.75 0 0 1 .75.75v7.5a.75.75 0 0 1-1.5 0v-7.5a.75.75 0 0 1 .75-.75m-7.516 9.467a2.25 2.25 0 0 0 2.24 2.033h6.052a2.25 2.25 0 0 0 2.24-2.033L18.424 6.5H5.576z"
                       /></svg
                     >
@@ -175,17 +175,17 @@
 
                 <label
                   on:click={() => (editMode = !editMode)}
-                  class="border text-sm border-gray-300 dark:border-gray-600 ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2 pl-3 pr-4 font-semibold shadow-xs bg-default sm:hover:bg-default/60 ease-out"
+                  class="border shadow-sm text-sm border-gray-300 dark:border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 pl-3 pr-4 font-semibold sm:hover:bg-gray-100 dark:sm:hover:bg-default/60 ease-out sm:hover:text-gray-800 dark:sm:hover:text-gray-200"
                 >
                   <svg
                     class="inline-block w-5 h-5"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 1024 1024"
                     ><path
-                      fill="white"
+                      fill="currentColor"
                       d="M832 512a32 32 0 1 1 64 0v352a32 32 0 0 1-32 32H160a32 32 0 0 1-32-32V160a32 32 0 0 1 32-32h352a32 32 0 0 1 0 64H192v640h640z"
                     /><path
-                      fill="white"
+                      fill="currentColor"
                       d="m469.952 554.24l52.8-7.552L847.104 222.4a32 32 0 1 0-45.248-45.248L477.44 501.44l-7.552 52.8zm422.4-422.4a96 96 0 0 1 0 135.808l-331.84 331.84a32 32 0 0 1-18.112 9.088L436.8 623.68a32 32 0 0 1-36.224-36.224l15.104-105.6a32 32 0 0 1 9.024-18.112l331.904-331.84a96 96 0 0 1 135.744 0z"
                     /></svg
                   >
@@ -202,77 +202,47 @@
                 class="w-full rounded-md overflow-hidden overflow-x-auto no-scrollbar"
               >
                 <table
-                  class="table table-pin-cols table-sm table-compact rounded-none sm:rounded-md w-full bg-table m-auto mt-4 overflow-x-auto"
+                  class="table table-pin-cols table-sm table-compact rounded-none sm:rounded-md w-full m-auto mt-4 overflow-x-auto"
                 >
                   <thead class="bg-default">
-                    <tr class="">
-                      <td
-                        class="text-slate-200 font-semibold text-sm text-start"
-                        >Time</td
-                      >
+                    <tr
+                      class="bg-white dark:bg-default border-b border-[#27272A] text-muted dark:text-white"
+                    >
+                      <td class=" font-semibold text-sm text-center">Time</td>
                       <th
-                        class="text-slate-200 bg-default font-semibold text-sm text-start"
+                        class="bg-white dark:bg-default font-semibold text-sm text-center"
                         >Symbol</th
                       >
-                      <td
-                        class="text-slate-200 font-semibold text-sm text-start"
-                        >Date</td
-                      >
-                      <td
-                        class="text-slate-200 font-semibold text-sm text-start"
-                        >Expiry</td
-                      >
-                      <td class="text-slate-200 font-semibold text-sm text-end"
-                        >DTE</td
-                      >
-                      <td class="text-slate-200 font-semibold text-sm text-end"
-                        >Strike</td
-                      >
-                      <td class="text-slate-200 font-semibold text-sm text-end"
-                        >C/P</td
-                      >
-                      <td
-                        class="text-slate-200 font-semibold text-sm text-start"
-                        >Sent.</td
-                      >
-                      <td
-                        class="text-slate-200 font-semibold text-sm text-start"
-                        >Exec.</td
-                      >
-                      <td class="text-slate-200 font-semibold text-sm text-end"
-                        >Spot</td
-                      >
-                      <td class="text-slate-200 font-semibold text-sm text-end"
-                        >Price</td
-                      >
-                      <td class="text-slate-200 font-semibold text-sm text-end"
-                        >Prem.</td
-                      >
-                      <td
-                        class="text-slate-200 font-semibold text-sm text-start"
-                        >Type</td
-                      >
-                      <td class="text-slate-200 font-semibold text-sm text-end"
-                        >Vol.</td
-                      >
-                      <td class="text-slate-200 font-semibold text-sm text-end"
-                        >OI</td
-                      >
+                      <td class=" font-semibold text-sm text-center">Date</td>
+                      <td class=" font-semibold text-sm text-center">Expiry</td>
+                      <td class=" font-semibold text-sm text-center">DTE</td>
+                      <td class=" font-semibold text-sm text-center">Strike</td>
+                      <td class=" font-semibold text-sm text-center">C/P</td>
+                      <td class=" font-semibold text-sm text-center">Sent.</td>
+                      <td class=" font-semibold text-sm text-center">Exec.</td>
+                      <td class=" font-semibold text-sm text-center">Spot</td>
+                      <td class=" font-semibold text-sm text-center">Price</td>
+                      <td class=" font-semibold text-sm text-center">Prem.</td>
+                      <td class=" font-semibold text-sm text-center">Type</td>
+                      <td class=" font-semibold text-sm text-center">Vol.</td>
+                      <td class=" font-semibold text-sm text-center">OI</td>
                     </tr>
                   </thead>
                   <tbody>
                     {#each optionsWatchlist as item, index}
                       <!-- row -->
-                      <tr class="odd:bg-odd border-b border-gray-800">
-                        <td class=" text-sm text-start whitespace-nowrap">
+                      <tr class=" odd:bg-[#F6F7F8] dark:odd:bg-odd">
+                        <td
+                          class="text-xs sm:text-sm text-start whitespace-nowrap"
+                        >
                           {formatTime(item?.time)}
                         </td>
 
                         <th
                           on:click={() => handleFilter(item?.id)}
                           class="{index % 2
-                            ? 'bg-table'
-                            : 'bg-odd'} font-normal text-sm sm:text-[1rem] text-start"
+                            ? 'bg-white dark:bg-default'
+                            : 'bg-[#F6F7F8] dark:bg-odd'} font-normal text-sm sm:text-[1rem] text-center"
                         >
                           <div class=" flex flex-row items-center">
                             <input
@@ -289,16 +259,17 @@
                                 assetType={item?.underlying_type}
                               />
                             {:else}
-                              <span class="text-blue-400 cursor-pointer"
+                              <span
+                                class="text-blue-800 dark:text-blue-400 cursor-pointer"
                                 >{item?.ticker}</span
                               >
                             {/if}
                           </div>
                         </th>
-                        <td class=" text-sm sm:text-[1rem] text-start">
+                        <td class=" text-sm sm:text-[1rem] text-center">
                           {formatDate(item?.date)}
                         </td>
-                        <td class=" text-sm sm:text-[1rem] text-start">
+                        <td class=" text-sm sm:text-[1rem] text-center">
                           {reformatDate(item?.date_expiration)}
                         </td>
 
@@ -313,8 +284,8 @@
                         <td
                           class="text-sm sm:text-[1rem] {item?.put_call ===
                           'Calls'
-                            ? 'text-green-800 dark:text-[#00FC50]'
-                            : 'text-red-800 dark:text-[#FF2F1F]'} text-start"
+                            ? 'dark:text-[#00FC50]'
+                            : 'dark:text-[#FF2F1F]'} text-center"
                         >
                           {item?.put_call}
                         </td>
@@ -322,15 +293,15 @@
                         <td
                           class="text-sm sm:text-[1rem] {item?.sentiment ===
                           'Bullish'
-                            ? 'text-green-800 dark:text-[#00FC50]'
+                            ? 'dark:text-[#00FC50]'
                             : item?.sentiment === 'Bearish'
-                              ? 'text-red-800 dark:text-[#FF2F1F]'
-                              : 'text-[#C6A755]'} text-start"
+                              ? 'dark:text-[#FF2F1F]'
+                              : 'text-[#C6A755]'} text-center"
                         >
                           {item?.sentiment}
                         </td>
                         <td
-                          class="text-sm sm:text-[1rem] text-start whitespace-nowrap"
+                          class="text-sm sm:text-[1rem] text-center whitespace-nowrap"
                         >
                           {item?.execution_estimate}
                         </td>
@@ -346,17 +317,17 @@
                         <td
                           class="text-sm sm:text-[1rem] text-end {item?.put_call ===
                           'Puts'
-                            ? 'text-[#CB281C]'
-                            : 'text-[#0FB307]'} "
+                            ? 'dark:text-[#CB281C]'
+                            : 'dark:text-[#0FB307]'} "
                         >
                           {abbreviateNumber(item?.cost_basis)}
                         </td>
 
                         <td
-                          class="text-sm sm:text-[1rem] text-start {item?.option_activity_type ===
+                          class="text-sm sm:text-[1rem] text-center {item?.option_activity_type ===
                           'Sweep'
-                            ? 'text-[#C6A755]'
-                            : 'text-[#976DB7]'}"
+                            ? 'dark:text-[#C6A755]'
+                            : 'dark:text-[#976DB7]'}"
                         >
                           {item?.option_activity_type}
                         </td>
@@ -384,14 +355,13 @@
                 class="flex flex-col justify-center items-center m-auto pt-8"
               >
                 <span class=" text-[1rem] sm:text-lg m-auto p-4 text-center">
-                  Add your unusual options contracts and start tracking them
-                  now!
+                  Track your unusual options contracts now!
                 </span>
                 <a
                   href="/options-flow"
-                  class="py-3 sm:hover:bg-primary rounded-md w-64 flex mt-5 justify-center items-center m-auto border border-gray-300 dark:border-gray-600 group"
+                  class="py-3 bg-blue-600 sm:hover:bg-blue-700 rounded-md w-64 flex justify-center items-center m-auto border border-gray-300 dark:border-gray-600 group"
                 >
-                  <span class="font-semibold text-[1rem]"
+                  <span class="font-semibold text-[1rem] text-white"
                     >Follow the Whales
                   </span>
                 </a>
