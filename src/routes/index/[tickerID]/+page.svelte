@@ -187,11 +187,11 @@
 
           // Loop through each point in the shared tooltip
           this.points?.forEach((point) => {
-            tooltipContent += `<span class="text-white text-[1rem] font-[501]">${point.series.name}: ${point.y}</span><br>`;
+            tooltipContent += `<span class=" text-[1rem] font-[501]">${point.series.name}: ${point.y}</span><br>`;
           });
 
           // Append the formatted date at the end
-          tooltipContent += `<span class="text-white m-auto text-black text-sm font-normal">${formattedDate}</span><br>`;
+          tooltipContent += `<span class=" m-auto text-black text-sm font-normal">${formattedDate}</span><br>`;
 
           return tooltipContent;
         },
@@ -664,7 +664,7 @@
   description={`Get a real-time ${data?.companyName} (${$indexTicker}) stock chart, price quote with breaking news, financials, statistics, charts and more.`}
 />
 
-<section class="bg-default min-h-screen pb-40 overflow-hidden w-full">
+<section class=" min-h-screen pb-40 overflow-hidden w-full">
   <div class="w-full m-auto overflow-hidden">
     <div
       class="md:flex md:justify-between md:divide-x md:divide-slate-800 w-full"
@@ -684,9 +684,7 @@
                   <div
                     class="flex h-full w-full flex-col items-center justify-center rounded-sm border border-gray-800 p-6 text-center md:p-12"
                   >
-                    <div
-                      class="mb-4 text-white text-[1rem] sm:text-xl font-semibold"
-                    >
+                    <div class="mb-4 text-[1rem] sm:text-xl font-semibold">
                       No {displayData} chart data available
                     </div>
                   </div>
@@ -708,8 +706,8 @@
                             <span
                               class="block px-3 py-1 rounded duration-100 ease-in-out
           {displayData === interval
-                                ? 'bg-gray-200 text-muted dark:bg-primary dark:text-white font-semibold'
-                                : 'bg-transparent text-muted dark:text-gray-400 dark:sm:hover:text-white sm:hover:bg-gray-100 dark:sm:hover:bg-primary'}"
+                                ? 'bg-gray-200 text-muted dark:bg-primary dark: font-semibold'
+                                : 'bg-transparent text-muted dark:text-gray-400 dark:sm:hover: sm:hover:bg-gray-100 dark:sm:hover:bg-primary'}"
                             >
                               {interval}
                             </span>
@@ -758,14 +756,12 @@
             <div
               class="mt-10 lg:mt-0 order-5 lg:order-1 flex flex-row space-x-2 sm:space-x-3 xs:space-x-4"
             >
-              <table
-                class="w-[50%] text-sm text-white sm:text-[1rem] lg:min-w-[250px]"
-              >
+              <table class="w-[50%] text-sm sm:text-[1rem] lg:min-w-[250px]">
                 <tbody>
                   <tr
-                    class="flex flex-col border-b border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-1 text-sm"
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Open</td
                     >
                     <td
@@ -775,9 +771,9 @@
                   >
 
                   <tr
-                    class="flex flex-col border-b border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-1 text-sm"
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Volume</td
                     >
                     <td
@@ -789,9 +785,9 @@
                   >
 
                   <tr
-                    class="flex flex-col border-b border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-1 text-sm"
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Market Cap</td
                     >
                     <td
@@ -801,9 +797,9 @@
                   >
 
                   <tr
-                    class="flex flex-col border-b border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-1 text-sm"
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Price Avg 50</td
                     >
                     <td
@@ -813,9 +809,9 @@
                   >
 
                   <tr
-                    class="flex flex-col border-b border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-1 text-sm"
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Day's Range</td
                     >
                     <td
@@ -827,12 +823,12 @@
                   >
                 </tbody>
               </table>
-              <table class="w-[50%] text-sm text-white lg:min-w-[250px]">
+              <table class="w-[50%] text-sm lg:min-w-[250px]">
                 <tbody>
                   <tr
-                    class="flex flex-col border-b border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-1 text-sm"
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Previous Close</td
                     >
                     <td
@@ -842,9 +838,9 @@
                   >
 
                   <tr
-                    class="flex flex-col border-b border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-1 text-sm"
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Avg. Volume</td
                     >
                     <td
@@ -856,9 +852,9 @@
                   >
 
                   <tr
-                    class="flex flex-col border-b border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-1 text-sm"
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Holdings
                     </td>
                     <td
@@ -870,9 +866,9 @@
                   >
 
                   <tr
-                    class="flex flex-col border-b border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-1 text-sm"
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Price Avg 200</td
                     >
                     <td
@@ -882,9 +878,9 @@
                   >
 
                   <tr
-                    class="flex flex-col border-b border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
-                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-1 text-sm"
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >52-Week Range</td
                     >
                     <td

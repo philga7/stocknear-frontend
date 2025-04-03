@@ -381,7 +381,7 @@
 <svelte:window bind:scrollY={y} />
 
 <body
-  class="text-muted dark:text-white w-full max-w-screen sm:max-w-[1250px] min-h-screen overflow-hidden"
+  class=" w-full max-w-screen sm:max-w-[1250px] min-h-screen overflow-hidden"
 >
   <!-- Page wrapper -->
   <div class=" flex flex-col w-full relative w-full sm:max-w-[1250px]">
@@ -909,7 +909,7 @@
                           on:click={() => changeSection("overview")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'overview'
-                            ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
+                            ? ' bg-[#EEEEEE] dark:bg-secondary font-semibold'
                             : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                         >
                           Overview
@@ -919,7 +919,7 @@
                           on:click={() => changeSection("financials")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'financials'
-                            ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
+                            ? ' bg-[#EEEEEE] dark:bg-secondary font-semibold'
                             : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                         >
                           Financials
@@ -929,7 +929,7 @@
                           on:click={() => changeSection("statistics")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'statistics'
-                            ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
+                            ? ' bg-[#EEEEEE] dark:bg-secondary font-semibold'
                             : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                           >Statistics</a
                         >
@@ -939,7 +939,7 @@
                           on:click={() => changeSection("metrics")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'metrics'
-                            ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
+                            ? ' bg-[#EEEEEE] dark:bg-secondary font-semibold'
                             : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                           >Metrics</a
                         >
@@ -950,7 +950,7 @@
                             on:click={() => changeSection("forecast")}
                             class="p-2 px-5 cursor-pointer {displaySection ===
                             'forecast'
-                              ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
+                              ? ' bg-[#EEEEEE] dark:bg-secondary font-semibold'
                               : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                           >
                             Forecast
@@ -961,7 +961,7 @@
                           on:click={() => changeSection("dark-pool")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'dark-pool'
-                            ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
+                            ? ' bg-[#EEEEEE] dark:bg-secondary font-semibold'
                             : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                         >
                           Dark Pool
@@ -971,7 +971,7 @@
                           on:click={() => changeSection("options")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'options'
-                            ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
+                            ? ' bg-[#EEEEEE] dark:bg-secondary font-semibold'
                             : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                         >
                           Options
@@ -982,7 +982,7 @@
                           on:click={() => changeSection("insider")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'insider'
-                            ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
+                            ? ' bg-[#EEEEEE] dark:bg-secondary font-semibold'
                             : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                         >
                           Insider
@@ -992,7 +992,7 @@
                           on:click={() => changeSection("dividends")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'dividends'
-                            ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
+                            ? ' bg-[#EEEEEE] dark:bg-secondary font-semibold'
                             : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                         >
                           Dividends
@@ -1002,7 +1002,7 @@
                           on:click={() => changeSection("history")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'history'
-                            ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
+                            ? ' bg-[#EEEEEE] dark:bg-secondary font-semibold'
                             : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                         >
                           History
@@ -1012,7 +1012,7 @@
                           on:click={() => changeSection("profile")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'profile'
-                            ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
+                            ? ' bg-[#EEEEEE] dark:bg-secondary font-semibold'
                             : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                         >
                           Profile

@@ -365,7 +365,7 @@
 <svelte:window bind:scrollY={y} />
 
 <body
-  class="bg-default w-full max-w-screen sm:max-w-[1250px] min-h-screen overflow-hidden"
+  class=" w-full max-w-screen sm:max-w-[1250px] min-h-screen overflow-hidden"
 >
   <!-- Page wrapper -->
   <div class="mt-5 flex flex-col w-full relative w-full">
@@ -374,7 +374,7 @@
         <div class="w-full">
           <div class="sm:flex sm:justify-start w-full sm:max-w-[1250px]">
             <!--Start Mobile Navbar-->
-            <div class="fixed top-0 left-0 right-0 z-20 bg-default sm:hidden">
+            <div class="fixed top-0 left-0 right-0 z-20 sm:hidden">
               <div class="navbar w-full px-4 py-2">
                 <div
                   class="{isScrolled
@@ -407,10 +407,10 @@
                         ? "hidden"
                         : "flex flex-col items-center ml-6 transition-transform ease-in"}
                     >
-                      <span class="text-white text-xs font-semibold">
+                      <span class=" text-xs font-semibold">
                         {$indexTicker}
                       </span>
-                      <span class="text-white text-sm">
+                      <span class=" text-sm">
                         {#if $currentPortfolioPrice !== null && $currentPortfolioPrice !== 0}
                           {$currentPortfolioPrice}
                         {:else}
@@ -528,7 +528,7 @@
                     {:else}
                       <label
                         for="userLogin"
-                        class="cursor-pointer shrink-0 text-white mr-4"
+                        class="cursor-pointer shrink-0 mr-4"
                       >
                         <svg
                           class="w-6 h-6 inline-block"
@@ -593,7 +593,7 @@
                           <div class="flex flex-col ml-auto mr-2">
                             {#if userWatchList?.length !== 0}
                               <div
-                                class="shrink-0 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
+                                class="shrink-0 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative flex items-center justify-center"
                               >
                                 <label
                                   for="addWatchListModal"
@@ -624,7 +624,7 @@
                               </div>
                             {:else if userWatchList?.length === 0}
                               <div
-                                class="shrink-0 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
+                                class="shrink-0 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative flex items-center justify-center"
                               >
                                 <label
                                   on:click={() =>
@@ -658,11 +658,11 @@
                           </div>
                         {:else}
                           <div
-                            class="shrink-0 ml-auto mr-2 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
+                            class="shrink-0 ml-auto mr-2 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative flex items-center justify-center"
                           >
                             <label
                               for="userLogin"
-                              class="cursor-pointer shrink-0 text-white"
+                              class="cursor-pointer shrink-0"
                             >
                               <svg
                                 class="w-7 h-7 inline-block"
@@ -681,12 +681,12 @@
                         <!--Start Price Alert -->
 
                         <div
-                          class="shrink-0 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative bg-default flex items-center justify-center"
+                          class="shrink-0 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative flex items-center justify-center"
                         >
                           <label
                             on:click={() => ($openPriceAlert = true)}
                             for={data?.user ? "priceAlertModal" : "userLogin"}
-                            class="cursor-pointer shrink-0 text-white"
+                            class="cursor-pointer shrink-0"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -721,9 +721,7 @@
                             <div
                               class="flex flex-row justify-between items-center w-full sm:-mt-[50px] mb-5 sm:mb-10"
                             >
-                              <h1
-                                class="text-2xl lg:text-3xl font-bold text-white"
-                              >
+                              <h1 class="text-2xl lg:text-3xl font-bold">
                                 {$displayCompanyName?.length > charNumber
                                   ? $displayCompanyName?.slice(0, charNumber) +
                                     "..."
@@ -735,7 +733,7 @@
                             </div>
 
                             <div
-                              class="-mt-5 sm:-mt-8 mb-5 flex flex-row items-end space-x-2 xs:space-x-3 sm:space-x-5 text-white"
+                              class="-mt-5 sm:-mt-8 mb-5 flex flex-row items-end space-x-2 xs:space-x-3 sm:space-x-5"
                             >
                               <div class="w-full max-w-[50%] whitespace-nowrap">
                                 <div
@@ -757,14 +755,14 @@
                                   <span
                                     class={displayLegend?.change >= 0
                                       ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
-                                      : "text-[#FF2F1F]"}
+                                      : "text-red-800 dark:text-[#FF2F1F]"}
                                   >
                                     {displayLegend?.change}
                                   </span>
                                   <span
                                     class={displayLegend?.changesPercentage >= 0
-                                      ? "text-[#00FC50]"
-                                      : "text-[#FF2F1F]"}
+                                      ? "text-green-800 dark:text-[#00FC50]"
+                                      : "text-red-800 dark:text-[#FF2F1F]"}
                                   >
                                     ({displayLegend?.changesPercentage}%)
                                   </span>
@@ -861,18 +859,16 @@
                     <!--Start Ticker Section-->
 
                     <nav
-                      class="sm:ml-4 border-b-[2px] overflow-x-auto md:overflow-hidden whitespace-nowrap"
+                      class="sm:ml-4 border-b-[2px] border-[#2C6288] dark:border-white overflow-x-auto whitespace-nowrap no-scrollbar"
                     >
-                      <ul
-                        class="flex flex-row items-center w-full text-[1rem] text-white"
-                      >
+                      <ul class="flex flex-row items-center w-full text-[1rem]">
                         <a
                           href={`/index/${$indexTicker}`}
                           on:click={() => changeSection("overview")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'overview'
-                            ? 'text-white bg-secondary font-semibold'
-                            : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary'}"
+                            ? ' bg-[#EEEEEE] dark:bg-secondary font-semibold'
+                            : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                         >
                           Overview
                         </a>
@@ -882,8 +878,8 @@
                           on:click={() => changeSection("holdings")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'holdings'
-                            ? 'text-white bg-secondary font-semibold'
-                            : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary'}"
+                            ? ' bg-[#EEEEEE] dark:bg-secondary font-semibold'
+                            : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                         >
                           Holdings
                         </a>
@@ -892,8 +888,8 @@
                           on:click={() => changeSection("options")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'options'
-                            ? 'text-white bg-secondary font-semibold'
-                            : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary'}"
+                            ? ' bg-[#EEEEEE] dark:bg-secondary font-semibold'
+                            : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                         >
                           Options
                         </a>
@@ -903,8 +899,8 @@
                           on:click={() => changeSection("history")}
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'history'
-                            ? 'text-white bg-secondary font-semibold'
-                            : 'text-gray-400 sm:hover:text-white sm:hover:bg-secondary'}"
+                            ? ' bg-[#EEEEEE] dark:bg-secondary font-semibold'
+                            : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                         >
                           History
                         </a>
@@ -948,12 +944,12 @@
   <div class="modal-box rounded-md w-full bg-secondary border border-gray-600">
     <label
       for="addWatchListModal"
-      class="cursor-pointer bg-secondary absolute right-5 top-2 text-[1rem] sm:text-[1.5rem] text-white"
+      class="cursor-pointer bg-secondary absolute right-5 top-2 text-[1rem] sm:text-[1.5rem]"
     >
       ✕
     </label>
 
-    <div class="text-white">
+    <div class="">
       <h3 class="font-semibold text-lg sm:text-xl mb-10">Add to Watchlist</h3>
 
       <div class="flex flex-col items-center w-full max-w-3xl bg-secondary">
@@ -970,10 +966,10 @@
                 : 'border-gray-600'}"
             >
               <div class="flex flex-col items-center w-full">
-                <span class="ml-1 text-white mr-auto">
+                <span class="ml-1 mr-auto">
                   {item?.title}
                 </span>
-                <span class="ml-1 text-white text-sm mr-auto">
+                <span class="ml-1 text-sm mr-auto">
                   {item?.ticker?.length}
                   {item?.ticker?.length !== 1 ? "Companies" : "Company"}
                 </span>

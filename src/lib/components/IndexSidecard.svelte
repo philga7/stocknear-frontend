@@ -21,10 +21,10 @@
 </script>
 
 <div class="px-0.5 lg:px-0">
-  <h2 class="mb-2 text-2xl text-white font-semibold">
+  <h2 class="mb-2 text-2xl font-bold">
     About {$indexTicker}
   </h2>
-  <p class="text-gray-200">
+  <p>
     {description}
   </p>
 </div>

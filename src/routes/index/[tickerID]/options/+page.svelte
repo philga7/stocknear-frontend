@@ -142,7 +142,7 @@
   description={`Detailed informaton of unusual options activity for ${$displayCompanyName} (${$indexTicker}).`}
 />
 
-<section class="w-full bg-default overflow-hidden text-white min-h-screen">
+<section class="w-full overflow-hidden min-h-screen">
   <div class="w-full flex h-full overflow-hidden">
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"
@@ -160,7 +160,7 @@
 
         {#if rawData?.length > 0}
           {#if optionList?.length !== 0}
-            <h3 class="text-xl sm:text-2xl text-white font-bold text-start">
+            <h3 class="text-xl sm:text-2xl font-bold text-start">
               Historical {$indexTicker} Data
             </h3>
 
@@ -170,12 +170,27 @@
               >
                 <thead class="text-muted dark:text-white dark:bg-default">
                   <tr class="">
-                    <td class=" font-semibold text-sm text-start">Date</td>
-                    <td class=" font-semibold text-sm text-end">% Change</td>
-                    <td class=" font-semibold text-sm text-end">P/C</td>
-                    <td class=" font-semibold text-sm text-center">Volume</td>
-                    <td class=" font-semibold text-sm text-center">C Volume</td>
-                    <td class=" font-semibold text-sm text-center">P Volume</td>
+                    <td class=" font-semibold text-sm sm:text-[1rem] text-start"
+                      >Date</td
+                    >
+                    <td class=" font-semibold text-sm sm:text-[1rem] text-end"
+                      >% Change</td
+                    >
+                    <td class=" font-semibold text-sm sm:text-[1rem] text-end"
+                      >P/C</td
+                    >
+                    <td
+                      class=" font-semibold text-sm sm:text-[1rem] text-center"
+                      >Volume</td
+                    >
+                    <td
+                      class=" font-semibold text-sm sm:text-[1rem] text-center"
+                      >C Volume</td
+                    >
+                    <td
+                      class=" font-semibold text-sm sm:text-[1rem] text-center"
+                      >P Volume</td
+                    >
                     <!--
                     <td class=" font-semibold text-sm text-end"
                       >Vol/30D</td
@@ -340,11 +355,11 @@
                       </td>
 
                       <td class=" text-sm sm:text-[1rem] text-end">
-                        {#if item?.changeOI >= 0}
+                        {#if item?.changeOI >= 0 && item?.changeOI}
                           <span class="text-green-800 dark:text-[#00FC50]"
                             >+{item?.changeOI?.toLocaleString("en-US")}</span
                           >
-                        {:else if item?.changeOI < 0}
+                        {:else if item?.changeOI < 0 && item?.changeOI}
                           <span class="text-red-800 dark:text-[#FF2F1F]"
                             >{item?.changeOI?.toLocaleString("en-US")}
                           </span>
@@ -354,13 +369,13 @@
                       </td>
 
                       <td class=" text-sm sm:text-[1rem] text-end">
-                        {#if item?.changesPercentageOI >= 0}
+                        {#if item?.changesPercentageOI >= 0 && item?.changesPercentageOI}
                           <span class="text-green-800 dark:text-[#00FC50]"
                             >+{item?.changesPercentageOI >= 1000
                               ? abbreviateNumber(item?.changesPercentageOI)
                               : item?.changesPercentageOI?.toFixed(2)}%</span
                           >
-                        {:else if item?.changesPercentageOI < 0}
+                        {:else if item?.changesPercentageOI < 0 && item?.changesPercentageOI}
                           <span class="text-red-800 dark:text-[#FF2F1F]"
                             >{item?.changesPercentageOI <= -1000
                               ? abbreviateNumber(item?.changesPercentageOI)
