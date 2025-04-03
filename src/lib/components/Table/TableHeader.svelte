@@ -25,7 +25,9 @@
       class="cursor-pointer select-none font-semibold text-sm sm:text-[1rem] whitespace-nowrap {column.align ===
       'right'
         ? 'text-end'
-        : 'text-start'}"
+        : column.align === 'left'
+          ? 'text-start'
+          : 'text-center'}"
     >
       {column?.label}
       {@html SortIcon({ sortOrder: sortOrders[column.key]?.order })}

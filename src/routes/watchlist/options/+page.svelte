@@ -1,17 +1,31 @@
 <script lang="ts">
   import HoverStockChart from "$lib/components/HoverStockChart.svelte";
   import { abbreviateNumber } from "$lib/utils";
+  import TableHeader from "$lib/components/Table/TableHeader.svelte";
+  import Star from "lucide-svelte/icons/star";
   import SEO from "$lib/components/SEO.svelte";
+  import { screenWidth, setCache, getCache } from "$lib/store";
   import { onMount } from "svelte";
   import { toast } from "svelte-sonner";
   import { mode } from "mode-watcher";
 
   export let data;
+  let originalData = [];
   let editMode = false;
   let numberOfChecked = 0;
   let deleteOptionsId = [];
 
   let isLoaded = false;
+  let configContract = null;
+
+  let optionHistoryList = [];
+  let selectGraphType = "Vol/OI";
+  let container;
+  let rawDataHistory = [];
+  let strikePrice;
+  let optionType;
+  let dateExpiration;
+  let ticker;
 
   function daysLeft(targetDate) {
     const targetTime = new Date(targetDate).getTime();
@@ -127,10 +141,415 @@
     if (optionsWatchlist?.length !== 0) {
       optionsWatchlist?.forEach((item) => {
         item.dte = daysLeft(item?.date_expiration);
+        item.size = Math.floor(item?.cost_basis / (item?.price * 100));
       });
     }
+    originalData = [...optionsWatchlist];
     isLoaded = true;
   });
+
+  function getScroll() {
+    const scrollThreshold = container.scrollHeight * 0.8; // 80% of the container height
+
+    // Check if the user has scrolled to the bottom based on the threshold
+    const isBottom =
+      container.scrollTop + container.clientHeight >= scrollThreshold;
+
+    // Only load more data if at the bottom and there is still data to load
+    if (isBottom && optionHistoryList?.length !== rawDataHistory?.length) {
+      const nextIndex = optionHistoryList.length; // Ensure optionHistoryList is defined
+      const filteredNewResults = rawDataHistory.slice(
+        nextIndex,
+        nextIndex + 25,
+      ); // Ensure rawData is defined
+      optionHistoryList = [...optionHistoryList, ...filteredNewResults];
+    }
+  }
+
+  const getContractHistory = async (contractId) => {
+    let output;
+    const cachedData = getCache(contractId, "getContractHistory");
+    if (cachedData) {
+      output = cachedData;
+    } else {
+      const postData = {
+        ticker: ticker,
+        contract: contractId,
+      };
+
+      // make the POST request to the endpoint
+      const response = await fetch("/api/options-contract-history", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postData),
+      });
+
+      output = await response.json();
+
+      setCache(contractId, output, "getContractHistory");
+    }
+
+    return output;
+  };
+
+  async function handleViewData(item) {
+    isLoaded = false;
+    selectGraphType = "Vol/OI";
+    optionDetailsDesktopModal?.showModal();
+
+    strikePrice = item?.strike_price;
+    optionType = item?.option_type;
+    dateExpiration = item?.date_expiration;
+    const output = await getContractHistory(item?.option_symbol);
+    rawDataHistory = output?.history;
+
+    if (rawDataHistory?.length > 0) {
+      rawDataHistory.forEach((entry) => {
+        const matchingData = data?.getHistoricalPrice?.find(
+          (d) => d?.time === entry?.date,
+        );
+        if (matchingData) {
+          entry.price = matchingData?.close;
+        }
+      });
+
+      configContract = plotContractHistory();
+      rawDataHistory = rawDataHistory?.sort(
+        (a, b) => new Date(b?.date) - new Date(a?.date),
+      );
+      optionHistoryList = rawDataHistory?.slice(0, 20);
+    } else {
+      configContract = null;
+    }
+
+    isLoaded = true;
+  }
+
+  function plotContractHistory() {
+    // Ensure rawDataHistory exists and sort it by date
+    const sortedData =
+      rawDataHistory?.sort((a, b) => new Date(a?.date) - new Date(b?.date)) ||
+      [];
+
+    // Filter out data points that have an undefined price so they don't appear in any series
+    const filteredData = sortedData.filter((item) => item?.price !== undefined);
+
+    // Build series based on the selected graph type, using filteredData
+    let series = [];
+    if (selectGraphType == "Vol/OI") {
+      series = [
+        {
+          name: "Volume",
+          type: "column",
+          data: filteredData.map((item) => [
+            new Date(item.date).getTime(),
+            item.volume,
+          ]),
+          color: "#FD7E14",
+          borderColor: "#FD7E14",
+          borderRadius: "2px",
+          yAxis: 0,
+          animation: false,
+        },
+        {
+          name: "OI",
+          type: "column",
+          data: filteredData.map((item) => [
+            new Date(item.date).getTime(),
+            item.open_interest,
+          ]),
+          color: "#33B890",
+          borderColor: "#33B890",
+          borderRadius: "2px",
+          yAxis: 0,
+          animation: false,
+        },
+        {
+          name: "Avg Fill",
+          type: "spline", // smooth line
+          data: filteredData.map((item) => [
+            new Date(item.date).getTime(),
+            item.mark,
+          ]),
+          color: "#FAD776",
+          yAxis: 2,
+          animation: false,
+          marker: { enabled: false },
+        },
+        {
+          name: "Price",
+          type: "spline",
+          yAxis: 1,
+          data: filteredData.map((item) => [
+            new Date(item.date).getTime(),
+            item.price,
+          ]),
+          color: $mode === "light" ? "#3B82F6" : "white",
+          lineWidth: 1,
+          marker: { enabled: false },
+          animation: false,
+        },
+      ];
+    } else {
+      series = [
+        {
+          name: "IV",
+          type: "spline",
+          data: filteredData.map((item) => [
+            new Date(item.date).getTime(),
+            Math.floor(item.implied_volatility * 100),
+          ]),
+          color: "#B24BF3",
+          yAxis: 0,
+          animation: false,
+          marker: { enabled: false },
+        },
+        {
+          name: "Avg Fill",
+          type: "spline",
+          data: filteredData.map((item) => [
+            new Date(item.date).getTime(),
+            item.mark,
+          ]),
+          color: "#FAD776",
+          yAxis: 2,
+          lineWidth: 1,
+          animation: false,
+          marker: { enabled: false },
+        },
+        {
+          name: "Price",
+          type: "spline",
+          yAxis: 1,
+          data: filteredData.map((item) => [
+            new Date(item.date).getTime(),
+            item.price,
+          ]),
+          color: $mode === "light" ? "black" : "white",
+          lineWidth: 1,
+          marker: { enabled: false },
+          animation: false,
+        },
+      ];
+    }
+
+    // Highcharts configuration object
+    const options = {
+      chart: {
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        animation: false,
+        height: 360,
+      },
+      credits: { enabled: false },
+      title: {
+        text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">Contract History</h3>`,
+        useHTML: true,
+        style: { color: $mode === "light" ? "black" : "white" },
+      },
+      // Disable markers globally on hover for all series
+      plotOptions: {
+        series: {
+          color: $mode === "light" ? "black" : "white",
+          animation: false, // Disable series animation
+          states: {
+            hover: {
+              enabled: false, // Disable hover effect globally
+            },
+          },
+        },
+      },
+      xAxis: {
+        type: "datetime",
+        endOnTick: false,
+        crosshair: {
+          color: $mode === "light" ? "black" : "white",
+          width: 1,
+          dashStyle: "Solid",
+        },
+        labels: {
+          style: { color: "#fff" },
+          distance: 20,
+          formatter: function () {
+            return new Date(this.value).toLocaleDateString("en-US", {
+              month: "short",
+              year: "numeric",
+            });
+          },
+        },
+        tickPositioner: function () {
+          const positions = [];
+          const info = this.getExtremes();
+          const tickCount = 5; // Reduce number of ticks displayed
+          const interval = Math.floor((info.max - info.min) / tickCount);
+
+          for (let i = 0; i <= tickCount; i++) {
+            positions.push(info.min + i * interval);
+          }
+          return positions;
+        },
+      },
+      yAxis: [
+        {
+          gridLineWidth: 1,
+          gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
+          labels: { style: { color: $mode === "light" ? "black" : "white" } },
+          title: { text: null },
+          opposite: true,
+        },
+        {
+          title: { text: null },
+          gridLineWidth: 0,
+          labels: { enabled: false },
+        },
+        {
+          title: { text: null },
+          gridLineWidth: 0,
+          labels: { enabled: false },
+        },
+        {
+          title: { text: null },
+          gridLineWidth: 0,
+          labels: { enabled: false },
+        },
+      ],
+      tooltip: {
+        shared: true,
+        useHTML: true,
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
+        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        borderWidth: 1,
+        style: {
+          color: "#fff",
+          fontSize: "16px",
+          padding: "10px",
+        },
+        borderRadius: 4,
+        formatter: function () {
+          // Format the x value to display time in a custom format
+          let tooltipContent = `<span class="m-auto text-[1rem] font-[501]">${new Date(
+            this?.x,
+          ).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })}</span><br>`;
+
+          // Loop through each point in the shared tooltip
+          this.points.forEach((point) => {
+            tooltipContent += `
+        <span style="display:inline-block; width:10px; height:10px; background-color:${point.color}; border-radius:50%; margin-right:5px;"></span>
+        <span class="font-semibold text-sm">${point.series.name}:</span> 
+        <span class="font-normal text-sm">${abbreviateNumber(point.y)}</span><br>`;
+          });
+
+          return tooltipContent;
+        },
+      },
+      legend: { enabled: false },
+      series: series,
+    };
+
+    return options;
+  }
+
+  $: columns = [
+    { key: "time", label: "Time", align: "center" },
+    { key: "ticker", label: "Symbol", align: "center" },
+    { key: "option_symbol", label: "Option Chain", align: "center" },
+    { key: "date_expiration", label: "Expiry", align: "center" },
+    { key: "dte", label: "DTE", align: "center" },
+    { key: "sentiment", label: "Sent.", align: "center" },
+    { key: "size", label: "Size", align: "center" },
+    { key: "execution_estimate", label: "Exec", align: "center" },
+    { key: "underlying_price", label: "Price", align: "center" },
+    { key: "price", label: "Spot", align: "center" },
+    { key: "cost_basis", label: "Prem", align: "center" },
+    { key: "option_activity_type", label: "Type", align: "center" },
+    { key: "volume", label: "Volume", align: "center" },
+    { key: "open_interest", label: "OI", align: "center" },
+  ];
+
+  $: sortOrders = {
+    time: { order: "none", type: "string" },
+    date: { order: "none", type: "date" },
+    ticker: { order: "none", type: "string" },
+    option_symbol: { order: "none", type: "string" },
+    date_expiration: { order: "none", type: "date" },
+    execution_estimate: { order: "none", type: "string" },
+    dte: { order: "none", type: "number" },
+    sentiment: { order: "none", type: "sentiment" },
+    size: { order: "none", type: "number" },
+    underlying_price: { order: "none", type: "number" },
+    price: { order: "none", type: "number" },
+    cost_basis: { order: "none", type: "number" },
+    volume: { order: "none", type: "number" },
+    open_interest: { order: "none", type: "number" },
+    option_activity_type: { order: "none", type: "string" },
+  };
+
+  const sortData = (key) => {
+    // Reset all other keys to 'none' except the current key
+    for (const k in sortOrders) {
+      if (k !== key) {
+        sortOrders[k].order = "none";
+      }
+    }
+
+    // Cycle through 'none', 'asc', 'desc' for the clicked key
+    const orderCycle = ["none", "asc", "desc"];
+    const currentOrderIndex = orderCycle.indexOf(sortOrders[key].order);
+    sortOrders[key].order =
+      orderCycle[(currentOrderIndex + 1) % orderCycle.length];
+    const sortOrder = sortOrders[key].order;
+
+    // Reset to original data when 'none' and stop further sorting
+    if (sortOrder === "none") {
+      optionsWatchlist = [...originalData]?.slice(0, 150);
+      return;
+    }
+
+    // Define a generic comparison function
+    const compareValues = (a, b) => {
+      const { type } = sortOrders[key];
+      let valueA, valueB;
+
+      switch (type) {
+        case "date":
+          valueA = new Date(a[key]);
+          valueB = new Date(b[key]);
+          break;
+        case "string":
+          valueA = a[key].toUpperCase();
+          valueB = b[key].toUpperCase();
+          return sortOrder === "asc"
+            ? valueA.localeCompare(valueB)
+            : valueB.localeCompare(valueA);
+        case "sentiment":
+          const sentimentOrder = { BULLISH: 1, NEUTRAL: 2, BEARISH: 3 };
+          const sentimentA = sentimentOrder[a?.sentiment?.toUpperCase()] || 4;
+          const sentimentB = sentimentOrder[b?.sentiment?.toUpperCase()] || 4;
+          return sortOrder === "asc"
+            ? sentimentA - sentimentB
+            : sentimentB - sentimentA;
+
+        case "number":
+        default:
+          valueA = parseFloat(a[key]);
+          valueB = parseFloat(b[key]);
+          break;
+      }
+
+      // Default comparison for numbers and fallback case
+      if (valueA < valueB) return sortOrder === "asc" ? -1 : 1;
+      if (valueA > valueB) return sortOrder === "asc" ? 1 : -1;
+      return 0;
+    };
+
+    // Sort using the generic comparison function
+    optionsWatchlist = [...originalData].sort(compareValues)?.slice(0, 150);
+  };
 </script>
 
 <SEO
@@ -153,10 +572,17 @@
                 <h2 class="font-semibold text-xl mr-auto">
                   {optionsWatchlist?.length} Options
                 </h2>
+                <a
+                  href="/options-flow"
+                  class="border shadow-sm text-sm border-gray-300 dark:border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 pl-3 pr-4 font-semibold sm:hover:bg-gray-100 dark:sm:hover:bg-default/60 ease-out dark:sm:hover:text-gray-300"
+                >
+                  <Star class="inline-block w-5 h-5" />
+                  <span class="ml-1 text-sm"> Add Contracts </span>
+                </a>
                 {#if editMode}
                   <label
                     on:click={handleDelete}
-                    class="border shadow-sm text-sm border-gray-300 dark:border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 pl-3 pr-4 font-semibold sm:hover:bg-gray-200 dark:sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
+                    class="border shadow-sm text-sm border-gray-300 dark:border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 pl-3 pr-4 font-semibold sm:hover:bg-gray-100 dark:sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
                   >
                     <svg
                       class="inline-block w-5 h-5"
@@ -202,31 +628,10 @@
                 class="w-full rounded-md overflow-hidden overflow-x-auto no-scrollbar"
               >
                 <table
-                  class="table table-pin-cols table-sm table-compact rounded-none sm:rounded-md w-full m-auto mt-4 overflow-x-auto"
+                  class="table table-sm table-compact rounded-none sm:rounded-md w-full m-auto mt-2 overflow-x-auto border border-gray-300 dark:border-gray-800"
                 >
-                  <thead class="bg-default">
-                    <tr
-                      class="bg-white dark:bg-default border-b border-[#27272A] text-muted dark:text-white"
-                    >
-                      <td class=" font-semibold text-sm text-center">Time</td>
-                      <th
-                        class="bg-white dark:bg-default font-semibold text-sm text-center"
-                        >Symbol</th
-                      >
-                      <td class=" font-semibold text-sm text-center">Date</td>
-                      <td class=" font-semibold text-sm text-center">Expiry</td>
-                      <td class=" font-semibold text-sm text-center">DTE</td>
-                      <td class=" font-semibold text-sm text-center">Strike</td>
-                      <td class=" font-semibold text-sm text-center">C/P</td>
-                      <td class=" font-semibold text-sm text-center">Sent.</td>
-                      <td class=" font-semibold text-sm text-center">Exec.</td>
-                      <td class=" font-semibold text-sm text-center">Spot</td>
-                      <td class=" font-semibold text-sm text-center">Price</td>
-                      <td class=" font-semibold text-sm text-center">Prem.</td>
-                      <td class=" font-semibold text-sm text-center">Type</td>
-                      <td class=" font-semibold text-sm text-center">Vol.</td>
-                      <td class=" font-semibold text-sm text-center">OI</td>
-                    </tr>
+                  <thead>
+                    <TableHeader {columns} {sortOrders} {sortData} />
                   </thead>
                   <tbody>
                     {#each optionsWatchlist as item, index}
@@ -238,7 +643,7 @@
                           {formatTime(item?.time)}
                         </td>
 
-                        <th
+                        <td
                           on:click={() => handleFilter(item?.id)}
                           class="{index % 2
                             ? 'bg-white dark:bg-default'
@@ -265,29 +670,41 @@
                               >
                             {/if}
                           </div>
-                        </th>
-                        <td class=" text-sm sm:text-[1rem] text-center">
-                          {formatDate(item?.date)}
                         </td>
+
+                        <td
+                          class="text-sm sm:text-[1rem] text-start whitespace-nowrap flex justify-between"
+                        >
+                          <label
+                            on:click={() => handleViewData(item)}
+                            on:mouseover={() =>
+                              getContractHistory(item?.option_symbol)}
+                            class="cursor-pointer flex flex-row items-center justify-between text-blue-800 dark:text-blue-400 dark:sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
+                          >
+                            <div>
+                              {item?.put_call === "Puts" ? "P" : "C"}
+                              {item?.strike_price}
+
+                              {" " + item?.date_expiration}
+                            </div>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              class="inline-block w-4 h-4 ml-1"
+                              viewBox="0 0 512 512"
+                              fill="currentColor"
+                              ><path
+                                d="M104 496H72a24 24 0 01-24-24V328a24 24 0 0124-24h32a24 24 0 0124 24v144a24 24 0 01-24 24zM328 496h-32a24 24 0 01-24-24V232a24 24 0 0124-24h32a24 24 0 0124 24v240a24 24 0 01-24 24zM440 496h-32a24 24 0 01-24-24V120a24 24 0 0124-24h32a24 24 0 0124 24v352a24 24 0 01-24 24zM216 496h-32a24 24 0 01-24-24V40a24 24 0 0124-24h32a24 24 0 0124 24v432a24 24 0 01-24 24z"
+                              ></path></svg
+                            >
+                          </label>
+                        </td>
+
                         <td class=" text-sm sm:text-[1rem] text-center">
                           {reformatDate(item?.date_expiration)}
                         </td>
 
-                        <td class=" text-sm sm:text-[1rem] text-end">
+                        <td class=" text-sm sm:text-[1rem] text-center">
                           {item?.dte < 0 ? "expired" : item?.dte + "d"}
-                        </td>
-
-                        <td class="text-sm sm:text-[1rem] text-end">
-                          {item?.strike_price}
-                        </td>
-
-                        <td
-                          class="text-sm sm:text-[1rem] {item?.put_call ===
-                          'Calls'
-                            ? 'dark:text-[#00FC50]'
-                            : 'dark:text-[#FF2F1F]'} text-center"
-                        >
-                          {item?.put_call}
                         </td>
 
                         <td
@@ -300,25 +717,28 @@
                         >
                           {item?.sentiment}
                         </td>
+                        <td class="text-sm sm:text-[1rem] text-center">
+                          {item?.size?.toLocaleString("en-US")}
+                        </td>
                         <td
                           class="text-sm sm:text-[1rem] text-center whitespace-nowrap"
                         >
                           {item?.execution_estimate}
                         </td>
 
-                        <td class="text-sm sm:text-[1rem] text-end">
-                          {item?.underlying_price}
-                        </td>
-
-                        <td class="text-sm sm:text-[1rem] text-end">
+                        <td class="text-sm sm:text-[1rem] text-center">
                           {item?.price}
                         </td>
 
+                        <td class="text-sm sm:text-[1rem] text-center">
+                          {item?.underlying_price}
+                        </td>
+
                         <td
-                          class="text-sm sm:text-[1rem] text-end {item?.put_call ===
+                          class="text-sm sm:text-[1rem] text-center {item?.put_call ===
                           'Puts'
-                            ? 'dark:text-[#CB281C]'
-                            : 'dark:text-[#0FB307]'} "
+                            ? 'dark:text-green-400'
+                            : 'dark:text-red-400'} "
                         >
                           {abbreviateNumber(item?.cost_basis)}
                         </td>
@@ -332,14 +752,18 @@
                           {item?.option_activity_type}
                         </td>
 
-                        <td class=" text-end text-sm sm:text-[1rem] text-end">
+                        <td
+                          class=" text-center text-sm sm:text-[1rem] text-center"
+                        >
                           {new Intl.NumberFormat("en", {
                             minimumFractionDigits: 0,
                             maximumFractionDigits: 0,
                           }).format(item?.volume)}
                         </td>
 
-                        <td class=" text-end text-sm sm:text-[1rem] text-end">
+                        <td
+                          class=" text-center text-sm sm:text-[1rem] text-center"
+                        >
                           {new Intl.NumberFormat("en", {
                             minimumFractionDigits: 0,
                             maximumFractionDigits: 0,
@@ -351,21 +775,6 @@
                 </table>
               </div>
               <!--End Table-->
-              <div
-                class="flex flex-col justify-center items-center m-auto pt-8"
-              >
-                <span class=" text-[1rem] sm:text-lg m-auto p-4 text-center">
-                  Track your unusual options contracts now!
-                </span>
-                <a
-                  href="/options-flow"
-                  class="py-3 bg-blue-600 sm:hover:bg-blue-700 rounded-md w-64 flex justify-center items-center m-auto border border-gray-300 dark:border-gray-600 group"
-                >
-                  <span class="font-semibold text-[1rem] text-white"
-                    >Follow the Whales
-                  </span>
-                </a>
-              </div>
             {:else}
               <div
                 class="flex flex-col justify-center items-center m-auto pt-8"
@@ -450,3 +859,225 @@
     </div>
   </div>
 </section>
+
+<dialog
+  id="optionDetailsDesktopModal"
+  class="modal {$screenWidth < 640 ? 'modal-bottom ' : ''} bg-[#000]/40 sm:px-5"
+>
+  <div
+    class="modal-box bg-white dark:bg-default w-full {rawDataHistory?.length > 0
+      ? 'max-w-7xl'
+      : 'w-full'} rounded-md border-t sm:border border-gray-300 dark:border-gray-800 min-h-48 h-auto"
+  >
+    <form
+      method="dialog"
+      class="modal-backdrop backdrop-blur-[4px] flex flex-row items-center w-full justify-between"
+    >
+      <p
+        class="text-muted dark:text-white text-[1rem] sm:text-xl font-semibold cursor-text"
+      >
+        Contract: <span
+          class={optionType === "Calls"
+            ? "text-green-800 dark:text-[#00FC50]"
+            : "text-red-800 dark:text-[#FF2F1F]"}
+          >{ticker}
+          {strikePrice}
+          {optionType}
+          {dateExpiration} ({daysLeft(dateExpiration)})
+        </span>
+      </p>
+      <button class="cursor-pointer text-[1.8rem] focus:outline-hidden">
+        <svg
+          class="w-8 h-8 text-muted dark:text-white"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          ><path
+            fill="currentColor"
+            d="m6.4 18.308l-.708-.708l5.6-5.6l-5.6-5.6l.708-.708l5.6 5.6l5.6-5.6l.708.708l-5.6 5.6l5.6 5.6l-.708.708l-5.6-5.6z"
+          />
+        </svg>
+      </button>
+    </form>
+    {#if rawDataHistory?.length > 0}
+      <div
+        class="border-b border-gray-300 dark:border-gray-800 w-full mt-2 mb-2 sm:mb-3 sm:mt-3"
+      ></div>
+
+      <div class="hidden sm:flex flex-wrap pb-2">
+        <div class="mr-3 whitespace-nowrap">
+          {formatDate(optionHistoryList?.at(0)?.date)}:
+        </div>
+        <div class="mr-3 whitespace-nowrap">
+          <span class="text-[var(--light-text-color)] font-normal">Vol:</span>
+          {optionHistoryList?.at(0)?.volume?.toLocaleString("en-US")}
+        </div>
+        <div class="mr-3 whitespace-nowrap">
+          <span class="text-[var(--light-text-color)] font-normal">OI:</span>
+          {optionHistoryList?.at(0)?.open_interest?.toLocaleString("en-US")}
+        </div>
+        <div class="mr-3 whitespace-nowrap">
+          <span class="text-[var(--light-text-color)] font-normal">Avg:</span>
+          ${optionHistoryList?.at(0)?.mark}
+        </div>
+        <div class="mr-3 whitespace-nowrap">
+          <span class="text-[var(--light-text-color)] font-normal">Prem:</span>
+          {abbreviateNumber(optionHistoryList?.at(0)?.total_premium, true)}
+        </div>
+        <div class="mr-3 whitespace-nowrap">
+          <span class="text-[var(--light-text-color)] font-normal">IV:</span>
+          {(optionHistoryList?.at(0)?.implied_volatility * 100)?.toLocaleString(
+            "en-US",
+          )}%
+        </div>
+      </div>
+
+      <div class="pb-8 sm:pb-2 rounded-md overflow-hidden">
+        <div
+          class="flex flex-row items-center justify-between gap-x-2 ml-auto w-fit mt-2"
+        >
+          {#each ["Vol/OI", "IV"] as item}
+            <label
+              on:click={() => (selectGraphType = item)}
+              class="px-3 py-1.5 {selectGraphType === item
+                ? 'shadow-sm bg-gray-100 dark:bg-white text-black '
+                : 'shadow-sm text-opacity-[0.6] border border-gray-300 dark:border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+            >
+              {item}
+            </label>
+          {/each}
+        </div>
+        <div
+          class="mt-2 border border-gray-300 dark:border-gray-800 rounded"
+          use:highcharts={configContract}
+        ></div>
+      </div>
+
+      <div
+        bind:this={container}
+        on:scroll={getScroll}
+        class="h-full max-h-[500px] overflow-y-auto overflow-x-auto"
+      >
+        <div class="flex justify-start items-center m-auto cursor-normal">
+          {#if isLoaded}
+            <table
+              class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
+            >
+              <thead class="text-muted dark:text-white dark:bg-default">
+                <tr class="">
+                  <td class=" font-semibold text-sm text-start">Date</td>
+                  <td class=" font-semibold text-sm text-end">Vol</td>
+                  <td class=" font-semibold text-sm text-end">OI</td>
+                  <td class=" font-semibold text-sm text-end">OI Change</td>
+                  <td class=" font-semibold text-sm text-end">% Change OI</td>
+                  <td class=" font-semibold text-sm text-end">Last Price</td>
+                  <td class=" font-semibold text-sm text-end">Avg Price</td>
+                  <td class=" font-semibold text-sm text-end">IV</td>
+                  <td class=" font-semibold text-sm text-end">Total Prem</td>
+                  <td class=" font-semibold text-sm text-end">GEX</td>
+                  <td class=" font-semibold text-sm text-end">DEX</td>
+                </tr>
+              </thead>
+              <tbody>
+                {#each optionHistoryList as item}
+                  <!-- row -->
+                  <tr
+                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
+                  >
+                    <td class="text-sm sm:text-[1rem] text-start">
+                      {formatDate(item?.date)}
+                    </td>
+
+                    <td class="text-sm sm:text-[1rem] text-end">
+                      {item?.volume !== null
+                        ? item?.volume?.toLocaleString("en-US")
+                        : 0}
+                    </td>
+
+                    <td class="text-sm sm:text-[1rem] text-end">
+                      {item?.open_interest !== undefined
+                        ? item?.open_interest?.toLocaleString("en-US")
+                        : "n/a"}
+                    </td>
+                    <td class="text-sm sm:text-[1rem] text-end">
+                      {#if item?.changeOI >= 0 && item?.changeOI !== null}
+                        <span class="text-green-800 dark:text-[#00FC50]"
+                          >+{item?.changeOI?.toLocaleString("en-US")}</span
+                        >
+                      {:else if item?.changeOI < 0 && item?.changeOI !== null}
+                        <span class="text-red-800 dark:text-[#FF2F1F]"
+                          >{item?.changeOI?.toLocaleString("en-US")}</span
+                        >
+                      {:else}
+                        n/a
+                      {/if}
+                    </td>
+
+                    <td class="text-sm sm:text-[1rem] text-end">
+                      {#if item?.changesPercentageOI > 0 && item?.changesPercentageOI !== undefined}
+                        <span class="text-green-800 dark:text-[#00FC50]"
+                          >+{item?.changesPercentageOI + "%"}</span
+                        >
+                      {:else if item?.changesPercentageOI < 0 && item?.changesPercentageOI !== undefined}
+                        <span class="text-red-800 dark:text-[#FF2F1F]"
+                          >{item?.changesPercentageOI + "%"}</span
+                        >
+                      {:else if item?.changesPercentageOI === 0 && item?.changesPercentageOI !== undefined}
+                        0%
+                      {:else}
+                        n/a
+                      {/if}
+                    </td>
+
+                    <td class="text-sm sm:text-[1rem] text-end">
+                      {item?.close}
+                    </td>
+
+                    <td class="text-sm sm:text-[1rem] text-end">
+                      {item?.mark}
+                    </td>
+
+                    <td class="text-sm sm:text-[1rem] text-end">
+                      {(item?.implied_volatility * 100)?.toLocaleString(
+                        "en-US",
+                      ) + "%"}
+                    </td>
+
+                    <td class="text-sm sm:text-[1rem] text-end">
+                      {abbreviateNumber(item?.total_premium, false, true)}
+                    </td>
+                    <td class="text-sm sm:text-[1rem] text-end">
+                      {abbreviateNumber(item?.gex, false, true)}
+                    </td>
+                    <td class="text-sm sm:text-[1rem] text-end">
+                      {abbreviateNumber(item?.dex, false, true)}
+                    </td>
+                  </tr>
+                {/each}
+              </tbody>
+            </table>
+          {:else}
+            <div class="m-auto flex justify-center items-center h-80">
+              <div class="relative">
+                <label
+                  class="bg-[#272727] rounded-xl h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                >
+                  <span class="loading loading-spinner loading-md text-gray-400"
+                  ></span>
+                </label>
+              </div>
+            </div>
+          {/if}
+        </div>
+      </div>
+    {:else}
+      <div
+        class="mt-10 flex justify-center sm:justify-start items-center w-full"
+      >
+        No historical data available yet for the given contract
+      </div>
+    {/if}
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>
