@@ -16,6 +16,7 @@
   let postDate = "n/a";
   let postUrl = "#";
   let postTitle = "n/a";
+  let postSentiment = "n/a";
 
   const updatedSectorList = ["S&P500", ...sectorList];
 
@@ -614,13 +615,13 @@
                                   {item?.title}
                                   <!-- Sentiment badge -->
                                   <div
-                                    class={`mt-2 px-3 py-1 rounded text-white text-xs sm:text-sm w-fit
+                                    class={`mt-2 px-3 py-1 rounded  text-xs sm:text-sm w-fit
                 ${
                   item?.sentiment === "Bullish"
-                    ? "bg-emerald-500"
+                    ? "bg-emerald-500 text-white"
                     : item?.sentiment === "Bearish"
-                      ? "bg-red-600"
-                      : "bg-yellow-500"
+                      ? "bg-red-600 text-white"
+                      : "bg-gray-300 text-black"
                 }`}
                                   >
                                     {item?.sentiment}
@@ -677,6 +678,7 @@
                               on:click={() => {
                                 postTitle = item?.title;
                                 postContent = item?.description;
+                                postSentiment = item?.sentiment;
                                 postDate = item?.date;
                                 postUrl = item?.link;
                               }}
@@ -928,16 +930,15 @@
 
 <input type="checkbox" id="executivePostModal" class="modal-toggle" />
 
-<dialog id="executivePostModal" class="modal modal-bottom sm:modal-middle">
-  <label
-    for="executivePostModal"
-    class="cursor-pointer modal-backdrop bg-[#000]/40"
-  ></label>
+<dialog
+  id="executivePostModal"
+  class="modal modal-bottom sm:modal-middle bg-[#000]/40"
+>
+  <label for="executivePostModal" class="cursor-pointer modal-backdrop"></label>
 
   <div
-    class="modal-box w-full max-w-sm p-6 rounded-lg shadow-lg border
+    class="modal-box w-full p-6 rounded shadow-lg border
         bg-white dark:bg-secondary border border-gray-600 dark:border-gray-800"
-    style="opacity: 1; transform: none;"
   >
     <div class="flex items-start space-x-3">
       <span class="w-10 h-10 rounded-full shrink-0">
@@ -951,16 +952,21 @@
 
       <div class="flex flex-col items-start w-full">
         <h3 class="font-semibold text-gray-900 dark:text-white">
-          <a
-            href="https://truthsocial.com/@realDonaldTrump"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="hover:text-blue-700"
-          >
-            Donald J. Trump
-          </a>
+          <span> Donald J. Trump </span>
         </h3>
         <h4 class="text-sm text-gray-800 dark:text-gray-400">{postTitle}</h4>
+        <div
+          class={`mt-2 px-3 py-1 rounded  text-xs sm:text-sm w-fit
+                ${
+                  postSentiment === "Bullish"
+                    ? "bg-emerald-500 text-white"
+                    : postSentiment === "Bearish"
+                      ? "bg-red-600 text-white"
+                      : "bg-gray-300 text-black"
+                }`}
+        >
+          {postSentiment}
+        </div>
       </div>
     </div>
 
@@ -999,14 +1005,14 @@
 
 <input type="checkbox" id="socialPostModal" class="modal-toggle" />
 
-<dialog id="socialPostModal" class="modal modal-bottom sm:modal-middle">
-  <label
-    for="socialPostModal"
-    class="cursor-pointer modal-backdrop bg-[#000]/40"
-  ></label>
+<dialog
+  id="socialPostModal"
+  class="modal modal-bottom sm:modal-middle bg-[#000]/40"
+>
+  <label for="socialPostModal" class="cursor-pointer modal-backdrop"></label>
 
   <div
-    class="modal-box w-full max-w-sm p-6 rounded-lg shadow-lg border
+    class="modal-box w-full p-6 rounded shadow-lg border
         bg-white dark:bg-secondary border border-gray-600 dark:border-gray-800"
     style="opacity: 1; transform: none;"
   >
