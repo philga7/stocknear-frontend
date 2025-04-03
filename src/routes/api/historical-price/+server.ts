@@ -15,6 +15,5 @@ export const POST: RequestHandler = async ({ request, locals }) => {
   });
 
   const output = await response.json();
-
   return new Response(JSON.stringify(output));
 };
