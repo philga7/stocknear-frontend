@@ -341,7 +341,7 @@
           graphBaseClose = oneMonthPrice?.at(0)?.close;
           config = plotData(oneMonthPrice) || null;
           break;
-        case "ytd":
+        case "YTD":
           currentDataRow = ytdPrice?.at(-1);
           graphBaseClose = ytdPrice?.at(0)?.close;
           config = plotData(ytdPrice) || null;
@@ -469,8 +469,8 @@
           lastValue = null;
         }
         break;
-      case "ytd":
-        displayData = "ytd";
+      case "YTD":
+        displayData = "YTD";
         await historicalPrice("ytd");
         if (ytdPrice?.length !== 0) {
           displayLastLogicalRangeValue = ytdPrice?.at(0)?.close;
