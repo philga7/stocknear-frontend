@@ -24,6 +24,8 @@
   {#if image}
     <meta property="og:image" content={image} />
     <meta property="og:image:alt" content={title} />
+  {:else}
+    <meta property="og:image" content="/img/astronaut.png" />
   {/if}
 
   <!-- Twitter meta tags -->
@@ -32,5 +34,7 @@
   <meta name="twitter:description" content={description} />
   {#if image}
     <meta name="twitter:image" content={image} />
+  {:else}
+    <meta property="twitter:image" content="/img/astronaut.png" />
   {/if}
 </svelte:head>

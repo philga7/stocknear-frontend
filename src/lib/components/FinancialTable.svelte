@@ -1,6 +1,7 @@
 <script lang="ts">
   import { abbreviateNumber } from "$lib/utils";
-  import { screenWidth, stockTicker } from "$lib/store";
+  import { screenWidth, stockTicker, getCache, setCache } from "$lib/store";
+
   import { mode } from "mode-watcher";
   import highcharts from "$lib/highcharts.ts";
 
@@ -15,6 +16,7 @@
   let lowestValueDate;
   let lowestValue;
   let fiveYearsGrowth;
+  let infoText = {};
 
   const marginKeys = new Set([
     /*
@@ -173,6 +175,26 @@
     modalLabel = label;
     config = plotData(label, key);
   }
+
+  async function getInfoText(parameter, title) {
+    modalLabel = title;
+    const cachedData = getCache(parameter, "getInfoText");
+    if (cachedData) {
+      infoText = cachedData;
+    } else {
+      const postData = { parameter };
+      const response = await fetch("/api/info-text", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postData),
+      });
+
+      infoText = await response.json();
+      setCache(parameter, infoText, "getInfoText");
+    }
+  }
 </script>
 
 {#each computedFields as { label, key, isMargin } (key)}
@@ -182,7 +204,23 @@
     <td
       class="text-start min-w-[220px] sm:min-w-[320px] border-r border-gray-300 dark:border-gray-700 text-sm sm:text-[1rem] w-full flex flex-row items-center justify-between"
     >
-      <span class="truncate w-fit max-w-40 sm:max-w-64">{label}</span>
+      <label
+        for="tooltipModal"
+        class="truncate w-fit max-w-40 sm:max-w-64 cursor-pointer"
+        on:click={() => getInfoText(key, label)}
+        >{label}
+        <svg
+          class="-ml-0.5 -mt-4 h-[10.5px] w-[10.5px] inline-block text-gray-600 dark:text-gray-400"
+          viewBox="0 0 4 16"
+          fill="currentColor"
+          style="max-width:20px"
+        >
+          <path
+            d="M0 6h4v10h-4v-10zm2-6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"
+          ></path>
+        </svg>
+      </label>
+
       <label
         for="financialPlotModal"
         on:click={() => handleChart(label, key)}
@@ -243,6 +281,36 @@
       <label
         for="financialPlotModal"
         class="mt-4 font-semibold text-xl m-auto flex justify-center cursor-pointer"
+      >
+        Close
+      </label>
+    </div>
+  </div>
+</dialog>
+
+<input type="checkbox" id="tooltipModal" class="modal-toggle" />
+<dialog id="tooltipModal" class="modal p-3">
+  <label for="tooltipModal" class="cursor-pointer modal-backdrop"></label>
+
+  <!-- Desktop modal content -->
+  <div
+    class="modal-box rounded-md border border-gray-300 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
+  >
+    <div class=" mb-5 text-center">
+      <h3 class="font-bold text-2xl mb-5">{modalLabel}</h3>
+      <span class=" text-[1rem] font-normal">{infoText?.text ?? "n/a"}</span>
+      {#if infoText?.equation !== undefined}
+        <div class="w-5/6 m-auto mt-5"></div>
+        <div class="text-[1rem] w-full pt-3 pb-3 m-auto">
+          {infoText?.equation}
+        </div>
+      {/if}
+    </div>
+
+    <div class="border-t border-gray-300 dark:border-gray-600 mt-2 w-full">
+      <label
+        for="tooltipModal"
+        class="cursor-pointer mt-4 font-semibold text-xl m-auto flex justify-center"
       >
         Close
       </label>

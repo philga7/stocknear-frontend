@@ -487,10 +487,10 @@
                 </div>
               {:else}
                 <div
-                  class="flex flex-col sm:flex-row items-start sm:items-center sm:justify-between"
+                  class="flex flex-col sm:flex-row items-start sm:items-end sm:justify-between"
                 >
                   <span
-                    class="text-sm order-1 sm:order-0 mt-5 sm:mt-0 text-gray-600 dark:text-gray-400 w-full"
+                    class="text-xs sm:text-sm order-1 sm:order-0 mt-5 sm:mt-0 text-gray-600 dark:text-gray-400 w-full"
                   >
                     Financials in {data?.getProfileData?.currency}. Fiscal year
                     is

@@ -93,7 +93,7 @@
     },
     {
       propertyName: "incomeTaxExpense",
-      label: "Income Tax",
+      label: "Income Tax Expense",
     },
     {
       propertyName: "weightedAverageShsOut",
@@ -281,7 +281,7 @@
 
 <SEO
   title={`${$displayCompanyName} (${$stockTicker}) Financials - Income Statement`}
-  description={`Detailed annual and quarter income statement for ${$displayCompanyName} (${$stockTicker}). See many years of revenue, expenses and profits or losses.`}
+  description={`Detailed annual and quarterly income statement for ${$displayCompanyName} (${$stockTicker}). See many years of revenue, expenses and profits or losses.`}
 />
 
 <section class=" w-full overflow-hidden h-full">
