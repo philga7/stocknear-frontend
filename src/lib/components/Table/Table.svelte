@@ -855,7 +855,7 @@
 
 <div class="w-full overflow-x-auto text-muted dark:text-white">
   <table
-    class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-2"
+    class="table table-sm table-compact rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-2"
   >
     <thead>
       <TableHeader {columns} {sortOrders} {sortData} />

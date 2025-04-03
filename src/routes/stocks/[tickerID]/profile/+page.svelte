@@ -215,7 +215,7 @@ ${paragraphs.join("\n")}
                       >Ticker Symbol</td
                     >
                     <td class="px-1 py-1.5 text-right lg:py-2"
-                      >{rawData?.symbol ?? "n/a"}</td
+                      >{$stockTicker?.toUpperCase() ?? "n/a"}</td
                     ></tr
                   >
                   <tr

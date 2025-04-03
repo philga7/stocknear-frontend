@@ -575,7 +575,7 @@
                   class="w-full rounded-none sm:rounded-md m-auto overflow-x-auto no-scrollbar"
                 >
                   <table
-                    class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto"
+                    class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
                   >
                     <thead class="text-muted dark:text-white dark:bg-default">
                       <tr class="border min-w-[250px]">
