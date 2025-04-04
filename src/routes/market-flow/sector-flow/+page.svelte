@@ -233,9 +233,7 @@
       ?.slice(0, 50);
   };
 
-  function getPlotOptions() {
-    isLoading = true;
-
+  function plotData() {
     // Determine the base date (using the first data point, or fallback to today)
     const baseDate =
       marketTideData && marketTideData.length
@@ -288,12 +286,17 @@
       },
 
       title: {
-        text: null,
+        text: `<h3 class="mt-3 -mb-2">${selectedSector} Flow</h3>`,
+        style: {
+          color: $mode === "light" ? "black" : "white",
+          // Using inline CSS for margin-top and margin-bottom
+        },
+        useHTML: true, // Enable HTML to apply custom class styling
       },
 
       legend: {
         enabled: true,
-        align: "left", // Positions legend at the left edge
+        align: "center", // Positions legend at the left edge
         verticalAlign: "top", // Positions legend at the top
         layout: "horizontal", // Align items horizontally (use 'vertical' if preferred)
         itemStyle: {
@@ -322,10 +325,9 @@
           // Format the x value to display time in a custom format
           let tooltipContent = `<span class="m-auto text-[1rem] font-[501]">${new Date(
             this?.x,
-          ).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
+          )?.toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
           })}</span><br>`;
 
           // Loop through each point in the shared tooltip
@@ -461,11 +463,10 @@
       },
     };
 
-    isLoading = false;
     return options;
   }
 
-  config = marketTideData ? getPlotOptions() : null;
+  config = marketTideData ? plotData() : null;
 
   $: {
     if (selectedSector || $mode) {
@@ -481,7 +482,7 @@
 
       originalNegTickers = topNegNetPremium;
       displayNegTickers = topNegNetPremium;
-      config = marketTideData ? getPlotOptions() : null;
+      config = marketTideData ? plotData() : null;
     }
   }
 </script>

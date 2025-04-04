@@ -263,12 +263,17 @@
       },
 
       title: {
-        text: null,
+        text: `<h3 class="mt-3 -mb-2">S&P500 Flow</h3>`,
+        style: {
+          color: $mode === "light" ? "black" : "white",
+          // Using inline CSS for margin-top and margin-bottom
+        },
+        useHTML: true, // Enable HTML to apply custom class styling
       },
 
       legend: {
         enabled: true,
-        align: "left", // Positions legend at the left edge
+        align: "center", // Positions legend at the left edge
         verticalAlign: "top", // Positions legend at the top
         layout: "horizontal", // Align items horizontally (use 'vertical' if preferred)
         itemStyle: {
@@ -297,10 +302,9 @@
           // Format the x value to display time in a custom format
           let tooltipContent = `<span class="m-auto text-[1rem] font-[501]">${new Date(
             this?.x,
-          ).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
+          )?.toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
           })}</span><br>`;
 
           // Loop through each point in the shared tooltip
@@ -462,7 +466,7 @@
             {#if config !== null}
               <p class="mt-4">
                 Market Flow evaluates the balance between advancing and
-                declining stocks by analyzing SP& 500 price movements, net call
+                declining stocks by analyzing S&P500 price movements, net call
                 premiums and net put premiums, providing a real-time snapshot of
                 market sentiment and momentum. <a
                   href="/learning-center/article/market-sentiment-through-options-activity-riding-the-tide"
