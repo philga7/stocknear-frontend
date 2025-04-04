@@ -6,7 +6,9 @@
   function getHref(symbol: string) {
     let path = "";
     if (symbol?.length !== 0) {
-      if (["stocks", "stock"].includes(assetType?.toLowerCase())) {
+      if (symbol.includes("^")) {
+        path = `/index/${symbol}${link ? `/${link}` : ""}`;
+      } else if (["stocks", "stock"].includes(assetType?.toLowerCase())) {
         path = `/stocks/${symbol}${link ? `/${link}` : ""}`;
       } else if (assetType?.toLowerCase() === "etf") {
         path = `/etf/${symbol}${link ? `/${link}` : ""}`;
