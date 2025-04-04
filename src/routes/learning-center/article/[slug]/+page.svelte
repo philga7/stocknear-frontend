@@ -45,7 +45,7 @@
               : 'mt-5'} rounded-t-md bg-white dark:bg-default p-3 xs:p-4 lg:ml-3 lg:p-5 xl:mx-4"
           >
             <header
-              class="pb-3 border-b-[2px] border-muted dark:border-white w-full sm:min-w-[850px] sm:max-w-[850px]"
+              class="pb-3 border-b-[2px] border-[#2C6288] dark:border-white w-full sm:min-w-[850px] sm:max-w-[850px]"
             >
               <h1 class="mb-3 text-2xl sm:text-3xl font-bold md:text-4xl">
                 {article?.title}

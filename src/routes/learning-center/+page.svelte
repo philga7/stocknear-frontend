@@ -8,9 +8,8 @@
 </script>
 
 <SEO
-  title="Stock
-    Analysis Blog"
-  description="Get the latest blog post to understand and invest correctly into companies."
+  title="Learning Center"
+  description="Explore Stocknear's comprehensive Learning Center to enhance your trading strategies, understand key concepts, and leverage advanced features for smarter investments."
 />
 
 <section
@@ -22,10 +21,8 @@
         class="relative flex justify-center items-start overflow-hidden w-full"
       >
         <main class="w-full">
-          <div class="mb-6 border-b-[2px]">
-            <h1 class="mb-1 text-2xl sm:text-3xl font-bold">
-              Stock Analysis Blog
-            </h1>
+          <div class="mb-6 border-b-[2px] border-[#2C6288] dark:border-white">
+            <h1 class="mb-1 text-2xl sm:text-3xl font-bold">Learning Center</h1>
           </div>
 
           <div class="w-full grid grid-cols-1 sm:grid-cols-3 gap-y-5 gap-5">
@@ -45,7 +42,7 @@
                           item?.id,
                           item?.cover,
                         )}
-                        alt="Stock Analysis Blog Post Wallpaper"
+                        alt="Tutorial Wallpaper"
                         loading="lazy"
                       /></a
                     >
@@ -69,8 +66,10 @@
                       >
                     </div>
                     <div class="mt-6 flex items-center">
-                      <div class="flex space-x-1 text-sm">
-                        Published: <time datetime={item?.created} class="ml-1">
+                      <div
+                        class="flex text-xs badge px-3 bg-gray-100 dark:bg-secondary rounded-md text-black dark:text-gray-300"
+                      >
+                        Published: <time datetime={item?.created} class="">
                           {new Date(item?.created)?.toLocaleString("en-US", {
                             month: "short",
                             day: "numeric",
