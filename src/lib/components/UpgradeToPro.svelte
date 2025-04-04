@@ -9,7 +9,7 @@
     <div class="mx-auto max-w-7xl px-3 xs:px-6 lg:px-8">
       <div class="mx-auto max-w-2xl text-center">
         <h3 class="mt-2 text-2xl sm:text-3xl font-extrabold tracking-tight">
-          Trade Smarter, Not Harder
+          Stop Guessing, Start Knowing.
         </h3>
         <p class="mt-4 text-lg">
           Cut through market noise with <span class="italic">actionable</span> insights

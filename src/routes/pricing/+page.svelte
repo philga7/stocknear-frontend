@@ -142,7 +142,7 @@
   <div class="px-3">
     <div class="mx-auto text-center mb-8">
       <h1 class="text-4xl sm:text-5xl font-bold pb-4">
-        Trade Smarter, Not Harder
+        Stop Guessing, Start Knowing.
       </h1>
     </div>
 

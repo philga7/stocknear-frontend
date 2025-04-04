@@ -140,7 +140,7 @@
         <main class="w-full lg:pr-5">
           <div class="mb-6 border-b-[2px]">
             <h1 class="mb-3 text-2xl sm:text-3xl font-bold">
-              Wallstreet Analyst Live Flow
+              Analyst Live Flow
             </h1>
           </div>
 
