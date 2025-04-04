@@ -15,7 +15,7 @@
 <SEO
   title={article?.title}
   description={article?.abstract}
-  image={article?.comver
+  image={article?.cover
     ? getImageURL(article?.collectionId, article?.id, article?.cover)
     : ""}
 />
