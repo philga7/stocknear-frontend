@@ -438,7 +438,7 @@
             </div>
 
             <div
-              class="chart mt-5 border border-gray-300 dark:border-gray-800 rounded"
+              class="shadow-sm mt-5 border border-gray-300 dark:border-gray-800 rounded"
               use:highcharts={config}
             ></div>
 

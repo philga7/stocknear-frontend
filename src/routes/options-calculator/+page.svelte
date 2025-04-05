@@ -1,8 +1,11 @@
 <script lang="ts">
   import SEO from "$lib/components/SEO.svelte";
+  import { mode } from "mode-watcher";
+  import highcharts from "$lib/highcharts.ts";
 
   export let data;
 
+  let config = null;
   let selectedStrategy = "Long Call";
 
   let strategies = [
@@ -26,6 +29,157 @@
     { name: "Long Straddle", sentiment: "Neutral" },
     { name: "Short Straddle", sentiment: "Neutral" },
   ];
+
+  function plotData() {
+    const action = "Buy";
+    const optionType = "Call";
+
+    const strikePrice = 230;
+    const numOfQuantities = 1;
+    const currentStockPrice = 239;
+    const cost = 30.13;
+    const premium = cost * 100 * numOfQuantities; // total premium paid for 1 contract
+    const breakEven = strikePrice + cost;
+
+    // 1) Build payoff data from 0 to 600 (in steps of 10)
+    const dataPoints = [];
+    const xMin = 0;
+    const xMax = 600;
+    const step = 10;
+
+    for (let s = xMin; s <= xMax; s += step) {
+      // Payoff for a long call:
+      // If underlying price < strike, payoff = -premium
+      // Else payoff = (underlying - strike)*100 - premium
+      const payoff =
+        s < strikePrice ? -premium : (s - strikePrice) * 100 - premium;
+
+      dataPoints.push([s, payoff]);
+    }
+
+    // 2) Create Highcharts configuration
+    const options = {
+      credits: {
+        enabled: false,
+      },
+      chart: {
+        type: "area", // or "line"
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        height: 400,
+        animation: false,
+      },
+      title: {
+        text: null,
+      },
+      xAxis: {
+        // numeric axis from 0 to 600
+        min: xMin,
+        max: xMax,
+        tickInterval: 50,
+        title: {
+          text: "TSLA Price at Expiration ($)",
+          style: { color: $mode === "light" ? "black" : "white" },
+        },
+        labels: {
+          style: { color: $mode === "light" ? "black" : "white" },
+        },
+        plotLines: [
+          // Strike Price
+          {
+            value: currentStockPrice,
+            color: "black",
+            dashStyle: "Dash",
+            width: 1.2,
+            label: {
+              text: `<span class="text-black dark:text-white">Underlying Price $${currentStockPrice}</span>`,
+            },
+            zIndex: 5,
+          },
+          // Break-Even
+          {
+            value: breakEven,
+            color: "#10B981",
+            dashStyle: "Dash",
+            width: 1.2,
+            label: {
+              text: `<span class="text-black dark:text-white">Breakeven $${breakEven?.toFixed(2)}</span>`,
+            },
+            zIndex: 5,
+          },
+        ],
+      },
+      yAxis: {
+        title: {
+          text: "Expected Profit/Loss ($)",
+          style: { color: $mode === "light" ? "black" : "white" },
+        },
+        gridLineWidth: 1,
+        gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
+        labels: {
+          style: { color: $mode === "light" ? "black" : "white" },
+          formatter: function () {
+            return "$" + this.value.toFixed(0);
+          },
+        },
+        // If you want symmetrical around zero, set min/max or startOnTick/endOnTick
+        // startOnTick: false,
+        // endOnTick: false,
+      },
+      tooltip: {
+        shared: true,
+        backgroundColor: $mode === "light" ? "#f9fafb" : "#1f2937",
+        borderColor: "#6b7280",
+        style: {
+          color: $mode === "light" ? "black" : "white",
+        },
+        formatter: function () {
+          return `
+            <b>TSLA Price: $${this.x}</b><br/>
+            P/L: $${this.y?.toLocaleString("en-US")}
+          `;
+        },
+      },
+      plotOptions: {
+        area: {
+          // Fill the area below the line
+          fillOpacity: 0.2,
+          marker: {
+            enabled: false,
+          },
+          animation: false,
+        },
+        series: {
+          // Zone coloring based on profit/loss
+          zoneAxis: "y",
+          zones: [
+            {
+              value: 0, // below $0 -> red
+              color: "#E02424",
+              fillColor: "rgba(224,36,36,0.5)",
+            },
+            {
+              color: "#10B981", // above $0 -> green
+              fillColor: "rgba(16,185,129,0.5)",
+            },
+          ],
+        },
+      },
+      legend: {
+        enabled: false,
+      },
+      series: [
+        {
+          name: "Payoff",
+          data: dataPoints,
+        },
+      ],
+    };
+
+    return options;
+  }
+
+  config = plotData();
 </script>
 
 <SEO
@@ -96,61 +250,61 @@
                     <tr>
                       <th
                         scope="col"
-                        class="px-4 py-3 text-left text-sm font-medium text-gray-700"
+                        class="px-4 py-3 text-left text-sm font-semibold"
                       >
                         Ticker
                       </th>
                       <th
                         scope="col"
-                        class="px-4 py-3 text-left text-sm font-medium text-gray-700"
+                        class="px-4 py-3 text-left text-sm font-semibold"
                       >
                         Action
                       </th>
                       <th
                         scope="col"
-                        class="px-4 py-3 text-left text-sm font-medium text-gray-700"
+                        class="px-4 py-3 text-left text-sm font-semibold"
                       >
                         Quantity
                       </th>
                       <th
                         scope="col"
-                        class="px-4 py-3 text-left text-sm font-medium text-gray-700"
+                        class="px-4 py-3 text-left text-sm font-semibold"
                       >
                         Expiration Date
                       </th>
                       <th
                         scope="col"
-                        class="px-4 py-3 text-left text-sm font-medium text-gray-700"
+                        class="px-4 py-3 text-left text-sm font-semibold"
                       >
                         Strike
                       </th>
                       <th
                         scope="col"
-                        class="px-4 py-3 text-left text-sm font-medium text-gray-700"
+                        class="px-4 py-3 text-left text-sm font-semibold"
                       >
                         Type
                       </th>
                       <th
                         scope="col"
-                        class="px-4 py-3 text-left text-sm font-medium text-gray-700"
+                        class="px-4 py-3 text-left text-sm font-semibold"
                       >
                         Price
                       </th>
                       <th
                         scope="col"
-                        class="px-4 py-3 text-left text-sm font-medium text-gray-700"
+                        class="px-4 py-3 text-left text-sm font-semibold"
                       >
                         Delta
                       </th>
                       <th
                         scope="col"
-                        class="px-4 py-3 text-left text-sm font-medium text-gray-700"
+                        class="px-4 py-3 text-left text-sm font-semibold"
                       >
                         Adjustment
                       </th>
                       <th
                         scope="col"
-                        class="px-4 py-3 text-left text-sm font-medium text-gray-700"
+                        class="px-4 py-3 text-left text-sm font-semibold"
                       ></th>
                     </tr>
                   </thead>
@@ -159,12 +313,8 @@
                   <tbody class="bg-white divide-y divide-gray-200 text-sm">
                     <!-- Example Option Leg Row -->
                     <tr>
-                      <td class="px-4 py-3 whitespace-nowrap">
-                        <input
-                          type="text"
-                          value="TSLA"
-                          class="border border-gray-300 rounded px-2 py-1 w-16 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                        />
+                      <td class="px-4 py-3 whitespace-nowrap font-bold">
+                        TSLA
                       </td>
                       <td class="px-4 py-3 whitespace-nowrap">
                         <label
@@ -253,6 +403,12 @@
                   </tbody>
                 </table>
               </div>
+              {#if config}
+                <div
+                  class="shadow-sm mt-5 border border-gray-300 dark:border-gray-800 rounded"
+                  use:highcharts={config}
+                ></div>
+              {/if}
             </div>
           </div>
         </div>
