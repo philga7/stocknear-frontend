@@ -162,7 +162,7 @@
             </h2>
 
             <div
-              class="no-scrollbar flex justify-start items-center w-screen sm:w-full mt-6 m-auto overflow-x-auto pr-5 sm:pr-0"
+              class="no-scrollbar flex justify-start items-center w-screen sm:w-full mt-6 m-auto overflow-x-auto ovef pr-5 sm:pr-0"
             >
               <table
                 class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
@@ -175,7 +175,7 @@
                     >
                     {#each geographicXData as item}
                       <th
-                        class="z-20 bg-default border-b border-gray-800 text-white font-semibold text-sm text-center bg-default"
+                        class="z-20 border-b border-gray-300 dark:border-gray-800 font-semibold text-sm text-center"
                         >{new Date(item ?? null)?.toLocaleString("en-US", {
                           month: "short",
                           day: "numeric",

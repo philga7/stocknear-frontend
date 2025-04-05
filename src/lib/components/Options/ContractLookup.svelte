@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { abbreviateNumber } from "$lib/utils";
-  import { setCache, getCache, screenWidth } from "$lib/store";
+  import { abbreviateNumber, buildOptionSymbol } from "$lib/utils";
+  import { setCache, getCache } from "$lib/store";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
   import Infobox from "$lib/components/Infobox.svelte";
@@ -42,25 +42,6 @@
       year: "numeric",
     });
   };
-
-  function buildOptionSymbol(dateExpiration, optionType, strikePrice) {
-    // Format the expiration date as YYMMDD
-    const date = new Date(dateExpiration);
-    const year = date.getFullYear() % 100; // Last two digits of the year
-    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are 0-indexed
-    const day = date.getDate().toString().padStart(2, "0");
-    const expirationStr = `${year}${month}${day}`;
-
-    // Convert option type to a single uppercase letter (C for Call, P for Put)
-    const optionTypeChar = optionType.charAt(0).toUpperCase();
-
-    // Format strike price as 8 digits (multiply by 1000 and pad with leading zeros)
-    const strikePriceScaled = Math.round(strikePrice * 1000);
-    const strikeStr = strikePriceScaled.toString().padStart(8, "0");
-
-    // Combine all components into the final option symbol
-    return `${ticker}${expirationStr}${optionTypeChar}${strikeStr}`;
-  }
 
   const currentTime = new Date(
     new Date().toLocaleString("en-US", { timeZone: "America/New_York" }),
@@ -410,6 +391,7 @@
     rawDataHistory = [];
 
     optionSymbol = buildOptionSymbol(
+      ticker,
       selectedDate,
       selectedOptionType,
       selectedStrike,
@@ -888,27 +870,32 @@
           </table>
         </div>
 
-        <div class="pb-8 sm:pb-2 rounded-md overflow-hidden">
-          <div
-            class="flex flex-row items-center justify-between gap-x-2 ml-auto w-fit mt-2"
-          >
-            {#each ["Vol/OI", "IV"] as item}
-              <label
-                on:click={() => {
-                  selectGraphType = item;
-                  loadData("default");
-                }}
-                class="px-3 py-1.5 {selectGraphType === item
-                  ? 'shadow-sm bg-gray-100 dark:bg-white text-black '
-                  : 'shadow-sm text-opacity-[0.6] border border-gray-300 dark:border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
-              >
-                {item}
-              </label>
-            {/each}
+        <div class="mt-5 pb-2 rounded-md overflow-hidden">
+          <div class="flex flex-row items-center justify-between w-full mt-2">
+            <h2 class="text-xl sm:text-2xl font-bold text-start">
+              Contract Chart
+            </h2>
+            <div class="w-fit ml-auto">
+              {#each ["Vol/OI", "IV"] as item, index}
+                <label
+                  on:click={() => {
+                    selectGraphType = item;
+                    loadData("default");
+                  }}
+                  class="px-3 py-1.5 text-sm {index === 0
+                    ? 'mr-2'
+                    : ''} {selectGraphType === item
+                    ? 'shadow-sm border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-white text-black '
+                    : 'shadow-sm text-opacity-[0.6] border border-gray-300 dark:border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+                >
+                  {item}
+                </label>
+              {/each}
+            </div>
           </div>
           {#if config}
             <div>
-              <div class="grow pt-5">
+              <div class="grow pt-3">
                 <div class="relative">
                   <!-- Apply the blur class to the chart -->
                   <div
@@ -946,6 +933,10 @@
         </div>
 
         {#if isLoaded && displayList?.length > 0}
+          <h2 class="text-xl sm:text-2xl font-bold text-start mt-5">
+            Contract History
+          </h2>
+
           <div
             class="flex justify-start items-center m-auto overflow-x-auto cursor-normal"
           >
