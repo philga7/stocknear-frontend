@@ -30,7 +30,7 @@
         class="relative flex justify-center items-start overflow-hidden w-full"
       >
         <main class="w-full lg:w-3/4 lg:pr-5">
-          <div class=" border-b-[2px]">
+          <div class="border-b-[2px] border-[#2C6288] dark:border-white">
             <h1 class="mb-1 text-2xl sm:text-3xl font-bold">All ETF Symbols</h1>
             <p class="mb-3 px-1 font-semibold sm:px-0">
               List of all {rawData?.length} ETF symbols we support

@@ -353,7 +353,7 @@
       >
         <div class="w-full mt-5">
           <div class="lg:float-left lg:w-[calc(100%-336px-20px)]">
-            <div class=" border-b-[2px]">
+            <div class="border-b-[2px] border-[#2C6288] dark:border-white">
               <h1 class="mb-1 text-2xl sm:text-3xl font-bold">POTUS Tracker</h1>
             </div>
           </div>
