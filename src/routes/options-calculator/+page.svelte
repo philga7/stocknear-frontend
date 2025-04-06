@@ -555,8 +555,8 @@
 </script>
 
 <SEO
-  title="Options Calculator: Real-Time Presidential Schedule, Executive Orders & Legislation"
-  description="Track the President of the United States in real-time. Get updates on the POTUS schedule, executive orders, signed legislation, and official events."
+  title="Options Calculator: Calculate Options Profit, Breakeven, and Risk-Reward"
+  description="Use our free Options Calculator to calculate potential profit, breakeven prices, risk-reward ratios, and more for calls and puts. Perfect for traders and investors."
 />
 
 <section
