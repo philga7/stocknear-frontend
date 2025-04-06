@@ -84,18 +84,52 @@
   ];
   let description = strategies?.at(0)?.description;
 
+  function changeStrategy(strategy) {
+    selectedStrategy = strategy?.name;
+    description = strategy?.description;
+
+    switch (selectedStrategy) {
+      case "Long Call":
+        selectedOptionType = "Call";
+        selectedAction = "Buy";
+        break;
+
+      case "Short Call":
+        selectedOptionType = "Call";
+        selectedAction = "Sell";
+        break;
+
+      case "Long Put":
+        selectedOptionType = "Put";
+        selectedAction = "Buy";
+        break;
+
+      case "Short Put":
+        selectedOptionType = "Put";
+        selectedAction = "Sell";
+        break;
+
+      default:
+        console.warn("Unknown strategy:", strategy);
+        selectedOptionType = null;
+        selectedAction = null;
+    }
+
+    config = plotData();
+  }
+
   const payoffFunctions = {
     "Buy Call": (s, strike, premium) =>
-      s < strike ? -premium : (s - strike) * 100 - premium,
+      s < strike ? -premium : (s - strike) * 100 * selectedQuantity - premium,
 
     "Sell Call": (s, strike, premium) =>
-      s < strike ? premium : premium - (s - strike) * 100,
+      s < strike ? premium : premium - (s - strike) * 100 * selectedQuantity,
 
     "Buy Put": (s, strike, premium) =>
-      s > strike ? -premium : (strike - s) * 100 - premium,
+      s > strike ? -premium : (strike - s) * 100 * selectedQuantity - premium,
 
     "Sell Put": (s, strike, premium) =>
-      s > strike ? premium : premium - (strike - s) * 100,
+      s > strike ? premium : premium - (strike - s) * 100 * selectedQuantity,
   };
 
   // Define break-even calculators for each scenario (using per-share price)
@@ -165,7 +199,7 @@
 
     const dataPoints = [];
     const xMin = 0;
-    const xMax = 600;
+    const xMax = Math.floor(currentStockPrice * 3);
     const step = 10;
 
     if (payoffFunctions[scenarioKey]) {
@@ -404,6 +438,17 @@
     }, 500);
   }
 
+  function handleQuantityInput(event) {
+    selectedQuantity = +event.target.value;
+    // Clear any existing debounce timeout
+    if (debounceTimeout) clearTimeout(debounceTimeout);
+
+    // Set a new debounce timeout (1 second)
+    debounceTimeout = setTimeout(() => {
+      config = plotData();
+    }, 500);
+  }
+
   onMount(async () => {
     await loadData("default");
   });
@@ -446,12 +491,9 @@
 
           <div class="mt-5 mb-5 w-fulll">
             <div class="flex flex-wrap gap-3 mt-4">
-              {#each strategies as strategy, index}
+              {#each strategies as strategy}
                 <div
-                  on:click={() => {
-                    selectedStrategy = strategy?.name;
-                    description = strategy?.description;
-                  }}
+                  on:click={() => changeStrategy(strategy)}
                   class="{selectedStrategy === strategy?.name
                     ? 'bg-blue-100'
                     : ''} select-none flex items-center space-x-2 border rounded-full px-3 py-1 text-sm font-medium border border-gray-300 cursor-pointer sm:hover:bg-blue-100"
@@ -551,7 +593,8 @@
                         <input
                           type="number"
                           min="1"
-                          value="1"
+                          bind:value={selectedQuantity}
+                          on:input={handleQuantityInput}
                           class="border border-gray-300 rounded px-2 py-1 w-20 focus:outline-none focus:ring-1 focus:ring-blue-500"
                         />
                       </td>
