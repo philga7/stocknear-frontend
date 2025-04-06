@@ -3,7 +3,7 @@
   import { Button } from "$lib/components/shadcn/button/index.js";
   import SEO from "$lib/components/SEO.svelte";
   import { onMount } from "svelte";
-  import { buildOptionSymbol } from "$lib/utils";
+  import { abbreviateNumber, buildOptionSymbol } from "$lib/utils";
   import { setCache, getCache } from "$lib/store";
 
   import { mode } from "mode-watcher";
@@ -23,6 +23,7 @@
   let dateList = Object?.keys(optionData);
   let selectedDate = Object?.keys(optionData)[0];
   let strikeList = optionData[selectedDate] || [];
+  let deltaList = optionData[selectedDate] || [];
   let selectedStrike = strikeList?.at(0) || [];
   let optionSymbol;
 
@@ -92,7 +93,6 @@
       // Else payoff = (underlying - strike)*100 - premium
       const payoff =
         s < strikePrice ? -premium : (s - strikePrice) * 100 - premium;
-
       dataPoints.push([s, payoff]);
     }
 
@@ -108,7 +108,8 @@
         animation: false,
       },
       title: {
-        text: null,
+        text: `<h3 class="mt-1"></h3>`,
+        useHTML: true,
       },
       xAxis: {
         // numeric axis from 0 to 600
@@ -123,7 +124,7 @@
           style: { color: $mode === "light" ? "#545454" : "white" },
         },
         plotLines: [
-          // Strike Price
+          // Underlying Price line
           {
             value: currentStockPrice,
             color: "black",
@@ -134,14 +135,14 @@
             },
             zIndex: 5,
           },
-          // Break-Even
+          // Break-Even line
           {
             value: breakEven,
             color: "#10B981",
             dashStyle: "Dash",
             width: 1.2,
             label: {
-              text: `<span class="text-black dark:text-white">Breakeven $${breakEven?.toFixed(2)}</span>`,
+              text: `<span class="text-black dark:text-white">Breakeven $${breakEven.toFixed(2)}</span>`,
             },
             zIndex: 5,
           },
@@ -157,12 +158,9 @@
         labels: {
           style: { color: $mode === "light" ? "#545454" : "white" },
           formatter: function () {
-            return "$" + this.value.toFixed(0);
+            return abbreviateNumber(this.value.toFixed(2));
           },
         },
-        // If you want symmetrical around zero, set min/max or startOnTick/endOnTick
-        // startOnTick: false,
-        // endOnTick: false,
       },
       tooltip: {
         shared: true,
@@ -172,15 +170,32 @@
           color: $mode === "light" ? "black" : "white",
         },
         formatter: function () {
+          const underlyingPrice = this.x;
+          const profitLoss = this.y;
+          // Calculate percentage change for underlying price relative to currentStockPrice
+          const underlyingPctChange =
+            ((underlyingPrice - currentStockPrice) / currentStockPrice) * 100;
+          // Calculate profit/loss percentage relative to the total premium paid
+          const profitLossPctChange = (profitLoss / premium) * 100;
+
           return `
-            <b>TSLA Price: $${this.x}</b><br/>
-            P/L: $${this.y?.toLocaleString("en-US")}
-          `;
+          <div class="flex flex-col items-start">
+            <div>
+              <span class="text-start text-muted font-semibold">Underlying Price:</span> 
+              $${underlyingPrice} 
+              (<span>${underlyingPctChange.toFixed(2)}%</span>)
+            </div>
+            <div>
+              <span class="text-start text-muted font-semibold">Profit or Loss:</span> 
+              $${profitLoss.toLocaleString("en-US")} 
+              (<span>${profitLossPctChange.toFixed(2)}%</span>)
+            </div>
+          </div>
+        `;
         },
       },
       plotOptions: {
         area: {
-          // Fill the area below the line
           fillOpacity: 0.2,
           marker: {
             enabled: false,
@@ -188,7 +203,6 @@
           animation: false,
         },
         series: {
-          // Zone coloring based on profit/loss
           zoneAxis: "y",
           zones: [
             {
@@ -334,8 +348,10 @@
                   <span>{strategy.name}</span>
                   {#if strategy?.sentiment}
                     <span
-                      class="badge px-2 text-xs rounded-full bg-green-100 text-green-800"
-                      >{strategy.sentiment}</span
+                      class="badge px-2 text-xs rounded-full {strategy.sentiment ===
+                      'Bullish'
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-red-100 text-red-800'}">{strategy.sentiment}</span
                     >
                   {/if}
                 </div>
@@ -402,22 +418,6 @@
                       >
                         Price
                       </th>
-                      <th
-                        scope="col"
-                        class="px-4 py-1.5 text-left text-sm font-semibold"
-                      >
-                        Delta
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-4 py-1.5 text-left text-sm font-semibold"
-                      >
-                        Adjustment
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-4 py-1.5 text-left text-sm font-semibold"
-                      ></th>
                     </tr>
                   </thead>
 
@@ -554,16 +554,9 @@
                           class="border border-gray-300 rounded px-2 py-1 w-24 focus:outline-none focus:ring-1 focus:ring-blue-500"
                         />
                       </td>
+
+                      <!--
                       <td class="px-4 py-3 whitespace-nowrap">
-                        <input
-                          type="number"
-                          step="0.01"
-                          value="0.30"
-                          class="border border-gray-300 rounded px-2 py-1 w-16 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                        />
-                      </td>
-                      <td class="px-4 py-3 whitespace-nowrap">
-                        <!-- Example slider -->
                         <input
                           type="range"
                           min="0"
@@ -573,8 +566,9 @@
                           class="accent-blue-500 w-24"
                         />
                       </td>
+                      -->
+                      <!--
                       <td class="px-4 py-3 whitespace-nowrap">
-                        <!-- Example delete or settings icon (SVG) -->
                         <button class="text-gray-500 hover:text-red-500">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -592,6 +586,7 @@
                           </svg>
                         </button>
                       </td>
+                      -->
                     </tr>
 
                     <!-- Add more rows as needed -->

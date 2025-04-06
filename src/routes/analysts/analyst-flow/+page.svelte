@@ -190,7 +190,7 @@
                       >
                         <a
                           href={`/analysts/${item?.analystId}`}
-                          class="underline underline-offset-4 sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
+                          class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
                           >{item?.analystName}</a
                         >
                       </td>
