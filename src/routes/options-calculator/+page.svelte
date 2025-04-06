@@ -37,12 +37,33 @@
   let optionSymbol;
   let breakEvenPrice;
   let premium;
+  let limits = {};
 
   let strategies = [
-    { name: "Long Call", sentiment: "Bullish" },
-    { name: "Long Put", sentiment: "Bearish" },
-    { name: "Short Call", sentiment: "Bearish" },
-    { name: "Short Put", sentiment: "Bullish" },
+    {
+      name: "Long Call",
+      sentiment: "Bullish",
+      description:
+        "In a long call strategy, an investor buys a call option, anticipating that the price of the underlying asset will increase and generate a profit from the option's higher value. Investors typically use a long call strategy when they have a bullish outlook on the stock.",
+    },
+    {
+      name: "Long Put",
+      sentiment: "Bearish",
+      description:
+        " In a long put strategy, an investor purchases a put option, expecting that the price of the underlying asset will decrease and generate a profit from the option's increased value. Investors typically use a long put strategy when they have a bearish outlook on the stock.",
+    },
+    {
+      name: "Short Call",
+      sentiment: "Bearish",
+      description:
+        "In this strategy, an investor sells a call option, anticipating that the price of the underlying asset will remain stable or decrease, allowing the investor to keep the premium received from selling the option. Investors typically use a short call strategy when they have a neutral to bearish outlook on the stock and to generate potential income.",
+    },
+    {
+      name: "Short Put",
+      sentiment: "Bullish",
+      description:
+        " In this strategy, an investor sells a put option, expecting that the price of the underlying asset will remain stable or increase, allowing the investor to keep the premium received from selling the option. Investors typically use a short put strategy when they have a neutral to bullish outlook on the stock and and views a potential assignment as an opportunity to buy the asset at a desirable price.",
+    },
     /*
     { name: "Custom Strategy", sentiment: "" },
     { name: "Covered Call", sentiment: "Bullish" },
@@ -61,6 +82,7 @@
     { name: "Short Straddle", sentiment: "Neutral" },
      */
   ];
+  let description = strategies?.at(0)?.description;
 
   const payoffFunctions = {
     "Buy Call": (s, strike, premium) =>
@@ -113,7 +135,34 @@
       breakEvenPrice = selectedStrike; // default fallback
     }
 
-    // 1) Build payoff data from 0 to 600 (in steps of 10)
+    limits = {};
+    if (scenarioKey === "Buy Call") {
+      limits = {
+        maxProfit: "Unlimited",
+        maxLoss: `-$${premium?.toLocaleString("en-US")}`,
+      };
+    } else if (scenarioKey === "Sell Call") {
+      limits = {
+        maxProfit: `+$${premium?.toLocaleString("en-US")}`,
+        maxLoss: "Unlimited",
+      };
+    } else if (scenarioKey === "Buy Put") {
+      limits = {
+        // Maximum profit when underlying goes to 0
+        maxProfit: `+$${(selectedStrike * 100 - premium)?.toLocaleString("en-US")}`,
+        maxLoss: `-$${premium?.toLocaleString("en-US")}`,
+      };
+    } else if (scenarioKey === "Sell Put") {
+      limits = {
+        maxProfit: `+$${premium?.toLocaleString("en-US")}`,
+        // Maximum loss when underlying goes to 0
+        maxLoss: `-$${(selectedStrike * 100 - premium)?.toLocaleString("en-US")}`,
+      };
+    } else {
+      console.error("Limits not defined for scenario:", scenarioKey);
+      limits = { maxProfit: "n/a", maxLoss: "n/a" };
+    }
+
     const dataPoints = [];
     const xMin = 0;
     const xMax = 600;
@@ -397,12 +446,15 @@
 
           <div class="mt-5 mb-5 w-fulll">
             <div class="flex flex-wrap gap-3 mt-4">
-              {#each strategies as strategy}
+              {#each strategies as strategy, index}
                 <div
-                  on:click={() => (selectedStrategy = strategy?.name)}
+                  on:click={() => {
+                    selectedStrategy = strategy?.name;
+                    description = strategy?.description;
+                  }}
                   class="{selectedStrategy === strategy?.name
                     ? 'bg-blue-100'
-                    : ''} flex items-center space-x-2 border rounded-full px-3 py-1 text-sm font-medium border border-gray-300 cursor-pointer sm:hover:bg-blue-100 ease-out transition"
+                    : ''} select-none flex items-center space-x-2 border rounded-full px-3 py-1 text-sm font-medium border border-gray-300 cursor-pointer sm:hover:bg-blue-100"
                 >
                   <span>{strategy.name}</span>
                   {#if strategy?.sentiment}
@@ -417,13 +469,11 @@
               {/each}
             </div>
             <div class="border-b border-gray-400 mt-5"></div>
-            <h2 class="mt-5 mb-1 text-xl sm:text-2xl font-bold">Long Call</h2>
+            <h2 class="mt-5 mb-1 text-xl sm:text-2xl font-bold">
+              {selectedStrategy}
+            </h2>
             <p class="mt-3">
-              In a long call strategy, an investor buys a call option,
-              anticipating that the price of the underlying asset will increase
-              and generate a profit from the option's higher value. Investors
-              typically use a long call strategy when they have a bullish
-              outlook on the stock.
+              {description}
             </p>
 
             <div class="mt-4">
@@ -771,7 +821,7 @@
                         </svg>
                       </div>
                       <div class="text-lg font-semibold text-green-800">
-                        Unlimited
+                        {limits?.maxProfit}
                       </div>
                     </div>
 
@@ -794,7 +844,7 @@
                         </svg>
                       </div>
                       <div class="text-lg font-semibold text-red-600">
-                        -${premium?.toLocaleString("en-US")}
+                        {limits?.maxLoss}
                       </div>
                     </div>
                   </div>
