@@ -688,7 +688,7 @@
                           <div class="relative w-full">
                             <Combobox.Input
                               on:input={search}
-                              class="text-sm controls-input bg-white dark:bg-[#2A2E39] focus:outline-hidden  border border-gray-300 dark:border-gray-500 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-2 py-1.5 grow w-full"
+                              class="text-sm controls-input bg-white dark:bg-[#2A2E39] focus:outline-hidden  border border-gray-300 dark:border-gray-500 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-2 py-1.5 grow w-full min-w-54"
                               placeholder="Search Ticker"
                               aria-label="Search new stock"
                             />
@@ -892,6 +892,7 @@
                   </tbody>
                 </table>
               </div>
+
               {#if isLoaded}
                 {#if config}
                   <div
