@@ -1,10 +1,15 @@
 <script lang="ts">
-  import { abbreviateNumber, buildOptionSymbol } from "$lib/utils";
+  import {
+    abbreviateNumber,
+    buildOptionSymbol,
+    parseOptionSymbol,
+  } from "$lib/utils";
   import { setCache, getCache } from "$lib/store";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
   import Infobox from "$lib/components/Infobox.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
+  import { page } from "$app/stores";
 
   import { onMount } from "svelte";
 
@@ -15,17 +20,19 @@
   export let ticker;
 
   let isLoaded = false;
+  let currentStockPrice = data?.getStockQuote?.price;
   let config = null;
-  let selectedOptionType = "Call";
-  let optionData = data?.getData[selectedOptionType];
+  let selectedOptionType;
+
+  let optionData = {};
 
   let dateList = Object?.keys(optionData);
 
-  let selectedDate = Object?.keys(optionData)[0];
+  let selectedDate;
 
-  let strikeList = optionData[selectedDate] || [];
+  let strikeList = [];
 
-  let selectedStrike = strikeList?.at(0) || [];
+  let selectedStrike;
   let optionSymbol = "n/a";
 
   let displayList = [];
@@ -33,6 +40,34 @@
   let rawDataHistory = [];
   let infoText = {};
   let tooltipTitle;
+
+  let optionQuery = $page.url.searchParams.get("query") || "";
+
+  try {
+    if (optionQuery?.length > 0) {
+      const parsedData = parseOptionSymbol(optionQuery);
+      selectedOptionType = parsedData?.optionType;
+      optionData = data?.getData[selectedOptionType];
+      selectedDate = parsedData?.dateExpiration;
+      strikeList = optionData[selectedDate] || [];
+      selectedStrike = parsedData?.strikePrice;
+    } else {
+    }
+  } catch (e) {
+    selectedOptionType = "Call";
+    optionData = data?.getData[selectedOptionType];
+
+    selectedDate = Object?.keys(optionData)[0];
+    strikeList = [...optionData[selectedDate]] || [];
+    if (!strikeList?.includes(selectedStrike)) {
+      selectedStrike = strikeList.reduce((closest, strike) => {
+        return Math.abs(strike - currentStockPrice) <
+          Math.abs(closest - currentStockPrice)
+          ? strike
+          : closest;
+      }, strikeList[0]);
+    }
+  }
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -42,20 +77,6 @@
       year: "numeric",
     });
   };
-
-  const currentTime = new Date(
-    new Date().toLocaleString("en-US", { timeZone: "America/New_York" }),
-  )?.getTime();
-
-  function daysLeft(targetDate) {
-    const targetTime = new Date(targetDate).getTime();
-    const difference = targetTime - currentTime;
-
-    const millisecondsPerDay = 1000 * 60 * 60 * 24;
-    const daysLeft = Math?.ceil(difference / millisecondsPerDay);
-
-    return daysLeft + "D";
-  }
 
   function calculateDTE(data, dateExpiration) {
     // Convert the expiration date to a Date object
@@ -384,7 +405,12 @@
     strikeList = [...optionData[selectedDate]];
 
     if (!strikeList?.includes(selectedStrike)) {
-      selectedStrike = strikeList?.at(0); // Set to first element if not found
+      selectedStrike = strikeList.reduce((closest, strike) => {
+        return Math.abs(strike - currentStockPrice) <
+          Math.abs(closest - currentStockPrice)
+          ? strike
+          : closest;
+      }, strikeList[0]);
     }
 
     displayList = [];
@@ -396,6 +422,7 @@
       selectedOptionType,
       selectedStrike,
     );
+
     const output = await getContractHistory(optionSymbol);
     rawDataHistory = output?.history;
 

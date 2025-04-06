@@ -7,6 +7,7 @@
   import { setCache, getCache, screenWidth } from "$lib/store";
   import { Combobox } from "bits-ui";
   import InfoModal from "$lib/components/InfoModal.svelte";
+  import Link from "lucide-svelte/icons/square-arrow-out-up-right";
 
   import { mode } from "mode-watcher";
   import highcharts from "$lib/highcharts.ts";
@@ -18,6 +19,8 @@
   let selectedStrategy = "Long Call";
   let selectedOptionType = "Call";
   let selectedTicker = "TSLA";
+  let assetType = "stocks";
+
   let selectedAction = "Buy";
   let selectedOptionPrice;
   let selectedQuantity = 1;
@@ -533,8 +536,10 @@
     }, strikeList[0]);
   }
 
-  async function changeTicker(symbol) {
-    selectedTicker = symbol;
+  async function changeTicker(data) {
+    selectedTicker = data?.symbol;
+    assetType = data?.type?.toLowerCase() || "stocks";
+
     await getStockData();
     await loadData("default");
   }
@@ -670,6 +675,8 @@
                       >
                         Price
                       </th>
+                      <th scope="col" class="px-4 py-1.5 text-sm font-semibold"
+                      ></th>
                     </tr>
                   </thead>
 
@@ -703,7 +710,7 @@
                                   class="cursor-pointer border-b border-gray-300 dark:border-gray-500 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-5 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-200 dark:data-highlighted:bg-primary"
                                   value={item?.symbol}
                                   label={item?.symbol}
-                                  on:click={(e) => changeTicker(item?.symbol)}
+                                  on:click={(e) => changeTicker(item)}
                                 >
                                   <div class="flex flex-col items-start">
                                     <span
@@ -852,6 +859,16 @@
                           on:input={handleOptionPriceInput}
                           class="border border-gray-300 dark:border-gray-500 rounded px-2 py-1 w-24 focus:outline-none focus:ring-1 focus:ring-blue-500"
                         />
+                      </td>
+                      <td class="px-4 py-3 whitespace-nowrap">
+                        <a
+                          href={`/${["stocks", "stock"]?.includes(assetType) ? "stocks" : assetType === "etf" ? "etf" : "index"}/${selectedTicker}/options/contract-lookup?query=${optionSymbol}`}
+                          rel="noopener noreferrer"
+                          target="_blank"
+                          class="option-leg-link-to-contract"
+                        >
+                          <Link class="w-4 h-4 text-gray-100" />
+                        </a>
                       </td>
 
                       <!--

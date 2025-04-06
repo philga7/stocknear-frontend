@@ -43,6 +43,33 @@ export function buildOptionSymbol(ticker, dateExpiration, optionType, strikePric
     return `${ticker}${expirationStr}${optionTypeChar}${strikeStr}`;
   }
 
+  export function parseOptionSymbol(optionSymbol) {
+  // Extract the ticker (everything before the 6-digit date + 1 character + 8-digit strike)
+  const match = optionSymbol.match(/^([A-Z]+)(\d{6})([CP])(\d{8})$/);
+  if (!match) throw new Error("Invalid option symbol format");
+
+  const [, ticker, datePart, optionTypeChar, strikeStr] = match;
+
+  // Parse and format the expiration date manually
+  const year = (parseInt(datePart.slice(0, 2), 10) + 2000).toString();
+  const month = datePart.slice(2, 4); // Already 2-digit string
+  const day = datePart.slice(4, 6);   // Already 2-digit string
+  const dateExpiration = `${year}-${month}-${day}`;
+
+  // Convert the option type character back to "call" or "put"
+  const optionType = optionTypeChar === "C" ? "Call" : "Put";
+
+  // Convert strike price string back to a float
+  const strikePrice = parseInt(strikeStr, 10) / 1000;
+
+  return {
+    ticker,
+    dateExpiration,
+    optionType,
+    strikePrice,
+  };
+}
+
 
 export function convertToSlug(title) {
     // Remove punctuation, hyphens, and special characters
