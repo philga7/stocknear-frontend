@@ -227,7 +227,7 @@
 
     const dataPoints = [];
     const xMin = 0;
-    const xMax = Math.floor(currentStockPrice * 3);
+    const xMax = Math.floor(Math.max(currentStockPrice, selectedStrike) * 3);
     const step = 10;
 
     if (payoffFunctions[scenarioKey]) {
