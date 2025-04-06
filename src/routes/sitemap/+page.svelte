@@ -74,16 +74,12 @@
       link: "/list/highest-option-premium",
     },
     {
-      title: "Insider Tracker",
-      link: "/insider-tracker",
+      title: "POTUS Tracker",
+      link: "/potus-tracker",
     },
     {
-      title: "Sentiment Tracker",
-      link: "/sentiment-tracker",
-    },
-    {
-      title: "Wallstreetbets Tracker",
-      link: "/reddit-tracker",
+      title: "Options Calculator",
+      link: "/options-calculator",
     },
     {
       title: "Top Stock Gainers",

@@ -71,6 +71,8 @@ const pages = [
   { title: "/market-flow/sector-flow" },
   { title: "/affiliate-program" },
   { title: "/dark-pool-flow" },
+  { title: "/potus-tracker" },
+  { title: "/options-calculator" },
   { title: "/faq" },
 ];
 
