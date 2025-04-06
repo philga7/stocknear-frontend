@@ -24,7 +24,7 @@ export const load = async ({ locals }) => {
 
    const getStockQuote = async () => {
      const postData = { ticker: 'TSLA' };
-  const response = await fetch(apiURL + "/historical-price", {
+  const response = await fetch(apiURL + "/stock-quote", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

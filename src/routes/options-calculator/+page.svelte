@@ -2,7 +2,7 @@
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
   import SEO from "$lib/components/SEO.svelte";
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
   import { abbreviateNumber, buildOptionSymbol } from "$lib/utils";
   import { setCache, getCache } from "$lib/store";
 
@@ -18,14 +18,25 @@
   let selectedTicker = "TSLA";
   let selectedAction = "Buy";
   let selectedOptionPrice;
+  let selectedQuantity = 1;
+  let debounceTimeout;
+
+  let currentStockPrice = data?.getStockQuote?.price;
 
   let optionData = data?.getData[selectedOptionType];
   let dateList = Object?.keys(optionData);
   let selectedDate = Object?.keys(optionData)[0];
   let strikeList = optionData[selectedDate] || [];
-  let deltaList = optionData[selectedDate] || [];
-  let selectedStrike = strikeList?.at(0) || [];
+  let selectedStrike = strikeList.reduce((closest, strike) => {
+    return Math.abs(strike - currentStockPrice) <
+      Math.abs(closest - currentStockPrice)
+      ? strike
+      : closest;
+  }, strikeList[0]);
+
   let optionSymbol;
+  let breakEvenPrice;
+  let premium;
 
   let strategies = [
     { name: "Long Call", sentiment: "Bullish" },
@@ -51,14 +62,26 @@
      */
   ];
 
-  const tradeInfo = {
-    type: "Long Call",
-    details: "BUY +1 TSLA Apr 11, 2025 280.0 call @$30.0",
-    currentPrice: "$239.34",
-    breakEvenPrice: "$310.00",
-    costOfTrade: "$3,000.00",
-    maxProfit: "Unlimited",
-    maxLoss: "-$3,000.00",
+  const payoffFunctions = {
+    "Buy Call": (s, strike, premium) =>
+      s < strike ? -premium : (s - strike) * 100 - premium,
+
+    "Sell Call": (s, strike, premium) =>
+      s < strike ? premium : premium - (s - strike) * 100,
+
+    "Buy Put": (s, strike, premium) =>
+      s > strike ? -premium : (strike - s) * 100 - premium,
+
+    "Sell Put": (s, strike, premium) =>
+      s > strike ? premium : premium - (strike - s) * 100,
+  };
+
+  // Define break-even calculators for each scenario (using per-share price)
+  const breakEvenCalculators = {
+    "Buy Call": (strike, optionPrice) => strike + optionPrice,
+    "Sell Call": (strike, optionPrice) => strike + optionPrice,
+    "Buy Put": (strike, optionPrice) => strike - optionPrice,
+    "Sell Put": (strike, optionPrice) => strike - optionPrice,
   };
 
   const formatDate = (dateString) => {
@@ -71,15 +94,24 @@
   };
 
   function plotData() {
-    const action = "Buy";
-    const optionType = "Call";
+    // total premium paid for 1 contract (premium is calculated per share times 100 shares)
+    premium = selectedOptionPrice * 100 * selectedQuantity;
 
-    const strikePrice = 230;
-    const numOfQuantities = 1;
-    const currentStockPrice = 239;
-    const cost = 30.13;
-    const premium = cost * 100 * numOfQuantities; // total premium paid for 1 contract
-    const breakEven = strikePrice + cost;
+    // Create a key from the selected action and option type
+    const scenarioKey = `${selectedAction} ${selectedOptionType}`;
+
+    // Calculate break-even price per share using the mapping above.
+    // Note: For display, we assume optionPrice is per share.
+    breakEvenPrice;
+    if (breakEvenCalculators[scenarioKey]) {
+      breakEvenPrice = breakEvenCalculators[scenarioKey](
+        selectedStrike,
+        selectedOptionPrice,
+      );
+    } else {
+      console.error("Break-even scenario not implemented:", scenarioKey);
+      breakEvenPrice = selectedStrike; // default fallback
+    }
 
     // 1) Build payoff data from 0 to 600 (in steps of 10)
     const dataPoints = [];
@@ -87,13 +119,17 @@
     const xMax = 600;
     const step = 10;
 
-    for (let s = xMin; s <= xMax; s += step) {
-      // Payoff for a long call:
-      // If underlying price < strike, payoff = -premium
-      // Else payoff = (underlying - strike)*100 - premium
-      const payoff =
-        s < strikePrice ? -premium : (s - strikePrice) * 100 - premium;
-      dataPoints.push([s, payoff]);
+    if (payoffFunctions[scenarioKey]) {
+      for (let s = xMin; s <= xMax; s += step) {
+        // For each price point, calculate payoff based on the scenario.
+        const payoff = payoffFunctions[scenarioKey](s, selectedStrike, premium);
+        dataPoints.push([s, payoff]);
+      }
+    } else {
+      console.error(
+        "Payoff function not implemented for scenario:",
+        scenarioKey,
+      );
     }
 
     const options = {
@@ -112,12 +148,11 @@
         useHTML: true,
       },
       xAxis: {
-        // numeric axis from 0 to 600
         min: xMin,
         max: xMax,
         tickInterval: 50,
         title: {
-          text: "TSLA Price at Expiration ($)",
+          text: `${selectedTicker} Price at Expiration ($)`,
           style: { color: $mode === "light" ? "#545454" : "white" },
         },
         labels: {
@@ -137,12 +172,12 @@
           },
           // Break-Even line
           {
-            value: breakEven,
+            value: breakEvenPrice,
             color: "#10B981",
             dashStyle: "Dash",
             width: 1.2,
             label: {
-              text: `<span class="text-black dark:text-white">Breakeven $${breakEven.toFixed(2)}</span>`,
+              text: `<span class="text-black dark:text-white">Breakeven $${breakEvenPrice.toFixed(2)}</span>`,
             },
             zIndex: 5,
           },
@@ -268,7 +303,12 @@
     strikeList = [...optionData[selectedDate]];
 
     if (!strikeList?.includes(selectedStrike)) {
-      selectedStrike = strikeList?.at(0); // Set to first element if not found
+      selectedStrike = strikeList.reduce((closest, strike) => {
+        return Math.abs(strike - currentStockPrice) <
+          Math.abs(closest - currentStockPrice)
+          ? strike
+          : closest;
+      }, strikeList[0]);
     }
 
     optionSymbol = buildOptionSymbol(
@@ -280,29 +320,48 @@
     const output = await getContractHistory(optionSymbol);
 
     selectedOptionPrice = output?.history?.at(-1)?.mark;
+
+    config = plotData();
+
     isLoaded = true;
   }
 
-  function handleOptionType() {
+  async function handleOptionType() {
     if (selectedOptionType === "Call") {
       selectedOptionType = "Put";
     } else {
       selectedOptionType = "Call";
     }
+    await loadData("optionType");
   }
-  function handleAction() {
+  async function handleAction() {
     if (selectedAction === "Buy") {
       selectedAction = "Sell";
     } else {
-      selectedAction = "But";
+      selectedAction = "Buy";
     }
+
+    config = plotData();
+  }
+
+  function handleOptionPriceInput(event) {
+    selectedOptionPrice = +event.target.value;
+    // Clear any existing debounce timeout
+    if (debounceTimeout) clearTimeout(debounceTimeout);
+
+    // Set a new debounce timeout (1 second)
+    debounceTimeout = setTimeout(() => {
+      config = plotData();
+    }, 500);
   }
 
   onMount(async () => {
     await loadData("default");
   });
 
-  config = plotData();
+  onDestroy(() => {
+    if (debounceTimeout) clearTimeout(debounceTimeout);
+  });
 </script>
 
 <SEO
@@ -425,8 +484,8 @@
                   <tbody class="bg-[#F8F9FA] divide-y divide-gray-200 text-sm">
                     <!-- Example Option Leg Row -->
                     <tr>
-                      <td class="px-4 py-3 whitespace-nowrap font-bold">
-                        TSLA
+                      <td class="px-4 py-3 whitespace-nowrap font-semibold">
+                        {selectedTicker}
                       </td>
                       <td class="px-4 py-3 whitespace-nowrap">
                         <label
@@ -550,7 +609,8 @@
                         <input
                           type="number"
                           step="0.1"
-                          value={selectedOptionPrice}
+                          bind:value={selectedOptionPrice}
+                          on:input={handleOptionPriceInput}
                           class="border border-gray-300 rounded px-2 py-1 w-24 focus:outline-none focus:ring-1 focus:ring-blue-500"
                         />
                       </td>
@@ -610,9 +670,13 @@
                   <div
                     class="border border-gray-300 dark:border-gray-800 rounded-lg p-4 mb-6 shadow-sm max-w-sm"
                   >
-                    <div>Long Call</div>
+                    <div>{selectedStrategy}</div>
                     <div class="text-green-800 font-semibold">
-                      BUY +1 TSLA Apr 11, 2025 280.0 call @$30.0
+                      {selectedAction?.toUpperCase()} +{selectedQuantity}
+                      {selectedTicker}
+                      {formatDate(selectedDate)}
+                      {selectedStrike}
+                      {selectedOptionType} @${selectedOptionPrice}
                     </div>
                   </div>
 
@@ -620,17 +684,19 @@
                   <h2 class="text-xl font-bold text-gray-800 mb-4">Stock</h2>
                   <div class="grid grid-cols-2 sm:grid-cols-4 mb-6">
                     <div>
-                      <div class="text-gray-600">TSLA Current Price</div>
+                      <div class="text-gray-600">
+                        {selectedTicker} Current Price
+                      </div>
                       <div class="flex items-baseline">
                         <span class="text-lg font-semibold"
-                          >{tradeInfo.currentPrice}</span
+                          >${currentStockPrice}</span
                         >
                       </div>
                     </div>
 
                     <div>
                       <div class="flex items-center text-gray-600">
-                        TSLA Breakeven Price
+                        {selectedTicker} Breakeven Price
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           class="h-4 w-4 ml-1"
@@ -648,7 +714,7 @@
                       </div>
                       <div class="flex items-baseline">
                         <span class="text-lg font-semibold"
-                          >{tradeInfo.breakEvenPrice}</span
+                          >${breakEvenPrice}</span
                         >
                       </div>
                     </div>
@@ -681,7 +747,7 @@
                       </div>
                       <div class="flex items-baseline">
                         <span class="text-lg font-semibold"
-                          >{tradeInfo.costOfTrade}</span
+                          >${premium?.toLocaleString("en-US")}</span
                         >
                       </div>
                     </div>
@@ -705,7 +771,7 @@
                         </svg>
                       </div>
                       <div class="text-lg font-semibold text-green-800">
-                        {tradeInfo.maxProfit}
+                        Unlimited
                       </div>
                     </div>
 
@@ -728,7 +794,7 @@
                         </svg>
                       </div>
                       <div class="text-lg font-semibold text-red-600">
-                        {tradeInfo.maxLoss}
+                        -${premium?.toLocaleString("en-US")}
                       </div>
                     </div>
                   </div>
