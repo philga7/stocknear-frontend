@@ -4,7 +4,8 @@
   import SEO from "$lib/components/SEO.svelte";
   import { onMount, onDestroy } from "svelte";
   import { abbreviateNumber, buildOptionSymbol } from "$lib/utils";
-  import { setCache, getCache } from "$lib/store";
+  import { setCache, getCache, screenWidth } from "$lib/store";
+  import { Combobox } from "bits-ui";
 
   import { mode } from "mode-watcher";
   import highcharts from "$lib/highcharts.ts";
@@ -21,23 +22,25 @@
   let selectedQuantity = 1;
   let debounceTimeout;
 
-  let currentStockPrice = data?.getStockQuote?.price;
+  let currentStockPrice;
 
-  let optionData = data?.getData[selectedOptionType];
-  let dateList = Object?.keys(optionData);
-  let selectedDate = Object?.keys(optionData)[0];
-  let strikeList = optionData[selectedDate] || [];
-  let selectedStrike = strikeList.reduce((closest, strike) => {
-    return Math.abs(strike - currentStockPrice) <
-      Math.abs(closest - currentStockPrice)
-      ? strike
-      : closest;
-  }, strikeList[0]);
+  let optionData = {};
+  let dateList = [];
+  let selectedDate;
+  let strikeList = [];
+  let selectedStrike;
 
   let optionSymbol;
   let breakEvenPrice;
   let premium;
   let limits = {};
+  let rawData = {};
+
+  let searchBarData = [];
+  let timeoutId;
+
+  let inputValue = selectedTicker;
+  let touchedInput = false;
 
   let strategies = [
     {
@@ -173,24 +176,48 @@
     if (scenarioKey === "Buy Call") {
       limits = {
         maxProfit: "Unlimited",
-        maxLoss: `-$${premium?.toLocaleString("en-US")}`,
+        maxLoss: `-$${premium?.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`,
       };
     } else if (scenarioKey === "Sell Call") {
       limits = {
-        maxProfit: `+$${premium?.toLocaleString("en-US")}`,
+        maxProfit: `$${premium?.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`,
         maxLoss: "Unlimited",
       };
     } else if (scenarioKey === "Buy Put") {
       limits = {
         // Maximum profit when underlying goes to 0
-        maxProfit: `+$${(selectedStrike * 100 - premium)?.toLocaleString("en-US")}`,
-        maxLoss: `-$${premium?.toLocaleString("en-US")}`,
+        maxProfit: `$${(selectedStrike * 100 - premium)?.toLocaleString(
+          "en-US",
+          {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          },
+        )}`,
+        maxLoss: `-$${premium?.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`,
       };
     } else if (scenarioKey === "Sell Put") {
       limits = {
-        maxProfit: `+$${premium?.toLocaleString("en-US")}`,
+        maxProfit: `$${premium?.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`,
         // Maximum loss when underlying goes to 0
-        maxLoss: `-$${(selectedStrike * 100 - premium)?.toLocaleString("en-US")}`,
+        maxLoss: `-$${(selectedStrike * 100 - premium)?.toLocaleString(
+          "en-US",
+          {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          },
+        )}`,
       };
     } else {
       console.error("Limits not defined for scenario:", scenarioKey);
@@ -245,22 +272,23 @@
           // Underlying Price line
           {
             value: currentStockPrice,
-            color: "black",
+            color: $mode === "light" ? "black" : "white",
             dashStyle: "Dash",
             width: 1.2,
             label: {
               text: `<span class="text-black dark:text-white">Underlying Price $${currentStockPrice}</span>`,
+              style: { color: $mode === "light" ? "black" : "white" },
             },
             zIndex: 5,
           },
-          // Break-Even line
           {
             value: breakEvenPrice,
             color: "#10B981",
             dashStyle: "Dash",
-            width: 1.2,
+            width: $screenWidth < 640 ? 0 : 1.2,
             label: {
-              text: `<span class="text-black dark:text-white">Breakeven $${breakEvenPrice.toFixed(2)}</span>`,
+              text: `<span class="hidden sm:block text-black dark:text-white">Breakeven $${breakEvenPrice.toFixed(2)}</span>`,
+              style: { color: $mode === "light" ? "black" : "white" },
             },
             zIndex: 5,
           },
@@ -282,11 +310,16 @@
       },
       tooltip: {
         shared: true,
-        backgroundColor: $mode === "light" ? "#f9fafb" : "#1f2937",
-        borderColor: "#6b7280",
+        useHTML: true,
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
+        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        borderWidth: 1,
         style: {
-          color: $mode === "light" ? "black" : "white",
+          color: "#fff",
+          fontSize: "16px",
+          padding: "10px",
         },
+        borderRadius: 2,
         formatter: function () {
           const underlyingPrice = this.x;
           const profitLoss = this.y;
@@ -297,17 +330,18 @@
           const profitLossPctChange = (profitLoss / premium) * 100;
 
           return `
-          <div class="flex flex-col items-start">
+          <div class="flex flex-col items-start text-sm">
             <div>
-              <span class="text-start text-muted font-semibold">Underlying Price:</span> 
+              <span class="text-start font-semibold">Underlying Price:</span> 
               $${underlyingPrice} 
               (<span>${underlyingPctChange.toFixed(2)}%</span>)
             </div>
-            <div>
-              <span class="text-start text-muted font-semibold">Profit or Loss:</span> 
-              $${profitLoss.toLocaleString("en-US")} 
-              (<span>${profitLossPctChange.toFixed(2)}%</span>)
-            </div>
+            <br>
+          <div class="">
+            <span class="text-start font-semibold">Profit or Loss:</span> 
+            ${profitLoss < 0 ? "-$" : "$"}${Math.abs(profitLoss).toLocaleString("en-US")} 
+            (<span>${profitLossPctChange.toFixed(2)}%</span>)
+          </div>
           </div>
         `;
         },
@@ -377,38 +411,6 @@
     return output;
   };
 
-  async function loadData(state: string) {
-    isLoaded = false;
-    optionData = data?.getData[selectedOptionType];
-
-    dateList = [...Object?.keys(optionData)];
-
-    strikeList = [...optionData[selectedDate]];
-
-    if (!strikeList?.includes(selectedStrike)) {
-      selectedStrike = strikeList.reduce((closest, strike) => {
-        return Math.abs(strike - currentStockPrice) <
-          Math.abs(closest - currentStockPrice)
-          ? strike
-          : closest;
-      }, strikeList[0]);
-    }
-
-    optionSymbol = buildOptionSymbol(
-      selectedTicker,
-      selectedDate,
-      selectedOptionType,
-      selectedStrike,
-    );
-    const output = await getContractHistory(optionSymbol);
-
-    selectedOptionPrice = output?.history?.at(-1)?.mark;
-
-    config = plotData();
-
-    isLoaded = true;
-  }
-
   async function handleOptionType() {
     if (selectedOptionType === "Call") {
       selectedOptionType = "Put";
@@ -449,13 +451,106 @@
     }, 500);
   }
 
+  async function search() {
+    clearTimeout(timeoutId); // Clear any existing timeout
+
+    if (!inputValue.trim()) {
+      // Skip if query is empty or just whitespace
+      searchBarData = []; // Clear previous results
+      return;
+    }
+
+    timeoutId = setTimeout(async () => {
+      const response = await fetch(
+        `/api/searchbar?query=${encodeURIComponent(inputValue)}&limit=10`,
+      );
+      searchBarData = await response?.json();
+    }, 50); // delay
+  }
+
+  async function loadData(state: string) {
+    if (!rawData || !rawData.getData) {
+      console.error("rawData is undefined or invalid in loadData");
+      return;
+    }
+
+    isLoaded = false;
+
+    optionData = rawData?.getData[selectedOptionType];
+
+    dateList = [...Object?.keys(optionData)];
+
+    strikeList = [...optionData[selectedDate]];
+
+    if (!strikeList?.includes(selectedStrike)) {
+      selectedStrike = strikeList.reduce((closest, strike) => {
+        return Math.abs(strike - currentStockPrice) <
+          Math.abs(closest - currentStockPrice)
+          ? strike
+          : closest;
+      }, strikeList[0]);
+    }
+
+    optionSymbol = buildOptionSymbol(
+      selectedTicker,
+      selectedDate,
+      selectedOptionType,
+      selectedStrike,
+    );
+    const output = await getContractHistory(optionSymbol);
+
+    selectedOptionPrice = output?.history?.at(-1)?.mark;
+
+    config = plotData();
+
+    isLoaded = true;
+  }
+
+  async function getStockData() {
+    const postData = { ticker: selectedTicker };
+    const response = await fetch("/api/options-calculator", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(postData),
+    });
+
+    rawData = (await response.json()) || {};
+
+    currentStockPrice = rawData?.getStockQuote?.price;
+
+    optionData = rawData?.getData[selectedOptionType];
+    dateList = Object?.keys(optionData);
+    selectedDate = Object?.keys(optionData)[0];
+    strikeList = optionData[selectedDate] || [];
+    selectedStrike = strikeList.reduce((closest, strike) => {
+      return Math.abs(strike - currentStockPrice) <
+        Math.abs(closest - currentStockPrice)
+        ? strike
+        : closest;
+    }, strikeList[0]);
+  }
+
+  async function changeTicker(symbol) {
+    selectedTicker = symbol;
+    await getStockData();
+    await loadData("default");
+  }
   onMount(async () => {
+    await getStockData();
     await loadData("default");
   });
 
   onDestroy(() => {
     if (debounceTimeout) clearTimeout(debounceTimeout);
   });
+
+  $: {
+    if ($mode) {
+      config = plotData();
+    }
+  }
 </script>
 
 <SEO
@@ -495,16 +590,17 @@
                 <div
                   on:click={() => changeStrategy(strategy)}
                   class="{selectedStrategy === strategy?.name
-                    ? 'bg-blue-100'
-                    : ''} select-none flex items-center space-x-2 border rounded-full px-3 py-1 text-sm font-medium border border-gray-300 cursor-pointer sm:hover:bg-blue-100"
+                    ? 'bg-blue-100 dark:bg-primary text-muted'
+                    : ''} text-sm elect-none flex items-center space-x-2 border border-gray-300 dark:border-gray-600 rounded-full px-3 py-1 text-blue-700 dark:text-white dark:sm:hover:text-white sm:hover:text-muted cursor-pointer"
                 >
                   <span>{strategy.name}</span>
                   {#if strategy?.sentiment}
                     <span
                       class="badge px-2 text-xs rounded-full {strategy.sentiment ===
                       'Bullish'
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-red-100 text-red-800'}">{strategy.sentiment}</span
+                        ? 'bg-green-100 text-green-800 dark:bg-green-300 dark:text-black'
+                        : 'bg-red-100 text-red-800 dark:bg-red-300 dark:text-black'}"
+                      >{strategy.sentiment}</span
                     >
                   {/if}
                 </div>
@@ -522,10 +618,14 @@
               <!-- Table header -->
 
               <!-- Table container -->
-              <div class="overflow-x-auto border rounded-md">
-                <table class="min-w-full divide-y divide-gray-200">
+              <div
+                class="overflow-x-auto border border-gray-300 dark:border-gray-600 rounded"
+              >
+                <table
+                  class="min-w-full divide-y divide-gray-200 dark:divide-gray-600"
+                >
                   <!-- Table head -->
-                  <thead class="bg-gray-50">
+                  <thead class="bg-gray-50 dark:bg-secondary">
                     <tr>
                       <th
                         scope="col"
@@ -573,19 +673,64 @@
                   </thead>
 
                   <!-- Table body -->
-                  <tbody class="bg-[#F8F9FA] divide-y divide-gray-200 text-sm">
+                  <tbody
+                    class="bg-[#F8F9FA] dark:bg-secondary divide-y divide-gray-200 dark:divide-gray-800 text-sm"
+                  >
                     <!-- Example Option Leg Row -->
                     <tr>
                       <td class="px-4 py-3 whitespace-nowrap font-semibold">
-                        {selectedTicker}
+                        <Combobox.Root
+                          items={searchBarData}
+                          bind:inputValue
+                          bind:touchedInput
+                        >
+                          <div class="relative w-full">
+                            <Combobox.Input
+                              on:input={search}
+                              class="text-sm controls-input bg-white dark:bg-[#2A2E39] focus:outline-hidden  border border-gray-300 dark:border-gray-500 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-2 py-1.5 grow w-full"
+                              placeholder="Search Ticker"
+                              aria-label="Search new stock"
+                            />
+                          </div>
+                          {#if inputValue?.length !== 0 && inputValue !== selectedTicker}
+                            <Combobox.Content
+                              class=" z-10 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-default px-1 py-3 shadow-sm outline-hidden"
+                              sideOffset={8}
+                            >
+                              {#each searchBarData as item}
+                                <Combobox.Item
+                                  class="cursor-pointer border-b border-gray-300 dark:border-gray-500 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-5 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-200 dark:data-highlighted:bg-primary"
+                                  value={item?.symbol}
+                                  label={item?.symbol}
+                                  on:click={(e) => changeTicker(item?.symbol)}
+                                >
+                                  <div class="flex flex-col items-start">
+                                    <span
+                                      class="text-sm text-blue-700 dark:text-blue-400"
+                                      >{item?.symbol}</span
+                                    >
+                                    <span
+                                      class="text-xs sm:text-sm text-muted dark:text-white"
+                                      >{item?.name}</span
+                                    >
+                                  </div>
+                                </Combobox.Item>
+                              {:else}
+                                <span class="block px-5 py-2 text-sm">
+                                  No results found
+                                </span>
+                              {/each}
+                            </Combobox.Content>
+                          {/if}
+                        </Combobox.Root>
                       </td>
                       <td class="px-4 py-3 whitespace-nowrap">
                         <label
                           on:click={handleAction}
                           class="badge px-2 select-none rounded-md {selectedAction ===
                           'Buy'
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-red-100 text-red-800'} font-semibold cursor-pointer"
+                            ? 'bg-green-100 text-green-800 dark:bg-green-300 dark:text-muted'
+                            : 'bg-red-100 text-red-800 dark:bg-red-300 dark:text-muted'} font-semibold cursor-pointer"
                           >{selectedAction}</label
                         >
                       </td>
@@ -595,7 +740,7 @@
                           min="1"
                           bind:value={selectedQuantity}
                           on:input={handleQuantityInput}
-                          class="border border-gray-300 rounded px-2 py-1 w-20 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                          class="border border-gray-300 dark:border-gray-500 rounded px-2 py-1 w-20 focus:outline-none focus:ring-1 focus:ring-blue-500"
                         />
                       </td>
                       <td class="px-4 py-3 whitespace-nowrap">
@@ -694,7 +839,7 @@
                       <td class="px-4 py-3 whitespace-nowrap">
                         <label
                           on:click={handleOptionType}
-                          class="select-none badge px-2 rounded-md bg-blue-100 text-blue-800 font-semibold cursor-pointer"
+                          class="select-none badge px-2 rounded-md bg-blue-100 text-blue-800 dark:bg-blue-300 dark:text-muted font-semibold cursor-pointer"
                           >{selectedOptionType}</label
                         >
                       </td>
@@ -704,7 +849,7 @@
                           step="0.1"
                           bind:value={selectedOptionPrice}
                           on:input={handleOptionPriceInput}
-                          class="border border-gray-300 rounded px-2 py-1 w-24 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                          class="border border-gray-300 dark:border-gray-500 rounded px-2 py-1 w-24 focus:outline-none focus:ring-1 focus:ring-blue-500"
                         />
                       </td>
 
@@ -755,7 +900,9 @@
                 {/if}
 
                 <div class="mt-5">
-                  <h1 class="text-2xl font-bold text-gray-800 mb-6">
+                  <h1
+                    class="text-2xl font-bold text-gray-800 dark:text-white mb-6"
+                  >
                     Trade Information
                   </h1>
 
@@ -764,7 +911,7 @@
                     class="border border-gray-300 dark:border-gray-800 rounded-lg p-4 mb-6 shadow-sm max-w-sm"
                   >
                     <div>{selectedStrategy}</div>
-                    <div class="text-green-800 font-semibold">
+                    <div class="text-green-800 dark:text-white font-semibold">
                       {selectedAction?.toUpperCase()} +{selectedQuantity}
                       {selectedTicker}
                       {formatDate(selectedDate)}
@@ -774,10 +921,14 @@
                   </div>
 
                   <!-- Stock Section -->
-                  <h2 class="text-xl font-bold text-gray-800 mb-4">Stock</h2>
+                  <h2
+                    class="text-xl font-bold text-gray-800 dark:text-white mb-4"
+                  >
+                    Stock
+                  </h2>
                   <div class="grid grid-cols-2 sm:grid-cols-4 mb-6">
                     <div>
-                      <div class="text-gray-600">
+                      <div class="text-gray-600 dark:text-white">
                         {selectedTicker} Current Price
                       </div>
                       <div class="flex items-baseline">
@@ -788,7 +939,9 @@
                     </div>
 
                     <div>
-                      <div class="flex items-center text-gray-600">
+                      <div
+                        class="flex items-center text-gray-600 dark:text-white"
+                      >
                         {selectedTicker} Breakeven Price
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -814,14 +967,18 @@
                   </div>
 
                   <!-- Trade Details Section -->
-                  <h2 class="text-xl font-bold text-gray-800 mb-4">
+                  <h2
+                    class="text-xl font-bold text-gray-800 dark:text-white mb-4"
+                  >
                     Trade Details
                   </h2>
                   <div
                     class="grid grid-cols-2 md:grid-cols-4 gap-y-6 sm:gap-y-0 mb-6"
                   >
                     <div>
-                      <div class="flex items-center text-gray-600">
+                      <div
+                        class="flex items-center text-gray-600 dark:text-white"
+                      >
                         Cost of Trade
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -840,13 +997,18 @@
                       </div>
                       <div class="flex items-baseline">
                         <span class="text-lg font-semibold"
-                          >${premium?.toLocaleString("en-US")}</span
-                        >
+                          >${premium?.toLocaleString("en-US", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}
+                        </span>
                       </div>
                     </div>
 
                     <div>
-                      <div class="flex items-center text-gray-600">
+                      <div
+                        class="flex items-center text-gray-600 dark:text-white"
+                      >
                         Maximum Profit
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -863,13 +1025,17 @@
                           />
                         </svg>
                       </div>
-                      <div class="text-lg font-semibold text-green-800">
+                      <div
+                        class="text-lg font-semibold text-green-800 dark:text-green-400"
+                      >
                         {limits?.maxProfit}
                       </div>
                     </div>
 
                     <div>
-                      <div class="flex items-center text-gray-600">
+                      <div
+                        class="flex items-center text-gray-600 dark:text-white"
+                      >
                         Maximum Loss
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -886,18 +1052,20 @@
                           />
                         </svg>
                       </div>
-                      <div class="text-lg font-semibold text-red-600">
+                      <div
+                        class="text-lg font-semibold text-red-600 dark:text-red-400"
+                      >
                         {limits?.maxLoss}
                       </div>
                     </div>
                   </div>
                   <!--
-                <h2 class="text-xl font-bold text-gray-800 mb-4">
+                <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4">
                   Probability Analysis
                 </h2>
                 <div class="grid grid-cols-2 md:grid-cols-4 mb-6">
                   <div>
-                    <div class="flex items-center text-gray-600">
+                    <div class="flex items-center text-gray-600 dark:text-white">
                       Probability of Profit (PoP)
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -933,7 +1101,7 @@
                   </div>
 
                   <div>
-                    <div class="flex items-center text-gray-600">
+                    <div class="flex items-center text-gray-600 dark:text-white">
                       Probability of Max Profit
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -969,7 +1137,7 @@
                   </div>
 
                   <div>
-                    <div class="flex items-center text-gray-600">
+                    <div class="flex items-center text-gray-600 dark:text-white">
                       Probability of Max Loss
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -1005,12 +1173,12 @@
                   </div>
                 </div>
 
-                <h2 class="text-xl font-bold text-gray-800 mb-4">
+                <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4">
                   Risk Reward Analysis
                 </h2>
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-6 mb-6">
                   <div>
-                    <div class="flex items-center text-gray-600">
+                    <div class="flex items-center text-gray-600 dark:text-white">
                       Expected Value (EV)
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -1046,7 +1214,7 @@
                   </div>
 
                   <div>
-                    <div class="flex items-center text-gray-600">
+                    <div class="flex items-center text-gray-600 dark:text-white">
                       Expected Return (EV/risk)
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -1082,7 +1250,7 @@
                   </div>
 
                   <div>
-                    <div class="flex items-center text-gray-600">
+                    <div class="flex items-center text-gray-600 dark:text-white">
                       Reward/Risk
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -1119,7 +1287,7 @@
                 </div>
 
                 <h2
-                  class="text-xl font-bold text-gray-800 mb-4 flex items-center"
+                  class="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center"
                 >
                   Position Greeks
                   <svg
@@ -1139,7 +1307,7 @@
                 </h2>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
                   <div>
-                    <div class="flex items-center text-gray-600">
+                    <div class="flex items-center text-gray-600 dark:text-white">
                       Delta (Δ)
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -1175,7 +1343,7 @@
                   </div>
 
                   <div>
-                    <div class="flex items-center text-gray-600">
+                    <div class="flex items-center text-gray-600 dark:text-white">
                       Gamma (Γ)
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -1211,7 +1379,7 @@
                   </div>
 
                   <div>
-                    <div class="flex items-center text-gray-600">
+                    <div class="flex items-center text-gray-600 dark:text-white">
                       Theta (Θ)
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -1247,7 +1415,7 @@
                   </div>
 
                   <div>
-                    <div class="flex items-center text-gray-600">
+                    <div class="flex items-center text-gray-600 dark:text-white">
                       Vega (v)
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
