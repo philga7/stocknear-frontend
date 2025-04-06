@@ -793,7 +793,7 @@
                       >Open</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
                       >{data?.getStockQuote?.open?.toFixed(2)}</td
                     ></tr
                   >
@@ -805,7 +805,7 @@
                       >Volume</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
                       >{data?.getStockQuote?.volume
                         ? abbreviateNumber(data?.getStockQuote?.volume)
                         : "n/a"}</td
@@ -819,7 +819,7 @@
                       >Market Cap</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
                       >n/a</td
                     ></tr
                   >
@@ -831,7 +831,7 @@
                       >Price Avg 50</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
                       >{data?.getStockQuote?.priceAvg50?.toFixed(2)}</td
                     ></tr
                   >
@@ -843,7 +843,7 @@
                       >Day's Range</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
                       >{data?.getStockQuote?.dayLow?.toFixed(2)} - {data?.getStockQuote?.dayHigh?.toFixed(
                         2,
                       )}</td
@@ -860,7 +860,7 @@
                       >Previous Close</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
                       >{data?.getStockQuote?.previousClose?.toFixed(2)}</td
                     ></tr
                   >
@@ -872,7 +872,7 @@
                       >Avg. Volume</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
                       >{data?.getStockQuote?.avgVolume
                         ? abbreviateNumber(data?.getStockQuote?.avgVolume)
                         : "n/a"}</td
@@ -886,7 +886,7 @@
                       >Holdings
                     </td>
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
                       >n/a</td
                     ></tr
                   >
@@ -898,7 +898,7 @@
                       >Price Avg 200</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
                       >{data?.getStockQuote?.priceAvg200?.toFixed(2)}</td
                     ></tr
                   >
@@ -910,7 +910,7 @@
                       >52-Week Range</td
                     >
                     <td
-                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm font-semibold xs:px-1 sm:text-right"
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm text-[1rem] font-semibold dark:font-normal xs:px-1 sm:text-right"
                       >{data?.getStockQuote?.yearLow?.toFixed(2)} - {data?.getStockQuote?.yearHigh?.toFixed(
                         2,
                       )}</td
