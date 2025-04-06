@@ -6,6 +6,7 @@
   import { abbreviateNumber, buildOptionSymbol } from "$lib/utils";
   import { setCache, getCache, screenWidth } from "$lib/store";
   import { Combobox } from "bits-ui";
+  import InfoModal from "$lib/components/InfoModal.svelte";
 
   import { mode } from "mode-watcher";
   import highcharts from "$lib/highcharts.ts";
@@ -943,20 +944,11 @@
                         class="flex items-center text-gray-600 dark:text-white"
                       >
                         {selectedTicker} Breakeven Price
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="h-4 w-4 ml-1"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                          />
-                        </svg>
+                        <InfoModal
+                          title="Breakeven Price"
+                          id="breakevenModal"
+                          content="The stock price at which an options position will neither make nor lose money."
+                        />
                       </div>
                       <div class="flex items-baseline">
                         <span class="text-lg font-semibold"
@@ -980,20 +972,11 @@
                         class="flex items-center text-gray-600 dark:text-white"
                       >
                         Cost of Trade
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="h-4 w-4 ml-1"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                          />
-                        </svg>
+                        <InfoModal
+                          title="Cost of Trade"
+                          id="premModal"
+                          content="The Cost of Trade refers to the total amount needed to open a position. For options, buying a contract creates a net debit (positive cost), while selling a contract creates a net credit (negative cost)."
+                        />
                       </div>
                       <div class="flex items-baseline">
                         <span class="text-lg font-semibold"
@@ -1010,20 +993,11 @@
                         class="flex items-center text-gray-600 dark:text-white"
                       >
                         Maximum Profit
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="h-4 w-4 ml-1"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                          />
-                        </svg>
+                        <InfoModal
+                          title="Maximum Profit"
+                          id="maxProfitModal"
+                          content="Maximum Profit is the highest possible gain from an options position or strategy. For long positions, profit is unlimited for calls and capped for puts (if the stock drops to zero). For short positions, profit is limited to the premium received, achieved if the option expires worthless or is repurchased at a lower price."
+                        />
                       </div>
                       <div
                         class="text-lg font-semibold text-green-800 dark:text-green-400"
@@ -1037,20 +1011,11 @@
                         class="flex items-center text-gray-600 dark:text-white"
                       >
                         Maximum Loss
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="h-4 w-4 ml-1"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                          />
-                        </svg>
+                        <InfoModal
+                          title="Maximum Loss"
+                          id="maxLossModal"
+                          content="Maximum Loss is the worst possible financial outcome of an options position. For long calls or puts, it’s limited to the premium paid. For naked calls, losses can be unlimited due to unlimited upside risk. For naked puts, the maximum loss is the strike price minus the premium if the stock drops to zero. In defined-risk spreads, it’s the difference between strike prices minus net premium received or paid."
+                        />
                       </div>
                       <div
                         class="text-lg font-semibold text-red-600 dark:text-red-400"
@@ -1069,7 +1034,7 @@
                       Probability of Profit (PoP)
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-4 w-4 ml-1"
+                        class="h-5 w-5 ml-1"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -1105,7 +1070,7 @@
                       Probability of Max Profit
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-4 w-4 ml-1"
+                        class="h-5 w-5 ml-1"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -1141,7 +1106,7 @@
                       Probability of Max Loss
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-4 w-4 ml-1"
+                        class="h-5 w-5 ml-1"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -1182,7 +1147,7 @@
                       Expected Value (EV)
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-4 w-4 ml-1"
+                        class="h-5 w-5 ml-1"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -1218,7 +1183,7 @@
                       Expected Return (EV/risk)
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-4 w-4 ml-1"
+                        class="h-5 w-5 ml-1"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -1254,7 +1219,7 @@
                       Reward/Risk
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-4 w-4 ml-1"
+                        class="h-5 w-5 ml-1"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -1292,7 +1257,7 @@
                   Position Greeks
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="h-4 w-4 ml-1"
+                    class="h-5 w-5 ml-1"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -1311,7 +1276,7 @@
                       Delta (Δ)
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-4 w-4 ml-1"
+                        class="h-5 w-5 ml-1"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -1347,7 +1312,7 @@
                       Gamma (Γ)
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-4 w-4 ml-1"
+                        class="h-5 w-5 ml-1"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -1383,7 +1348,7 @@
                       Theta (Θ)
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-4 w-4 ml-1"
+                        class="h-5 w-5 ml-1"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -1419,7 +1384,7 @@
                       Vega (v)
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-4 w-4 ml-1"
+                        class="h-5 w-5 ml-1"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
