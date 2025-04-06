@@ -194,7 +194,7 @@
             class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit"
           >
             <div class="p-4 text-sm">
-              <h3 class="text-xl font-bold mb-3">IPO News</h3>
+              <h3 class="text-xl font-bold mb-3">Stock News</h3>
               <ul class="">
                 {#each marketNews?.slice(0, 10) as item}
                   <li class="mb-3 last:mb-1">

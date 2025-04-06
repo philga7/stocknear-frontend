@@ -37,10 +37,7 @@
   description="Detailed information the last 200 IPOs (initial public offerings) on the stock market. Includes IPO prices, dates, total returns and more."
 />
 
-<div class="w-full overflow-hidden m-auto mt-5">
-  <h2 class=" text-xl font- text-start mt-5 w-full font-semibold">
-    Last {rawData?.length} IPOs
-  </h2>
+<div class="w-full overflow-hidden m-auto">
   <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
     <div
       class="relative flex justify-center items-start overflow-hidden w-full"
@@ -78,7 +75,7 @@
               </ul>
               <a
                 href={`/ipos/news`}
-                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-white dark:text-black m-auto sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 bg-[#3B82F6] dark:bg-[#fff] transition duration-100"
+                class="flex justify-center items-center rounded cursor-pointer w-full py-2 -mb-2 text-[1rem] text-center font-semibold text-white dark:text-black m-auto sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 bg-[#3B82F6] dark:bg-[#fff] transition duration-100"
               >
                 More IPO News
               </a>

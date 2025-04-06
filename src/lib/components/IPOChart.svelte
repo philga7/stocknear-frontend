@@ -120,14 +120,14 @@
         categories: months,
         gridLineWidth: 0,
         labels: {
-          style: { color: $mode === "light" ? "black" : "white" },
+          style: { color: $mode === "light" ? "#545454" : "white" },
         },
       },
       yAxis: {
         gridLineWidth: 1,
         gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
         labels: {
-          style: { color: $mode === "light" ? "black" : "white" },
+          style: { color: $mode === "light" ? "#545454" : "white" },
         },
         title: { text: null },
         opposite: true,
@@ -159,7 +159,7 @@
             color: $mode === "light" ? "black" : "white",
             style: {
               fontSize: "13px",
-              fontWeight: "bold",
+              fontWeight: "",
             },
             formatter: function () {
               return this.y;

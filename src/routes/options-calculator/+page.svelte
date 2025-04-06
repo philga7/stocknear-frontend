@@ -16,6 +16,8 @@
   let selectedStrategy = "Long Call";
   let selectedOptionType = "Call";
   let selectedTicker = "TSLA";
+  let selectedAction = "Buy";
+  let selectedOptionPrice;
 
   let optionData = data?.getData[selectedOptionType];
   let dateList = Object?.keys(optionData);
@@ -274,6 +276,14 @@
       selectedOptionType = "Call";
     }
   }
+  function handleAction() {
+    if (selectedAction === "Buy") {
+      selectedAction = "Sell";
+    } else {
+      selectedAction = "But";
+    }
+  }
+
   onMount(async () => {
     await loadData("default");
   });
@@ -323,7 +333,10 @@
                 >
                   <span>{strategy.name}</span>
                   {#if strategy?.sentiment}
-                    <span class="">({strategy.sentiment})</span>
+                    <span
+                      class="badge px-2 text-xs rounded-full bg-green-100 text-green-800"
+                      >{strategy.sentiment}</span
+                    >
                   {/if}
                 </div>
               {/each}
@@ -417,8 +430,12 @@
                       </td>
                       <td class="px-4 py-3 whitespace-nowrap">
                         <label
-                          class="badge px-2 rounded-md bg-green-100 text-green-800 font-semibold cursor-pointer"
-                          >Buy</label
+                          on:click={handleAction}
+                          class="badge px-2 select-none rounded-md {selectedAction ===
+                          'Buy'
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-red-100 text-red-800'} font-semibold cursor-pointer"
+                          >{selectedAction}</label
                         >
                       </td>
                       <td class="px-4 py-3 whitespace-nowrap">
@@ -434,7 +451,7 @@
                           <DropdownMenu.Trigger asChild let:builder>
                             <Button
                               builders={[builder]}
-                              class="mb-1 border border-gray-300 dark:border-none shadow-sm bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
+                              class="mb-1 border border-gray-300 dark:border-none  bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
                             >
                               <span class="truncate text-sm"
                                 >{formatDate(selectedDate)}</span
@@ -480,7 +497,7 @@
                           <DropdownMenu.Trigger asChild let:builder>
                             <Button
                               builders={[builder]}
-                              class="mb-1 border border-gray-300 dark:border-none shadow-sm bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
+                              class="mb-1 border border-gray-300 dark:border-none  bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
                             >
                               <span class="truncate text-sm"
                                 >{selectedStrike}</span
@@ -532,8 +549,8 @@
                       <td class="px-4 py-3 whitespace-nowrap">
                         <input
                           type="number"
-                          step="0.01"
-                          value="5.80"
+                          step="0.1"
+                          value={selectedOptionPrice}
                           class="border border-gray-300 rounded px-2 py-1 w-24 focus:outline-none focus:ring-1 focus:ring-blue-500"
                         />
                       </td>

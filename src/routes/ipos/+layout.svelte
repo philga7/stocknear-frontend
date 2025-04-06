@@ -40,7 +40,7 @@
       path: "/ipos/statistics",
     },
     {
-      title: "IPO News",
+      title: "News",
       path: "/ipos/news",
     },
   ];
@@ -100,7 +100,7 @@
 
           {#if activeIdx === 0}
             <nav class="overflow-x-auto whitespace-nowrap">
-              <ul class="flex flex-row items-center w-full text-[1rem]">
+              <ul class="flex flex-row items-center w-full">
                 {#each ["Latest", "2025", "2024", "2023", "2022", "2021", "2020", "2019"] as item}
                   {#if item !== "Latest"}
                     <a
