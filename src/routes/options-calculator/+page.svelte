@@ -12,41 +12,67 @@
   import { mode } from "mode-watcher";
   import highcharts from "$lib/highcharts.ts";
 
-  export let data;
-  let isLoaded = true;
-  let shouldUpdate = false;
+  // Types
+  type Strategy = {
+    name: string;
+    sentiment: string;
+    description: string;
+  };
 
-  let config = null;
+  type OptionLeg = {
+    action: string;
+    quantity: number;
+    date: string;
+    strike: number;
+    optionType: string;
+    optionPrice: number;
+  };
+
+  type SearchResult = {
+    symbol: string;
+    type: string;
+  };
+
+  export let data;
+
+  // State variables with proper types
+  let isLoaded = false;
+  let shouldUpdate = false;
+  let config: any = null;
+
+  // Strategy selection
   let selectedStrategy = "Long Call";
   let selectedOptionType = "Call";
   let selectedTicker = "TSLA";
   let assetType = "stocks";
-
   let selectedAction = "Buy";
-  let selectedOptionPrice;
+  let selectedOptionPrice: number;
   let selectedQuantity = 1;
-  let debounceTimeout;
+  let debounceTimeout: ReturnType<typeof setTimeout>;
 
-  let currentStockPrice;
+  // Market data
+  let currentStockPrice: number;
+  let optionData: Record<string, any> = {};
+  let dateList: string[] = [];
+  let selectedDate: string;
+  let strikeList: number[] = [];
+  let selectedStrike: number;
 
-  let optionData = {};
-  let dateList = [];
-  let selectedDate;
-  let strikeList = [];
-  let selectedStrike;
+  // Option information
+  let optionSymbol: string;
+  let breakEvenPrice: number | null = null;
+  let totalPremium: number;
+  let limits: Record<string, string> = {};
+  let rawData: Record<string, any> = {};
 
-  let optionSymbol;
-  let breakEvenPrice;
-  let totalPremium;
-  let limits = {};
-  let rawData = {};
-
-  let searchBarData = [];
-  let timeoutId;
-
+  // Search variables
+  let searchBarData: SearchResult[] = [];
+  let timeoutId: ReturnType<typeof setTimeout>;
   let inputValue = "";
   let touchedInput = false;
-  let prebuiltStrategy = [
+
+  // Strategy definitions
+  const prebuiltStrategy: Strategy[] = [
     {
       name: "Long Call",
       sentiment: "Bullish",
@@ -57,7 +83,7 @@
       name: "Long Put",
       sentiment: "Bearish",
       description:
-        " In a long put strategy, an investor purchases a put option, expecting that the price of the underlying asset will decrease and generate a profit from the option's increased value. Investors typically use a long put strategy when they have a bearish outlook on the stock.",
+        "In a long put strategy, an investor purchases a put option, expecting that the price of the underlying asset will decrease and generate a profit from the option's increased value. Investors typically use a long put strategy when they have a bearish outlook on the stock.",
     },
     {
       name: "Short Call",
@@ -69,56 +95,38 @@
       name: "Short Put",
       sentiment: "Bullish",
       description:
-        " In this strategy, an investor sells a put option, expecting that the price of the underlying asset will remain stable or increase, allowing the investor to keep the premium received from selling the option. Investors typically use a short put strategy when they have a neutral to bullish outlook on the stock and and views a potential assignment as an opportunity to buy the asset at a desirable price.",
+        "In this strategy, an investor sells a put option, expecting that the price of the underlying asset will remain stable or increase, allowing the investor to keep the premium received from selling the option. Investors typically use a short put strategy when they have a neutral to bullish outlook on the stock and and views a potential assignment as an opportunity to buy the asset at a desirable price.",
     },
-    /*
-    { name: "Custom Strategy", sentiment: "" },
-    { name: "Covered Call", sentiment: "Bullish" },
-    { name: "Protective Put", sentiment: "Bullish" },
-    { name: "Cash Secured Put", sentiment: "Bullish" },
-    { name: "Bull Call Spread", sentiment: "Bullish" },
-    { name: "Bull Put Spread", sentiment: "Bullish" },
-    { name: "Bear Call Spread", sentiment: "Bearish" },
-    { name: "Bear Put Spread", sentiment: "Bearish" },
-    { name: "Collar", sentiment: "Neutral" },
-    { name: "Iron Condor", sentiment: "Neutral" },
-    { name: "Calendar Spread", sentiment: "Neutral" },
-    { name: "Covered Combination", sentiment: "Neutral" },
-    { name: "Long Call Butterfly", sentiment: "Neutral" },
-    { name: "Long Straddle", sentiment: "Neutral" },
-    { name: "Short Straddle", sentiment: "Neutral" },
-     */
+    // Other strategies commented out in original code
   ];
 
-  let userStrategy = [];
+  let userStrategy: OptionLeg[] = [];
+  let description = prebuiltStrategy[0]?.description;
 
-  let description = prebuiltStrategy?.at(0)?.description;
+  // STRATEGY FUNCTIONS
 
-  async function changeStrategy(strategy) {
+  async function changeStrategy(strategy: Strategy) {
     selectedStrategy = strategy?.name;
     description = strategy?.description;
 
+    // Set appropriate option type and action based on strategy
     switch (selectedStrategy) {
       case "Long Call":
         selectedOptionType = "Call";
         selectedAction = "Buy";
         break;
-
       case "Short Call":
         selectedOptionType = "Call";
         selectedAction = "Sell";
         break;
-
       case "Long Put":
         selectedOptionType = "Put";
         selectedAction = "Buy";
         break;
-
       case "Short Put":
         selectedOptionType = "Put";
         selectedAction = "Sell";
         break;
-
       default:
         console.warn("Unknown strategy:", strategy);
         selectedOptionType = null;
@@ -128,29 +136,31 @@
     await loadData("default");
   }
 
+  // PAYOFF CALCULATION FUNCTIONS
+
   const payoffFunctions = {
-    "Buy Call": (s, strike, premium) =>
+    "Buy Call": (s: number, strike: number, premium: number) =>
       s < strike ? -premium : (s - strike) * 100 * selectedQuantity - premium,
 
-    "Sell Call": (s, strike, premium) =>
+    "Sell Call": (s: number, strike: number, premium: number) =>
       s < strike ? premium : premium - (s - strike) * 100 * selectedQuantity,
 
-    "Buy Put": (s, strike, premium) =>
+    "Buy Put": (s: number, strike: number, premium: number) =>
       s > strike ? -premium : (strike - s) * 100 * selectedQuantity - premium,
 
-    "Sell Put": (s, strike, premium) =>
+    "Sell Put": (s: number, strike: number, premium: number) =>
       s > strike ? premium : premium - (strike - s) * 100 * selectedQuantity,
   };
 
   // Define break-even calculators for each scenario (using per-share price)
   const breakEvenCalculators = {
-    "Buy Call": (strike, optionPrice) => strike + optionPrice,
-    "Sell Call": (strike, optionPrice) => strike + optionPrice,
-    "Buy Put": (strike, optionPrice) => strike - optionPrice,
-    "Sell Put": (strike, optionPrice) => strike - optionPrice,
+    "Buy Call": (strike: number, optionPrice: number) => strike + optionPrice,
+    "Sell Call": (strike: number, optionPrice: number) => strike + optionPrice,
+    "Buy Put": (strike: number, optionPrice: number) => strike - optionPrice,
+    "Sell Put": (strike: number, optionPrice: number) => strike - optionPrice,
   };
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
       month: "short",
@@ -159,26 +169,21 @@
     });
   };
 
-  function plotData() {
-    userStrategy = [
-      {
-        action: selectedAction,
-        quantity: selectedQuantity,
-        date: selectedDate,
-        strike: selectedStrike,
-        optionType: selectedOptionType,
-        optionPrice: selectedOptionPrice,
-      },
-    ];
+  // CHART FUNCTIONS
 
+  function plotData() {
     // Determine x-axis range based on current stock price and max leg strike
-    const maxLegStrike = Math.max(...userStrategy?.map((leg) => leg.strike));
+    if (!userStrategy || userStrategy.length === 0) {
+      return null;
+    }
+
+    const maxLegStrike = Math.max(...userStrategy.map((leg) => leg.strike));
     const xMin = 0;
     const xMax = Math.floor(Math.max(currentStockPrice, maxLegStrike) * 3);
     const step = 10;
 
     // Calculate the total premium across all legs
-    totalPremium = userStrategy?.reduce((sum, leg) => {
+    totalPremium = userStrategy.reduce((sum, leg) => {
       return sum + leg.optionPrice * 100 * leg.quantity;
     }, 0);
 
@@ -205,74 +210,10 @@
       dataPoints.push([s, aggregatedPayoff]);
     }
 
-    if (userStrategy.length === 1) {
-      const leg = userStrategy[0];
-      const scenarioKey = `${leg?.action} ${leg?.optionType}`;
-      if (breakEvenCalculators[scenarioKey]) {
-        breakEvenPrice = breakEvenCalculators[scenarioKey](
-          leg.strike,
-          leg.optionPrice,
-        );
-      }
-      if (scenarioKey === "Buy Call") {
-        limits = {
-          maxProfit: "Unlimited",
-          maxLoss: `-$${totalPremium.toLocaleString("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}`,
-        };
-      } else if (scenarioKey === "Sell Call") {
-        limits = {
-          maxProfit: `$${totalPremium.toLocaleString("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}`,
-          maxLoss: "Unlimited",
-        };
-      } else if (scenarioKey === "Buy Put") {
-        limits = {
-          maxProfit: `$${(leg.strike * 100 - totalPremium).toLocaleString(
-            "en-US",
-            {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            },
-          )}`,
-          maxLoss: `-$${totalPremium.toLocaleString("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}`,
-        };
-      } else if (scenarioKey === "Sell Put") {
-        limits = {
-          maxProfit: `$${totalPremium.toLocaleString("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}`,
-          maxLoss: `-$${(leg.strike * 100 - totalPremium).toLocaleString(
-            "en-US",
-            {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            },
-          )}`,
-        };
-      } else {
-        console.error("Limits not defined for scenario:", scenarioKey);
-        limits = { maxProfit: "n/a", maxLoss: "n/a" };
-      }
-    } else {
-      // For multiple legs, simply display the aggregated premium info
-      limits = {
-        info: `Aggregated Premium: $${totalPremium.toLocaleString("en-US", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })}`,
-      };
-    }
+    // Calculate break-even and limits for single-leg strategies
+    calculateBreakEvenAndLimits();
 
-    // Build the chart options (using the first leg's ticker for the title)
+    // Build the chart options
     const options = {
       credits: { enabled: false },
       chart: {
@@ -353,7 +294,8 @@
           const profitLoss = this.y;
           const underlyingPctChange =
             ((underlyingPrice - currentStockPrice) / currentStockPrice) * 100;
-          const profitLossPctChange = (profitLoss / totalPremium) * 100;
+          const profitLossPctChange =
+            totalPremium !== 0 ? (profitLoss / totalPremium) * 100 : 0;
           return `
           <div class="flex flex-col items-start text-sm">
             <div>
@@ -403,18 +345,80 @@
     return options;
   }
 
-  const getContractHistory = async (contractId) => {
-    let output;
-    const cachedData = getCache(contractId, "getContractHistory");
-    if (cachedData) {
-      output = cachedData;
+  // Calculate break-even price and profit/loss limits
+  function calculateBreakEvenAndLimits() {
+    if (userStrategy.length === 1) {
+      const leg = userStrategy[0];
+      const scenarioKey = `${leg?.action} ${leg?.optionType}`;
+
+      // Calculate break-even price
+      if (breakEvenCalculators[scenarioKey]) {
+        breakEvenPrice = breakEvenCalculators[scenarioKey](
+          leg.strike,
+          leg.optionPrice,
+        );
+      } else {
+        breakEvenPrice = null;
+      }
+
+      // Set profit/loss limits based on strategy
+      if (scenarioKey === "Buy Call") {
+        limits = {
+          maxProfit: "Unlimited",
+          maxLoss: `-$${formatCurrency(totalPremium)}`,
+        };
+      } else if (scenarioKey === "Sell Call") {
+        limits = {
+          maxProfit: `$${formatCurrency(totalPremium)}`,
+          maxLoss: "Unlimited",
+        };
+      } else if (scenarioKey === "Buy Put") {
+        limits = {
+          maxProfit: `$${formatCurrency(leg.strike * 100 - totalPremium)}`,
+          maxLoss: `-$${formatCurrency(totalPremium)}`,
+        };
+      } else if (scenarioKey === "Sell Put") {
+        limits = {
+          maxProfit: `$${formatCurrency(totalPremium)}`,
+          maxLoss: `-$${formatCurrency(leg.strike * 100 - totalPremium)}`,
+        };
+      } else {
+        console.error("Limits not defined for scenario:", scenarioKey);
+        limits = { maxProfit: "n/a", maxLoss: "n/a" };
+      }
     } else {
+      // For multiple legs, display the aggregated premium info
+      breakEvenPrice = null;
+      limits = {
+        info: `Aggregated Premium: $${formatCurrency(totalPremium)}`,
+      };
+    }
+  }
+
+  // Helper function for currency formatting
+  function formatCurrency(value: number): string {
+    return value.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
+
+  // DATA LOADING FUNCTIONS
+
+  const getContractHistory = async (contractId: string) => {
+    const cacheKey = contractId;
+    const cachedData = getCache(cacheKey, "getContractHistory");
+
+    if (cachedData) {
+      return cachedData;
+    }
+
+    try {
       const postData = {
         ticker: selectedTicker,
         contract: contractId,
       };
 
-      // make the POST request to the endpoint
       const response = await fetch("/api/options-contract-history", {
         method: "POST",
         headers: {
@@ -423,60 +427,206 @@
         body: JSON.stringify(postData),
       });
 
-      output = await response.json();
+      if (!response.ok) {
+        throw new Error(
+          `Failed to fetch contract history: ${response.statusText}`,
+        );
+      }
 
-      setCache(contractId, output, "getContractHistory");
+      const output = await response.json();
+      setCache(cacheKey, output, "getContractHistory");
+      return output;
+    } catch (error) {
+      console.error("Error fetching contract history:", error);
+      return { history: [{ mark: 0 }] };
     }
-
-    return output;
   };
 
-  async function handleOptionType() {
-    if (selectedOptionType === "Call") {
-      selectedOptionType = "Put";
-    } else {
-      selectedOptionType = "Call";
+  async function loadData(state: string) {
+    if (!rawData?.getData) {
+      console.error("rawData is undefined or invalid in loadData");
+      return;
     }
-    await loadData("optionType");
+
+    isLoaded = false;
+
+    try {
+      optionData = rawData?.getData[selectedOptionType] || {};
+      dateList = Object.keys(optionData);
+
+      // Make sure selectedDate exists in the data
+      if (!dateList.includes(selectedDate) && dateList.length > 0) {
+        selectedDate = dateList[0];
+      }
+
+      strikeList = optionData[selectedDate] || [];
+
+      // Find closest strike to current stock price
+      if (!strikeList.includes(selectedStrike) && strikeList.length > 0) {
+        selectedStrike = strikeList.reduce((closest, strike) => {
+          return Math.abs(strike - currentStockPrice) <
+            Math.abs(closest - currentStockPrice)
+            ? strike
+            : closest;
+        }, strikeList[0]);
+      }
+
+      // Get option price
+      optionSymbol = buildOptionSymbol(
+        selectedTicker,
+        selectedDate,
+        selectedOptionType,
+        selectedStrike,
+      );
+
+      const output = await getContractHistory(optionSymbol);
+      selectedOptionPrice = output?.history?.at(-1)?.mark || 0;
+
+      // Update user strategy if necessary
+      if (state === "default" && userStrategy.length > 0) {
+        userStrategy = userStrategy.map((leg) => ({
+          ...leg,
+          date: selectedDate,
+          strike: selectedStrike,
+          optionType: selectedOptionType,
+          optionPrice: selectedOptionPrice,
+          action: selectedAction,
+          quantity: selectedQuantity,
+        }));
+      }
+
+      shouldUpdate = true;
+    } catch (error) {
+      console.error("Error loading data:", error);
+    } finally {
+      isLoaded = true;
+    }
   }
-  async function handleAction() {
-    if (selectedAction === "Buy") {
-      selectedAction = "Sell";
+
+  async function getStockData() {
+    try {
+      const postData = { ticker: selectedTicker };
+      const response = await fetch("/api/options-calculator", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postData),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch stock data: ${response.statusText}`);
+      }
+
+      rawData = (await response.json()) || {};
+      currentStockPrice = rawData?.getStockQuote?.price || 0;
+
+      // Initialize option data
+      if (rawData?.getData) {
+        optionData = rawData.getData[selectedOptionType] || {};
+        dateList = Object.keys(optionData);
+
+        if (dateList.length > 0) {
+          selectedDate = dateList[0];
+          strikeList = optionData[selectedDate] || [];
+
+          // Select strike closest to current stock price
+          if (strikeList.length > 0) {
+            selectedStrike = strikeList.reduce((closest, strike) => {
+              return Math.abs(strike - currentStockPrice) <
+                Math.abs(closest - currentStockPrice)
+                ? strike
+                : closest;
+            }, strikeList[0]);
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching stock data:", error);
+    }
+  }
+
+  // USER INTERACTION FUNCTIONS
+
+  async function handleAddOptionLeg() {
+    if (userStrategy.length === 0) {
+      userStrategy = [
+        {
+          action: selectedAction,
+          quantity: selectedQuantity,
+          date: selectedDate,
+          strike: selectedStrike,
+          optionType: selectedOptionType,
+          optionPrice: selectedOptionPrice,
+        },
+      ];
     } else {
-      selectedAction = "Buy";
+      const lastLeg = userStrategy[userStrategy.length - 1];
+      const newLeg = { ...lastLeg }; // Create a shallow copy
+      userStrategy = [...userStrategy, newLeg];
     }
     shouldUpdate = true;
   }
 
-  function handleOptionPriceInput(event) {
-    if (event.target.value === "") {
-      selectedOptionPrice = "";
-    } else {
-      selectedOptionPrice = +event.target.value;
-    }
-    // Clear any existing debounce timeout
-    if (debounceTimeout) clearTimeout(debounceTimeout);
-
-    // Set a new debounce timeout (1 second)
-    debounceTimeout = setTimeout(() => {
-      config = plotData();
-    }, 500);
+  async function handleOptionType() {
+    selectedOptionType = selectedOptionType === "Call" ? "Put" : "Call";
+    await loadData("optionType");
   }
 
-  function handleQuantityInput(event) {
-    // Check if the input is empty
-    if (event.target.value === "") {
-      selectedQuantity = "";
+  // FIXED: Make sure the handleAction function correctly uses the index
+  async function handleAction(index: number) {
+    if (index !== undefined && userStrategy[index]) {
+      // Update the specific leg in userStrategy
+      const updatedStrategy = [...userStrategy];
+      updatedStrategy[index].action =
+        updatedStrategy[index].action === "Buy" ? "Sell" : "Buy";
+      userStrategy = updatedStrategy;
     } else {
-      selectedQuantity = +event.target.value;
+      // Update the selectedAction (for new legs)
+      selectedAction = selectedAction === "Buy" ? "Sell" : "Buy";
     }
+    console.log(userStrategy);
+    shouldUpdate = true;
+  }
+
+  function handleOptionPriceInput(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+
+    selectedOptionPrice = value === "" ? null : +value;
+
     // Clear any existing debounce timeout
     if (debounceTimeout) clearTimeout(debounceTimeout);
 
-    // Set a new debounce timeout (1 second)
+    // Set a new debounce timeout
     debounceTimeout = setTimeout(() => {
-      config = plotData();
-    }, 500);
+      if (userStrategy.length > 0) {
+        userStrategy = userStrategy.map((leg) => ({
+          ...leg,
+          optionPrice: selectedOptionPrice,
+        }));
+        shouldUpdate = true;
+      }
+    }, 300);
+  }
+
+  function handleQuantityInput(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+
+    selectedQuantity = value === "" ? null : +value;
+
+    // Clear any existing debounce timeout
+    if (debounceTimeout) clearTimeout(debounceTimeout);
+
+    // Set a new debounce timeout
+    debounceTimeout = setTimeout(() => {
+      if (userStrategy.length > 0) {
+        userStrategy = userStrategy.map((leg) => ({
+          ...leg,
+          quantity: selectedQuantity,
+        }));
+        shouldUpdate = true;
+      }
+    }, 300);
   }
 
   async function search() {
@@ -489,98 +639,65 @@
     }
 
     timeoutId = setTimeout(async () => {
-      const response = await fetch(
-        `/api/searchbar?query=${encodeURIComponent(inputValue)}&limit=10`,
-      );
-      searchBarData = await response?.json();
+      try {
+        const response = await fetch(
+          `/api/searchbar?query=${encodeURIComponent(inputValue)}&limit=10`,
+        );
+
+        if (!response.ok) {
+          throw new Error(`Search failed: ${response.statusText}`);
+        }
+
+        searchBarData = await response.json();
+      } catch (error) {
+        console.error("Error during search:", error);
+        searchBarData = [];
+      }
     }, 50); // delay
   }
 
-  async function loadData(state: string) {
-    if (!rawData || !rawData.getData) {
-      console.error("rawData is undefined or invalid in loadData");
-      return;
-    }
+  async function changeTicker(data: SearchResult) {
+    if (!data?.symbol) return;
 
-    isLoaded = false;
-
-    optionData = rawData?.getData[selectedOptionType];
-
-    dateList = [...Object?.keys(optionData)];
-
-    strikeList = [...optionData[selectedDate]];
-
-    if (!strikeList?.includes(selectedStrike)) {
-      selectedStrike = strikeList.reduce((closest, strike) => {
-        return Math.abs(strike - currentStockPrice) <
-          Math.abs(closest - currentStockPrice)
-          ? strike
-          : closest;
-      }, strikeList[0]);
-    }
-
-    optionSymbol = buildOptionSymbol(
-      selectedTicker,
-      selectedDate,
-      selectedOptionType,
-      selectedStrike,
-    );
-    const output = await getContractHistory(optionSymbol);
-
-    selectedOptionPrice = output?.history?.at(-1)?.mark;
-    shouldUpdate = true;
-  }
-
-  async function getStockData() {
-    const postData = { ticker: selectedTicker };
-    const response = await fetch("/api/options-calculator", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(postData),
-    });
-
-    rawData = (await response.json()) || {};
-
-    currentStockPrice = rawData?.getStockQuote?.price;
-
-    optionData = rawData?.getData[selectedOptionType];
-    dateList = Object?.keys(optionData);
-    selectedDate = Object?.keys(optionData)[0];
-    strikeList = optionData[selectedDate] || [];
-    selectedStrike = strikeList.reduce((closest, strike) => {
-      return Math.abs(strike - currentStockPrice) <
-        Math.abs(closest - currentStockPrice)
-        ? strike
-        : closest;
-    }, strikeList[0]);
-  }
-
-  async function changeTicker(data) {
-    selectedTicker = data?.symbol;
+    selectedTicker = data.symbol;
     assetType = data?.type?.toLowerCase() || "stocks";
 
     await getStockData();
     await loadData("default");
     inputValue = "";
   }
+
+  // LIFECYCLE FUNCTIONS
+
   onMount(async () => {
     await getStockData();
     await loadData("default");
+
+    userStrategy = [
+      {
+        action: selectedAction,
+        quantity: selectedQuantity,
+        date: selectedDate,
+        strike: selectedStrike,
+        optionType: selectedOptionType,
+        optionPrice: selectedOptionPrice,
+      },
+    ];
+
     shouldUpdate = true;
   });
 
   onDestroy(() => {
     if (debounceTimeout) clearTimeout(debounceTimeout);
+    if (timeoutId) clearTimeout(timeoutId);
   });
+
+  // REACTIVE STATEMENTS
 
   $: {
     if (shouldUpdate) {
       shouldUpdate = false;
-
       config = plotData();
-
       isLoaded = true;
     }
   }
@@ -588,6 +705,13 @@
   $: {
     if ($mode) {
       config = plotData();
+    }
+  }
+
+  // Watch for changes to inputValue and trigger search
+  $: {
+    if (inputValue) {
+      search();
     }
   }
 </script>
@@ -705,7 +829,7 @@
                   class="overflow-x-auto border border-gray-300 dark:border-gray-600 rounded"
                 >
                   <table
-                    class="min-w-full divide-y divide-gray-200 dark:divide-gray-600"
+                    class="min-w-full divide-y divide-gray-200 dark:divide-gray-600 bg-[#F8F9FA] dark:bg-secondary"
                   >
                     <!-- Table head -->
                     <thead class="bg-gray-50 dark:bg-secondary">
@@ -763,14 +887,14 @@
                     <tbody
                       class="bg-[#F8F9FA] dark:bg-secondary divide-y divide-gray-200 dark:divide-gray-800 text-sm"
                     >
-                      {#each userStrategy as item}
+                      {#each userStrategy as item, index}
                         <tr>
-                          <td class="px-4 py-3 whitespace-nowrap font-semibold">
+                          <td class="px-4 whitespace-nowrap font-semibold">
                             {selectedTicker}
                           </td>
-                          <td class="px-4 py-3 whitespace-nowrap">
+                          <td class="px-4 whitespace-nowrap">
                             <label
-                              on:click={handleAction}
+                              on:click={() => handleAction(index)}
                               class="badge px-2 select-none rounded-md {item?.action ===
                               'Buy'
                                 ? 'bg-green-100 text-green-800 dark:bg-green-300 dark:text-muted'
@@ -778,7 +902,7 @@
                               >{item?.action}</label
                             >
                           </td>
-                          <td class="px-4 py-3 whitespace-nowrap">
+                          <td class="px-4 whitespace-nowrap">
                             <input
                               type="number"
                               bind:value={selectedQuantity}
@@ -787,7 +911,7 @@
                               class="border border-gray-300 dark:border-gray-500 rounded px-2 py-1 w-20 focus:outline-none focus:ring-1 focus:ring-blue-500"
                             />
                           </td>
-                          <td class="px-4 py-3 whitespace-nowrap">
+                          <td class="px-4 whitespace-nowrap">
                             <DropdownMenu.Root>
                               <DropdownMenu.Trigger asChild let:builder>
                                 <Button
@@ -833,7 +957,7 @@
                               </DropdownMenu.Content>
                             </DropdownMenu.Root>
                           </td>
-                          <td class="px-4 py-3 whitespace-nowrap">
+                          <td class="px-4 whitespace-nowrap">
                             <DropdownMenu.Root>
                               <DropdownMenu.Trigger asChild let:builder>
                                 <Button
@@ -880,14 +1004,14 @@
                               </DropdownMenu.Content>
                             </DropdownMenu.Root>
                           </td>
-                          <td class="px-4 py-3 whitespace-nowrap">
+                          <td class="px-4 whitespace-nowrap">
                             <label
                               on:click={handleOptionType}
                               class="select-none badge px-2 rounded-md bg-blue-100 text-blue-800 dark:bg-blue-300 dark:text-muted font-semibold cursor-pointer"
                               >{item?.optionType}</label
                             >
                           </td>
-                          <td class="px-4 py-3 whitespace-nowrap">
+                          <td class="px-4 whitespace-nowrap">
                             <input
                               type="number"
                               step="0.1"
@@ -897,7 +1021,7 @@
                               class="border border-gray-300 dark:border-gray-500 rounded px-2 py-1 w-24 focus:outline-none focus:ring-1 focus:ring-blue-500"
                             />
                           </td>
-                          <td class="px-4 py-3 whitespace-nowrap">
+                          <td class="px-4 whitespace-nowrap">
                             <a
                               href={`/${["stocks", "stock"]?.includes(assetType) ? "stocks" : assetType === "etf" ? "etf" : "index"}/${selectedTicker}/options/contract-lookup?query=${optionSymbol}`}
                               class="option-leg-link-to-contract"
@@ -910,7 +1034,25 @@
                         </tr>
                       {/each}
 
-                      <!-- Add more rows as needed -->
+                      <button
+                        type="button"
+                        on:click={() => handleAddOptionLeg()}
+                        class="cursor-pointer mt-3 mb-3 ml-3 align-middle inline-flex items-center gap-x-1.5 rounded bg-green-600 px-2.5 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 transition duration-150 ease-in-out whitespace-nowrap"
+                      >
+                        <svg
+                          class="-ml-0.5 h-4 w-4"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          aria-hidden="true"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+                            clip-rule="evenodd"
+                          ></path>
+                        </svg>
+                        Add Option Leg
+                      </button>
                     </tbody>
                   </table>
                 </div>
