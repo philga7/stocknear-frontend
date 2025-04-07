@@ -4,6 +4,7 @@
     stockTicker,
     coolMode,
     timeFrame,
+    selectedTimePeriod,
   } from "$lib/store";
   import { removeCompanyStrings } from "$lib/utils";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
@@ -21,18 +22,6 @@
 
   let financialData = [];
   let fullStatement = [];
-  let filterRule = "annual";
-
-  let activeIdx = 0;
-
-  const tabs = [
-    {
-      title: "Annual",
-    },
-    {
-      title: "Quarterly",
-    },
-  ];
 
   const statementConfig = [
     {
@@ -164,8 +153,8 @@
 
       let properties = [
         {
-          key: filterRule === "annual" ? "fiscalYear" : "date",
-          label: filterRule === "annual" ? "Year" : "Quarter",
+          key: $selectedTimePeriod === "annual" ? "fiscalYear" : "date",
+          label: $selectedTimePeriod === "annual" ? "Year" : "Quarter",
         },
       ];
 
@@ -198,7 +187,7 @@
         a.href = url;
         a.download =
           $stockTicker.toLowerCase() +
-          `${filterRule === "annual" ? "_annual" : "_quarter"}_income_statement.csv`;
+          `${$selectedTimePeriod === "annual" ? "_annual" : $selectedTimePeriod === "quarterly" ? "_quarter" : "_ttm"}_income_statement.csv`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -228,7 +217,9 @@
       const year = statement.fiscalYear.slice(-2);
       const quarter = statement.period;
       xList.push(
-        filterRule === "annual" ? "FY" + year : "FY" + year + " " + quarter,
+        $selectedTimePeriod === "annual"
+          ? "FY" + year
+          : "FY" + year + " " + quarter,
       );
     }
 
@@ -256,7 +247,7 @@
     });
 
     // Build tableList once for all charts and sort by date (newest first)
-    tableList = financialData.map((statement) => ({
+    tableList = financialData?.map((statement) => ({
       date: statement.date,
       // Add more properties if needed
     }));
@@ -265,14 +256,17 @@
   }
 
   $: {
-    if ($timeFrame || activeIdx) {
-      if (activeIdx === 0) {
-        filterRule = "annual";
+    if ($timeFrame || $selectedTimePeriod) {
+      if ($selectedTimePeriod === "annual") {
         fullStatement = data?.getData?.annual;
-      } else {
-        filterRule = "quarterly";
+      } else if ($selectedTimePeriod === "quarterly") {
         fullStatement = data?.getData?.quarter;
+      } else if ($selectedTimePeriod === "ttm") {
+        fullStatement = data?.getData?.ttm;
+      } else {
+        fullStatement = data?.getData?.annual;
       }
+
       financialData = filterStatement(fullStatement, $timeFrame);
       preprocessFinancialData();
     }
@@ -281,7 +275,7 @@
 
 <SEO
   title={`${$displayCompanyName} (${$stockTicker}) Financials - Income Statement`}
-  description={`Detailed annual and quarterly income statement for ${$displayCompanyName} (${$stockTicker}). See many years of revenue, expenses and profits or losses.`}
+  description={`Detailed annual, quarterly and trailing income statement for ${$displayCompanyName} (${$stockTicker}). See many years of revenue, expenses and profits or losses.`}
 />
 
 <section class=" w-full overflow-hidden h-full">
@@ -430,7 +424,7 @@
                       data={financialData}
                       {statementConfig}
                       displayStatement={item?.key}
-                      {filterRule}
+                      filterRule={$selectedTimePeriod}
                       {processedData}
                       color={["#ff00cc", "#37ff00", "#0c63e7", "#07c8f9"][
                         i % 4
@@ -451,7 +445,7 @@
                           >Fiscal Year</td
                         >
                         {#each financialData as item}
-                          {#if filterRule === "annual"}
+                          {#if $selectedTimePeriod === "annual"}
                             <td
                               class="min-w-[130px] font-semibold text-sm text-end border-l border-gray-300 dark:border-gray-800"
                             >

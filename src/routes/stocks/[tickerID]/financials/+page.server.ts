@@ -6,13 +6,14 @@ export const load = async ({ locals, params }) => {
    const { apiKey, apiURL } = locals;
     const postData = {
       ticker: params.tickerID,
+      statement: 'income-statement',
     };
 
 
   const getData = async () => {
    
     // make the POST request to the endpoint
-    const response = await fetch(apiURL + "/stock-income", {
+    const response = await fetch(apiURL + "/financial-statement", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

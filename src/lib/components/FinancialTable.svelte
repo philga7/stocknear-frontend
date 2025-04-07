@@ -1,6 +1,12 @@
 <script lang="ts">
   import { abbreviateNumber } from "$lib/utils";
-  import { screenWidth, stockTicker, getCache, setCache } from "$lib/store";
+  import {
+    selectedTimePeriod,
+    screenWidth,
+    stockTicker,
+    getCache,
+    setCache,
+  } from "$lib/store";
 
   import { mode } from "mode-watcher";
   import highcharts from "$lib/highcharts.ts";
@@ -76,7 +82,7 @@
 
     const options = {
       chart: {
-        type: "column",
+        type: $selectedTimePeriod === "annual" ? "column" : "spline",
         backgroundColor: $mode === "light" ? "#fff" : "#2A2E39",
         plotBackgroundColor: $mode === "light" ? "#fff" : "#2A2E39",
         height: 360,

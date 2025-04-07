@@ -89,7 +89,9 @@
             >
               <ul class="flex flex-row items-center w-full">
                 <a
-                  href={`/stocks/${$stockTicker}/financials`}
+                  href={$selectedTimePeriod !== "annual" && $selectedTimePeriod
+                    ? `/stocks/${$stockTicker}/financials/?query=${$selectedTimePeriod}`
+                    : `/stocks/${$stockTicker}/financials`}
                   on:click={() => changeSubSection("income")}
                   class="p-2 px-5 cursor-pointer {displaySubSection === 'income'
                     ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
@@ -99,9 +101,9 @@
                 </a>
 
                 <a
-                  href={$selectedTimePeriod
+                  href={$selectedTimePeriod !== "annual" && $selectedTimePeriod
                     ? `/stocks/${$stockTicker}/financials/balance-sheet/?query=${$selectedTimePeriod}`
-                    : "/stocks/${$stockTicker}/financials/balance-sheet"}
+                    : `/stocks/${$stockTicker}/financials/balance-sheet`}
                   on:click={() => changeSubSection("balance-sheet")}
                   class="p-2 px-5 cursor-pointer {displaySubSection ===
                   'balance-sheet'
@@ -111,9 +113,9 @@
                   Balance Sheet
                 </a>
                 <a
-                  href={$selectedTimePeriod
+                  href={$selectedTimePeriod !== "annual" && $selectedTimePeriod
                     ? `/stocks/${$stockTicker}/financials/cash-flow/?query=${$selectedTimePeriod}`
-                    : "/stocks/${$stockTicker}/financials/cash-flow"}
+                    : `/stocks/${$stockTicker}/financials/cash-flow`}
                   on:click={() => changeSubSection("cash-flow")}
                   class="p-2 px-5 cursor-pointer {displaySubSection ===
                   'cash-flow'
@@ -123,7 +125,9 @@
                   Cashflow
                 </a>
                 <a
-                  href={`/stocks/${$stockTicker}/financials/ratios`}
+                  href={$selectedTimePeriod !== "annual" && $selectedTimePeriod
+                    ? `/stocks/${$stockTicker}/financials/ratios/?query=${$selectedTimePeriod}`
+                    : `/stocks/${$stockTicker}/financials/ratios`}
                   on:click={() => changeSubSection("ratios")}
                   class="p-2 px-5 cursor-pointer {displaySubSection === 'ratios'
                     ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
