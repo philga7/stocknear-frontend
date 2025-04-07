@@ -1,12 +1,12 @@
 <script lang="ts">
   import "../app.css";
   import "../app.pcss";
-  import { partytownSnippet } from "@builder.io/partytown/integration";
+  //import { partytownSnippet } from "@builder.io/partytown/integration";
   import { Toaster } from "svelte-sonner";
   import "@bprogress/core/css";
   import { BProgress } from "@bprogress/core";
 
-	import { ModeWatcher, setMode, mode } from "mode-watcher";
+  import { ModeWatcher, setMode, mode } from "mode-watcher";
   import { page } from "$app/stores";
 
   import Footer from "$lib/components/Footer.svelte";
@@ -54,7 +54,6 @@
   import Gem from "lucide-svelte/icons/gem";
 
   export let data;
-
 
   let hideHeader = false;
   BProgress.configure({
@@ -129,13 +128,15 @@
   onMount(async () => {
     if (data?.user?.id) {
       await loadWorker();
-
     }
 
     await checkMarketHour();
+    /*
     if ($showCookieConsent === true) {
       Cookie = (await import("$lib/components/Cookie.svelte")).default;
     }
+      */
+
     /*
     if (window?.innerWidth <= 768) {
       await detectSWUpdate();
@@ -229,9 +230,7 @@
     isAfterMarketClose.set(isAfterMarketCloseValue);
   };
 
-
-
- async function handleModeChange() {
+  async function handleModeChange() {
     const newMode = $mode === "light" ? "dark" : "light";
     setMode(newMode);
 
@@ -239,7 +238,7 @@
       await fetch("/api/theme-mode", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mode: newMode })
+        body: JSON.stringify({ mode: newMode }),
       });
     } catch (error) {
       console.error("Failed to update theme:", error);
@@ -249,6 +248,7 @@
 
 <svelte:window bind:innerWidth={$screenWidth} />
 
+<!--
 <svelte:head>
   <script>
     // Forward the necessary functions to the web worker layer
@@ -273,12 +273,15 @@
   </script>
 
 </svelte:head>
+-->
 
 <ModeWatcher defaultMode={data?.themeMode} />
 
-
-
-<div class="app text-muted dark:text-white {$page?.url?.pathname === '/' ? 'bg-[#000]' : ''}">
+<div
+  class="app text-muted dark:text-white {$page?.url?.pathname === '/'
+    ? 'bg-[#000]'
+    : ''}"
+>
   <div class="flex min-h-screen w-full flex-col bg-white dark:bg-default">
     <div class="w-full">
       <div
@@ -286,7 +289,7 @@
         $screenWidth < 640 &&
         hideHeader
           ? 'invisible -mt-20'
-          : ''} top-0 z-40 bg-white dark:bg-default  shadow shadow-b shadow-md dark:border-b dark:border-gray-800 flex h-14 items-center gap-4 px-4 sm:h-auto sm:px-6"
+          : ''} top-0 z-40 bg-white dark:bg-default shadow shadow-b shadow-md dark:border-b dark:border-gray-800 flex h-14 items-center gap-4 px-4 sm:h-auto sm:px-6"
       >
         <Sheet.Root>
           <Sheet.Trigger asChild let:builder>
@@ -295,7 +298,9 @@
               size="icon"
               class="bg-white dark:bg-default text-white sm:hover:bg-gray-200 dark:sm:hover:bg-[#18181B] border-none"
             >
-              <Menu class="h-5.5 w-5.5 sm:w-7 sm:h-7 text-muted dark:text-white " />
+              <Menu
+                class="h-5.5 w-5.5 sm:w-7 sm:h-7 text-muted dark:text-white "
+              />
               <span class="sr-only">Toggle Menu</span>
             </Button>
           </Sheet.Trigger>
@@ -303,7 +308,7 @@
             side="left"
             class="max-w-screen w-full sm:max-w-xs bg-white dark:bg-[#18181B] overflow-y-auto text-muted dark:text-white"
           >
-            <nav class=" grid gap-6 text-lg ">
+            <nav class=" grid gap-6 text-lg">
               <Sheet.Close asChild let:builder>
                 <Button
                   builders={[builder]}
@@ -314,7 +319,7 @@
                     class="flex items-center gap-4 px-0.5 text-muted dark:text-white text-xl font-semibold"
                   >
                     <img
-                      class="avatar w-9 sm:w-10 rounded-full "
+                      class="avatar w-9 sm:w-10 rounded-full"
                       src="/pwa-192x192.png"
                       alt="Stocknear Logo"
                     />
@@ -334,11 +339,13 @@
                     class="w-full flex flex-row items-center mr-auto mt-5"
                   >
                     <div
-                      class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white  md:h-8 md:w-8"
+                      class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white md:h-8 md:w-8"
                     >
                       <Home class="h-5.5 w-5.5" />
                     </div>
-                    <span class="ml-3 text-muted dark:text-white text-[1rem]">Home</span>
+                    <span class="ml-3 text-muted dark:text-white text-[1rem]"
+                      >Home</span
+                    >
                   </a>
                 </Button>
               </Sheet.Close>
@@ -347,18 +354,18 @@
                 <Accordion.Root class="w-full">
                   <Accordion.Item value="item-1">
                     <Accordion.Trigger class="">
-                      <Stock class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1" />
-                      <span class="text-muted dark:text-white ml-1 mr-auto">Stocks</span>
+                      <Stock
+                        class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1"
+                      />
+                      <span class="text-muted dark:text-white ml-1 mr-auto"
+                        >Stocks</span
+                      >
                     </Accordion.Trigger>
                     <Accordion.Content
                       class="border-l border-gray-500 ml-2 mt-5"
                     >
                       <Sheet.Close asChild let:builder>
                         <div class="flex flex-col items-start">
-                         
-
-                         
-
                           <Button
                             builders={[builder]}
                             type="submit"
@@ -428,8 +435,12 @@
                 <Accordion.Root class="w-full">
                   <Accordion.Item value="item-1">
                     <Accordion.Trigger class="">
-                      <Layers class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1" />
-                      <span class="text-muted dark:text-white ml-1 mr-auto">ETFs</span>
+                      <Layers
+                        class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1"
+                      />
+                      <span class="text-muted dark:text-white ml-1 mr-auto"
+                        >ETFs</span
+                      >
                     </Accordion.Trigger>
                     <Accordion.Content
                       class="border-l border-gray-500 ml-2 mt-5"
@@ -465,12 +476,16 @@
                 </Accordion.Root>
               </div>
 
-               <div class="flex flex-row items-center w-full">
+              <div class="flex flex-row items-center w-full">
                 <Accordion.Root class="w-full">
                   <Accordion.Item value="item-1">
                     <Accordion.Trigger class="">
-                      <Analyst class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1" />
-                      <span class="text-muted dark:text-white ml-1 mr-auto">Analyst</span>
+                      <Analyst
+                        class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1"
+                      />
+                      <span class="text-muted dark:text-white ml-1 mr-auto"
+                        >Analyst</span
+                      >
                     </Accordion.Trigger>
                     <Accordion.Content
                       class="border-l border-gray-500 ml-2 mt-5"
@@ -511,8 +526,6 @@
                               >Analyst Live Flow</a
                             >
                           </Button>
-
-                       
                         </div>
                       </Sheet.Close>
                     </Accordion.Content>
@@ -524,8 +537,12 @@
                 <Accordion.Root class="w-full">
                   <Accordion.Item value="item-1">
                     <Accordion.Trigger class="">
-                      <Calendar class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1" />
-                      <span class="text-muted dark:text-white ml-1 mr-auto">Calendar</span>
+                      <Calendar
+                        class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1"
+                      />
+                      <span class="text-muted dark:text-white ml-1 mr-auto"
+                        >Calendar</span
+                      >
                     </Accordion.Trigger>
                     <Accordion.Content
                       class="border-l border-gray-500 ml-2 mt-5"
@@ -611,14 +628,17 @@
                   </Accordion.Item>
                 </Accordion.Root>
               </div>
-              
 
               <div class="flex flex-row items-center w-full">
                 <Accordion.Root class="w-full">
                   <Accordion.Item value="item-1">
                     <Accordion.Trigger class="">
-                      <HandShake class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1" />
-                      <span class="text-muted dark:text-white ml-1 mr-auto">Congress</span>
+                      <HandShake
+                        class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1"
+                      />
+                      <span class="text-muted dark:text-white ml-1 mr-auto"
+                        >Congress</span
+                      >
                     </Accordion.Trigger>
                     <Accordion.Content
                       class="border-l border-gray-500 ml-2 mt-5"
@@ -654,16 +674,16 @@
                 </Accordion.Root>
               </div>
 
-              
-           
-            
-
               <div class="flex flex-row items-center w-full">
                 <Accordion.Root class="w-full">
                   <Accordion.Item value="item-1">
                     <Accordion.Trigger class="">
-                      <Flow class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1" />
-                      <span class="text-muted dark:text-white ml-1 mr-auto">Flow Feed</span>
+                      <Flow
+                        class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1"
+                      />
+                      <span class="text-muted dark:text-white ml-1 mr-auto"
+                        >Flow Feed</span
+                      >
                     </Accordion.Trigger>
                     <Accordion.Content
                       class="border-l border-gray-500 ml-2 mt-5"
@@ -711,11 +731,13 @@
                 </Accordion.Root>
               </div>
 
-                 <div class="flex flex-row items-center w-full">
+              <div class="flex flex-row items-center w-full">
                 <Accordion.Root class="w-full">
                   <Accordion.Item value="item-1">
                     <Accordion.Trigger class="">
-                      <Tools class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1" />
+                      <Tools
+                        class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1"
+                      />
                       <span class="text-muted dark:text-white ml-1 mr-auto"
                         >Tools</span
                       >
@@ -723,10 +745,8 @@
                     <Accordion.Content
                       class="border-l border-gray-500 ml-2 mt-5"
                     >
-
-                     <Sheet.Close asChild let:builder>
+                      <Sheet.Close asChild let:builder>
                         <div class="flex flex-col items-start">
-
                           <Button
                             builders={[builder]}
                             type="submit"
@@ -738,14 +758,11 @@
                               >Options Calculator</a
                             >
                           </Button>
-
-        
                         </div>
                       </Sheet.Close>
 
                       <Sheet.Close asChild let:builder>
                         <div class="flex flex-col items-start">
-
                           <Button
                             builders={[builder]}
                             type="submit"
@@ -757,8 +774,6 @@
                               >POTUS Tracker</a
                             >
                           </Button>
-
-        
                         </div>
                       </Sheet.Close>
                     </Accordion.Content>
@@ -778,7 +793,7 @@
                   >
                     <div class="flex flex-row items-center mr-auto">
                       <div
-                        class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white  sm:hover:text-muted dark:text-white md:h-8 md:w-8"
+                        class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white sm:hover:text-muted dark:text-white md:h-8 md:w-8"
                       >
                         <Boxes class="h-5.5 w-5.5" />
                       </div>
@@ -802,11 +817,13 @@
                   >
                     <div class="flex flex-row items-center mr-auto">
                       <div
-                        class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white  hover:text-muted dark:text-white md:h-8 md:w-8"
+                        class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white hover:text-muted dark:text-white md:h-8 md:w-8"
                       >
                         <Newspaper class="h-5.5 w-5.5" />
                       </div>
-                      <span class="ml-3 text-muted dark:text-white text-[1rem]">News</span>
+                      <span class="ml-3 text-muted dark:text-white text-[1rem]"
+                        >News</span
+                      >
                     </div>
                   </a>
                 </Button>
@@ -824,11 +841,12 @@
                     >
                       <div class="flex flex-row items-center mr-auto">
                         <div
-                          class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white  hover:text-muted dark:text-white md:h-8 md:w-8"
+                          class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white hover:text-muted dark:text-white md:h-8 md:w-8"
                         >
                           <Gem class="h-5.5 w-5.5" />
                         </div>
-                        <span class="ml-3 text-muted dark:text-white text-[1rem]"
+                        <span
+                          class="ml-3 text-muted dark:text-white text-[1rem]"
                           >Pricing Plan</span
                         >
                       </div>
@@ -846,7 +864,9 @@
             src="/pwa-192x192.png"
             alt="Stocknear Logo"
           />
-          <span class="text-muted dark:text-white font-semibold ml-2 text-xl">Stocknear</span>
+          <span class="text-muted dark:text-white font-semibold ml-2 text-xl"
+            >Stocknear</span
+          >
         </a>
 
         <div
@@ -903,12 +923,13 @@
                     </DropdownMenu.Item>
                   </a>
 
-                  <button on:click={handleModeChange} class="cursor-pointer w-full sm:hover:bg-gray-300 dark:sm:hover:bg-[#18181B] relative flex cursor-default select-none items-center rounded px-2 py-1.5 text-sm outline-hidden data-disabled:pointer-events-none">
- 
-                    <span>{$mode === 'light' ? 'Dark' : 'Light'} Mode</span>
+                  <button
+                    on:click={handleModeChange}
+                    class="cursor-pointer w-full sm:hover:bg-gray-300 dark:sm:hover:bg-[#18181B] relative flex cursor-default select-none items-center rounded px-2 py-1.5 text-sm outline-hidden data-disabled:pointer-events-none"
+                  >
+                    <span>{$mode === "light" ? "Dark" : "Light"} Mode</span>
                     <span class="sr-only">Toggle theme</span>
                   </button>
-
 
                   <DropdownMenu.Separator />
                   <form class="cursor-pointer" action="/logout" method="POST">
@@ -920,7 +941,20 @@
                       <DropdownMenu.Item
                         class="sm:hover:bg-gray-300 dark:sm:hover:bg-[#18181B] cursor-pointer"
                       >
-                      <svg class="lucide lucide-log-out mr-2 w-3.5 h-3.5 transform scale-x-[-1]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" x2="9" y1="12" y2="12"></line></svg>
+                        <svg
+                          class="lucide lucide-log-out mr-2 w-3.5 h-3.5 transform scale-x-[-1]"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          ><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"
+                          ></path><polyline points="16 17 21 12 16 7"
+                          ></polyline><line x1="21" x2="9" y1="12" y2="12"
+                          ></line></svg
+                        >
                         <span class="text-start">Logout</span>
                       </DropdownMenu.Item>
                     </button>
@@ -930,12 +964,10 @@
             {:else}
               <a
                 href="/login"
-                class="inline-flex items-center justify-center rounded bg-[#3B82F6] dark:bg-[#fff] text-white dark:text-black px-4 py-2 text-sm font-semibold  shadow-xs transition-all duration-150 sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
+                class="inline-flex items-center justify-center rounded bg-[#3B82F6] dark:bg-[#fff] text-white dark:text-black px-4 py-2 text-sm font-semibold shadow-xs transition-all duration-150 sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
               >
                 Login
               </a>
-              
-
             {/if}
           </div>
         </div>
@@ -958,12 +990,14 @@
                     src="/pwa-192x192.png"
                     alt="Stocknear Logo"
                   />
-                  <span class="text-muted dark:text-white text-xl">Stocknear</span>
+                  <span class="text-muted dark:text-white text-xl"
+                    >Stocknear</span
+                  >
                 </a>
 
                 <a href="/" class="flex flex-row items-center ml-9 w-full">
                   <div
-                    class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white  md:h-8 md:w-8"
+                    class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white md:h-8 md:w-8"
                   >
                     <Home class="h-5.5 w-5.5" />
                   </div>
@@ -974,15 +1008,17 @@
                   <Accordion.Root class="w-full">
                     <Accordion.Item value="item-1">
                       <Accordion.Trigger class="text-muted dark:text-white ">
-                        <Stock class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1" />
-                        <span class="text-muted dark:text-white ml-1 mr-auto">Stocks</span>
+                        <Stock
+                          class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1"
+                        />
+                        <span class="text-muted dark:text-white ml-1 mr-auto"
+                          >Stocks</span
+                        >
                       </Accordion.Trigger>
                       <Accordion.Content
                         class="border-l border-gray-500 ml-2 mt-5"
                       >
                         <div class="flex flex-col items-start">
-                      
-
                           <a
                             href="/industry"
                             class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
@@ -1020,8 +1056,12 @@
                   <Accordion.Root class="w-full">
                     <Accordion.Item value="item-1">
                       <Accordion.Trigger class="">
-                        <Layers class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1" />
-                        <span class="text-muted dark:text-white ml-1 mr-auto">ETFs</span>
+                        <Layers
+                          class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1"
+                        />
+                        <span class="text-muted dark:text-white ml-1 mr-auto"
+                          >ETFs</span
+                        >
                       </Accordion.Trigger>
                       <Accordion.Content
                         class="border-l border-gray-500 ml-2 mt-5"
@@ -1043,12 +1083,16 @@
                   </Accordion.Root>
                 </div>
 
-                  <div class="flex flex-row items-center ml-9 w-full mt-3">
+                <div class="flex flex-row items-center ml-9 w-full mt-3">
                   <Accordion.Root class="w-full">
                     <Accordion.Item value="item-1">
                       <Accordion.Trigger class="">
-                        <Analyst class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1" />
-                        <span class="text-muted dark:text-white ml-1 mr-auto">Analyst</span>
+                        <Analyst
+                          class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1"
+                        />
+                        <span class="text-muted dark:text-white ml-1 mr-auto"
+                          >Analyst</span
+                        >
                       </Accordion.Trigger>
                       <Accordion.Content
                         class="border-l border-gray-500 ml-2 mt-5"
@@ -1064,28 +1108,28 @@
                             class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
                             >Top Analyst Stocks</a
                           >
-                         
 
                           <a
                             href="/analysts/analyst-flow"
                             class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
                             >Analyst Live Flow</a
                           >
-                         
-    
                         </div>
                       </Accordion.Content>
                     </Accordion.Item>
                   </Accordion.Root>
                 </div>
 
-
                 <div class="flex flex-row items-center ml-9 w-full mt-3">
                   <Accordion.Root class="w-full">
                     <Accordion.Item value="item-1">
                       <Accordion.Trigger class="">
-                        <Calendar class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1" />
-                        <span class="text-muted dark:text-white ml-1 mr-auto">Calendar</span>
+                        <Calendar
+                          class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1"
+                        />
+                        <span class="text-muted dark:text-white ml-1 mr-auto"
+                          >Calendar</span
+                        >
                       </Accordion.Trigger>
                       <Accordion.Content
                         class="border-l border-gray-500 ml-2 mt-5"
@@ -1119,7 +1163,6 @@
                             class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
                             >Economic Calendar</a
                           >
-    
                         </div>
                       </Accordion.Content>
                     </Accordion.Item>
@@ -1130,8 +1173,12 @@
                   <Accordion.Root class="w-full">
                     <Accordion.Item value="item-1">
                       <Accordion.Trigger class="">
-                        <HandShake class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1" />
-                        <span class="text-muted dark:text-white ml-1 mr-auto">Congress</span>
+                        <HandShake
+                          class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1"
+                        />
+                        <span class="text-muted dark:text-white ml-1 mr-auto"
+                          >Congress</span
+                        >
                       </Accordion.Trigger>
 
                       <Accordion.Content
@@ -1156,15 +1203,16 @@
                   </Accordion.Root>
                 </div>
 
-                
-              
-
                 <div class="flex flex-row items-center ml-9 w-full mt-3">
                   <Accordion.Root class="w-full">
                     <Accordion.Item value="item-1">
                       <Accordion.Trigger class="">
-                        <Flow class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1" />
-                        <span class="text-muted dark:text-white ml-1 mr-auto">Flow Feed</span>
+                        <Flow
+                          class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1"
+                        />
+                        <span class="text-muted dark:text-white ml-1 mr-auto"
+                          >Flow Feed</span
+                        >
                       </Accordion.Trigger>
                       <Accordion.Content
                         class="border-l border-gray-500 ml-2 mt-5"
@@ -1192,11 +1240,13 @@
                   </Accordion.Root>
                 </div>
 
-                  <div class="flex flex-row items-center ml-9 w-full mt-3">
+                <div class="flex flex-row items-center ml-9 w-full mt-3">
                   <Accordion.Root class="w-full">
                     <Accordion.Item value="item-1">
                       <Accordion.Trigger class="">
-                        <Tools class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1" />
+                        <Tools
+                          class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1"
+                        />
                         <span class="text-muted dark:text-white ml-1 mr-auto"
                           >Tools</span
                         >
@@ -1205,9 +1255,7 @@
                         class="border-l border-gray-500 ml-2 mt-5"
                       >
                         <div class="flex flex-col items-start">
-                          
-
-                           <a
+                          <a
                             href="/options-calculator"
                             class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
                             >Options Calculator</a
@@ -1218,25 +1266,24 @@
                             class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
                             >POTUS Tracker</a
                           >
-
-                        
                         </div>
                       </Accordion.Content>
                     </Accordion.Item>
                   </Accordion.Root>
                 </div>
-                
 
                 <a
                   href="/hedge-funds"
                   class="flex flex-row items-center ml-9 w-full mt-3"
                 >
                   <div
-                    class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white   md:h-8 md:w-8"
+                    class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white md:h-8 md:w-8"
                   >
                     <Boxes class="h-5.5 w-5.5" />
                   </div>
-                  <span class="ml-3 text-muted dark:text-white">Hedge Funds</span>
+                  <span class="ml-3 text-muted dark:text-white"
+                    >Hedge Funds</span
+                  >
                 </a>
 
                 <a
@@ -1244,7 +1291,7 @@
                   class="flex flex-row items-center ml-9 w-full mt-3"
                 >
                   <div
-                    class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white  md:h-8 md:w-8"
+                    class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white md:h-8 md:w-8"
                   >
                     <Newspaper class="h-5.5 w-5.5" />
                   </div>
@@ -1256,11 +1303,13 @@
                     class="flex flex-row items-center ml-9 w-full mt-3"
                   >
                     <div
-                      class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white  md:h-8 md:w-8"
+                      class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white md:h-8 md:w-8"
                     >
                       <Gem class="h-5.5 w-5.5" />
                     </div>
-                    <span class="ml-3 text-muted dark:text-white">Pricing Plan</span>
+                    <span class="ml-3 text-muted dark:text-white"
+                      >Pricing Plan</span
+                    >
                   </a>
                 {/if}
               </nav>
@@ -1268,10 +1317,8 @@
           </div>
           <div class="w-full">
             <main class="w-full overflow-y-auto sm:p-4">
-
-
               <slot />
- 
+
               <Toaster position="top-center" />
               {#if Cookie && $showCookieConsent === true}
                 <Cookie />
@@ -1289,7 +1336,7 @@
 
 <style lang="scss">
   :root {
-    --bprogress-color: #00A6F4;
+    --bprogress-color: #00a6f4;
     --bprogress-height: 1px;
   }
 </style>
