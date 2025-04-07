@@ -37,14 +37,14 @@
 
   let optionSymbol;
   let breakEvenPrice;
-  let premium;
+  let totalPremium;
   let limits = {};
   let rawData = {};
 
   let searchBarData = [];
   let timeoutId;
 
-  let inputValue = selectedTicker;
+  let inputValue = "";
   let touchedInput = false;
   let prebuiltStrategy = [
     {
@@ -160,101 +160,123 @@
   };
 
   function plotData() {
-    // total premium paid for 1 contract (premium is calculated per share times 100 shares)
-    premium = selectedOptionPrice * 100 * selectedQuantity;
+    userStrategy = [
+      {
+        action: selectedAction,
+        quantity: selectedQuantity,
+        date: selectedDate,
+        strike: selectedStrike,
+        optionType: selectedOptionType,
+        optionPrice: selectedOptionPrice,
+      },
+    ];
 
-    // Create a key from the selected action and option type
-    const scenarioKey = `${selectedAction} ${selectedOptionType}`;
-
-    // Calculate break-even price per share using the mapping above.
-    // Note: For display, we assume optionPrice is per share.
-    breakEvenPrice;
-    if (breakEvenCalculators[scenarioKey]) {
-      breakEvenPrice = breakEvenCalculators[scenarioKey](
-        selectedStrike,
-        selectedOptionPrice,
-      );
-    } else {
-      console.error("Break-even scenario not implemented:", scenarioKey);
-      breakEvenPrice = selectedStrike; // default fallback
-    }
-
-    limits = {};
-    if (scenarioKey === "Buy Call") {
-      limits = {
-        maxProfit: "Unlimited",
-        maxLoss: `-$${premium?.toLocaleString("en-US", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })}`,
-      };
-    } else if (scenarioKey === "Sell Call") {
-      limits = {
-        maxProfit: `$${premium?.toLocaleString("en-US", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })}`,
-        maxLoss: "Unlimited",
-      };
-    } else if (scenarioKey === "Buy Put") {
-      limits = {
-        // Maximum profit when underlying goes to 0
-        maxProfit: `$${(selectedStrike * 100 - premium)?.toLocaleString(
-          "en-US",
-          {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          },
-        )}`,
-        maxLoss: `-$${premium?.toLocaleString("en-US", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })}`,
-      };
-    } else if (scenarioKey === "Sell Put") {
-      limits = {
-        maxProfit: `$${premium?.toLocaleString("en-US", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })}`,
-        // Maximum loss when underlying goes to 0
-        maxLoss: `-$${(selectedStrike * 100 - premium)?.toLocaleString(
-          "en-US",
-          {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          },
-        )}`,
-      };
-    } else {
-      console.error("Limits not defined for scenario:", scenarioKey);
-      limits = { maxProfit: "n/a", maxLoss: "n/a" };
-    }
-
-    const dataPoints = [];
+    // Determine x-axis range based on current stock price and max leg strike
+    const maxLegStrike = Math.max(...userStrategy?.map((leg) => leg.strike));
     const xMin = 0;
-    const xMax = Math.floor(Math.max(currentStockPrice, selectedStrike) * 3);
+    const xMax = Math.floor(Math.max(currentStockPrice, maxLegStrike) * 3);
     const step = 10;
 
-    if (payoffFunctions[scenarioKey]) {
-      for (let s = xMin; s <= xMax; s += step) {
-        // For each price point, calculate payoff based on the scenario.
-        const payoff = payoffFunctions[scenarioKey](s, selectedStrike, premium);
-        dataPoints.push([s, payoff]);
-      }
-    } else {
-      console.error(
-        "Payoff function not implemented for scenario:",
-        scenarioKey,
-      );
+    // Calculate the total premium across all legs
+    totalPremium = userStrategy?.reduce((sum, leg) => {
+      return sum + leg.optionPrice * 100 * leg.quantity;
+    }, 0);
+
+    // Compute the aggregated payoff at each underlying price
+    const dataPoints = [];
+    for (let s = xMin; s <= xMax; s += step) {
+      let aggregatedPayoff = 0;
+      userStrategy.forEach((leg) => {
+        const legPremium = leg.optionPrice * 100 * leg.quantity;
+        const scenarioKey = `${leg.action} ${leg.optionType}`;
+        if (payoffFunctions[scenarioKey]) {
+          aggregatedPayoff += payoffFunctions[scenarioKey](
+            s,
+            leg.strike,
+            legPremium,
+          );
+        } else {
+          console.error(
+            "Payoff function not implemented for scenario:",
+            scenarioKey,
+          );
+        }
+      });
+      dataPoints.push([s, aggregatedPayoff]);
     }
 
+    if (userStrategy.length === 1) {
+      const leg = userStrategy[0];
+      const scenarioKey = `${leg?.action} ${leg?.optionType}`;
+      if (breakEvenCalculators[scenarioKey]) {
+        breakEvenPrice = breakEvenCalculators[scenarioKey](
+          leg.strike,
+          leg.optionPrice,
+        );
+      }
+      if (scenarioKey === "Buy Call") {
+        limits = {
+          maxProfit: "Unlimited",
+          maxLoss: `-$${totalPremium.toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}`,
+        };
+      } else if (scenarioKey === "Sell Call") {
+        limits = {
+          maxProfit: `$${totalPremium.toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}`,
+          maxLoss: "Unlimited",
+        };
+      } else if (scenarioKey === "Buy Put") {
+        limits = {
+          maxProfit: `$${(leg.strike * 100 - totalPremium).toLocaleString(
+            "en-US",
+            {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            },
+          )}`,
+          maxLoss: `-$${totalPremium.toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}`,
+        };
+      } else if (scenarioKey === "Sell Put") {
+        limits = {
+          maxProfit: `$${totalPremium.toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}`,
+          maxLoss: `-$${(leg.strike * 100 - totalPremium).toLocaleString(
+            "en-US",
+            {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            },
+          )}`,
+        };
+      } else {
+        console.error("Limits not defined for scenario:", scenarioKey);
+        limits = { maxProfit: "n/a", maxLoss: "n/a" };
+      }
+    } else {
+      // For multiple legs, simply display the aggregated premium info
+      limits = {
+        info: `Aggregated Premium: $${totalPremium.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`,
+      };
+    }
+
+    // Build the chart options (using the first leg's ticker for the title)
     const options = {
-      credits: {
-        enabled: false,
-      },
+      credits: { enabled: false },
       chart: {
-        type: "area", // or "line"
+        type: "area",
         backgroundColor: $mode === "light" ? "#fff" : "#09090B",
         plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
         height: 400,
@@ -272,9 +294,7 @@
           text: `${selectedTicker} Price at Expiration ($)`,
           style: { color: $mode === "light" ? "#545454" : "white" },
         },
-        labels: {
-          style: { color: $mode === "light" ? "#545454" : "white" },
-        },
+        labels: { style: { color: $mode === "light" ? "#545454" : "white" } },
         plotLines: [
           // Underlying Price line
           {
@@ -288,22 +308,27 @@
             },
             zIndex: 5,
           },
-          {
-            value: breakEvenPrice,
-            color: "#10B981",
-            dashStyle: "Dash",
-            width: $screenWidth < 640 ? 0 : 1.5,
-            label: {
-              text: `<span class="hidden sm:block text-black dark:text-white text-sm">Breakeven $${breakEvenPrice.toFixed(2)}</span>`,
-              style: { color: $mode === "light" ? "black" : "white" },
-            },
-            zIndex: 5,
-          },
-        ],
+          // Only add a breakeven line if there is a single leg
+          breakEvenPrice !== null
+            ? {
+                value: breakEvenPrice,
+                color: "#10B981",
+                dashStyle: "Dash",
+                width: $screenWidth < 640 ? 0 : 1.5,
+                label: {
+                  text: `<span class="hidden sm:block text-black dark:text-white text-sm">Breakeven $${breakEvenPrice.toFixed(
+                    2,
+                  )}</span>`,
+                  style: { color: $mode === "light" ? "black" : "white" },
+                },
+                zIndex: 5,
+              }
+            : null,
+        ].filter((line) => line !== null),
       },
       yAxis: {
         title: {
-          text: "Expected Profit/Loss ($)",
+          text: "<span class='hidden sm:block'>Expected Profit/Loss ($)</span>",
           style: { color: $mode === "light" ? "#545454" : "white" },
         },
         gridLineWidth: 1,
@@ -318,67 +343,55 @@
       tooltip: {
         shared: true,
         useHTML: true,
-        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
-        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        borderColor: "rgba(255, 255, 255, 0.2)",
         borderWidth: 1,
-        style: {
-          color: "#fff",
-          fontSize: "16px",
-          padding: "10px",
-        },
+        style: { color: "#fff", fontSize: "16px", padding: "10px" },
         borderRadius: 2,
         formatter: function () {
           const underlyingPrice = this.x;
           const profitLoss = this.y;
-          // Calculate percentage change for underlying price relative to currentStockPrice
           const underlyingPctChange =
             ((underlyingPrice - currentStockPrice) / currentStockPrice) * 100;
-          // Calculate profit/loss percentage relative to the total premium paid
-          const profitLossPctChange = (profitLoss / premium) * 100;
-
+          const profitLossPctChange = (profitLoss / totalPremium) * 100;
           return `
-      <div class="flex flex-col items-start text-sm">
-        <div>
-          <span class="text-start font-semibold">Underlying Price:</span> 
-          $${underlyingPrice} 
-          (<span>${underlyingPctChange.toFixed(2)}%</span>)
-        </div>
-        <div class="">
-          <span class="text-start font-semibold">Profit or Loss:</span> 
-          ${profitLoss < 0 ? "-$" : "$"}${Math.abs(profitLoss).toLocaleString("en-US")} 
-          (<span>${profitLossPctChange.toFixed(2)}%</span>)
-        </div>
-      </div>
-    `;
+          <div class="flex flex-col items-start text-sm">
+            <div>
+              <span class="text-start font-semibold">Underlying Price:</span> 
+              $${underlyingPrice} 
+              (<span>${underlyingPctChange.toFixed(2)}%</span>)
+            </div>
+            <div class="">
+              <span class="text-start font-semibold">Profit or Loss:</span> 
+              ${profitLoss < 0 ? "-$" : "$"}${Math.abs(profitLoss).toLocaleString("en-US")} 
+              (<span>${profitLossPctChange.toFixed(2)}%</span>)
+            </div>
+          </div>
+        `;
         },
       },
-
       plotOptions: {
         area: {
           fillOpacity: 0.2,
-          marker: {
-            enabled: false,
-          },
+          marker: { enabled: false },
           animation: false,
         },
         series: {
           zoneAxis: "y",
           zones: [
             {
-              value: 0, // below $0 -> red
+              value: 0,
               color: "#E02424",
               fillColor: "rgba(224,36,36,0.5)",
             },
             {
-              color: "#10B981", // above $0 -> green
+              color: "#10B981",
               fillColor: "rgba(16,185,129,0.5)",
             },
           ],
         },
       },
-      legend: {
-        enabled: false,
-      },
+      legend: { enabled: false },
       series: [
         {
           name: "Payoff",
@@ -432,8 +445,6 @@
     } else {
       selectedAction = "Buy";
     }
-
-    config = plotData();
     shouldUpdate = true;
   }
 
@@ -449,7 +460,6 @@
     // Set a new debounce timeout (1 second)
     debounceTimeout = setTimeout(() => {
       config = plotData();
-      shouldUpdate = true;
     }, 500);
   }
 
@@ -466,7 +476,6 @@
     // Set a new debounce timeout (1 second)
     debounceTimeout = setTimeout(() => {
       config = plotData();
-      shouldUpdate = true;
     }, 500);
   }
 
@@ -519,10 +528,7 @@
     const output = await getContractHistory(optionSymbol);
 
     selectedOptionPrice = output?.history?.at(-1)?.mark;
-
-    config = plotData();
     shouldUpdate = true;
-    isLoaded = true;
   }
 
   async function getStockData() {
@@ -557,10 +563,12 @@
 
     await getStockData();
     await loadData("default");
+    inputValue = "";
   }
   onMount(async () => {
     await getStockData();
     await loadData("default");
+    shouldUpdate = true;
   });
 
   onDestroy(() => {
@@ -570,19 +578,10 @@
   $: {
     if (shouldUpdate) {
       shouldUpdate = false;
-      userStrategy = [
-        {
-          ticker: selectedTicker,
-          action: selectedAction,
-          quantity: selectedQuantity,
-          date: selectedDate,
-          strike: selectedStrike,
-          optionType: selectedOptionType,
-          optionPrice: selectedOptionPrice,
-        },
-      ];
 
-      console.log("yes");
+      config = plotData();
+
+      isLoaded = true;
     }
   }
 
@@ -656,6 +655,51 @@
 
             <div class="mt-4">
               {#if isLoaded && config}
+                <Combobox.Root
+                  items={searchBarData}
+                  bind:inputValue
+                  bind:touchedInput
+                >
+                  <div class="relative w-full">
+                    <Combobox.Input
+                      on:input={search}
+                      class="mb-3 text-sm controls-input bg-white dark:bg-default focus:outline-hidden  border border-gray-300 dark:border-gray-500 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-2 py-1.5 grow w-full max-w-48"
+                      placeholder="Search Ticker"
+                      aria-label="Search Ticker"
+                    />
+                  </div>
+                  {#if inputValue?.length !== 0 && inputValue !== selectedTicker}
+                    <Combobox.Content
+                      class=" z-10 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-default px-1 py-3 shadow-sm outline-hidden"
+                      sideOffset={8}
+                    >
+                      {#each searchBarData as searchItem}
+                        <Combobox.Item
+                          class="cursor-pointer border-b border-gray-300 dark:border-gray-500 last:border-none flex h-fit w-auto select-none items-center rounded-button py-1 px-2  text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-200 dark:data-highlighted:bg-primary"
+                          value={searchItem?.symbol}
+                          label={searchItem?.symbol}
+                          on:click={(e) => changeTicker(searchItem)}
+                        >
+                          <div class="flex flex-col items-start">
+                            <span
+                              class="text-sm text-blue-700 dark:text-blue-400"
+                              >{searchItem?.symbol}</span
+                            >
+                            <span
+                              class="text-xs sm:text-sm text-muted dark:text-white"
+                              >{searchItem?.name}</span
+                            >
+                          </div>
+                        </Combobox.Item>
+                      {:else}
+                        <span class="block px-5 py-2 text-sm">
+                          No results found
+                        </span>
+                      {/each}
+                    </Combobox.Content>
+                  {/if}
+                </Combobox.Root>
+
                 <!-- Table container -->
                 <div
                   class="overflow-x-auto border border-gray-300 dark:border-gray-600 rounded"
@@ -722,50 +766,7 @@
                       {#each userStrategy as item}
                         <tr>
                           <td class="px-4 py-3 whitespace-nowrap font-semibold">
-                            <Combobox.Root
-                              items={searchBarData}
-                              bind:inputValue
-                              bind:touchedInput
-                            >
-                              <div class="relative w-full">
-                                <Combobox.Input
-                                  on:input={search}
-                                  class="text-sm controls-input bg-white dark:bg-[#2A2E39] focus:outline-hidden  border border-gray-300 dark:border-gray-500 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-2 py-1.5 grow w-full min-w-54"
-                                  placeholder="Search Ticker"
-                                  aria-label="Search Ticker"
-                                />
-                              </div>
-                              {#if inputValue?.length !== 0 && inputValue !== item?.ticker}
-                                <Combobox.Content
-                                  class=" z-10 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-default px-1 py-3 shadow-sm outline-hidden"
-                                  sideOffset={8}
-                                >
-                                  {#each searchBarData as searchItem}
-                                    <Combobox.Item
-                                      class="cursor-pointer border-b border-gray-300 dark:border-gray-500 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-5 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-200 dark:data-highlighted:bg-primary"
-                                      value={searchItem?.symbol}
-                                      label={searchItem?.symbol}
-                                      on:click={(e) => changeTicker(searchItem)}
-                                    >
-                                      <div class="flex flex-col items-start">
-                                        <span
-                                          class="text-sm text-blue-700 dark:text-blue-400"
-                                          >{searchItem?.symbol}</span
-                                        >
-                                        <span
-                                          class="text-xs sm:text-sm text-muted dark:text-white"
-                                          >{searchItem?.name}</span
-                                        >
-                                      </div>
-                                    </Combobox.Item>
-                                  {:else}
-                                    <span class="block px-5 py-2 text-sm">
-                                      No results found
-                                    </span>
-                                  {/each}
-                                </Combobox.Content>
-                              {/if}
-                            </Combobox.Root>
+                            {selectedTicker}
                           </td>
                           <td class="px-4 py-3 whitespace-nowrap">
                             <label
@@ -930,14 +931,24 @@
                   <div
                     class="border border-gray-300 dark:border-gray-800 rounded-lg p-4 mb-6 shadow-sm max-w-sm"
                   >
-                    <div>{selectedStrategy}</div>
-                    <div class="text-green-800 dark:text-white font-semibold">
-                      {selectedAction?.toUpperCase()} +{selectedQuantity}
-                      {selectedTicker}
-                      {formatDate(selectedDate)}
-                      {selectedStrike}
-                      {selectedOptionType} @${selectedOptionPrice}
-                    </div>
+                    {#each userStrategy as item}
+                      <div>
+                        {userStrategy?.length > 2
+                          ? "Custom Strategy"
+                          : selectedStrategy}
+                      </div>
+                      <div
+                        class="{item?.action === 'Buy'
+                          ? 'text-green-800'
+                          : 'text-red-800'} dark:text-white font-semibold"
+                      >
+                        {item?.action?.toUpperCase()} +{item?.quantity}
+                        {selectedTicker}
+                        {formatDate(item?.date)}
+                        {item?.strike}
+                        {item?.optionType} @${item?.optionPrice}
+                      </div>
+                    {/each}
                   </div>
 
                   <!-- Stock Section -->
@@ -999,7 +1010,7 @@
                       </div>
                       <div class="flex items-baseline">
                         <span class="text-lg font-semibold"
-                          >${premium?.toLocaleString("en-US", {
+                          >${totalPremium?.toLocaleString("en-US", {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
                           })}
@@ -1043,398 +1054,6 @@
                       </div>
                     </div>
                   </div>
-                  <!--
-                <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4">
-                  Probability Analysis
-                </h2>
-                <div class="grid grid-cols-2 md:grid-cols-4 mb-6">
-                  <div>
-                    <div class="flex items-center text-gray-600 dark:text-white">
-                      Probability of Profit (PoP)
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-5 w-5 ml-1"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                    </div>
-                    <div class="text-xl text-start">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div class="flex items-center text-gray-600 dark:text-white">
-                      Probability of Max Profit
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-5 w-5 ml-1"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                    </div>
-                    <div class="text-xl text-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6 mx-auto"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div class="flex items-center text-gray-600 dark:text-white">
-                      Probability of Max Loss
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-5 w-5 ml-1"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                    </div>
-                    <div class="text-xl text-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6 mx-auto"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-
-                <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4">
-                  Risk Reward Analysis
-                </h2>
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-6 mb-6">
-                  <div>
-                    <div class="flex items-center text-gray-600 dark:text-white">
-                      Expected Value (EV)
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-5 w-5 ml-1"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                    </div>
-                    <div class="text-xl text-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6 mx-auto"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div class="flex items-center text-gray-600 dark:text-white">
-                      Expected Return (EV/risk)
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-5 w-5 ml-1"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                    </div>
-                    <div class="text-xl text-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6 mx-auto"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div class="flex items-center text-gray-600 dark:text-white">
-                      Reward/Risk
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-5 w-5 ml-1"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                    </div>
-                    <div class="text-xl text-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6 mx-auto"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-
-                <h2
-                  class="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center"
-                >
-                  Position Greeks
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5 ml-1"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </h2>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
-                  <div>
-                    <div class="flex items-center text-gray-600 dark:text-white">
-                      Delta (Δ)
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-5 w-5 ml-1"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                    </div>
-                    <div class="text-xl text-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6 mx-auto"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div class="flex items-center text-gray-600 dark:text-white">
-                      Gamma (Γ)
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-5 w-5 ml-1"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                    </div>
-                    <div class="text-xl text-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6 mx-auto"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div class="flex items-center text-gray-600 dark:text-white">
-                      Theta (Θ)
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-5 w-5 ml-1"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                    </div>
-                    <div class="text-xl text-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6 mx-auto"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div class="flex items-center text-gray-600 dark:text-white">
-                      Vega (v)
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-5 w-5 ml-1"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                    </div>
-                    <div class="text-xl text-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6 mx-auto"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                -->
                 </div>
               {:else}
                 <div class="flex justify-center items-center h-80">
