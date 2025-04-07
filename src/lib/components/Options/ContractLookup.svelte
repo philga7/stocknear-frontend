@@ -43,30 +43,36 @@
 
   let optionQuery = $page.url.searchParams.get("query") || "";
 
-  try {
-    if (optionQuery?.length > 0) {
+  function setDefault() {
+    selectedOptionType = "Call";
+    optionData = data?.getData[selectedOptionType];
+    selectedDate = Object.keys(optionData)[0];
+    strikeList = [...optionData[selectedDate]] || [];
+    if (!strikeList.includes(selectedStrike)) {
+      selectedStrike = strikeList.reduce(
+        (closest, strike) =>
+          Math.abs(strike - currentStockPrice) <
+          Math.abs(closest - currentStockPrice)
+            ? strike
+            : closest,
+        strikeList[0],
+      );
+    }
+  }
+
+  if (optionQuery?.length > 0) {
+    try {
       const parsedData = parseOptionSymbol(optionQuery);
       selectedOptionType = parsedData?.optionType;
       optionData = data?.getData[selectedOptionType];
       selectedDate = parsedData?.dateExpiration;
       strikeList = optionData[selectedDate] || [];
       selectedStrike = parsedData?.strikePrice;
-    } else {
+    } catch (e) {
+      setDefault();
     }
-  } catch (e) {
-    selectedOptionType = "Call";
-    optionData = data?.getData[selectedOptionType];
-
-    selectedDate = Object?.keys(optionData)[0];
-    strikeList = [...optionData[selectedDate]] || [];
-    if (!strikeList?.includes(selectedStrike)) {
-      selectedStrike = strikeList.reduce((closest, strike) => {
-        return Math.abs(strike - currentStockPrice) <
-          Math.abs(closest - currentStockPrice)
-          ? strike
-          : closest;
-      }, strikeList[0]);
-    }
+  } else {
+    setDefault();
   }
 
   const formatDate = (dateString) => {

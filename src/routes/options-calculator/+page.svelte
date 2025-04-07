@@ -8,6 +8,8 @@
   import { Combobox } from "bits-ui";
   import InfoModal from "$lib/components/InfoModal.svelte";
   import Link from "lucide-svelte/icons/square-arrow-out-up-right";
+  import Trash from "lucide-svelte/icons/trash";
+  import { toast } from "svelte-sonner";
 
   import { mode } from "mode-watcher";
   import highcharts from "$lib/highcharts.ts";
@@ -134,6 +136,7 @@
     }
 
     await loadData("default");
+    shouldUpdate = true;
   }
 
   // PAYOFF CALCULATION FUNCTIONS
@@ -568,8 +571,6 @@
     }
   }
 
-  // USER INTERACTION FUNCTIONS
-
   async function handleAddOptionLeg() {
     if (userStrategy.length === 0) {
       userStrategy = [
@@ -588,6 +589,23 @@
       userStrategy = [...userStrategy, newLeg];
     }
     shouldUpdate = true;
+  }
+
+  function handleDeleteOptionLeg(index) {
+    if (userStrategy?.length === 1) {
+      toast.error("At least one option leg is required!", {
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
+      });
+    } else {
+      userStrategy = [
+        ...userStrategy.slice(0, index),
+        ...userStrategy.slice(index + 1),
+      ];
+      if (userStrategy?.length === 0) {
+        changeStrategy(prebuiltStrategy?.at(0));
+      }
+      shouldUpdate = true;
+    }
   }
 
   async function handleOptionType() {
@@ -1044,22 +1062,34 @@
                             />
                           </td>
                           <td class="px-4 whitespace-nowrap">
-                            <a
-                              href={`/${["stocks", "stock"]?.includes(assetType) ? "stocks" : assetType === "etf" ? "etf" : "index"}/${selectedTicker}/options/contract-lookup?query=${optionSymbol}`}
-                              class="option-leg-link-to-contract"
+                            <div
+                              class="flex flex-row items-center m-auto text-center justify-center"
                             >
-                              <Link
-                                class="w-4 h-4 text-gray-800 dark:text-gray-100"
-                              />
-                            </a>
+                              <a
+                                class="inline-block"
+                                href={`/${["stocks", "stock"]?.includes(assetType) ? "stocks" : assetType === "etf" ? "etf" : "index"}/${selectedTicker}/options/contract-lookup?query=${optionSymbol}`}
+                              >
+                                <Link
+                                  class="w-4 h-4 text-gray-800 dark:text-gray-100 mt-0.5"
+                                />
+                              </a>
+                              <label
+                                on:click={() => handleDeleteOptionLeg(index)}
+                                class="ml-3 inline-block cursor-pointer"
+                              >
+                                <Trash
+                                  class="w-4 h-4 text-gray-800 dark:text-gray-100"
+                                />
+                              </label>
+                            </div>
                           </td>
                         </tr>
                       {/each}
-
+                      <!--
                       <button
                         type="button"
                         on:click={() => handleAddOptionLeg()}
-                        class="cursor-pointer mt-3 mb-3 ml-3 align-middle inline-flex items-center gap-x-1.5 rounded bg-green-600 px-2.5 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 transition duration-150 ease-in-out whitespace-nowrap"
+                        class=" cursor-pointer mt-3 mb-3 ml-3 align-middle inline-flex items-center gap-x-1.5 rounded bg-green-600 px-2.5 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 transition duration-150 ease-in-out whitespace-nowrap"
                       >
                         <svg
                           class="-ml-0.5 h-4 w-4"
@@ -1075,6 +1105,7 @@
                         </svg>
                         Add Option Leg
                       </button>
+                      -->
                     </tbody>
                   </table>
                 </div>
