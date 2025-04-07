@@ -14,6 +14,7 @@
 
   export let data;
   let isLoaded = true;
+  let shouldUpdate = false;
 
   let config = null;
   let selectedStrategy = "Long Call";
@@ -45,8 +46,7 @@
 
   let inputValue = selectedTicker;
   let touchedInput = false;
-
-  let strategies = [
+  let prebuiltStrategy = [
     {
       name: "Long Call",
       sentiment: "Bullish",
@@ -89,9 +89,12 @@
     { name: "Short Straddle", sentiment: "Neutral" },
      */
   ];
-  let description = strategies?.at(0)?.description;
 
-  function changeStrategy(strategy) {
+  let userStrategy = [];
+
+  let description = prebuiltStrategy?.at(0)?.description;
+
+  async function changeStrategy(strategy) {
     selectedStrategy = strategy?.name;
     description = strategy?.description;
 
@@ -122,7 +125,7 @@
         selectedAction = null;
     }
 
-    config = plotData();
+    await loadData("default");
   }
 
   const payoffFunctions = {
@@ -431,6 +434,7 @@
     }
 
     config = plotData();
+    shouldUpdate = true;
   }
 
   function handleOptionPriceInput(event) {
@@ -445,6 +449,7 @@
     // Set a new debounce timeout (1 second)
     debounceTimeout = setTimeout(() => {
       config = plotData();
+      shouldUpdate = true;
     }, 500);
   }
 
@@ -461,6 +466,7 @@
     // Set a new debounce timeout (1 second)
     debounceTimeout = setTimeout(() => {
       config = plotData();
+      shouldUpdate = true;
     }, 500);
   }
 
@@ -515,7 +521,7 @@
     selectedOptionPrice = output?.history?.at(-1)?.mark;
 
     config = plotData();
-
+    shouldUpdate = true;
     isLoaded = true;
   }
 
@@ -562,6 +568,25 @@
   });
 
   $: {
+    if (shouldUpdate) {
+      shouldUpdate = false;
+      userStrategy = [
+        {
+          ticker: selectedTicker,
+          action: selectedAction,
+          quantity: selectedQuantity,
+          date: selectedDate,
+          strike: selectedStrike,
+          optionType: selectedOptionType,
+          optionPrice: selectedOptionPrice,
+        },
+      ];
+
+      console.log(userStrategy);
+    }
+  }
+
+  $: {
     if ($mode) {
       config = plotData();
     }
@@ -601,7 +626,7 @@
 
           <div class="mt-5 mb-5 w-fulll">
             <div class="flex flex-wrap gap-3 mt-4">
-              {#each strategies as strategy}
+              {#each prebuiltStrategy as strategy}
                 <div
                   on:click={() => changeStrategy(strategy)}
                   class="{selectedStrategy === strategy?.name
@@ -694,227 +719,195 @@
                     <tbody
                       class="bg-[#F8F9FA] dark:bg-secondary divide-y divide-gray-200 dark:divide-gray-800 text-sm"
                     >
-                      <!-- Example Option Leg Row -->
-                      <tr>
-                        <td class="px-4 py-3 whitespace-nowrap font-semibold">
-                          <Combobox.Root
-                            items={searchBarData}
-                            bind:inputValue
-                            bind:touchedInput
-                          >
-                            <div class="relative w-full">
-                              <Combobox.Input
-                                on:input={search}
-                                class="text-sm controls-input bg-white dark:bg-[#2A2E39] focus:outline-hidden  border border-gray-300 dark:border-gray-500 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-2 py-1.5 grow w-full min-w-54"
-                                placeholder="Search Ticker"
-                                aria-label="Search new stock"
+                      {#each userStrategy as item}
+                        <tr>
+                          <td class="px-4 py-3 whitespace-nowrap font-semibold">
+                            <Combobox.Root
+                              items={searchBarData}
+                              bind:inputValue
+                              bind:touchedInput
+                            >
+                              <div class="relative w-full">
+                                <Combobox.Input
+                                  on:input={search}
+                                  class="text-sm controls-input bg-white dark:bg-[#2A2E39] focus:outline-hidden  border border-gray-300 dark:border-gray-500 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-2 py-1.5 grow w-full min-w-54"
+                                  placeholder="Search Ticker"
+                                  aria-label="Search Ticker"
+                                />
+                              </div>
+                              {#if inputValue?.length !== 0 && inputValue !== item?.ticker}
+                                <Combobox.Content
+                                  class=" z-10 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-default px-1 py-3 shadow-sm outline-hidden"
+                                  sideOffset={8}
+                                >
+                                  {#each searchBarData as searchItem}
+                                    <Combobox.Item
+                                      class="cursor-pointer border-b border-gray-300 dark:border-gray-500 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-5 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-200 dark:data-highlighted:bg-primary"
+                                      value={searchItem?.symbol}
+                                      label={searchItem?.symbol}
+                                      on:click={(e) => changeTicker(searchItem)}
+                                    >
+                                      <div class="flex flex-col items-start">
+                                        <span
+                                          class="text-sm text-blue-700 dark:text-blue-400"
+                                          >{searchItem?.symbol}</span
+                                        >
+                                        <span
+                                          class="text-xs sm:text-sm text-muted dark:text-white"
+                                          >{searchItem?.name}</span
+                                        >
+                                      </div>
+                                    </Combobox.Item>
+                                  {:else}
+                                    <span class="block px-5 py-2 text-sm">
+                                      No results found
+                                    </span>
+                                  {/each}
+                                </Combobox.Content>
+                              {/if}
+                            </Combobox.Root>
+                          </td>
+                          <td class="px-4 py-3 whitespace-nowrap">
+                            <label
+                              on:click={handleAction}
+                              class="badge px-2 select-none rounded-md {item?.action ===
+                              'Buy'
+                                ? 'bg-green-100 text-green-800 dark:bg-green-300 dark:text-muted'
+                                : 'bg-red-100 text-red-800 dark:bg-red-300 dark:text-muted'} font-semibold cursor-pointer"
+                              >{item?.action}</label
+                            >
+                          </td>
+                          <td class="px-4 py-3 whitespace-nowrap">
+                            <input
+                              type="number"
+                              bind:value={selectedQuantity}
+                              min="0"
+                              on:input={handleQuantityInput}
+                              class="border border-gray-300 dark:border-gray-500 rounded px-2 py-1 w-20 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                            />
+                          </td>
+                          <td class="px-4 py-3 whitespace-nowrap">
+                            <DropdownMenu.Root>
+                              <DropdownMenu.Trigger asChild let:builder>
+                                <Button
+                                  builders={[builder]}
+                                  class="mb-1 border border-gray-300 dark:border-none  bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
+                                >
+                                  <span class="truncate text-sm"
+                                    >{formatDate(selectedDate)}</span
+                                  >
+                                  <svg
+                                    class="-mr-1 ml-2 h-5 w-5 inline-block"
+                                    viewBox="0 0 20 20"
+                                    fill="currentColor"
+                                    style="max-width:40px"
+                                    aria-hidden="true"
+                                  >
+                                    <path
+                                      fill-rule="evenodd"
+                                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                      clip-rule="evenodd"
+                                    ></path>
+                                  </svg>
+                                </Button>
+                              </DropdownMenu.Trigger>
+
+                              <DropdownMenu.Content
+                                class="w-auto max-w-60 max-h-[400px] overflow-y-auto scroller relative"
+                              >
+                                <!-- Dropdown items -->
+                                <DropdownMenu.Group class="pb-2"
+                                  >{#each dateList as item}
+                                    <DropdownMenu.Item
+                                      on:click={() => {
+                                        selectedDate = item;
+                                        loadData("default");
+                                      }}
+                                      class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
+                                    >
+                                      {formatDate(item)}
+                                    </DropdownMenu.Item>
+                                  {/each}</DropdownMenu.Group
+                                >
+                              </DropdownMenu.Content>
+                            </DropdownMenu.Root>
+                          </td>
+                          <td class="px-4 py-3 whitespace-nowrap">
+                            <DropdownMenu.Root>
+                              <DropdownMenu.Trigger asChild let:builder>
+                                <Button
+                                  builders={[builder]}
+                                  class="mb-1 border border-gray-300 dark:border-none  bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
+                                >
+                                  <span class="truncate text-sm"
+                                    >{selectedStrike}</span
+                                  >
+                                  <svg
+                                    class="-mr-1 ml-2 h-5 w-5 inline-block"
+                                    viewBox="0 0 20 20"
+                                    fill="currentColor"
+                                    style="max-width:40px"
+                                    aria-hidden="true"
+                                  >
+                                    <path
+                                      fill-rule="evenodd"
+                                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                      clip-rule="evenodd"
+                                    ></path>
+                                  </svg>
+                                </Button>
+                              </DropdownMenu.Trigger>
+
+                              <DropdownMenu.Content
+                                class="w-auto max-w-60 max-h-[400px] overflow-y-auto scroller relative"
+                              >
+                                <!-- Dropdown items -->
+                                <DropdownMenu.Group class="pb-2">
+                                  <!-- Added padding to avoid overlapping with Reset button -->
+                                  {#each strikeList as item}
+                                    <DropdownMenu.Item
+                                      on:click={() => {
+                                        selectedStrike = item;
+                                        loadData("default");
+                                      }}
+                                      class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
+                                    >
+                                      {item}
+                                    </DropdownMenu.Item>
+                                  {/each}
+                                </DropdownMenu.Group>
+                              </DropdownMenu.Content>
+                            </DropdownMenu.Root>
+                          </td>
+                          <td class="px-4 py-3 whitespace-nowrap">
+                            <label
+                              on:click={handleOptionType}
+                              class="select-none badge px-2 rounded-md bg-blue-100 text-blue-800 dark:bg-blue-300 dark:text-muted font-semibold cursor-pointer"
+                              >{item?.optionType}</label
+                            >
+                          </td>
+                          <td class="px-4 py-3 whitespace-nowrap">
+                            <input
+                              type="number"
+                              step="0.1"
+                              min="0"
+                              bind:value={selectedOptionPrice}
+                              on:input={handleOptionPriceInput}
+                              class="border border-gray-300 dark:border-gray-500 rounded px-2 py-1 w-24 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                            />
+                          </td>
+                          <td class="px-4 py-3 whitespace-nowrap">
+                            <a
+                              href={`/${["stocks", "stock"]?.includes(assetType) ? "stocks" : assetType === "etf" ? "etf" : "index"}/${selectedTicker}/options/contract-lookup?query=${optionSymbol}`}
+                              class="option-leg-link-to-contract"
+                            >
+                              <Link
+                                class="w-4 h-4 text-gray-800 dark:text-gray-100"
                               />
-                            </div>
-                            {#if inputValue?.length !== 0 && inputValue !== selectedTicker}
-                              <Combobox.Content
-                                class=" z-10 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-default px-1 py-3 shadow-sm outline-hidden"
-                                sideOffset={8}
-                              >
-                                {#each searchBarData as item}
-                                  <Combobox.Item
-                                    class="cursor-pointer border-b border-gray-300 dark:border-gray-500 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-5 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-200 dark:data-highlighted:bg-primary"
-                                    value={item?.symbol}
-                                    label={item?.symbol}
-                                    on:click={(e) => changeTicker(item)}
-                                  >
-                                    <div class="flex flex-col items-start">
-                                      <span
-                                        class="text-sm text-blue-700 dark:text-blue-400"
-                                        >{item?.symbol}</span
-                                      >
-                                      <span
-                                        class="text-xs sm:text-sm text-muted dark:text-white"
-                                        >{item?.name}</span
-                                      >
-                                    </div>
-                                  </Combobox.Item>
-                                {:else}
-                                  <span class="block px-5 py-2 text-sm">
-                                    No results found
-                                  </span>
-                                {/each}
-                              </Combobox.Content>
-                            {/if}
-                          </Combobox.Root>
-                        </td>
-                        <td class="px-4 py-3 whitespace-nowrap">
-                          <label
-                            on:click={handleAction}
-                            class="badge px-2 select-none rounded-md {selectedAction ===
-                            'Buy'
-                              ? 'bg-green-100 text-green-800 dark:bg-green-300 dark:text-muted'
-                              : 'bg-red-100 text-red-800 dark:bg-red-300 dark:text-muted'} font-semibold cursor-pointer"
-                            >{selectedAction}</label
-                          >
-                        </td>
-                        <td class="px-4 py-3 whitespace-nowrap">
-                          <input
-                            type="number"
-                            bind:value={selectedQuantity}
-                            min="0"
-                            on:input={handleQuantityInput}
-                            class="border border-gray-300 dark:border-gray-500 rounded px-2 py-1 w-20 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                          />
-                        </td>
-                        <td class="px-4 py-3 whitespace-nowrap">
-                          <DropdownMenu.Root>
-                            <DropdownMenu.Trigger asChild let:builder>
-                              <Button
-                                builders={[builder]}
-                                class="mb-1 border border-gray-300 dark:border-none  bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
-                              >
-                                <span class="truncate text-sm"
-                                  >{formatDate(selectedDate)}</span
-                                >
-                                <svg
-                                  class="-mr-1 ml-2 h-5 w-5 inline-block"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                  style="max-width:40px"
-                                  aria-hidden="true"
-                                >
-                                  <path
-                                    fill-rule="evenodd"
-                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                    clip-rule="evenodd"
-                                  ></path>
-                                </svg>
-                              </Button>
-                            </DropdownMenu.Trigger>
-
-                            <DropdownMenu.Content
-                              class="w-auto max-w-60 max-h-[400px] overflow-y-auto scroller relative"
-                            >
-                              <!-- Dropdown items -->
-                              <DropdownMenu.Group class="pb-2"
-                                >{#each dateList as item}
-                                  <DropdownMenu.Item
-                                    on:click={() => {
-                                      selectedDate = item;
-                                      loadData("default");
-                                    }}
-                                    class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
-                                  >
-                                    {formatDate(item)}
-                                  </DropdownMenu.Item>
-                                {/each}</DropdownMenu.Group
-                              >
-                            </DropdownMenu.Content>
-                          </DropdownMenu.Root>
-                        </td>
-                        <td class="px-4 py-3 whitespace-nowrap">
-                          <DropdownMenu.Root>
-                            <DropdownMenu.Trigger asChild let:builder>
-                              <Button
-                                builders={[builder]}
-                                class="mb-1 border border-gray-300 dark:border-none  bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
-                              >
-                                <span class="truncate text-sm"
-                                  >{selectedStrike}</span
-                                >
-                                <svg
-                                  class="-mr-1 ml-2 h-5 w-5 inline-block"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                  style="max-width:40px"
-                                  aria-hidden="true"
-                                >
-                                  <path
-                                    fill-rule="evenodd"
-                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                    clip-rule="evenodd"
-                                  ></path>
-                                </svg>
-                              </Button>
-                            </DropdownMenu.Trigger>
-
-                            <DropdownMenu.Content
-                              class="w-auto max-w-60 max-h-[400px] overflow-y-auto scroller relative"
-                            >
-                              <!-- Dropdown items -->
-                              <DropdownMenu.Group class="pb-2">
-                                <!-- Added padding to avoid overlapping with Reset button -->
-                                {#each strikeList as item}
-                                  <DropdownMenu.Item
-                                    on:click={() => {
-                                      selectedStrike = item;
-                                      loadData("default");
-                                    }}
-                                    class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
-                                  >
-                                    {item}
-                                  </DropdownMenu.Item>
-                                {/each}
-                              </DropdownMenu.Group>
-                            </DropdownMenu.Content>
-                          </DropdownMenu.Root>
-                        </td>
-                        <td class="px-4 py-3 whitespace-nowrap">
-                          <label
-                            on:click={handleOptionType}
-                            class="select-none badge px-2 rounded-md bg-blue-100 text-blue-800 dark:bg-blue-300 dark:text-muted font-semibold cursor-pointer"
-                            >{selectedOptionType}</label
-                          >
-                        </td>
-                        <td class="px-4 py-3 whitespace-nowrap">
-                          <input
-                            type="number"
-                            step="0.1"
-                            min="0"
-                            bind:value={selectedOptionPrice}
-                            on:input={handleOptionPriceInput}
-                            class="border border-gray-300 dark:border-gray-500 rounded px-2 py-1 w-24 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                          />
-                        </td>
-                        <td class="px-4 py-3 whitespace-nowrap">
-                          <a
-                            href={`/${["stocks", "stock"]?.includes(assetType) ? "stocks" : assetType === "etf" ? "etf" : "index"}/${selectedTicker}/options/contract-lookup?query=${optionSymbol}`}
-                            class="option-leg-link-to-contract"
-                          >
-                            <Link
-                              class="w-4 h-4 text-gray-800 dark:text-gray-100"
-                            />
-                          </a>
-                        </td>
-
-                        <!--
-                      <td class="px-4 py-3 whitespace-nowrap">
-                        <input
-                          type="range"
-                          min="0"
-                          max="1"
-                          step="0.01"
-                          value="0.30"
-                          class="accent-blue-500 w-24"
-                        />
-                      </td>
-                      -->
-                        <!--
-                      <td class="px-4 py-3 whitespace-nowrap">
-                        <button class="text-gray-500 hover:text-red-500">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-5 w-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-4h4m-4 0a1 1 0 00-1 1v1h6V4a1 1 0 00-1-1m-4 0h4"
-                            />
-                          </svg>
-                        </button>
-                      </td>
-                      -->
-                      </tr>
+                            </a>
+                          </td>
+                        </tr>
+                      {/each}
 
                       <!-- Add more rows as needed -->
                     </tbody>

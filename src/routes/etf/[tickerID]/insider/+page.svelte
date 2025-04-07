@@ -4,6 +4,7 @@
   import { getPartyForPoliticians } from "$lib/utils";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import SEO from "$lib/components/SEO.svelte";
+  import Infobox from "$lib/components/Infobox.svelte";
 
   export let data;
 
@@ -420,12 +421,7 @@
                 </label>
               {/if}
             {:else}
-              <h2
-                class="pl-4 pr-4 flex justify-center items-center text-md sm:text-lg text-center text-slate-200"
-              >
-                No trading history available for {$displayCompanyName}. Likely
-                no corrupt politican has interest in this stock.
-              </h2>
+              <Infobox text="No data available" />
             {/if}
           {:else}
             <div class="flex justify-center items-center h-80">
