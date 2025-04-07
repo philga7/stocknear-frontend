@@ -169,8 +169,6 @@
     });
   };
 
-  // CHART FUNCTIONS
-
   function plotData() {
     // Determine x-axis range based on current stock price and max leg strike
     if (!userStrategy || userStrategy.length === 0) {
@@ -345,53 +343,77 @@
     return options;
   }
 
-  // Calculate break-even price and profit/loss limits
   function calculateBreakEvenAndLimits() {
+    let totalPremium = 0;
+    let overallMaxProfit = 0;
+    let overallMaxLoss = 0;
+    let unlimitedProfit = false;
+    let unlimitedLoss = false;
+
+    // Loop through each leg in the strategy
+    for (let i = 0; i < userStrategy.length; i++) {
+      const leg = userStrategy[i];
+      totalPremium += leg.optionPrice; // accumulate total premium
+      const scenarioKey = `${leg?.action} ${leg?.optionType}`;
+
+      let legProfit = 0;
+      let legLoss = 0;
+
+      // Determine limits for each leg based on its scenario
+      if (scenarioKey === "Buy Call") {
+        // Profit is unlimited for a long call, loss limited to the premium paid.
+        legProfit = Infinity;
+        legLoss = -leg.optionPrice;
+        unlimitedProfit = true;
+      } else if (scenarioKey === "Sell Call") {
+        // Profit is limited to the premium received; loss is unlimited.
+        legProfit = leg.optionPrice;
+        legLoss = -Infinity;
+        unlimitedLoss = true;
+      } else if (scenarioKey === "Buy Put") {
+        // For a long put, profit is (strike * 100) minus the premium, loss is the premium paid.
+        legProfit = leg.strike * 100 - leg.optionPrice;
+        legLoss = -leg.optionPrice;
+      } else if (scenarioKey === "Sell Put") {
+        // For a short put, profit is the premium received, loss is (strike * 100 - premium).
+        legProfit = leg.optionPrice;
+        legLoss = -(leg.strike * 100 - leg.optionPrice);
+      } else {
+        console.error("Limits not defined for scenario:", scenarioKey);
+        // Defaulting to zero contribution if unknown
+        legProfit = 0;
+        legLoss = 0;
+      }
+
+      // Sum only the finite numbers. If any leg is unlimited, the corresponding flag is set.
+      if (isFinite(legProfit)) {
+        overallMaxProfit += legProfit;
+      }
+      if (isFinite(legLoss)) {
+        overallMaxLoss += legLoss;
+      }
+    }
+
+    // Format the aggregated limits: if any leg was unlimited, set overall accordingly.
+    limits = {
+      maxProfit: unlimitedProfit
+        ? "Unlimited"
+        : `$${formatCurrency(overallMaxProfit)}`,
+      maxLoss: unlimitedLoss
+        ? "Unlimited"
+        : `$${formatCurrency(overallMaxLoss)}`,
+    };
+
+    // For break-even price, if there's exactly one leg, compute it; otherwise, set it to null.
     if (userStrategy.length === 1) {
       const leg = userStrategy[0];
       const scenarioKey = `${leg?.action} ${leg?.optionType}`;
-
-      // Calculate break-even price
       if (breakEvenCalculators[scenarioKey]) {
         breakEvenPrice = breakEvenCalculators[scenarioKey](
           leg.strike,
           leg.optionPrice,
         );
-      } else {
-        breakEvenPrice = null;
       }
-
-      // Set profit/loss limits based on strategy
-      if (scenarioKey === "Buy Call") {
-        limits = {
-          maxProfit: "Unlimited",
-          maxLoss: `-$${formatCurrency(totalPremium)}`,
-        };
-      } else if (scenarioKey === "Sell Call") {
-        limits = {
-          maxProfit: `$${formatCurrency(totalPremium)}`,
-          maxLoss: "Unlimited",
-        };
-      } else if (scenarioKey === "Buy Put") {
-        limits = {
-          maxProfit: `$${formatCurrency(leg.strike * 100 - totalPremium)}`,
-          maxLoss: `-$${formatCurrency(totalPremium)}`,
-        };
-      } else if (scenarioKey === "Sell Put") {
-        limits = {
-          maxProfit: `$${formatCurrency(totalPremium)}`,
-          maxLoss: `-$${formatCurrency(leg.strike * 100 - totalPremium)}`,
-        };
-      } else {
-        console.error("Limits not defined for scenario:", scenarioKey);
-        limits = { maxProfit: "n/a", maxLoss: "n/a" };
-      }
-    } else {
-      // For multiple legs, display the aggregated premium info
-      breakEvenPrice = null;
-      limits = {
-        info: `Aggregated Premium: $${formatCurrency(totalPremium)}`,
-      };
     }
   }
 
