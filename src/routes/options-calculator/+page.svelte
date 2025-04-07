@@ -582,7 +582,7 @@
         },
       ];
 
-      console.log(userStrategy);
+      console.log("yes");
     }
   }
 
@@ -971,7 +971,7 @@
                       </div>
                       <div class="flex items-baseline">
                         <span class="text-lg font-semibold"
-                          >${breakEvenPrice}</span
+                          >${breakEvenPrice?.toFixed(2)}</span
                         >
                       </div>
                     </div>

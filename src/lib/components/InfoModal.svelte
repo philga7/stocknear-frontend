@@ -25,7 +25,7 @@
 <!-- Desktop modal using dialog component -->
 <input type="checkbox" {id} class="modal-toggle" />
 
-<dialog {id} class="modal p-3 sm:p-0">
+<dialog {id} class="modal p-3 sm:p-0 text-muted dark:text-white">
   <label for={id} class="cursor-pointer modal-backdrop bg-[#000]/30"></label>
 
   <!-- Desktop modal content -->
