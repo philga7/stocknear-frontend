@@ -759,11 +759,11 @@
                 <div use:highcharts={config}></div>
               {:else}
                 <div
-                  class="flex justify-center w-full sm:w-[650px] h-[300px] sm:h-[360px] items-center"
+                  class="flex justify-center w-full sm:w-[650px] h-[300px] sm:h-[330px] items-center"
                 >
                   <div class="relative">
                     <label
-                      class="bg-secondary rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                      class="shadow-sm bg-gray-300 dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                     >
                       <span
                         class="loading loading-spinner loading-md text-muted dark:text-gray-400"
