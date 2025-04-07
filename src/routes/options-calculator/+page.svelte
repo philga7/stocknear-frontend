@@ -278,9 +278,9 @@
             value: currentStockPrice,
             color: $mode === "light" ? "black" : "white",
             dashStyle: "Dash",
-            width: 1.2,
+            width: 1.5,
             label: {
-              text: `<span class="text-black dark:text-white">Underlying Price $${currentStockPrice}</span>`,
+              text: `<span class="text-black dark:text-white text-sm">Underlying Price $${currentStockPrice}</span>`,
               style: { color: $mode === "light" ? "black" : "white" },
             },
             zIndex: 5,
@@ -289,9 +289,9 @@
             value: breakEvenPrice,
             color: "#10B981",
             dashStyle: "Dash",
-            width: $screenWidth < 640 ? 0 : 1.2,
+            width: $screenWidth < 640 ? 0 : 1.5,
             label: {
-              text: `<span class="hidden sm:block text-black dark:text-white">Breakeven $${breakEvenPrice.toFixed(2)}</span>`,
+              text: `<span class="hidden sm:block text-black dark:text-white text-sm">Breakeven $${breakEvenPrice.toFixed(2)}</span>`,
               style: { color: $mode === "light" ? "black" : "white" },
             },
             zIndex: 5,
@@ -434,7 +434,11 @@
   }
 
   function handleOptionPriceInput(event) {
-    selectedOptionPrice = +event.target.value;
+    if (event.target.value === "") {
+      selectedOptionPrice = "";
+    } else {
+      selectedOptionPrice = +event.target.value;
+    }
     // Clear any existing debounce timeout
     if (debounceTimeout) clearTimeout(debounceTimeout);
 
@@ -445,7 +449,12 @@
   }
 
   function handleQuantityInput(event) {
-    selectedQuantity = +event.target.value;
+    // Check if the input is empty
+    if (event.target.value === "") {
+      selectedQuantity = "";
+    } else {
+      selectedQuantity = +event.target.value;
+    }
     // Clear any existing debounce timeout
     if (debounceTimeout) clearTimeout(debounceTimeout);
 
@@ -746,8 +755,8 @@
                         <td class="px-4 py-3 whitespace-nowrap">
                           <input
                             type="number"
-                            min="1"
                             bind:value={selectedQuantity}
+                            min="0"
                             on:input={handleQuantityInput}
                             class="border border-gray-300 dark:border-gray-500 rounded px-2 py-1 w-20 focus:outline-none focus:ring-1 focus:ring-blue-500"
                           />
@@ -856,6 +865,7 @@
                           <input
                             type="number"
                             step="0.1"
+                            min="0"
                             bind:value={selectedOptionPrice}
                             on:input={handleOptionPriceInput}
                             class="border border-gray-300 dark:border-gray-500 rounded px-2 py-1 w-24 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -864,11 +874,11 @@
                         <td class="px-4 py-3 whitespace-nowrap">
                           <a
                             href={`/${["stocks", "stock"]?.includes(assetType) ? "stocks" : assetType === "etf" ? "etf" : "index"}/${selectedTicker}/options/contract-lookup?query=${optionSymbol}`}
-                            rel="noopener noreferrer"
-                            target="_blank"
                             class="option-leg-link-to-contract"
                           >
-                            <Link class="w-4 h-4 text-gray-100" />
+                            <Link
+                              class="w-4 h-4 text-gray-800 dark:text-gray-100"
+                            />
                           </a>
                         </td>
 
