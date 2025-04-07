@@ -199,10 +199,10 @@
 
 {#each computedFields as { label, key, isMargin } (key)}
   <tr
-    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd whitespace-nowrap"
+    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd whitespace-nowrap border"
   >
     <td
-      class="text-start min-w-[220px] sm:min-w-[320px] border-r border-gray-300 dark:border-gray-700 text-sm sm:text-[1rem] w-full flex flex-row items-center justify-between"
+      class="text-start min-w-[220px] sm:min-w-[320px] text-sm sm:text-[1rem] border-r border-gray-300 dark:border-gray-800 w-full flex flex-row items-center justify-between"
     >
       <label
         for="tooltipModal"
@@ -248,7 +248,9 @@
       </label>
     </td>
     {#each data as item}
-      <td class="text-sm sm:text-[1rem] text-end">
+      <td
+        class="text-sm sm:text-[1rem] text-end border-r border-gray-300 dark:border-gray-800"
+      >
         {formatValue(item[key], isMargin)}
       </td>
     {/each}
@@ -263,7 +265,7 @@
   <label for="financialPlotModal" class="cursor-pointer modal-backdrop"></label>
 
   <div
-    class="modal-box w-full p-6 rounded shadow-lg border
+    class="modal-box w-full max-w-3xl p-6 rounded shadow-lg border
         bg-white dark:bg-secondary border border-gray-600 dark:border-gray-800"
   >
     {#if config}
@@ -289,12 +291,12 @@
 </dialog>
 
 <input type="checkbox" id="tooltipModal" class="modal-toggle" />
-<dialog id="tooltipModal" class="modal p-3">
+<dialog id="tooltipModal" class="modal p-3 w-full">
   <label for="tooltipModal" class="cursor-pointer modal-backdrop"></label>
 
   <!-- Desktop modal content -->
   <div
-    class="modal-box rounded-md border border-gray-300 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
+    class="modal-box w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-secondary flex flex-col items-center"
   >
     <div class=" mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">{modalLabel}</h3>

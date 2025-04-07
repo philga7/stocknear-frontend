@@ -47,7 +47,9 @@ export const clearCache = () => {
 
 export const showCookieConsent = writable(<boolean>false);
 export const shouldUpdatePriceChart = writable(<boolean>false);
+export const selectedTimePeriod =  writable(<string>"");
 export const coolMode = writable(<boolean>false);
+
 export const timeFrame =writable(<string>"Max");
 
 export const closedPWA = writable(<boolean>false);
