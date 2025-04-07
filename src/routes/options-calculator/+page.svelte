@@ -476,48 +476,94 @@
     isLoaded = false;
 
     try {
-      optionData = rawData?.getData[selectedOptionType] || {};
-      dateList = Object.keys(optionData);
+      if (userStrategy?.length > 0) {
+        for (const item of userStrategy) {
+          optionData = rawData?.getData[item?.optionType] || {};
+          selectedOptionType = item?.optionType || "Call";
+          selectedQuantity = item?.quantity || 1;
+          dateList = Object.keys(optionData);
+          item.dateList = dateList;
 
-      // Make sure selectedDate exists in the data
-      if (!dateList.includes(selectedDate) && dateList.length > 0) {
-        selectedDate = dateList[0];
-      }
+          // Make sure selectedDate exists in the data
+          if (!dateList.includes(item?.date) && dateList.length > 0) {
+            selectedDate = dateList[0];
+            item.date = selectedDate;
+          }
 
-      strikeList = optionData[selectedDate] || [];
+          strikeList = optionData[selectedDate] || [];
+          item.strikeList = strikeList;
 
-      // Find closest strike to current stock price
-      if (!strikeList.includes(selectedStrike) && strikeList.length > 0) {
-        selectedStrike = strikeList.reduce((closest, strike) => {
-          return Math.abs(strike - currentStockPrice) <
-            Math.abs(closest - currentStockPrice)
-            ? strike
-            : closest;
-        }, strikeList[0]);
-      }
+          // Find closest strike to current stock price
+          if (!strikeList.includes(selectedStrike) && strikeList.length > 0) {
+            selectedStrike = strikeList.reduce((closest, strike) => {
+              return Math.abs(strike - currentStockPrice) <
+                Math.abs(closest - currentStockPrice)
+                ? strike
+                : closest;
+            }, strikeList[0]);
+          }
 
-      // Get option price
-      optionSymbol = buildOptionSymbol(
-        selectedTicker,
-        selectedDate,
-        selectedOptionType,
-        selectedStrike,
-      );
+          item.strike = selectedStrike;
 
-      const output = await getContractHistory(optionSymbol);
-      selectedOptionPrice = output?.history?.at(-1)?.mark || 0;
+          // Get option price
+          optionSymbol = buildOptionSymbol(
+            selectedTicker,
+            selectedDate,
+            selectedOptionType,
+            selectedStrike,
+          );
 
-      // Update user strategy if necessary
-      if (state === "default" && userStrategy.length > 0) {
-        userStrategy = userStrategy.map((leg) => ({
-          ...leg,
-          date: selectedDate,
-          strike: selectedStrike,
-          optionType: selectedOptionType,
-          optionPrice: selectedOptionPrice,
-          action: selectedAction,
-          quantity: selectedQuantity,
-        }));
+          const output = await getContractHistory(optionSymbol);
+          selectedOptionPrice = output?.history?.at(-1)?.mark || 0;
+          item.optionPrice = selectedOptionPrice;
+        }
+      } else {
+        optionData = rawData?.getData[selectedOptionType] || {};
+        dateList = Object.keys(optionData);
+
+        // Make sure selectedDate exists in the data
+        if (!dateList.includes(selectedDate) && dateList.length > 0) {
+          selectedDate = dateList[0];
+        }
+
+        strikeList = optionData[selectedDate] || [];
+
+        // Find closest strike to current stock price
+        if (!strikeList.includes(selectedStrike) && strikeList.length > 0) {
+          selectedStrike = strikeList.reduce((closest, strike) => {
+            return Math.abs(strike - currentStockPrice) <
+              Math.abs(closest - currentStockPrice)
+              ? strike
+              : closest;
+          }, strikeList[0]);
+        }
+
+        // Get option price
+        optionSymbol = buildOptionSymbol(
+          selectedTicker,
+          selectedDate,
+          selectedOptionType,
+          selectedStrike,
+        );
+
+        const output = await getContractHistory(optionSymbol);
+        selectedOptionPrice = output?.history?.at(-1)?.mark || 0;
+
+        // Update user strategy if necessary
+        if (state === "default") {
+          userStrategy = [
+            {
+              date: selectedDate,
+              strike: selectedStrike,
+              optionType: selectedOptionType,
+              optionPrice: selectedOptionPrice,
+              action: selectedAction,
+              quantity: selectedQuantity,
+              strikeList: strikeList,
+              dateList: dateList,
+            },
+          ];
+        }
       }
 
       shouldUpdate = true;
@@ -608,12 +654,20 @@
     }
   }
 
-  async function handleOptionType() {
-    selectedOptionType = selectedOptionType === "Call" ? "Put" : "Call";
-    await loadData("optionType");
+  async function handleOptionType(index) {
+    if (index !== undefined && userStrategy[index]) {
+      // Update the specific leg in userStrategy
+      const updatedStrategy = [...userStrategy];
+      updatedStrategy[index].optionType =
+        updatedStrategy[index].optionType === "Call" ? "Put" : "Call";
+      userStrategy = updatedStrategy;
+    } else {
+      // Update the selectedAction (for new legs)
+      selectedOptionType = selectedOptionType === "Call" ? "Put" : "Call";
+    }
+    shouldUpdate = true;
   }
 
-  // FIXED: Make sure the handleAction function correctly uses the index
   async function handleAction(index: number) {
     if (index !== undefined && userStrategy[index]) {
       // Update the specific leg in userStrategy
@@ -625,8 +679,28 @@
       // Update the selectedAction (for new legs)
       selectedAction = selectedAction === "Buy" ? "Sell" : "Buy";
     }
-    console.log(userStrategy);
     shouldUpdate = true;
+  }
+
+  async function handleExpirationDate(date, index) {
+    selectedDate = date;
+    if (index !== undefined && userStrategy[index]) {
+      // Update the specific leg in userStrategy
+      const updatedStrategy = [...userStrategy];
+      updatedStrategy[index].date = selectedDate;
+      userStrategy = updatedStrategy;
+      shouldUpdate = true;
+    }
+  }
+  async function handleStrikePrice(strikePrice, index: number) {
+    selectedStrike = strikePrice;
+    if (index !== undefined && userStrategy[index]) {
+      // Update the specific leg in userStrategy
+      const updatedStrategy = [...userStrategy];
+      updatedStrategy[index].strike = selectedStrike;
+      userStrategy = updatedStrategy;
+      shouldUpdate = true;
+    }
   }
 
   function handleOptionPriceInput(event: Event) {
@@ -649,23 +723,23 @@
     }, 300);
   }
 
-  function handleQuantityInput(event: Event) {
-    const value = (event.target as HTMLInputElement).value;
+  function handleQuantityInput(event, index) {
+    if (index !== undefined && userStrategy[index]) {
+      const value = (event.target as HTMLInputElement).value;
 
-    selectedQuantity = value === "" ? null : +value;
+      selectedQuantity = value === "" ? null : +value;
+      const updatedStrategy = [...userStrategy];
+      updatedStrategy[index].quantity = updatedStrategy[index].quantity =
+        selectedQuantity;
+      userStrategy = updatedStrategy;
+    }
 
     // Clear any existing debounce timeout
     if (debounceTimeout) clearTimeout(debounceTimeout);
 
     // Set a new debounce timeout
     debounceTimeout = setTimeout(() => {
-      if (userStrategy.length > 0) {
-        userStrategy = userStrategy.map((leg) => ({
-          ...leg,
-          quantity: selectedQuantity,
-        }));
-        shouldUpdate = true;
-      }
+      shouldUpdate = true;
     }, 300);
   }
 
@@ -712,17 +786,6 @@
   onMount(async () => {
     await getStockData();
     await loadData("default");
-
-    userStrategy = [
-      {
-        action: selectedAction,
-        quantity: selectedQuantity,
-        date: selectedDate,
-        strike: selectedStrike,
-        optionType: selectedOptionType,
-        optionPrice: selectedOptionPrice,
-      },
-    ];
 
     shouldUpdate = true;
   });
@@ -945,9 +1008,9 @@
                           <td class="px-4 whitespace-nowrap">
                             <input
                               type="number"
-                              bind:value={selectedQuantity}
+                              value={userStrategy[index]?.quantity}
                               min="0"
-                              on:input={handleQuantityInput}
+                              on:input={(e) => handleQuantityInput(e, index)}
                               class="border border-gray-300 dark:border-gray-500 rounded px-2 py-1 w-20 focus:outline-none focus:ring-1 focus:ring-blue-500"
                             />
                           </td>
@@ -959,7 +1022,9 @@
                                   class="mb-1 border border-gray-300 dark:border-none  bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
                                 >
                                   <span class="truncate text-sm"
-                                    >{formatDate(selectedDate)}</span
+                                    >{formatDate(
+                                      userStrategy[index]?.date,
+                                    )}</span
                                   >
                                   <svg
                                     class="-mr-1 ml-2 h-5 w-5 inline-block"
@@ -982,11 +1047,10 @@
                               >
                                 <!-- Dropdown items -->
                                 <DropdownMenu.Group class="pb-2"
-                                  >{#each dateList as item}
+                                  >{#each userStrategy[index]?.dateList as item}
                                     <DropdownMenu.Item
                                       on:click={() => {
-                                        selectedDate = item;
-                                        loadData("default");
+                                        handleExpirationDate(item, index);
                                       }}
                                       class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
                                     >
@@ -1005,7 +1069,7 @@
                                   class="mb-1 border border-gray-300 dark:border-none  bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
                                 >
                                   <span class="truncate text-sm"
-                                    >{selectedStrike}</span
+                                    >{userStrategy[index]?.strike}</span
                                   >
                                   <svg
                                     class="-mr-1 ml-2 h-5 w-5 inline-block"
@@ -1029,11 +1093,10 @@
                                 <!-- Dropdown items -->
                                 <DropdownMenu.Group class="pb-2">
                                   <!-- Added padding to avoid overlapping with Reset button -->
-                                  {#each strikeList as item}
+                                  {#each userStrategy[index]?.strikeList as item}
                                     <DropdownMenu.Item
                                       on:click={() => {
-                                        selectedStrike = item;
-                                        loadData("default");
+                                        handleStrikePrice(item, index);
                                       }}
                                       class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
                                     >
@@ -1046,7 +1109,7 @@
                           </td>
                           <td class="px-4 whitespace-nowrap">
                             <label
-                              on:click={handleOptionType}
+                              on:click={() => handleOptionType(index)}
                               class="select-none badge px-2 rounded-md bg-blue-100 text-blue-800 dark:bg-blue-300 dark:text-muted font-semibold cursor-pointer"
                               >{item?.optionType}</label
                             >
@@ -1056,7 +1119,7 @@
                               type="number"
                               step="0.1"
                               min="0"
-                              bind:value={selectedOptionPrice}
+                              value={userStrategy[index]?.optionPrice}
                               on:input={handleOptionPriceInput}
                               class="border border-gray-300 dark:border-gray-500 rounded px-2 py-1 w-24 focus:outline-none focus:ring-1 focus:ring-blue-500"
                             />
@@ -1085,7 +1148,7 @@
                           </td>
                         </tr>
                       {/each}
-                      <!--
+
                       <button
                         type="button"
                         on:click={() => handleAddOptionLeg()}
@@ -1105,7 +1168,6 @@
                         </svg>
                         Add Option Leg
                       </button>
-                      -->
                     </tbody>
                   </table>
                 </div>
