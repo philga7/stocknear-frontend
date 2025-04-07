@@ -1,14 +1,12 @@
-import { getCache, setCache } from "$lib/store";
-
 export const load = async ({ locals, params }) => {
   const getData = async () => {
     const { apiKey, apiURL } = locals;
     const postData = {
       ticker: params.tickerID,
+      statement: 'balance-sheet-statement',
     };
-
     // make the POST request to the endpoint
-    const response = await fetch(apiURL + "/stock-balance-sheet", {
+    const response = await fetch(apiURL + "/financial-statement", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -21,6 +19,8 @@ export const load = async ({ locals, params }) => {
 
     return output;
   };
+
+
 
   // Make sure to return a promise
   return {

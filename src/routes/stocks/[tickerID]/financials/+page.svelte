@@ -452,7 +452,9 @@
                               {"FY" + " " + item?.fiscalYear}
                             </td>
                           {:else}
-                            <td class=" font-semibold text-sm text-end">
+                            <td
+                              class="min-w-[130px] font-semibold text-sm text-end"
+                            >
                               {item?.period + " " + item?.fiscalYear}
                             </td>
                           {/if}

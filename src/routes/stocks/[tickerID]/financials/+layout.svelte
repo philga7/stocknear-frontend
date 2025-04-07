@@ -72,6 +72,10 @@
         Object.keys(sectionMap).find(
           (key) => sectionMap[key] === foundSection,
         ) || "income";
+
+      if (displaySubSection === "ratios" && $selectedTimePeriod === "ttm") {
+        $selectedTimePeriod = "annual";
+      }
     }
   }
 </script>
@@ -156,16 +160,18 @@
                 >
                   Quarterly
                 </a>
-                <a
-                  href={$page?.url?.pathname + "?query=ttm"}
-                  on:click|preventDefault={() => updateQuery("ttm")}
-                  class="hidden sm:block p-2 px-5 cursor-pointer {$selectedTimePeriod ===
-                  'ttm'
-                    ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
-                    : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
-                >
-                  TTM
-                </a>
+                {#if displaySubSection !== "ratios"}
+                  <a
+                    href={$page?.url?.pathname + "?query=ttm"}
+                    on:click|preventDefault={() => updateQuery("ttm")}
+                    class="hidden sm:block p-2 px-5 cursor-pointer {$selectedTimePeriod ===
+                    'ttm'
+                      ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                      : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+                  >
+                    TTM
+                  </a>
+                {/if}
               </ul>
 
               <ul class="flex flex-row items-center w-full mt-1 sm:hidden">
@@ -189,15 +195,18 @@
                 >
                   Quarterly
                 </a>
-                <a
-                  href={$page?.url?.pathname + "?query=ttm"}
-                  on:click|preventDefault={() => updateQuery("ttm")}
-                  class="p-2 px-5 cursor-pointer {$selectedTimePeriod === 'ttm'
-                    ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
-                    : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
-                >
-                  TTM
-                </a>
+                {#if displaySubSection !== "ratios"}
+                  <a
+                    href={$page?.url?.pathname + "?query=ttm"}
+                    on:click|preventDefault={() => updateQuery("ttm")}
+                    class="p-2 px-5 cursor-pointer {$selectedTimePeriod ===
+                    'ttm'
+                      ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                      : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+                  >
+                    TTM
+                  </a>
+                {/if}
               </ul>
             </nav>
           </div>

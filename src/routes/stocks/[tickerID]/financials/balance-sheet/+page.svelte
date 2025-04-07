@@ -4,6 +4,7 @@
     stockTicker,
     coolMode,
     timeFrame,
+    selectedTimePeriod,
   } from "$lib/store";
   import { removeCompanyStrings } from "$lib/utils";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
@@ -16,25 +17,11 @@
 
   export let data;
 
-  let isLoaded = true;
   let tableList = [];
   let processedData = {};
 
   let financialData = [];
   let fullStatement = [];
-  let filterRule = "annual";
-  let displayStatement = "revenue";
-
-  let activeIdx = 0;
-
-  const tabs = [
-    {
-      title: "Annual",
-    },
-    {
-      title: "Quarterly",
-    },
-  ];
 
   const statementConfig = [
     {
@@ -229,7 +216,6 @@
   };
 
   fullStatement = data?.getData;
-  displayStatement = "revenue";
 
   const exportFundamentalData = (format = "csv") => {
     if (["Pro", "Plus"]?.includes(data?.user?.tier)) {
@@ -240,8 +226,8 @@
 
       let properties = [
         {
-          key: filterRule === "annual" ? "fiscalYear" : "date",
-          label: filterRule === "annual" ? "Year" : "Quarter",
+          key: $selectedTimePeriod === "annual" ? "fiscalYear" : "date",
+          label: $selectedTimePeriod === "annual" ? "Year" : "Quarter",
         },
       ];
 
@@ -274,7 +260,7 @@
         a.href = url;
         a.download =
           $stockTicker.toLowerCase() +
-          `${filterRule === "annual" ? "_annual" : "_quarter"}_balance_sheet_statement.csv`;
+          `${$selectedTimePeriod === "annual" ? "_annual" : $selectedTimePeriod === "quarterly" ? "_quarter" : "_ttm"}_balance_sheet_statement.csv`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -297,13 +283,16 @@
       }
     });
 
+    // Precompute xList from income (reverse order)
     const xList = [];
     for (let i = financialData.length - 1; i >= 0; i--) {
       const statement = financialData[i];
       const year = statement.fiscalYear.slice(-2);
       const quarter = statement.period;
       xList.push(
-        filterRule === "annual" ? "FY" + year : "FY" + year + " " + quarter,
+        $selectedTimePeriod === "annual"
+          ? "FY" + year
+          : "FY" + year + " " + quarter,
       );
     }
 
@@ -331,7 +320,7 @@
     });
 
     // Build tableList once for all charts and sort by date (newest first)
-    tableList = financialData.map((statement) => ({
+    tableList = financialData?.map((statement) => ({
       date: statement.date,
       // Add more properties if needed
     }));
@@ -340,14 +329,17 @@
   }
 
   $: {
-    if ($timeFrame || activeIdx) {
-      if (activeIdx === 0) {
-        filterRule = "annual";
+    if ($timeFrame || $selectedTimePeriod) {
+      if ($selectedTimePeriod === "annual") {
         fullStatement = data?.getData?.annual;
-      } else {
-        filterRule = "quarterly";
+      } else if ($selectedTimePeriod === "quarterly") {
         fullStatement = data?.getData?.quarter;
+      } else if ($selectedTimePeriod === "ttm") {
+        fullStatement = data?.getData?.ttm;
+      } else {
+        fullStatement = data?.getData?.annual;
       }
+
       financialData = filterStatement(fullStatement, $timeFrame);
       preprocessFinancialData();
     }
@@ -355,8 +347,8 @@
 </script>
 
 <SEO
-  title={`${$displayCompanyName} (${$stockTicker}) Balance Sheet`}
-  description={`Detailed balance sheet for ${$displayCompanyName} (${$stockTicker}), including cash, debt, assets, liabilities, and book value.`}
+  title={`${$displayCompanyName} (${$stockTicker}) Cash Flow Statement`}
+  description={`Detailed cash flow statements for ${$displayCompanyName} (${$stockTicker}), including operating cash flow, capex and free cash flow.`}
 />
 
 <section class=" w-full overflow-hidden h-full">
@@ -367,113 +359,70 @@
       <main class="w-full">
         <div class="sm:pl-7 sm:pb-7 sm:pt-7 m-auto mt-2 sm:mt-0">
           <div
-            class="mb-3 flex flex-col sm:flex-row items-start sm:items-center justify-between"
+            class="mb-3 sm:mb-0 flex flex-col sm:flex-row items-start sm:items-center justify-between"
           >
             <h1 class="text-xl sm:text-2xl font-bold">
-              {removeCompanyStrings($displayCompanyName)} Balance Sheet Statement
+              {removeCompanyStrings($displayCompanyName)} Income Statement
             </h1>
-            <div
-              class="mt-3 sm:mt-0 mb-2 sm:mb-0 bg-gray-300 dark:bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1"
-            >
-              {#each tabs as item, i}
-                {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}
-                  <button
-                    on:click={() => goto("/pricing")}
-                    class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
-                  >
-                    <span class="relative text-sm block font-semibold">
-                      {item.title}
-                      <svg
-                        class="inline-block ml-0.5 -mt-1 w-3.5 h-3.5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        ><path
-                          fill="currentColor"
-                          d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                        /></svg
-                      >
-                    </span>
-                  </button>
-                {:else}
-                  <button
-                    on:click={() => (activeIdx = i)}
-                    class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
-                    i
-                      ? 'z-0'
-                      : ''} "
-                  >
-                    {#if activeIdx === i}
-                      <div class="absolute inset-0 rounded-md bg-[#fff]"></div>
-                    {/if}
-                    <span
-                      class="relative text-sm block font-semibold whitespace-nowrap {activeIdx ===
-                      i
-                        ? 'text-black'
-                        : ''}"
-                    >
-                      {item.title}
-                    </span>
-                  </button>
-                {/if}
-              {/each}
-            </div>
+            <label class="inline-flex sm:hidden mt-4 cursor-pointer relative">
+              <input
+                on:click={toggleMode}
+                type="checkbox"
+                checked={$coolMode}
+                value={$coolMode}
+                class="sr-only peer"
+              />
+              <div
+                class="w-11 h-6 bg-gray-400 rounded-full peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1563F9]"
+              ></div>
+              {#if $coolMode}
+                <span class="ml-2 text-sm"> Table Mode </span>
+              {:else}
+                <span class="ml-2 text-sm"> Chart Mode </span>
+              {/if}
+            </label>
           </div>
 
           <div class="grid grid-cols-1 gap-2">
             {#if financialData?.length > 0}
               <div
-                class="flex flex-row items-center w-full justify-end sm:justify-center"
+                class="flex flex-col sm:flex-row items-start sm:items-end sm:justify-between"
               >
-                <label
-                  class="inline-flex mt-2 sm:mt-0 cursor-pointer relative mr-auto"
+                <span
+                  class="text-xs sm:text-sm order-1 sm:order-0 mt-5 sm:mt-0 text-gray-600 dark:text-gray-400 w-full"
                 >
-                  <input
-                    on:click={toggleMode}
-                    type="checkbox"
-                    checked={$coolMode}
-                    value={$coolMode}
-                    class="sr-only peer"
-                  />
-                  <div
-                    class="w-11 h-6 bg-gray-400 rounded-full peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1563F9]"
-                  ></div>
-                  {#if $coolMode}
-                    <span class="ml-2 text-sm"> Table Mode </span>
-                  {:else}
-                    <span class="ml-2 text-sm"> Chart Mode </span>
-                  {/if}
-                </label>
-
-                <div class="flex flex-row items-center w-fit sm:ml-auto">
-                  <!--
-                  <div class="ml-2 relative inline-block text-left">
-                    <Button
-                      class="shadow-sm w-full border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-5 rounded-md truncate"
-                    >
-                      <svg
-                        class="w-4 h-4 bp:w-5 bp:h-5 pointer-events-none"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        style="max-width:40px"
-                        ><path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
-                        ></path></svg
-                      >
-                    </Button>
-                  </div>
-
-                  <div class="ml-2 relative inline-block text-left grow">
+                  Financials in {financialData?.at(0)?.reportedCurrency}. Fiscal
+                  year is
+                  {data?.getProfileData?.fiscalYearRange}.
+                </span>
+                <div class="flex flex-row items-center justify-end w-full">
+                  <label
+                    class="hidden sm:inline-flex ml-auto mt-2 sm:mt-0 cursor-pointer relative"
+                  >
+                    <input
+                      on:click={toggleMode}
+                      type="checkbox"
+                      checked={$coolMode}
+                      value={$coolMode}
+                      class="sr-only peer"
+                    />
+                    <div
+                      class="w-11 h-6 bg-gray-400 rounded-full peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1563F9]"
+                    ></div>
+                    {#if $coolMode}
+                      <span class="ml-2 text-sm"> Table Mode </span>
+                    {:else}
+                      <span class="ml-2 text-sm"> Chart Mode </span>
+                    {/if}
+                  </label>
+                  <div class="ml-auto sm:ml-5 relative inline-block">
                     <DropdownMenu.Root>
                       <DropdownMenu.Trigger asChild let:builder>
                         <Button
                           builders={[builder]}
-                          class="shadow-sm w-full border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-1.5  rounded-md truncate"
+                          class="shadow-sm w-full sm:w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-1.5  rounded-md truncate"
                         >
-                          <span class="truncate">Raw</span>
+                          <span class="truncate">{$timeFrame}</span>
                           <svg
                             class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
                             viewBox="0 0 20 20"
@@ -492,33 +441,55 @@
                       <DropdownMenu.Content
                         class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                       >
+                        <DropdownMenu.Label
+                          class="text-muted dark:text-gray-400"
+                        >
+                          Select time frame
+                        </DropdownMenu.Label>
+                        <DropdownMenu.Separator />
                         <DropdownMenu.Group>
                           <DropdownMenu.Item
                             on:click={() => ($timeFrame = "5Y")}
                             class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                           >
-                            Billions
+                            5 years
                           </DropdownMenu.Item>
                           <DropdownMenu.Item
                             on:click={() => ($timeFrame = "10Y")}
                             class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                           >
-                            Millions
+                            10 years
                           </DropdownMenu.Item>
                           <DropdownMenu.Item
                             on:click={() => ($timeFrame = "MAX")}
                             class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                           >
-                            Raw
+                            Max
                           </DropdownMenu.Item>
                         </DropdownMenu.Group>
                       </DropdownMenu.Content>
                     </DropdownMenu.Root>
                   </div>
-                  -->
+
+                  <Button
+                    on:click={() => exportFundamentalData("csv")}
+                    class="shadow-sm ml-2 w-fit border-gray-300 dark:border-gray-600 border  sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-1.5  rounded-md truncate"
+                  >
+                    <span class="truncate">Download</span>
+                    <svg
+                      class="{['Pro', 'Plus']?.includes(data?.user?.tier)
+                        ? 'hidden'
+                        : ''} ml-1 -mt-0.5 w-3.5 h-3.5"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      ><path
+                        fill="currentColor"
+                        d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                      /></svg
+                    >
+                  </Button>
                 </div>
               </div>
-
               {#if $coolMode}
                 <div class="grid gap-5 xs:gap-6 lg:grid-cols-3 lg:gap-3">
                   {#each fields as item, i}
@@ -526,7 +497,7 @@
                       data={financialData}
                       {statementConfig}
                       displayStatement={item?.key}
-                      {filterRule}
+                      filterRule={$selectedTimePeriod}
                       {processedData}
                       color={["#ff00cc", "#37ff00", "#0c63e7", "#07c8f9"][
                         i % 4
@@ -535,91 +506,6 @@
                   {/each}
                 </div>
               {:else}
-                <div
-                  class="flex flex-col sm:flex-row items-start sm:items-end sm:justify-between"
-                >
-                  <span
-                    class="text-xs sm:text-sm order-1 sm:order-0 mt-5 sm:mt-0 text-gray-600 dark:text-gray-400 w-full"
-                  >
-                    Financials in {data?.getProfileData?.currency}. Fiscal year
-                    is
-                    {data?.getProfileData?.fiscalYearRange}.
-                  </span>
-                  <div class="flex flex-row items-center justify-end w-full">
-                    <div class="sm:ml-auto relative inline-block">
-                      <DropdownMenu.Root>
-                        <DropdownMenu.Trigger asChild let:builder>
-                          <Button
-                            builders={[builder]}
-                            class="shadow-sm w-full sm:w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-1.5  rounded-md truncate"
-                          >
-                            <span class="truncate">{$timeFrame}</span>
-                            <svg
-                              class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                              style="max-width:40px"
-                              aria-hidden="true"
-                            >
-                              <path
-                                fill-rule="evenodd"
-                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                clip-rule="evenodd"
-                              ></path>
-                            </svg>
-                          </Button>
-                        </DropdownMenu.Trigger>
-                        <DropdownMenu.Content
-                          class="w-56 h-fit max-h-72 overflow-y-auto scroller"
-                        >
-                          <DropdownMenu.Label
-                            class="text-muted dark:text-gray-400"
-                          >
-                            Select time frame
-                          </DropdownMenu.Label>
-                          <DropdownMenu.Separator />
-                          <DropdownMenu.Group>
-                            <DropdownMenu.Item
-                              on:click={() => ($timeFrame = "5Y")}
-                              class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
-                            >
-                              5 years
-                            </DropdownMenu.Item>
-                            <DropdownMenu.Item
-                              on:click={() => ($timeFrame = "10Y")}
-                              class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
-                            >
-                              10 years
-                            </DropdownMenu.Item>
-                            <DropdownMenu.Item
-                              on:click={() => ($timeFrame = "MAX")}
-                              class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
-                            >
-                              Max
-                            </DropdownMenu.Item>
-                          </DropdownMenu.Group>
-                        </DropdownMenu.Content>
-                      </DropdownMenu.Root>
-                    </div>
-                    <Button
-                      on:click={() => exportFundamentalData("csv")}
-                      class="shadow-sm ml-2 w-fit border-gray-300 dark:border-gray-600 border  sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-1.5  rounded-md truncate"
-                    >
-                      <span class="truncate">Download</span>
-                      <svg
-                        class="{['Pro', 'Plus']?.includes(data?.user?.tier)
-                          ? 'hidden'
-                          : ''} ml-1 -mt-0.5 w-3.5 h-3.5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        ><path
-                          fill="currentColor"
-                          d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                        /></svg
-                      >
-                    </Button>
-                  </div>
-                </div>
                 <div
                   class="w-full rounded-none sm:rounded-md m-auto overflow-x-auto no-scrollbar"
                 >
@@ -632,14 +518,16 @@
                           >Fiscal Year</td
                         >
                         {#each financialData as item}
-                          {#if filterRule === "annual"}
+                          {#if $selectedTimePeriod === "annual"}
                             <td
-                              class=" font-semibold text-sm text-end border-l border-gray-300 dark:border-gray-800"
+                              class="min-w-[130px] font-semibold text-sm text-end border-l border-gray-300 dark:border-gray-800"
                             >
                               {"FY" + " " + item?.fiscalYear}
                             </td>
                           {:else}
-                            <td class=" font-semibold text-sm text-end">
+                            <td
+                              class="min-w-[130px] font-semibold text-sm text-end"
+                            >
                               {item?.period + " " + item?.fiscalYear}
                             </td>
                           {/if}
