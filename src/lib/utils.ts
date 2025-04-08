@@ -1350,6 +1350,7 @@ export function getPartyForPoliticians(name) {
     "James Banks": "Republican",
      "April Delaney": "Democratic",
      "David Taylor": "Republican",
+      "Kelly Morrison": "Democratic",
   };
 
   // Combine first and last name to form the key
