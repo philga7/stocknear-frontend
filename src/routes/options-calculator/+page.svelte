@@ -1184,6 +1184,14 @@
   }
 
   async function handleAddOptionLeg() {
+    if (userStrategy?.length >= 5) {
+      toast.error("You've reached the maximum number of option legs.", {
+        style: `border-radius: 5px; background: #fff; color: #000; border: 1px solid ${$mode === "light" ? "#F3F4F6" : "#4B5563"}; font-size: 15px; padding: 10px;`,
+      });
+
+      return;
+    }
+
     if (userStrategy.length === 0) {
       userStrategy = [
         {
@@ -1346,9 +1354,45 @@
     shouldUpdate = true;
   }
 
-  // LIFECYCLE FUNCTIONS
+  async function handleSaveStrategy() {
+    try {
+      // Create filtered strategies without strikeList and dateList
+      const strategiesToSave = userStrategy.map(
+        ({ strikeList, dateList, ...rest }) => rest,
+      );
+
+      // Save the filtered version
+      localStorage?.setItem(
+        "options-calculator-strategy",
+        JSON?.stringify({
+          userStrategy: strategiesToSave,
+          ticker: selectedTicker,
+        }),
+      );
+
+      toast.success("Options Strategy saved!", {
+        style: `border-radius: 5px; background: #fff; color: #000; border: 1px solid ${$mode === "light" ? "#F3F4F6" : "#4B5563"}; font-size: 15px; padding: 10px;`,
+      });
+    } catch (e) {
+      console.log("Failed saving indicator rules: ", e);
+    }
+  }
 
   onMount(async () => {
+    try {
+      const savedStrategy = localStorage?.getItem(
+        "options-calculator-strategy",
+      );
+
+      if (savedStrategy) {
+        const parsedData = JSON.parse(savedStrategy);
+        userStrategy = parsedData?.userStrategy;
+        selectedTicker = parsedData?.ticker;
+      }
+    } catch (e) {
+      console.log(e);
+    }
+
     await getStockData();
     await loadData();
 
@@ -1424,8 +1468,8 @@
                 <div
                   on:click={() => changeStrategy(strategy)}
                   class="{selectedStrategy === strategy?.name
-                    ? 'bg-blue-100 dark:bg-primary text-muted'
-                    : ''} text-sm elect-none flex items-center space-x-2 border border-gray-300 dark:border-gray-600 rounded-full px-3 py-1 text-blue-700 dark:text-white dark:sm:hover:text-white sm:hover:text-muted cursor-pointer"
+                    ? 'bg-blue-100 dark:bg-white text-muted '
+                    : 'text-blue-700 dark:text-white dark:sm:hover:text-white sm:hover:text-muted'} text-sm select-none flex items-center space-x-2 border border-gray-300 dark:border-gray-600 rounded-full px-3 py-1 cursor-pointer"
                 >
                   <span>{strategy.name}</span>
                   {#if strategy?.sentiment}
@@ -1453,57 +1497,122 @@
 
             <div class="mt-4">
               {#if isLoaded && config}
-                <Combobox.Root
-                  items={searchBarData}
-                  bind:inputValue
-                  bind:touchedInput
+                <div
+                  class="{$screenWidth < 640 && $screenWidth
+                    ? 'grid grid-cols-2'
+                    : 'flex flex-row'} items-center w-full mt-3 mb-3"
                 >
-                  <div class="relative w-full">
-                    <Combobox.Input
-                      on:input={search}
-                      class="mb-3 text-sm controls-input bg-white dark:bg-default focus:outline-hidden  border border-gray-300 dark:border-gray-500 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-2 py-1.5 grow w-full max-w-48"
-                      placeholder="Search Ticker"
-                      aria-label="Search Ticker"
-                    />
-                  </div>
-                  {#if inputValue?.length !== 0 && inputValue !== selectedTicker}
-                    <Combobox.Content
-                      class=" z-10 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-default px-1 py-3 shadow-sm outline-hidden"
-                      sideOffset={8}
-                    >
-                      {#each searchBarData as searchItem}
-                        <Combobox.Item
-                          class="cursor-pointer border-b border-gray-300 dark:border-gray-500 last:border-none flex h-fit w-auto select-none items-center rounded-button py-1 px-2  text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-200 dark:data-highlighted:bg-primary"
-                          value={searchItem?.symbol}
-                          label={searchItem?.symbol}
-                          on:click={(e) => changeTicker(searchItem)}
+                  <Combobox.Root
+                    items={searchBarData}
+                    bind:inputValue
+                    bind:touchedInput
+                  >
+                    <div class="relative w-full">
+                      <div
+                        class="absolute inset-y-0 left-0 flex items-center pl-2.5"
+                      >
+                        <svg
+                          class="h-4 w-4 text-icon xs:h-5 xs:w-5"
+                          fill="none"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="3"
+                          stroke="currentcolor"
+                          viewBox="0 0 24 24"
+                          style="max-width: 40px"
+                          aria-hidden="true"
                         >
-                          <div class="flex flex-col items-start">
-                            <span
-                              class="text-sm text-blue-700 dark:text-blue-400"
-                              >{searchItem?.symbol}</span
-                            >
-                            <span
-                              class="text-xs sm:text-sm text-muted dark:text-white"
-                              >{searchItem?.name}</span
-                            >
-                          </div>
-                        </Combobox.Item>
-                      {:else}
-                        <span class="block px-5 py-2 text-sm">
-                          No results found
-                        </span>
-                      {/each}
-                    </Combobox.Content>
-                  {/if}
-                </Combobox.Root>
+                          <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                          ></path>
+                        </svg>
+                      </div>
+                      <Combobox.Input
+                        on:input={search}
+                        class="text-sm  controls-input shadow-sm focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-3 py-2 pl-8 xs:pl-10 grow w-full w-full sm:max-w-56"
+                        placeholder="Add new stock..."
+                        aria-label="Add new stock..."
+                      />
+                    </div>
+                    {#if inputValue?.length !== 0 && inputValue !== selectedTicker}
+                      <Combobox.Content
+                        class=" z-10 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-default px-1 py-3 shadow-sm outline-hidden"
+                        sideOffset={8}
+                      >
+                        {#each searchBarData as searchItem}
+                          <Combobox.Item
+                            class="cursor-pointer border-b border-gray-300 dark:border-gray-500 last:border-none flex h-fit w-auto select-none items-center rounded-button py-1 px-2  text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-200 dark:data-highlighted:bg-primary"
+                            value={searchItem?.symbol}
+                            label={searchItem?.symbol}
+                            on:click={(e) => changeTicker(searchItem)}
+                          >
+                            <div class="flex flex-col items-start">
+                              <span
+                                class="text-sm text-blue-700 dark:text-blue-400"
+                                >{searchItem?.symbol}</span
+                              >
+                              <span
+                                class="text-xs sm:text-sm text-muted dark:text-white"
+                                >{searchItem?.name}</span
+                              >
+                            </div>
+                          </Combobox.Item>
+                        {:else}
+                          <span class="block px-5 py-2 text-sm">
+                            No results found
+                          </span>
+                        {/each}
+                      </Combobox.Content>
+                    {/if}
+                  </Combobox.Root>
+
+                  <button
+                    type="button"
+                    on:click={() => handleAddOptionLeg()}
+                    class="cursor-pointer ml-3 align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm font-semibold shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
+                  >
+                    <svg
+                      class="-ml-0.5 h-5 w-5 text-gray-600 dark:text-gray-300"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    Add Option Leg
+                  </button>
+                  <button
+                    type="button"
+                    on:click={handleSaveStrategy}
+                    class="cursor-pointer mt-3 sm:mt-0 sm:ml-3 align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm font-semibold shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="w-4 h-4"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
+                      ></path>
+                    </svg>
+                    Save Trade
+                  </button>
+                </div>
 
                 <!-- Table container -->
                 <div
-                  class="overflow-x-auto border border-gray-300 dark:border-gray-600 rounded"
+                  class="overflow-x-auto border border-gray-300 dark:border-gray-600 rounded bg-[#F8F9FA] dark:bg-secondary"
                 >
                   <table
-                    class="min-w-full divide-y divide-gray-200 dark:divide-gray-600 bg-[#F8F9FA] dark:bg-secondary"
+                    class="min-w-full divide-y divide-gray-200 dark:divide-gray-600"
                   >
                     <!-- Table head -->
                     <thead class="bg-gray-50 dark:bg-secondary">
@@ -1719,26 +1828,6 @@
                           </td>
                         </tr>
                       {/each}
-
-                      <button
-                        type="button"
-                        on:click={() => handleAddOptionLeg()}
-                        class=" cursor-pointer mt-3 mb-3 ml-3 align-middle inline-flex items-center gap-x-1.5 rounded bg-green-600 px-2.5 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 transition duration-150 ease-in-out whitespace-nowrap"
-                      >
-                        <svg
-                          class="-ml-0.5 h-4 w-4"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          aria-hidden="true"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
-                            clip-rule="evenodd"
-                          ></path>
-                        </svg>
-                        Add Option Leg
-                      </button>
                     </tbody>
                   </table>
                 </div>
@@ -1748,7 +1837,7 @@
                   use:highcharts={config}
                 ></div>
 
-                <div class="mt-5">
+                <div class="mt-10">
                   <h1
                     class="text-2xl font-bold text-gray-800 dark:text-white mb-6"
                   >
