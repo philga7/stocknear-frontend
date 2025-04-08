@@ -537,6 +537,7 @@
       month: "short",
       day: "2-digit",
       year: "numeric",
+      timeZone: "America/New_York",
     });
   };
 

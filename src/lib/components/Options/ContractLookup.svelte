@@ -75,12 +75,13 @@
     setDefault();
   }
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
       month: "short",
       day: "2-digit",
       year: "numeric",
+      timeZone: "America/New_York",
     });
   };
 
