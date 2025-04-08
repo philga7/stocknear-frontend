@@ -72,10 +72,9 @@
     let minValue = Math?.min(...rawData?.map((item) => item?.close));
     let maxValue = Math?.max(...rawData?.map((item) => item?.close));
 
-    if (displayData === "1D") {
+    if (minValue - 0 < 1 && displayData === "1D") {
       //don't delete this sometimes 1D can't find minValue
       minValue = data?.getStockQuote?.dayLow;
-      maxValue = data?.getStockQuote?.dayHigh;
     }
 
     let padding = 0.015;
