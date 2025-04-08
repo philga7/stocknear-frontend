@@ -1355,6 +1355,12 @@
   }
 
   async function handleSaveStrategy() {
+    if (data?.user?.tier !== "Pro") {
+      toast.error("Upgrade to Pro to unlock this feature!", {
+        style: `border-radius: 5px; background: #fff; color: #000; border: 1px solid ${$mode === "light" ? "#F3F4F6" : "#4B5563"}; font-size: 15px; padding: 10px;`,
+      });
+      return;
+    }
     try {
       // Create filtered strategies without strikeList and dateList
       const strategiesToSave = userStrategy.map(
@@ -1379,18 +1385,20 @@
   }
 
   onMount(async () => {
-    try {
-      const savedStrategy = localStorage?.getItem(
-        "options-calculator-strategy",
-      );
+    if (data?.user?.tier === "Pro") {
+      try {
+        const savedStrategy = localStorage?.getItem(
+          "options-calculator-strategy",
+        );
 
-      if (savedStrategy) {
-        const parsedData = JSON.parse(savedStrategy);
-        userStrategy = parsedData?.userStrategy;
-        selectedTicker = parsedData?.ticker;
+        if (savedStrategy) {
+          const parsedData = JSON.parse(savedStrategy);
+          userStrategy = parsedData?.userStrategy;
+          selectedTicker = parsedData?.ticker;
+        }
+      } catch (e) {
+        console.log(e);
       }
-    } catch (e) {
-      console.log(e);
     }
 
     await getStockData();
