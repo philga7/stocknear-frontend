@@ -14,27 +14,6 @@
   import { mode } from "mode-watcher";
   import highcharts from "$lib/highcharts.ts";
 
-  // Types
-  type Strategy = {
-    name: string;
-    sentiment: string;
-    description: string;
-  };
-
-  type OptionLeg = {
-    action: string;
-    quantity: number;
-    date: string;
-    strike: number;
-    optionType: string;
-    optionPrice: number;
-  };
-
-  type SearchResult = {
-    symbol: string;
-    type: string;
-  };
-
   export let data;
 
   // State variables with proper types
@@ -68,13 +47,13 @@
   let rawData: Record<string, any> = {};
 
   // Search variables
-  let searchBarData: SearchResult[] = [];
+  let searchBarData = [];
   let timeoutId: ReturnType<typeof setTimeout>;
   let inputValue = "";
   let touchedInput = false;
 
   // Strategy definitions
-  const prebuiltStrategy: Strategy[] = [
+  const prebuiltStrategy = [
     {
       name: "Long Call",
       sentiment: "Bullish",
@@ -99,6 +78,18 @@
       description:
         "In this strategy, an investor sells a put option, expecting that the price of the underlying asset will remain stable or increase, allowing the investor to keep the premium received from selling the option. Investors typically use a short put strategy when they have a neutral to bullish outlook on the stock and and views a potential assignment as an opportunity to buy the asset at a desirable price.",
     },
+    {
+      name: "Cash Secured Put",
+      sentiment: "Bullish",
+      description:
+        "In this strategy, an investor sells a put option and simultaneously sets aside enough cash to buy the stock. The goal is to be assigned the stock at a desirable price and generate income from the option premium. Investors typically use a cash secured put strategy when they have a neutral to bullish outlook on the stock and view a potential assignment as an opportunity to buy the asset at a desirable price.",
+    },
+    {
+      name: "Bull Call Spread",
+      sentiment: "Bullish",
+      description:
+        "In this strategy, an investor simultaneously purchases call options at a specific strike price and sells the same number of calls at a higher strike price. Both call options have the same expiration date. This strategy is used when the investor is bullish and expects a moderate rise in the price of the underlying asset. The investor limits their upside profit potential but reduces the net premium spent compared to buying a single call option outright. The strategy is also known as a 'debit call spread' because the investor pays a net debit to establish the position.",
+    },
     // Other strategies commented out in original code
   ];
 
@@ -107,7 +98,7 @@
 
   // STRATEGY FUNCTIONS
 
-  async function changeStrategy(strategy: Strategy) {
+  async function changeStrategy(strategy) {
     selectedStrategy = strategy?.name;
     description = strategy?.description;
 
@@ -129,21 +120,47 @@
         selectedOptionType = "Put";
         selectedAction = "Sell";
         break;
+      case "Cash Secured Put":
+        selectedOptionType = "Put";
+        selectedAction = "Sell";
+        break;
       default:
         console.warn("Unknown strategy:", strategy);
         selectedOptionType = null;
         selectedAction = null;
     }
-    userStrategy = [
-      {
-        strike: selectedStrike,
-        optionType: selectedOptionType,
-        date: selectedDate,
-        optionPrice: selectedOptionPrice,
-        quantity: selectedQuantity,
-        action: selectedAction,
-      },
-    ];
+    if (["Bull Call Spread"]?.includes(selectedStrategy)) {
+      userStrategy = [
+        {
+          strike: selectedStrike,
+          optionType: "Call",
+          date: selectedDate,
+          optionPrice: selectedOptionPrice,
+          quantity: 1,
+          action: "Buy",
+        },
+        {
+          strike: selectedStrike,
+          optionType: "Call",
+          date: selectedDate,
+          optionPrice: selectedOptionPrice,
+          quantity: 1,
+          action: "Sell",
+        },
+      ];
+    } else {
+      userStrategy = [
+        {
+          strike: selectedStrike,
+          optionType: selectedOptionType,
+          date: selectedDate,
+          optionPrice: selectedOptionPrice,
+          quantity: selectedQuantity,
+          action: selectedAction,
+        },
+      ];
+    }
+
     shouldUpdate = true;
   }
 
@@ -500,7 +517,7 @@
     }
   };
 
-  async function loadData(state: string) {
+  async function loadData() {
     if (!rawData?.getData) {
       console.error("rawData is undefined or invalid in loadData");
       return;
@@ -525,16 +542,15 @@
           item.strikeList = strikeList;
 
           // Find closest strike to current stock price
-          if (!strikeList.includes(selectedStrike) && strikeList.length > 0) {
+          if (!strikeList?.includes(item?.strike) && strikeList?.length > 0) {
             selectedStrike = strikeList.reduce((closest, strike) => {
               return Math.abs(strike - currentStockPrice) <
                 Math.abs(closest - currentStockPrice)
                 ? strike
                 : closest;
             }, strikeList[0]);
+            item.strike = selectedStrike;
           }
-
-          item.strike = selectedStrike;
 
           // Get option price
           optionSymbol = buildOptionSymbol(
@@ -547,6 +563,8 @@
           const output = await getContractHistory(optionSymbol);
           selectedOptionPrice = output?.history?.at(-1)?.mark || 0;
           item.optionPrice = selectedOptionPrice;
+          item.optionSymbol = optionSymbol;
+          item.optionType = selectedOptionType;
         }
       } else {
         optionData = rawData?.getData[selectedOptionType] || {};
@@ -581,22 +599,20 @@
         selectedOptionPrice = output?.history?.at(-1)?.mark || 0;
 
         // Update user strategy if necessary
-        if (state === "default") {
-          userStrategy = [
-            {
-              date: selectedDate,
-              strike: selectedStrike,
-              optionType: selectedOptionType,
-              optionPrice: selectedOptionPrice,
-              action: selectedAction,
-              quantity: selectedQuantity,
-              strikeList: strikeList,
-              dateList: dateList,
-            },
-          ];
-        }
+        userStrategy = [
+          {
+            date: selectedDate,
+            strike: selectedStrike,
+            optionType: selectedOptionType,
+            optionPrice: selectedOptionPrice,
+            action: selectedAction,
+            quantity: selectedQuantity,
+            strikeList: strikeList,
+            dateList: dateList,
+            optionSymbol: optionSymbol,
+          },
+        ];
       }
-
       shouldUpdate = true;
     } catch (error) {
       console.error("Error loading data:", error);
@@ -644,6 +660,7 @@
       const newLeg = { ...lastLeg }; // Create a shallow copy
       userStrategy = [...userStrategy, newLeg];
     }
+    await loadData();
     shouldUpdate = true;
   }
 
@@ -675,6 +692,7 @@
       // Update the selectedAction (for new legs)
       selectedOptionType = selectedOptionType === "Call" ? "Put" : "Call";
     }
+    await loadData();
     shouldUpdate = true;
   }
 
@@ -699,7 +717,7 @@
       const updatedStrategy = [...userStrategy];
       updatedStrategy[index].date = selectedDate;
       userStrategy = updatedStrategy;
-      await loadData("default");
+      await loadData();
       shouldUpdate = true;
     }
   }
@@ -710,11 +728,12 @@
       const updatedStrategy = [...userStrategy];
       updatedStrategy[index].strike = selectedStrike;
       userStrategy = updatedStrategy;
+      await loadData();
       shouldUpdate = true;
     }
   }
 
-  function handleOptionPriceInput(event: Event, index) {
+  async function handleOptionPriceInput(event: Event, index) {
     const value = (event.target as HTMLInputElement).value;
 
     selectedOptionPrice = value === "" ? null : +value;
@@ -726,12 +745,12 @@
     if (debounceTimeout) clearTimeout(debounceTimeout);
 
     // Set a new debounce timeout
-    debounceTimeout = setTimeout(() => {
+    debounceTimeout = setTimeout(async () => {
       shouldUpdate = true;
     }, 300);
   }
 
-  function handleQuantityInput(event, index) {
+  async function handleQuantityInput(event, index) {
     if (index !== undefined && userStrategy[index]) {
       const value = (event.target as HTMLInputElement).value;
 
@@ -742,7 +761,7 @@
       if (debounceTimeout) clearTimeout(debounceTimeout);
 
       // Set a new debounce timeout
-      debounceTimeout = setTimeout(() => {
+      debounceTimeout = setTimeout(async () => {
         shouldUpdate = true;
       }, 300);
     }
@@ -775,14 +794,14 @@
     }, 50); // delay
   }
 
-  async function changeTicker(data: SearchResult) {
+  async function changeTicker(data) {
     if (!data?.symbol) return;
 
     selectedTicker = data.symbol;
     assetType = data?.type?.toLowerCase() || "stocks";
 
     await getStockData();
-    await loadData("default");
+    await loadData();
     inputValue = "";
     shouldUpdate = true;
   }
@@ -791,7 +810,7 @@
 
   onMount(async () => {
     await getStockData();
-    await loadData("default");
+    await loadData();
 
     shouldUpdate = true;
   });
@@ -881,6 +900,7 @@
                 </div>
               {/each}
             </div>
+
             <div class="border-b border-gray-400 mt-5"></div>
             <h2 class="mt-5 mb-1 text-xl sm:text-2xl font-bold">
               {selectedStrategy}
@@ -945,7 +965,7 @@
                   >
                     <!-- Table head -->
                     <thead class="bg-gray-50 dark:bg-secondary">
-                      <tr>
+                      <tr class="">
                         <th
                           scope="col"
                           class="px-4 py-1.5 text-left text-sm font-semibold"
@@ -997,14 +1017,14 @@
 
                     <!-- Table body -->
                     <tbody
-                      class="bg-[#F8F9FA] dark:bg-secondary divide-y divide-gray-200 dark:divide-gray-800 text-sm"
+                      class="bg-[#F8F9FA] dark:bg-secondary divide-y divide-gray-200 dark:divide-gray-600 text-sm"
                     >
                       {#each userStrategy as item, index}
-                        <tr>
+                        <tr class="">
                           <td class="px-4 whitespace-nowrap font-semibold">
                             {selectedTicker}
                           </td>
-                          <td class="px-4 whitespace-nowrap">
+                          <td class="px-4 whitespace-nowrap py-2">
                             <label
                               on:click={() => handleAction(index)}
                               class="badge px-2 select-none rounded-md {item?.action ===
@@ -1014,7 +1034,7 @@
                               >{item?.action}</label
                             >
                           </td>
-                          <td class="px-4 whitespace-nowrap">
+                          <td class="px-4 whitespace-nowrap py-2">
                             <input
                               type="number"
                               value={userStrategy[index]?.quantity}
@@ -1023,7 +1043,7 @@
                               class="border border-gray-300 dark:border-gray-500 rounded px-2 py-1 w-20 focus:outline-none focus:ring-1 focus:ring-blue-500"
                             />
                           </td>
-                          <td class="px-4 whitespace-nowrap">
+                          <td class="px-4 whitespace-nowrap py-2">
                             <DropdownMenu.Root>
                               <DropdownMenu.Trigger asChild let:builder>
                                 <Button
@@ -1070,7 +1090,7 @@
                               </DropdownMenu.Content>
                             </DropdownMenu.Root>
                           </td>
-                          <td class="px-4 whitespace-nowrap">
+                          <td class="px-4 whitespace-nowrap py-2">
                             <DropdownMenu.Root>
                               <DropdownMenu.Trigger asChild let:builder>
                                 <Button
@@ -1116,14 +1136,14 @@
                               </DropdownMenu.Content>
                             </DropdownMenu.Root>
                           </td>
-                          <td class="px-4 whitespace-nowrap">
+                          <td class="px-4 whitespace-nowrap py-2">
                             <label
                               on:click={() => handleOptionType(index)}
                               class="select-none badge px-2 rounded-md bg-blue-100 text-blue-800 dark:bg-blue-300 dark:text-muted font-semibold cursor-pointer"
                               >{item?.optionType}</label
                             >
                           </td>
-                          <td class="px-4 whitespace-nowrap">
+                          <td class="px-4 whitespace-nowrap py-2">
                             <input
                               type="number"
                               step="0.1"
@@ -1133,13 +1153,13 @@
                               class="border border-gray-300 dark:border-gray-500 rounded px-2 py-1 w-24 focus:outline-none focus:ring-1 focus:ring-blue-500"
                             />
                           </td>
-                          <td class="px-4 whitespace-nowrap">
+                          <td class="px-4 whitespace-nowrap py-2">
                             <div
                               class="flex flex-row items-center m-auto text-center justify-center"
                             >
                               <a
                                 class="inline-block"
-                                href={`/${["stocks", "stock"]?.includes(assetType) ? "stocks" : assetType === "etf" ? "etf" : "index"}/${selectedTicker}/options/contract-lookup?query=${optionSymbol}`}
+                                href={`/${["stocks", "stock"]?.includes(assetType) ? "stocks" : assetType === "etf" ? "etf" : "index"}/${selectedTicker}/options/contract-lookup?query=${userStrategy[index]?.optionSymbol}`}
                               >
                                 <Link
                                   class="w-4 h-4 text-gray-800 dark:text-gray-100 mt-0.5"
