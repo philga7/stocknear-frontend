@@ -2,16 +2,33 @@
   import { displayCompanyName, stockTicker } from "$lib/store";
   import Infobox from "$lib/components/Infobox.svelte";
   import SEO from "$lib/components/SEO.svelte";
+  import TableHeader from "$lib/components/Table/TableHeader.svelte";
+
+  import { onMount } from "svelte";
 
   export let data;
   let dateDistance;
-  let rawData = { history: [] };
+  let rawData = data?.getStockDividend;
+  let stockList = rawData?.history?.slice(0, 50);
   let exDividendDate;
   let dividendYield;
   let annualDividend;
   let payoutFrequency;
   let payoutRatio;
   let dividendGrowth;
+
+  async function handleScroll() {
+    const scrollThreshold = document.body.offsetHeight * 0.8; // 80% of the website height
+    const isBottom = window.innerHeight + window.scrollY >= scrollThreshold;
+    if (isBottom && stockList?.length !== rawData?.history?.length) {
+      const nextIndex = stockList?.length;
+      const filteredNewResults = rawData?.history?.slice(
+        nextIndex,
+        nextIndex + 50,
+      );
+      stockList = [...stockList, ...filteredNewResults];
+    }
+  }
 
   function generateDividendInfoHTML() {
     const history = rawData?.history || [];
@@ -61,9 +78,89 @@
 
   let htmlOutput = `No dividend history available for ${$displayCompanyName}.`;
 
+  onMount(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  });
+
+  let columns = [
+    { key: "date", label: "Ex-Dividend Date", align: "left" },
+    { key: "adjDividend", label: "Cash Amount", align: "right" },
+    { key: "declarationDate", label: "Declaration Date", align: "right" },
+    { key: "recordDate", label: "Record Date", align: "right" },
+    { key: "paymentDate", label: "Pay Date", align: "right" },
+  ];
+
+  let sortOrders = {
+    date: { order: "none", type: "date" },
+    adjDividend: { order: "none", type: "number" },
+    declarationDate: { order: "none", type: "date" },
+    recordDate: { order: "none", type: "date" },
+    paymentDate: { order: "none", type: "date" },
+  };
+
+  const sortData = (key) => {
+    // Reset all other keys to 'none' except the current key
+    for (const k in sortOrders) {
+      if (k !== key) {
+        sortOrders[k].order = "none";
+      }
+    }
+
+    // Cycle through 'none', 'asc', 'desc' for the clicked key
+    const orderCycle = ["none", "asc", "desc"];
+
+    let originalData = rawData?.history;
+
+    const currentOrderIndex = orderCycle.indexOf(sortOrders[key].order);
+    sortOrders[key].order =
+      orderCycle[(currentOrderIndex + 1) % orderCycle.length];
+    const sortOrder = sortOrders[key].order;
+
+    // Reset to original data when 'none' and stop further sorting
+    if (sortOrder === "none") {
+      stockList = [...originalData]?.slice(0, 50); // Reset to original data (spread to avoid mutation)
+      return;
+    }
+
+    // Define a generic comparison function
+    const compareValues = (a, b) => {
+      const { type } = sortOrders[key];
+      let valueA, valueB;
+
+      switch (type) {
+        case "date":
+          valueA = new Date(a[key]);
+          valueB = new Date(b[key]);
+          break;
+        case "string":
+          valueA = a[key].toUpperCase();
+          valueB = b[key].toUpperCase();
+          return sortOrder === "asc"
+            ? valueA.localeCompare(valueB)
+            : valueB.localeCompare(valueA);
+        case "number":
+        default:
+          valueA = parseFloat(a[key]);
+          valueB = parseFloat(b[key]);
+          break;
+      }
+
+      if (sortOrder === "asc") {
+        return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
+      } else {
+        return valueA > valueB ? -1 : valueA < valueB ? 1 : 0;
+      }
+    };
+
+    // Sort using the generic comparison function
+    stockList = [...originalData].sort(compareValues)?.slice(0, 50);
+  };
+
   $: {
     if ($stockTicker) {
-      console.log("call");
       rawData = data?.getStockDividend;
 
       exDividendDate = rawData?.history?.at(0)?.date;
@@ -184,32 +281,18 @@
             <h2 class="text-xl sm:text-2xl font-bold">Dividends History</h2>
           </div>
 
-          {#if rawData?.history?.length > 0}
+          {#if stockList?.length > 0}
             <div
               class="overflow-x-auto no-scrollbar flex justify-start items-center w-full m-auto rounded-none sm:rounded-md mb-4"
             >
               <table
                 class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
               >
-                <thead class="text-muted dark:text-white dark:bg-default">
-                  <tr class="">
-                    <th class="text-start text-sm font-semibold">
-                      Ex-Dividend Date
-                    </th>
-                    <th class="text-end text-sm font-semibold">
-                      Cash Amount
-                    </th>
-                    <th class="text-end text-sm font-semibold">
-                      Declaration Date
-                    </th>
-                    <th class="text-end text-sm font-semibold">
-                      Record Date
-                    </th>
-                    <th class="text-end text-sm font-semibold"> Pay Date </th>
-                  </tr>
+                <thead>
+                  <TableHeader {columns} {sortOrders} {sortData} />
                 </thead>
                 <tbody class="">
-                  {#each rawData?.history as item}
+                  {#each stockList as item}
                     <tr
                       class=" dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                     >
