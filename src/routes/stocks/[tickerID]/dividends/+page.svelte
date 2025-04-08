@@ -5,7 +5,7 @@
 
   export let data;
   let dateDistance;
-  let rawData;
+  let rawData = { history: [] };
   let exDividendDate;
   let dividendYield;
   let annualDividend;
@@ -59,7 +59,7 @@
     }
   }
 
-  let htmlOutput;
+  let htmlOutput = `No dividend history available for ${$displayCompanyName}.`;
 
   $: {
     if ($stockTicker) {
@@ -94,7 +94,7 @@
           <Infobox text={htmlOutput} />
         </div>
 
-        {#if rawData?.history?.length !== 0}
+        {#if rawData?.history?.length > 0}
           <div
             class="shadow-sm mb-4 grid grid-cols-2 grid-rows-1 divide-gray-300 dark:divide-gray-600 rounded-md border border-gray-300 dark:border-gray-600 md:grid-cols-3 md:grid-rows-1 divide-x"
           >
@@ -183,7 +183,7 @@
             <h2 class="text-xl sm:text-2xl font-bold">Dividends History</h2>
           </div>
 
-          {#if rawData?.history?.length !== 0}
+          {#if rawData?.history?.length > 0}
             <div
               class="overflow-x-auto no-scrollbar flex justify-start items-center w-full m-auto rounded-none sm:rounded-md mb-4"
             >
