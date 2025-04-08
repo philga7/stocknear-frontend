@@ -38,7 +38,6 @@
   }
 
   function plotData() {
-    console.log(dataset);
     const plotDataset = [...dataset]?.sort(
       (a, b) => new Date(a?.date) - new Date(b?.date),
     );
@@ -125,7 +124,6 @@
           // Loop through each point in the shared tooltip
           this.points.forEach((point) => {
             tooltipContent += `
-        <span style="display:inline-block; width:10px; height:10px; background-color:${point.color}; border-radius:50%; margin-right:5px;"></span>
         <span class="font-semibold text-sm">${point.series.name}:</span> 
         <span class="font-normal text-sm">${abbreviateNumber(point.y)}</span><br>`;
           });
@@ -155,6 +153,7 @@
           name: "Revenue",
           data: valueList,
           color: $mode === "light" ? "#2C6288" : "white",
+          borderRadius: "2",
         },
       ],
       legend: {
@@ -221,10 +220,18 @@
               >
                 <thead class="text-muted dark:text-white dark:bg-default">
                   <tr class="border-b border-gray-300 dark:border-gray-800">
-                    <th class=" font-semibold text-start text-sm">Quarter</th>
-                    <th class=" font-semibold text-end text-sm">Value</th>
-                    <th class=" font-semibold text-end text-sm"> Change </th>
-                    <th class=" font-semibold text-end text-sm">Growth</th>
+                    <th class=" font-semibold text-start text-sm sm:text-[1rem]"
+                      >Quarter</th
+                    >
+                    <th class=" font-semibold text-end text-sm sm:text-[1rem]"
+                      >Value</th
+                    >
+                    <th class=" font-semibold text-end text-sm sm:text-[1rem]">
+                      Change
+                    </th>
+                    <th class=" font-semibold text-end text-sm sm:text-[1rem]"
+                      >Growth</th
+                    >
                   </tr>
                 </thead>
                 <tbody>
