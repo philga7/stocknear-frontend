@@ -90,13 +90,40 @@
       description:
         "In this strategy, an investor simultaneously purchases call options at a specific strike price and sells the same number of calls at a higher strike price. Both call options have the same expiration date. This strategy is used when the investor is bullish and expects a moderate rise in the price of the underlying asset. The investor limits their upside profit potential but reduces the net premium spent compared to buying a single call option outright. The strategy is also known as a 'debit call spread' because the investor pays a net debit to establish the position.",
     },
-    // Other strategies commented out in original code
+    {
+      name: "Bull Put Spread",
+      sentiment: "Bullish",
+      description:
+        "In this strategy, an investor simultaneously sells put options at a specific strike price and purchases the same number of puts at a lower strike price. Both put options have the same expiration date. This strategy is used when the investor is bullish and expects the price of the underlying asset to remain above the higher strike price at expiration. The investor limits their profit potential but also limits their risk compared to selling puts outright. The strategy is also known as a 'credit put spread' because the investor receives a net credit for establishing the position.",
+    },
+    {
+      name: "Bear Call Spread",
+      sentiment: "Bearish",
+      description:
+        "A bear call spread consists of one short call with a lower strike price and one long call with a higher strike price. This strategy is used when the investor is bearish. The investor limits their downside risk but reduces the net premium spent compared to buying a single put option outright.",
+    },
+    {
+      name: "Bear Put Spread",
+      sentiment: "Bearish",
+      description:
+        "A bear put spread consists of one long put with a higher strike price and one short put with a lower strike price. This strategy is used when the investor is bearish and expects a moderate decline in the price of the underlying asset. The investor limits their downside risk but reduces the net premium spent compared to buying a single put option outright.",
+    },
+    {
+      name: "Long Straddle",
+      sentiment: "Neutral",
+      description:
+        "A long straddle is a volatility strategy which consists of one long call and one long put of the same strike and expiration. This strategy is used when the investor is unsure of the direction of the underlying asset's price, but expects a significant move. The goal of a long straddle is to profit from a very strong move in either direction.",
+    },
+    {
+      name: "Short Straddle",
+      sentiment: "Neutral",
+      description:
+        "A short straddle is a volatility strategy which consists of one short call and one short put of the same strike and expiration. This strategy is used when the investor believes there will be little or no price movement in the underlying asset's price.",
+    },
   ];
 
   let userStrategy = [];
   let description = prebuiltStrategy[0]?.description;
-
-  // STRATEGY FUNCTIONS
 
   async function changeStrategy(strategy) {
     selectedStrategy = strategy?.name;
@@ -178,6 +205,197 @@
           action: "Sell",
         },
       ];
+    } else if (["Bull Put Spread"].includes(selectedStrategy)) {
+      // Find the lower strike first (for the Buy leg)
+      const lowerStrike = selectedStrike;
+
+      // Find a higher strike in the available strikeList for the Sell leg
+      // First, calculate the target strike (40% higher)
+      const targetHigherStrike = lowerStrike * 1.4;
+
+      // Find the closest available strike price that is higher than the lower strike
+      let higherStrike;
+      if (strikeList && strikeList.length > 0) {
+        // Filter strikes that are higher than the lower strike
+        const higherStrikes = strikeList?.filter(
+          (strike) => strike > lowerStrike,
+        );
+
+        if (higherStrikes.length > 0) {
+          // Find the strike closest to our target from the available higher strikes
+          higherStrike = higherStrikes?.reduce((closest, strike) => {
+            return Math.abs(strike - targetHigherStrike) <
+              Math.abs(closest - targetHigherStrike)
+              ? strike
+              : closest;
+          }, higherStrikes[0]);
+        } else {
+          // If no higher strikes available, use the highest available strike
+          higherStrike = Math.max(...strikeList);
+        }
+      } else {
+        // Fallback if strikeList is empty
+        higherStrike = lowerStrike * 1.4;
+      }
+
+      userStrategy = [
+        {
+          strike: higherStrike,
+          optionType: "Put",
+          date: selectedDate,
+          optionPrice: 0, // This will be updated when loadData() is called
+          quantity: 1,
+          action: "Sell",
+        },
+        {
+          strike: lowerStrike,
+          optionType: "Put",
+          optionPrice: 0, // This will be updated when loadData() is called
+          date: selectedDate,
+          quantity: 1,
+          action: "Buy",
+        },
+      ];
+    } else if (["Bear Call Spread"].includes(selectedStrategy)) {
+      // Find the lower strike first (for the Buy leg)
+      const lowerStrike = selectedStrike;
+
+      // Find a higher strike in the available strikeList for the Sell leg
+      // First, calculate the target strike (40% higher)
+      const targetHigherStrike = lowerStrike * 1.4;
+
+      // Find the closest available strike price that is higher than the lower strike
+      let higherStrike;
+      if (strikeList && strikeList.length > 0) {
+        // Filter strikes that are higher than the lower strike
+        const higherStrikes = strikeList?.filter(
+          (strike) => strike > lowerStrike,
+        );
+
+        if (higherStrikes.length > 0) {
+          // Find the strike closest to our target from the available higher strikes
+          higherStrike = higherStrikes?.reduce((closest, strike) => {
+            return Math.abs(strike - targetHigherStrike) <
+              Math.abs(closest - targetHigherStrike)
+              ? strike
+              : closest;
+          }, higherStrikes[0]);
+        } else {
+          // If no higher strikes available, use the highest available strike
+          higherStrike = Math.max(...strikeList);
+        }
+      } else {
+        // Fallback if strikeList is empty
+        higherStrike = lowerStrike * 1.4;
+      }
+
+      userStrategy = [
+        {
+          strike: lowerStrike,
+          optionType: "Call",
+          date: selectedDate,
+          optionPrice: 0, // This will be updated when loadData() is called
+          quantity: 1,
+          action: "Sell",
+        },
+        {
+          strike: higherStrike,
+          optionType: "Call",
+          optionPrice: 0, // This will be updated when loadData() is called
+          date: selectedDate,
+          quantity: 1,
+          action: "Buy",
+        },
+      ];
+    } else if ("Bear Put Spread" === selectedStrategy) {
+      // Find the lower strike first (for the Buy leg)
+      const lowerStrike = selectedStrike;
+
+      // Find a higher strike in the available strikeList for the Sell leg
+      // First, calculate the target strike (40% higher)
+      const targetHigherStrike = lowerStrike * 1.4;
+
+      // Find the closest available strike price that is higher than the lower strike
+      let higherStrike;
+      if (strikeList && strikeList.length > 0) {
+        // Filter strikes that are higher than the lower strike
+        const higherStrikes = strikeList?.filter(
+          (strike) => strike > lowerStrike,
+        );
+
+        if (higherStrikes.length > 0) {
+          // Find the strike closest to our target from the available higher strikes
+          higherStrike = higherStrikes?.reduce((closest, strike) => {
+            return Math.abs(strike - targetHigherStrike) <
+              Math.abs(closest - targetHigherStrike)
+              ? strike
+              : closest;
+          }, higherStrikes[0]);
+        } else {
+          // If no higher strikes available, use the highest available strike
+          higherStrike = Math.max(...strikeList);
+        }
+      } else {
+        // Fallback if strikeList is empty
+        higherStrike = lowerStrike * 1.4;
+      }
+
+      userStrategy = [
+        {
+          strike: higherStrike,
+          optionType: "Put",
+          date: selectedDate,
+          optionPrice: 0, // This will be updated when loadData() is called
+          quantity: 1,
+          action: "Buy",
+        },
+        {
+          strike: lowerStrike,
+          optionType: "Put",
+          optionPrice: 0, // This will be updated when loadData() is called
+          date: selectedDate,
+          quantity: 1,
+          action: "Sell",
+        },
+      ];
+    } else if ("Long Straddle" === selectedStrategy) {
+      userStrategy = [
+        {
+          strike: selectedStrike,
+          optionType: "Call",
+          date: selectedDate,
+          optionPrice: 0,
+          quantity: 1,
+          action: "Buy",
+        },
+        {
+          strike: selectedStrike,
+          optionType: "Put",
+          optionPrice: 0,
+          date: selectedDate,
+          quantity: 1,
+          action: "Buy",
+        },
+      ];
+    } else if ("Short Straddle" === selectedStrategy) {
+      userStrategy = [
+        {
+          strike: selectedStrike,
+          optionType: "Call",
+          date: selectedDate,
+          optionPrice: 0,
+          quantity: 1,
+          action: "Sell",
+        },
+        {
+          strike: selectedStrike,
+          optionType: "Put",
+          optionPrice: 0,
+          date: selectedDate,
+          quantity: 1,
+          action: "Sell",
+        },
+      ];
     } else {
       userStrategy = [
         {
@@ -194,8 +412,6 @@
     await loadData();
     shouldUpdate = true;
   }
-
-  // PAYOFF CALCULATION FUNCTIONS
 
   const payoffFunctions = {
     "Buy Call": (
@@ -1171,7 +1387,9 @@
                       class="badge px-2 text-xs rounded-full {strategy.sentiment ===
                       'Bullish'
                         ? 'bg-green-100 text-green-800 dark:bg-green-300 dark:text-black'
-                        : 'bg-red-100 text-red-800 dark:bg-red-300 dark:text-black'}"
+                        : strategy?.sentiment === 'Bearish'
+                          ? 'bg-red-100 text-red-800 dark:bg-red-300 dark:text-black'
+                          : 'bg-orange-100 text-orange-800 dark:bg-yellow-300/80 dark:text-black'}"
                       >{strategy.sentiment}</span
                     >
                   {/if}
@@ -1495,11 +1713,9 @@
                   <div
                     class="border border-gray-300 dark:border-gray-800 rounded-lg p-4 mb-6 shadow-sm max-w-sm"
                   >
-                    {#each userStrategy as item}
+                    {#each userStrategy as item, index}
                       <div>
-                        {userStrategy?.length > 2
-                          ? "Custom Strategy"
-                          : selectedStrategy}
+                        {"Option-Leg" + " " + (index + 1)}
                       </div>
                       <div
                         class="{item?.action === 'Buy'
