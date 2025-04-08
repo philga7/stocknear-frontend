@@ -120,6 +120,12 @@
       description:
         "A short straddle is a volatility strategy which consists of one short call and one short put of the same strike and expiration. This strategy is used when the investor believes there will be little or no price movement in the underlying asset's price.",
     },
+    {
+      name: "Long Call Butterfly",
+      sentiment: "Neutral",
+      description:
+        "A long call butterfly is an options strategy that is created by purchasing a call option at a lower strike price, selling two call options at a middle strike price, and purchasing another call option at a higher strike price, all with the same expiration date. This strategy is used when an investor believes that the underlying asset will stay within a certain price range until the options expire.",
+    },
   ];
 
   let userStrategy = [];
@@ -394,6 +400,88 @@
           date: selectedDate,
           quantity: 1,
           action: "Sell",
+        },
+      ];
+    } else if ("Long Call Butterfly" === selectedStrategy) {
+      const lowerStrike = selectedStrike;
+
+      // Define target values relative to the lower strike
+      const targetMidStrike = lowerStrike * 1.1;
+      const targetHigherStrike = lowerStrike * 1.2;
+
+      // Initialize the strike values that will be used in the strategy
+      let higherStrike;
+      let midStrike;
+
+      if (strikeList && strikeList.length > 0) {
+        // Filter strikes that are higher than the lower strike
+        const higherStrikes = strikeList.filter(
+          (strike) => strike > lowerStrike,
+        );
+
+        // Determine the higher strike leg:
+        if (higherStrikes.length > 0) {
+          // Choose the strike closest to our targetHigherStrike
+          higherStrike = higherStrikes.reduce((closest, strike) => {
+            return Math.abs(strike - targetHigherStrike) <
+              Math.abs(closest - targetHigherStrike)
+              ? strike
+              : closest;
+          }, higherStrikes[0]);
+        } else {
+          // If no higher strikes are available, fallback to using the highest strike from the list
+          higherStrike = Math.max(...strikeList);
+        }
+
+        // For the mid strike, filter strikes that lie between the lowerStrike and the higherStrike
+        const midStrikes = strikeList.filter(
+          (strike) => strike > lowerStrike && strike < higherStrike,
+        );
+
+        // Determine the mid strike leg:
+        if (midStrikes.length > 0) {
+          // Choose the strike closest to our targetMidStrike
+          midStrike = midStrikes.reduce((closest, strike) => {
+            return Math.abs(strike - targetMidStrike) <
+              Math.abs(closest - targetMidStrike)
+              ? strike
+              : closest;
+          }, midStrikes[0]);
+        } else {
+          // Fallback if no strike exists in between: you could use the target or any other logic.
+          midStrike = lowerStrike * 1.1;
+        }
+      } else {
+        // Fallback if strikeList is empty
+        higherStrike = lowerStrike * 1.2;
+        midStrike = lowerStrike * 1.1;
+      }
+
+      // Build the trading strategy for a Long Call Butterfly
+      userStrategy = [
+        {
+          strike: higherStrike,
+          optionType: "Call",
+          date: selectedDate,
+          optionPrice: 0,
+          quantity: 1,
+          action: "Buy",
+        },
+        {
+          strike: midStrike,
+          optionType: "Call",
+          date: selectedDate,
+          optionPrice: 0,
+          quantity: 2,
+          action: "Sell",
+        },
+        {
+          strike: lowerStrike,
+          optionType: "Call",
+          date: selectedDate,
+          optionPrice: 0,
+          quantity: 1,
+          action: "Buy",
         },
       ];
     } else {
