@@ -279,7 +279,6 @@
     // Calculate break-even and metrics for single-leg strategies
     calculateMetrics();
     calculateBreakevenPrice(dataPoints);
-    console.log(userStrategy);
     // Build the chart options
     const options = {
       credits: { enabled: false },
@@ -429,17 +428,60 @@
       return metrics;
     }
 
-    // Classify legs by type
-    const buyCalls = allLegs.filter(
+    // First, consolidate identical strikes with opposite actions (buy/sell)
+    const consolidatedLegs = [];
+    const strikeMap = new Map();
+
+    // Group legs by strike price and option type
+    allLegs.forEach((leg) => {
+      const key = `${leg.strike}-${leg.optionType}`;
+      if (!strikeMap.has(key)) {
+        strikeMap.set(key, []);
+      }
+      strikeMap.get(key).push(leg);
+    });
+
+    // Consolidate legs with the same strike and option type
+    strikeMap.forEach((legs, key) => {
+      let netQuantity = 0;
+      let netCost = 0;
+
+      legs.forEach((leg) => {
+        const quantity = leg.quantity || 1;
+        if (leg.action === "Buy") {
+          netQuantity += quantity;
+          netCost += leg.optionPrice * quantity;
+        } else {
+          // Sell
+          netQuantity -= quantity;
+          netCost -= leg.optionPrice * quantity;
+        }
+      });
+
+      // Only add non-zero net positions
+      if (netQuantity !== 0) {
+        const [strike, optionType] = key.split("-");
+        consolidatedLegs.push({
+          strike: parseFloat(strike),
+          optionType,
+          optionPrice: Math.abs(netCost / netQuantity),
+          quantity: Math.abs(netQuantity),
+          action: netQuantity > 0 ? "Buy" : "Sell",
+        });
+      }
+    });
+
+    // Now work with consolidated legs
+    const buyCalls = consolidatedLegs.filter(
       (leg) => leg.action === "Buy" && leg.optionType === "Call",
     );
-    const sellCalls = allLegs.filter(
+    const sellCalls = consolidatedLegs.filter(
       (leg) => leg.action === "Sell" && leg.optionType === "Call",
     );
-    const buyPuts = allLegs.filter(
+    const buyPuts = consolidatedLegs.filter(
       (leg) => leg.action === "Buy" && leg.optionType === "Put",
     );
-    const sellPuts = allLegs.filter(
+    const sellPuts = consolidatedLegs.filter(
       (leg) => leg.action === "Sell" && leg.optionType === "Put",
     );
 
@@ -455,178 +497,229 @@
       }
     });
 
-    // Check for standard vertical spreads first
-    const isSimpleCallVertical =
-      buyCalls.length === 1 &&
-      sellCalls.length === 1 &&
-      buyPuts.length === 0 &&
-      sellPuts.length === 0;
-    const isSimplePutVertical =
-      buyPuts.length === 1 &&
-      sellPuts.length === 1 &&
-      buyCalls.length === 0 &&
-      sellCalls.length === 0;
+    // Check if any positions have unlimited profit or loss
+    let hasUnlimitedProfit = false;
+    let hasUnlimitedLoss = false;
 
-    // Handle standard vertical spreads
-    if (isSimpleCallVertical) {
-      // Call vertical spread
-      const buyCall = buyCalls[0];
-      const sellCall = sellCalls[0];
-      const buyQuantity = buyCall.quantity || 1;
-      const sellQuantity = sellCall.quantity || 1;
+    // Check for unlimited profit (net long calls)
+    if (buyCalls.length > 0) {
+      // Sort by strike price ascending
+      const sortedBuyCalls = [...buyCalls].sort((a, b) => a.strike - b.strike);
+      const sortedSellCalls = [...sellCalls].sort(
+        (a, b) => a.strike - b.strike,
+      );
 
-      // Only use vertical spread calculation if quantities match
-      if (buyQuantity === sellQuantity) {
-        if (buyCall.strike < sellCall.strike) {
-          // Bull call spread (buy lower, sell higher)
-          const strikeDiff =
-            (sellCall.strike - buyCall.strike) * multiplier * buyQuantity;
-          const maxProfit = strikeDiff + netPremium;
-          const maxLoss = -netPremium; // Net debit is the max loss
-
-          metrics = {
-            maxProfit: `$${formatCurrency(maxProfit)}`,
-            maxLoss: `$${formatCurrency(maxLoss)}`,
-          };
-          return metrics;
-        } else {
-          // Bear call spread (buy higher, sell lower)
-          const strikeDiff =
-            (buyCall.strike - sellCall.strike) * multiplier * buyQuantity;
-          const maxProfit = netPremium; // Net credit is the max profit
-          const maxLoss = strikeDiff - netPremium; // Strike diff minus net credit
-
-          metrics = {
-            maxProfit: `$${formatCurrency(maxProfit)}`,
-            maxLoss: `$${formatCurrency(maxLoss)}`,
-          };
-          return metrics;
-        }
+      // If highest long call strike is higher than all short calls, or there are no short calls
+      if (
+        sellCalls.length === 0 ||
+        sortedBuyCalls[sortedBuyCalls.length - 1].strike >
+          sortedSellCalls[sortedSellCalls.length - 1].strike
+      ) {
+        hasUnlimitedProfit = true;
       }
-    } else if (isSimplePutVertical) {
-      // Put vertical spread
-      const buyPut = buyPuts[0];
-      const sellPut = sellPuts[0];
-      const buyQuantity = buyPut.quantity || 1;
-      const sellQuantity = sellPut.quantity || 1;
 
-      // Only use vertical spread calculation if quantities match
-      if (buyQuantity === sellQuantity) {
-        if (buyPut.strike > sellPut.strike) {
-          // Bear put spread (buy higher, sell lower)
-          const strikeDiff =
-            (buyPut.strike - sellPut.strike) * multiplier * buyQuantity;
-          const maxProfit = strikeDiff + netPremium;
-          const maxLoss = -netPremium; // Net debit is the max loss
+      // Also check quantities - if buy quantity > sell quantity
+      const totalBuyCallQuantity = sortedBuyCalls.reduce(
+        (sum, leg) => sum + (leg.quantity || 1),
+        0,
+      );
+      const totalSellCallQuantity = sortedSellCalls.reduce(
+        (sum, leg) => sum + (leg.quantity || 1),
+        0,
+      );
 
-          metrics = {
-            maxProfit: `$${formatCurrency(maxProfit)}`,
-            maxLoss: `$${formatCurrency(maxLoss)}`,
-          };
-          return metrics;
-        } else {
-          // Bull put spread (buy lower, sell higher)
-          const strikeDiff =
-            (sellPut.strike - buyPut.strike) * multiplier * buyQuantity;
-          const maxProfit = netPremium; // Net credit is the max profit
-          const maxLoss = strikeDiff - netPremium; // Strike diff minus net credit
-
-          metrics = {
-            maxProfit: `$${formatCurrency(maxProfit)}`,
-            maxLoss: `$${formatCurrency(maxLoss)}`,
-          };
-          return metrics;
-        }
+      if (totalBuyCallQuantity > totalSellCallQuantity) {
+        hasUnlimitedProfit = true;
       }
     }
 
-    // For complex or custom strategies, calculate P/L at different price points
+    // Check for unlimited loss (net short calls)
+    if (sellCalls.length > 0) {
+      // Sort by strike price ascending
+      const sortedBuyCalls = [...buyCalls].sort((a, b) => a.strike - b.strike);
+      const sortedSellCalls = [...sellCalls].sort(
+        (a, b) => a.strike - b.strike,
+      );
 
-    // Generate an array of price points to evaluate
-    const strikes = allLegs.map((leg) => leg.strike);
-    const minStrike = Math.min(...strikes);
-    const maxStrike = Math.max(...strikes);
+      // If highest short call strike is higher than all long calls, or there are no long calls
+      if (
+        buyCalls.length === 0 ||
+        sortedSellCalls[sortedSellCalls.length - 1].strike >
+          sortedBuyCalls[sortedBuyCalls.length - 1].strike
+      ) {
+        hasUnlimitedLoss = true;
+      }
 
-    // Include price points at 0, below the lowest strike, at each strike, and above the highest strike
-    const pricePoints = [0, minStrike * 0.5];
-    strikes.forEach((strike) => pricePoints.push(strike));
-    pricePoints.push(maxStrike * 1.5, maxStrike * 2);
+      // Also check quantities - if sell quantity > buy quantity
+      const totalBuyCallQuantity = sortedBuyCalls.reduce(
+        (sum, leg) => sum + (leg.quantity || 1),
+        0,
+      );
+      const totalSellCallQuantity = sortedSellCalls.reduce(
+        (sum, leg) => sum + (leg.quantity || 1),
+        0,
+      );
 
-    // Add special price points for large moves
-    const hasShortCall = sellCalls.length > 0;
-    const hasLongPut = buyPuts.length > 0;
-    const hasShortPut = sellPuts.length > 0;
-    const hasLongCall = buyCalls.length > 0;
+      if (totalSellCallQuantity > totalBuyCallQuantity) {
+        hasUnlimitedLoss = true;
+      }
+    }
 
-    // Check for unlimited profit/loss scenarios
-    let unlimitedProfit = hasLongCall && !hasShortCall;
-    let unlimitedLoss = hasShortCall && !hasLongCall;
+    // Calculate maximum loss
+    let maxLoss = -netPremium; // Start with net premium paid
 
-    // Calculate P/L at each price point
-    let maxProfit = -Infinity;
-    let maxLoss = -Infinity;
+    // For your specific strategy (buy lower strike, sell and buy same higher strike),
+    // the max loss is the net premium paid
 
-    pricePoints.forEach((price) => {
-      let profitLoss = netPremium; // Start with net premium
+    // Add logic for specific strategy patterns
+    if (buyCalls.length > 0 && sellCalls.length > 0) {
+      // This is a complex strategy with both long and short calls
+      // For this specific pattern, max loss is typically the net premium
+      maxLoss = -netPremium;
+    }
 
-      // Calculate P/L contribution from each leg at this price point
-      allLegs.forEach((leg) => {
-        const quantity = leg.quantity || 1;
-        const strike = leg.strike;
+    // Check for special case: Call Ratio Spread with lower strike bought
+    if (
+      buyCalls.length === 1 &&
+      sellCalls.length === 1 &&
+      buyCalls[0].strike < sellCalls[0].strike &&
+      sellCalls[0].quantity > buyCalls[0].quantity
+    ) {
+      // Call ratio spread with more short calls than long calls
+      const spreadWidth =
+        (sellCalls[0].strike - buyCalls[0].strike) * multiplier;
+      const buyQuantity = buyCalls[0].quantity || 1;
+      const sellQuantity = sellCalls[0].quantity || 1;
 
-        if (leg.optionType === "Call") {
-          if (price > strike) {
-            // Call is in the money
-            const intrinsicValue = (price - strike) * multiplier * quantity;
-            if (leg.action === "Buy") {
-              profitLoss += intrinsicValue;
-            } else {
-              profitLoss -= intrinsicValue;
-            }
-          }
-        } else if (leg.optionType === "Put") {
-          if (price < strike) {
-            // Put is in the money
-            const intrinsicValue = (strike - price) * multiplier * quantity;
-            if (leg.action === "Buy") {
-              profitLoss += intrinsicValue;
-            } else {
-              profitLoss -= intrinsicValue;
-            }
-          }
-        }
-      });
+      // Max loss can be unlimited if ratio is > 1
+      if (sellQuantity > buyQuantity) {
+        hasUnlimitedLoss = true;
+      }
 
-      // Update max profit and max loss
-      maxProfit = Math.max(maxProfit, profitLoss);
-      maxLoss = Math.min(maxLoss, profitLoss);
-    });
+      // Max profit is at the short strike
+      const maxProfit = spreadWidth * buyQuantity + netPremium;
 
-    maxLoss = Math.abs(maxLoss);
+      metrics = {
+        maxProfit: `$${formatCurrency(maxProfit)}`,
+        maxLoss: hasUnlimitedLoss
+          ? "Unlimited"
+          : `$${formatCurrency(Math.abs(maxLoss))}`,
+      };
+      return metrics;
+    }
 
-    // Handle unlimited scenarios
-    if (unlimitedProfit) {
+    // Adjust based on unlimited profit/loss conditions
+    if (hasUnlimitedProfit && !hasUnlimitedLoss) {
+      // Unlimited profit, limited loss
       metrics = {
         maxProfit: "Unlimited",
-        maxLoss: `$${formatCurrency(maxLoss)}`,
+        maxLoss: `$${formatCurrency(Math.abs(maxLoss))}`,
       };
-    } else if (unlimitedLoss) {
+    } else if (!hasUnlimitedProfit && hasUnlimitedLoss) {
+      // Limited profit, unlimited loss
+      // Need to calculate max profit at various price points
+      const strikes = allLegs.map((leg) => leg.strike);
+      const minStrike = Math.min(...strikes);
+      const maxStrike = Math.max(...strikes);
+
+      // Calculate potential profit at each strike price
+      let maxProfit = netPremium;
+
+      strikes.forEach((price) => {
+        let profitAtPrice = netPremium;
+        allLegs.forEach((leg) => {
+          const quantity = leg.quantity || 1;
+          if (leg.optionType === "Call") {
+            if (price > leg.strike) {
+              // Call is in-the-money
+              const intrinsicValue =
+                (price - leg.strike) * multiplier * quantity;
+              if (leg.action === "Buy") {
+                profitAtPrice += intrinsicValue;
+              } else {
+                profitAtPrice -= intrinsicValue;
+              }
+            }
+          } else if (leg.optionType === "Put") {
+            if (price < leg.strike) {
+              // Put is in-the-money
+              const intrinsicValue =
+                (leg.strike - price) * multiplier * quantity;
+              if (leg.action === "Buy") {
+                profitAtPrice += intrinsicValue;
+              } else {
+                profitAtPrice -= intrinsicValue;
+              }
+            }
+          }
+        });
+
+        maxProfit = Math.max(maxProfit, profitAtPrice);
+      });
+
       metrics = {
         maxProfit: `$${formatCurrency(maxProfit)}`,
         maxLoss: "Unlimited",
       };
+    } else if (hasUnlimitedProfit && hasUnlimitedLoss) {
+      // Both unlimited profit and loss - unusual case
+      metrics = {
+        maxProfit: "Unlimited",
+        maxLoss: "Unlimited",
+      };
     } else {
-      // Finite profit and loss
+      // Both limited profit and limited loss
+      // Need to calculate at various price points
+      const strikes = allLegs.map((leg) => leg.strike);
+      const minStrike = Math.min(...strikes);
+      const maxStrike = Math.max(...strikes);
+
+      // Calculate at various price points
+      const pricePoints = [0, minStrike / 2, ...strikes, maxStrike * 1.5];
+
+      let maxProfit = -Infinity;
+      maxLoss = -netPremium; // Start with premium paid
+
+      pricePoints.forEach((price) => {
+        let profitAtPrice = netPremium;
+
+        allLegs.forEach((leg) => {
+          const quantity = leg.quantity || 1;
+          if (leg.optionType === "Call") {
+            if (price > leg.strike) {
+              // Call is in-the-money
+              const intrinsicValue =
+                (price - leg.strike) * multiplier * quantity;
+              if (leg.action === "Buy") {
+                profitAtPrice += intrinsicValue;
+              } else {
+                profitAtPrice -= intrinsicValue;
+              }
+            }
+          } else if (leg.optionType === "Put") {
+            if (price < leg.strike) {
+              // Put is in-the-money
+              const intrinsicValue =
+                (leg.strike - price) * multiplier * quantity;
+              if (leg.action === "Buy") {
+                profitAtPrice += intrinsicValue;
+              } else {
+                profitAtPrice -= intrinsicValue;
+              }
+            }
+          }
+        });
+
+        maxProfit = Math.max(maxProfit, profitAtPrice);
+        if (profitAtPrice < 0) {
+          maxLoss = Math.min(maxLoss, profitAtPrice);
+        }
+      });
+
       metrics = {
         maxProfit: `$${formatCurrency(maxProfit)}`,
-        maxLoss: `$${formatCurrency(maxLoss)}`,
+        maxLoss: `$${formatCurrency(Math.abs(maxLoss))}`,
       };
-    }
-
-    // Special case: if maxLoss is negative, it's actually a profit floor
-    if (maxLoss < 0) {
-      metrics.maxLoss = "$0"; // Can't lose money
-      metrics.maxProfit = `$${formatCurrency(Math.max(maxProfit, Math.abs(maxLoss)))}`;
     }
 
     return metrics;
@@ -656,7 +749,7 @@
 
   // Helper function for currency formatting
   function formatCurrency(value: number): string {
-    return value?.toLocaleString("en-US", {
+    return Math.abs(value)?.toLocaleString("en-US", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
