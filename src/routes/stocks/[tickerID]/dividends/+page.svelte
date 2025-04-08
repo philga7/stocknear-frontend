@@ -63,6 +63,7 @@
 
   $: {
     if ($stockTicker) {
+      console.log("call");
       rawData = data?.getStockDividend;
 
       exDividendDate = rawData?.history?.at(0)?.date;
