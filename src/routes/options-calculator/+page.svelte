@@ -580,10 +580,9 @@
       dataPoints.push([s, aggregatedPayoff]);
     }
 
-    // Calculate break-even and metrics for single-leg strategies
     metrics = calculateMetrics();
     calculateBreakevenPrice(dataPoints);
-    console.log(userStrategy);
+    //console.log(userStrategy);
     const options = {
       credits: { enabled: false },
       chart: {
