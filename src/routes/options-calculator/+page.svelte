@@ -160,7 +160,7 @@
       default:
         break;
     }
-    if (["Bull Call Spread"].includes(selectedStrategy)) {
+    if ("Bull Call Spread" === selectedStrategy) {
       // Find the lower strike first (for the Buy leg)
       const lowerStrike = selectedStrike;
 
@@ -581,9 +581,9 @@
     }
 
     // Calculate break-even and metrics for single-leg strategies
-    calculateMetrics();
+    metrics = calculateMetrics();
     calculateBreakevenPrice(dataPoints);
-    // Build the chart options
+    console.log(userStrategy);
     const options = {
       credits: { enabled: false },
       chart: {
@@ -719,6 +719,7 @@
 
   function calculateMetrics() {
     const multiplier = 100;
+    let metrics = {};
 
     // Get all legs in the strategy
     const allLegs = [...userStrategy];
@@ -732,11 +733,11 @@
       return metrics;
     }
 
-    // First, consolidate identical strikes with opposite actions (buy/sell)
+    // Consolidate identical strikes with opposite actions (Buy/Sell)
     const consolidatedLegs = [];
     const strikeMap = new Map();
 
-    // Group legs by strike price and option type
+    // Group legs by strike and option type
     allLegs.forEach((leg) => {
       const key = `${leg.strike}-${leg.optionType}`;
       if (!strikeMap.has(key)) {
@@ -745,24 +746,21 @@
       strikeMap.get(key).push(leg);
     });
 
-    // Consolidate legs with the same strike and option type
+    // Consolidate legs with same strike/option type into net positions
     strikeMap.forEach((legs, key) => {
       let netQuantity = 0;
       let netCost = 0;
-
       legs.forEach((leg) => {
         const quantity = leg.quantity || 1;
         if (leg.action === "Buy") {
           netQuantity += quantity;
           netCost += leg.optionPrice * quantity;
         } else {
-          // Sell
           netQuantity -= quantity;
           netCost -= leg.optionPrice * quantity;
         }
       });
-
-      // Only add non-zero net positions
+      // Only include legs with nonzero positions
       if (netQuantity !== 0) {
         const [strike, optionType] = key.split("-");
         consolidatedLegs.push({
@@ -775,7 +773,7 @@
       }
     });
 
-    // Now work with consolidated legs
+    // Separate the legs by type and action
     const buyCalls = consolidatedLegs.filter(
       (leg) => leg.action === "Buy" && leg.optionType === "Call",
     );
@@ -789,31 +787,46 @@
       (leg) => leg.action === "Sell" && leg.optionType === "Put",
     );
 
-    // Calculate net premium for the entire strategy
+    // Calculate net premium for the entire strategy.
+    // For each leg, buying incurs a debit and selling generates a credit.
     let netPremium = 0;
-    allLegs.forEach((leg) => {
+    allLegs?.forEach((leg) => {
       const quantity = leg.quantity || 1;
       const premium = leg.optionPrice * multiplier * quantity;
       if (leg.action === "Buy") {
-        netPremium -= premium; // Buying costs money (debit)
+        netPremium -= premium;
       } else {
-        netPremium += premium; // Selling receives money (credit)
+        netPremium += premium;
       }
     });
 
-    // Check if any positions have unlimited profit or loss
+    if (
+      buyCalls.length === 1 &&
+      sellCalls.length === 1 &&
+      sellCalls[0].strike < buyCalls[0].strike
+    ) {
+      const spreadWidth =
+        (buyCalls[0].strike - sellCalls[0].strike) * multiplier;
+      // In a vertical spread, the max profit is the net premium (credit received)
+      // and the maximum loss equals the spread width minus the net premium.
+      const maxProfit = netPremium;
+      const maxLoss = spreadWidth - netPremium;
+      metrics = {
+        maxProfit: `$${formatCurrency(maxProfit)}`,
+        maxLoss: `$${formatCurrency(maxLoss)}`,
+      };
+      return metrics;
+    }
+    // --- END VERTICAL SPREAD HANDLING ---
+
+    // Determine unlimited profit/loss flags based on calls only.
     let hasUnlimitedProfit = false;
     let hasUnlimitedLoss = false;
-
-    // Check for unlimited profit (net long calls)
     if (buyCalls.length > 0) {
-      // Sort by strike price ascending
       const sortedBuyCalls = [...buyCalls].sort((a, b) => a.strike - b.strike);
       const sortedSellCalls = [...sellCalls].sort(
         (a, b) => a.strike - b.strike,
       );
-
-      // If highest long call strike is higher than all short calls, or there are no short calls
       if (
         sellCalls.length === 0 ||
         sortedBuyCalls[sortedBuyCalls.length - 1].strike >
@@ -821,8 +834,6 @@
       ) {
         hasUnlimitedProfit = true;
       }
-
-      // Also check quantities - if buy quantity > sell quantity
       const totalBuyCallQuantity = sortedBuyCalls.reduce(
         (sum, leg) => sum + (leg.quantity || 1),
         0,
@@ -831,21 +842,15 @@
         (sum, leg) => sum + (leg.quantity || 1),
         0,
       );
-
       if (totalBuyCallQuantity > totalSellCallQuantity) {
         hasUnlimitedProfit = true;
       }
     }
-
-    // Check for unlimited loss (net short calls)
     if (sellCalls.length > 0) {
-      // Sort by strike price ascending
       const sortedBuyCalls = [...buyCalls].sort((a, b) => a.strike - b.strike);
       const sortedSellCalls = [...sellCalls].sort(
         (a, b) => a.strike - b.strike,
       );
-
-      // If highest short call strike is higher than all long calls, or there are no long calls
       if (
         buyCalls.length === 0 ||
         sortedSellCalls[sortedSellCalls.length - 1].strike >
@@ -853,8 +858,6 @@
       ) {
         hasUnlimitedLoss = true;
       }
-
-      // Also check quantities - if sell quantity > buy quantity
       const totalBuyCallQuantity = sortedBuyCalls.reduce(
         (sum, leg) => sum + (leg.quantity || 1),
         0,
@@ -863,166 +866,122 @@
         (sum, leg) => sum + (leg.quantity || 1),
         0,
       );
-
       if (totalSellCallQuantity > totalBuyCallQuantity) {
         hasUnlimitedLoss = true;
       }
     }
 
-    // Calculate maximum loss
-    let maxLoss = -netPremium; // Start with net premium paid
+    // Check if exactly one put is bought and one sold (vertical spread)
+    if (buyPuts.length === 1 && sellPuts.length === 1) {
+      const buyStrike = buyPuts[0].strike;
+      const sellStrike = sellPuts[0].strike;
+      const spreadWidth = Math.abs(buyStrike - sellStrike) * multiplier;
 
-    // For your specific strategy (buy lower strike, sell and buy same higher strike),
-    // the max loss is the net premium paid
-
-    // Add logic for specific strategy patterns
-    if (buyCalls.length > 0 && sellCalls.length > 0) {
-      // This is a complex strategy with both long and short calls
-      // For this specific pattern, max loss is typically the net premium
-      maxLoss = -netPremium;
-    }
-
-    // Check for special case: Call Ratio Spread with lower strike bought
-    if (
-      buyCalls.length === 1 &&
-      sellCalls.length === 1 &&
-      buyCalls[0].strike < sellCalls[0].strike &&
-      sellCalls[0].quantity > buyCalls[0].quantity
-    ) {
-      // Call ratio spread with more short calls than long calls
-      const spreadWidth =
-        (sellCalls[0].strike - buyCalls[0].strike) * multiplier;
-      const buyQuantity = buyCalls[0].quantity || 1;
-      const sellQuantity = sellCalls[0].quantity || 1;
-
-      // Max loss can be unlimited if ratio is > 1
-      if (sellQuantity > buyQuantity) {
-        hasUnlimitedLoss = true;
+      // Bull Put Spread (sell higher strike, buy lower strike)
+      if (sellStrike > buyStrike) {
+        const maxProfit = netPremium; // Net credit received
+        const maxLoss = spreadWidth - maxProfit;
+        metrics = {
+          maxProfit: `$${formatCurrency(maxProfit)}`,
+          maxLoss: `$${formatCurrency(maxLoss)}`,
+        };
+        return metrics;
       }
-
-      // Max profit is at the short strike
-      const maxProfit = spreadWidth * buyQuantity + netPremium;
-
-      metrics = {
-        maxProfit: `$${formatCurrency(maxProfit)}`,
-        maxLoss: hasUnlimitedLoss
-          ? "Unlimited"
-          : `$${formatCurrency(Math.abs(maxLoss))}`,
-      };
-      return metrics;
+      // Bear Put Spread (buy higher strike, sell lower strike)
+      else if (buyStrike > sellStrike) {
+        const maxProfit = spreadWidth - Math.abs(netPremium);
+        const maxLoss = Math.abs(netPremium); // Net debit paid
+        metrics = {
+          maxProfit: `$${formatCurrency(maxProfit)}`,
+          maxLoss: `$${formatCurrency(maxLoss)}`,
+        };
+        return metrics;
+      }
     }
 
-    // Adjust based on unlimited profit/loss conditions
+    // --- RATIO SPREAD HANDLING ---
+    // Detect a pattern where two (or more) long calls bracket the short call(s) with balanced quantities.
+    if (buyCalls.length >= 2 && sellCalls.length >= 1) {
+      const buyStrikes = buyCalls.map((leg) => leg.strike);
+      const sellStrikes = sellCalls.map((leg) => leg.strike);
+      const lowerBuy = Math.min(...buyStrikes);
+      const higherBuy = Math.max(...buyStrikes);
+      const minSell = Math.min(...sellStrikes);
+      const maxSell = Math.max(...sellStrikes);
+      const totalBuyCallQuantity = buyCalls.reduce(
+        (sum, leg) => sum + leg.quantity,
+        0,
+      );
+      const totalSellCallQuantity = sellCalls.reduce(
+        (sum, leg) => sum + leg.quantity,
+        0,
+      );
+
+      if (
+        lowerBuy < minSell &&
+        higherBuy > maxSell &&
+        totalBuyCallQuantity === totalSellCallQuantity
+      ) {
+        hasUnlimitedProfit = false;
+        hasUnlimitedLoss = false;
+      }
+    }
+    // --- END RATIO SPREAD HANDLING ---
+
+    // If we haven't returned earlier via a specific branch, then compute profit and loss
+    // by simulating across various price points.
+    const strikes = allLegs.map((leg) => leg.strike);
+    const minStrike = Math.min(...strikes);
+    const maxStrike = Math.max(...strikes);
+    const pricePoints = [0, minStrike / 2, ...strikes, maxStrike * 1.5];
+
+    let computedMaxProfit = -Infinity;
+    let computedMaxLoss = -netPremium; // starting point: net premium paid
+
+    pricePoints.forEach((price) => {
+      let profitAtPrice = netPremium;
+      allLegs.forEach((leg) => {
+        const quantity = leg.quantity || 1;
+        if (leg.optionType === "Call") {
+          if (price > leg.strike) {
+            const intrinsicValue = (price - leg.strike) * multiplier * quantity;
+            profitAtPrice +=
+              leg.action === "Buy" ? intrinsicValue : -intrinsicValue;
+          }
+        } else if (leg.optionType === "Put") {
+          if (price < leg.strike) {
+            const intrinsicValue = (leg.strike - price) * multiplier * quantity;
+            profitAtPrice +=
+              leg.action === "Buy" ? intrinsicValue : -intrinsicValue;
+          }
+        }
+      });
+      computedMaxProfit = Math.max(computedMaxProfit, profitAtPrice);
+      if (profitAtPrice < 0) {
+        computedMaxLoss = Math.min(computedMaxLoss, profitAtPrice);
+      }
+    });
+
+    // Adjust final metrics based on unlimited flags:
     if (hasUnlimitedProfit && !hasUnlimitedLoss) {
-      // Unlimited profit, limited loss
       metrics = {
         maxProfit: "Unlimited",
-        maxLoss: `$${formatCurrency(Math.abs(maxLoss))}`,
+        maxLoss: `$${formatCurrency(Math.abs(computedMaxLoss))}`,
       };
     } else if (!hasUnlimitedProfit && hasUnlimitedLoss) {
-      // Limited profit, unlimited loss
-      // Need to calculate max profit at various price points
-      const strikes = allLegs.map((leg) => leg.strike);
-      const minStrike = Math.min(...strikes);
-      const maxStrike = Math.max(...strikes);
-
-      // Calculate potential profit at each strike price
-      let maxProfit = netPremium;
-
-      strikes.forEach((price) => {
-        let profitAtPrice = netPremium;
-        allLegs.forEach((leg) => {
-          const quantity = leg.quantity || 1;
-          if (leg.optionType === "Call") {
-            if (price > leg.strike) {
-              // Call is in-the-money
-              const intrinsicValue =
-                (price - leg.strike) * multiplier * quantity;
-              if (leg.action === "Buy") {
-                profitAtPrice += intrinsicValue;
-              } else {
-                profitAtPrice -= intrinsicValue;
-              }
-            }
-          } else if (leg.optionType === "Put") {
-            if (price < leg.strike) {
-              // Put is in-the-money
-              const intrinsicValue =
-                (leg.strike - price) * multiplier * quantity;
-              if (leg.action === "Buy") {
-                profitAtPrice += intrinsicValue;
-              } else {
-                profitAtPrice -= intrinsicValue;
-              }
-            }
-          }
-        });
-
-        maxProfit = Math.max(maxProfit, profitAtPrice);
-      });
-
       metrics = {
-        maxProfit: `$${formatCurrency(maxProfit)}`,
+        maxProfit: `$${formatCurrency(computedMaxProfit)}`,
         maxLoss: "Unlimited",
       };
     } else if (hasUnlimitedProfit && hasUnlimitedLoss) {
-      // Both unlimited profit and loss - unusual case
       metrics = {
         maxProfit: "Unlimited",
         maxLoss: "Unlimited",
       };
     } else {
-      // Both limited profit and limited loss
-      // Need to calculate at various price points
-      const strikes = allLegs.map((leg) => leg.strike);
-      const minStrike = Math.min(...strikes);
-      const maxStrike = Math.max(...strikes);
-
-      // Calculate at various price points
-      const pricePoints = [0, minStrike / 2, ...strikes, maxStrike * 1.5];
-
-      let maxProfit = -Infinity;
-      maxLoss = -netPremium; // Start with premium paid
-
-      pricePoints.forEach((price) => {
-        let profitAtPrice = netPremium;
-
-        allLegs.forEach((leg) => {
-          const quantity = leg.quantity || 1;
-          if (leg.optionType === "Call") {
-            if (price > leg.strike) {
-              // Call is in-the-money
-              const intrinsicValue =
-                (price - leg.strike) * multiplier * quantity;
-              if (leg.action === "Buy") {
-                profitAtPrice += intrinsicValue;
-              } else {
-                profitAtPrice -= intrinsicValue;
-              }
-            }
-          } else if (leg.optionType === "Put") {
-            if (price < leg.strike) {
-              // Put is in-the-money
-              const intrinsicValue =
-                (leg.strike - price) * multiplier * quantity;
-              if (leg.action === "Buy") {
-                profitAtPrice += intrinsicValue;
-              } else {
-                profitAtPrice -= intrinsicValue;
-              }
-            }
-          }
-        });
-
-        maxProfit = Math.max(maxProfit, profitAtPrice);
-        if (profitAtPrice < 0) {
-          maxLoss = Math.min(maxLoss, profitAtPrice);
-        }
-      });
-
       metrics = {
-        maxProfit: `$${formatCurrency(maxProfit)}`,
-        maxLoss: `$${formatCurrency(Math.abs(maxLoss))}`,
+        maxProfit: `$${formatCurrency(computedMaxProfit)}`,
+        maxLoss: `$${formatCurrency(Math.abs(computedMaxLoss))}`,
       };
     }
 
