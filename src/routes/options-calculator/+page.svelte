@@ -125,25 +125,55 @@
         selectedAction = "Sell";
         break;
       default:
-        console.warn("Unknown strategy:", strategy);
-        selectedOptionType = null;
-        selectedAction = null;
+        break;
     }
-    if (["Bull Call Spread"]?.includes(selectedStrategy)) {
+    if (["Bull Call Spread"].includes(selectedStrategy)) {
+      // Find the lower strike first (for the Buy leg)
+      const lowerStrike = selectedStrike;
+
+      // Find a higher strike in the available strikeList for the Sell leg
+      // First, calculate the target strike (40% higher)
+      const targetHigherStrike = lowerStrike * 1.4;
+
+      // Find the closest available strike price that is higher than the lower strike
+      let higherStrike;
+      if (strikeList && strikeList.length > 0) {
+        // Filter strikes that are higher than the lower strike
+        const higherStrikes = strikeList?.filter(
+          (strike) => strike > lowerStrike,
+        );
+
+        if (higherStrikes.length > 0) {
+          // Find the strike closest to our target from the available higher strikes
+          higherStrike = higherStrikes?.reduce((closest, strike) => {
+            return Math.abs(strike - targetHigherStrike) <
+              Math.abs(closest - targetHigherStrike)
+              ? strike
+              : closest;
+          }, higherStrikes[0]);
+        } else {
+          // If no higher strikes available, use the highest available strike
+          higherStrike = Math.max(...strikeList);
+        }
+      } else {
+        // Fallback if strikeList is empty
+        higherStrike = lowerStrike * 1.4;
+      }
+
       userStrategy = [
         {
-          strike: selectedStrike,
+          strike: lowerStrike,
           optionType: "Call",
           date: selectedDate,
-          optionPrice: selectedOptionPrice,
+          optionPrice: 0, // This will be updated when loadData() is called
           quantity: 1,
           action: "Buy",
         },
         {
-          strike: selectedStrike,
+          strike: higherStrike,
           optionType: "Call",
+          optionPrice: 0, // This will be updated when loadData() is called
           date: selectedDate,
-          optionPrice: selectedOptionPrice,
           quantity: 1,
           action: "Sell",
         },
@@ -160,7 +190,8 @@
         },
       ];
     }
-
+    userStrategy = [...userStrategy];
+    await loadData();
     shouldUpdate = true;
   }
 
@@ -248,6 +279,7 @@
     // Calculate break-even and metrics for single-leg strategies
     calculateMetrics();
     calculateBreakevenPrice(dataPoints);
+    console.log(userStrategy);
     // Build the chart options
     const options = {
       credits: { enabled: false },
@@ -385,69 +417,105 @@
   function calculateMetrics() {
     const multiplier = 100;
 
-    let totalPremium = 0;
-    let overallMaxProfit = 0;
-    let overallMaxLoss = 0;
-    let unlimitedProfit = false;
-    let unlimitedLoss = false;
+    // Determine if the strategy is a vertical spread for calls:
+    const buyCalls = userStrategy.filter(
+      (leg) => leg.action === "Buy" && leg.optionType === "Call",
+    );
+    const sellCalls = userStrategy.filter(
+      (leg) => leg.action === "Sell" && leg.optionType === "Call",
+    );
 
-    // Loop through each leg in the strategy.
-    for (let i = 0; i < userStrategy.length; i++) {
-      const leg = userStrategy[i];
-      const quantity = leg?.quantity || 1; // Default to 1 if quantity is missing.
+    // If we have both buy and sell call legs, assume a vertical spread.
+    if (buyCalls.length > 0 && sellCalls.length > 0) {
+      // For simplicity, assume one pairing per vertical spread.
+      // Find the highest strike among the sell calls (short leg) and the lowest strike among the buy calls (long leg).
+      const lowerBuyCall = buyCalls.reduce((prev, curr) =>
+        prev.strike < curr.strike ? prev : curr,
+      );
+      const higherSellCall = sellCalls.reduce((prev, curr) =>
+        prev.strike > curr.strike ? prev : curr,
+      );
 
-      // Multiply the premium by the contract multiplier and quantity.
-      totalPremium += leg.optionPrice * multiplier * quantity;
-      const scenarioKey = `${leg?.action} ${leg?.optionType}`;
-      let legProfit = 0;
-      let legLoss = 0;
+      // Calculate net premium (net debit)
+      // Note: Adjust if quantities differ.
+      const netDebit =
+        lowerBuyCall.optionPrice * multiplier * (lowerBuyCall.quantity || 1) -
+        higherSellCall.optionPrice *
+          multiplier *
+          (higherSellCall.quantity || 1);
 
-      // Determine metrics for each leg based on its scenario.
-      if (scenarioKey === "Buy Call") {
-        // Long call: unlimited profit, limited loss (the premium paid).
-        legProfit = Infinity;
-        legLoss = leg.optionPrice * multiplier * quantity;
-        unlimitedProfit = true;
-      } else if (scenarioKey === "Sell Call") {
-        // Short call: limited profit (premium received), unlimited loss.
-        legProfit = leg.optionPrice * multiplier * quantity;
-        legLoss = -Infinity;
-        unlimitedLoss = true;
-      } else if (scenarioKey === "Buy Put") {
-        // Long put: profit is (strike * multiplier minus premium) and loss is the premium paid.
-        legProfit =
-          (leg.strike * multiplier - leg.optionPrice * multiplier) * quantity;
-        legLoss = leg.optionPrice * multiplier * quantity;
-      } else if (scenarioKey === "Sell Put") {
-        // Short put: profit is the premium received;
-        // Maximum loss is the difference between strike * multiplier and the premium, scaled by quantity.
-        legProfit = leg.optionPrice * multiplier * quantity;
-        legLoss =
-          (leg.strike * multiplier - leg.optionPrice * multiplier) * quantity;
-      } else {
-        console.error("Metrics not defined for scenario:", scenarioKey);
-        legProfit = 0;
-        legLoss = 0;
+      // Maximum profit is the difference in strikes times the multiplier minus the net debit.
+      const strikeDiff =
+        (higherSellCall.strike - lowerBuyCall.strike) * multiplier;
+      const maxProfit = strikeDiff - netDebit;
+      const maxLoss = netDebit;
+
+      metrics = {
+        maxProfit: `$${formatCurrency(maxProfit)}`,
+        maxLoss: `$${formatCurrency(maxLoss)}`,
+      };
+    } else {
+      // Otherwise, use the individual leg logic.
+      let overallMaxProfit = 0;
+      let overallMaxLoss = 0;
+      let unlimitedProfit = false;
+      let unlimitedLoss = false;
+      let totalPremium = 0;
+
+      // Loop through each leg in the strategy.
+      for (let i = 0; i < userStrategy.length; i++) {
+        const leg = userStrategy[i];
+        const quantity = leg?.quantity || 1;
+        totalPremium += leg.optionPrice * multiplier * quantity;
+
+        const scenarioKey = `${leg?.action} ${leg?.optionType}`;
+        let legProfit = 0;
+        let legLoss = 0;
+
+        if (scenarioKey === "Buy Call") {
+          // Long call: unlimited profit, limited loss (the premium paid).
+          legProfit = Infinity;
+          legLoss = leg.optionPrice * multiplier * quantity;
+          unlimitedProfit = true;
+        } else if (scenarioKey === "Sell Call") {
+          // Short call: limited profit (premium received), unlimited loss.
+          legProfit = leg.optionPrice * multiplier * quantity;
+          legLoss = -Infinity;
+          unlimitedLoss = true;
+        } else if (scenarioKey === "Buy Put") {
+          // Long put: profit is (strike * multiplier minus premium) and loss is the premium paid.
+          legProfit =
+            (leg.strike * multiplier - leg.optionPrice * multiplier) * quantity;
+          legLoss = leg.optionPrice * multiplier * quantity;
+        } else if (scenarioKey === "Sell Put") {
+          // Short put: profit is the premium received;
+          // Maximum loss is the difference between strike * multiplier and the premium, scaled by quantity.
+          legProfit = leg.optionPrice * multiplier * quantity;
+          legLoss =
+            (leg.strike * multiplier - leg.optionPrice * multiplier) * quantity;
+        } else {
+          console.error("Metrics not defined for scenario:", scenarioKey);
+          legProfit = 0;
+          legLoss = 0;
+        }
+
+        if (isFinite(legProfit)) {
+          overallMaxProfit += legProfit;
+        }
+        if (isFinite(legLoss)) {
+          overallMaxLoss += legLoss;
+        }
       }
 
-      // Sum only the finite numbers.
-      if (isFinite(legProfit)) {
-        overallMaxProfit += legProfit;
-      }
-      if (isFinite(legLoss)) {
-        overallMaxLoss += legLoss;
-      }
+      metrics = {
+        maxProfit: unlimitedProfit
+          ? "Unlimited"
+          : `$${formatCurrency(overallMaxProfit)}`,
+        maxLoss: unlimitedLoss
+          ? "Unlimited"
+          : `$${formatCurrency(overallMaxLoss)}`,
+      };
     }
-
-    // Format the aggregated metrics.
-    metrics = {
-      maxProfit: unlimitedProfit
-        ? "Unlimited"
-        : `$${formatCurrency(overallMaxProfit)}`,
-      maxLoss: unlimitedLoss
-        ? "Unlimited"
-        : `$${formatCurrency(overallMaxLoss)}`,
-    };
   }
 
   function calculateBreakevenPrice(dataPoints) {
@@ -542,13 +610,16 @@
           item.strikeList = strikeList;
 
           // Find closest strike to current stock price
-          if (!strikeList?.includes(item?.strike) && strikeList?.length > 0) {
-            selectedStrike = strikeList.reduce((closest, strike) => {
+          if (
+            !item.strikeList?.includes(item?.strike) &&
+            item.strikeList?.length > 0
+          ) {
+            selectedStrike = item?.strikeList?.reduce((closest, strike) => {
               return Math.abs(strike - currentStockPrice) <
                 Math.abs(closest - currentStockPrice)
                 ? strike
                 : closest;
-            }, strikeList[0]);
+            }, item.strikeList[0]);
             item.strike = selectedStrike;
           }
 
