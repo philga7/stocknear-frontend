@@ -64,7 +64,7 @@
   let optionSymbol: string;
   let breakEvenPrice: number | null = null;
   let totalPremium: number;
-  let limits: Record<string, string> = {};
+  let metrics: Record<string, string> = {};
   let rawData: Record<string, any> = {};
 
   // Search variables
@@ -102,7 +102,7 @@
     // Other strategies commented out in original code
   ];
 
-  let userStrategy: OptionLeg[] = [];
+  let userStrategy = [];
   let description = prebuiltStrategy[0]?.description;
 
   // STRATEGY FUNCTIONS
@@ -134,33 +134,49 @@
         selectedOptionType = null;
         selectedAction = null;
     }
-
-    await loadData("default");
+    userStrategy = [
+      {
+        strike: selectedStrike,
+        optionType: selectedOptionType,
+        date: selectedDate,
+        optionPrice: selectedOptionPrice,
+        quantity: selectedQuantity,
+        action: selectedAction,
+      },
+    ];
     shouldUpdate = true;
   }
 
   // PAYOFF CALCULATION FUNCTIONS
 
   const payoffFunctions = {
-    "Buy Call": (s: number, strike: number, premium: number) =>
-      s < strike ? -premium : (s - strike) * 100 * selectedQuantity - premium,
+    "Buy Call": (
+      s: number,
+      strike: number,
+      premium: number,
+      quantity: number,
+    ) => (s < strike ? -premium : (s - strike) * 100 * quantity - premium),
 
-    "Sell Call": (s: number, strike: number, premium: number) =>
-      s < strike ? premium : premium - (s - strike) * 100 * selectedQuantity,
+    "Sell Call": (
+      s: number,
+      strike: number,
+      premium: number,
+      quantity: number,
+    ) => (s < strike ? premium : premium - (s - strike) * 100 * quantity),
 
-    "Buy Put": (s: number, strike: number, premium: number) =>
-      s > strike ? -premium : (strike - s) * 100 * selectedQuantity - premium,
+    "Buy Put": (
+      s: number,
+      strike: number,
+      premium: number,
+      quantity: number,
+    ) => (s > strike ? -premium : (strike - s) * 100 * quantity - premium),
 
-    "Sell Put": (s: number, strike: number, premium: number) =>
-      s > strike ? premium : premium - (strike - s) * 100 * selectedQuantity,
-  };
-
-  // Define break-even calculators for each scenario (using per-share price)
-  const breakEvenCalculators = {
-    "Buy Call": (strike: number, optionPrice: number) => strike + optionPrice,
-    "Sell Call": (strike: number, optionPrice: number) => strike + optionPrice,
-    "Buy Put": (strike: number, optionPrice: number) => strike - optionPrice,
-    "Sell Put": (strike: number, optionPrice: number) => strike - optionPrice,
+    "Sell Put": (
+      s: number,
+      strike: number,
+      premium: number,
+      quantity: number,
+    ) => (s > strike ? premium : premium - (strike - s) * 100 * quantity),
   };
 
   const formatDate = (dateString: string) => {
@@ -200,6 +216,7 @@
             s,
             leg.strike,
             legPremium,
+            leg.quantity,
           );
         } else {
           console.error(
@@ -211,9 +228,9 @@
       dataPoints.push([s, aggregatedPayoff]);
     }
 
-    // Calculate break-even and limits for single-leg strategies
-    calculateBreakEvenAndLimits();
-
+    // Calculate break-even and metrics for single-leg strategies
+    calculateMetrics();
+    calculateBreakevenPrice(dataPoints);
     // Build the chart options
     const options = {
       credits: { enabled: false },
@@ -258,9 +275,11 @@
                 dashStyle: "Dash",
                 width: $screenWidth < 640 ? 0 : 1.5,
                 label: {
-                  text: `<span class="hidden sm:block text-black dark:text-white text-sm">Breakeven $${breakEvenPrice.toFixed(
-                    2,
-                  )}</span>`,
+                  text: `<span class="hidden sm:block text-black dark:text-white text-sm">Breakeven $${
+                    typeof breakEvenPrice === "number"
+                      ? breakEvenPrice.toFixed(2)
+                      : ""
+                  }</span>`,
                   style: { color: $mode === "light" ? "black" : "white" },
                 },
                 zIndex: 5,
@@ -346,49 +365,55 @@
     return options;
   }
 
-  function calculateBreakEvenAndLimits() {
+  function calculateMetrics() {
+    const multiplier = 100;
+
     let totalPremium = 0;
     let overallMaxProfit = 0;
     let overallMaxLoss = 0;
     let unlimitedProfit = false;
     let unlimitedLoss = false;
 
-    // Loop through each leg in the strategy
+    // Loop through each leg in the strategy.
     for (let i = 0; i < userStrategy.length; i++) {
       const leg = userStrategy[i];
-      totalPremium += leg.optionPrice; // accumulate total premium
-      const scenarioKey = `${leg?.action} ${leg?.optionType}`;
+      const quantity = leg?.quantity || 1; // Default to 1 if quantity is missing.
 
+      // Multiply the premium by the contract multiplier and quantity.
+      totalPremium += leg.optionPrice * multiplier * quantity;
+      const scenarioKey = `${leg?.action} ${leg?.optionType}`;
       let legProfit = 0;
       let legLoss = 0;
 
-      // Determine limits for each leg based on its scenario
+      // Determine metrics for each leg based on its scenario.
       if (scenarioKey === "Buy Call") {
-        // Profit is unlimited for a long call, loss limited to the premium paid.
+        // Long call: unlimited profit, limited loss (the premium paid).
         legProfit = Infinity;
-        legLoss = -leg.optionPrice;
+        legLoss = leg.optionPrice * multiplier * quantity;
         unlimitedProfit = true;
       } else if (scenarioKey === "Sell Call") {
-        // Profit is limited to the premium received; loss is unlimited.
-        legProfit = leg.optionPrice;
+        // Short call: limited profit (premium received), unlimited loss.
+        legProfit = leg.optionPrice * multiplier * quantity;
         legLoss = -Infinity;
         unlimitedLoss = true;
       } else if (scenarioKey === "Buy Put") {
-        // For a long put, profit is (strike * 100) minus the premium, loss is the premium paid.
-        legProfit = leg.strike * 100 - leg.optionPrice;
-        legLoss = -leg.optionPrice;
+        // Long put: profit is (strike * multiplier minus premium) and loss is the premium paid.
+        legProfit =
+          (leg.strike * multiplier - leg.optionPrice * multiplier) * quantity;
+        legLoss = leg.optionPrice * multiplier * quantity;
       } else if (scenarioKey === "Sell Put") {
-        // For a short put, profit is the premium received, loss is (strike * 100 - premium).
-        legProfit = leg.optionPrice;
-        legLoss = -(leg.strike * 100 - leg.optionPrice);
+        // Short put: profit is the premium received;
+        // Maximum loss is the difference between strike * multiplier and the premium, scaled by quantity.
+        legProfit = leg.optionPrice * multiplier * quantity;
+        legLoss =
+          (leg.strike * multiplier - leg.optionPrice * multiplier) * quantity;
       } else {
-        console.error("Limits not defined for scenario:", scenarioKey);
-        // Defaulting to zero contribution if unknown
+        console.error("Metrics not defined for scenario:", scenarioKey);
         legProfit = 0;
         legLoss = 0;
       }
 
-      // Sum only the finite numbers. If any leg is unlimited, the corresponding flag is set.
+      // Sum only the finite numbers.
       if (isFinite(legProfit)) {
         overallMaxProfit += legProfit;
       }
@@ -397,8 +422,8 @@
       }
     }
 
-    // Format the aggregated limits: if any leg was unlimited, set overall accordingly.
-    limits = {
+    // Format the aggregated metrics.
+    metrics = {
       maxProfit: unlimitedProfit
         ? "Unlimited"
         : `$${formatCurrency(overallMaxProfit)}`,
@@ -406,29 +431,37 @@
         ? "Unlimited"
         : `$${formatCurrency(overallMaxLoss)}`,
     };
+  }
 
-    // For break-even price, if there's exactly one leg, compute it; otherwise, set it to null.
-    if (userStrategy.length === 1) {
-      const leg = userStrategy[0];
-      const scenarioKey = `${leg?.action} ${leg?.optionType}`;
-      if (breakEvenCalculators[scenarioKey]) {
-        breakEvenPrice = breakEvenCalculators[scenarioKey](
-          leg.strike,
-          leg.optionPrice,
-        );
+  function calculateBreakevenPrice(dataPoints) {
+    breakEvenPrice = null;
+    // Loop over the dataPoints to find a sign change from loss to profit or vice versa
+    for (let i = 1; i < dataPoints.length; i++) {
+      const [prevPrice, prevProfitLoss] = dataPoints[i - 1];
+      const [currPrice, currProfitLoss] = dataPoints[i];
+
+      // Check if there is a sign change between consecutive points
+      if (
+        (prevProfitLoss < 0 && currProfitLoss >= 0) ||
+        (prevProfitLoss > 0 && currProfitLoss <= 0)
+      ) {
+        // Linear interpolation to estimate the exact crossing point
+        const priceDiff = currPrice - prevPrice;
+        const profitDiff = currProfitLoss - prevProfitLoss;
+        const ratio = Math.abs(prevProfitLoss) / Math.abs(profitDiff);
+        breakEvenPrice = prevPrice + ratio * priceDiff;
+        break;
       }
     }
   }
 
   // Helper function for currency formatting
   function formatCurrency(value: number): string {
-    return value.toLocaleString("en-US", {
+    return value?.toLocaleString("en-US", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
   }
-
-  // DATA LOADING FUNCTIONS
 
   const getContractHistory = async (contractId: string) => {
     const cacheKey = contractId;
@@ -473,8 +506,6 @@
       return;
     }
 
-    isLoaded = false;
-
     try {
       if (userStrategy?.length > 0) {
         for (const item of userStrategy) {
@@ -490,7 +521,7 @@
             item.date = selectedDate;
           }
 
-          strikeList = optionData[selectedDate] || [];
+          strikeList = optionData[item.date] || [];
           item.strikeList = strikeList;
 
           // Find closest strike to current stock price
@@ -508,9 +539,9 @@
           // Get option price
           optionSymbol = buildOptionSymbol(
             selectedTicker,
-            selectedDate,
-            selectedOptionType,
-            selectedStrike,
+            item?.date,
+            item?.optionType,
+            item?.strike,
           );
 
           const output = await getContractHistory(optionSymbol);
@@ -591,27 +622,6 @@
 
       rawData = (await response.json()) || {};
       currentStockPrice = rawData?.getStockQuote?.price || 0;
-
-      // Initialize option data
-      if (rawData?.getData) {
-        optionData = rawData.getData[selectedOptionType] || {};
-        dateList = Object.keys(optionData);
-
-        if (dateList.length > 0) {
-          selectedDate = dateList[0];
-          strikeList = optionData[selectedDate] || [];
-
-          // Select strike closest to current stock price
-          if (strikeList.length > 0) {
-            selectedStrike = strikeList.reduce((closest, strike) => {
-              return Math.abs(strike - currentStockPrice) <
-                Math.abs(closest - currentStockPrice)
-                ? strike
-                : closest;
-            }, strikeList[0]);
-          }
-        }
-      }
     } catch (error) {
       console.error("Error fetching stock data:", error);
     }
@@ -689,6 +699,7 @@
       const updatedStrategy = [...userStrategy];
       updatedStrategy[index].date = selectedDate;
       userStrategy = updatedStrategy;
+      await loadData("default");
       shouldUpdate = true;
     }
   }
@@ -703,23 +714,20 @@
     }
   }
 
-  function handleOptionPriceInput(event: Event) {
+  function handleOptionPriceInput(event: Event, index) {
     const value = (event.target as HTMLInputElement).value;
 
     selectedOptionPrice = value === "" ? null : +value;
+    const updatedStrategy = [...userStrategy];
+    updatedStrategy[index].optionPrice = selectedOptionPrice;
+    userStrategy = updatedStrategy;
 
     // Clear any existing debounce timeout
     if (debounceTimeout) clearTimeout(debounceTimeout);
 
     // Set a new debounce timeout
     debounceTimeout = setTimeout(() => {
-      if (userStrategy.length > 0) {
-        userStrategy = userStrategy.map((leg) => ({
-          ...leg,
-          optionPrice: selectedOptionPrice,
-        }));
-        shouldUpdate = true;
-      }
+      shouldUpdate = true;
     }, 300);
   }
 
@@ -729,18 +737,15 @@
 
       selectedQuantity = value === "" ? null : +value;
       const updatedStrategy = [...userStrategy];
-      updatedStrategy[index].quantity = updatedStrategy[index].quantity =
-        selectedQuantity;
+      updatedStrategy[index].quantity = selectedQuantity;
       userStrategy = updatedStrategy;
+      if (debounceTimeout) clearTimeout(debounceTimeout);
+
+      // Set a new debounce timeout
+      debounceTimeout = setTimeout(() => {
+        shouldUpdate = true;
+      }, 300);
     }
-
-    // Clear any existing debounce timeout
-    if (debounceTimeout) clearTimeout(debounceTimeout);
-
-    // Set a new debounce timeout
-    debounceTimeout = setTimeout(() => {
-      shouldUpdate = true;
-    }, 300);
   }
 
   async function search() {
@@ -779,6 +784,7 @@
     await getStockData();
     await loadData("default");
     inputValue = "";
+    shouldUpdate = true;
   }
 
   // LIFECYCLE FUNCTIONS
@@ -800,7 +806,10 @@
   $: {
     if (shouldUpdate) {
       shouldUpdate = false;
+
       config = plotData();
+      userStrategy = [...userStrategy];
+
       isLoaded = true;
     }
   }
@@ -1120,7 +1129,7 @@
                               step="0.1"
                               min="0"
                               value={userStrategy[index]?.optionPrice}
-                              on:input={handleOptionPriceInput}
+                              on:input={(e) => handleOptionPriceInput(e, index)}
                               class="border border-gray-300 dark:border-gray-500 rounded px-2 py-1 w-24 focus:outline-none focus:ring-1 focus:ring-blue-500"
                             />
                           </td>
@@ -1239,7 +1248,9 @@
                       </div>
                       <div class="flex items-baseline">
                         <span class="text-lg font-semibold"
-                          >${breakEvenPrice?.toFixed(2)}</span
+                          >{typeof breakEvenPrice === "number"
+                            ? "$" + breakEvenPrice?.toFixed(2)
+                            : "n/a"}</span
                         >
                       </div>
                     </div>
@@ -1289,7 +1300,7 @@
                       <div
                         class="text-lg font-semibold text-green-800 dark:text-green-400"
                       >
-                        {limits?.maxProfit}
+                        {metrics?.maxProfit}
                       </div>
                     </div>
 
@@ -1307,7 +1318,7 @@
                       <div
                         class="text-lg font-semibold text-red-600 dark:text-red-400"
                       >
-                        {limits?.maxLoss}
+                        {metrics?.maxLoss}
                       </div>
                     </div>
                   </div>
