@@ -1,3 +1,5 @@
+
+
   // Helper function for currency formatting
   function formatCurrency(value: number): string {
     return Math.abs(value)?.toLocaleString("en-US", {
@@ -309,3 +311,92 @@ for (let i = 1; i < dataPoints.length; i++) {
 
 return breakEvenPrice;
 }
+
+  const payoffFunctions = {
+    "Buy Call": (
+      s: number,
+      strike: number,
+      premium: number,
+      quantity: number,
+    ) => (s < strike ? -premium : (s - strike) * 100 * quantity - premium),
+
+    "Sell Call": (
+      s: number,
+      strike: number,
+      premium: number,
+      quantity: number,
+    ) => (s < strike ? premium : premium - (s - strike) * 100 * quantity),
+
+    "Buy Put": (
+      s: number,
+      strike: number,
+      premium: number,
+      quantity: number,
+    ) => (s > strike ? -premium : (strike - s) * 100 * quantity - premium),
+
+    "Sell Put": (
+      s: number,
+      strike: number,
+      premium: number,
+      quantity: number,
+    ) => (s > strike ? premium : premium - (strike - s) * 100 * quantity),
+  };
+
+function plotData(userStrategy, currentStockPrice) {
+    // Determine x-axis range based on current stock price and max leg strike
+    if (!userStrategy || userStrategy.length === 0) {
+      return null;
+    }
+
+    const maxLegStrike = Math.max(...userStrategy.map((leg) => leg.strike));
+    const xMin = 0;
+    const xMax = Math.floor(Math.max(currentStockPrice, maxLegStrike) * 3);
+    const step = 10;
+
+    // Calculate the total premium across all legs
+    let totalPremium = userStrategy.reduce((sum, leg) => {
+      return sum + leg.optionPrice * 100 * leg.quantity;
+    }, 0);
+
+    // Compute the aggregated payoff at each underlying price
+    const dataPoints = [];
+    for (let s = xMin; s <= xMax; s += step) {
+      let aggregatedPayoff = 0;
+      userStrategy.forEach((leg) => {
+        const legPremium = leg.optionPrice * 100 * leg.quantity;
+        const scenarioKey = `${leg.action} ${leg.optionType}`;
+        if (payoffFunctions[scenarioKey]) {
+          aggregatedPayoff += payoffFunctions[scenarioKey](
+            s,
+            leg.strike,
+            legPremium,
+            leg.quantity,
+          );
+        } else {
+          console.error(
+            "Payoff function not implemented for scenario:",
+            scenarioKey,
+          );
+        }
+      });
+      dataPoints.push([s, aggregatedPayoff]);
+    }
+
+    const metrics = calculateMetrics(userStrategy);
+    let breakEvenPrice = calculateBreakevenPrice(dataPoints);
+  
+
+    return {metrics, breakEvenPrice, totalPremium, dataPoints, xMin, xMax};
+  }
+
+
+  onmessage = async (event) => {
+  const { userStrategy, currentStockPrice } = event.data;
+ 
+  const output = plotData(userStrategy, currentStockPrice);
+
+   
+  postMessage({ message: "success", output });
+};
+
+export {};

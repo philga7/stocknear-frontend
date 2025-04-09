@@ -21,6 +21,8 @@
   let shouldUpdate = false;
   let config: any = null;
   let downloadWorker: Worker | undefined;
+  let plotWorker: Worker | undefined;
+  let strategyWorker: Worker | undefined;
 
   // Strategy selection
   let selectedStrategy = "Long Call";
@@ -139,460 +141,18 @@
     await loadData();
   };
 
-  async function changeStrategy(strategy) {
-    selectedStrategy = strategy?.name;
-    description = strategy?.description;
+  const handlePlotMessage = async (event) => {
+    const output = event?.data?.output;
+    metrics = output?.metrics;
+    config = output?.options;
+    breakEvenPrice = output?.breakEvenPrice;
+    totalPremium = output?.totalPremium;
 
-    // Set appropriate option type and action based on strategy
-    switch (selectedStrategy) {
-      case "Long Call":
-        selectedOptionType = "Call";
-        selectedAction = "Buy";
-        break;
-      case "Short Call":
-        selectedOptionType = "Call";
-        selectedAction = "Sell";
-        break;
-      case "Long Put":
-        selectedOptionType = "Put";
-        selectedAction = "Buy";
-        break;
-      case "Short Put":
-        selectedOptionType = "Put";
-        selectedAction = "Sell";
-        break;
-      case "Cash Secured Put":
-        selectedOptionType = "Put";
-        selectedAction = "Sell";
-        break;
-      default:
-        break;
-    }
-    if ("Bull Call Spread" === selectedStrategy) {
-      // Find the lower strike first (for the Buy leg)
-      const lowerStrike = selectedStrike;
+    const xMax = output?.xMax;
+    const xMin = output?.xMin;
+    const dataPoints = output?.dataPoints;
 
-      // Find a higher strike in the available strikeList for the Sell leg
-      // First, calculate the target strike (40% higher)
-      const targetHigherStrike = lowerStrike * 1.4;
-
-      // Find the closest available strike price that is higher than the lower strike
-      let higherStrike;
-      if (strikeList && strikeList.length > 0) {
-        // Filter strikes that are higher than the lower strike
-        const higherStrikes = strikeList?.filter(
-          (strike) => strike > lowerStrike,
-        );
-
-        if (higherStrikes.length > 0) {
-          // Find the strike closest to our target from the available higher strikes
-          higherStrike = higherStrikes?.reduce((closest, strike) => {
-            return Math.abs(strike - targetHigherStrike) <
-              Math.abs(closest - targetHigherStrike)
-              ? strike
-              : closest;
-          }, higherStrikes[0]);
-        } else {
-          // If no higher strikes available, use the highest available strike
-          higherStrike = Math.max(...strikeList);
-        }
-      } else {
-        // Fallback if strikeList is empty
-        higherStrike = lowerStrike * 1.4;
-      }
-
-      userStrategy = [
-        {
-          strike: lowerStrike,
-          optionType: "Call",
-          date: selectedDate,
-          optionPrice: 0, // This will be updated when loadData() is called
-          quantity: 1,
-          action: "Buy",
-        },
-        {
-          strike: higherStrike,
-          optionType: "Call",
-          optionPrice: 0, // This will be updated when loadData() is called
-          date: selectedDate,
-          quantity: 1,
-          action: "Sell",
-        },
-      ];
-    } else if (["Bull Put Spread"].includes(selectedStrategy)) {
-      // Find the lower strike first (for the Buy leg)
-      const lowerStrike = selectedStrike;
-
-      // Find a higher strike in the available strikeList for the Sell leg
-      // First, calculate the target strike (40% higher)
-      const targetHigherStrike = lowerStrike * 1.4;
-
-      // Find the closest available strike price that is higher than the lower strike
-      let higherStrike;
-      if (strikeList && strikeList.length > 0) {
-        // Filter strikes that are higher than the lower strike
-        const higherStrikes = strikeList?.filter(
-          (strike) => strike > lowerStrike,
-        );
-
-        if (higherStrikes.length > 0) {
-          // Find the strike closest to our target from the available higher strikes
-          higherStrike = higherStrikes?.reduce((closest, strike) => {
-            return Math.abs(strike - targetHigherStrike) <
-              Math.abs(closest - targetHigherStrike)
-              ? strike
-              : closest;
-          }, higherStrikes[0]);
-        } else {
-          // If no higher strikes available, use the highest available strike
-          higherStrike = Math.max(...strikeList);
-        }
-      } else {
-        // Fallback if strikeList is empty
-        higherStrike = lowerStrike * 1.4;
-      }
-
-      userStrategy = [
-        {
-          strike: higherStrike,
-          optionType: "Put",
-          date: selectedDate,
-          optionPrice: 0, // This will be updated when loadData() is called
-          quantity: 1,
-          action: "Sell",
-        },
-        {
-          strike: lowerStrike,
-          optionType: "Put",
-          optionPrice: 0, // This will be updated when loadData() is called
-          date: selectedDate,
-          quantity: 1,
-          action: "Buy",
-        },
-      ];
-    } else if (["Bear Call Spread"].includes(selectedStrategy)) {
-      // Find the lower strike first (for the Buy leg)
-      const lowerStrike = selectedStrike;
-
-      // Find a higher strike in the available strikeList for the Sell leg
-      // First, calculate the target strike (40% higher)
-      const targetHigherStrike = lowerStrike * 1.4;
-
-      // Find the closest available strike price that is higher than the lower strike
-      let higherStrike;
-      if (strikeList && strikeList.length > 0) {
-        // Filter strikes that are higher than the lower strike
-        const higherStrikes = strikeList?.filter(
-          (strike) => strike > lowerStrike,
-        );
-
-        if (higherStrikes.length > 0) {
-          // Find the strike closest to our target from the available higher strikes
-          higherStrike = higherStrikes?.reduce((closest, strike) => {
-            return Math.abs(strike - targetHigherStrike) <
-              Math.abs(closest - targetHigherStrike)
-              ? strike
-              : closest;
-          }, higherStrikes[0]);
-        } else {
-          // If no higher strikes available, use the highest available strike
-          higherStrike = Math.max(...strikeList);
-        }
-      } else {
-        // Fallback if strikeList is empty
-        higherStrike = lowerStrike * 1.4;
-      }
-
-      userStrategy = [
-        {
-          strike: lowerStrike,
-          optionType: "Call",
-          date: selectedDate,
-          optionPrice: 0, // This will be updated when loadData() is called
-          quantity: 1,
-          action: "Sell",
-        },
-        {
-          strike: higherStrike,
-          optionType: "Call",
-          optionPrice: 0, // This will be updated when loadData() is called
-          date: selectedDate,
-          quantity: 1,
-          action: "Buy",
-        },
-      ];
-    } else if ("Bear Put Spread" === selectedStrategy) {
-      // Find the lower strike first (for the Buy leg)
-      const lowerStrike = selectedStrike;
-
-      // Find a higher strike in the available strikeList for the Sell leg
-      // First, calculate the target strike (40% higher)
-      const targetHigherStrike = lowerStrike * 1.4;
-
-      // Find the closest available strike price that is higher than the lower strike
-      let higherStrike;
-      if (strikeList && strikeList.length > 0) {
-        // Filter strikes that are higher than the lower strike
-        const higherStrikes = strikeList?.filter(
-          (strike) => strike > lowerStrike,
-        );
-
-        if (higherStrikes.length > 0) {
-          // Find the strike closest to our target from the available higher strikes
-          higherStrike = higherStrikes?.reduce((closest, strike) => {
-            return Math.abs(strike - targetHigherStrike) <
-              Math.abs(closest - targetHigherStrike)
-              ? strike
-              : closest;
-          }, higherStrikes[0]);
-        } else {
-          // If no higher strikes available, use the highest available strike
-          higherStrike = Math.max(...strikeList);
-        }
-      } else {
-        // Fallback if strikeList is empty
-        higherStrike = lowerStrike * 1.4;
-      }
-
-      userStrategy = [
-        {
-          strike: higherStrike,
-          optionType: "Put",
-          date: selectedDate,
-          optionPrice: 0, // This will be updated when loadData() is called
-          quantity: 1,
-          action: "Buy",
-        },
-        {
-          strike: lowerStrike,
-          optionType: "Put",
-          optionPrice: 0, // This will be updated when loadData() is called
-          date: selectedDate,
-          quantity: 1,
-          action: "Sell",
-        },
-      ];
-    } else if ("Long Straddle" === selectedStrategy) {
-      userStrategy = [
-        {
-          strike: selectedStrike,
-          optionType: "Call",
-          date: selectedDate,
-          optionPrice: 0,
-          quantity: 1,
-          action: "Buy",
-        },
-        {
-          strike: selectedStrike,
-          optionType: "Put",
-          optionPrice: 0,
-          date: selectedDate,
-          quantity: 1,
-          action: "Buy",
-        },
-      ];
-    } else if ("Short Straddle" === selectedStrategy) {
-      userStrategy = [
-        {
-          strike: selectedStrike,
-          optionType: "Call",
-          date: selectedDate,
-          optionPrice: 0,
-          quantity: 1,
-          action: "Sell",
-        },
-        {
-          strike: selectedStrike,
-          optionType: "Put",
-          optionPrice: 0,
-          date: selectedDate,
-          quantity: 1,
-          action: "Sell",
-        },
-      ];
-    } else if ("Long Call Butterfly" === selectedStrategy) {
-      const lowerStrike = selectedStrike;
-
-      // Define target values relative to the lower strike
-      const targetMidStrike = lowerStrike * 1.1;
-      const targetHigherStrike = lowerStrike * 1.2;
-
-      // Initialize the strike values that will be used in the strategy
-      let higherStrike;
-      let midStrike;
-
-      if (strikeList && strikeList.length > 0) {
-        // Filter strikes that are higher than the lower strike
-        const higherStrikes = strikeList.filter(
-          (strike) => strike > lowerStrike,
-        );
-
-        // Determine the higher strike leg:
-        if (higherStrikes.length > 0) {
-          // Choose the strike closest to our targetHigherStrike
-          higherStrike = higherStrikes.reduce((closest, strike) => {
-            return Math.abs(strike - targetHigherStrike) <
-              Math.abs(closest - targetHigherStrike)
-              ? strike
-              : closest;
-          }, higherStrikes[0]);
-        } else {
-          // If no higher strikes are available, fallback to using the highest strike from the list
-          higherStrike = Math.max(...strikeList);
-        }
-
-        // For the mid strike, filter strikes that lie between the lowerStrike and the higherStrike
-        const midStrikes = strikeList.filter(
-          (strike) => strike > lowerStrike && strike < higherStrike,
-        );
-
-        // Determine the mid strike leg:
-        if (midStrikes.length > 0) {
-          // Choose the strike closest to our targetMidStrike
-          midStrike = midStrikes.reduce((closest, strike) => {
-            return Math.abs(strike - targetMidStrike) <
-              Math.abs(closest - targetMidStrike)
-              ? strike
-              : closest;
-          }, midStrikes[0]);
-        } else {
-          // Fallback if no strike exists in between: you could use the target or any other logic.
-          midStrike = lowerStrike * 1.1;
-        }
-      } else {
-        // Fallback if strikeList is empty
-        higherStrike = lowerStrike * 1.2;
-        midStrike = lowerStrike * 1.1;
-      }
-
-      // Build the trading strategy for a Long Call Butterfly
-      userStrategy = [
-        {
-          strike: higherStrike,
-          optionType: "Call",
-          date: selectedDate,
-          optionPrice: 0,
-          quantity: 1,
-          action: "Buy",
-        },
-        {
-          strike: midStrike,
-          optionType: "Call",
-          date: selectedDate,
-          optionPrice: 0,
-          quantity: 2,
-          action: "Sell",
-        },
-        {
-          strike: lowerStrike,
-          optionType: "Call",
-          date: selectedDate,
-          optionPrice: 0,
-          quantity: 1,
-          action: "Buy",
-        },
-      ];
-    } else {
-      userStrategy = [
-        {
-          strike: selectedStrike,
-          optionType: selectedOptionType,
-          date: selectedDate,
-          optionPrice: selectedOptionPrice,
-          quantity: selectedQuantity,
-          action: selectedAction,
-        },
-      ];
-    }
-    userStrategy = [...userStrategy];
-    await loadData();
-    shouldUpdate = true;
-  }
-
-  const payoffFunctions = {
-    "Buy Call": (
-      s: number,
-      strike: number,
-      premium: number,
-      quantity: number,
-    ) => (s < strike ? -premium : (s - strike) * 100 * quantity - premium),
-
-    "Sell Call": (
-      s: number,
-      strike: number,
-      premium: number,
-      quantity: number,
-    ) => (s < strike ? premium : premium - (s - strike) * 100 * quantity),
-
-    "Buy Put": (
-      s: number,
-      strike: number,
-      premium: number,
-      quantity: number,
-    ) => (s > strike ? -premium : (strike - s) * 100 * quantity - premium),
-
-    "Sell Put": (
-      s: number,
-      strike: number,
-      premium: number,
-      quantity: number,
-    ) => (s > strike ? premium : premium - (strike - s) * 100 * quantity),
-  };
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "2-digit",
-      year: "numeric",
-      timeZone: "America/New_York",
-    });
-  };
-
-  function plotData() {
-    // Determine x-axis range based on current stock price and max leg strike
-    if (!userStrategy || userStrategy.length === 0) {
-      return null;
-    }
-
-    const maxLegStrike = Math.max(...userStrategy.map((leg) => leg.strike));
-    const xMin = 0;
-    const xMax = Math.floor(Math.max(currentStockPrice, maxLegStrike) * 3);
-    const step = 10;
-
-    // Calculate the total premium across all legs
-    totalPremium = userStrategy.reduce((sum, leg) => {
-      return sum + leg.optionPrice * 100 * leg.quantity;
-    }, 0);
-
-    // Compute the aggregated payoff at each underlying price
-    const dataPoints = [];
-    for (let s = xMin; s <= xMax; s += step) {
-      let aggregatedPayoff = 0;
-      userStrategy.forEach((leg) => {
-        const legPremium = leg.optionPrice * 100 * leg.quantity;
-        const scenarioKey = `${leg.action} ${leg.optionType}`;
-        if (payoffFunctions[scenarioKey]) {
-          aggregatedPayoff += payoffFunctions[scenarioKey](
-            s,
-            leg.strike,
-            legPremium,
-            leg.quantity,
-          );
-        } else {
-          console.error(
-            "Payoff function not implemented for scenario:",
-            scenarioKey,
-          );
-        }
-      });
-      dataPoints.push([s, aggregatedPayoff]);
-    }
-
-    metrics = calculateMetrics();
-    calculateBreakevenPrice(dataPoints);
-    //console.log(userStrategy);
-    const options = {
+    config = {
       credits: { enabled: false },
       chart: {
         type: "area",
@@ -637,7 +197,7 @@
                 label: {
                   text: `<span class="hidden sm:block text-black dark:text-white text-sm">Breakeven $${
                     typeof breakEvenPrice === "number"
-                      ? breakEvenPrice.toFixed(2)
+                      ? breakEvenPrice?.toFixed(2)
                       : ""
                   }</span>`,
                   style: { color: $mode === "light" ? "black" : "white" },
@@ -645,7 +205,7 @@
                 zIndex: 5,
               }
             : null,
-        ].filter((line) => line !== null),
+        ]?.filter((line) => line !== null),
       },
       yAxis: {
         title: {
@@ -721,316 +281,56 @@
         },
       ],
     };
+  };
 
-    return options;
+  const handleStrategyMessage = async (event) => {
+    userStrategy = event?.data?.output;
+
+    userStrategy = [...userStrategy];
+    await loadData();
+    shouldUpdate = true;
+  };
+
+  async function changeStrategy(strategy) {
+    selectedStrategy = strategy?.name;
+    description = strategy?.description;
+
+    strategyWorker.postMessage({
+      userStrategy,
+      strikeList,
+      selectedStrategy,
+      selectedAction,
+      selectedDate,
+      selectedOptionPrice,
+      selectedOptionType,
+      selectedQuantity,
+      selectedStrike,
+    });
   }
 
-  function calculateMetrics() {
-    const multiplier = 100;
-
-    // Get all legs in the strategy
-    const allLegs = [...userStrategy];
-
-    // Check if strategy is empty
-    if (allLegs.length === 0) {
-      metrics = {
-        maxProfit: "$0",
-        maxLoss: "$0",
-      };
-      return metrics;
-    }
-
-    // Consolidate identical strikes with opposite actions (Buy/Sell)
-    const consolidatedLegs = [];
-    const strikeMap = new Map();
-
-    // Group legs by strike and option type
-    allLegs.forEach((leg) => {
-      const key = `${leg.strike}-${leg.optionType}`;
-      if (!strikeMap.has(key)) {
-        strikeMap.set(key, []);
-      }
-      strikeMap.get(key).push(leg);
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+      timeZone: "America/New_York",
     });
+  };
 
-    // Consolidate legs with same strike/option type into net positions
-    strikeMap.forEach((legs, key) => {
-      let netQuantity = 0;
-      let netCost = 0;
-      legs.forEach((leg) => {
-        const quantity = leg.quantity || 1;
-        if (leg.action === "Buy") {
-          netQuantity += quantity;
-          netCost += leg.optionPrice * quantity;
-        } else {
-          netQuantity -= quantity;
-          netCost -= leg.optionPrice * quantity;
-        }
+  function plotData() {
+    // Determine x-axis range based on current stock price and max leg strike
+    if (!userStrategy || userStrategy.length === 0) {
+      return null;
+    }
+    try {
+      plotWorker.postMessage({
+        userStrategy: userStrategy,
+        currentStockPrice: currentStockPrice,
       });
-      // Only include legs with nonzero positions
-      if (netQuantity !== 0) {
-        const [strike, optionType] = key.split("-");
-        consolidatedLegs.push({
-          strike: parseFloat(strike),
-          optionType,
-          optionPrice: Math.abs(netCost / netQuantity),
-          quantity: Math.abs(netQuantity),
-          action: netQuantity > 0 ? "Buy" : "Sell",
-        });
-      }
-    });
-
-    // Separate the legs by type and action
-    const buyCalls = consolidatedLegs.filter(
-      (leg) => leg.action === "Buy" && leg.optionType === "Call",
-    );
-    const sellCalls = consolidatedLegs.filter(
-      (leg) => leg.action === "Sell" && leg.optionType === "Call",
-    );
-    const buyPuts = consolidatedLegs.filter(
-      (leg) => leg.action === "Buy" && leg.optionType === "Put",
-    );
-    const sellPuts = consolidatedLegs.filter(
-      (leg) => leg.action === "Sell" && leg.optionType === "Put",
-    );
-
-    // Calculate net premium for the entire strategy.
-    let netPremium = 0;
-    allLegs.forEach((leg) => {
-      const quantity = leg.quantity || 1;
-      const premium = leg.optionPrice * multiplier * quantity;
-      if (leg.action === "Buy") {
-        netPremium -= premium;
-      } else {
-        netPremium += premium;
-      }
-    });
-
-    // --- VERTICAL SPREAD HANDLING (UPDATED) ---
-    if (buyCalls.length === 1 && sellCalls.length === 1) {
-      const buyCall = buyCalls[0];
-      const sellCall = sellCalls[0];
-      const spreadWidth =
-        Math.abs(buyCall.strike - sellCall.strike) * multiplier;
-
-      if (buyCall.strike < sellCall.strike) {
-        // Bull call spread: max loss is net debit, max profit is spread width - net debit
-        const maxLoss = -netPremium; // Net debit is negative, convert to positive
-        const maxProfit = spreadWidth - maxLoss;
-        metrics = {
-          maxProfit: `$${formatCurrency(maxProfit)}`,
-          maxLoss: `$${formatCurrency(maxLoss)}`,
-        };
-      } else {
-        // Bear call spread: max profit is net credit, max loss is spread width - net credit
-        const maxProfit = netPremium;
-        const maxLoss = spreadWidth - maxProfit;
-        metrics = {
-          maxProfit: `$${formatCurrency(maxProfit)}`,
-          maxLoss: `$${formatCurrency(maxLoss)}`,
-        };
-      }
-      return metrics;
+    } catch (error) {
+      console.error("Error fetching stock data:", error);
     }
-    // --- END VERTICAL SPREAD HANDLING ---
-
-    // Determine unlimited profit/loss flags based on calls only.
-    let hasUnlimitedProfit = false;
-    let hasUnlimitedLoss = false;
-    if (buyCalls.length > 0) {
-      const sortedBuyCalls = [...buyCalls].sort((a, b) => a.strike - b.strike);
-      const sortedSellCalls = [...sellCalls].sort(
-        (a, b) => a.strike - b.strike,
-      );
-      if (
-        sellCalls.length === 0 ||
-        sortedBuyCalls[sortedBuyCalls.length - 1].strike >
-          sortedSellCalls[sortedSellCalls.length - 1].strike
-      ) {
-        hasUnlimitedProfit = true;
-      }
-      const totalBuyCallQuantity = sortedBuyCalls.reduce(
-        (sum, leg) => sum + (leg.quantity || 1),
-        0,
-      );
-      const totalSellCallQuantity = sortedSellCalls.reduce(
-        (sum, leg) => sum + (leg.quantity || 1),
-        0,
-      );
-      if (totalBuyCallQuantity > totalSellCallQuantity) {
-        hasUnlimitedProfit = true;
-      }
-    }
-    if (sellCalls.length > 0) {
-      const sortedBuyCalls = [...buyCalls].sort((a, b) => a.strike - b.strike);
-      const sortedSellCalls = [...sellCalls].sort(
-        (a, b) => a.strike - b.strike,
-      );
-      if (
-        buyCalls.length === 0 ||
-        sortedSellCalls[sortedSellCalls.length - 1].strike >
-          sortedBuyCalls[sortedBuyCalls.length - 1].strike
-      ) {
-        hasUnlimitedLoss = true;
-      }
-      const totalBuyCallQuantity = sortedBuyCalls.reduce(
-        (sum, leg) => sum + (leg.quantity || 1),
-        0,
-      );
-      const totalSellCallQuantity = sortedSellCalls.reduce(
-        (sum, leg) => sum + (leg.quantity || 1),
-        0,
-      );
-      if (totalSellCallQuantity > totalBuyCallQuantity) {
-        hasUnlimitedLoss = true;
-      }
-    }
-
-    // Check if exactly one put is bought and one sold (vertical spread)
-    if (buyPuts.length === 1 && sellPuts.length === 1) {
-      const buyStrike = buyPuts[0].strike;
-      const sellStrike = sellPuts[0].strike;
-      const spreadWidth = Math.abs(buyStrike - sellStrike) * multiplier;
-
-      // Bull Put Spread (sell higher strike, buy lower strike)
-      if (sellStrike > buyStrike) {
-        const maxProfit = netPremium; // Net credit received
-        const maxLoss = spreadWidth - maxProfit;
-        metrics = {
-          maxProfit: `$${formatCurrency(maxProfit)}`,
-          maxLoss: `$${formatCurrency(maxLoss)}`,
-        };
-        return metrics;
-      }
-      // Bear Put Spread (buy higher strike, sell lower strike)
-      else if (buyStrike > sellStrike) {
-        const maxProfit = spreadWidth - Math.abs(netPremium);
-        const maxLoss = Math.abs(netPremium); // Net debit paid
-        metrics = {
-          maxProfit: `$${formatCurrency(maxProfit)}`,
-          maxLoss: `$${formatCurrency(maxLoss)}`,
-        };
-        return metrics;
-      }
-    }
-
-    // --- RATIO SPREAD HANDLING ---
-    // Detect a pattern where two (or more) long calls bracket the short call(s) with balanced quantities.
-    if (buyCalls.length >= 2 && sellCalls.length >= 1) {
-      const buyStrikes = buyCalls.map((leg) => leg.strike);
-      const sellStrikes = sellCalls.map((leg) => leg.strike);
-      const lowerBuy = Math.min(...buyStrikes);
-      const higherBuy = Math.max(...buyStrikes);
-      const minSell = Math.min(...sellStrikes);
-      const maxSell = Math.max(...sellStrikes);
-      const totalBuyCallQuantity = buyCalls.reduce(
-        (sum, leg) => sum + leg.quantity,
-        0,
-      );
-      const totalSellCallQuantity = sellCalls.reduce(
-        (sum, leg) => sum + leg.quantity,
-        0,
-      );
-
-      if (
-        lowerBuy < minSell &&
-        higherBuy > maxSell &&
-        totalBuyCallQuantity === totalSellCallQuantity
-      ) {
-        hasUnlimitedProfit = false;
-        hasUnlimitedLoss = false;
-      }
-    }
-    // --- END RATIO SPREAD HANDLING ---
-
-    // If we haven't returned earlier via a specific branch, then compute profit and loss
-    // by simulating across various price points.
-    const strikes = allLegs.map((leg) => leg.strike);
-    const minStrike = Math.min(...strikes);
-    const maxStrike = Math.max(...strikes);
-    const pricePoints = [0, minStrike / 2, ...strikes, maxStrike * 1.5];
-
-    let computedMaxProfit = -Infinity;
-    let computedMaxLoss = -netPremium; // starting point: net premium paid
-
-    pricePoints.forEach((price) => {
-      let profitAtPrice = netPremium;
-      allLegs.forEach((leg) => {
-        const quantity = leg.quantity || 1;
-        if (leg.optionType === "Call") {
-          if (price > leg.strike) {
-            const intrinsicValue = (price - leg.strike) * multiplier * quantity;
-            profitAtPrice +=
-              leg.action === "Buy" ? intrinsicValue : -intrinsicValue;
-          }
-        } else if (leg.optionType === "Put") {
-          if (price < leg.strike) {
-            const intrinsicValue = (leg.strike - price) * multiplier * quantity;
-            profitAtPrice +=
-              leg.action === "Buy" ? intrinsicValue : -intrinsicValue;
-          }
-        }
-      });
-      computedMaxProfit = Math.max(computedMaxProfit, profitAtPrice);
-      if (profitAtPrice < 0) {
-        computedMaxLoss = Math.min(computedMaxLoss, profitAtPrice);
-      }
-    });
-
-    // Adjust final metrics based on unlimited flags:
-    if (hasUnlimitedProfit && !hasUnlimitedLoss) {
-      metrics = {
-        maxProfit: "Unlimited",
-        maxLoss: `$${formatCurrency(Math.abs(computedMaxLoss))}`,
-      };
-    } else if (!hasUnlimitedProfit && hasUnlimitedLoss) {
-      metrics = {
-        maxProfit: `$${formatCurrency(computedMaxProfit)}`,
-        maxLoss: "Unlimited",
-      };
-    } else if (hasUnlimitedProfit && hasUnlimitedLoss) {
-      metrics = {
-        maxProfit: "Unlimited",
-        maxLoss: "Unlimited",
-      };
-    } else {
-      metrics = {
-        maxProfit: `$${formatCurrency(computedMaxProfit)}`,
-        maxLoss: `$${formatCurrency(Math.abs(computedMaxLoss))}`,
-      };
-    }
-
-    return metrics;
-  }
-
-  function calculateBreakevenPrice(dataPoints) {
-    breakEvenPrice = null;
-    // Loop over the dataPoints to find a sign change from loss to profit or vice versa
-    for (let i = 1; i < dataPoints.length; i++) {
-      const [prevPrice, prevProfitLoss] = dataPoints[i - 1];
-      const [currPrice, currProfitLoss] = dataPoints[i];
-
-      // Check if there is a sign change between consecutive points
-      if (
-        (prevProfitLoss < 0 && currProfitLoss >= 0) ||
-        (prevProfitLoss > 0 && currProfitLoss <= 0)
-      ) {
-        // Linear interpolation to estimate the exact crossing point
-        const priceDiff = currPrice - prevPrice;
-        const profitDiff = currProfitLoss - prevProfitLoss;
-        const ratio = Math.abs(prevProfitLoss) / Math.abs(profitDiff);
-        breakEvenPrice = prevPrice + ratio * priceDiff;
-        break;
-      }
-    }
-  }
-
-  // Helper function for currency formatting
-  function formatCurrency(value: number): string {
-    return Math.abs(value)?.toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
   }
 
   const getContractHistory = async (contractId: string) => {
@@ -1409,6 +709,18 @@
       const DownloadWorker = await import("./workers/downloadWorker?worker");
       downloadWorker = new DownloadWorker.default();
       downloadWorker.onmessage = handleDownloadMessage;
+    }
+
+    if (!plotWorker) {
+      const PlotWorker = await import("./workers/plotWorker?worker");
+      plotWorker = new PlotWorker.default();
+      plotWorker.onmessage = handlePlotMessage;
+    }
+
+    if (!strategyWorker) {
+      const StrategyWorker = await import("./workers/strategyWorker?worker");
+      strategyWorker = new StrategyWorker.default();
+      strategyWorker.onmessage = handleStrategyMessage;
     }
 
     await getStockData();
