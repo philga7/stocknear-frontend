@@ -719,7 +719,6 @@
 
   function calculateMetrics() {
     const multiplier = 100;
-    let metrics = {};
 
     // Get all legs in the strategy
     const allLegs = [...userStrategy];
@@ -788,9 +787,8 @@
     );
 
     // Calculate net premium for the entire strategy.
-    // For each leg, buying incurs a debit and selling generates a credit.
     let netPremium = 0;
-    allLegs?.forEach((leg) => {
+    allLegs.forEach((leg) => {
       const quantity = leg.quantity || 1;
       const premium = leg.optionPrice * multiplier * quantity;
       if (leg.action === "Buy") {
@@ -800,21 +798,30 @@
       }
     });
 
-    if (
-      buyCalls.length === 1 &&
-      sellCalls.length === 1 &&
-      sellCalls[0].strike < buyCalls[0].strike
-    ) {
+    // --- VERTICAL SPREAD HANDLING (UPDATED) ---
+    if (buyCalls.length === 1 && sellCalls.length === 1) {
+      const buyCall = buyCalls[0];
+      const sellCall = sellCalls[0];
       const spreadWidth =
-        (buyCalls[0].strike - sellCalls[0].strike) * multiplier;
-      // In a vertical spread, the max profit is the net premium (credit received)
-      // and the maximum loss equals the spread width minus the net premium.
-      const maxProfit = netPremium;
-      const maxLoss = spreadWidth - netPremium;
-      metrics = {
-        maxProfit: `$${formatCurrency(maxProfit)}`,
-        maxLoss: `$${formatCurrency(maxLoss)}`,
-      };
+        Math.abs(buyCall.strike - sellCall.strike) * multiplier;
+
+      if (buyCall.strike < sellCall.strike) {
+        // Bull call spread: max loss is net debit, max profit is spread width - net debit
+        const maxLoss = -netPremium; // Net debit is negative, convert to positive
+        const maxProfit = spreadWidth - maxLoss;
+        metrics = {
+          maxProfit: `$${formatCurrency(maxProfit)}`,
+          maxLoss: `$${formatCurrency(maxLoss)}`,
+        };
+      } else {
+        // Bear call spread: max profit is net credit, max loss is spread width - net credit
+        const maxProfit = netPremium;
+        const maxLoss = spreadWidth - maxProfit;
+        metrics = {
+          maxProfit: `$${formatCurrency(maxProfit)}`,
+          maxLoss: `$${formatCurrency(maxLoss)}`,
+        };
+      }
       return metrics;
     }
     // --- END VERTICAL SPREAD HANDLING ---
@@ -1600,7 +1607,7 @@
                         >
                           <span class="truncate">{selectedStrategy}</span>
                           <svg
-                            class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
+                            class="-mr-1 ml-3 h-5 w-5 xs:ml-2 inline-block"
                             viewBox="0 0 20 20"
                             fill="currentColor"
                             style="max-width:40px"
@@ -1632,7 +1639,7 @@
                               <span>{strategy.name}</span>
                               {#if strategy?.sentiment}
                                 <span
-                                  class="badge px-2 text-xs rounded-full {strategy.sentiment ===
+                                  class="ml-2 badge px-2 text-xs rounded-full {strategy.sentiment ===
                                   'Bullish'
                                     ? 'bg-green-100 text-green-800 dark:bg-green-300 dark:text-black'
                                     : strategy?.sentiment === 'Bearish'
