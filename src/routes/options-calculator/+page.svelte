@@ -472,8 +472,6 @@
       shouldUpdate = true;
     } catch (error) {
       console.error("Error loading data:", error);
-    } finally {
-      isLoaded = true;
     }
   }
 
@@ -741,8 +739,6 @@
 
       config = plotData();
       userStrategy = [...userStrategy];
-
-      isLoaded = true;
     }
   }
 
@@ -800,542 +796,402 @@
             </p>
 
             <div class="mt-4">
-              {#if isLoaded && config}
-                <div
-                  class="{$screenWidth < 640 && $screenWidth
-                    ? 'grid grid-cols-2'
-                    : 'flex flex-row'} items-center w-full mt-3 mb-3"
+              <div
+                class="{$screenWidth < 640 && $screenWidth
+                  ? 'grid grid-cols-2'
+                  : 'flex flex-row'} items-center w-full mt-3 mb-3"
+              >
+                <Combobox.Root
+                  items={searchBarData}
+                  bind:inputValue
+                  bind:touchedInput
                 >
-                  <Combobox.Root
-                    items={searchBarData}
-                    bind:inputValue
-                    bind:touchedInput
-                  >
-                    <div class="relative w-full">
-                      <div
-                        class="absolute inset-y-0 left-0 flex items-center pl-2.5"
-                      >
-                        <svg
-                          class="h-4 w-4 text-icon xs:h-5 xs:w-5"
-                          fill="none"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="3"
-                          stroke="currentcolor"
-                          viewBox="0 0 24 24"
-                          style="max-width: 40px"
-                          aria-hidden="true"
-                        >
-                          <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                          ></path>
-                        </svg>
-                      </div>
-                      <Combobox.Input
-                        on:input={search}
-                        class="text-sm  controls-input shadow-sm focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-3 py-2 pl-8 xs:pl-10 grow w-full w-full sm:max-w-56"
-                        placeholder="Add new stock..."
-                        aria-label="Add new stock..."
-                      />
-                    </div>
-                    {#if inputValue?.length !== 0 && inputValue !== selectedTicker}
-                      <Combobox.Content
-                        class=" z-10 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-default px-1 py-3 shadow-sm outline-hidden"
-                        sideOffset={8}
-                      >
-                        {#each searchBarData as searchItem}
-                          <Combobox.Item
-                            class="cursor-pointer border-b border-gray-300 dark:border-gray-500 last:border-none flex h-fit w-auto select-none items-center rounded-button py-1 px-2  text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-200 dark:data-highlighted:bg-primary"
-                            value={searchItem?.symbol}
-                            label={searchItem?.symbol}
-                            on:click={(e) => changeTicker(searchItem)}
-                          >
-                            <div class="flex flex-col items-start">
-                              <span
-                                class="text-sm text-blue-700 dark:text-blue-400"
-                                >{searchItem?.symbol}</span
-                              >
-                              <span
-                                class="text-xs sm:text-sm text-muted dark:text-white"
-                                >{searchItem?.name}</span
-                              >
-                            </div>
-                          </Combobox.Item>
-                        {:else}
-                          <span class="block px-5 py-2 text-sm">
-                            No results found
-                          </span>
-                        {/each}
-                      </Combobox.Content>
-                    {/if}
-                  </Combobox.Root>
-
-                  <button
-                    type="button"
-                    on:click={() => handleAddOptionLeg()}
-                    class="cursor-pointer ml-3 align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm font-semibold shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
-                  >
-                    <svg
-                      class="-ml-0.5 h-5 w-5 text-gray-600 dark:text-gray-300"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      aria-hidden="true"
+                  <div class="relative w-full">
+                    <div
+                      class="absolute inset-y-0 left-0 flex items-center pl-2.5"
                     >
-                      <path
-                        fill-rule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
-                        clip-rule="evenodd"
-                      ></path>
-                    </svg>
-                    Add Option Leg
-                  </button>
-                  <button
-                    type="button"
-                    on:click={handleSaveStrategy}
-                    class="cursor-pointer mt-3 sm:mt-0 sm:ml-3 align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm font-semibold shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="w-4 h-4"
-                    >
-                      <path
+                      <svg
+                        class="h-4 w-4 text-icon xs:h-5 xs:w-5"
+                        fill="none"
                         stroke-linecap="round"
                         stroke-linejoin="round"
-                        d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
-                      ></path>
-                    </svg>
-                    Save Trade
-                  </button>
-                  <div
-                    class="order-last relative inline-block text-left ml-3 shadow-sm mt-3 sm:mt-0"
-                  >
-                    <DropdownMenu.Root>
-                      <DropdownMenu.Trigger asChild let:builder>
-                        <Button
-                          builders={[builder]}
-                          class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
-                        >
-                          <span class="truncate">{selectedStrategy}</span>
-                          <svg
-                            class="-mr-1 ml-3 h-5 w-5 xs:ml-2 inline-block"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                            style="max-width:40px"
-                            aria-hidden="true"
-                          >
-                            <path
-                              fill-rule="evenodd"
-                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                              clip-rule="evenodd"
-                            ></path>
-                          </svg>
-                        </Button>
-                      </DropdownMenu.Trigger>
-                      <DropdownMenu.Content
-                        class="w-56 h-fit max-h-72 overflow-y-auto scroller"
+                        stroke-width="3"
+                        stroke="currentcolor"
+                        viewBox="0 0 24 24"
+                        style="max-width: 40px"
+                        aria-hidden="true"
                       >
-                        <DropdownMenu.Label
-                          class="text-muted dark:text-gray-400"
-                        >
-                          Select Strategy
-                        </DropdownMenu.Label>
-                        <DropdownMenu.Separator />
-                        <DropdownMenu.Group>
-                          {#each prebuiltStrategy as strategy}
-                            <DropdownMenu.Item
-                              on:click={() => changeStrategy(strategy)}
-                              class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
-                            >
-                              <span>{strategy.name}</span>
-                              {#if strategy?.sentiment}
-                                <span
-                                  class="ml-2 badge px-2 text-xs rounded-full {strategy.sentiment ===
-                                  'Bullish'
-                                    ? 'bg-green-100 text-green-800 dark:bg-green-300 dark:text-black'
-                                    : strategy?.sentiment === 'Bearish'
-                                      ? 'bg-red-100 text-red-800 dark:bg-red-300 dark:text-black'
-                                      : 'bg-orange-100 text-orange-800 dark:bg-yellow-300/80 dark:text-black'}"
-                                  >{strategy.sentiment}</span
-                                >
-                              {/if}
-                            </DropdownMenu.Item>
-                          {/each}
-                        </DropdownMenu.Group>
-                      </DropdownMenu.Content>
-                    </DropdownMenu.Root>
+                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        ></path>
+                      </svg>
+                    </div>
+                    <Combobox.Input
+                      on:input={search}
+                      class="text-sm  controls-input shadow-sm focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-3 py-2 pl-8 xs:pl-10 grow w-full w-full sm:max-w-56"
+                      placeholder="Add new stock..."
+                      aria-label="Add new stock..."
+                    />
                   </div>
-                </div>
-
-                <!-- Table container -->
-                <div
-                  class="overflow-x-auto border border-gray-300 dark:border-gray-600 rounded bg-[#F8F9FA] dark:bg-secondary"
-                >
-                  <table
-                    class="min-w-full divide-y divide-gray-200 dark:divide-gray-600"
-                  >
-                    <!-- Table head -->
-                    <thead class="bg-gray-50 dark:bg-secondary">
-                      <tr class="">
-                        <th
-                          scope="col"
-                          class="px-4 py-1.5 text-left text-sm font-semibold"
-                        >
-                          Ticker
-                        </th>
-                        <th
-                          scope="col"
-                          class="px-4 py-1.5 text-left text-sm font-semibold"
-                        >
-                          Action
-                        </th>
-                        <th
-                          scope="col"
-                          class="px-4 py-1.5 text-left text-sm font-semibold"
-                        >
-                          Quantity
-                        </th>
-                        <th
-                          scope="col"
-                          class="px-4 py-1.5 text-left text-sm font-semibold"
-                        >
-                          Expiration Date
-                        </th>
-                        <th
-                          scope="col"
-                          class="px-4 py-1.5 text-left text-sm font-semibold"
-                        >
-                          Strike
-                        </th>
-                        <th
-                          scope="col"
-                          class="px-4 py-1.5 text-left text-sm font-semibold"
-                        >
-                          Type
-                        </th>
-                        <th
-                          scope="col"
-                          class="px-4 py-1.5 text-left text-sm font-semibold"
-                        >
-                          Price
-                        </th>
-                        <th
-                          scope="col"
-                          class="px-4 py-1.5 text-sm font-semibold"
-                        ></th>
-                      </tr>
-                    </thead>
-
-                    <!-- Table body -->
-                    <tbody
-                      class="bg-[#F8F9FA] dark:bg-secondary divide-y divide-gray-200 dark:divide-gray-600 text-sm"
+                  {#if inputValue?.length !== 0 && inputValue !== selectedTicker}
+                    <Combobox.Content
+                      class=" z-10 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-default px-1 py-3 shadow-sm outline-hidden"
+                      sideOffset={8}
                     >
-                      {#each userStrategy as item, index}
-                        <tr class="">
-                          <td class="px-4 whitespace-nowrap font-semibold">
-                            {selectedTicker}
-                          </td>
-                          <td class="px-4 whitespace-nowrap py-2">
-                            <label
-                              on:click={() => handleAction(index)}
-                              class="badge px-2 select-none rounded-md {item?.action ===
-                              'Buy'
-                                ? 'bg-green-100 text-green-800 dark:bg-green-300 dark:text-muted'
-                                : 'bg-red-100 text-red-800 dark:bg-red-300 dark:text-muted'} font-semibold cursor-pointer"
-                              >{item?.action}</label
+                      {#each searchBarData as searchItem}
+                        <Combobox.Item
+                          class="cursor-pointer border-b border-gray-300 dark:border-gray-500 last:border-none flex h-fit w-auto select-none items-center rounded-button py-1 px-2  text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-200 dark:data-highlighted:bg-primary"
+                          value={searchItem?.symbol}
+                          label={searchItem?.symbol}
+                          on:click={(e) => changeTicker(searchItem)}
+                        >
+                          <div class="flex flex-col items-start">
+                            <span
+                              class="text-sm text-blue-700 dark:text-blue-400"
+                              >{searchItem?.symbol}</span
                             >
-                          </td>
-                          <td class="px-4 whitespace-nowrap py-2">
-                            <input
-                              type="number"
-                              value={userStrategy[index]?.quantity}
-                              min="0"
-                              on:input={(e) => handleQuantityInput(e, index)}
-                              class="border border-gray-300 dark:border-gray-500 rounded px-2 py-1 w-20 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                            />
-                          </td>
-                          <td class="px-4 whitespace-nowrap py-2">
-                            <DropdownMenu.Root>
-                              <DropdownMenu.Trigger asChild let:builder>
-                                <Button
-                                  builders={[builder]}
-                                  class="mb-1 border border-gray-300 dark:border-none  bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
-                                >
-                                  <span class="truncate text-sm"
-                                    >{formatDate(
-                                      userStrategy[index]?.date,
-                                    )}</span
-                                  >
-                                  <svg
-                                    class="-mr-1 ml-2 h-5 w-5 inline-block"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                    style="max-width:40px"
-                                    aria-hidden="true"
-                                  >
-                                    <path
-                                      fill-rule="evenodd"
-                                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                      clip-rule="evenodd"
-                                    ></path>
-                                  </svg>
-                                </Button>
-                              </DropdownMenu.Trigger>
-
-                              <DropdownMenu.Content
-                                class="w-auto max-w-60 max-h-[400px] overflow-y-auto scroller relative"
-                              >
-                                <!-- Dropdown items -->
-                                <DropdownMenu.Group class="pb-2"
-                                  >{#each userStrategy[index]?.dateList as item}
-                                    <DropdownMenu.Item
-                                      on:click={() => {
-                                        handleExpirationDate(item, index);
-                                      }}
-                                      class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
-                                    >
-                                      {formatDate(item)}
-                                    </DropdownMenu.Item>
-                                  {/each}</DropdownMenu.Group
-                                >
-                              </DropdownMenu.Content>
-                            </DropdownMenu.Root>
-                          </td>
-                          <td class="px-4 whitespace-nowrap py-2">
-                            <DropdownMenu.Root>
-                              <DropdownMenu.Trigger asChild let:builder>
-                                <Button
-                                  builders={[builder]}
-                                  class="mb-1 border border-gray-300 dark:border-none  bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
-                                >
-                                  <span class="truncate text-sm"
-                                    >{userStrategy[index]?.strike}</span
-                                  >
-                                  <svg
-                                    class="-mr-1 ml-2 h-5 w-5 inline-block"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                    style="max-width:40px"
-                                    aria-hidden="true"
-                                  >
-                                    <path
-                                      fill-rule="evenodd"
-                                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                      clip-rule="evenodd"
-                                    ></path>
-                                  </svg>
-                                </Button>
-                              </DropdownMenu.Trigger>
-
-                              <DropdownMenu.Content
-                                class="w-auto max-w-60 max-h-[400px] overflow-y-auto scroller relative"
-                              >
-                                <!-- Dropdown items -->
-                                <DropdownMenu.Group class="pb-2">
-                                  <!-- Added padding to avoid overlapping with Reset button -->
-                                  {#each userStrategy[index]?.strikeList as item}
-                                    <DropdownMenu.Item
-                                      on:click={() => {
-                                        handleStrikePrice(item, index);
-                                      }}
-                                      class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
-                                    >
-                                      {item}
-                                    </DropdownMenu.Item>
-                                  {/each}
-                                </DropdownMenu.Group>
-                              </DropdownMenu.Content>
-                            </DropdownMenu.Root>
-                          </td>
-                          <td class="px-4 whitespace-nowrap py-2">
-                            <label
-                              on:click={() => handleOptionType(index)}
-                              class="select-none badge px-2 rounded-md bg-blue-100 text-blue-800 dark:bg-blue-300 dark:text-muted font-semibold cursor-pointer"
-                              >{item?.optionType}</label
+                            <span
+                              class="text-xs sm:text-sm text-muted dark:text-white"
+                              >{searchItem?.name}</span
                             >
-                          </td>
-                          <td class="px-4 whitespace-nowrap py-2">
-                            <input
-                              type="number"
-                              step="0.1"
-                              min="0"
-                              value={userStrategy[index]?.optionPrice}
-                              on:input={(e) => handleOptionPriceInput(e, index)}
-                              class="border border-gray-300 dark:border-gray-500 rounded px-2 py-1 w-24 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                            />
-                          </td>
-                          <td class="px-4 whitespace-nowrap py-2">
-                            <div
-                              class="flex flex-row items-center m-auto text-center justify-center"
-                            >
-                              <a
-                                class="inline-block"
-                                href={`/${["stocks", "stock"]?.includes(assetType) ? "stocks" : assetType === "etf" ? "etf" : "index"}/${selectedTicker}/options/contract-lookup?query=${userStrategy[index]?.optionSymbol}`}
-                              >
-                                <Link
-                                  class="w-4 h-4 text-gray-800 dark:text-gray-100 mt-0.5"
-                                />
-                              </a>
-                              <label
-                                on:click={() => handleDeleteOptionLeg(index)}
-                                class="ml-3 inline-block cursor-pointer"
-                              >
-                                <Trash
-                                  class="w-4 h-4 text-gray-800 dark:text-gray-100"
-                                />
-                              </label>
-                            </div>
-                          </td>
-                        </tr>
+                          </div>
+                        </Combobox.Item>
+                      {:else}
+                        <span class="block px-5 py-2 text-sm">
+                          No results found
+                        </span>
                       {/each}
-                    </tbody>
-                  </table>
-                </div>
+                    </Combobox.Content>
+                  {/if}
+                </Combobox.Root>
 
+                <button
+                  type="button"
+                  on:click={() => handleAddOptionLeg()}
+                  class="cursor-pointer ml-3 align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm font-semibold shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
+                >
+                  <svg
+                    class="-ml-0.5 h-5 w-5 text-gray-600 dark:text-gray-300"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                  Add Option Leg
+                </button>
+                <button
+                  type="button"
+                  on:click={handleSaveStrategy}
+                  class="cursor-pointer mt-3 sm:mt-0 sm:ml-3 align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm font-semibold shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-4 h-4"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
+                    ></path>
+                  </svg>
+                  Save Trade
+                </button>
+                <div
+                  class="order-last relative inline-block text-left ml-3 shadow-sm mt-3 sm:mt-0"
+                >
+                  <DropdownMenu.Root>
+                    <DropdownMenu.Trigger asChild let:builder>
+                      <Button
+                        builders={[builder]}
+                        class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                      >
+                        <span class="truncate">{selectedStrategy}</span>
+                        <svg
+                          class="-mr-1 ml-3 h-5 w-5 xs:ml-2 inline-block"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          style="max-width:40px"
+                          aria-hidden="true"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clip-rule="evenodd"
+                          ></path>
+                        </svg>
+                      </Button>
+                    </DropdownMenu.Trigger>
+                    <DropdownMenu.Content
+                      class="w-56 h-fit max-h-72 overflow-y-auto scroller"
+                    >
+                      <DropdownMenu.Label class="text-muted dark:text-gray-400">
+                        Select Strategy
+                      </DropdownMenu.Label>
+                      <DropdownMenu.Separator />
+                      <DropdownMenu.Group>
+                        {#each prebuiltStrategy as strategy}
+                          <DropdownMenu.Item
+                            on:click={() => changeStrategy(strategy)}
+                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                          >
+                            <span>{strategy.name}</span>
+                            {#if strategy?.sentiment}
+                              <span
+                                class="ml-2 badge px-2 text-xs rounded-full {strategy.sentiment ===
+                                'Bullish'
+                                  ? 'bg-green-100 text-green-800 dark:bg-green-300 dark:text-black'
+                                  : strategy?.sentiment === 'Bearish'
+                                    ? 'bg-red-100 text-red-800 dark:bg-red-300 dark:text-black'
+                                    : 'bg-orange-100 text-orange-800 dark:bg-yellow-300/80 dark:text-black'}"
+                                >{strategy.sentiment}</span
+                              >
+                            {/if}
+                          </DropdownMenu.Item>
+                        {/each}
+                      </DropdownMenu.Group>
+                    </DropdownMenu.Content>
+                  </DropdownMenu.Root>
+                </div>
+              </div>
+
+              <!-- Table container -->
+              <div
+                class="overflow-x-auto border border-gray-300 dark:border-gray-600 rounded bg-[#F8F9FA] dark:bg-secondary"
+              >
+                <table
+                  class="min-w-full divide-y divide-gray-200 dark:divide-gray-600"
+                >
+                  <!-- Table head -->
+                  <thead class="bg-gray-50 dark:bg-secondary">
+                    <tr class="">
+                      <th
+                        scope="col"
+                        class="px-4 py-1.5 text-left text-sm font-semibold"
+                      >
+                        Ticker
+                      </th>
+                      <th
+                        scope="col"
+                        class="px-4 py-1.5 text-left text-sm font-semibold"
+                      >
+                        Action
+                      </th>
+                      <th
+                        scope="col"
+                        class="px-4 py-1.5 text-left text-sm font-semibold"
+                      >
+                        Quantity
+                      </th>
+                      <th
+                        scope="col"
+                        class="px-4 py-1.5 text-left text-sm font-semibold"
+                      >
+                        Expiration Date
+                      </th>
+                      <th
+                        scope="col"
+                        class="px-4 py-1.5 text-left text-sm font-semibold"
+                      >
+                        Strike
+                      </th>
+                      <th
+                        scope="col"
+                        class="px-4 py-1.5 text-left text-sm font-semibold"
+                      >
+                        Type
+                      </th>
+                      <th
+                        scope="col"
+                        class="px-4 py-1.5 text-left text-sm font-semibold"
+                      >
+                        Price
+                      </th>
+                      <th scope="col" class="px-4 py-1.5 text-sm font-semibold"
+                      ></th>
+                    </tr>
+                  </thead>
+
+                  <!-- Table body -->
+                  <tbody
+                    class="bg-[#F8F9FA] dark:bg-secondary divide-y divide-gray-200 dark:divide-gray-600 text-sm"
+                  >
+                    {#each userStrategy as item, index}
+                      <tr class="">
+                        <td class="px-4 whitespace-nowrap font-semibold">
+                          {selectedTicker}
+                        </td>
+                        <td class="px-4 whitespace-nowrap py-2">
+                          <label
+                            on:click={() => handleAction(index)}
+                            class="badge px-2 select-none rounded-md {item?.action ===
+                            'Buy'
+                              ? 'bg-green-100 text-green-800 dark:bg-green-300 dark:text-muted'
+                              : 'bg-red-100 text-red-800 dark:bg-red-300 dark:text-muted'} font-semibold cursor-pointer"
+                            >{item?.action}</label
+                          >
+                        </td>
+                        <td class="px-4 whitespace-nowrap py-2">
+                          <input
+                            type="number"
+                            value={userStrategy[index]?.quantity}
+                            min="0"
+                            on:input={(e) => handleQuantityInput(e, index)}
+                            class="border border-gray-300 dark:border-gray-500 rounded px-2 py-1 w-20 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                          />
+                        </td>
+                        <td class="px-4 whitespace-nowrap py-2">
+                          <DropdownMenu.Root>
+                            <DropdownMenu.Trigger asChild let:builder>
+                              <Button
+                                builders={[builder]}
+                                class="mb-1 border border-gray-300 dark:border-none  bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
+                              >
+                                <span class="truncate text-sm"
+                                  >{formatDate(userStrategy[index]?.date)}</span
+                                >
+                                <svg
+                                  class="-mr-1 ml-2 h-5 w-5 inline-block"
+                                  viewBox="0 0 20 20"
+                                  fill="currentColor"
+                                  style="max-width:40px"
+                                  aria-hidden="true"
+                                >
+                                  <path
+                                    fill-rule="evenodd"
+                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                    clip-rule="evenodd"
+                                  ></path>
+                                </svg>
+                              </Button>
+                            </DropdownMenu.Trigger>
+
+                            <DropdownMenu.Content
+                              class="w-auto max-w-60 max-h-[400px] overflow-y-auto scroller relative"
+                            >
+                              <!-- Dropdown items -->
+                              <DropdownMenu.Group class="pb-2"
+                                >{#each userStrategy[index]?.dateList as item}
+                                  <DropdownMenu.Item
+                                    on:click={() => {
+                                      handleExpirationDate(item, index);
+                                    }}
+                                    class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
+                                  >
+                                    {formatDate(item)}
+                                  </DropdownMenu.Item>
+                                {/each}</DropdownMenu.Group
+                              >
+                            </DropdownMenu.Content>
+                          </DropdownMenu.Root>
+                        </td>
+                        <td class="px-4 whitespace-nowrap py-2">
+                          <DropdownMenu.Root>
+                            <DropdownMenu.Trigger asChild let:builder>
+                              <Button
+                                builders={[builder]}
+                                class="mb-1 border border-gray-300 dark:border-none  bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
+                              >
+                                <span class="truncate text-sm"
+                                  >{userStrategy[index]?.strike}</span
+                                >
+                                <svg
+                                  class="-mr-1 ml-2 h-5 w-5 inline-block"
+                                  viewBox="0 0 20 20"
+                                  fill="currentColor"
+                                  style="max-width:40px"
+                                  aria-hidden="true"
+                                >
+                                  <path
+                                    fill-rule="evenodd"
+                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                    clip-rule="evenodd"
+                                  ></path>
+                                </svg>
+                              </Button>
+                            </DropdownMenu.Trigger>
+
+                            <DropdownMenu.Content
+                              class="w-auto max-w-60 max-h-[400px] overflow-y-auto scroller relative"
+                            >
+                              <!-- Dropdown items -->
+                              <DropdownMenu.Group class="pb-2">
+                                <!-- Added padding to avoid overlapping with Reset button -->
+                                {#each userStrategy[index]?.strikeList as item}
+                                  <DropdownMenu.Item
+                                    on:click={() => {
+                                      handleStrikePrice(item, index);
+                                    }}
+                                    class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
+                                  >
+                                    {item}
+                                  </DropdownMenu.Item>
+                                {/each}
+                              </DropdownMenu.Group>
+                            </DropdownMenu.Content>
+                          </DropdownMenu.Root>
+                        </td>
+                        <td class="px-4 whitespace-nowrap py-2">
+                          <label
+                            on:click={() => handleOptionType(index)}
+                            class="select-none badge px-2 rounded-md bg-blue-100 text-blue-800 dark:bg-blue-300 dark:text-muted font-semibold cursor-pointer"
+                            >{item?.optionType}</label
+                          >
+                        </td>
+                        <td class="px-4 whitespace-nowrap py-2">
+                          <input
+                            type="number"
+                            step="0.1"
+                            min="0"
+                            value={userStrategy[index]?.optionPrice}
+                            on:input={(e) => handleOptionPriceInput(e, index)}
+                            class="border border-gray-300 dark:border-gray-500 rounded px-2 py-1 w-24 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                          />
+                        </td>
+                        <td class="px-4 whitespace-nowrap py-2">
+                          <div
+                            class="flex flex-row items-center m-auto text-center justify-center"
+                          >
+                            <a
+                              class="inline-block"
+                              href={`/${["stocks", "stock"]?.includes(assetType) ? "stocks" : assetType === "etf" ? "etf" : "index"}/${selectedTicker}/options/contract-lookup?query=${userStrategy[index]?.optionSymbol}`}
+                            >
+                              <Link
+                                class="w-4 h-4 text-gray-800 dark:text-gray-100 mt-0.5"
+                              />
+                            </a>
+                            <label
+                              on:click={() => handleDeleteOptionLeg(index)}
+                              class="ml-3 inline-block cursor-pointer"
+                            >
+                              <Trash
+                                class="w-4 h-4 text-gray-800 dark:text-gray-100"
+                              />
+                            </label>
+                          </div>
+                        </td>
+                      </tr>
+                    {/each}
+                  </tbody>
+                </table>
+              </div>
+
+              {#if config}
                 <div
                   class="shadow-sm mt-5 border border-gray-300 dark:border-gray-800 rounded"
                   use:highcharts={config}
                 ></div>
-
-                <div class="mt-10">
-                  <h1
-                    class="text-2xl font-bold text-gray-800 dark:text-white mb-6"
-                  >
-                    Trade Information
-                  </h1>
-
-                  <!-- Trade Information Card -->
-                  <div
-                    class="border border-gray-300 dark:border-gray-800 rounded-lg p-4 mb-6 shadow-sm max-w-sm"
-                  >
-                    {#each userStrategy as item, index}
-                      <div>
-                        {"Option-Leg" + " " + (index + 1)}
-                      </div>
-                      <div
-                        class="{item?.action === 'Buy'
-                          ? 'text-green-800'
-                          : 'text-red-800'} dark:text-white font-semibold"
-                      >
-                        {item?.action?.toUpperCase()} +{item?.quantity}
-                        {selectedTicker}
-                        {formatDate(item?.date)}
-                        {item?.strike}
-                        {item?.optionType} @${item?.optionPrice}
-                      </div>
-                    {/each}
-                  </div>
-
-                  <!-- Stock Section -->
-                  <h2
-                    class="text-xl font-bold text-gray-800 dark:text-white mb-4"
-                  >
-                    Stock
-                  </h2>
-                  <div class="grid grid-cols-2 sm:grid-cols-4 mb-6">
-                    <div>
-                      <div class="text-gray-600 dark:text-white">
-                        {selectedTicker} Current Price
-                      </div>
-                      <div class="flex items-baseline">
-                        <span class="text-lg font-semibold"
-                          >${currentStockPrice}</span
-                        >
-                      </div>
-                    </div>
-
-                    <div>
-                      <div
-                        class="flex items-center text-gray-600 dark:text-white"
-                      >
-                        {selectedTicker} Breakeven Price
-                        <InfoModal
-                          title="Breakeven Price"
-                          id="breakevenModal"
-                          content="The stock price at which an options position will neither make nor lose money."
-                        />
-                      </div>
-                      <div class="flex items-baseline">
-                        <span class="text-lg font-semibold"
-                          >{typeof breakEvenPrice === "number"
-                            ? "$" + breakEvenPrice?.toFixed(2)
-                            : "n/a"}</span
-                        >
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Trade Details Section -->
-                  <h2
-                    class="text-xl font-bold text-gray-800 dark:text-white mb-4"
-                  >
-                    Trade Details
-                  </h2>
-                  <div
-                    class="grid grid-cols-2 md:grid-cols-4 gap-y-6 sm:gap-y-0 mb-6"
-                  >
-                    <div>
-                      <div
-                        class="flex items-center text-gray-600 dark:text-white"
-                      >
-                        Cost of Trade
-                        <InfoModal
-                          title="Cost of Trade"
-                          id="premModal"
-                          content="The Cost of Trade refers to the total amount needed to open a position. For options, buying a contract creates a net debit (positive cost), while selling a contract creates a net credit (negative cost)."
-                        />
-                      </div>
-                      <div class="flex items-baseline">
-                        <span class="text-lg font-semibold"
-                          >${totalPremium?.toLocaleString("en-US", {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div>
-                      <div
-                        class="flex items-center text-gray-600 dark:text-white"
-                      >
-                        Maximum Profit
-                        <InfoModal
-                          title="Maximum Profit"
-                          id="maxProfitModal"
-                          content="Maximum Profit is the highest possible gain from an options position or strategy. For long positions, profit is unlimited for calls and capped for puts (if the stock drops to zero). For short positions, profit is limited to the premium received, achieved if the option expires worthless or is repurchased at a lower price."
-                        />
-                      </div>
-                      <div
-                        class="text-lg font-semibold text-green-800 dark:text-green-400"
-                      >
-                        {metrics?.maxProfit}
-                      </div>
-                    </div>
-
-                    <div>
-                      <div
-                        class="flex items-center text-gray-600 dark:text-white"
-                      >
-                        Maximum Loss
-                        <InfoModal
-                          title="Maximum Loss"
-                          id="maxLossModal"
-                          content="Maximum Loss is the worst possible financial outcome of an options position. For long calls or puts, it’s limited to the premium paid. For naked calls, losses can be unlimited due to unlimited upside risk. For naked puts, the maximum loss is the strike price minus the premium if the stock drops to zero. In defined-risk spreads, it’s the difference between strike prices minus net premium received or paid."
-                        />
-                      </div>
-                      <div
-                        class="text-lg font-semibold text-red-600 dark:text-red-400"
-                      >
-                        {metrics?.maxLoss}
-                      </div>
-                    </div>
-                  </div>
-                </div>
               {:else}
-                <div class="flex justify-center items-center h-80">
+                <div
+                  class="flex justify-center items-center h-[300px] sm:h-[350px]"
+                >
                   <div class="relative">
                     <label
                       class="shadow-sm bg-gray-300 dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
@@ -1347,6 +1203,142 @@
                   </div>
                 </div>
               {/if}
+
+              <div class="mt-10">
+                <h1
+                  class="text-2xl font-bold text-gray-800 dark:text-white mb-6"
+                >
+                  Trade Information
+                </h1>
+
+                <!-- Trade Information Card -->
+                <div
+                  class="border border-gray-300 dark:border-gray-800 rounded-lg p-4 mb-6 shadow-sm max-w-sm"
+                >
+                  {#each userStrategy as item, index}
+                    <div>
+                      {"Option-Leg" + " " + (index + 1)}
+                    </div>
+                    <div
+                      class="{item?.action === 'Buy'
+                        ? 'text-green-800'
+                        : 'text-red-800'} dark:text-white font-semibold"
+                    >
+                      {item?.action?.toUpperCase()} +{item?.quantity}
+                      {selectedTicker}
+                      {formatDate(item?.date)}
+                      {item?.strike}
+                      {item?.optionType} @${item?.optionPrice}
+                    </div>
+                  {/each}
+                </div>
+
+                <!-- Stock Section -->
+                <h2
+                  class="text-xl font-bold text-gray-800 dark:text-white mb-4"
+                >
+                  Stock
+                </h2>
+                <div class="grid grid-cols-2 sm:grid-cols-4 mb-6">
+                  <div>
+                    <div class="text-gray-600 dark:text-white">
+                      {selectedTicker} Current Price
+                    </div>
+                    <div class="flex items-baseline">
+                      <span class="text-lg font-semibold"
+                        >${currentStockPrice}</span
+                      >
+                    </div>
+                  </div>
+
+                  <div>
+                    <div
+                      class="flex items-center text-gray-600 dark:text-white"
+                    >
+                      {selectedTicker} Breakeven Price
+                      <InfoModal
+                        title="Breakeven Price"
+                        id="breakevenModal"
+                        content="The stock price at which an options position will neither make nor lose money."
+                      />
+                    </div>
+                    <div class="flex items-baseline">
+                      <span class="text-lg font-semibold"
+                        >{typeof breakEvenPrice === "number"
+                          ? "$" + breakEvenPrice?.toFixed(2)
+                          : "n/a"}</span
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Trade Details Section -->
+                <h2
+                  class="text-xl font-bold text-gray-800 dark:text-white mb-4"
+                >
+                  Trade Details
+                </h2>
+                <div
+                  class="grid grid-cols-2 md:grid-cols-4 gap-y-6 sm:gap-y-0 mb-6"
+                >
+                  <div>
+                    <div
+                      class="flex items-center text-gray-600 dark:text-white"
+                    >
+                      Cost of Trade
+                      <InfoModal
+                        title="Cost of Trade"
+                        id="premModal"
+                        content="The Cost of Trade refers to the total amount needed to open a position. For options, buying a contract creates a net debit (positive cost), while selling a contract creates a net credit (negative cost)."
+                      />
+                    </div>
+                    <div class="flex items-baseline">
+                      <span class="text-lg font-semibold"
+                        >${totalPremium?.toLocaleString("en-US", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div
+                      class="flex items-center text-gray-600 dark:text-white"
+                    >
+                      Maximum Profit
+                      <InfoModal
+                        title="Maximum Profit"
+                        id="maxProfitModal"
+                        content="Maximum Profit is the highest possible gain from an options position or strategy. For long positions, profit is unlimited for calls and capped for puts (if the stock drops to zero). For short positions, profit is limited to the premium received, achieved if the option expires worthless or is repurchased at a lower price."
+                      />
+                    </div>
+                    <div
+                      class="text-lg font-semibold text-green-800 dark:text-green-400"
+                    >
+                      {metrics?.maxProfit}
+                    </div>
+                  </div>
+
+                  <div>
+                    <div
+                      class="flex items-center text-gray-600 dark:text-white"
+                    >
+                      Maximum Loss
+                      <InfoModal
+                        title="Maximum Loss"
+                        id="maxLossModal"
+                        content="Maximum Loss is the worst possible financial outcome of an options position. For long calls or puts, it’s limited to the premium paid. For naked calls, losses can be unlimited due to unlimited upside risk. For naked puts, the maximum loss is the strike price minus the premium if the stock drops to zero. In defined-risk spreads, it’s the difference between strike prices minus net premium received or paid."
+                      />
+                    </div>
+                    <div
+                      class="text-lg font-semibold text-red-600 dark:text-red-400"
+                    >
+                      {metrics?.maxLoss}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
