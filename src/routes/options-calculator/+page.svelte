@@ -1471,32 +1471,7 @@
             </div>
           </div>
 
-          <div class="mt-5 mb-5 w-fulll">
-            <div class="flex flex-wrap gap-3 mt-4">
-              {#each prebuiltStrategy as strategy}
-                <div
-                  on:click={() => changeStrategy(strategy)}
-                  class="{selectedStrategy === strategy?.name
-                    ? 'bg-blue-100 dark:bg-white text-muted '
-                    : 'text-blue-700 dark:text-white dark:sm:hover:text-white sm:hover:text-muted'} text-sm select-none flex items-center space-x-2 border border-gray-300 dark:border-gray-600 rounded-full px-3 py-1 cursor-pointer"
-                >
-                  <span>{strategy.name}</span>
-                  {#if strategy?.sentiment}
-                    <span
-                      class="badge px-2 text-xs rounded-full {strategy.sentiment ===
-                      'Bullish'
-                        ? 'bg-green-100 text-green-800 dark:bg-green-300 dark:text-black'
-                        : strategy?.sentiment === 'Bearish'
-                          ? 'bg-red-100 text-red-800 dark:bg-red-300 dark:text-black'
-                          : 'bg-orange-100 text-orange-800 dark:bg-yellow-300/80 dark:text-black'}"
-                      >{strategy.sentiment}</span
-                    >
-                  {/if}
-                </div>
-              {/each}
-            </div>
-
-            <div class="border-b border-gray-400 mt-5"></div>
+          <div class="mt-5 mb-5 w-full">
             <h2 class="mt-5 mb-1 text-xl sm:text-2xl font-bold">
               {selectedStrategy}
             </h2>
@@ -1614,6 +1589,64 @@
                     </svg>
                     Save Trade
                   </button>
+                  <div
+                    class="order-last relative inline-block text-left ml-3 shadow-sm mt-3 sm:mt-0"
+                  >
+                    <DropdownMenu.Root>
+                      <DropdownMenu.Trigger asChild let:builder>
+                        <Button
+                          builders={[builder]}
+                          class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                        >
+                          <span class="truncate">{selectedStrategy}</span>
+                          <svg
+                            class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                            style="max-width:40px"
+                            aria-hidden="true"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clip-rule="evenodd"
+                            ></path>
+                          </svg>
+                        </Button>
+                      </DropdownMenu.Trigger>
+                      <DropdownMenu.Content
+                        class="w-56 h-fit max-h-72 overflow-y-auto scroller"
+                      >
+                        <DropdownMenu.Label
+                          class="text-muted dark:text-gray-400"
+                        >
+                          Select Strategy
+                        </DropdownMenu.Label>
+                        <DropdownMenu.Separator />
+                        <DropdownMenu.Group>
+                          {#each prebuiltStrategy as strategy}
+                            <DropdownMenu.Item
+                              on:click={() => changeStrategy(strategy)}
+                              class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                            >
+                              <span>{strategy.name}</span>
+                              {#if strategy?.sentiment}
+                                <span
+                                  class="badge px-2 text-xs rounded-full {strategy.sentiment ===
+                                  'Bullish'
+                                    ? 'bg-green-100 text-green-800 dark:bg-green-300 dark:text-black'
+                                    : strategy?.sentiment === 'Bearish'
+                                      ? 'bg-red-100 text-red-800 dark:bg-red-300 dark:text-black'
+                                      : 'bg-orange-100 text-orange-800 dark:bg-yellow-300/80 dark:text-black'}"
+                                  >{strategy.sentiment}</span
+                                >
+                              {/if}
+                            </DropdownMenu.Item>
+                          {/each}
+                        </DropdownMenu.Group>
+                      </DropdownMenu.Content>
+                    </DropdownMenu.Root>
+                  </div>
                 </div>
 
                 <!-- Table container -->
