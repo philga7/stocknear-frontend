@@ -71,7 +71,7 @@
 </script>
 
 <div class="px-0.5 lg:px-0 text-muted dark:text-white">
-  <h2 class="mb-2 text-2xl font-semibold">
+  <h2 class="mb-2 text-2xl font-bold">
     About {$etfTicker}
   </h2>
   <p class="text-muted dark:text-gray-200">
@@ -97,7 +97,7 @@
       <span class="block font-semibold">Provider</span>
       <a
         href={`/etf/etf-providers/${provider}`}
-        class="sm:hover:text-blue-400 underline underline-offset-4"
+        class="sm:hover:text-blue-800 dark:sm:hover:text-blue-400 underline underline-offset-4"
         >{formatETFName(provider)}</a
       >
     </div>
@@ -106,7 +106,7 @@
       <span class="block font-semibold">Website</span>
       <a
         href={website}
-        class="sm:hover:text-blue-400 underline underline-offset-4"
+        class="sm:hover:text-blue-800 dark:sm:hover:text-blue-400 underline underline-offset-4"
         target="_blank">Fund Home Page</a
       >
     </div>
@@ -145,7 +145,7 @@
                         href={sectorNavigation?.find(
                           (listItem) => listItem?.title === item?.sector,
                         )?.link}
-                        class="sm:hover:underline sm:hover:underline-offset-4 truncate"
+                        class="sm:hover:text-blue-800 dark:sm:hover:text-blue-400 underline underline-offset-4 truncate"
                       >
                         {item?.sector}
                       </a>
