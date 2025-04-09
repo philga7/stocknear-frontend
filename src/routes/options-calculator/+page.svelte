@@ -20,6 +20,7 @@
   let isLoaded = false;
   let shouldUpdate = false;
   let config: any = null;
+  let downloadWorker: Worker | undefined;
 
   // Strategy selection
   let selectedStrategy = "Long Call";
@@ -130,6 +131,13 @@
 
   let userStrategy = [];
   let description = prebuiltStrategy[0]?.description;
+
+  const handleDownloadMessage = async (event) => {
+    rawData = event?.data?.output;
+
+    currentStockPrice = rawData?.getStockQuote?.price || 0;
+    await loadData();
+  };
 
   async function changeStrategy(strategy) {
     selectedStrategy = strategy?.name;
@@ -1171,21 +1179,9 @@
 
   async function getStockData() {
     try {
-      const postData = { ticker: selectedTicker };
-      const response = await fetch("/api/options-calculator", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(postData),
+      downloadWorker.postMessage({
+        ticker: selectedTicker,
       });
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch stock data: ${response.statusText}`);
-      }
-
-      rawData = (await response.json()) || {};
-      currentStockPrice = rawData?.getStockQuote?.price || 0;
     } catch (error) {
       console.error("Error fetching stock data:", error);
     }
@@ -1409,8 +1405,13 @@
       }
     }
 
+    if (!downloadWorker) {
+      const DownloadWorker = await import("./workers/downloadWorker?worker");
+      downloadWorker = new DownloadWorker.default();
+      downloadWorker.onmessage = handleDownloadMessage;
+    }
+
     await getStockData();
-    await loadData();
 
     shouldUpdate = true;
   });
