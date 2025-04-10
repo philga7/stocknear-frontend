@@ -373,11 +373,11 @@
                       aria-label="Add new stock"
                     />
                   </div>
-                  {#if inputValue?.length !== 0}
-                    <Combobox.Content
-                      class="w-auto z-10 rounded-md bg-white dark:bg-default border border-gray-300 dark:border-gray-700  px-1 py-3 shadow-sm outline-hidden"
-                      sideOffset={8}
-                    >
+                  <Combobox.Content
+                    class="w-auto z-10 rounded-md bg-white dark:bg-default border border-gray-300 dark:border-gray-700  px-1 py-3 shadow-sm outline-hidden"
+                    sideOffset={8}
+                  >
+                    {#if inputValue?.length > 0}
                       {#each searchBarData as item}
                         <Combobox.Item
                           class="cursor-pointer border-b border-gray-300 dark:border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-5 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-100 dark:data-highlighted:bg-primary"
@@ -398,12 +398,22 @@
                           </div>
                         </Combobox.Item>
                       {:else}
-                        <span class="block px-5 py-2 text-sm">
+                        <span
+                          class="block px-5 py-2 text-sm text-muted dark:text-white"
+                        >
                           No results found
                         </span>
                       {/each}
-                    </Combobox.Content>
-                  {/if}
+                    {:else}
+                      <Combobox.Item
+                        class="cursor-pointer border-b border-gray-300 dark:border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-1.5 pl-5 pr-1.5 text-sm capitalize outline-hidden"
+                      >
+                        <span class=" text-sm text-muted dark:text-white">
+                          No results found
+                        </span>
+                      </Combobox.Item>
+                    {/if}
+                  </Combobox.Content>
                 </Combobox.Root>
               </div>
             </div>
