@@ -339,7 +339,7 @@
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   ><path
-                    fill="white"
+                    fill="currentColor"
                     d="m6.4 18.308l-.708-.708l5.6-5.6l-5.6-5.6l.708-.708l5.6 5.6l5.6-5.6l.708.708l-5.6 5.6l5.6 5.6l-.708.708l-5.6-5.6z"
                   /></svg
                 >
@@ -443,11 +443,8 @@
   bind:checked={searchBarModalChecked}
 />
 
-<dialog id="searchBarModal" class="modal modal-bottom">
-  <label
-    for="searchBarModal"
-    class="cursor-pointer modal-backdrop bg-[#000] bg-[#000]/30"
-  ></label>
+<dialog id="searchBarModal" class="modal bg-[#000]/40 p-3">
+  <label for="searchBarModal" class="cursor-pointer modal-backdrop"></label>
 
   <div
     class="z-999 modal-box overflow-hidden rounded-md shadow bg-white dark:bg-secondary border border-gray-300 dark:border-gray-600 sm:my-8 sm:m-auto sm:h-auto w-full sm:w-3/4 lg:w-1/2 2xl:w-1/3"
@@ -482,7 +479,7 @@
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 ><path
-                  fill="white"
+                  fill="currentColor"
                   d="m6.4 18.308l-.708-.708l5.6-5.6l-5.6-5.6l.708-.708l5.6 5.6l5.6-5.6l.708.708l-5.6 5.6l5.6 5.6l-.708.708l-5.6-5.6z"
                 /></svg
               >
@@ -496,7 +493,7 @@
 
         <input
           id="modal-search"
-          class="rounded-md w-full bg-gray-300 dark:bg-secondary border border-gray-300 dark:border-gray-600 focus:ring-transparent placeholder-gray-600 dark:placeholder-gray-200 py-3 pl-10 pr-4"
+          class="focus:outline-none rounded-md w-full bg-gray-300 dark:bg-secondary border border-gray-300 dark:border-gray-600 focus:ring-transparent placeholder-gray-600 dark:placeholder-gray-200 py-3 pl-10 pr-4"
           type="search"
           placeholder="Company or stock symbol..."
           bind:value={inputValue}

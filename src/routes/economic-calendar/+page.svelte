@@ -454,7 +454,7 @@
                       class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                     >
                       <div
-                        class="relative sticky z-40 focus:outline-hidden -top-1"
+                        class="relative sticky z-40 focus:outline-hidden -top-1 flex flex-row items-center justitfy-between p-3 bg-white dark:bg-default border-b border-gray-200"
                         tabindex="0"
                         role="menu"
                       >
@@ -462,10 +462,26 @@
                           bind:value={searchQuery}
                           on:input={handleInput}
                           autocomplete="off"
-                          class="absolute sticky w-full border-0 dark:bg-default border-b border-gray-200 focus:border-gray-200 focus:ring-0 placeholder-gray-500 dark:placeholder:text-gray-300"
+                          class="focus:outline-none text-sm absolute sticky w-full border-0 focus:border-gray-200 focus:ring-0 placeholder-gray-500 dark:placeholder:text-gray-300"
                           type="search"
                           placeholder="Search..."
                         />
+                        {#if searchQuery?.length > 0}
+                          <label
+                            class="cursor-pointer inline-block"
+                            on:click={() => (searchQuery = "")}
+                          >
+                            <svg
+                              class="w-5 h-5"
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              ><path
+                                fill="currentColor"
+                                d="m6.4 18.308l-.708-.708l5.6-5.6l-5.6-5.6l.708-.708l5.6 5.6l5.6-5.6l.708.708l-5.6 5.6l5.6 5.6l-.708.708l-5.6-5.6z"
+                              /></svg
+                            >
+                          </label>
+                        {/if}
                       </div>
                       <DropdownMenu.Group>
                         {#each searchQuery.length > 0 ? testList : listOfRelevantCountries as item}
@@ -485,6 +501,12 @@
                                 <span class="ml-2">{item}</span>
                               </label>
                             </div>
+                          </DropdownMenu.Item>
+                        {:else}
+                          <DropdownMenu.Item
+                            class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                          >
+                            No country found
                           </DropdownMenu.Item>
                         {/each}
                       </DropdownMenu.Group>
