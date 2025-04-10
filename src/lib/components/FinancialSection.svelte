@@ -18,7 +18,6 @@
   import Download from "lucide-svelte/icons/download";
 
   import { goto } from "$app/navigation";
-  import SEO from "$lib/components/SEO.svelte";
 
   export let data;
   export let title;
@@ -110,6 +109,7 @@
       const headers = properties.map((prop) => prop.label);
       rows.unshift(headers);
 
+      const fileTitle = title?.toLowerCase()?.trim()?.replace(/\s+/g, "_");
       // Check the format to export
       if (format.toLowerCase() === "csv") {
         const csvContent = rows.map((row) => row.join(",")).join("\n");
@@ -121,7 +121,7 @@
         a.href = url;
         a.download =
           $stockTicker.toLowerCase() +
-          `${$selectedTimePeriod === "annual" ? "_annual" : $selectedTimePeriod === "quarterly" ? "_quarter" : "_ttm"}_income_statement.csv`;
+          `${$selectedTimePeriod === "annual" ? "_annual" : $selectedTimePeriod === "quarterly" ? "_quarter" : "_ttm"}_${fileTitle}.csv`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -206,11 +206,6 @@
     }
   }
 </script>
-
-<SEO
-  title={`${$displayCompanyName} (${$stockTicker}) Financials - ${title}`}
-  description={seoDescription}
-/>
 
 <section class=" w-full overflow-hidden h-full">
   <div class="w-full flex justify-center w-full sm-auto h-full overflow-hidden">
