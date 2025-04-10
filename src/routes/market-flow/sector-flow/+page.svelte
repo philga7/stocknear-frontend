@@ -544,7 +544,9 @@
                     <DropdownMenu.Content
                       class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                     >
-                      <DropdownMenu.Label class="text-muted dark:text-gray-400">
+                      <DropdownMenu.Label
+                        class="text-muted dark:text-gray-400 font-normal"
+                      >
                         Select Sector
                       </DropdownMenu.Label>
                       <DropdownMenu.Separator />

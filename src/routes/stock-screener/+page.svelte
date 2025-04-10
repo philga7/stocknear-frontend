@@ -2540,7 +2540,9 @@ const handleKeyDown = (event) => {
               <DropdownMenu.Content
                 class="w-56 h-fit max-h-72 overflow-y-auto scroller"
               >
-                <DropdownMenu.Label class="text-muted dark:text-gray-400">
+                <DropdownMenu.Label
+                  class="text-muted dark:text-gray-400 font-normal"
+                >
                   Popular Strategies
                 </DropdownMenu.Label>
                 <DropdownMenu.Separator />
@@ -2626,7 +2628,9 @@ const handleKeyDown = (event) => {
               <DropdownMenu.Content
                 class="w-56 h-fit max-h-72 overflow-y-auto scroller"
               >
-                <DropdownMenu.Label class="text-muted dark:text-gray-400">
+                <DropdownMenu.Label
+                  class="text-muted dark:text-gray-400 font-normal"
+                >
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
                       on:click={handleCreateStrategy}
@@ -3078,8 +3082,8 @@ const handleKeyDown = (event) => {
                                 'country',
                               ]?.includes(row?.rule)
                                 ? 'hidden'
-                                : ''} absolute fixed sticky w-full border-0 bg-white dark:bg-default border-b border-gray-200
-                                      focus:border-gray-200 focus:ring-0 placeholder:text-gray-500 dark:placeholder:text-gray-300"
+                                : ''} text-sm p-2 absolute fixed sticky w-full border-0 bg-white dark:bg-default border-b border-gray-200 dark:border-gray-600
+                                      focus:outline-none placeholder:text-gray-500 dark:placeholder:text-gray-300"
                               type="search"
                               placeholder="Search..."
                             />

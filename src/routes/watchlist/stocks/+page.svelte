@@ -1114,7 +1114,7 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="shadow-sm min-w-[110px] w-full sm:w-fit border-gray-300 bg-white dark:bg-default dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5  rounded truncate"
+                        class="shadow-sm min-w-[110px] w-full sm:w-fit border-gray-300 bg-white dark:bg-default dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-1.5  rounded truncate"
                       >
                         <span
                           class="truncate font-medium text-sm sm:text-[1rem]"
@@ -1235,7 +1235,7 @@
                     {/if}
                     <label
                       on:click={handleEditMode}
-                      class="shadow-sm border text-sm border-gray-300 dark:border-gray-600 sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 px-3 sm:hover:bg-gray-200 dark:sm:hover:bg-primary ease-out sm:hover:text-red-500"
+                      class="shadow-sm border text-sm border-gray-300 dark:border-gray-600 sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-1.5 px-3 sm:hover:bg-gray-200 dark:sm:hover:bg-primary ease-out"
                     >
                       <svg
                         class="inline-block w-5 h-5"
@@ -1301,12 +1301,12 @@
                     </div>
                     {#if inputValue?.length !== 0}
                       <Combobox.Content
-                        class="w-auto z-10 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-default px-1 py-3 shadow-sm outline-hidden"
+                        class="w-auto z-10 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-default px-1 py-1.5 shadow-sm outline-hidden"
                         sideOffset={8}
                       >
                         {#each searchBarData as item}
                           <Combobox.Item
-                            class="cursor-pointer border-b border-gray-300 dark:border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-5 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-200 dark:data-highlighted:bg-primary"
+                            class="cursor-pointer border-b border-gray-300 dark:border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-1.5 pl-5 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-200 dark:data-highlighted:bg-primary"
                             value={item?.symbol}
                             label={item?.name}
                             on:click={(e) => handleAddTicker(e, item?.symbol)}
@@ -2064,7 +2064,7 @@
 
   <div
     class="modal-box w-full p-6 rounded shadow-sm border
-        bg-white dark:bg-[#17181C] border border-gray-300 dark:border-gray-800"
+        bg-white dark:bg-secondary border border-gray-300 dark:border-gray-600"
   >
     <h3 class="text-lg font-medium mb-2">Delete Watchlist</h3>
     <p class="text-sm mb-6">
@@ -2075,8 +2075,8 @@
       <label
         for="deleteWatchlist"
         class="cursor-pointer px-4 py-2 rounded text-sm font-medium
-            transition-colors duration-200
-            bg-zinc-800 text-zinc-300 hover:bg-zinc-700"
+            transition-colors duration-100
+            bg-gray-600 text-white dark:bg-white dark:text-black"
         tabindex="0">Cancel</label
       ><label
         for="deleteWatchlist"
