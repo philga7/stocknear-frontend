@@ -5,6 +5,7 @@
     coolMode,
     timeFrame,
     selectedTimePeriod,
+    screenWidth,
   } from "$lib/store";
   import { removeCompanyStrings } from "$lib/utils";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
@@ -12,11 +13,16 @@
   //import * as XLSX from 'xlsx';
   import FinancialTable from "$lib/components/FinancialTable.svelte";
   import FinancialChart from "$lib/components/FinancialChart.svelte";
+  import TableMode from "lucide-svelte/icons/grid-2x2";
+  import ChartMode from "lucide-svelte/icons/chart-column-increasing";
+  import Download from "lucide-svelte/icons/download";
+
   import { goto } from "$app/navigation";
   import SEO from "$lib/components/SEO.svelte";
 
   export let data;
 
+  let switchDate = false;
   let tableList = [];
   let processedData = {};
 
@@ -125,21 +131,34 @@
 
   const getCurrentYear = () => new Date()?.getFullYear();
 
-  const filterStatement = (fullStatement, timeFrame) => {
+  const filterStatement = (fullStatement, timeFrame, switchDate) => {
     const currentYear = getCurrentYear();
+
+    let filtered = [...(fullStatement || [])];
 
     switch (timeFrame) {
       case "5Y":
-        return fullStatement?.filter(
+        filtered = filtered.filter(
           (item) => currentYear - parseInt(item?.fiscalYear) < 5,
         );
+        break;
       case "10Y":
-        return fullStatement?.filter(
+        filtered = filtered.filter(
           (item) => currentYear - parseInt(item?.fiscalYear) < 10,
         );
-      default:
-        return fullStatement;
+        break;
     }
+
+    // Sort by date depending on switchDate
+    filtered.sort((a, b) => {
+      const dateA = new Date(a.date || a.fiscalDate || a.fiscalYear);
+      const dateB = new Date(b.date || b.fiscalDate || b.fiscalYear);
+      return switchDate
+        ? dateA - dateB // earliest to latest
+        : dateB - dateA; // latest to earliest
+    });
+
+    return filtered;
   };
 
   fullStatement = data?.getData;
@@ -267,7 +286,7 @@
         fullStatement = data?.getData?.annual;
       }
 
-      financialData = filterStatement(fullStatement, $timeFrame);
+      financialData = filterStatement(fullStatement, $timeFrame, switchDate);
       preprocessFinancialData();
     }
   }
@@ -291,30 +310,11 @@
             <h1 class="text-xl sm:text-2xl font-bold">
               {removeCompanyStrings($displayCompanyName)} Income Statement
             </h1>
-            <label class="inline-flex sm:hidden mt-4 cursor-pointer relative">
-              <input
-                on:click={toggleMode}
-                type="checkbox"
-                checked={$coolMode}
-                value={$coolMode}
-                class="sr-only peer"
-              />
-              <div
-                class="w-11 h-6 bg-gray-400 rounded-full peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1563F9]"
-              ></div>
-              {#if $coolMode}
-                <span class="ml-2 text-sm"> Table Mode </span>
-              {:else}
-                <span class="ml-2 text-sm"> Chart Mode </span>
-              {/if}
-            </label>
           </div>
 
           <div class="grid grid-cols-1 gap-2">
             {#if financialData?.length > 0}
-              <div
-                class="flex flex-col sm:flex-row items-start sm:items-end sm:justify-between"
-              >
+              <div class="flex flex-col md:flex-row items-end justify-between">
                 <span
                   class="text-xs sm:text-sm order-1 sm:order-0 mt-5 sm:mt-0 text-gray-600 dark:text-gray-400 w-full"
                 >
@@ -323,31 +323,43 @@
                   {data?.getProfileData?.fiscalYearRange}.
                 </span>
                 <div class="flex flex-row items-center justify-end w-full">
-                  <label
-                    class="hidden sm:inline-flex ml-auto mt-2 sm:mt-0 cursor-pointer relative"
+                  <Button
+                    on:click={toggleMode}
+                    class=" shadow-sm w-full max-w-36 sm:w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-4 py-1.5  rounded-md truncate"
                   >
-                    <input
-                      on:click={toggleMode}
-                      type="checkbox"
-                      checked={$coolMode}
-                      value={$coolMode}
-                      class="sr-only peer"
-                    />
-                    <div
-                      class="w-11 h-6 bg-gray-400 rounded-full peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1563F9]"
-                    ></div>
                     {#if $coolMode}
+                      <TableMode class="w-4.5 h-4.5" />
                       <span class="ml-2 text-sm"> Table Mode </span>
                     {:else}
+                      <ChartMode class="w-4.5 h-4.5" />
                       <span class="ml-2 text-sm"> Chart Mode </span>
-                    {/if}
-                  </label>
-                  <div class="ml-auto sm:ml-5 relative inline-block">
+                    {/if}</Button
+                  >
+
+                  <Button
+                    on:click={() => (switchDate = !switchDate)}
+                    class="ml-2 shadow-sm w-48 sm:w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-4 py-1.5  rounded-md truncate"
+                  >
+                    <svg
+                      class="shrink-0 w-5 h-5 pointer-events-none m-auto"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      style="max-width:40px"
+                      ><path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                      ></path></svg
+                    ></Button
+                  >
+                  <div class="ml-2 relative inline-block">
                     <DropdownMenu.Root>
                       <DropdownMenu.Trigger asChild let:builder>
                         <Button
                           builders={[builder]}
-                          class="shadow-sm w-full sm:w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-1.5  rounded-md truncate"
+                          class="flex-shrink-0 shadow-sm w-full sm:w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-1.5  rounded-md truncate"
                         >
                           <span class="truncate">{$timeFrame}</span>
                           <svg
@@ -369,7 +381,7 @@
                         class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                       >
                         <DropdownMenu.Label
-                          class="text-muted dark:text-gray-400"
+                          class="text-muted dark:text-gray-400 font-normal"
                         >
                           Select time frame
                         </DropdownMenu.Label>
@@ -400,20 +412,24 @@
 
                   <Button
                     on:click={() => exportFundamentalData("csv")}
-                    class="shadow-sm ml-2 w-fit border-gray-300 dark:border-gray-600 border  sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-1.5  rounded-md truncate"
+                    class="shadow-sm ml-2 w-20 sm:w-fit border-gray-300 dark:border-gray-600 border  sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-1.5  rounded-md truncate"
                   >
-                    <span class="truncate">Download</span>
-                    <svg
-                      class="{['Pro', 'Plus']?.includes(data?.user?.tier)
-                        ? 'hidden'
-                        : ''} ml-1 -mt-0.5 w-3.5 h-3.5"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      ><path
-                        fill="currentColor"
-                        d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                      /></svg
-                    >
+                    {#if $screenWidth < 640}
+                      <Download class="w-4.5 h-4.5 flex-shrink-0 m-auto" />
+                    {:else}
+                      <span class="truncate">Download</span>
+                      <svg
+                        class="{['Pro', 'Plus']?.includes(data?.user?.tier)
+                          ? 'hidden'
+                          : ''} ml-1 -mt-0.5 w-3.5 h-3.5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        ><path
+                          fill="currentColor"
+                          d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                        /></svg
+                      >
+                    {/if}
                   </Button>
                 </div>
               </div>

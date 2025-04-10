@@ -1,7 +1,7 @@
 <script lang="ts">
   import "../app.css";
   import "../app.pcss";
-  //import { partytownSnippet } from "@builder.io/partytown/integration";
+  import { partytownSnippet } from "@builder.io/partytown/integration";
   import { Toaster } from "svelte-sonner";
   import "@bprogress/core/css";
   import { BProgress } from "@bprogress/core";
@@ -248,7 +248,7 @@
 
 <svelte:window bind:innerWidth={$screenWidth} />
 
-<!--
+
 <svelte:head>
   <script>
     // Forward the necessary functions to the web worker layer
@@ -273,7 +273,7 @@
   </script>
 
 </svelte:head>
--->
+
 
 <ModeWatcher defaultMode={data?.themeMode} />
 

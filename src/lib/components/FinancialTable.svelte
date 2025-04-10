@@ -264,10 +264,7 @@
 {/each}
 
 <input type="checkbox" id="financialPlotModal" class="modal-toggle" />
-<dialog
-  id="financialPlotModal"
-  class="modal {$screenWidth < 640 ? 'modal-bottom ' : ''} bg-[#000]/40 sm:px-5"
->
+<dialog id="financialPlotModal" class="modal bg-[#000]/40 px-3">
   <label for="financialPlotModal" class="cursor-pointer modal-backdrop"></label>
 
   <div
