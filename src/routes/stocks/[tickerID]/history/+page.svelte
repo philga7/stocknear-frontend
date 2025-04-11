@@ -5,7 +5,6 @@
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
   import { goto } from "$app/navigation";
-  import ArrowLogo from "lucide-svelte/icons/move-up-right";
   import SEO from "$lib/components/SEO.svelte";
   import { onMount } from "svelte";
   import { removeCompanyStrings } from "$lib/utils";
@@ -299,7 +298,7 @@
 </script>
 
 <SEO
-  title={`${$displayCompanyName} (${$stockTicker}) Stock Price History · Stocknear`}
+  title={`${$displayCompanyName} (${$stockTicker}) Stock Price History`}
   description={`Get a complete stock price history for ${$displayCompanyName} (${$stockTicker}), starting from its first trading day. Includes open, high, low, close and volume.`}
 />
 
@@ -481,7 +480,9 @@
                           <td
                             class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                           >
-                            {item?.adjOpen?.toFixed(2)}
+                            {item?.adjOpen !== undefined
+                              ? item?.adjOpen?.toFixed(2)
+                              : "n/a"}
                           </td>
                           <td
                             class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
@@ -491,7 +492,9 @@
                           <td
                             class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                           >
-                            {item?.adjHigh?.toFixed(2)}
+                            {item?.adjHigh !== undefined && item?.adjHigh
+                              ? item?.adjHigh?.toFixed(2)
+                              : "n/a"}
                           </td>
                           <td
                             class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
@@ -501,7 +504,9 @@
                           <td
                             class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                           >
-                            {item?.adjLow?.toFixed(2)}
+                            {item?.adjLow !== undefined && item?.adjLow
+                              ? item?.adjLow?.toFixed(2)
+                              : "n/a"}
                           </td>
                           <td
                             class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
@@ -512,7 +517,9 @@
                           <td
                             class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                           >
-                            {item?.adjClose?.toFixed(2)}
+                            {item?.adjClose !== undefined
+                              ? item?.adjClose?.toFixed(2)
+                              : "n/a"}
                           </td>
 
                           <td

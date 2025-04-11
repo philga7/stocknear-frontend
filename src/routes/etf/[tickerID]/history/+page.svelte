@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { stockTicker, displayCompanyName } from "$lib/store";
+  import { etfTicker, displayCompanyName } from "$lib/store";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
   import { goto } from "$app/navigation";
-  import ArrowLogo from "lucide-svelte/icons/move-up-right";
   import SEO from "$lib/components/SEO.svelte";
   import { onMount } from "svelte";
+  import { removeCompanyStrings } from "$lib/utils";
 
   export let data;
   let timePeriod = "Daily";
@@ -63,33 +63,51 @@
             periodStart,
             periodKey,
             open: entry.open,
+            adjOpen: entry.adjOpen,
             high: entry.high,
+            adjHigh: entry.adjHigh,
             low: entry.low,
+            adjLow: entry.adjLow,
             close: entry.close,
+            adjClose: entry.adjClose,
             volume: entry.volume,
           };
           aggregatedData.push(currentPeriod);
         } else {
           // Update the current period's values
+          // High values should be the maximum observed so far.
           currentPeriod.high = Math.max(currentPeriod.high, entry.high);
+          currentPeriod.adjHigh = Math.max(
+            currentPeriod.adjHigh,
+            entry.adjHigh,
+          );
+          // Low values should be the minimum observed so far.
           currentPeriod.low = Math.min(currentPeriod.low, entry.low);
-          currentPeriod.close = entry.close; // Update the close to the most recent in the period
+          currentPeriod.adjLow = Math.min(currentPeriod.adjLow, entry.adjLow);
+          // For close values, use the most recent (current) close.
+          currentPeriod.close = entry.close;
+          currentPeriod.adjClose = entry.adjClose;
+          // Sum volumes.
           currentPeriod.volume += entry.volume;
         }
       });
 
-      // Replace Daily data with aggregated data
+      // Replace Daily data with aggregated data including adjusted values
       data = aggregatedData.map((period) => ({
         time: period.periodStart.toISOString().split("T")[0],
         open: period.open,
+        adjOpen: period.adjOpen,
         high: period.high,
+        adjHigh: period.adjHigh,
         low: period.low,
+        adjLow: period.adjLow,
         close: period.close,
+        adjClose: period.adjClose,
         volume: period.volume,
       }));
     }
 
-    // Process the data to add change and changesPercentage
+    // Process the data to add change and changesPercentage (using non-adjusted close values)
     const modifiedData = data?.map((entry, index, arr) => {
       if (index === 0) {
         return { ...entry, change: null, changesPercentage: null };
@@ -101,7 +119,7 @@
         previousClose !== 0
           ? (((currentClose - previousClose) / previousClose) * 100)?.toFixed(2)
           : null;
-      return { ...entry, change, changesPercentage };
+      return { ...entry, changesPercentage };
     });
 
     // Sort the data by "time" from latest to earliest
@@ -129,10 +147,13 @@
   $: columns = [
     { key: "time", label: "Date", align: "left" },
     { key: "open", label: "Open", align: "right" },
+    { key: "adjOpen", label: "Adj Open", align: "right" },
     { key: "high", label: "High", align: "right" },
+    { key: "adjHigh", label: "Adj High", align: "right" },
     { key: "low", label: "Low", align: "right" },
+    { key: "adjLow", label: "Adj Low", align: "right" },
     { key: "close", label: "Close", align: "right" },
-    { key: "change", label: "Change", align: "right" },
+    { key: "adjClose", label: "Adj Close", align: "right" },
     { key: "changesPercentage", label: "% Change", align: "right" },
     { key: "volume", label: "Volume", align: "right" },
   ];
@@ -140,10 +161,13 @@
   $: sortOrders = {
     time: { order: "none", type: "date" },
     open: { order: "none", type: "number" },
+    adjOpen: { order: "none", type: "number" },
     high: { order: "none", type: "number" },
+    adjHigh: { order: "none", type: "number" },
     low: { order: "none", type: "number" },
+    adjLow: { order: "none", type: "number" },
     close: { order: "none", type: "number" },
-    change: { order: "none", type: "number" },
+    adjClose: { order: "none", type: "number" },
     changesPercentage: { order: "none", type: "number" },
     volume: { order: "none", type: "number" },
   };
@@ -211,19 +235,25 @@
         ({
           time,
           open,
+          adjOpen,
           high,
+          adjHigh,
           low,
+          adjLow,
           close,
-          change,
+          adjClose,
           changesPercentage,
           volume,
         }) => ({
           time,
           open,
+          adjOpen,
           high,
+          adjHigh,
           low,
+          adjLow,
           close,
-          change,
+          adjClose,
           changesPercentage,
           volume,
         }),
@@ -232,11 +262,13 @@
       const csvRows = [];
 
       // Add headers row
-      csvRows.push("time,open,high,low,close,change,changesPercentage,volume");
+      csvRows.push(
+        "time,open,adjOpen,high,adjHigh,low,adjLow,close,adjClose,changesPercentage,volume",
+      );
 
       // Add data rows
       for (const row of exportList) {
-        const csvRow = `${row.time},${row.open},${row.high},${row.low},${row.close},${row.change},${row.changesPercentage},${row.volume}`;
+        const csvRow = `${row.time},${row.open},${row.adjOpen},${row.high},${row.adjHigh},${row.low},${row.adjLow},${row.close},${row.adjClose},${row.changesPercentage},${row.volume}`;
         csvRows.push(csvRow);
       }
 
@@ -247,7 +279,7 @@
       const a = document.createElement("a");
       a.setAttribute("hidden", "");
       a.setAttribute("href", url);
-      a.setAttribute("download", `${$stockTicker}_price_history.csv`);
+      a.setAttribute("download", `${$etfTicker}_price_history.csv`);
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -266,8 +298,8 @@
 </script>
 
 <SEO
-  title={`${$displayCompanyName} (${$stockTicker}) Stock Price History · Stocknear`}
-  description={`Get a complete stock price history for ${$displayCompanyName} (${$stockTicker}), starting from its first trading day. Includes open, high, low, close and volume.`}
+  title={`${$displayCompanyName} (${$etfTicker}) Stock Price History`}
+  description={`Get a complete stock price history for ${$displayCompanyName} (${$etfTicker}), starting from its first trading day. Includes open, high, low, close and volume.`}
 />
 
 <section
@@ -278,13 +310,13 @@
       <div
         class="relative flex justify-center items-start overflow-hidden w-full"
       >
-        <main class="w-full lg:w-3/4 lg:pr-10">
+        <main class="w-full">
           <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto">
             <div
-              class="flex flex-col sm:flex-row items-start w-full sm:justify-between md:space-x-4 md:border-0 w-full mb-5"
+              class="flex flex-col sm:flex-row items-start w-full sm:justify-between md:space-x-4 md:border-0 w-full mb-3"
             >
               <h1 class="text-xl sm:text-2xl font-bold mb-3 sm:mb-0">
-                {$stockTicker} Stock Price History
+                {removeCompanyStrings($displayCompanyName)} Stock Price History
               </h1>
               <div
                 class="flex flex-row items-center ml-auto w-fit mt-2 sm:mt-0"
@@ -397,7 +429,7 @@
               </div>
             </div>
             {#if rawData?.length !== 0}
-              <div class="w-full m-auto mt-2">
+              <div class="w-full m-auto">
                 <div
                   class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
                 >
@@ -448,7 +480,21 @@
                           <td
                             class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                           >
+                            {item?.adjOpen !== undefined
+                              ? item?.adjOpen?.toFixed(2)
+                              : "n/a"}
+                          </td>
+                          <td
+                            class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                          >
                             {item?.high?.toFixed(2)}
+                          </td>
+                          <td
+                            class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                          >
+                            {item?.adjHigh !== undefined && item?.adjHigh
+                              ? item?.adjHigh?.toFixed(2)
+                              : "n/a"}
                           </td>
                           <td
                             class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
@@ -458,13 +504,24 @@
                           <td
                             class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                           >
-                            {item?.close?.toFixed(2)}
+                            {item?.adjLow !== undefined && item?.adjLow
+                              ? item?.adjLow?.toFixed(2)
+                              : "n/a"}
                           </td>
                           <td
                             class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                           >
-                            {item?.change !== null ? item?.change : "n/a"}
+                            {item?.close?.toFixed(2)}
                           </td>
+
+                          <td
+                            class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                          >
+                            {item?.adjClose !== undefined
+                              ? item?.adjClose?.toFixed(2)
+                              : "n/a"}
+                          </td>
+
                           <td
                             class="text-sm sm:text-[1rem] {item?.changesPercentage >=
                               0 && item?.changesPercentage !== null
@@ -496,44 +553,6 @@
             {/if}
           </div>
         </main>
-        <aside class="hidden lg:block relative fixed w-1/4 mt-3">
-          <div
-            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
-          >
-            <a
-              href="/stock-screener"
-              class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
-            >
-              <div class="w-full flex justify-between items-center p-3 mt-3">
-                <h2 class="text-start text-xl font-semibold ml-3">
-                  Stock Screener
-                </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:" />
-              </div>
-              <span class="p-3 ml-3 mr-3">
-                Filter, sort and analyze all stocks to find your next
-                investment.
-              </span>
-            </a>
-          </div>
-
-          <div
-            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
-          >
-            <a
-              href="/watchlist/stocks"
-              class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
-            >
-              <div class="w-full flex justify-between items-center p-3 mt-3">
-                <h2 class="text-start text-xl font-semibold ml-3">Watchlist</h2>
-                <ArrowLogo class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:" />
-              </div>
-              <span class="p-3 ml-3 mr-3">
-                Keep track of your favorite stocks in real-time.
-              </span>
-            </a>
-          </div>
-        </aside>
       </div>
     </div>
   </div>

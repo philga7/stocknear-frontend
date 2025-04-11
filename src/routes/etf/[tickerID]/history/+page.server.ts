@@ -1,10 +1,10 @@
 export const load = async ({ locals, params }) => {
   const { apiKey, apiURL } = locals;
   const getData = async () => {
-     const postData = { ticker: params.tickerID, timePeriod: 'max' };
+     const postData = { ticker: params.tickerID };
 
    
-  const response = await fetch(apiURL + "/historical-price", {
+  const response = await fetch(apiURL + "/historical-adj-price", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
