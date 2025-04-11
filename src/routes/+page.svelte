@@ -547,7 +547,7 @@
           </Card.Root>
 
           <Card.Root
-            class="order-1 sm:order-2 overflow-x-auto overflow-hidden overflow-y-auto no-scrollbar sm:max-h-[550px]"
+            class="order-1 sm:order-2 overflow-x-auto overflow-hidden overflow-y-auto no-scrollbar h-fit"
           >
             <Card.Header class="flex flex-row items-center">
               <div class="flex flex-col items-start w-full">
@@ -685,7 +685,7 @@
           </Card.Root>
 
           <Card.Root
-            class="order-2 sm:order-3 overflow-x-auto overflow-hidden overflow-y-auto no-scrollbar sm:max-h-[550px]"
+            class="order-2 sm:order-3 overflow-x-auto overflow-hidden overflow-y-auto no-scrollbar h-fit"
           >
             <Card.Header class="flex flex-row items-center">
               <div class="flex flex-col items-start w-full">
