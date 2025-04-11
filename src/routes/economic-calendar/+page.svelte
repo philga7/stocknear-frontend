@@ -47,7 +47,12 @@
   }
 
   // Whenever filters are applied and the worker exists, trigger filtering
-  $: if (filterList.length > 0 && syncWorker) {
+  $: if (
+    filterList.length > 0 &&
+    syncWorker &&
+    selectedWeekday &&
+    currentWeek
+  ) {
     loadWorker();
   }
 
