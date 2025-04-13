@@ -174,13 +174,13 @@
                     class="relative grid grid-cols-1 sm:grid-cols-4 gap-y-3 gap-x-3 flex flex-wrap p-1 list-none rounded-[3px]"
                   >
                     <li
-                      class="pl-3 py-1.5 flex-auto text-center shadow-sm bg-gray-100 dark:bg-[#2E3238] rounded-[3px]"
+                      class="pl-3 py-1.5 flex-auto text-center shadow-sm bg-gray-200 dark:bg-[#2E3238] rounded-[3px] border border-gray-100 dark:border-gray-800"
                     >
                       <label class="flex flex-row items-center">
                         <input
                           id="modal-search"
                           type="search"
-                          class=" ml-2 text-[1rem] dark:placeholder-gray-400 bg-inherit border-transparent focus:border-transparent focus:ring-0 flex items-center justify-center w-full px-0 py-1"
+                          class=" ml-2 text-[1rem] placeholder-gray-600 dark:placeholder-gray-400 bg-inherit border-transparent focus:outline-none focus:border-transparent focus:ring-0 flex items-center justify-center w-full px-0 py-1"
                           placeholder="Find by name"
                           bind:value={filterQuery}
                           on:input={handleInput}
@@ -233,7 +233,7 @@
                   {#each displayList as item}
                     <a
                       href={`/politicians/${item?.id}`}
-                      class="w-full cursor-pointer bg-gray-300 dark:bg-[#141417] sm:hover:bg-gray-400 dark:sm:hover:bg-[#000] ease-in-out border dark:sm:hover:border-[#000] sm:hover:shadow-[#8C5F1B] border-gray-300 dark:border-gray-800 shadow-md rounded-md h-auto pb-4 pt-4 mb-7 {item?.party ===
+                      class="w-full cursor-pointer bg-gray-100 dark:bg-[#141417] sm:hover:bg-gray-400 dark:sm:hover:bg-[#000] ease-in-out border dark:sm:hover:border-[#000] sm:hover:shadow-[#8C5F1B] border-gray-300 dark:border-gray-800 shadow-md rounded-md h-auto pb-4 pt-4 mb-7 {item?.party ===
                       'Republican'
                         ? 'sm:hover:shadow-[#80000D]'
                         : item?.party === 'Democratic'
