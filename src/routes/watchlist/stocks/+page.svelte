@@ -49,19 +49,24 @@
 
   let bulkData = [
     {
-      name: "Price Data",
+      name: "Stock Price",
       selected: true,
       credit: 1,
     },
     {
-      name: "Dividends Data",
+      name: "Dividends",
       selected: true,
       credit: 1,
     },
     {
-      name: "Options Data",
+      name: "Options",
       selected: true,
       credit: 3,
+    },
+    {
+      name: "Dark Pool",
+      selected: true,
+      credit: 2,
     },
   ];
   const tabs = [
@@ -1600,7 +1605,7 @@
                     </DropdownMenu.Trigger>
 
                     <DropdownMenu.Content
-                      class="w-auto max-w-80 max-h-[400px] overflow-y-auto scroller relative"
+                      class="w-auto min-w-64 max-w-80 max-h-[400px] overflow-y-auto scroller relative"
                     >
                       <DropdownMenu.Label
                         class="text-muted dark:text-gray-400 font-semibold dark:font-normal text-xs"
@@ -1620,7 +1625,7 @@
                               }}
                               class="inline-flex justify-between w-full items-center cursor-pointer"
                             >
-                              <span class="mr-2 text-sm">{item?.name}</span>
+                              <span class="mr-1 text-sm">{item?.name}</span>
                               <span class="mr-2 text-xs inline-block"
                                 >({item?.credit} Credits)</span
                               >
@@ -1652,7 +1657,7 @@
                         </span>
                         <button
                           on:click={handleBulkDownload}
-                          class="w-full flex justify-end dark:sm:hover:text-white text-muted dark:text-gray-300 bg-white dark:bg-default text-start text-sm cursor-pointer"
+                          class="whitespace-nowrap w-full flex justify-end dark:sm:hover:text-white text-muted dark:text-gray-300 bg-white dark:bg-default text-start text-sm cursor-pointer"
                         >
                           Bulk Download
                         </button>
