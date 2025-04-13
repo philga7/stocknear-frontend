@@ -29,9 +29,9 @@
   let searchQuery = "";
   let switchWatchlist = false;
   let editMode = false;
-  let realtimeUpdates = true;
   let numberOfChecked = 0;
   let activeIdx = 0;
+  let totalCreditCost = 0;
   let rawTabData = [];
 
   let deleteTickerList = [];
@@ -47,6 +47,23 @@
   let checkedItems;
   let socket;
 
+  let bulkData = [
+    {
+      name: "Price Data",
+      selected: true,
+      credit: 1,
+    },
+    {
+      name: "Dividends Data",
+      selected: true,
+      credit: 1,
+    },
+    {
+      name: "Options Data",
+      selected: true,
+      credit: 3,
+    },
+  ];
   const tabs = [
     {
       title: "News",
@@ -1048,14 +1065,25 @@
     watchList = [...originalData].sort(compareValues)?.slice(0, 50);
   };
 
-  async function downloadHistoricalData() {
+  async function handleBulkDownload() {
     const tickers = watchList?.map((item) => item?.symbol); // example tickers
-    if (data?.user?.credits > tickers?.length && tickers?.length > 0) {
-      data.user.credits = data?.user?.credits - tickers?.length;
+
+    if (totalCreditCost === 0 || tickers?.length === 0) {
+      toast.error(
+        `Select at least one ${tickers?.length === 0 ? "symbol" : "bulk data"} to download`,
+        {
+          style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
+        },
+      );
+      return;
+    }
+
+    if (data?.user?.credits > totalCreditCost && tickers?.length > 0) {
+      data.user.credits = data?.user?.credits - totalCreditCost;
       const response = await fetch("/api/bulk-download", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tickers }),
+        body: JSON.stringify({ tickers: tickers, bulkData: bulkData }),
       });
 
       if (response.ok) {
@@ -1077,6 +1105,18 @@
       toast.error("Not enough credits", {
         style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
+    }
+  }
+
+  $: {
+    if (bulkData) {
+      const tickers = watchList?.map((item) => item?.symbol); // example tickers
+
+      totalCreditCost =
+        tickers?.length *
+        bulkData?.reduce((sum, item) => {
+          return item.selected ? sum + item.credit : sum;
+        }, 0);
     }
   }
 </script>
@@ -1527,7 +1567,7 @@
                         class="shadow-sm min-w-[110px] w-full sm:w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5  rounded truncate"
                       >
                         <span class="truncate text-sm sm:text-[1rem]"
-                          >Options</span
+                          >Bulk Download</span
                         >
                         <svg
                           class="-mr-1 ml-2 h-5 w-5 inline-block"
@@ -1546,51 +1586,63 @@
                     </DropdownMenu.Trigger>
 
                     <DropdownMenu.Content
-                      class="w-auto max-w-60 max-h-[400px] overflow-y-auto scroller relative"
+                      class="w-auto max-w-80 max-h-[400px] overflow-y-auto scroller relative"
                     >
+                      <DropdownMenu.Label
+                        class="text-muted dark:text-gray-400 font-semibold dark:font-normal text-xs"
+                      >
+                        {data?.user?.credits} Credits left
+                      </DropdownMenu.Label>
                       <!-- Dropdown items -->
                       <DropdownMenu.Group class="pb-2">
-                        <!-- Added padding to avoid overlapping with Reset button -->
-                        <DropdownMenu.Item
-                          class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer mt-2"
-                        >
-                          <button
-                            on:click={downloadHistoricalData}
-                            class="flex items-center cursor-pointer"
+                        {#each bulkData as item}
+                          <DropdownMenu.Item
+                            class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary"
                           >
-                            Bulk Download <span class="ml-2 text-xs"
-                              >({data?.user?.credits} Credits left)</span
+                            <label
+                              on:click|capture={(event) => {
+                                event.preventDefault();
+                                item.selected = !item?.selected;
+                              }}
+                              class="inline-flex justify-between w-full items-center cursor-pointer"
                             >
-                          </button>
-                        </DropdownMenu.Item>
-                        <DropdownMenu.Item
-                          class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary"
-                        >
-                          <label
-                            on:click|capture={(event) => {
-                              event.preventDefault();
-                              realtimeUpdates = !realtimeUpdates;
-                            }}
-                            class="inline-flex justify-between w-full items-center cursor-pointer"
-                          >
-                            <span class="mr-2 text-sm">Realtime Updates</span>
-                            <div class="relative ml-auto">
-                              <input
-                                type="checkbox"
-                                bind:checked={realtimeUpdates}
-                                class="sr-only peer"
-                              />
-                              <div
-                                class="w-9 h-5 bg-gray-400 rounded-full peer peer-checked:bg-blue-600
+                              <span class="mr-2 text-sm">{item?.name}</span>
+                              <span class="mr-2 text-xs inline-block"
+                                >({item?.credit} Credits)</span
+                              >
+                              <div class="relative ml-auto">
+                                <input
+                                  type="checkbox"
+                                  checked={item?.selected}
+                                  class="sr-only peer"
+                                />
+                                <div
+                                  class="w-9 h-5 bg-gray-400 rounded-full peer peer-checked:bg-blue-600
       after:content-[''] after:absolute after:top-0.5 after:left-[2px]
       after:bg-white after:border-gray-300 after:border
       after:rounded-full after:h-4 after:w-4 after:transition-all
       peer-checked:after:translate-x-full"
-                              ></div>
-                            </div></label
-                          >
-                        </DropdownMenu.Item>
+                                ></div>
+                              </div></label
+                            >
+                          </DropdownMenu.Item>
+                        {/each}
                       </DropdownMenu.Group>
+                      <div
+                        class="sticky -bottom-1 bg-white dark:bg-default z-50 p-2 border-t border-gray-300 dark:border-gray-600 w-full flex justify-between items-center"
+                      >
+                        <span
+                          class="w-full text-muted dark:text-gray-300 bg-white dark:bg-default font-semibold dark:font-normal text-start text-xs select-none"
+                        >
+                          = Credit Cost {totalCreditCost}
+                        </span>
+                        <button
+                          on:click={handleBulkDownload}
+                          class="w-full flex justify-end dark:sm:hover:text-white text-muted dark:text-gray-300 bg-white dark:bg-default text-start text-sm cursor-pointer"
+                        >
+                          Bulk Download
+                        </button>
+                      </div>
                     </DropdownMenu.Content>
                   </DropdownMenu.Root>
                 </div>
