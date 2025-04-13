@@ -1079,24 +1079,38 @@
     }
 
     if (data?.user?.credits > totalCreditCost && tickers?.length > 0) {
-      data.user.credits = data?.user?.credits - totalCreditCost;
-      const response = await fetch("/api/bulk-download", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tickers: tickers, bulkData: bulkData }),
-      });
+      toast.promise(
+        (async () => {
+          data.user.credits = data.user.credits - totalCreditCost;
 
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "historical_data.zip";
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
-      }
+          const response = await fetch("/api/bulk-download", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ tickers: tickers, bulkData: bulkData }),
+          });
+
+          if (!response.ok) {
+            throw new Error("Download request failed");
+          }
+
+          const blob = await response.blob();
+          const url = URL.createObjectURL(blob);
+
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "historical_data.zip";
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
+        })(),
+        {
+          loading: "Downloading data...",
+          success: "Download complete!",
+          error: "Download failed. Try again.",
+          style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
+        },
+      );
     } else if (tickers?.length === 0) {
       toast.error("Add tickers first to your watchlist", {
         style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
