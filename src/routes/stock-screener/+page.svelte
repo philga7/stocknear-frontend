@@ -3213,7 +3213,7 @@ const handleKeyDown = (event) => {
   <!--End Build Strategy-->
 
   <div
-    class="mt-6 grid-cols-2 items-center sm:grid lg:flex lg:space-x-1 lg:overflow-visible lg:px-1 py-1.5 border-t border-b border-gray-300 dark:border-gray-600 mb-2"
+    class="mt-6 grid-cols-2 items-center sm:grid lg:flex lg:space-x-1 lg:overflow-visible lg:px-1 py-1.5 border-t border-b border-gray-300 dark:border-gray-800 mb-2"
   >
     <h2 class=" whitespace-nowrap text-xl font-semibold bp:text-[1.3rem]">
       {filteredData?.length} Stocks
