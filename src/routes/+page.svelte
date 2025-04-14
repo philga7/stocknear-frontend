@@ -62,6 +62,16 @@
   description="Stocknear has everything you need to analyze stocks with help of AI, including detailed financial data, statistics, news and charts."
 />
 
+{@html `<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://stocknear.com",
+      "name": "Stocknear.com",
+      "description": "Stocknear has everything you need to analyze stocks with help of AI, including detailed financial data, statistics, news and charts."
+    }
+</script>`}
+
 <div
   class="w-full sm:max-w-[1400px] overflow-hidden m-auto min-h-screen bg-white dark:bg-default text-muted dark:text-white mb-16"
 >
@@ -101,7 +111,7 @@
       {#if data?.user}
         <Feedback {data} />
       {/if}
-
+      <!--
       <div
         class="text-center mb-10 relative w-fit flex justify-center m-auto text-white"
       >
@@ -122,6 +132,7 @@
           >
         </div>
       </div>
+      -->
 
       <h1
         class="hidden sm:block text-3xl lg:text-4xl text-muted dark:text-white font-bold text-center mb-10 relative w-fit flex justify-center m-auto"

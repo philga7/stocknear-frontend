@@ -417,7 +417,9 @@
           );
 
           const output = await getContractHistory(optionSymbol);
-          selectedOptionPrice = output?.history?.at(-1)?.mark || 0;
+          selectedOptionPrice = output?.history?.at(-1)?.mark
+            ? output?.history?.at(-1)?.mark
+            : output?.history?.at(-1)?.close || 0;
           item.optionPrice = selectedOptionPrice;
           item.optionSymbol = optionSymbol;
           item.optionType = selectedOptionType;
@@ -1258,7 +1260,9 @@
                     </div>
                     <div class="flex items-baseline">
                       <span class="text-lg font-semibold"
-                        >${currentStockPrice}</span
+                        >${currentStockPrice
+                          ? currentStockPrice?.toFixed(2)
+                          : "n/a"}</span
                       >
                     </div>
                   </div>
