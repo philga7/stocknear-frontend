@@ -206,12 +206,10 @@
     price: {
       label: "Stock Price",
       step: [1000, 500, 400, 300, 200, 150, 100, 80, 60, 50, 20, 10, 5, 1],
-
       defaultCondition: "over",
       defaultValue: "any",
       category: "Price & Volume",
     },
-
     change1W: {
       label: "Price Change 1W",
       step: ["20%", "10%", "5%", "1%", "-1%", "-5%", "-10%", "-20%"],
@@ -323,7 +321,6 @@
     marketCap: {
       label: "Market Cap",
       step: ["100B", "50B", "10B", "1B", "300M", "100M", "10M"],
-
       defaultCondition: "over",
       defaultValue: "any",
       category: ["Most Popular", "Valuation & Ratios"],
@@ -338,7 +335,6 @@
     totalAssets: {
       label: "Total Assets",
       step: ["500B", "200B", "100B", "50B", "10B", "1B", "100M", "10M"],
-
       defaultCondition: "over",
       defaultValue: "any",
     },
@@ -352,7 +348,6 @@
     revenue: {
       label: "Revenue",
       step: ["100B", "50B", "10B", "1B", "300M", "100M", "10M"],
-
       defaultCondition: "over",
       defaultValue: "any",
       category: "Revenue / Sales",
@@ -360,7 +355,6 @@
     revenueGrowthYears: {
       label: "Revenue Growth Years",
       step: ["10", "5", "3", "1"],
-
       defaultCondition: "over",
       defaultValue: "any",
       category: "Revenue / Sales",
@@ -368,7 +362,6 @@
     epsGrowthYears: {
       label: "EPS Growth Years",
       step: ["10", "5", "3", "1"],
-
       defaultCondition: "over",
       defaultValue: "any",
       category: "Valuation & Ratios",
@@ -376,7 +369,6 @@
     netIncomeGrowthYears: {
       label: "Net Income Growth Years",
       step: ["10", "5", "3", "1"],
-
       defaultCondition: "over",
       defaultValue: "any",
       category: "Net Income",
@@ -384,7 +376,6 @@
     grossProfitGrowthYears: {
       label: "Gross Profit Growth Years",
       step: ["10", "5", "3", "1"],
-
       defaultCondition: "over",
       defaultValue: "any",
       category: "Other Profits",
@@ -392,9 +383,9 @@
     growthRevenue: {
       label: "Revenue Growth",
       step: ["200%", "100%", "50%", "20%", "10%", "5%", "1%"],
-
       defaultCondition: "over",
       defaultValue: "any",
+      varType: "percentSign",
       category: ["Most Popular", "Revenue / Sales"],
     },
     costOfRevenue: {
@@ -426,7 +417,6 @@
     netIncome: {
       label: "Net Income",
       step: ["100B", "50B", "10B", "1B", "300M", "100M", "10M"],
-
       defaultCondition: "over",
       defaultValue: "any",
       category: "Net Income",
@@ -470,23 +460,22 @@
     payoutRatio: {
       label: "Payout Ratio",
       step: ["100%", "80%", "60%", "40%", "20%", "0%", "-20%", "-40%"],
-
       defaultCondition: "over",
       defaultValue: "any",
+      varType: "percent",
       category: "Dividends",
     },
     dividendYield: {
       label: "Dividend Yield",
       step: ["50%", "20%", "10%", "5%", "1%"],
-
       defaultCondition: "over",
       defaultValue: "any",
+      varType: "percent",
       category: ["Most Popular", "Dividends"],
     },
     annualDividend: {
       label: "Annual Dividend",
       step: [10, 5, 3, 2, 1, 0],
-
       defaultCondition: "over",
       defaultValue: "any",
       category: "Dividends",
@@ -555,7 +544,6 @@
     operatingIncome: {
       label: "Operating Income",
       step: ["100B", "50B", "10B", "1B", "300M", "100M", "10M"],
-
       defaultCondition: "over",
       defaultValue: "any",
       category: "Other Profits",
@@ -705,7 +693,6 @@
       defaultValue: "any",
       category: "Valuation & Ratios",
     },
-
     priceToBookRatio: {
       label: "PB Ratio",
       step: [50, 40, 30, 20, 10, 5, 1],
@@ -2589,7 +2576,7 @@ const handleKeyDown = (event) => {
                     <Button
                       on:click={handleCreateStrategy}
                       builders={[builder]}
-                      class="p-0 -mb-2 -mt-2 text-sm inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap   bg-[#0909B] focus:outline-hidden sm:text-smaller"
+                      class="p-0 -mb-2 -mt-2 text-sm inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap   bg-[#0909B] focus:outline-hidden "
                     >
                       <svg
                         class="h-4 w-4"
@@ -2637,11 +2624,11 @@ const handleKeyDown = (event) => {
         >
           <button
             on:click={() => (showFilters = !showFilters)}
-            class="flex cursor-pointer items-center text-lg sm:text-xl font-semibold"
+            class="flex cursor-pointer items-center text-lg font-semibold"
             title="Hide Filter Area"
           >
             <svg
-              class="-mb-0.5 h-6 w-6 {showFilters ? '' : '-rotate-90'} "
+              class="-mb-0.5 h-5 w-5 {showFilters ? '' : '-rotate-90'} "
               viewBox="0 0 20 20"
               fill="currentColor"
               style="max-width:40px"
@@ -2660,7 +2647,7 @@ const handleKeyDown = (event) => {
         <div class="mt-3 flex flex-col gap-y-2.5 sm:flex-row lg:gap-y-2">
           <label
             for="ruleModal"
-            class="inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-sm bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500 sm:text-smaller"
+            class="text-white inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-sm bg-blue-500 sm:hover:bg-blue-600 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
           >
             <svg
               class="h-5 w-5"
@@ -2682,7 +2669,7 @@ const handleKeyDown = (event) => {
             <label
               for={!data?.user ? "userLogin" : ""}
               on:click={() => handleSave(true)}
-              class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-sm bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500 sm:text-smaller"
+              class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-sm bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
             >
               <svg
                 class="h-5 w-5"
@@ -2698,7 +2685,7 @@ const handleKeyDown = (event) => {
 
             <label
               for="deleteStrategy"
-              class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-sm bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out sm:hover:text-red-500 focus:outline-hidden focus:ring-2 focus:ring-blue-500 sm:text-smaller"
+              class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-sm bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out sm:hover:text-red-500 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
             >
               <svg
                 class="h-5 w-5"
@@ -2716,7 +2703,7 @@ const handleKeyDown = (event) => {
           {#if ruleOfList?.length !== 0}
             <label
               on:click={handleResetAll}
-              class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-sm bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:text-red-500 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500 sm:text-smaller"
+              class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-sm bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:text-red-500 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
             >
               <svg
                 class="h-4 w-4"
@@ -2848,7 +2835,7 @@ const handleKeyDown = (event) => {
                             {/if}
                           </span>
                           <svg
-                            class=" ml-1 h-6 w-6 xs:ml-2 inline-block"
+                            class=" ml-1 h-5 w-5 xs:ml-2 inline-block"
                             viewBox="0 0 20 20"
                             fill="currentColor"
                             style="max-width:40px"
@@ -3162,24 +3149,22 @@ const handleKeyDown = (event) => {
   <!--End Build Strategy-->
 
   <div
-    class="mt-10 sm:mt-6 grid-cols-2 items-center sm:grid lg:flex lg:space-x-1 lg:overflow-visible lg:px-1 lg:py-2"
+    class="mt-6 grid-cols-2 items-center sm:grid lg:flex lg:space-x-1 lg:overflow-visible lg:px-1 py-1.5 border-t border-b border-gray-300 dark:border-gray-600 mb-2"
   >
-    <h2
-      class="mb-1 whitespace-nowrap text-xl font-semibold bp:text-[1.3rem] sm:mb-0"
-    >
+    <h2 class=" whitespace-nowrap text-xl font-semibold bp:text-[1.3rem]">
       {filteredData?.length} Stocks
     </h2>
     <div
-      class="col-span-2 flex flex-row items-center border-t border-gray-300 dark:border-gray-600 lg:order-2 lg:grow lg:border-0 lg:pl-1 xl:pl-3"
+      class="col-span-2 flex flex-row items-center lg:order-2 lg:grow lg:border-0 lg:pl-1 xl:pl-3"
     >
-      <nav class="w-full flex flex-row items-center py-2.5 sm:py-3 lg:py-1">
+      <nav class="w-full flex flex-row items-center">
         <ul
           class="flex flex-row overflow-x-auto items-center space-x-2 whitespace-nowrap"
         >
           <li>
             <button
               on:click={() => (displayTableTab = "general")}
-              class="cursor-pointer text-[1rem] sm:text-lg block rounded-md px-2 py-1 focus:outline-hidden sm:hover:bg-gray-100 dark:sm:hover:bg-primary {displayTableTab ===
+              class="cursor-pointer text-[1rem] block rounded-md px-2 py-1 focus:outline-hidden sm:hover:bg-gray-100 dark:sm:hover:bg-primary {displayTableTab ===
               'general'
                 ? 'font-semibold bg-gray-100 dark:bg-primary'
                 : ''}"
@@ -3190,7 +3175,7 @@ const handleKeyDown = (event) => {
           <li>
             <button
               on:click={() => (displayTableTab = "filters")}
-              class="cursor-pointer text-[1rem] sm:text-lg flex flex-row items-center relative block rounded-md px-2 py-1 sm:hover:bg-gray-100 dark:sm:hover:bg-primary{displayTableTab ===
+              class="cursor-pointer text-[1rem] flex flex-row items-center relative block rounded-md px-2 py-1 sm:hover:bg-gray-100 dark:sm:hover:bg-primary {displayTableTab ===
               'filters'
                 ? 'font-semibold bg-gray-100 dark:bg-primary'
                 : ''} focus:outline-hidden"
@@ -3209,7 +3194,7 @@ const handleKeyDown = (event) => {
           <li>
             <button
               on:click={() => changeTab("performance")}
-              class="cursor-pointer text-[1rem] sm:text-lg block rounded-md px-2 py-1 focus:outline-hidden sm:hover:bg-gray-100 dark:sm:hover:bg-primary{displayTableTab ===
+              class="cursor-pointer text-[1rem] block rounded-md px-2 py-1 focus:outline-hidden sm:hover:bg-gray-100 dark:sm:hover:bg-primary {displayTableTab ===
               'performance'
                 ? 'font-semibold bg-gray-100 dark:bg-primary'
                 : ''}"
@@ -3220,7 +3205,7 @@ const handleKeyDown = (event) => {
           <li>
             <button
               on:click={() => changeTab("analysts")}
-              class="cursor-pointer text-[1rem] sm:text-lg block rounded-md px-2 py-1 focus:outline-hidden sm:hover:bg-gray-100 dark:sm:hover:bg-primary{displayTableTab ===
+              class="cursor-pointer text-[1rem] block rounded-md px-2 py-1 focus:outline-hidden sm:hover:bg-gray-100 dark:sm:hover:bg-primary {displayTableTab ===
               'analysts'
                 ? 'font-semibold bg-gray-100 dark:bg-primary'
                 : ''}"
@@ -3396,7 +3381,7 @@ const handleKeyDown = (event) => {
                   <td class=" whitespace-nowrap">
                     <a
                       href={"/stocks/" + item?.symbol}
-                      class="sm:hover: text-blue-400 text-sm sm:text-[1rem]"
+                      class="text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400 text-sm sm:text-[1rem]"
                       >{item?.symbol}</a
                     >
                   </td>
@@ -3425,7 +3410,7 @@ const handleKeyDown = (event) => {
                           )}%</span
                         >
                       {:else}
-                        <span class="text-[#fff]">-</span>
+                        <span class="">n/a</span>
                       {/if}
                     </td>
                   {/each}
@@ -3450,7 +3435,7 @@ const handleKeyDown = (event) => {
                   <td class=" whitespace-nowrap">
                     <a
                       href={"/stocks/" + item?.symbol}
-                      class="sm:hover: text-blue-400 text-sm sm:text-[1rem]"
+                      class="text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400 text-sm sm:text-[1rem]"
                       >{item?.symbol}</a
                     >
                   </td>
@@ -3479,22 +3464,19 @@ const handleKeyDown = (event) => {
                             >{item[row?.rule]?.toFixed(2)}%</span
                           >
                         {:else}
-                          <span class="text-[#fff]">n/a</span>
+                          <span class="">n/a</span>
                         {/if}
                       {:else if ["analystRating", "topAnalystRating"]?.includes(row?.rule)}
                         {#if ["Strong Buy", "Buy"].includes(item[row?.rule])}
-                          <span
-                            class="font-semibold dark:font-normal text-green-800 dark:text-[#00FC50]"
+                          <span class=" text-green-800 dark:text-[#00FC50]"
                             >{item[row?.rule]}</span
                           >
                         {:else if ["Strong Sell", "Sell"].includes(item[row?.rule])}
-                          <span
-                            class="font-semibold dark:font-normal text-red-800 dark:text-[#FF2F1F]"
+                          <span class=" text-red-800 dark:text-[#FF2F1F]"
                             >{item[row?.rule]}</span
                           >
                         {:else if item[row?.rule] === "Hold"}
-                          <span
-                            class="font-semibold dark:font-normal text-orange-600 dark:text-[#FFA838]"
+                          <span class=" text-orange-600 dark:text-[#FFA838]"
                             >{item[row?.rule]}</span
                           >
                         {:else}
