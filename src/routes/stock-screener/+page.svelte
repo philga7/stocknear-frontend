@@ -485,7 +485,7 @@
       step: ["50%", "20%", "10%", "5%", "3%", "2%", "1%", "0%"],
       defaultCondition: "over",
       defaultValue: "any",
-      varType: "percentSign",
+      varType: "percent",
       category: "Dividends",
     },
     eps: {
@@ -1571,7 +1571,12 @@
   };
 
   const loadWorker = async () => {
-    if (["performance", "analysts"]?.includes(displayTableTab) || hoverStatus) {
+    if (
+      ["performance", "analysts", "dividends", "financials"]?.includes(
+        displayTableTab,
+      ) ||
+      hoverStatus
+    ) {
       syncWorker.postMessage({
         stockScreenerData,
         ruleOfList: [...ruleOfList, ...otherTabRules],
@@ -1585,7 +1590,12 @@
   };
 
   const updateStockScreenerData = async () => {
-    if (["performance", "analysts"]?.includes(displayTableTab) || hoverStatus) {
+    if (
+      ["performance", "analysts", "dividends", "financials"]?.includes(
+        displayTableTab,
+      ) ||
+      hoverStatus
+    ) {
       downloadWorker.postMessage({
         ruleOfList: [...ruleOfList, ...otherTabRules],
       });
@@ -2303,6 +2313,16 @@ const handleKeyDown = (event) => {
           { key: "name", label: "Name", align: "left" },
           { key: "marketCap", label: "Market Cap", align: "right" },
         ],
+        dividends: [
+          { key: "symbol", label: "Symbol", align: "left" },
+          { key: "name", label: "Name", align: "left" },
+          { key: "marketCap", label: "Market Cap", align: "right" },
+        ],
+        financials: [
+          { key: "symbol", label: "Symbol", align: "left" },
+          { key: "name", label: "Name", align: "left" },
+          { key: "marketCap", label: "Market Cap", align: "right" },
+        ],
       };
 
       const baseSortOrdersMap = {
@@ -2312,6 +2332,16 @@ const handleKeyDown = (event) => {
           marketCap: { order: "none", type: "number" },
         },
         analysts: {
+          symbol: { order: "none", type: "string" },
+          name: { order: "none", type: "string" },
+          marketCap: { order: "none", type: "number" },
+        },
+        dividends: {
+          symbol: { order: "none", type: "string" },
+          name: { order: "none", type: "string" },
+          marketCap: { order: "none", type: "number" },
+        },
+        financials: {
           symbol: { order: "none", type: "string" },
           name: { order: "none", type: "string" },
           marketCap: { order: "none", type: "number" },
@@ -2330,7 +2360,12 @@ const handleKeyDown = (event) => {
         columns = [...(baseColumnsMap[displayTableTab] || [])];
         sortOrders = { ...(baseSortOrdersMap[displayTableTab] || {}) };
 
-        const rulesList = ["performance", "analysts"]?.includes(displayTableTab)
+        const rulesList = [
+          "performance",
+          "analysts",
+          "dividends",
+          "financials",
+        ]?.includes(displayTableTab)
           ? tabRuleList
           : displayRules;
         rulesList?.forEach((rule) => {
@@ -2374,6 +2409,35 @@ const handleKeyDown = (event) => {
         { name: "analystCounter", value: "any" },
         { name: "priceTarget", value: "any" },
         { name: "upside", value: "any" },
+      ];
+      tabRuleList = otherTabRules
+        ?.map((rule) => allRows?.find((row) => row?.rule === rule?.name))
+        ?.filter(Boolean);
+
+      await updateStockScreenerData();
+    } else if (displayTableTab === "dividends") {
+      hoverStatus = false;
+      otherTabRules = [
+        { name: "marketCap", value: "any" },
+        { name: "annualDividend", value: "any" },
+        { name: "dividendYield", value: "any" },
+        { name: "payoutRatio", value: "any" },
+        { name: "dividendGrowth", value: "any" },
+      ];
+      tabRuleList = otherTabRules
+        ?.map((rule) => allRows?.find((row) => row?.rule === rule?.name))
+        ?.filter(Boolean);
+
+      await updateStockScreenerData();
+    } else if (displayTableTab === "financials") {
+      hoverStatus = false;
+      otherTabRules = [
+        { name: "marketCap", value: "any" },
+        { name: "revenue", value: "any" },
+        { name: "operatingIncome", value: "any" },
+        { name: "netIncome", value: "any" },
+        { name: "freeCashFlow", value: "any" },
+        { name: "eps", value: "any" },
       ];
       tabRuleList = otherTabRules
         ?.map((rule) => allRows?.find((row) => row?.rule === rule?.name))
@@ -3213,6 +3277,28 @@ const handleKeyDown = (event) => {
               Analysts
             </button>
           </li>
+          <li>
+            <button
+              on:click={() => changeTab("dividends")}
+              class="cursor-pointer text-[1rem] block rounded-md px-2 py-1 focus:outline-hidden sm:hover:bg-gray-100 dark:sm:hover:bg-primary {displayTableTab ===
+              'dividends'
+                ? 'font-semibold bg-gray-100 dark:bg-primary'
+                : ''}"
+            >
+              Dividends
+            </button>
+          </li>
+          <li>
+            <button
+              on:click={() => changeTab("financials")}
+              class="cursor-pointer text-[1rem] block rounded-md px-2 py-1 focus:outline-hidden sm:hover:bg-gray-100 dark:sm:hover:bg-primary {displayTableTab ===
+              'financials'
+                ? 'font-semibold bg-gray-100 dark:bg-primary'
+                : ''}"
+            >
+              Financials
+            </button>
+          </li>
         </ul>
         <div class="w-fit ml-auto hidden sm:inline-block">
           <DownloadData
@@ -3482,6 +3568,52 @@ const handleKeyDown = (event) => {
                         {:else}
                           n/a
                         {/if}
+                      {/if}
+                    </td>
+                  {/each}
+                </tr>
+              {/each}
+            </tbody>
+          </table>
+        </div>
+      {:else if ["dividends", "financials"]?.includes(displayTableTab)}
+        <div class="w-full rounded-md overflow-x-auto">
+          <table
+            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
+          >
+            <thead>
+              <TableHeader {columns} {sortOrders} {sortData} />
+            </thead>
+            <tbody>
+              {#each displayResults as item (item?.symbol)}
+                <tr
+                  class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
+                >
+                  <td class=" whitespace-nowrap">
+                    <a
+                      href={"/stocks/" + item?.symbol}
+                      class="text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400 text-sm sm:text-[1rem]"
+                      >{item?.symbol}</a
+                    >
+                  </td>
+                  <td class="whitespace-nowrap text-[1rem]">
+                    {item?.name?.length > charNumber
+                      ? item?.name?.slice(0, charNumber) + "..."
+                      : item?.name}
+                  </td>
+
+                  {#each tabRuleList as row (row?.rule)}
+                    <td
+                      class="whitespace-nowrap text-sm sm:text-[1rem] text-end"
+                    >
+                      {#if row?.rule === "marketCap"}
+                        {abbreviateNumber(item[row?.rule])}
+                      {:else if row?.varType && row?.varType === "percent"}
+                        {abbreviateNumber(item[row?.rule])}%
+                      {:else}
+                        {item[row?.rule]
+                          ? abbreviateNumber(item[row?.rule])
+                          : "n/a"}
                       {/if}
                     </td>
                   {/each}
