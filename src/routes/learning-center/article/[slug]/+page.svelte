@@ -1,6 +1,8 @@
 <script>
   import { getImageURL } from "$lib/utils";
   import SEO from "$lib/components/SEO.svelte";
+  import ArticleBreadcrumbStructuredData from "$lib/components/ArticleBreadcrumbStructuredData.svelte";
+
   export let data;
 
   let article = data?.getArticle;
@@ -15,6 +17,16 @@
 <SEO
   title={article?.title}
   description={article?.abstract}
+  image={article?.cover
+    ? getImageURL(article?.collectionId, article?.id, article?.cover)
+    : ""}
+/>
+
+<ArticleBreadcrumbStructuredData
+  title={article?.title}
+  datePublished={article.created}
+  dateModified={article?.updated}
+  url={`learning-center/article/${data?.getParams}`}
   image={article?.cover
     ? getImageURL(article?.collectionId, article?.id, article?.cover)
     : ""}

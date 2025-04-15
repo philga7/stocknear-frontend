@@ -24,7 +24,7 @@
     "author": [
       {
         "@type": "Person",
-        "name": "Jack Landon",
+        "name": "Muslem Rahimi",
         "url": "https://stocknear.com/about"
       }
     ]
