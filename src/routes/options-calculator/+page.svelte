@@ -417,6 +417,7 @@
           );
 
           const output = await getContractHistory(optionSymbol);
+
           selectedOptionPrice = output?.history?.at(-1)?.mark
             ? output?.history?.at(-1)?.mark
             : output?.history?.at(-1)?.close || 0;
@@ -454,7 +455,9 @@
         );
 
         const output = await getContractHistory(optionSymbol);
-        selectedOptionPrice = output?.history?.at(-1)?.mark || 0;
+        selectedOptionPrice = output?.history?.at(-1)?.mark
+          ? output?.history?.at(-1)?.mark
+          : output?.history?.at(-1)?.close || 0;
 
         // Update user strategy if necessary
         userStrategy = [
