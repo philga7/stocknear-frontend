@@ -399,10 +399,10 @@
                       <tr
                         ><td colspan="8" class="px-0" style=""
                           ><div class="-mt-0.5 px-0 pb-2">
-                            <div class="relative h-[400px]">
+                            <div class="relative h-[350px]">
                               <div class="absolute top-0 w-full">
                                 <div
-                                  class="h-[250px] w-full xs:h-[300px] sm:h-[400px]"
+                                  class="h-[250px] w-full xs:h-[300px] sm:h-[350px]"
                                   style="overflow: hidden;"
                                 >
                                   <div

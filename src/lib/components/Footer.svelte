@@ -78,18 +78,6 @@
             >
           </a>
         </div>
-
-        <!--
-        <a href="https://stats.uptimerobot.com/MP0zLix9yk" rel="noopener noreferrer" target="_blank" class="flex flex-row items-center mt-4">
-          <span class="text-white dark:sm:hover:text-blue-400">
-            Server Status
-          </span>
-          <span class="relative flex h-3 w-3 ml-2">
-            <span class="absolute inline-flex h-full w-full rounded-full"></span>
-            <span class="relative inline-flex rounded-full h-3 w-3 bg-[#fff]"></span>
-          </span>
-        </a>
-        -->
       </div>
 
       <div class="flex-1 mb-2 sm:mb-0">
@@ -243,59 +231,16 @@
               >Imprint</a
             >
           </li>
-          <!--
-          <li class="mt-2 inline-block mr-2 md:block md:mr-0">
-            <a
-              href="/blog"
-              class="no-underline sm:hover:underline text-gray-300 sm:hover:text-white dark:text-gray-100 dark:sm:hover:text-blue-400"
-            >
-              Blog
-            </a>
-          </li>-->
-          <!--
-          <li class="mt-2 inline-block mr-2 md:block md:mr-0">
-            <a href="/newsletter" class="no-underline sm:hover:underline text-gray-300 sm:hover:text-white dark:text-gray-100 dark:sm:hover:text-blue-400">
-              Newsletter
-            </a>
-          </li>
-          -->
         </ul>
       </div>
-      <!--
-      <div class="flex-1">
-        <p class="uppercase text-slate-100 md:mb-6">App</p>
-        <ul class="list-reset mb-6">
-        
-          <li class="mt-6 sm:mt-2 inline-block mr-2 md:block md:mr-0">
-            <a href="https://play.google.com/store/apps/details?id=com.stocknear.bundleId" rel="noopener noreferrer" target="_blank" class="flex flex-row items-center no-underline text-white">
-              <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="white" d="M48 59.49v393a4.33 4.33 0 0 0 7.37 3.07L260 256L55.37 56.42A4.33 4.33 0 0 0 48 59.49M345.8 174L89.22 32.64l-.16-.09c-4.42-2.4-8.62 3.58-5 7.06l201.13 192.32ZM84.08 472.39c-3.64 3.48.56 9.46 5 7.06l.16-.09L345.8 338l-60.61-57.95ZM449.38 231l-71.65-39.46L310.36 256l67.37 64.43L449.38 281c19.49-10.77 19.49-39.23 0-50"/></svg>
-              <span class="ml-2 text-white text-[0.92rem] sm:text-md">
-                Google Playstore
-              </span>
-            </a>
-          </li>
-
-          <li class="mt-2 sm:mt-3 inline-block mr-2 md:block md:mr-0 ">
-            <label class="flex flex-row items-center no-underline text-white">
-              <svg class="w-7 h-7 -ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="white" d="M17.05 20.28c-.98.95-2.05.8-3.08.35c-1.09-.46-2.09-.48-3.24 0c-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8c1.18-.24 2.31-.93 3.57-.84c1.51.12 2.65.72 3.4 1.8c-3.12 1.87-2.38 5.98.48 7.13c-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25c.29 2.58-2.34 4.5-3.74 4.25"/></svg>
-              <span class="ml-2 text-white text-[0.92rem] sm:text-md">
-                App Store (Coming Soon)
-              </span>
-            </label>
-          </li>
-
-    
-        </ul>
-      </div>
-      -->
     </div>
 
     <div class="flex flex-col">
-      <div class="border-b border-gray-700 w-full" />
+      <div class="border-b border-gray-700 w-full pb-2">Made in EU 🇪🇺</div>
       <div
         class="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center mt-6 text-md text-gray-300 mb-5"
       >
-        <span class="mb-2 sm:mb-0"> Stocknear is 100% Open Source⚡ </span>
+        <span class="mb-2 sm:mb-0">Stocknear is 100% Open Source⚡ </span>
         <span class="hidden sm:inline-block">
           © 2025 Stocknear. All Rights Reserved.
         </span>
