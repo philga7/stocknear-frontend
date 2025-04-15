@@ -16,7 +16,7 @@
   );
 </script>
 
-<section class="w-full overflow-hidden m-auto">
+<section class="w-full overflow-hidden m-auto min-h-screen">
   <Infobox
     text={`The industry has a total of ${rawData?.length} stocks, with a combined market
     cap of ${abbreviateNumber(totalMarketCap)} and a total revenue of ${abbreviateNumber(
