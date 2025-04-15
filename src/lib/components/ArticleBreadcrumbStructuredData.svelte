@@ -7,37 +7,44 @@
 </script>
 
 {@html `<script type="application/ld+json">
-    [{
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": "${title}",
-      ${
-        image &&
-        `"image": [
-        "${image}"
-       ],`
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "${title}",
+    ${
+      image
+        ? `"image": [
+      "${image}"
+    ],`
+        : ""
+    }
+    "datePublished": "${datePublished}",
+    "dateModified": "${dateModified}",
+    "author": [
+      {
+        "@type": "Person",
+        "name": "Jack Landon",
+        "url": "https://stocknear.com/about"
       }
-      "datePublished": "${datePublished}",
-      "dateModified": "${dateModified}",
-      "author": [{
-          "@type": "Person",
-          "name": "Jack Landon",
-          "url": "https://stocknear.com/about"
-        }]
-    },
-    {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [{
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Blog",
-            "item": "https://stocknear.com/${url}
-        },{
-            "@type": "ListItem",
-            "position": 2,
-            "name": "${title}"
-        }]
-        }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Blog",
+        "item": "https://stocknear.com/${url}"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "${title}"
+      }
+    ]
+  }
 ]
 </script>`}
