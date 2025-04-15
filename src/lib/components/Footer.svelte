@@ -236,14 +236,12 @@
     </div>
 
     <div class="flex flex-col">
-      <div class="border-b border-gray-700 w-full pb-2">Made in EU 🇪🇺</div>
+      <div class="border-b border-gray-700 w-full"></div>
       <div
         class="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center mt-6 text-md text-gray-300 mb-5"
       >
-        <span class="mb-2 sm:mb-0">Stocknear is 100% Open Source⚡ </span>
-        <span class="hidden sm:inline-block">
-          © 2025 Stocknear. All Rights Reserved.
-        </span>
+        <span class="mb-2 sm:mb-0 inline-block"> Made in EU 🇪🇺</span>
+        <span class="">Stocknear is 100% Open Source⚡ </span>
       </div>
     </div>
   </div>
