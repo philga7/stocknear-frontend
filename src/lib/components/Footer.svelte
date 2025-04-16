@@ -126,6 +126,13 @@
           </li>
           <li class="mt-2 inline-block mr-2 md:block md:mr-0">
             <a
+              href="/discord-bot"
+              class="no-underline sm:hover:underline text-gray-300 sm:hover:text-white dark:text-gray-100 dark:sm:hover:text-blue-400"
+              >Discord Bot</a
+            >
+          </li>
+          <li class="mt-2 inline-block mr-2 md:block md:mr-0">
+            <a
               href="/newsletter"
               class="no-underline sm:hover:underline text-gray-300 sm:hover:text-white dark:text-gray-100 dark:sm:hover:text-blue-400"
               >Free Newsletter</a

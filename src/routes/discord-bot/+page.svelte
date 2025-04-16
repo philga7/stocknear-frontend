@@ -58,7 +58,7 @@
 </script>
 
 <SEO
-  title="Discord Bot Plans"
+  title="Discord Bot"
   description="Explore our affordable Discord Bot plans. Unlock unlimited access and powerful features to supercharge your Discord server with Stocknear dataset."
 />
 
