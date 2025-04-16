@@ -177,7 +177,7 @@
     >
       <div
         style="opacity: 1; transform: translateY(20px);"
-        class="hidden lg:flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
+        class="transform transition-all duration-300 sm:hover:-translate-y-1 hidden lg:flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
       >
         <h3 class="text-3xl font-bold">Basic</h3>
         <p class="text-muted dark:text-zinc-300 text-sm mt-1">
@@ -714,7 +714,7 @@
       </div>
       <div
         style="opacity: 1; transform: translateY(20px);"
-        class="relative flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
+        class="transform transition-all duration-300 sm:hover:-translate-y-1 relative flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
       >
         <div
           class="w-fit absolute -top-[20px] left-1/2 transform -translate-x-1/2 whitespace-nowrap m-auto px-4 py-1.5 rounded-md text-sm font-medium backdrop-blur-xl
@@ -1044,7 +1044,7 @@
       </div>
       <div
         style="opacity: 1; transform: translateY(20px);"
-        class="flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
+        class="transform transition-all duration-300 sm:hover:-translate-y-1 flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
       >
         <h3 class="text-3xl font-bold">Pro</h3>
         <p class="text-muted dark:text-zinc-300 text-sm mt-1">
