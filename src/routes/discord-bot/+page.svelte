@@ -24,22 +24,14 @@
     }
   });
 
-  async function purchasePlan(subscriptionType: string = "") {
+  async function purchasePlan() {
     if (data?.user) {
       let subId = "";
 
-      if (subscriptionType === "lifeTime") {
-        subId = import.meta.env.VITE_LEMON_SQUEEZY_LIFE_TIME_ACCESS_ID;
-      } else if (mode && subscriptionType === "plus") {
-        subId = import.meta.env.VITE_LEMON_SQUEEZY_ANNUAL_ID_PLUS;
-      } else if (!mode && subscriptionType === "plus") {
-        subId = import.meta.env.VITE_LEMON_SQUEEZY_MONTHLY_ID_PLUS;
-      } else if (mode && subscriptionType === "pro") {
-        subId = import.meta.env.VITE_LEMON_SQUEEZY_ANNUAL_ID_PRO;
-      } else if (!mode && subscriptionType === "pro") {
-        subId = import.meta.env.VITE_LEMON_SQUEEZY_MONTHLY_ID_PRO;
+      if (mode) {
+        subId = import.meta.env.VITE_LEMON_SQUEEZY_DISCORD_ANNUAL_ID;
       } else {
-        subId = import.meta.env.VITE_LEMON_SQUEEZY_ANNUAL_ID_PRO;
+        subId = import.meta.env.VITE_LEMON_SQUEEZY_DISCORD_MONTHLY_ID;
       }
       try {
       } catch (e) {
@@ -66,8 +58,8 @@
 </script>
 
 <SEO
-  title="Pricing Plans"
-  description="Get unlimited access to all of our data and tools, including full financial history, full ETF holdings, and more."
+  title="Discord Bot Plans"
+  description="Explore our affordable Discord Bot plans. Unlock unlimited access and powerful features to supercharge your Discord server with Stocknear dataset."
 />
 
 <svelte:head>
@@ -259,12 +251,13 @@
             <div
               class="flex flex-col sm:flex-row items-center justify-between w-full"
             >
-              <button
-                on:click={() => purchasePlan("lifeTime")}
+              <label
+                for={!data?.user ? "userLogin" : ""}
+                on:click={() => purchasePlan()}
                 class=" text-lg text-white cursor-pointer w-full lg:w-auto py-3 lg:mt-2 px-4 bg-blue-600 rounded font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center lg:justify-end"
               >
                 Unlock Discord Bot
-              </button>
+              </label>
               <div
                 class="hidden lg:flex flex-col justify-center lg:justify-end lg:ml-auto items-center mb-1"
               >
@@ -299,7 +292,7 @@
         class="relative overflow-hidden mt-4 card card-side mt-10 mb-10 bg-[#18181B] to-black rounded-lg p-5 flex flex-col lg:flex-row items-center justify-between"
       >
         <div class="card-body relative z-10 min-h-96 sm:min-h-0">
-          <h2 class="card-title text-4xl font-bold mb-6 text-start">
+          <h2 class="card-title text-3xl sm:text-4xl font-bold mb-6 text-start">
             See Our Discord Bots In Action!
           </h2>
           <p
@@ -314,13 +307,15 @@
               href={discordURL}
               rel="noopener noreferrer"
               target="_blank"
-              class="btn btn-ghost bg-blue-600 text-lg font-bold px-5 py-2.5 rounded"
+              class="btn btn-ghost bg-blue-600 text-lg font-semibold px-5 py-3 rounded w-full sm:w-fit"
             >
               Join Discord
             </a>
           </div>
         </div>
-        <figure class="absolute -bottom-48 sm:top-5 sm:-right-20 z-2">
+        <figure
+          class="absolute -bottom-30 sm:-bottom-48 sm:top-5 sm:-right-20 z-2"
+        >
           <div class="flex-shrink-0">
             <img
               class="rounded-xl w-full sm:w-[600px] opacity-60 sm:opacity-100"

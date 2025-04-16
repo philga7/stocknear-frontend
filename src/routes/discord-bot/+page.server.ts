@@ -2,32 +2,7 @@ import { error, fail, redirect } from "@sveltejs/kit";
 import { validateData } from "$lib/utils";
 import { loginUserSchema, registerUserSchema } from "$lib/schemas";
 
-/*
-export const load = async () => {
 
-	const apiKey = import.meta.env.VITE_LEMON_SQUEEZY_API_KEY;
-	
-	const getLTDCount = async () => {
-		  // make the POST request to the endpoint
-		  const response = await fetch('https://api.lemonsqueezy.com/v1/order-items?page[size]=100', {
-			headers: {
-				'Accept': 'application/vnd.api+json',
-				'Content-Type': 'application/vnd.api+json',
-				'Authorization': `Bearer ${apiKey}`
-			}
-		});
-		const output = await response.json();
-		const filteredData = output?.data?.filter(item => item?.attributes?.product_name === 'Pro Subscription (Life Time Access)');
-		const count = filteredData?.length || 0;
-		
-		return count;
-	};
-
-	return {
-		getLTDCount: await getLTDCount(),
-	  };
-  };
-*/
 
 export const actions = {
   login: async ({ request, locals }) => {

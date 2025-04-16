@@ -116,7 +116,7 @@
         class="text-center mb-10 relative w-fit flex justify-center m-auto text-white"
       >
         <div class="mb-4 flex justify-center -mt-3 lg:mb-3">
-          <a href="/learning-center/article/stocknear-discord-bot"
+          <a href="/discord-bot"
             ><div
               class="flex items-center justify-center sm:hover:text-muted dark:sm:hover:text-white text-blue-700 dark:text-blue-400"
             >
