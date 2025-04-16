@@ -110,9 +110,23 @@
         class="relative overflow-hidden card card-side mt-5 bg-[#18181B] to-black rounded-lg p-5 flex flex-col lg:flex-row items-center justify-between"
       >
         <div class="card-body relative z-10 min-h-[300px] sm:min-h-0">
-          <h2 class="card-title text-4xl font-bold mb-6 text-start">
+          <h2 class="card-title text-4xl font-bold mb-3 sm:mb-6 text-start">
             All-in-one Bot
           </h2>
+
+          <div
+            class="lg:hidden flex flex-col justify-start lg:ml-auto items-center mb-3"
+          >
+            <div>
+              <span class="text-4xl font-bold">{mode ? "$20" : "$30"}</span
+              ><span class=" text-xl ml-1">/Month</span>
+            </div>
+
+            <p class="ml-2 text-sm text-gray-500 dark:text-gray-400">
+              {!mode ? "" : "(Billed Annually)"}
+            </p>
+          </div>
+
           <p
             class="text-[1rem] sm:text-lg mb-6 w-full sm:max-w-[450px] text-start"
           >
