@@ -669,6 +669,16 @@
     }
   }
 
+  async function handleScrollStocks() {
+    const scrollThreshold = document.body.offsetHeight * 0.8; // 80% of the website height
+    const isBottom = window.innerHeight + window.scrollY >= scrollThreshold;
+    if (isBottom && displayList?.length !== rawTabData?.length) {
+      const nextIndex = displayList?.length;
+      const filteredItem = rawTabData?.slice(nextIndex, nextIndex + 8);
+      displayList = [...displayList, ...filteredItem];
+    }
+  }
+
   // Helper function to safely parse JSON
   function safeParse(value) {
     try {
@@ -757,8 +767,11 @@
     }
 
     window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScrollStocks);
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", handleScrollStocks);
     };
   });
 
