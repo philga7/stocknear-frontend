@@ -324,7 +324,7 @@
           <div class="flex-shrink-0">
             <img
               class="rounded-xl w-full sm:w-[600px] opacity-60 sm:opacity-100"
-              src="/img/discord-server.png"
+              src="/img/discord-server.jpg"
               alt="Dark Pool Card"
             />
           </div>
