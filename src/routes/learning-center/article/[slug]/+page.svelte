@@ -6,6 +6,7 @@
   export let data;
 
   let article = data?.getArticle;
+  let discordURL = import.meta.env.VITE_DISCORD_URL;
 
   let faqs = [];
 
