@@ -162,8 +162,12 @@
       link: "/donation",
     },
     {
-      title: "Stock Analysis Pro",
+      title: "Pricing",
       link: "/pricing",
+    },
+    {
+      title: "Discord Bot",
+      link: "/discord-bot",
     },
     {
       title: "Free Newsletter",

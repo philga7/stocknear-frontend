@@ -55,6 +55,7 @@ const pages = [
   { title: "/watchlist/stocks" },
   { title: "/watchlist/options" },
   { title: "/pricing" },
+  { title: "/discord-bot" },
   { title: "/terms-of-use" },
   { title: "/privacy-policy" },
   { title: "/imprint" },

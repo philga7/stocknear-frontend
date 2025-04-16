@@ -7,9 +7,12 @@
 
   let article = data?.getArticle;
 
+  let faqs = [];
+
   $: {
     if (data?.getParams) {
       article = data?.getArticle;
+      faqs = data?.getFAQ;
     }
   }
 </script>
