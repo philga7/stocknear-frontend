@@ -11,9 +11,8 @@ export const POST = (async ({ request, locals }) => {
   let output;
 
 
-  // Determine the ticker limit: 50 for Pro users, 5 for non-Pro users.
-  const isProUser = user?.tier === "Pro" || user?.tier === "Plus";
-  const tickerLimit = isProUser ? 100 : 5;
+  const isSubscribed = user?.tier === "Pro" || user?.tier === "Plus";
+  const tickerLimit = user?.tier === "Pro" ? 300 : user?.tier === 'Plus' ? 100 : 5;
 
   try {
     const watchList = await pb.collection("watchlist").getOne(watchListId);
@@ -40,7 +39,7 @@ export const POST = (async ({ request, locals }) => {
          if (tickerInput.length > tickerLimit) {
         return new Response(
           JSON.stringify({
-            error: isProUser
+            error: isSubscribed
               ? `You can only have up to ${tickerLimit} stocks in your watchlist.`
               : `Upgrade to Pro to add unlimited stocks!`,
           }),
@@ -67,7 +66,7 @@ export const POST = (async ({ request, locals }) => {
         if (newTickerList.length > tickerLimit) {
           return new Response(
             JSON.stringify({
-              error: isProUser
+              error: isSubscribed
                 ? `You can only have up to ${tickerLimit} stocks in your watchlist.`
                 : `Upgrade to Pro to add unlimited stocks`,
             }),
@@ -83,7 +82,7 @@ export const POST = (async ({ request, locals }) => {
     if (tickersArray.length > tickerLimit) {
       return new Response(
         JSON.stringify({
-          error: isProUser
+          error: isSubscribed
             ? `You can only have up to ${tickerLimit} stocks in your watchlist.`
             : `Upgrade to Pro to add unlimited stocks!`,
         }),

@@ -6,7 +6,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
   let output;
 
   // For non-Pro users, ensure they can only have 1 watchlist.
-  if (user?.tier !== 'Pro') {
+  if (!['Pro','Plus']?.includes(user?.tier)) {
     // Get the current watchlists for the user.
     const existingWatchlists = await pb.collection("watchlist").getFullList({
       filter: `user="${user.id}"`
@@ -15,7 +15,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     // If the user already has a watchlist, return an error response.
     if (existingWatchlists.length >= 1) {
       return new Response(
-        JSON.stringify({ error: "Non-Pro users can only have 1 watchlist" }),
+        JSON.stringify({ error: "Upgrade your account to unlock unlimited watchlists." }),
         { status: 403 }
       );
     }
