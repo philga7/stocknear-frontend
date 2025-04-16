@@ -1,5 +1,5 @@
 export const load = async ({ locals, params }) => {
-  const { apiKey, apiURL } = locals;
+  const { apiKey, apiURL, user } = locals;
   const getData = async () => {
      const postData = { ticker: params.tickerID };
 
@@ -13,8 +13,9 @@ export const load = async ({ locals, params }) => {
     body: JSON.stringify(postData),
   });
 
-  const output = await response.json();
+  let output = await response.json();
 
+  output = !["Pro","Plus"]?.includes(user?.tier) ? output?.reverse()?.slice(0,5): output
     return output;
   };
 

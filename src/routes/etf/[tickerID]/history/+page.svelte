@@ -8,6 +8,7 @@
   import SEO from "$lib/components/SEO.svelte";
   import { onMount } from "svelte";
   import { removeCompanyStrings } from "$lib/utils";
+  import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
 
   export let data;
   let timePeriod = "Daily";
@@ -545,6 +546,7 @@
                     </tbody>
                   </table>
                 </div>
+                <UpgradeToPro {data} />
               </div>
             {:else}
               <Infobox
