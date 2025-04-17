@@ -63,10 +63,22 @@ export const POST = async ({ request, locals }) => {
     const payload = JSON.parse(bodyText);
     const userId = payload?.meta?.custom_data?.userId;
     const { status, refunded } = payload?.data?.attributes || {};
+    const productName = payload?.data?.attributes?.first_order_item?.product_name;
 
     
     if (!userId || status === undefined) {
       console.error("Missing userId or status in payload:", payload);
+      return new Response(
+        JSON.stringify({ error: "Invalid payload structure" }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
+
+    if (!productName?.includes('Discord')) {
+      console.error("Not a discord product", payload);
       return new Response(
         JSON.stringify({ error: "Invalid payload structure" }),
         {

@@ -35,7 +35,7 @@
 
   $: previousClose = data?.getStockQuote?.previousClose;
   //============================================//
-  const intervals = ["1D", "1W", "1M", "YTD", "6M", "1Y", "MAX"];
+  const intervals = ["1D", "1W", "1M", "6M", "YTD", "1Y", "MAX"];
 
   let config = null;
   let output = null;
@@ -717,12 +717,12 @@
                           class="cursor-pointer"
                         >
                           <span
-                            class="block px-3 sm:px-2 py-1 text-sm sm:text-[1rem] rounded duration-100 ease-in-out
+                            class="block px-3 sm:px-2 py-1 text-sm sm:text-[1rem] rounded duration-100 ease-in-out whitespace-nowrap
           {displayData === interval
                               ? 'bg-gray-100 text-muted dark:bg-primary dark:text-white font-semibold'
                               : 'bg-transparent text-muted dark:text-gray-400 dark:sm:hover:text-white sm:hover:bg-gray-100 dark:sm:hover:bg-primary'}"
                           >
-                            {$screenWidth < 640
+                            {$screenWidth < 1200
                               ? interval
                               : convertPeriodString(interval)}
                           </span>
