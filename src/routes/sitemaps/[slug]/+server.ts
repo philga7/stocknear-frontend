@@ -129,6 +129,7 @@ const stockExtraSubPaths = [
   "/financials/ratios",
   "/statistics",
   "/statistics/market-cap",
+  "/statistics/short-interest",
   "/statistics/revenue",
   "/statistics/price-reaction",
   "/statistics/fail-to-deliver",
