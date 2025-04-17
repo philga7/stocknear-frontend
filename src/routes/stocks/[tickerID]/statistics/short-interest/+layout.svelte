@@ -81,26 +81,24 @@
                 >
                 <tbody>
                   {#each similarStocks?.slice(0, 8) as item, index}
-                    {#if item?.marketCap > 0}
-                      <tr
-                        class="border-gray-300 dark:border-gray-800 text-[1rem] {index !==
-                        similarStocks?.slice(0, 8).length - 1
-                          ? 'border-b'
-                          : ''}"
-                        ><td class="text-left text-[1rem] px-2"
-                          ><a
-                            href={`/stocks/${item?.symbol}`}
-                            class="text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
-                            >{item?.name}</a
-                          ></td
-                        >
-                        <td class="text-right cursor-normal text-[1rem] px-2"
-                          >{item?.shortFloatPercent
-                            ? abbreviateNumber(item?.shortFloatPercent) + "%"
-                            : "n/a"}</td
-                        >
-                      </tr>
-                    {/if}
+                    <tr
+                      class="border-gray-300 dark:border-gray-800 text-[1rem] {index !==
+                      similarStocks?.slice(0, 8).length - 1
+                        ? 'border-b'
+                        : ''}"
+                      ><td class="text-left text-[1rem] px-2"
+                        ><a
+                          href={`/stocks/${item?.symbol}`}
+                          class="text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
+                          >{item?.name}</a
+                        ></td
+                      >
+                      <td class="text-right cursor-normal text-[1rem] px-2"
+                        >{item?.shortFloatPercent
+                          ? abbreviateNumber(item?.shortFloatPercent) + "%"
+                          : "n/a"}</td
+                      >
+                    </tr>
                   {/each}
                 </tbody>
               </table>
