@@ -74,6 +74,7 @@
     { key: "changesPercentage", label: "% Change", align: "right" },
     { key: "totalShares", label: "Shares", align: "right" },
     { key: "avgValue", label: "Avg. Value", align: "right" },
+    { key: "transactionType", label: "Transaction Type", align: "right" },
   ];
 
   let sortOrders = {
@@ -87,6 +88,7 @@
     changesPercentage: { order: "none", type: "number" },
     totalShares: { order: "none", type: "number" },
     avgValue: { order: "none", type: "number" },
+    transactionType: { order: "none", type: "string" },
   };
 
   const sortData = (key) => {
@@ -187,7 +189,7 @@
           <Infobox
             text="We update our data in real time to bring you the latest
                       insights on unusual insider trading, sourced from SEC
-                      filings with a minimum transaction value of $100,000."
+                      filings with a minimum transaction value of 1 million dollars."
           />
 
           <div class="w-full m-auto mt-20 sm:mt-10">
@@ -280,33 +282,26 @@
                       </td>
 
                       <td
-                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap {item?.transactionType ===
-                        'Buy'
-                          ? 'text-green-800 dark:text-[#00FC50]'
-                          : item?.transactionType === 'Sell'
-                            ? 'text-red-800 dark:text-[#FF2F1F]'
-                            : 'text-[#E57C34]'}"
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                       >
-                        <div class="flex flex-row items-center justify-end">
-                          <div class="">
-                            {abbreviateNumber(item?.avgValue)}
-                          </div>
-                          <div
-                            class="ml-2 px-1.5 py-1.5 border text-center rounded-md text-xs font-semibold"
-                          >
-                            {item?.transactionType}
-                          </div>
-                        </div>
+                        {abbreviateNumber(item?.avgValue)}
+                      </td>
+
+                      <td
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                      >
+                        {item?.transactionType}
                       </td>
                     </tr>
+
                     {#if checkedSymbol === item?.symbol}
                       <tr class=""
-                        ><td colspan="9" class="px-0" style=""
+                        ><td colspan="10" class="px-0" style=""
                           ><div class="-mt-0.5 px-0 pb-2">
-                            <div class="relative h-[400px]">
+                            <div class="relative h-[350px]">
                               <div class="absolute top-0 w-full">
                                 <div
-                                  class="h-[250px] w-full xs:h-[300px] sm:h-[400px]"
+                                  class="h-[250px] w-full xs:h-[300px] sm:h-[350px]"
                                   style="overflow: hidden;"
                                 >
                                   <div

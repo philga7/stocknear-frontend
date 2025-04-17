@@ -776,6 +776,22 @@
                           </Button>
                         </div>
                       </Sheet.Close>
+
+                       <Sheet.Close asChild let:builder>
+                        <div class="flex flex-col items-start">
+                          <Button
+                            builders={[builder]}
+                            type="submit"
+                            class="w-full dark:bg-[#18181B]"
+                          >
+                            <a
+                              href="/insider-tracker"
+                              class="text-start w-full text-[1rem] text-muted dark:text-white ml-4 mt-4"
+                              >Insider Tracker</a
+                            >
+                          </Button>
+                        </div>
+                      </Sheet.Close>
                     </Accordion.Content>
                   </Accordion.Item>
                 </Accordion.Root>
@@ -1265,6 +1281,11 @@
                             href="/potus-tracker"
                             class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
                             >POTUS Tracker</a
+                          >
+                             <a
+                            href="/insider-tracker"
+                            class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
+                            >Insider Tracker</a
                           >
                         </div>
                       </Accordion.Content>

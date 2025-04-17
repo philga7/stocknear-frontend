@@ -74,6 +74,10 @@
       link: "/list/highest-option-premium",
     },
     {
+      title: "Insider Tracker",
+      link: "/insider-tracker",
+    },
+    {
       title: "POTUS Tracker",
       link: "/potus-tracker",
     },
