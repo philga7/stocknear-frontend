@@ -7,6 +7,7 @@
   function changeSubSection(state) {
     const subSectionMap = {
       "market-cap": "/statistics/market-cap",
+      "short-interest": "/statistics/short-interest",
       revenue: "/statistics/revenue",
       "price-reaction": "/statistics/price-reaction",
       "fail-to-deliver": "/statistics/fail-to-deliver",
@@ -24,6 +25,7 @@
       const parts = $page?.url?.pathname.split("/");
       const sectionMap = {
         "market-cap": "market-cap",
+        "short-interest": "short-interest",
         revenue: "revenue",
         "price-reaction": "price-reaction",
         "fail-to-deliver": "fail-to-deliver",
@@ -67,6 +69,17 @@
                 : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
             >
               Market Cap
+            </a>
+
+            <a
+              href={`/stocks/${$stockTicker}/statistics/short-interest`}
+              on:click={() => changeSubSection("short-interest")}
+              class="p-2 px-5 cursor-pointer {displaySubSection ===
+              'short-interest'
+                ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+            >
+              Short Interest
             </a>
 
             <a

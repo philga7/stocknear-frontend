@@ -352,7 +352,9 @@
         >
           <div>
             Employees
-            <div class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl">
+            <div
+              class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl font-semibold"
+            >
               {#if Number(employees)}
                 {new Intl.NumberFormat("en")?.format(employees)}
               {:else}
@@ -362,12 +364,14 @@
           </div>
           <div>
             Change (1Y) <div
-              class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl"
+              class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl font-semibold"
             >
               {#if dateDistance}
                 n/a
               {:else}
-                {changeRate !== null ? changeRate : "n/a"}
+                {changeRate !== null
+                  ? changeRate?.toLocaleString("en-US")
+                  : "n/a"}
               {/if}
             </div>
           </div>
@@ -382,7 +386,9 @@
           </div>
           <div>
             Revenue / Employee
-            <div class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl">
+            <div
+              class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl font-semibold"
+            >
               {#if Number(data?.getStockDeck?.revenuePerEmployee)}
                 ${new Intl.NumberFormat("en")?.format(
                   data?.getStockDeck?.revenuePerEmployee,
@@ -394,7 +400,9 @@
           </div>
           <div>
             Profits / Employee
-            <div class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl">
+            <div
+              class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl font-semibold"
+            >
               {#if Number(data?.getStockDeck?.profitPerEmployee)}
                 {formatWithDollarSign(data?.getStockDeck?.profitPerEmployee)}
               {:else}
@@ -404,7 +412,9 @@
           </div>
           <div>
             Market Cap
-            <div class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl">
+            <div
+              class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl font-semibold"
+            >
               {@html abbreviateNumber(
                 data?.getStockQuote?.marketCap,
                 false,

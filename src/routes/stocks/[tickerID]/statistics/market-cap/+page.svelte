@@ -451,7 +451,7 @@
           {#if rawData?.length !== 0}
             <div class="grid grid-cols-1 gap-2 mt-3 mb-3 sm:mt-0 sm:mb-0">
               <Infobox
-                text={`${$displayCompanyName} has a market cap or net worth of ${abbreviateNumber(
+                text={`${removeCompanyStrings($displayCompanyName)} has a market cap or net worth of ${abbreviateNumber(
                   data?.getStockQuote?.marketCap,
                 )} as of ${new Date()?.toLocaleString("en-US", {
                   month: "short",
