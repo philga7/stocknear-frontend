@@ -870,8 +870,8 @@
       varType: "percent",
       category: "Short Selling Statistics",
     },
-    shortOutStandingPercent: {
-      label: "Short % Shares",
+    shortOutstandingPercent: {
+      label: "Short % Outstanding",
       step: ["50%", "30%", "20%", "10%", "5%", "1%", "0%"],
       defaultCondition: "over",
       defaultValue: "any",
@@ -2118,7 +2118,7 @@ const handleKeyDown = (event) => {
         rules: [
           { condition: "over", name: "shortFloatPercent", value: "20%" },
           { condition: "over", name: "shortRatio", value: 1 },
-          { condition: "over", name: "shortOutStandingPercent", value: "10%" },
+          { condition: "over", name: "shortOutstandingPercent", value: "10%" },
           { condition: "over", name: "sharesShort", value: "20M" },
           { condition: "over", name: "marketCap", value: "100M" },
         ],

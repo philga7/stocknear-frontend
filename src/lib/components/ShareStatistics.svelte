@@ -104,7 +104,7 @@
               {abbreviateNumber(rawData?.sharesShort)}</span
             >, so
             <span class="font-semibold"
-              >{rawData?.shortOutStandingPercent}%</span
+              >{rawData?.shortOutstandingPercent}%</span
             > of the outstanding shares have been sold short.
           </span>
 
@@ -138,7 +138,7 @@
                   <td
                     class="whitespace-nowrap px-[5px] py-1.5 text-right  xs:px-2.5 xs:py-2"
                   >
-                    {rawData?.shortOutStandingPercent}%
+                    {rawData?.shortOutstandingPercent}%
                   </td>
                 </tr>
                 <tr class="border-y border-gray-800 odd:bg-odd">

@@ -139,7 +139,7 @@
                 The latest short interest is {abbreviateNumber(
                   rawData?.sharesShort,
                   false,
-                )}, so {rawData?.shortOutStandingPercent}% of the outstanding
+                )}, so {rawData?.shortOutstandingPercent}% of the outstanding
                 shares have been sold short.
               </p>
               <table class="w-full border border-gray-300 dark:border-gray-800">
@@ -160,7 +160,7 @@
                       ><span>Short % of Shares Out</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.shortOutStandingPercent}%</td
+                      >{rawData?.shortOutstandingPercent}%</td
                     >
                   </tr><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"

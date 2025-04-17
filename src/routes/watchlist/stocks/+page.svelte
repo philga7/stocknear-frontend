@@ -135,7 +135,7 @@
     { name: "Short % Float", rule: "shortFloatPercent", type: "percent" },
     {
       name: "Short % Shares",
-      rule: "shortOutStandingPercent",
+      rule: "shortOutstandingPercent",
       type: "percent",
     },
     { name: "FCF Yield", rule: "freeCashFlowYield", type: "percent" },
