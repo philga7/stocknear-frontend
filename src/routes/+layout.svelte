@@ -275,23 +275,6 @@
     gtag("config", "G-CLFNW10SND");
   </script>
 
-  <!--Google Tag Reddit tracker-->
-  <script>
-		partytown = {
-			forward: ['dataLayer.push', 'gtag']
-		};
-	</script>
- 
-	{@html '<script>' + partytownSnippet() + '</script>'}
- 
-	<script type="text/partytown" src="https://www.googletagmanager.com/gtag/js?id=GTM-NZBJ9W63"></script>
-	<script type="text/partytown">
-		window.dataLayer = window.dataLayer || [];
-		window.gtag = function(){dataLayer.push(arguments);}
-		gtag('js', new Date());
-		gtag('config', 'GTM-NZBJ9W63');
-	</script>
- 
 </svelte:head>
 
 
@@ -302,6 +285,7 @@
     ? 'bg-[#000]'
     : ''}"
 >
+
   <div class="flex min-h-screen w-full flex-col bg-white dark:bg-default">
     <div class="w-full">
       <div
