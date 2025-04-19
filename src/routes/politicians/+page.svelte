@@ -2,6 +2,9 @@
   import republicanBackground from "$lib/images/bg-republican.png";
   import democraticBackground from "$lib/images/bg-democratic.png";
   import otherBackground from "$lib/images/bg-other.png";
+  import { Combobox } from "bits-ui";
+  import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
+  import { Button } from "$lib/components/shadcn/button/index.js";
 
   import SEO from "$lib/components/SEO.svelte";
 
@@ -14,15 +17,77 @@
   export let data;
 
   let cloudFrontUrl = import.meta.env.VITE_IMAGE_URL;
+  let syncWorker: Worker | undefined;
+
   let pagePathName = $page?.url?.pathname;
+  let timeoutId;
 
   let rawData = data?.getAllPolitician;
   let displayList = [];
-  let filterQuery = "";
   let isLoaded = false;
   let animationClass = "";
   let animationId = "";
   let favoriteList = [];
+  let inputValue = "";
+  let touchedInput = false;
+  let filterList = [];
+  let checkedItems: Set<any> = new Set();
+
+  // Handle messages from our filtering web worker.
+  const handleMessage = (event) => {
+    rawData = event.data?.output || [];
+    rawData?.sort((a, b) => {
+      // Check if each id is in the favoriteList
+      const aIsFavorite = favoriteList?.includes(a?.id);
+      const bIsFavorite = favoriteList?.includes(b?.id);
+
+      // If both are favorites or both are not, keep their order
+      if (aIsFavorite === bIsFavorite) return 0;
+
+      // If a is favorite and b is not, a comes first; otherwise, b comes first
+      return aIsFavorite ? -1 : 1;
+    });
+
+    displayList = rawData?.slice(0, 20) ?? [];
+  };
+
+  // Tell the web worker to filter our data
+  const loadWorker = async () => {
+    syncWorker?.postMessage({
+      rawData: rawData,
+      filterList: filterList,
+    });
+  };
+
+  async function handleChangeValue(value) {
+    if (checkedItems.has(value)) {
+      checkedItems.delete(value);
+    } else {
+      checkedItems.add(value);
+    }
+    const filterSet = new Set(filterList);
+    filterSet.has(value) ? filterSet.delete(value) : filterSet.add(value);
+    filterList = Array.from(filterSet);
+
+    if (filterList.length > 0) {
+      await loadWorker();
+    } else {
+      rawData = [...data?.getAllPolitician];
+      rawData?.sort((a, b) => {
+        // Check if each id is in the favoriteList
+        const aIsFavorite = favoriteList?.includes(a?.id);
+        const bIsFavorite = favoriteList?.includes(b?.id);
+
+        // If both are favorites or both are not, keep their order
+        if (aIsFavorite === bIsFavorite) return 0;
+
+        // If a is favorite and b is not, a comes first; otherwise, b comes first
+        return aIsFavorite ? -1 : 1;
+      });
+
+      displayList = rawData?.slice(0, 20) ?? [];
+    }
+  }
 
   async function handleScroll() {
     const scrollThreshold = document.body.offsetHeight * 0.8; // 80% of the website height
@@ -43,6 +108,12 @@
       }
     } catch (e) {
       console.log(e);
+    }
+
+    if (!syncWorker) {
+      const SyncWorker = await import("./workers/filterWorker?worker");
+      syncWorker = new SyncWorker.default();
+      syncWorker.onmessage = handleMessage;
     }
 
     rawData?.sort((a, b) => {
@@ -70,21 +141,21 @@
     };
   });
 
-  function handleInput(event) {
-    filterQuery = event.target.value?.toLowerCase();
+  function search() {
+    clearTimeout(timeoutId); // Clear any existing timeout
     let newData = [];
 
-    setTimeout(() => {
-      if (filterQuery?.length !== 0) {
+    timeoutId = setTimeout(() => {
+      if (inputValue?.length !== 0) {
         newData = rawData?.filter((item) => {
           const representative = item?.representative?.toLowerCase();
-          // Check if representative includes filterQuery
-          if (representative?.includes(filterQuery)) return true;
+          // Check if representative includes inputValue
+          if (representative?.includes(inputValue)) return true;
 
           // Implement fuzzy search by checking similarity
           // You can adjust the threshold as needed
           const similarityThreshold = 0.5;
-          const similarity = compareTwoStrings(representative, filterQuery);
+          const similarity = compareTwoStrings(representative, inputValue);
           return similarity > similarityThreshold;
         });
 
@@ -101,7 +172,7 @@
         rawData = data?.getAllPolitician;
         displayList = rawData?.slice(0, 20);
       }
-    }, 500);
+    }, 100);
   }
 
   function saveList() {
@@ -139,6 +210,12 @@
 
     saveList();
   }
+
+  $: {
+    if (inputValue) {
+      search();
+    }
+  }
 </script>
 
 <SEO
@@ -168,62 +245,93 @@
               <h1 class="mb-3 text-2xl sm:text-3xl font-bold">
                 All US Politicians
               </h1>
-              <div class="w-full pb-3">
-                <div class="relative right-0">
-                  <ul
-                    class="relative grid grid-cols-1 sm:grid-cols-4 gap-y-3 gap-x-3 flex flex-wrap p-1 list-none rounded-[3px]"
-                  >
-                    <li
-                      class="pl-3 py-1.5 flex-auto text-center shadow-sm bg-gray-200 dark:bg-[#2E3238] rounded-[3px] border border-gray-100 dark:border-gray-800"
+              <div class="w-full flex flex-row items-center">
+                <Combobox.Root
+                  items={rawData}
+                  bind:inputValue
+                  bind:touchedInput
+                >
+                  <div class="relative w-fit">
+                    <div
+                      class="absolute inset-y-0 left-0 flex items-center pl-2.5"
                     >
-                      <label class="flex flex-row items-center">
-                        <input
-                          id="modal-search"
-                          type="search"
-                          class=" ml-2 text-[1rem] placeholder-gray-600 dark:placeholder-gray-400 bg-inherit border-transparent focus:outline-none focus:border-transparent focus:ring-0 flex items-center justify-center w-full px-0 py-1"
-                          placeholder="Find by name"
-                          bind:value={filterQuery}
-                          on:input={handleInput}
-                          autocomplete="off"
-                        />
-                        <svg
-                          class="ml-auto mr-5 h-8 w-8 inline-block mr-2"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          ><path
-                            fill="currentColor"
-                            d="m19.485 20.154l-6.262-6.262q-.75.639-1.725.989t-1.96.35q-2.402 0-4.066-1.663T3.808 9.503T5.47 5.436t4.064-1.667t4.068 1.664T15.268 9.5q0 1.042-.369 2.017t-.97 1.668l6.262 6.261zM9.539 14.23q1.99 0 3.36-1.37t1.37-3.361t-1.37-3.36t-3.36-1.37t-3.361 1.37t-1.37 3.36t1.37 3.36t3.36 1.37"
-                          /></svg
-                        >
-                      </label>
-                    </li>
-                    <!--
-                    <li
-                      class="pl-3 py-1.5 flex-auto text-center bg-[#2E3238] rounded-[3px]"
-                    >
-                      <label
-                        for="filterList"
-                        class="flex flex-row items-center cursor-pointer"
+                      <svg
+                        class="h-4 w-4 text-icon xs:h-5 xs:w-5"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="3"
+                        stroke="currentcolor"
+                        viewBox="0 0 24 24"
+                        style="max-width: 40px"
+                        aria-hidden="true"
                       >
-                        <span
-                          class="text-[0.75rem] sm:text-[1rem] text-gray-400 ml-2 text-start w-full px-0 py-1 bg-inherit"
+                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        ></path>
+                      </svg>
+                    </div>
+                    <Combobox.Input
+                      on:click={() => (inputValue = "")}
+                      class="text-sm sm:text-[1rem] controls-input shadow-sm focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-300 px-3 py-1.5 pl-8 xs:pl-10 grow w-full sm:min-w-56 sm:max-w-xs"
+                      placeholder="Search Politician"
+                      aria-label="Search Politician"
+                    />
+                  </div>
+                </Combobox.Root>
+                <DropdownMenu.Root>
+                  <DropdownMenu.Trigger asChild let:builder>
+                    <Button
+                      builders={[builder]}
+                      class="ml-3 border-gray-300 dark:border-gray-600 border border-gray-300 shadow-sm sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  px-3 py-2  rounded-md "
+                    >
+                      <span class="truncate">Filter by Party</span>
+                      <svg
+                        class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        style="max-width:40px"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                          clip-rule="evenodd"
+                        ></path>
+                      </svg>
+                    </Button>
+                  </DropdownMenu.Trigger>
+                  <DropdownMenu.Content
+                    class="w-56 h-fit max-h-72 overflow-y-auto scroller"
+                  >
+                    <DropdownMenu.Group>
+                      {#each ["Democratic", "Republican"] as item}
+                        <DropdownMenu.Item
+                          class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                         >
-                          Filter
-                        </span>
-                        <svg
-                          class="ml-auto mr-5 h-5 w-5 inline-block transform transition-transform mr-2 rotate-180"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 1024 1024"
-                          ><path
-                            fill="#fff"
-                            d="m488.832 344.32l-339.84 356.672a32 32 0 0 0 0 44.16l.384.384a29.44 29.44 0 0 0 42.688 0l320-335.872l319.872 335.872a29.44 29.44 0 0 0 42.688 0l.384-.384a32 32 0 0 0 0-44.16L535.168 344.32a32 32 0 0 0-46.336 0z"
-                          /></svg
+                          <div class="flex items-center">
+                            <label
+                              class="cursor-pointer"
+                              on:click={() => handleChangeValue(item)}
+                              for={item}
+                            >
+                              <input
+                                type="checkbox"
+                                checked={checkedItems.has(item)}
+                              />
+                              <span class="ml-2">{item}</span>
+                            </label>
+                          </div>
+                        </DropdownMenu.Item>
+                      {:else}
+                        <DropdownMenu.Item
+                          class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                         >
-                      </label>
-                    </li>
-                    -->
-                  </ul>
-                </div>
+                          No country found
+                        </DropdownMenu.Item>
+                      {/each}
+                    </DropdownMenu.Group>
+                  </DropdownMenu.Content>
+                </DropdownMenu.Root>
               </div>
 
               <div class="w-full m-auto mt-4">
