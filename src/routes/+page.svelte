@@ -113,9 +113,9 @@
       {/if}
 
       <div
-        class="text-center mb-10 relative w-fit flex justify-center m-auto text-white"
+        class="text-center mb-5 relative w-fit flex justify-center m-auto text-white"
       >
-        <div class="mb-4 flex justify-center -mt-3 lg:mb-3">
+        <div class=" flex justify-center -mt-3 mb-3">
           <a href="/stocks/GME/statistics/short-interest"
             ><div
               class="flex items-center justify-center sm:hover:text-muted dark:sm:hover:text-white text-blue-700 dark:text-blue-400"
@@ -134,7 +134,7 @@
       <h1
         class="hidden sm:block text-3xl lg:text-4xl text-muted dark:text-white font-bold text-center mb-10 relative w-fit flex justify-center m-auto"
       >
-        Clear & <span class="italic">Simple</span> Market Insight.
+        Real-Time Market Insights
       </h1>
 
       <main class="flex flex-1 flex-col gap-4 sm:p-4 md:gap-8">
@@ -394,54 +394,18 @@
               {#if recentWIIM?.length !== 0}
                 <ul style="padding-left: 5px;">
                   {#each recentWIIM as item, index}
-                    {#if index >= 3 && !["Pro", "Plus"]?.includes(data?.user?.tier)}
-                      <li
-                        class="text-sm sm:text-[1rem]"
-                        style="margin-left: 8px; margin-bottom: 15px; list-style-type: disc;"
+                    <li
+                      class="text-sm sm:text-[1rem]"
+                      style="margin-left: 8px; margin-bottom: 15px; list-style-type: disc;"
+                    >
+                      {item?.text}
+
+                      <a
+                        href={`/stocks/${item?.ticker}`}
+                        class="inline-block badge duration-0 bg-blue-50 dark:bg-primary font-semibold dark:font-normal rounded-sm ml-1 px-2 m-auto text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted"
+                        >{item?.ticker}</a
                       >
-                        {item?.text?.slice(0, 48) + "..."}
-                        <a href="/pricing" class="inline-block text-sm">
-                          <svg
-                            class="size-4 inline-block"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                            style="max-width: 40px;"
-                          >
-                            <path
-                              fill-rule="evenodd"
-                              d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                              clip-rule="evenodd"
-                            >
-                            </path>
-                          </svg>
-
-                          <span
-                            class="ml-1 font-semibold text-muted dark:text-gray-300 group-hover:text-white"
-                          >
-                            Upgrade
-                          </span>
-                        </a>
-
-                        <a
-                          href={`/stocks/${item?.ticker}`}
-                          class="inline-block badge bg-blue-50 dark:bg-primary duration-0 rounded-sm ml-1 px-2 m-auto text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted"
-                          >{item?.ticker}</a
-                        >
-                      </li>
-                    {:else}
-                      <li
-                        class="text-sm sm:text-[1rem]"
-                        style="margin-left: 8px; margin-bottom: 15px; list-style-type: disc;"
-                      >
-                        {item?.text}
-
-                        <a
-                          href={`/stocks/${item?.ticker}`}
-                          class="inline-block badge duration-0 bg-blue-50 dark:bg-primary font-semibold dark:font-normal rounded-sm ml-1 px-2 m-auto text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted"
-                          >{item?.ticker}</a
-                        >
-                      </li>
-                    {/if}
+                    </li>
                   {/each}
                 </ul>
               {:else}
@@ -580,108 +544,49 @@
               {#if data?.getDashboard?.upcomingEarnings?.length !== 0}
                 <ul style="padding-left: 5px;">
                   {#each data?.getDashboard?.upcomingEarnings as item, index}
-                    {#if index >= 3 && !["Pro", "Plus"]?.includes(data?.user?.tier)}
-                      <li
-                        class="text-sm sm:text-[1rem]"
-                        style=" margin-left: 8px;  margin-bottom: 30px; list-style-type: disc;"
-                      >
-                        <strong>{item?.name}</strong> (<a
-                          href={`/stocks/${item?.symbol}`}
-                          class="text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted cursor-pointer"
-                          >{item?.symbol}</a
-                        >)
-                        {item?.isToday === true
-                          ? "will report today"
-                          : [
-                                "Monday",
-                                "Tuesday",
-                                "Wednesday",
-                                "Thursday",
-                              ].includes(
-                                new Date().toLocaleDateString("en-US", {
-                                  weekday: "long",
-                                }),
-                              )
-                            ? "will report tomorrow"
-                            : "will report monday"}
-                        {#if item?.time}
-                          {#if compareTimes(item?.time, "16:00") >= 0}
-                            after market closes.
-                          {:else if compareTimes(item?.time, "09:30") <= 0}
-                            before market opens.
-                          {:else}
-                            during market.
-                          {/if}
-                        {/if}Analysts estimate ...
-                        <a
-                          href="/pricing"
-                          class="inline-block text-sm sm:hover:text-blue-400"
-                        >
-                          <svg
-                            class="size-4 inline-block"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                            style="max-width: 40px;"
-                          >
-                            <path
-                              fill-rule="evenodd"
-                              d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                              clip-rule="evenodd"
-                            >
-                            </path>
-                          </svg>
-
-                          <span class="ml-1 font-semibold currentColor">
-                            Upgrade
-                          </span>
-                        </a>
-                      </li>
-                    {:else}
-                      <li
-                        class="text-sm sm:text-[1rem]"
-                        style=" margin-left: 8px;  margin-bottom: 30px; list-style-type: disc;"
-                      >
-                        <strong>{item?.name}</strong> (<a
-                          href={`/stocks/${item?.symbol}`}
-                          class="text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted cursor-pointer"
-                          >{item?.symbol}</a
-                        >)
-                        {item?.isToday === true
-                          ? "will report today"
-                          : [
-                                "Monday",
-                                "Tuesday",
-                                "Wednesday",
-                                "Thursday",
-                              ].includes(
-                                new Date().toLocaleDateString("en-US", {
-                                  weekday: "long",
-                                }),
-                              )
-                            ? "will report tomorrow"
-                            : "will report monday"}
-                        {#if item?.time}
-                          {#if compareTimes(item?.time, "16:00") >= 0}
-                            after market closes.
-                          {:else if compareTimes(item?.time, "09:30") <= 0}
-                            before market opens.
-                          {:else}
-                            during market.
-                          {/if}
-                        {/if}Analysts estimate {abbreviateNumber(
-                          item?.revenueEst,
-                        )} in revenue ({(
-                          (item?.revenueEst / item?.revenuePrior - 1) *
-                          100
-                        )?.toFixed(2)}% YoY) and {item?.epsEst} in earnings per share
-                        {#if item?.epsPrior !== 0}
-                          ({(
-                            (item?.epsEst / item?.epsPrior - 1) *
-                            100
-                          )?.toFixed(2)}% YoY).
+                    <li
+                      class="text-sm sm:text-[1rem]"
+                      style=" margin-left: 8px;  margin-bottom: 30px; list-style-type: disc;"
+                    >
+                      <strong>{item?.name}</strong> (<a
+                        href={`/stocks/${item?.symbol}`}
+                        class="text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted cursor-pointer"
+                        >{item?.symbol}</a
+                      >)
+                      {item?.isToday === true
+                        ? "will report today"
+                        : [
+                              "Monday",
+                              "Tuesday",
+                              "Wednesday",
+                              "Thursday",
+                            ].includes(
+                              new Date().toLocaleDateString("en-US", {
+                                weekday: "long",
+                              }),
+                            )
+                          ? "will report tomorrow"
+                          : "will report monday"}
+                      {#if item?.time}
+                        {#if compareTimes(item?.time, "16:00") >= 0}
+                          after market closes.
+                        {:else if compareTimes(item?.time, "09:30") <= 0}
+                          before market opens.
+                        {:else}
+                          during market.
                         {/if}
-                      </li>
-                    {/if}
+                      {/if}Analysts estimate {abbreviateNumber(
+                        item?.revenueEst,
+                      )} in revenue ({(
+                        (item?.revenueEst / item?.revenuePrior - 1) *
+                        100
+                      )?.toFixed(2)}% YoY) and {item?.epsEst} in earnings per share
+                      {#if item?.epsPrior !== 0}
+                        ({((item?.epsEst / item?.epsPrior - 1) * 100)?.toFixed(
+                          2,
+                        )}% YoY).
+                      {/if}
+                    </li>
                   {/each}
                 </ul>
               {:else}
