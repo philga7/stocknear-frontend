@@ -3,7 +3,7 @@
   import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
   import SEO from "$lib/components/SEO.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
-  import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
+  import Tutorial from "$lib/components/Tutorial.svelte";
   import { Button } from "$lib/components/shadcn/button/index.js";
   //import * as XLSX from 'xlsx';
   import { goto } from "$app/navigation";
@@ -16,58 +16,127 @@
   let tableList = rawData;
   tableList?.sort((a, b) => new Date(b?.recordDate) - new Date(a?.recordDate));
 
-  let changePercentageYearAgo = 0;
-  let growthRate = 0;
+  let steps = [
+    {
+      popover: {
+        title: "Short Interest",
+        description:
+          "This dashboard tracks how many shares are sold short and key ratios that traders use to spot bearish sentiment and potential squeezes.",
+        side: "center",
+        align: "center",
+      },
+    },
+    // 2. Total Short Interest
+    {
+      element: ".short-interest-driver",
+      popover: {
+        title: "Total Short Interest",
+        description: `The total number of shares currently sold short (${abbreviateNumber(data?.getData?.sharesShort)} here). A rising number can indicate growing bearish bets.`,
+        side: "left",
+        align: "start",
+      },
+    },
+    // 3. Prior Month Comparison
+    {
+      element: ".shortPriorMonth-driver",
+      popover: {
+        title: "Last Month’s Shorts",
+        description: (() => {
+          const priorShorts = abbreviateNumber(
+            data?.getData?.sharesShortPriorMonth,
+          );
+          const change = tableList?.at(0)?.percentChangeMoMo;
+          const momentumDirection =
+            change >= 0 ? "momentum—up" : "momentum—down";
 
-  function filterDataByTimePeriod(rawData, timePeriod) {
-    let dates = [];
-    let marketCapList = [];
-    const now = new Date();
+          let jumpSize = "a small jump";
+          const absChange = Math.abs(change);
 
-    // Calculate the date threshold based on the selected time period
-    let thresholdDate;
-    switch (timePeriod) {
-      case "1M":
-        thresholdDate = new Date(now);
-        thresholdDate.setMonth(now.getMonth() - 1);
-        break;
-      case "6M":
-        thresholdDate = new Date(now);
-        thresholdDate.setMonth(now.getMonth() - 6);
-        break;
-      case "1Y":
-        thresholdDate = new Date(now);
-        thresholdDate.setFullYear(now.getFullYear() - 1);
-        break;
-      case "3Y":
-        thresholdDate = new Date(now);
-        thresholdDate.setFullYear(now.getFullYear() - 3);
-        break;
-      case "5Y":
-        thresholdDate = new Date(now);
-        thresholdDate.setFullYear(now.getFullYear() - 5);
-        break;
-      case "10Y":
-        thresholdDate = new Date(now);
-        thresholdDate.setFullYear(now.getFullYear() - 10);
-        break;
-      case "Max":
-      default:
-        thresholdDate = new Date(0); // Set to the earliest possible date
-        break;
-    }
+          if (absChange >= 20) {
+            jumpSize = "a big jump";
+          } else if (absChange >= 10) {
+            jumpSize = "a medium jump";
+          }
 
-    // Filter the data based on the threshold date
-    rawData?.forEach((item) => {
-      const itemDate = new Date(item?.date);
-      if (itemDate >= thresholdDate) {
-        dates?.push(item?.date);
-        marketCapList?.push(item?.marketCap);
-      }
-    });
-
-    return { dates, marketCapList };
-  }
+          return `Compare to last month’s short interest (${priorShorts}) to see ${momentumDirection}. ${Math.abs(change)}% MoM means ${jumpSize} in bearish positioning.`;
+        })(),
+        side: "bottom",
+        align: "start",
+      },
+    },
+    // 4. Month‑over‑Month Change
+    {
+      element: ".changeMoM-driver",
+      popover: {
+        title: "Month‑over‑Month Change",
+        description: `"Shows the % change from last month (${tableList?.at(0)?.percentChangeMoMo}%). Large swings can precede volatility or squeeze setups.`,
+        side: "bottom",
+        align: "start",
+      },
+    },
+    // 5. Short % of Float
+    {
+      element: ".shortPercentFloat-driver",
+      popover: {
+        title: "Short % of Float",
+        description: `${data?.getData?.shortFloatPercent}% tells you what portion of the freely tradable shares are sold short. The higher it is, the more crowded the short side.`,
+        side: "left",
+        align: "start",
+      },
+    },
+    // 6. Short % of Outstanding
+    {
+      element: ".shortPercentOutstanding-driver",
+      popover: {
+        title: "Short % of Outstanding",
+        description: `${data?.getData?.shortOutstandingPercent}% shows shorts relative to all shares out there. Use alongside % float to understand supply dynamics.`,
+        side: "left",
+        align: "start",
+      },
+    },
+    // 7. Days to Cover
+    {
+      element: ".daysToCover-driver",
+      popover: {
+        title: "Days to Cover",
+        description: `${data?.getData?.shortRatio} days — how long it’d take shorts to buy back at average daily volume. Low values can fuel quick squeezes.`,
+        side: "right",
+        align: "start",
+      },
+    },
+    // 8. Short Interest Chart
+    {
+      element: ".chart-driver",
+      popover: {
+        title: "Visualizing Trends",
+        description:
+          "This chart overlays price, % float, and % outstanding over time so you can spot divergences or spikes.",
+        side: "right",
+        align: "start",
+      },
+    },
+    // 9. Historical Table
+    {
+      element: ".history-driver",
+      popover: {
+        title: "Detailed History",
+        description:
+          "Scroll through past filings to see how metrics evolved—handy. You can also download the data for backtesting your entry and exit rules.",
+        side: "right",
+        align: "start",
+      },
+    },
+    // 10. Wrap‑up
+    {
+      popover: {
+        title: "You’re All Set!",
+        description:
+          "That’s the full tour. Now you know how to read each short‑interest metric and apply it to your trading strategies. Happy investing!",
+        side: "center",
+        align: "center",
+      },
+    },
+  ];
 
   function plotData() {
     if (!rawData || rawData.length === 0) {
@@ -314,10 +383,12 @@
     >
       <main class="w-full">
         <div class="sm:pl-7 sm:pb-7 sm:pt-7 m-auto mt-2 sm:mt-0">
-          <div class="">
+          <div class="w-full flex flex-col sm:flex-row justify-between">
             <h1 class="text-xl sm:text-2xl font-bold">
               {removeCompanyStrings($displayCompanyName)} Short Interest
             </h1>
+
+            <Tutorial {steps} />
           </div>
 
           {#if rawData?.length !== 0}
@@ -339,7 +410,7 @@
               <div
                 class="my-5 grid grid-cols-2 gap-3 xs:mt-6 bp:mt-7 sm:grid-cols-3 sm:gap-6"
               >
-                <div>
+                <div class="short-interest-driver">
                   Short Interest
                   <div
                     class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl font-semibold"
@@ -347,16 +418,17 @@
                     {abbreviateNumber(data?.getData?.sharesShort)}
                   </div>
                 </div>
-                <div>
+                <div class="shortPriorMonth-driver">
                   Short Prior Month <div
                     class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl font-semibold"
                   >
                     {abbreviateNumber(data?.getData?.sharesShortPriorMonth)}
                   </div>
                 </div>
-                <div>
+                <div class="changeMoM-driver">
                   % Change MoM <div
-                    class="mt-0.5 text-lg {growthRate > 0
+                    class="mt-0.5 text-lg {tableList?.at(0)?.percentChangeMoMo >
+                    0
                       ? "before:content-['+'] "
                       : ''} font-semibold bp:text-xl sm:mt-1.5 sm:text-2xl"
                   >
@@ -365,7 +437,7 @@
                       : "n/a"}
                   </div>
                 </div>
-                <div>
+                <div class="shortPercentFloat-driver">
                   Short % Floating
                   <div
                     class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl font-semibold"
@@ -375,7 +447,7 @@
                       : "n/a"}
                   </div>
                 </div>
-                <div>
+                <div class="shortPercentOutstanding-driver">
                   Short % Outstanding
                   <div
                     class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl font-semibold"
@@ -385,7 +457,7 @@
                       : "n/a"}
                   </div>
                 </div>
-                <div>
+                <div class="daysToCover-driver">
                   Days to Cover
                   <div
                     class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl font-semibold"
@@ -404,14 +476,14 @@
               </div>
 
               <div
-                class="chart border border-gray-300 shadow-sm dark:border-gray-800 rounded"
+                class="chart-driver border border-gray-300 shadow-sm dark:border-gray-800 rounded"
                 use:highcharts={config}
               ></div>
 
               <div
                 class="flex flex-row items-center w-full justify-between mt-3"
               >
-                <h3 class="text-xl sm:text-2xl font-bold">
+                <h3 class=" history-driver text-xl sm:text-2xl font-bold">
                   Short Interest History
                 </h3>
 
