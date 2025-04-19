@@ -347,7 +347,7 @@
       },
     },
     {
-      element: ".navbar-driver",
+      element: ".navbar-driver ul > button:nth-child(1)",
       popover: {
         title: "Presidential Schedule",
         description: `View the President's daily agenda and upcoming events in real-time.`,
@@ -356,7 +356,7 @@
       },
     },
     {
-      element: ".navbar-driver",
+      element: ".navbar-driver ul > button:nth-child(2)",
       popover: {
         title: "Executive Orders",
         description: `Track executive orders signed by President Trump and analyze their potential market impact.`,
@@ -365,7 +365,7 @@
       },
     },
     {
-      element: ".navbar-driver",
+      element: ".navbar-driver ul > button:nth-child(3)",
       popover: {
         title: "Truth Social Posts",
         description: `Monitor the President's latest Truth Social communications that may influence market sentiment.`,
