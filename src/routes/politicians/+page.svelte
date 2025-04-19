@@ -23,6 +23,7 @@
   let timeoutId;
 
   let rawData = data?.getAllPolitician;
+
   let displayList = [];
   let isLoaded = false;
   let animationClass = "";
@@ -54,7 +55,7 @@
   // Tell the web worker to filter our data
   const loadWorker = async () => {
     syncWorker?.postMessage({
-      rawData: rawData,
+      rawData: data?.getAllPolitician,
       filterList: filterList,
     });
   };
@@ -145,8 +146,8 @@
     clearTimeout(timeoutId); // Clear any existing timeout
     let newData = [];
 
-    timeoutId = setTimeout(() => {
-      if (inputValue?.length !== 0) {
+    timeoutId = setTimeout(async () => {
+      if (inputValue?.length > 0) {
         newData = rawData?.filter((item) => {
           const representative = item?.representative?.toLowerCase();
           // Check if representative includes inputValue
@@ -159,20 +160,27 @@
           return similarity > similarityThreshold;
         });
 
-        if (newData?.length !== 0) {
+        if (newData?.length > 0) {
           rawData = newData;
           displayList = [...newData];
         } else {
-          // Reset to original data if no matches found
-          rawData = data?.getAllPolitician;
-          displayList = rawData?.slice(0, 20);
+          if (filterList?.length === 0) {
+            rawData = [...data?.getAllPolitician];
+            displayList = rawData?.slice(0, 20);
+          } else {
+            await loadWorker();
+          }
         }
       } else {
         // Reset to original data if filter is empty
-        rawData = data?.getAllPolitician;
-        displayList = rawData?.slice(0, 20);
+        if (filterList?.length === 0) {
+          rawData = [...data?.getAllPolitician];
+          displayList = rawData?.slice(0, 20);
+        } else {
+          await loadWorker();
+        }
       }
-    }, 100);
+    }, 500);
   }
 
   function saveList() {
@@ -210,12 +218,6 @@
 
     saveList();
   }
-
-  $: {
-    if (inputValue) {
-      search();
-    }
-  }
 </script>
 
 <SEO
@@ -246,38 +248,33 @@
                 All US Politicians
               </h1>
               <div class="w-full flex flex-row items-center">
-                <Combobox.Root
-                  items={rawData}
-                  bind:inputValue
-                  bind:touchedInput
-                >
-                  <div class="relative w-fit">
-                    <div
-                      class="absolute inset-y-0 left-0 flex items-center pl-2.5"
+                <div class="relative w-fit">
+                  <div
+                    class="absolute inset-y-0 left-3 flex items-center pointer-events-none"
+                  >
+                    <svg
+                      class="h-5 w-5 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
                     >
-                      <svg
-                        class="h-4 w-4 text-icon xs:h-5 xs:w-5"
-                        fill="none"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="3"
-                        stroke="currentcolor"
-                        viewBox="0 0 24 24"
-                        style="max-width: 40px"
-                        aria-hidden="true"
-                      >
-                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                        ></path>
-                      </svg>
-                    </div>
-                    <Combobox.Input
-                      on:click={() => (inputValue = "")}
-                      class="text-sm sm:text-[1rem] controls-input shadow-sm focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-300 px-3 py-1.5 pl-8 xs:pl-10 grow w-full sm:min-w-56 sm:max-w-xs"
-                      placeholder="Search Politician"
-                      aria-label="Search Politician"
-                    />
+                      <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      ></path>
+                    </svg>
                   </div>
-                </Combobox.Root>
+                  <input
+                    bind:value={inputValue}
+                    on:input={search}
+                    type="text"
+                    placeholder="Search Politician"
+                    class="w-fit py-[5.5px] pl-10 border bg-inherit shadow-sm focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-300 px-3 focus:outline-none focus:ring-0 focus:border-gray-600 grow w-full sm:min-w-56 sm:max-w-xs"
+                  />
+                </div>
+
                 <DropdownMenu.Root>
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
