@@ -8,7 +8,8 @@
   import avatar from "$lib/images/trump-avatar.jpeg";
   import { mode } from "mode-watcher";
   import { goto } from "$app/navigation";
-  import html2canvas from "html2canvas-pro";
+  //import html2canvas from "html2canvas-pro";
+  import Tutorial from "$lib/components/Tutorial.svelte";
 
   export let data;
 
@@ -78,12 +79,6 @@
   ];
 
   let activeIdx = 0;
-  let expandedDescriptions: { [key: string]: boolean } = {};
-
-  function truncateText(text: string, maxLength: number = 300) {
-    if (text.length <= maxLength) return text;
-    return text.slice(0, maxLength) + "...";
-  }
 
   function latestInfoDate(inputDate) {
     // Create a Date object for the input date and convert it to New York time zone
@@ -204,7 +199,7 @@
   }
 
   let config = null;
-
+  /*
   async function captureScreenshot(index) {
     const postElement = document.querySelector(`#post-${index}`);
 
@@ -322,6 +317,73 @@
       throw error;
     }
   }
+    */
+
+  let steps = [
+    {
+      popover: {
+        title: "POTUS Tracker",
+        description: `This dashboard tracks the President of the United States in real-time. Get updates on the POTUS schedule, executive orders, signed legislation and official events.`,
+        side: "center",
+        align: "center",
+      },
+    },
+    {
+      element: ".chart-driver",
+      popover: {
+        title: "Economy Performance",
+        description: `Since the inauguration of POTUS on January 20, 2025, the ${selectedSector} has ${data?.getData?.marketPerformance[sectorDict[selectedSector]]["Inauguration"] >= 0 ? "grown" : "declined"} by ${data?.getData?.marketPerformance[sectorDict[selectedSector]]["Inauguration"]}%.`,
+        side: "left",
+        align: "start",
+      },
+    },
+    {
+      element: ".sector-driver",
+      popover: {
+        title: "All Market Sectors",
+        description: `Visual representation of all market sectors performance across multiple timeframes since POTUS inauguration to get a quick snapshot of the sector health.`,
+        side: "right",
+        align: "start",
+      },
+    },
+    {
+      element: ".navbar-driver",
+      popover: {
+        title: "Presidential Schedule",
+        description: `View the President's daily agenda and upcoming events in real-time.`,
+        side: "bottom",
+        align: "start",
+      },
+    },
+    {
+      element: ".navbar-driver",
+      popover: {
+        title: "Executive Orders",
+        description: `Track executive orders signed by President Trump and analyze their potential market impact.`,
+        side: "bottom",
+        align: "start",
+      },
+    },
+    {
+      element: ".navbar-driver",
+      popover: {
+        title: "Truth Social Posts",
+        description: `Monitor the President's latest Truth Social communications that may influence market sentiment.`,
+        side: "right",
+        align: "start",
+      },
+    },
+    {
+      popover: {
+        title: "You’re All Set!",
+        description:
+          "All dashboard panels refresh live—so you’re always on top of how presidential moves impact the market. You’re all set, happy exploring!",
+        side: "center",
+        align: "center",
+      },
+    },
+  ];
+
   $: {
     if (selectedSector || $mode) {
       config = plotData() || null;
@@ -353,8 +415,11 @@
       >
         <div class="w-full mt-5">
           <div class="lg:float-left lg:w-[calc(100%-336px-20px)]">
-            <div class="border-b-[2px] border-[#2C6288] dark:border-white">
+            <div
+              class="border-b-[2px] border-[#2C6288] dark:border-white flex flex-row justify-between"
+            >
               <h1 class="mb-1 text-2xl sm:text-3xl font-bold">POTUS Tracker</h1>
+              <Tutorial {steps} />
             </div>
           </div>
 
@@ -368,7 +433,7 @@
             </div>
 
             <div class="flex flex-row items-center w-fit ml-auto mt-2 sm:mt-0">
-              <div class="relative inline-block text-left grow">
+              <div class="sector-driver relative inline-block text-left grow">
                 <DropdownMenu.Root>
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
@@ -438,12 +503,12 @@
             </div>
 
             <div
-              class="shadow-sm mt-5 border border-gray-300 dark:border-gray-800 rounded"
+              class="chart-driver shadow-sm mt-5 border border-gray-300 dark:border-gray-800 rounded"
               use:highcharts={config}
             ></div>
 
             <nav
-              class="border-[#2C6288] dark:border-white border-b-[2px] overflow-x-auto whitespace-nowrap no-scrollbar mt-4"
+              class="navbar-driver border-[#2C6288] dark:border-white border-b-[2px] overflow-x-auto whitespace-nowrap no-scrollbar mt-4"
             >
               <ul class="flex flex-row items-center w-full text-[1rem]">
                 {#each tabs as item, i}
@@ -695,7 +760,7 @@
               </div>
             {:else if activeIdx === 2}
               <div
-                class="flex flex-row items-center mb-2 mt-6 border-y border-gray-300 dark:border-gray-800 pt-2 pb-2"
+                class=" flex flex-row items-center mb-2 mt-6 border-y border-gray-300 dark:border-gray-800 pt-2 pb-2"
               >
                 <svg
                   class="w-7 h-7 rounded-full inline-block"
