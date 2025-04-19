@@ -59,11 +59,24 @@
         value = 180;
       }
       try {
-        twq("event", "tw-onuuu-ospg6", {
-          value: value,
+        // --- REPLACED: send purchase event to GTM dataLayer ---
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: "Purchase",
+          conversionId: data?.user?.id,
+          advancedMatchingParams: [{ name: "email", value: data.user.email }],
+          itemCount: 1,
           currency: "USD",
-          conversion_id: data?.user?.id,
+          transactionValue: value,
+          productRows: [
+            {
+              id: subId,
+              category: "Subscription",
+              name: subscriptionType,
+            },
+          ],
         });
+        // ---------------------------------------------------------
       } catch (e) {
         console.log(e);
       }
@@ -97,24 +110,6 @@
     window.lemonSqueezyAffiliateConfig = { store: "stocknear" };
   </script>
   <script src="https://lmsqueezy.com/affiliate.js" defer></script>
-
-  <script>
-    !(function (e, t, n, s, u, a) {
-      e.twq ||
-        ((s = e.twq =
-          function () {
-            s.exe ? s.exe.apply(s, arguments) : s.queue.push(arguments);
-          }),
-        (s.version = "1.1"),
-        (s.queue = []),
-        (u = t.createElement(n)),
-        (u.async = !0),
-        (u.src = "https://static.ads-twitter.com/uwt.js"),
-        (a = t.getElementsByTagName(n)[0]),
-        a.parentNode.insertBefore(u, a));
-    })(window, document, "script");
-    twq("config", "onuuu");
-  </script>
 </svelte:head>
 
 <section
