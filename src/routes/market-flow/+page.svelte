@@ -3,6 +3,10 @@
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import { abbreviateNumber } from "$lib/utils";
   import InfoModal from "$lib/components/InfoModal.svelte";
+  import Infobox from "$lib/components/Infobox.svelte";
+
+  import Tutorial from "$lib/components/Tutorial.svelte";
+
   import { mode } from "mode-watcher";
 
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
@@ -443,6 +447,79 @@
     return options;
   }
 
+  let steps = [
+    {
+      popover: {
+        title: "Market Flow",
+        description: `Track real‑time S&P 500 options flow to pinpoint large call and put premium trades, monitor net premium movement, and gauge bullish vs. bearish sentiment. Instantly spot institutional‑size orders, follow shifts in market skew, and align your strategy with the prevailing market bias.`,
+        side: "center",
+        align: "center",
+      },
+    },
+    {
+      element: ".net-volume-driver",
+      popover: {
+        title: "Net Volume",
+        description: `Net volume is defined as (call ask volume − call bid volume) − (put ask volume − put bid volume). It reflects the balance of aggressive buying versus selling across calls and puts. A positive value suggests bullish sentiment, while a negative value indicates bearish pressure from big whales.`,
+        side: "left",
+        align: "start",
+      },
+    },
+    {
+      element: ".net-call-premium-driver",
+      popover: {
+        title: "Net Call Premium",
+        description: `Net call premium is defined as (call premium ask side) − (call premium bid side). It shows the flow of capital into call options, helping identify whether big whales are aggressively buying calls. A high positive value suggests bullish sentiment and potential institutional interest.`,
+        side: "left",
+        align: "start",
+      },
+    },
+    {
+      element: ".net-put-premium-driver",
+      popover: {
+        title: "Net Put Premium",
+        description: `Net put premium is defined as (put premium ask side) − (put premium bid side). It highlights the capital flow into put options, revealing whether big whales are positioning for downside. A high positive value signals strong bearish sentiment or hedging activity.`,
+        side: "right",
+        align: "start",
+      },
+    },
+    {
+      element: ".chart-driver",
+      popover: {
+        title: "S&P500 Flow Chart",
+        description: `This chart displays the price movement (white line) alongside net call premium (green line) and net put premium (red line) throughout the trading day from 9 AM to 4 PM. to get realtime updates about market sentiment.`,
+        side: "bottom",
+        align: "start",
+      },
+    },
+    {
+      element: ".positive-net-premium-driver",
+      popover: {
+        title: "Top Stocks by Positive Net Premium",
+        description: `This table highlights stocks with the strongest bullish options flow, where traders are aggressively buying calls or selling puts. A high positive net premium often signals institutional positioning or speculation on upside moves over the coming days, weeks, or months.`,
+        side: "bottom",
+        align: "start",
+      },
+    },
+    {
+      element: ".negative-net-premium-driver",
+      popover: {
+        title: "Top Stocks by Negative Net Premium",
+        description: `This section shows stocks with the most bearish options flow, where traders are heavily buying puts or selling calls. A deep negative net premium can suggest downside expectations, hedging activity, or divergence from current price action—such as Starbucks showing −7.74M in net premium while still up +0.88% on the day.`,
+        side: "right",
+        align: "start",
+      },
+    },
+    {
+      popover: {
+        title: "You’re All Set!",
+        description:
+          "You’ve now seen how market flow, including volume, premium, and directional bias, can reveal where the money is moving. Use these insights to spot momentum shifts, follow smart money, and sharpen your trading decisions. Happy trading!",
+        side: "center",
+        align: "center",
+      },
+    },
+  ];
   $: {
     if ($mode) {
       config = marketTideData ? plotData() : null;
@@ -464,32 +541,34 @@
         <main class="w-full">
           <div class="w-full m-auto">
             {#if config !== null}
-              <p class="mt-4">
-                Market Flow evaluates the balance between advancing and
+              <div class="mt-4">
+                <Infobox
+                  text={`Market Flow evaluates the balance between advancing and
                 declining stocks by analyzing S&P500 price movements, net call
                 premiums and net put premiums, providing a real-time snapshot of
-                market sentiment and momentum. <a
-                  href="/learning-center/article/market-sentiment-through-options-activity-riding-the-tide"
-                  class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
-                  >Learn more here.</a
-                >
-              </p>
-
-              <div class=" text-sm italic mt-5 mb-3">
-                Last Updated: {formatDate(
-                  findLastNonNull(marketTideData, "time"),
-                )}
+                market sentiment and momentum.`}
+                />
               </div>
+
+              <div class="mt-5 mb-3 flex flex-row items-center justify-between">
+                <div class="text-xs sm:text-sm italic">
+                  Last Updated: {formatDate(
+                    findLastNonNull(marketTideData, "time"),
+                  )}
+                </div>
+                <Tutorial {steps} />
+              </div>
+
               <div
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6"
               >
                 <div
-                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="net-volume-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
                 >
                   <div
                     class="dark:text-[#c3c6d0] text-sm mb-2 flex items-center"
                   >
-                    <span>Volume</span>
+                    <span>Net Volume</span>
                   </div>
                   <div class="flex items-baseline">
                     <span class="text-xl font-bold">
@@ -503,7 +582,7 @@
                 </div>
 
                 <div
-                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="net-call-premium-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
                 >
                   <div
                     class="dark:text-[#c3c6d0] text-sm mb-2 flex items-center"
@@ -522,7 +601,7 @@
                 </div>
 
                 <div
-                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="net-put-premium-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
                 >
                   <div
                     class="dark:text-[#c3c6d0] text-sm mb-2 flex items-center"
@@ -542,7 +621,7 @@
               </div>
 
               <div
-                class=" border border-gray-300 dark:border-gray-800 rounded w-full"
+                class="chart-driver border border-gray-300 dark:border-gray-800 rounded w-full"
                 use:highcharts={config}
               ></div>
             {/if}
@@ -553,7 +632,7 @@
                 <div class="flex flex-row items-center">
                   <label
                     for="topPosNetPrem"
-                    class="mr-1 cursor-pointer flex flex-row items-center text-xl font-bold"
+                    class="positive-net-premium-driver mr-1 cursor-pointer flex flex-row items-center text-xl font-bold"
                   >
                     Top Stocks by Positive Net Prem
                   </label>
@@ -646,7 +725,7 @@
                 <div class="flex flex-row items-center">
                   <label
                     for="topNegNetPrem"
-                    class="mr-1 cursor-pointer flex flex-row items-center text-xl font-bold"
+                    class="negative-net-premium-driver mr-1 cursor-pointer flex flex-row items-center text-xl font-bold"
                   >
                     Top Stocks by Negative Net Prem
                   </label>

@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
 
   import SEO from "$lib/components/SEO.svelte";
-
+  import Discount from "$lib/components/Discount.svelte";
   export let data;
   export let form;
 
@@ -171,7 +171,7 @@
       </h1>
     </div>
 
-    <!--<Discount/>-->
+    <Discount />
 
     <div class="flex flex-row items-center justify-center mb-5 sm:mb-0">
       <div class="flex flex-row items-center ml-auto">
@@ -759,9 +759,12 @@
           Best for Intermediate Traders
         </p>
         <div class="mt-4">
-          <span class="text-4xl font-bold">{mode ? "$7.50" : "$10"}</span><span
-            class=" text-xl ml-1">/Month</span
-          >
+          <span class="text-4xl font-bold line-through"
+            >{mode ? "$7.50" : "$10"}</span
+          ><span
+            class="text-pink-700 dark:text-pink-500 text-4xl font-bold ml-1"
+            >{mode ? "$3.75" : "$5"}</span
+          ><span class=" text-xl ml-1">/Month</span>
         </div>
         <p
           class="text-muted dark:text-gray-400 text-sm mt-1 mx-4 {!mode
@@ -1076,9 +1079,12 @@
           Best for Professional Traders
         </p>
         <div class="mt-4">
-          <span class="text-4xl font-bold">{mode ? "$15" : "$20"}</span><span
-            class=" text-xl ml-1">/Month</span
-          >
+          <span class="text-4xl font-bold line-through"
+            >{mode ? "$15" : "$20"}</span
+          ><span
+            class="text-pink-700 dark:text-pink-500 text-4xl font-bold ml-1"
+            >{mode ? "$7.5" : "$10"}</span
+          ><span class=" text-xl ml-1">/Month</span>
         </div>
         <p
           class="text-muted dark:text-gray-400 text-sm mt-1 mx-4 {!mode
@@ -1175,12 +1181,13 @@
         <!--
         {#if !["Pro", "Plus"]?.includes(data?.user?.tier) || data?.user?.freeTrial === true}
           <div class="mt-3 items-center text-[1rem] font-medium mb-5">
-            Promo Code: <strong>SPRINGSALE</strong>
+            Promo Code: <strong>EASTERSALE</strong>
             <br class="mb-2" />
-            Get <strong>50% OFF</strong> on Pro Annual Membership!
+            Get started with <strong></strong> on Pro Monthly to test our Service!
           </div>
         {/if}
         -->
+
         <div class="mt-auto pt-6 border-t border-zinc-700 mx-4">
           <label
             for={!data?.user ? "userLogin" : ""}
@@ -1209,7 +1216,12 @@
         <div class="flex flex-row items-center justify-between">
           <h3 class="text-2xl md:text-3xl font-bold">Lifetime</h3>
           <div>
-            <span class="text-3xl md:text-4xl font-bold">$999</span>
+            <span class="text-3xl md:text-4xl font-bold line-through">$999</span
+            >
+            <span
+              class="text-pink-700 dark:text-pink-500 text-3xl md:text-4xl font-bold ml-1"
+              >$499</span
+            >
           </div>
         </div>
         <p class=" md:text-lg mt-4 lg:mt-2">

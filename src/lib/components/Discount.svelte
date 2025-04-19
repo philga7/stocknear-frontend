@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
-  let targetDate = new Date("2024-07-14");
+  let targetDate = new Date("2025-04-25");
 
   let days = "-";
   let hours = "-";
@@ -38,23 +38,18 @@
   });
 </script>
 
-<div
-  class="lg:max-w-xl w-full bg-linear-to-r from-orange-400 to-purple-900 p-4 rounded-none sm:rounded-md shadow-md m-auto"
->
-  <div
-    class="container bg-linear-to-r from-orange-400 to-purple-900 p-4 mt-4"
-  >
-    <h2 class="text-2xl font-bold text-white text-center">
+<div class="lg:max-w-xl w-full rounded-none sm:rounded-md m-auto mb-10">
+  <div class="container">
+    <h2 class="text-2xl font-bold text-center text-pink-700 dark:text-pink-500">
       50% OFF Your Subscription!
     </h2>
   </div>
   <div class="container text-center">
-    <p class="text-white font-bold text-xl">
-      Use Promo Code: <span class="font-extrabold text-[#FFF374]">SUMMER50</span
-      >
+    <p class=" font-bold text-xl">
+      Use Promo Code: <span class="font-extrabold">EASTER25</span>
     </p>
     <div
-      class="grid grid-flow-col gap-5 text-[#FFF374] font-bold text-center m-auto auto-cols-max justify-center mt-6"
+      class="grid grid-flow-col gap-5 font-bold text-center m-auto auto-cols-max justify-center mt-6"
     >
       <div class="flex flex-col text-xs">
         <span class="countdown font-mono text-xl sm:text-2xl">
