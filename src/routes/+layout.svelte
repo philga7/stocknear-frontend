@@ -250,6 +250,9 @@
 
 
 <svelte:head>
+
+  <!--Google Tag Analytics-->
+
   <script>
     // Forward the necessary functions to the web worker layer
     partytown = {
@@ -272,6 +275,22 @@
     gtag("config", "G-CLFNW10SND");
   </script>
 
+  <!--Google Tag Reddit tracker-->
+  <script>
+		partytown = {
+			forward: ['dataLayer.push', 'gtag']
+		};
+	</script>
+ 
+	{@html '<script>' + partytownSnippet() + '</script>'}
+ 
+	<script type="text/partytown" src="https://www.googletagmanager.com/gtag/js?id=GTM-NZBJ9W63"></script>
+	<script type="text/partytown">
+		window.dataLayer = window.dataLayer || [];
+		window.gtag = function(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'GTM-NZBJ9W63');
+	</script>
  
 </svelte:head>
 
