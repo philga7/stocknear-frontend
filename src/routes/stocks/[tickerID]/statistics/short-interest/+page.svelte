@@ -26,7 +26,6 @@
         align: "center",
       },
     },
-    // 2. Total Short Interest
     {
       element: ".short-interest-driver",
       popover: {
@@ -36,7 +35,6 @@
         align: "start",
       },
     },
-    // 3. Prior Month Comparison
     {
       element: ".shortPriorMonth-driver",
       popover: {
@@ -64,7 +62,6 @@
         align: "start",
       },
     },
-    // 4. Month‑over‑Month Change
     {
       element: ".changeMoM-driver",
       popover: {
@@ -74,7 +71,6 @@
         align: "start",
       },
     },
-    // 5. Short % of Float
     {
       element: ".shortPercentFloat-driver",
       popover: {
@@ -84,7 +80,6 @@
         align: "start",
       },
     },
-    // 6. Short % of Outstanding
     {
       element: ".shortPercentOutstanding-driver",
       popover: {
@@ -94,7 +89,6 @@
         align: "start",
       },
     },
-    // 7. Days to Cover
     {
       element: ".daysToCover-driver",
       popover: {
@@ -104,7 +98,6 @@
         align: "start",
       },
     },
-    // 8. Short Interest Chart
     {
       element: ".chart-driver",
       popover: {
@@ -115,7 +108,6 @@
         align: "start",
       },
     },
-    // 9. Historical Table
     {
       element: ".history-driver",
       popover: {
@@ -126,12 +118,11 @@
         align: "start",
       },
     },
-    // 10. Wrap‑up
     {
       popover: {
         title: "You’re All Set!",
         description:
-          "That’s the full tour. Now you know how to read each short‑interest metric and apply it to your trading strategies. Happy investing!",
+          "Now you know how to read each short‑interest metric and apply it to your trading strategies. Happy investing!",
         side: "center",
         align: "center",
       },

@@ -2,6 +2,8 @@
   import { displayCompanyName, stockTicker } from "$lib/store";
   import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
   import SEO from "$lib/components/SEO.svelte";
+  import Tutorial from "$lib/components/Tutorial.svelte";
+
   import Infobox from "$lib/components/Infobox.svelte";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
@@ -428,6 +430,83 @@
     }
   }
   $: capCategory = getMarketCapCategory(data?.getStockQuote?.marketCap);
+
+  let steps = [
+    {
+      popover: {
+        title: "Market Cap",
+        description: `This dashboard shows total market capitalization, its size classification, and how it’s moved over the past year.`,
+        side: "center",
+        align: "center",
+      },
+    },
+    {
+      element: ".marketCap-driver",
+      popover: {
+        title: "Total Market Cap",
+        description: `The company’s current market cap is ${abbreviateNumber(data?.getStockQuote?.marketCap)}. This is the total equity value implied by all outstanding shares.`,
+        side: "left",
+        align: "start",
+      },
+    },
+    {
+      element: ".category-driver",
+      popover: {
+        title: "Market Cap Category",
+        description: `Categories help you compare relative scale across tickers.`,
+        side: "bottom",
+        align: "start",
+      },
+    },
+    {
+      element: ".oneYearChange-driver",
+      popover: {
+        title: "1‑Year Change",
+        description: `Shows how much market cap has moved in the last year (${changePercentageYearAgo?.toFixed(2)}%). A “> 100%” indicates a strong positive trend.`,
+        side: "right",
+        align: "start",
+      },
+    },
+    {
+      element: ".timeframe-toggle-driver",
+      popover: {
+        title: "Adjust Timeframe",
+        description:
+          "Switch the chart between different time periods to zoom in on shorter- or longer-term trends.",
+        side: "bottom",
+        align: "start",
+      },
+    },
+    {
+      element: ".chart-driver",
+      popover: {
+        title: "Market Cap Over Time",
+        description:
+          "This chart displays the market cap over time so you can spot divergences or spikes.",
+        side: "right",
+        align: "start",
+      },
+    },
+    {
+      element: ".history-driver",
+      popover: {
+        title: "Detailed History",
+        description:
+          "Browse annual or quarterly snapshots of market cap and percent change. Use this for a quick snapshot how fast the company is growing.",
+        side: "right",
+        align: "start",
+      },
+    },
+    {
+      popover: {
+        title: "You’re All Set!",
+        description:
+          "Now you know how to read market cap and how to apply it to your trading strategies. Happy investing!",
+        side: "center",
+        align: "center",
+      },
+    },
+  ];
 </script>
 
 <SEO
@@ -442,10 +521,11 @@
     >
       <main class="w-full">
         <div class="sm:pl-7 sm:pb-7 sm:pt-7 m-auto mt-2 sm:mt-0">
-          <div class="">
+          <div class="w-full flex flex-col sm:flex-row justify-between">
             <h1 class="text-xl sm:text-2xl font-bold">
               {removeCompanyStrings($displayCompanyName)} Market Cap
             </h1>
+            <Tutorial {steps} />
           </div>
 
           {#if rawData?.length !== 0}
@@ -473,26 +553,26 @@
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 mt-3"
               >
                 <div
-                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="marketCap-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
                 >
                   <div class=" text-sm mb-2 flex items-center">
                     <span>Market Cap</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-xl font-bold">
+                    <span class="text-xl font-semibold">
                       {abbreviateNumber(data?.getStockQuote?.marketCap)}</span
                     >
                   </div>
                 </div>
 
                 <div
-                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="category-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
                 >
                   <div class=" text-sm mb-2 flex items-center">
                     <span>Category</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-xl font-bold"
+                    <span class="text-xl font-semibold"
                       >{#if capCategory}
                         <a
                           class="text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
@@ -508,13 +588,13 @@
                 </div>
 
                 <div
-                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="oneYearChange-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
                 >
                   <div class=" text-sm mb-2 flex items-center">
                     <span>1-Year Change</span>
                   </div>
                   <div class="flex items-baseline">
-                    <span class="text-xl font-bold"
+                    <span class="text-xl font-semibold"
                       >{changePercentageYearAgo > 100
                         ? "> 100"
                         : changePercentageYearAgo?.toFixed(1)}%</span
@@ -547,7 +627,9 @@
                 <div
                   class="flex flex-row items-center w-fit sm:w-[50%] md:w-auto sm:ml-auto"
                 >
-                  <div class="relative inline-block text-left grow">
+                  <div
+                    class="timeframe-toggle-driver relative inline-block text-left grow"
+                  >
                     <DropdownMenu.Root>
                       <DropdownMenu.Trigger asChild let:builder>
                         <Button
@@ -649,14 +731,14 @@
               </div>
 
               <div
-                class="chart border border-gray-300 shadow-sm dark:border-gray-800 rounded"
+                class="chart-driver border border-gray-300 shadow-sm dark:border-gray-800 rounded"
                 use:highcharts={config}
               ></div>
 
               <div
                 class=" flex flex-col sm:flex-row items-start sm:items-center w-full justify-between"
               >
-                <h3 class="text-xl sm:text-2xl font-bold">
+                <h3 class="history-driver text-xl sm:text-2xl font-bold">
                   Market Cap History
                 </h3>
 
