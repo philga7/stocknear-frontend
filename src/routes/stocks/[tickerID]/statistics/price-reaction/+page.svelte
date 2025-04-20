@@ -3,6 +3,7 @@
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
   import SEO from "$lib/components/SEO.svelte";
+  import Tutorial from "$lib/components/Tutorial.svelte";
 
   export let data;
 
@@ -63,6 +64,118 @@
       return "n/a"; // Optional: if the time is in between
     }
   }
+
+  let steps = [
+    {
+      popover: {
+        title: "Price Reaction",
+        description:
+          "This dashboard tracks how a stock's price historically responded to earnings announcements. Traders use this data to anticipate potential price movements and volatility when positioning around future earnings reports.",
+        side: "center",
+        align: "center",
+      },
+    },
+    {
+      element: ".eps-beats-driver",
+      popover: {
+        title: "EPS Beats Estimate",
+        description:
+          "Shows how often EPS has topped analyst estimates. Companies with a history of consistent EPS beats tend to carry positive momentum into the next release—traders often anticipate another beat, which can drive the stock higher if actual results align with expectations.",
+        side: "left",
+        align: "start",
+      },
+    },
+    {
+      element: ".revenue-beats-driver",
+      popover: {
+        title: "Revenue Beats Estimate",
+        description:
+          "Shows how often revenue has topped analyst estimates. A strong beat history signals underlying business strength and can raise odds of another surprise on the next report—dual beats (EPS + revenue) typically amplify bullish market reactions.",
+        side: "bottom",
+        align: "start",
+      },
+    },
+
+    {
+      element: ".avg-price-impact-driver",
+      popover: {
+        title: "Average Price Impact",
+        description:
+          "This represents the typical price change following earnings announcements. While modest, the consistent positive direction suggests the market generally rewards this company's results.",
+        side: "right",
+        align: "start",
+      },
+    },
+    {
+      element: ".volatility-impact-driver",
+      popover: {
+        title: "Volatility Impact",
+        description:
+          "This measures the typical price swing magnitude around earnings. Options traders use this to calibrate strike prices and straddle/strangle strategies, while stock traders should prepare for significant moves.",
+        side: "bottom",
+        align: "start",
+      },
+    },
+    {
+      element: ".historical-data-driver",
+      popover: {
+        title: "Historical Earnings Table",
+        description:
+          "This table breaks down price action before, during, and after specific earnings reports. Note the variation between open and close prices on report days, plus the frequent reversals in subsequent days, suggesting initial reactions often overshoot.",
+        side: "center",
+        align: "center",
+      },
+    },
+    {
+      element: ".rsi-iv-driver",
+      popover: {
+        title: "RSI & IV Indicators",
+        description:
+          "RSI (Relative Strength Index) and IV (Implied Volatility) provide context about momentum and expected movement. Higher IV indicates the market anticipates larger moves, useful for options strategy selection.",
+        side: "right",
+        align: "start",
+      },
+    },
+    {
+      element: ".rsi-iv-driver",
+      popover: {
+        title: "Pre-Earnings Price Action",
+        description:
+          "The -3, -2, and -1 day columns show consistent patterns before announcements. Note how prices often move significantly before the actual report, suggesting positioning by informed traders or anticipatory momentum.",
+        side: "center",
+        align: "center",
+      },
+    },
+    {
+      element: ".rsi-iv-driver",
+      popover: {
+        title: "Report Day Trading",
+        description:
+          "Open, High, Low, Close columns reveal intraday volatility on report days. Note the wide ranges representing intraday swings, critical information for swing traders planning entries and exits.",
+        side: "center",
+        align: "center",
+      },
+    },
+    {
+      element: ".rsi-iv-driver",
+      popover: {
+        title: "Post-Earnings Price Action",
+        description:
+          "The +1, +2, +3 days and +/-1 Week columns show how initial reactions often reverse. For example, the Feb 2025 report shows an initial -8.48% close, followed by +3.97%, then -8.69%, revealing multi-day trading opportunities beyond the announcement.",
+        side: "center",
+        align: "center",
+      },
+    },
+    {
+      popover: {
+        title: "You're All Set!",
+        description:
+          "You've now understand the key earnings-related metrics and how they influence stock price reactions. Use these insights to craft smarter strategies, anticipate volatility and trade with greater knowledge compared to everyone else. Happy investing!",
+        side: "center",
+        align: "center",
+      },
+    },
+  ];
 </script>
 
 <SEO
@@ -77,10 +190,11 @@
     >
       <main class="w-full">
         <div class="sm:pl-7 sm:pt-7 sm:pb-7 m-auto mt-2 sm:mt-0">
-          <div class="mb-3">
-            <h1 class="text-xl sm:text-2xl font-bold">
+          <div class="w-full flex flex-col sm:flex-row justify-between mb-3">
+            <h1 class="text-xl sm:text-2xl font-bold mb-3 sm:mb-0">
               Price Reaction to Earnings Reports
             </h1>
+            <Tutorial {steps} />
           </div>
 
           {#if rawData?.length !== 0 && rawData?.at(0)?.high !== undefined}
@@ -88,7 +202,7 @@
               class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6"
             >
               <div
-                class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                class="eps-beats-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
               >
                 <div class=" text-sm mb-2 flex items-center">
                   <span>EPS Beats Estimate</span>
@@ -113,7 +227,7 @@
               </div>
 
               <div
-                class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                class="revenue-beats-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
               >
                 <div class=" text-sm mb-2 flex items-center">
                   <span>Revenue Beats Estimate</span>
@@ -138,7 +252,7 @@
               </div>
 
               <div
-                class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                class="avg-price-impact-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
               >
                 <div class=" text-sm mb-2 flex items-center">
                   <span>Avg. Price Impact</span>
@@ -163,7 +277,7 @@
               </div>
 
               <div
-                class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                class="volatility-impact-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
               >
                 <div class=" text-sm mb-2 flex items-center">
                   <span>Volatility Impact</span>
@@ -189,11 +303,11 @@
               />
             </div>
 
-            <div class="w-full overflow-x-auto no-scrollbar">
+            <div class=" w-full overflow-x-auto no-scrollbar">
               <table
                 class="table-fixed leading-3 border-separate border-spacing-0 font-sans tabular-nums w-full"
               >
-                <thead
+                <thead class="historical-data-driver"
                   ><tr class=" text-sm sm:text-[1rem]"
                     ><th
                       class="w-44 whitespace-nowrap font-normal h-5 text-left px-1"
@@ -361,7 +475,8 @@
                       ></tr
                     >
                     <tr
-                      class="group {index + 1 === rawData?.length &&
+                      class="group rsi-iv-driver {index + 1 ===
+                        rawData?.length &&
                       !['Pro', 'Plus']?.includes(data?.user?.tier)
                         ? 'opacity-[0.1]'
                         : ''}"
