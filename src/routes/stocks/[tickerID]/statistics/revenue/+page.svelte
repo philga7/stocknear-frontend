@@ -3,6 +3,7 @@
   import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
   import SEO from "$lib/components/SEO.svelte";
   import { mode } from "mode-watcher";
+  import Tutorial from "$lib/components/Tutorial.svelte";
 
   import { goto } from "$app/navigation";
   import highcharts from "$lib/highcharts.ts";
@@ -195,6 +196,97 @@
     return options;
   }
 
+  let steps = [
+    {
+      popover: {
+        title: "Revenue",
+        description: `This dashboard shows total revenue, revenue growth, and related efficiency and valuation metrics, plus their historical trends. Traders use these to gauge top-line strength: strong or rising revenue growth signals healthy demand and momentum, while declines can flag weakening fundamentals.`,
+        side: "center",
+        align: "center",
+      },
+    },
+    {
+      element: ".revenue-ttm-driver",
+      popover: {
+        title: "Revenue (TTM)",
+        description: `Trailing twelve months (TTM) revenue: ${abbreviateNumber(rawData?.revenue, true)}. Aggregates the last four quarters for a normalized view of recent top-line performance. Higher revenue usually correlates with stronger business scale and investor confidence.`,
+        side: "left",
+        align: "start",
+      },
+    },
+    {
+      element: ".revenue-growth-driver",
+      popover: {
+        title: "Revenue Growth",
+        description: `Year-over-year growth = (Current Revenue − Prior Revenue) / Prior Revenue × 100. Here: ${rawData?.growthRevenue}%. High growth (> 20%) often reflects accelerating sales trends, while negative growth can indicate contraction.`,
+        side: "bottom",
+        align: "start",
+      },
+    },
+    {
+      element: ".ps-ratio-driver",
+      popover: {
+        title: "Price / Sales Ratio",
+        description: `Price/Sales is defined as Market Cap / Revenue. A low P/S ratio (< 1) can signal undervaluation relative to peers, while a high ratio (> 5) implies strong market growth expectations or premium valuation.`,
+        side: "right",
+        align: "start",
+      },
+    },
+    {
+      element: ".rev-per-emp-driver",
+      popover: {
+        title: "Revenue / Employee",
+        description: `Revenue per employee = Revenue / Employees. Higher values indicate greater efficiency and productivity, whereas low values may suggest overstaffing or inefficiencies.`,
+        side: "bottom",
+        align: "start",
+      },
+    },
+    {
+      element: ".employees-driver",
+      popover: {
+        title: "Employees",
+        description: `Changes in staffing levels help contextualize shifts in revenue efficiency and per-employee output.`,
+        side: "right",
+        align: "start",
+      },
+    },
+    {
+      element: ".marketCap-driver",
+      popover: {
+        title: "Market Cap",
+        description: `Provides valuation context relative to revenue; compare market cap / revenue multiple versus industry benchmarks.`,
+        side: "left",
+        align: "start",
+      },
+    },
+    {
+      element: ".chart-driver",
+      popover: {
+        title: "Revenue Over Time",
+        description: `Plots revenue by period to reveal trends, seasonality, or inflection points. Look for consistent growth or accelerating curves when making trading decisions.`,
+        side: "right",
+        align: "start",
+      },
+    },
+    {
+      element: ".history-driver",
+      popover: {
+        title: "Revenue History Table",
+        description: `Detailed historical revenue and % change with period end dates. Use this to verify growth consistency or spot volatile swings that could impact stock performance.`,
+        side: "right",
+        align: "start",
+      },
+    },
+    {
+      popover: {
+        title: "You’re All Set!",
+        description: `Now you understand how each revenue metric is calculated, why they matter, and how high or low values can influence trading decisions. Happy investing!`,
+        side: "center",
+        align: "center",
+      },
+    },
+  ];
+
   $: {
     if ($stockTicker || $mode) {
       changeTablePeriod(0);
@@ -215,10 +307,11 @@
     >
       <main class="w-full">
         <div class="sm:pl-7 sm:pb-7 sm:pt-7 m-auto mt-2 sm:mt-0">
-          <div class="">
+          <div class="w-full flex flex-col sm:flex-row justify-between">
             <h1 class="text-xl sm:text-2xl font-bold">
               {removeCompanyStrings($displayCompanyName)} Revenue
             </h1>
+            <Tutorial {steps} />
           </div>
 
           {#if rawData?.length !== 0}
@@ -231,7 +324,7 @@
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 mt-3"
               >
                 <div
-                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="revenue-ttm-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
                 >
                   <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
                     <span>Revenue (ttm)</span>
@@ -244,7 +337,7 @@
                 </div>
 
                 <div
-                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="revenue-growth-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
                 >
                   <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
                     <span>Revenue Growth</span>
@@ -257,7 +350,7 @@
                 </div>
 
                 <div
-                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="ps-ratio-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
                 >
                   <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
                     <span>Price / Sales Ratio</span>
@@ -270,7 +363,7 @@
                 </div>
 
                 <div
-                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="rev-per-emp-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
                 >
                   <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
                     <span>Revenue / Employee </span>
@@ -286,7 +379,7 @@
                 </div>
 
                 <div
-                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="employees-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
                 >
                   <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
                     <span>Employees </span>
@@ -298,7 +391,7 @@
                   </div>
                 </div>
                 <div
-                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="marketCap-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
                 >
                   <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
                     <span>Market Cap </span>
@@ -350,12 +443,12 @@
               </div>
 
               <div
-                class="shadow-sm mt-5 sm:mt-0 border border-gray-300 dark:border-gray-800 rounded"
+                class="chart-driver shadow-sm mt-5 sm:mt-0 border border-gray-300 dark:border-gray-800 rounded"
                 use:highcharts={config}
               ></div>
 
               <div
-                class="mt-5 flex flex-col sm:flex-row items-start sm:items-center w-full justify-between sm:border-y border-gray-300 dark:border-gray-800 sm:pt-2 sm:pb-2"
+                class="history-driver mt-5 flex flex-col sm:flex-row items-start sm:items-center w-full justify-between sm:border-y border-gray-300 dark:border-gray-800 sm:pt-2 sm:pb-2"
               >
                 <h3 class="text-xl sm:text-2xl font-bold mb-2 sm:mb-0">
                   Revenue History
