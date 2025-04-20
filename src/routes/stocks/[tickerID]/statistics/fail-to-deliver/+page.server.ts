@@ -16,8 +16,11 @@ export const load = async ({ locals, params }) => {
     });
 
     const output = await response.json();
-
+    if (Array.isArray(output)) {
+      output.sort((a, b) => new Date(a?.date) - new Date(b?.date));
+    }
     return output;
+
   };
 
   
