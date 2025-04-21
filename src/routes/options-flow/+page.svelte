@@ -298,14 +298,14 @@
 
   const handleMessage = (event) => {
     displayRules = allRows?.filter((row) =>
-      ruleOfList.some((rule) => rule.name === row.rule),
+      ruleOfList?.some((rule) => rule.name === row.rule),
     );
-    filteredData = event.data?.filteredData ?? [];
+    filteredData = event.data?.filteredData || [];
     displayedData = [...filteredData];
     console.log("handle Message");
     calculateStats(displayedData);
 
-    //console.log(displayedData)
+    console.log(displayedData);
   };
 
   async function changeRuleCondition(name: string, state: string) {
@@ -518,6 +518,8 @@
 
   async function updateOptionsFlowData() {
     try {
+      if (!modeStatus) return;
+
       const response = await fetch("/api/options-flow-feed", {
         method: "GET",
         headers: {
@@ -526,7 +528,6 @@
       });
 
       const totalVolume = displayCallVolume + displayPutVolume;
-      if (!modeStatus) return;
 
       try {
         const newData = (await response.json()) || [];
@@ -541,7 +542,13 @@
             previousVolume !== totalVolume
           ) {
             rawData = [...newData];
-            shouldLoadWorker.set(true);
+
+            if (ruleOfList?.length > 0) {
+              shouldLoadWorker.set(true);
+            } else {
+              displayedData = [...rawData];
+              calculateStats(displayedData);
+            }
 
             if (!muted && audio) {
               audio?.play()?.catch((error) => {
