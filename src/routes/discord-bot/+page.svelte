@@ -118,7 +118,7 @@
             class="lg:hidden flex flex-col justify-start lg:ml-auto items-center mb-3"
           >
             <div>
-              <span class="text-4xl font-bold">{mode ? "$20" : "$30"}</span
+              <span class="text-4xl font-bold">{mode ? "$40" : "$50"}</span
               ><span class=" text-xl ml-1">/Month</span>
             </div>
 
@@ -277,7 +277,7 @@
               >
                 <div>
                   <span class="text-3xl md:text-4xl font-bold"
-                    >{mode ? "$20" : "$30"}</span
+                    >{mode ? "$40" : "$50"}</span
                   ><span class=" text-xl ml-1">/Month</span>
                 </div>
 
