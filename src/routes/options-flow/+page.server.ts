@@ -3,12 +3,14 @@ export const load = async ({ locals, cookies }) => {
 
   const getOptionsFlowFeed = async () => {
     // make the POST request to the endpoint
+    const postData = {'orderList': []}
     const response = await fetch(apiURL + "/options-flow-feed", {
-      method: "GET",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         "X-API-KEY": apiKey,
       },
+      body: JSON.stringify(postData),
     });
     let output = await response.json();
     output = user?.tier !== "Pro" ? output?.slice(0, 6) : output;

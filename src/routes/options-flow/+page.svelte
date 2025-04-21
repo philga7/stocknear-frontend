@@ -304,8 +304,6 @@
     displayedData = [...filteredData];
     console.log("handle Message");
     calculateStats(displayedData);
-
-    console.log(displayedData);
   };
 
   async function changeRuleCondition(name: string, state: string) {
@@ -520,11 +518,14 @@
     try {
       if (!modeStatus) return;
 
+      const orderList = rawData?.map((item) => item?.id);
+      const postData = { orderList: orderList };
       const response = await fetch("/api/options-flow-feed", {
-        method: "GET",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify(postData),
       });
 
       const totalVolume = displayCallVolume + displayPutVolume;
@@ -532,30 +533,27 @@
       try {
         const newData = (await response.json()) || [];
 
-        if (newData.length > 0) {
+        if (newData?.length > 0) {
           newData?.forEach((item) => {
             item.dte = daysLeft(item?.date_expiration);
           });
 
-          if (
-            newData.length > rawData.length &&
-            previousVolume !== totalVolume
-          ) {
-            rawData = [...newData];
+          rawData = [...newData, ...rawData];
 
-            if (ruleOfList?.length > 0) {
-              shouldLoadWorker.set(true);
-            } else {
-              displayedData = [...rawData];
-              calculateStats(displayedData);
-            }
-
-            if (!muted && audio) {
-              audio?.play()?.catch((error) => {
-                console.log("Audio play failed:", error);
-              });
-            }
+          if (ruleOfList?.length > 0) {
+            shouldLoadWorker.set(true);
+          } else {
+            displayedData = [...rawData];
+            calculateStats(displayedData);
           }
+
+          if (!muted && audio) {
+            audio?.play()?.catch((error) => {
+              console.log("Audio play failed:", error);
+            });
+          }
+        } else {
+          console.log("No new data received!");
         }
         previousVolume = totalVolume;
       } catch (e) {
@@ -808,8 +806,8 @@
   description="Explore unusual options from big institutional traders and hedge funds."
 />
 
-<body class="overflow-y-auto">
-  <section
+<section class="overflow-y-auto">
+  <div
     class="w-full max-w-screen sm:max-w-7xl sm:max-w-[1400px] flex justify-center items-center pb-20 10 p-3 sm:p-0"
   >
     <div class="w-full m-auto min-h-screen">
@@ -1639,8 +1637,8 @@
         </div>
       {/if}
     </div>
-  </section>
-</body>
+  </div>
+</section>
 
 <!--Start Choose Rule Modal-->
 <input type="checkbox" id="ruleModal" class="modal-toggle" />

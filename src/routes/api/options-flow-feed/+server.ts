@@ -1,15 +1,17 @@
 import type { RequestHandler } from "./$types";
 
-export const GET: RequestHandler = async ({ request, locals }) => {
+export const POST: RequestHandler = async ({ request, locals }) => {
   const { apiURL, apiKey, user } = locals;
-
-
+  const data = await request.json();
+    const postData = {'orderList': data?.orderList}
    const response = await fetch(apiURL + "/options-flow-feed", {
-      method: "GET",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         "X-API-KEY": apiKey,
       },
+      body: JSON.stringify(postData),
+
     });
 
     let output = await response.json();
