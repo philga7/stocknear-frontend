@@ -107,10 +107,12 @@
 
     <div class="">
       <section
-        class="relative overflow-hidden card card-side mt-5 bg-[#18181B] to-black rounded-lg p-5 flex flex-col lg:flex-row items-center justify-between"
+        class="relative overflow-hidden card card-side mt-5 bg-[#18181B] to-black rounded-lg p-2 sm:p-5 flex flex-col lg:flex-row items-center justify-between"
       >
         <div class="card-body relative z-10 min-h-[300px] sm:min-h-0">
-          <h2 class="card-title text-4xl font-bold mb-3 sm:mb-6 text-start">
+          <h2
+            class="card-title text-4xl font-bold mb-3 sm:mb-6 m-auto sm:m-0 text-start"
+          >
             All-in-one Bot
           </h2>
 
@@ -135,8 +137,10 @@
             news, and so much more.
           </p>
 
-          <ul class="space-y-3 grid grid-cols-2 sm:grid-cols-3 mt-4 sm:mt-8">
-            <li class="flex items-start text-[1rem]">
+          <ul
+            class="space-y-3 grid grid-cols-2 gap-x-5 sm:gap-x-0 sm:grid-cols-3 mt-4 sm:mt-8"
+          >
+            <li class="flex items-start text-sm sm:text-[1rem]">
               <svg
                 class="w-5 h-5 mr-2 text-green-500 flex-shrink-0 mt-0.5"
                 fill="none"
@@ -154,7 +158,7 @@
               <span>Unusual Options Flow</span>
             </li>
 
-            <li class="flex items-start text-[1rem]">
+            <li class="flex items-start text-sm sm:text-[1rem]">
               <svg
                 class="w-5 h-5 mr-2 text-green-500 flex-shrink-0 mt-0.5"
                 fill="none"
@@ -172,7 +176,7 @@
               <span>Unusual Dark Pool Orders</span>
             </li>
 
-            <li class="flex items-start text-[1rem]">
+            <li class="flex items-start text-sm sm:text-[1rem]">
               <svg
                 class="w-5 h-5 mr-2 text-green-500 flex-shrink-0 mt-0.5"
                 fill="none"
@@ -190,7 +194,7 @@
               <span>Earnings Release</span>
             </li>
 
-            <li class="flex items-start text-[1rem]">
+            <li class="flex items-start text-sm sm:text-[1rem]">
               <svg
                 class="w-5 h-5 mr-2 text-green-500 flex-shrink-0 mt-0.5"
                 fill="none"
@@ -208,7 +212,7 @@
               <span>Latest Executive Orders</span>
             </li>
 
-            <li class="flex items-start text-[1rem]">
+            <li class="flex items-start text-sm sm:text-[1rem]">
               <svg
                 class="w-5 h-5 mr-2 text-green-500 flex-shrink-0 mt-0.5"
                 fill="none"
@@ -225,7 +229,7 @@
               </svg>
               <span>Congress Trading</span>
             </li>
-            <li class="flex items-start text-[1rem]">
+            <li class="flex items-start text-sm sm:text-[1rem]">
               <svg
                 class="w-5 h-5 mr-2 text-green-500 flex-shrink-0 mt-0.5"
                 fill="none"
@@ -242,7 +246,7 @@
               </svg>
               <span>Analyst Ratings</span>
             </li>
-            <li class="flex items-start text-[1rem]">
+            <li class="flex items-start text-sm sm:text-[1rem]">
               <svg
                 class="w-5 h-5 mr-2 text-green-500 flex-shrink-0 mt-0.5"
                 fill="none"
@@ -306,7 +310,9 @@
         class="relative overflow-hidden mt-4 card card-side mt-10 mb-10 bg-[#18181B] to-black rounded-lg p-5 flex flex-col lg:flex-row items-center justify-between"
       >
         <div class="card-body relative z-10 min-h-96 sm:min-h-0">
-          <h2 class="card-title text-3xl sm:text-4xl font-bold mb-6 text-start">
+          <h2
+            class="card-title text-3xl sm:text-4xl font-bold mb-6 text-center sm:text-start"
+          >
             See Our Discord Bots In Action!
           </h2>
           <p
