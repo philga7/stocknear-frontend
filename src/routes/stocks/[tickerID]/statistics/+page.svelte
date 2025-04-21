@@ -135,13 +135,15 @@
               <h2 class="mb-2 px-0.5 text-xl font-bold">
                 Short Selling Information
               </h2>
-              <p class="mb-4 px-0.5 xs:text-[1.05rem] lg:leading-normal">
-                The latest short interest is {abbreviateNumber(
-                  rawData?.sharesShort,
-                  false,
-                )}, so {rawData?.shortOutstandingPercent}% of the outstanding
-                shares have been sold short.
-              </p>
+              {#if rawData?.sharesShort}
+                <p class="mb-4 px-0.5 xs:text-[1.05rem] lg:leading-normal">
+                  The latest short interest is {abbreviateNumber(
+                    rawData?.sharesShort,
+                    false,
+                  )}, so {rawData?.shortOutstandingPercent}% of the outstanding
+                  shares have been sold short.
+                </p>
+              {/if}
               <table class="w-full border border-gray-300 dark:border-gray-800">
                 <tbody
                   ><tr
@@ -152,7 +154,9 @@
                     <td
                       class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
                       title="74,332,630"
-                      >{abbreviateNumber(rawData?.sharesShort, false)}</td
+                      >{rawData?.sharesShort
+                        ? abbreviateNumber(rawData?.sharesShort)
+                        : "n/a"}</td
                     >
                   </tr><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -160,7 +164,9 @@
                       ><span>Short % of Shares Out</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.shortOutstandingPercent}%</td
+                      >{rawData?.shortOutstandingPercent
+                        ? rawData?.shortOutstandingPercent + "%"
+                        : "n/a"}</td
                     >
                   </tr><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -168,7 +174,9 @@
                       ><span>Short % of Float</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.shortFloatPercent}%</td
+                      >{rawData?.shortFloatPercent
+                        ? rawData?.shortFloatPercent + "%"
+                        : "n/a"}</td
                     >
                   </tr><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -176,7 +184,7 @@
                       ><span>Short Ratio (days to cover)</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.shortRatio}</td
+                      >{rawData?.shortRatio ? rawData?.shortRatio : "n/a"}</td
                     >
                   </tr></tbody
                 >
