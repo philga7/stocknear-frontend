@@ -71,12 +71,9 @@
     const sectionMap = {
       insider: "/insider",
       options: "/options",
+      holdings: "/holdings",
       "dark-pool": "/dark-pool",
       dividends: "/dividends",
-      statistics: "/statistics",
-      metrics: "metrics",
-      forecast: "/forecast",
-      financials: "/financials",
       history: "/history",
       profile: "/profile",
     };
@@ -354,16 +351,11 @@
     if ($page?.url?.pathname) {
       const parts = $page?.url?.pathname?.split("/");
       const sectionMap = {
-        statistics: "statistics",
-        financials: "financials",
         options: "options",
         "dark-pool": "dark-pool",
-        metrics: "metrics",
-        insider: "insider",
+        holdings: "holdings",
         dividends: "dividends",
-        forecast: "forecast",
         history: "history",
-        profile: "profile",
       };
       displaySection =
         sectionMap[
@@ -923,16 +915,6 @@
                           Options
                         </a>
 
-                        <a
-                          href={`/etf/${$etfTicker}/insider`}
-                          on:click={() => changeSection("insider")}
-                          class="p-2 px-5 cursor-pointer {displaySection ===
-                          'insider'
-                            ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
-                            : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
-                        >
-                          Insider
-                        </a>
                         <a
                           href={`/etf/${$etfTicker}/dividends`}
                           on:click={() => changeSection("dividends")}

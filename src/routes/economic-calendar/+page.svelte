@@ -152,7 +152,7 @@
     try {
       const savedRules = localStorage?.getItem(pagePathName);
       if (savedRules) {
-        filterList = JSON.parse(savedRules);
+        filterList = JSON?.parse(savedRules);
       }
       checkedItems = new Set(filterList);
 
@@ -161,6 +161,8 @@
         syncWorker = new SyncWorker.default();
         syncWorker.onmessage = handleMessage;
       }
+
+      await loadWorker();
     } catch (e) {
       console.error(e);
     }
