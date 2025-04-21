@@ -103,17 +103,15 @@
                               >New</label
                             >
                           {/if}
-                          <div
-                            class=" text-sm sm:text-[1rem] ml-auto font-semibold"
-                          >
+                          <div class=" text-sm sm:text-[1rem] ml-auto">
                             {#if item?.changesPercentage >= 0}
                               <span
-                                class="text-green-600 dark:text-[#00FC50] inline-block"
+                                class="text-green-800 dark:text-[#00FC50] inline-block"
                                 >+{item?.changesPercentage}%</span
                               >
                             {:else if item?.changesPercentage < 0}
                               <span
-                                class="text-red-600 dark:text-[#FF2F1F] inline-block font-semibold"
+                                class="text-red-800 dark:text-[#FF2F1F] inline-block"
                                 >{item?.changesPercentage}%
                               </span>
                             {/if}
