@@ -2136,9 +2136,11 @@ const handleKeyDown = (event) => {
       underValuedStocks: {
         name: "Undervalued Stocks",
         rules: [
-          { condition: "under", name: "marketCap", value: "100M" },
+          { condition: "between", name: "marketCap", value: ["100M", "500M"] },
           { condition: "over", name: "debtToEquityRatio", value: 1 },
-          { condition: "over", name: "debtRatio", value: -0.5 },
+          { condition: "under", name: "priceToEarningsRatio", value: 15 },
+          { condition: "under", name: "priceToSalesRatio", value: 1.5 },
+          { condition: "under", name: "priceToBookRatio", value: 1 },
           { condition: "over", name: "eps", value: 0 },
         ],
       },
