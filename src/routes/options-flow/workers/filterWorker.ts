@@ -44,7 +44,7 @@ function convertUnitToValue(
   ]);
   if (nonNumericValues.has(lowerInput)) return input;
   if (input.endsWith("%")) {
-    const numericValue = parseFloat(input.slice(0, -1));
+    const numericValue = parseFloat(input?.slice(0, -1));
     if (isNaN(numericValue)) {
       throw new Error(`Unable to convert ${input} to a number`);
     }

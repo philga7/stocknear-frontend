@@ -33,8 +33,6 @@
   let filteredData = [];
   let filterQuery = $page.url.searchParams.get("query") || "";
 
-  let socket: WebSocket | null = null; // Initialize socket as null
-
   let syncWorker: Worker | undefined;
   let ruleName = "";
   let searchTerm = "";
@@ -216,7 +214,7 @@
     displayRules = allRows?.filter((row) =>
       ruleOfList.some((rule) => rule.name === row.rule),
     );
-    displayedData = rawData;
+    displayedData = [...rawData];
     await saveCookieRuleOfList();
   }
 
@@ -303,7 +301,7 @@
       ruleOfList.some((rule) => rule.name === row.rule),
     );
     filteredData = event.data?.filteredData ?? [];
-    displayedData = filteredData;
+    displayedData = [...filteredData];
     console.log("handle Message");
     calculateStats(displayedData);
 
@@ -496,11 +494,9 @@
 
   let audio;
   let muted = false;
-  let newData = [];
   let previousVolume = 0; //This is needed to play the sound only if it changes.
   let notFound = false;
   let isLoaded = false;
-  let reconnectAttempts = 0;
 
   $: modeStatus = $isOpen === true ? true : false;
 
@@ -520,73 +516,46 @@
     }
   }
 
-  async function websocketRealtimeData() {
-    if (data?.user?.tier !== "Pro") return;
-
-    // Cleanup previous connection
-    if (socket) {
-      socket.onmessage = null;
-      socket.onclose = null;
-      socket.onerror = null;
-      if (socket?.readyState === WebSocket?.OPEN) {
-        socket?.close();
-      }
-    }
-
+  async function updateOptionsFlowData() {
     try {
-      socket = new WebSocket(`${data.wsURL}/options-flow-reader`);
+      const response = await fetch("/api/options-flow-feed", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-      socket.onopen = () => {
-        console.log("WebSocket connected");
-        reconnectAttempts = 0;
-      };
+      const totalVolume = displayCallVolume + displayPutVolume;
+      if (!modeStatus) return;
 
-      socket.onmessage = (event) => {
-        const totalVolume = displayCallVolume + displayPutVolume;
-        if (!modeStatus) return;
+      try {
+        const newData = (await response.json()) || [];
 
-        try {
-          const newData = JSON?.parse(event?.data) ?? [];
+        if (newData.length > 0) {
+          newData?.forEach((item) => {
+            item.dte = daysLeft(item?.date_expiration);
+          });
 
-          if (newData.length > 0) {
-            newData.forEach((item) => {
-              item.dte = daysLeft(item?.date_expiration);
-            });
+          if (
+            newData.length > rawData.length &&
+            previousVolume !== totalVolume
+          ) {
+            rawData = [...newData];
+            shouldLoadWorker.set(true);
 
-            if (
-              newData.length > rawData.length &&
-              previousVolume !== totalVolume
-            ) {
-              rawData = newData;
-              shouldLoadWorker.set(true);
-
-              if (!muted && audio) {
-                audio?.play()?.catch((error) => {
-                  console.log("Audio play failed:", error);
-                });
-              }
+            if (!muted && audio) {
+              audio?.play()?.catch((error) => {
+                console.log("Audio play failed:", error);
+              });
             }
           }
-          previousVolume = totalVolume;
-        } catch (e) {
-          console.error("Message processing error:", e);
         }
-      };
-
-      socket.onclose = (event) => {
-        console.log(`WebSocket closed (${event.code}), reconnecting...`);
-        const delay = Math.min(5000, reconnectAttempts ** 2 * 500);
-        setTimeout(websocketRealtimeData, delay);
-        reconnectAttempts++;
-      };
-
-      socket.onerror = (error) => {
-        console.error("WebSocket error:", error);
-        socket.close();
-      };
+        previousVolume = totalVolume;
+      } catch (e) {
+        console.error("Message processing error:", e);
+      }
     } catch (error) {
-      console.error("WebSocket connection error:", error);
-      setTimeout(websocketRealtimeData, 1000);
+      console.error("Update Realtime Data connection error:", error);
     }
   }
 
@@ -614,8 +583,13 @@
     }); // make a POST request to the server with the FormData object
   }
 
+  let intervalId;
+
   $: if ($isOpen) {
-    websocketRealtimeData();
+    if (intervalId) {
+      clearInterval(intervalId);
+    }
+    intervalId = setInterval(updateOptionsFlowData, 8000);
   }
 
   onMount(async () => {
@@ -632,7 +606,7 @@
     );
 
     audio = new Audio(notifySound);
-    displayedData = rawData;
+    displayedData = [...rawData];
     calculateStats(rawData);
 
     if (!syncWorker) {
@@ -654,10 +628,6 @@
   });
 
   onDestroy(async () => {
-    if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.close();
-      console.log("WebSocket connection closed safely.");
-    }
     if (audio) {
       audio?.pause();
       audio = null;
@@ -1631,7 +1601,7 @@
 
         <!-- Page wrapper -->
         <div class="flex w-full m-auto h-full overflow-hidden">
-          {#if displayedData?.length !== 0}
+          {#if displayedData?.length > 0}
             <div class="mt-8 w-full overflow-x-auto h-[850px] overflow-hidden">
               <OptionsFlowTable
                 {data}
