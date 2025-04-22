@@ -111,7 +111,7 @@
           await update();
           break;
         case "error":
-          toast.error(result.error.message, {
+          toast.error("Something went wrong, please try again...", {
             style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
           });
           break;
@@ -120,7 +120,7 @@
       }
 
       setTimeout(() => {
-        if (result.type === "redirect") {
+        if (result.type) {
           const anchor = document.createElement("a");
           anchor.href = "/profile";
           anchor.dataset.sveltekitReload = true;
@@ -536,7 +536,7 @@
             {:else if subscriptionData?.status_formatted === "Cancelled"}
               <label
                 for="reactivateSubscriptionModal"
-                class="cursor-pointer text-black bg-[#fff] sm:hover:bg-gray-300 text-sm sm:text-[1rem] px-4 py-2 rounded"
+                class="cursor-pointer border border-gray-300 shadow-sshadow-sm m dark:border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
               >
                 Reactivate Subscription
               </label>
@@ -615,7 +615,12 @@
 <!-- Start Cancel Subscription Modal -->
 <input type="checkbox" id="cancelSubscriptionModal" class="modal-toggle" />
 
-<dialog id="cancelSubscriptionModal" class="modal modal-bottom sm:modal-middle">
+<dialog
+  id="cancelSubscriptionModal"
+  class="modal overflow-hidden p-3 sm:p-0 bg-[#000]/40"
+>
+  <label for="cancelSubscriptionModal" class="cursor-pointer modal-backdrop"
+  ></label>
   <label
     for="cancelSubscriptionModal"
     class="cursor-pointer modal-backdrop bg-[#000]/40"
@@ -626,10 +631,10 @@
     method="POST"
     action="?/cancelSubscription"
     use:enhance={submitCancellation}
-    class="modal-box w-full bg-secondary shadow-sm border border-gray-300 dark:border-gray-600 flex flex-col items-center"
+    class="modal-box w-full bg-white dark:bg-secondary shadow-sm border border-gray-300 dark:border-gray-600 flex flex-col items-center"
   >
     <div class="mx-auto mb-8 h-1.5 w-20 shrink-0 rounded-full bg-gray-500" />
-    <div class="text-white mb-5 text-center">
+    <div class=" mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">Are you sure?</h3>
       <span class=" text-[1rem] font-normal">
         You will no longer be charged for this subscription, and at the end of
@@ -641,62 +646,7 @@
       on:click={() => (isClicked = !isClicked)}
       class="{!isClicked
         ? ''
-        : 'hidden'} cursor-pointer px-7 py-2 mb-5 rounded bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-black text-[1rem] font-normal"
-    >
-      Cancel Subscription
-      <input
-        class="hidden"
-        name="subscriptionId"
-        value={subscriptionData?.first_subscription_item?.subscription_id}
-      />
-    </button>
-    {#if isClicked === true}
-      <label
-        class="cursor-pointer px-7 py-2 mb-5 rounded bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-black text-[1rem] font-normal"
-      >
-        <div class="flex flex-row m-auto">
-          <span class="loading loading-infinity"></span>
-          <span class="text-black ml-2">Proceeding</span>
-        </div>
-      </label>
-    {/if}
-  </form>
-</dialog>
-<!-- End Cancel Subscription Modal -->
-
-<!-- Start Reactivate Subscription Modal -->
-<input type="checkbox" id="reactivateSubscriptionModal" class="modal-toggle" />
-
-<dialog
-  id="reactivateSubscriptionModal"
-  class="modal modal-bottom sm:modal-middle"
->
-  <label
-    for="reactivateSubscriptionModal"
-    class="cursor-pointer modal-backdrop bg-[#000]/40"
-  ></label>
-
-  <!-- Desktop modal content -->
-  <form
-    method="POST"
-    action="?/reactivateSubscription"
-    use:enhance={submitReactivate}
-    class="modal-box w-full bg-secondary flex flex-col items-center"
-  >
-    <div class="mx-auto mb-8 h-1.5 w-20 shrink-0 rounded-full bg-gray-500" />
-    <div class=" mb-5 text-center">
-      <h3 class="font-bold text-2xl mb-5">Reactivate Subscription</h3>
-      <span class=" text-[1rem] font-normal">
-        Reactivate your Pro Subscription now to unlock unlimited features and
-        gain the edge over the competition.
-      </span>
-    </div>
-
-    <button
-      on:click={() => (isClicked = !isClicked)}
-      class="{!isClicked
-        ? ''
-        : 'hidden'} cursor-pointer px-7 py-2 mb-5 rounded bg-white sm:hover:bg-white/80 ease-out duration-50 text-center text-black text-[1rem] font-normal"
+        : 'hidden'} cursor-pointer px-7 py-2 mb-5 rounded bg-blue-500 sm:hover:bg-blue-600 dark:bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-white dark:text-black text-[1rem] font-normal"
     >
       Proceed
       <input
@@ -707,11 +657,67 @@
     </button>
     {#if isClicked === true}
       <label
-        class="cursor-pointer px-7 py-2 mb-5 rounded bg-white sm:hover:bg-white/80 ease-out duration-50 text-center text-black text-[1rem] font-normal"
+        class="cursor-pointer px-7 py-2 mb-5 rounded bg-blue-500 sm:hove:bg-blue-600 dark:bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-white dark:text-black text-[1rem] font-normal"
       >
         <div class="flex flex-row m-auto">
           <span class="loading loading-infinity"></span>
-          <span class="text-black ml-2">Proceeding</span>
+          <span class="text-white dark:text-black ml-2">Proceeding</span>
+        </div>
+      </label>
+    {/if}
+  </form>
+</dialog>
+<!-- End Cancel Subscription Modal -->
+
+<!-- Start Reactivate Subscription Modal -->
+<input type="checkbox" id="reactivateSubscriptionModal" class="modal-toggle" />
+<dialog
+  id="reactivateSubscriptionModal"
+  class="modal overflow-hidden p-3 sm:p-0 bg-[#000]/40"
+>
+  <label for="reactivateSubscriptionModal" class="cursor-pointer modal-backdrop"
+  ></label>
+  <label
+    for="reactivateSubscriptionModal"
+    class="cursor-pointer modal-backdrop bg-[#000]/40"
+  ></label>
+
+  <!-- Desktop modal content -->
+  <form
+    method="POST"
+    action="?/reactivateSubscription"
+    use:enhance={submitReactivate}
+    class="modal-box w-full bg-white dark:bg-secondary shadow-sm border border-gray-300 dark:border-gray-600 flex flex-col items-center"
+  >
+    <div class="mx-auto mb-8 h-1.5 w-20 shrink-0 rounded-full bg-gray-500" />
+    <div class=" mb-5 text-center">
+      <h3 class="font-bold text-2xl mb-5">Reactivate Subscription</h3>
+      <span class=" text-[1rem] font-normal">
+        Reactivate your Subscription now to unlock unlimited features and gain
+        the edge over the competition.
+      </span>
+    </div>
+
+    <button
+      on:click={() => (isClicked = !isClicked)}
+      class="{!isClicked
+        ? ''
+        : 'hidden'} cursor-pointer px-7 py-2 mb-5 rounded bg-blue-500 sm:hover:bg-blue-600 dark:bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-white dark:text-black text-[1rem] font-normal"
+    >
+      Proceed
+      <input
+        class="hidden"
+        name="subscriptionId"
+        value={subscriptionData?.first_subscription_item?.subscription_id}
+      />
+    </button>
+    {#if isClicked === true}
+      <label
+        class="cursor-pointer px-7 py-2 mb-5 rounded bg-blue-500 sm:hove:bg-blue-600 dark:bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-white dark:text-black text-[1rem] font-normal"
+      >
+        <div class="flex flex-row m-auto">
+          <span class="loading loading-infinity"></span>
+          <span class="text-white dark:text-black ml-2">Proceeding</span>
         </div>
       </label>
     {/if}
@@ -752,11 +758,11 @@
 
 <!--Start Change Plans-->
 <input type="checkbox" id="changeSubscriptionModal" class="modal-toggle" />
-
-<dialog id="changeSubscriptionModal" class="modal modal-bottom sm:modal-middle">
-  <label
-    for="changeSubscriptionModal"
-    class="cursor-pointer modal-backdrop bg-[#000]/40"
+<dialog
+  id="changeSubscriptionModal"
+  class="modal overflow-hidden p-3 sm:p-0 bg-[#000]/40"
+>
+  <label for="changeSubscriptionModal" class="cursor-pointer modal-backdrop"
   ></label>
 
   <!-- Desktop modal content -->
@@ -764,14 +770,14 @@
     method="POST"
     action="?/changeSubscription"
     use:enhance={submitChangePlan}
-    class="modal-box w-full bg-[#272727A] flex flex-col items-center"
+    class="modal-box w-full bg-white dark:bg-secondary shadow-sm border border-gray-300 dark:border-gray-600 flex flex-col items-center"
   >
     <div
       class="mx-auto mb-8 h-1.5 w-20 flex-shrink-0 rounded-full bg-[#404040]"
     />
-    <div class="text-white mb-5 text-center">
+    <div class=" mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">Are you sure?</h3>
-      <span class="text-white text-[1rem] font-normal">
+      <span class=" text-[1rem] font-normal">
         You're Account will be upgraded to Pro (Annual Plan). You’ll only be
         charged the difference between your current plan and the new one.
       </span>
@@ -781,7 +787,7 @@
       on:click={() => (isClicked = !isClicked)}
       class="{!isClicked
         ? ''
-        : 'hidden'} cursor-pointer px-7 py-2 mb-5 rounded bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-black text-[1rem] font-normal"
+        : 'hidden'} cursor-pointer px-7 py-2 mb-5 rounded bg-blue-500 sm:hover:bg-blue-600 dark:bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-white dark:text-black text-[1rem] font-normal"
     >
       Upgrade to Pro (Annual)
       <input
@@ -792,11 +798,11 @@
     </button>
     {#if isClicked === true}
       <label
-        class="cursor-pointer px-7 py-2 mb-5 rounded bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-black text-[1rem] font-normal"
+        class="cursor-pointer px-7 py-2 mb-5 rounded bg-blue-500 sm:hove:bg-blue-600 dark:bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-white dark:text-black text-[1rem] font-normal"
       >
         <div class="flex flex-row m-auto">
           <span class="loading loading-infinity"></span>
-          <span class="text-black ml-2">Proceeding</span>
+          <span class="text-white dark:text-black ml-2">Proceeding</span>
         </div>
       </label>
     {/if}
