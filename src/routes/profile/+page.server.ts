@@ -111,6 +111,9 @@ export const actions = {
         method: "DELETE",
         headers: headers,
       });
+
+      console.log(await response.json());
+
     } catch (err) {
       console.log("Error: ", err);
       error(err.status, err.message);
@@ -119,7 +122,7 @@ export const actions = {
     redirect(302, "/profile");
   },
 
-  reactivateSubscription: async ({ request, locals }) => {
+  reactivateSubscription: async ({ request }) => {
     const formData = await request?.formData();
 
     const apiKey = import.meta.env.VITE_LEMON_SQUEEZY_API_KEY;
@@ -148,6 +151,9 @@ export const actions = {
         headers: headers,
         body: JSON.stringify(payload),
       });
+
+      console.log(await response.json());
+
     } catch (err) {
       console.log("Error: ", err);
       error(err.status, err.message);
@@ -156,7 +162,7 @@ export const actions = {
     redirect(302, "/profile");
   },
 
-  changeSubscription: async ({ request, locals }) => {
+  changeSubscription: async ({ request }) => {
     const formData = await request?.formData();
 
     const apiKey = import.meta.env.VITE_LEMON_SQUEEZY_API_KEY;

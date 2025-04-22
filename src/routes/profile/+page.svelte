@@ -39,15 +39,21 @@
     return async ({ result, update }) => {
       switch (result.type) {
         case "success":
-          toast.success("Subscription Cancelled successfully!", {
-            style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
-          });
+          toast.success(
+            "Subscription Cancelled successfully! Please wait a moment...",
+            {
+              style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
+            },
+          );
           await update();
           break;
         case "redirect":
-          toast.success("Subscription Cancelled successfully!", {
-            style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
-          });
+          toast.success(
+            "Subscription Cancelled successfully! Please wait a moment...",
+            {
+              style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
+            },
+          );
           await update();
           break;
         case "failure":
@@ -73,7 +79,7 @@
           document.body.appendChild(anchor);
           anchor.dispatchEvent(new MouseEvent("click"));
         }
-      }, 1500);
+      }, 5000);
     };
   };
 
@@ -81,15 +87,21 @@
     return async ({ result, update }) => {
       switch (result.type) {
         case "success":
-          toast.success("Subscription Reactivate successfully!", {
-            style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
-          });
+          toast.success(
+            "Subscription Reactivate successfully! Please wait a moment...",
+            {
+              style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
+            },
+          );
           await update();
           break;
         case "redirect":
-          toast.success("Subscription Reactivate successfully!", {
-            style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
-          });
+          toast.success(
+            "Subscription Reactivate successfully! Please wait a moment...",
+            {
+              style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
+            },
+          );
           await update();
           break;
         case "failure":
@@ -115,7 +127,55 @@
           document.body.appendChild(anchor);
           anchor.dispatchEvent(new MouseEvent("click"));
         }
-      }, 1500);
+      }, 5000);
+    };
+  };
+
+  const submitChangePlan = () => {
+    return async ({ result, update }) => {
+      switch (result.type) {
+        case "success":
+          toast.success(
+            "Changing to Annual Plan successfully! Please wait a moment...",
+            {
+              style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
+            },
+          );
+          await update();
+          break;
+        case "redirect":
+          toast.success(
+            "Changing to Annual Plan successfully! Please wait a moment...",
+            {
+              style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
+            },
+          );
+          await update();
+          break;
+        case "failure":
+          toast.error("Something went wrong.", {
+            style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
+          });
+          await update();
+          break;
+        case "error":
+          toast.error(result.error.message, {
+            style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
+          });
+          break;
+        default:
+          await update();
+      }
+
+      setTimeout(() => {
+        if (result.type === "redirect") {
+          const anchor = document.createElement("a");
+          anchor.href = "/profile";
+          anchor.dataset.sveltekitReload = true;
+          document.body.appendChild(anchor);
+          anchor.dispatchEvent(new MouseEvent("click"));
+        }
+      }, 5000);
     };
   };
 
@@ -224,7 +284,7 @@
           </div>
 
           <div
-            class="mt-6 rounded shadow-sm border border-gray-300 dark:border-gray-600 p-4 xs:p-4 xs:text-lg"
+            class="mt-6 rounded shadow-sm border border-gray-300 dark:border-gray-600 p-4 xs:text-lg pb-6"
           >
             <h2 class=" text-2xl font-semibold mb-3">Notification</h2>
             Customize your notification alerts based on your preferences.
@@ -365,7 +425,7 @@
               </div>
             {:else}
               <div class="mt-2">
-                <p class="mb-3">
+                <p class="mb-5">
                   You can activate the push notification only if you downloaded
                   the app.
                 </p>
@@ -448,7 +508,7 @@
                   {["Active", "Paid", "Cancelled"]?.includes(
                     subscriptionData?.status_formatted,
                   )
-                    ? subscriptionData?.product_name
+                    ? subscriptionData?.product_name || "Processing..."
                     : "Free Subscription"}
                 {/if}
               </span>
@@ -460,10 +520,18 @@
               >
                 <label
                   for="cancelSubscriptionModal"
-                  class="cursor-pointer border border-gray-300 shadow-sshadow-sm m dark:border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
+                  class="cursor-pointer border border-gray-300 shadow-sshadow-sm m dark:border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded"
                 >
                   Cancel Subscription
                 </label>
+                {#if subscriptionData?.product_name !== "Pro Subscription (Annually)"}
+                  <label
+                    for="changeSubscriptionModal"
+                    class="mt-3 sm:mt-0 sm:ml-3 cursor-pointer border border-gray-300 shadow-sshadow-sm m dark:border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded"
+                  >
+                    Upgrade to Pro (Annual Plan)
+                  </label>
+                {/if}
               </div>
             {:else if subscriptionData?.status_formatted === "Cancelled"}
               <label
@@ -476,12 +544,25 @@
               <span class=" mt-5">
                 Please wait a moment; you will be updated to Pro in a second.
               </span>
-            {:else if subscriptionData?.first_order_item?.product_name?.includes("Life Time")}{:else}
+            {:else if subscriptionData?.first_order_item?.product_name?.includes("Life Time")}{:else if subscriptionData?.first_order_item?.product_name?.includes("Plus") || subscriptionData?.first_order_item?.product_name?.includes("Pro Monthly")}
+              <div class="mt-2">
+                <p class="mb-5">
+                  You’ll only be charged the difference between your current
+                  plan and the new one.
+                </p>
+                <label
+                  for="changeSubscriptionModal"
+                  class="cursor-pointer border border-gray-300 shadow-sshadow-sm m dark:border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
+                >
+                  Upgrade to Pro (Annual Plan)
+                </label>
+              </div>
+            {:else}
               <a
                 href="/pricing"
                 class="sm:hover:text-muted dark:sm:hover:text-white text-blue-700 dark:text-blue-400"
               >
-                Get Full Access with Pro Subscription.
+                Get Full Access with our Subscription.
               </a>
             {/if}
           </div>
@@ -668,6 +749,59 @@
   </div>
 </dialog>
 <!-- End Cancel Subscription Modal -->
+
+<!--Start Change Plans-->
+<input type="checkbox" id="changeSubscriptionModal" class="modal-toggle" />
+
+<dialog id="changeSubscriptionModal" class="modal modal-bottom sm:modal-middle">
+  <label
+    for="changeSubscriptionModal"
+    class="cursor-pointer modal-backdrop bg-[#000]/40"
+  ></label>
+
+  <!-- Desktop modal content -->
+  <form
+    method="POST"
+    action="?/changeSubscription"
+    use:enhance={submitChangePlan}
+    class="modal-box w-full bg-[#272727A] flex flex-col items-center"
+  >
+    <div
+      class="mx-auto mb-8 h-1.5 w-20 flex-shrink-0 rounded-full bg-[#404040]"
+    />
+    <div class="text-white mb-5 text-center">
+      <h3 class="font-bold text-2xl mb-5">Are you sure?</h3>
+      <span class="text-white text-[1rem] font-normal">
+        You're Account will be upgraded to Pro (Annual Plan). You’ll only be
+        charged the difference between your current plan and the new one.
+      </span>
+    </div>
+
+    <button
+      on:click={() => (isClicked = !isClicked)}
+      class="{!isClicked
+        ? ''
+        : 'hidden'} cursor-pointer px-7 py-2 mb-5 rounded bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-black text-[1rem] font-normal"
+    >
+      Upgrade to Pro (Annual)
+      <input
+        class="hidden"
+        name="subscriptionId"
+        value={subscriptionData?.first_subscription_item?.subscription_id}
+      />
+    </button>
+    {#if isClicked === true}
+      <label
+        class="cursor-pointer px-7 py-2 mb-5 rounded bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-black text-[1rem] font-normal"
+      >
+        <div class="flex flex-row m-auto">
+          <span class="loading loading-infinity"></span>
+          <span class="text-black ml-2">Proceeding</span>
+        </div>
+      </label>
+    {/if}
+  </form>
+</dialog>
 
 <!--Start Create Watchlist Modal-->
 <input type="checkbox" id="installModal" class="modal-toggle" />
