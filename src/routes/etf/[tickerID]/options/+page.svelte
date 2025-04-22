@@ -278,7 +278,7 @@
 </script>
 
 <SEO
-  title="Options Activity"
+  title={`${$displayCompanyName} (${$etfTicker}) Options Activity`}
   description={`Explore unusual options activity for ${$displayCompanyName} (${$etfTicker}), providing insights into market sentiment and potential stock movement.`}
 />
 
