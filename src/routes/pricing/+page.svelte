@@ -20,18 +20,6 @@
     if (!data?.user) {
       LoginPopup = (await import("$lib/components/LoginPopup.svelte")).default;
     }
-
-    /*
-    if(data?.subscribeToPro === 'monthly') {
-        mode = false;
-        const closePopup = document.getElementById("becomePro");
-        closePopup?.dispatchEvent(new MouseEvent('click'))
-    } else if (data?.subscribeToPro === 'annually') {
-        mode = true;
-        const closePopup = document.getElementById("becomePro");
-        closePopup?.dispatchEvent(new MouseEvent('click'))
-    }
-    */
   });
 
   async function purchasePlan(subscriptionType: string = "") {

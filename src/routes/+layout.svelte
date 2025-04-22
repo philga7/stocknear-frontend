@@ -250,32 +250,26 @@
 
 
 <svelte:head>
-
-  <!--Google Tag Analytics-->
-
   <script>
-    // Forward the necessary functions to the web worker layer
+    // Forward dataLayer.push to the main thread so calls from your Svelte code work
     partytown = {
-      forward: ["dataLayer.push", "gtag"],
+      forward: ["dataLayer.push"],
+      // Add debug: true here to see if Partytown is working correctly
+      // debug: true,
     };
   </script>
 
   {@html "<script>" + partytownSnippet() + "</script>"}
 
-  <script
-    type="text/partytown"
-    src="https://www.googletagmanager.com/gtag/js?id=G-CLFNW10SND"
-  ></script>
   <script type="text/partytown">
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function () {
-      dataLayer.push(arguments);
-    };
-    gtag("js", new Date());
-    gtag("config", "G-CLFNW10SND");
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NZBJ9W63');
   </script>
 
-</svelte:head>
+  </svelte:head>
 
 
 <ModeWatcher defaultMode={data?.themeMode} />
