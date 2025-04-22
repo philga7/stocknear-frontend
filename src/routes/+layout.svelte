@@ -248,43 +248,41 @@
 
 <svelte:window bind:innerWidth={$screenWidth} />
 
-
 <svelte:head>
+  <!-- Google Tag Manager -->
   <script>
-    // Forward dataLayer.push to the main thread so calls from your Svelte code work
-    partytown = {
-      forward: ["dataLayer.push"],
-      // Add debug: true here to see if Partytown is working correctly
-      // debug: true,
-    };
+    (function (w, d, s, l, i) {
+      w[l] = w[l] || [];
+      w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+      var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s),
+        dl = l != "dataLayer" ? "&l=" + l : "";
+      j.async = true;
+      j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+      f.parentNode.insertBefore(j, f);
+    })(window, document, "script", "dataLayer", "GTM-NZBJ9W63");
   </script>
-
-  {@html "<script>" + partytownSnippet() + "</script>"}
-
-  <script type="text/partytown">
-    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-NZBJ9W63');
-  </script>
-
-  </svelte:head>
-
+  <!-- End Google Tag Manager -->
+</svelte:head>
 
 <ModeWatcher defaultMode={data?.themeMode} />
 
 <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NZBJ9W63"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<noscript
+  ><iframe
+    src="https://www.googletagmanager.com/ns.html?id=GTM-NZBJ9W63"
+    height="0"
+    width="0"
+    style="display:none;visibility:hidden"
+  ></iframe></noscript
+>
 <!-- End Google Tag Manager (noscript) -->
- 
+
 <div
   class="app text-muted dark:text-white {$page?.url?.pathname === '/'
     ? 'bg-[#000]'
     : ''}"
 >
-
   <div class="flex min-h-screen w-full flex-col bg-white dark:bg-default">
     <div class="w-full">
       <div
@@ -780,7 +778,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         </div>
                       </Sheet.Close>
 
-                       <Sheet.Close asChild let:builder>
+                      <Sheet.Close asChild let:builder>
                         <div class="flex flex-col items-start">
                           <Button
                             builders={[builder]}
@@ -1285,7 +1283,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
                             >POTUS Tracker</a
                           >
-                             <a
+                          <a
                             href="/insider-tracker"
                             class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
                             >Insider Tracker</a
