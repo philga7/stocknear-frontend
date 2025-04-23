@@ -10,7 +10,7 @@
 
   let rawData = data?.getAllHedgeFunds;
   let displayList = rawData?.slice(0, 20) ?? [];
-  let filterQuery = "";
+  let inputValue = "";
 
   async function handleScroll() {
     const scrollThreshold = document.body.offsetHeight * 0.8; // 80% of the website height
@@ -23,6 +23,12 @@
   }
 
   onMount(async () => {
+    if (!syncWorker) {
+      const SyncWorker = await import("./workers/filterQuery?worker");
+      syncWorker = new SyncWorker.default();
+      syncWorker.onmessage = handleMessage;
+    }
+
     window.addEventListener("scroll", handleScroll);
     //window.addEventListener('keydown', handleKeyDown);
 
@@ -50,21 +56,17 @@
   };
 
   const loadWorker = async () => {
-    const SyncWorker = await import("./workers/filterQuery?worker");
-    syncWorker = new SyncWorker.default();
     syncWorker.postMessage({
       rawData: data?.getAllHedgeFunds,
-      filterQuery: filterQuery,
+      inputValue: inputValue,
     });
-    syncWorker.onmessage = handleMessage;
   };
 
-  async function handleInput(event) {
-    filterQuery = event.target.value?.toLowerCase();
-    let newData = [];
+  async function search() {
+    inputValue = inputValue?.toLowerCase();
 
     setTimeout(async () => {
-      if (filterQuery?.length !== 0) {
+      if (inputValue?.length !== 0) {
         await loadWorker();
       } else {
         // Reset to original data if filter is empty
@@ -101,35 +103,34 @@
             <h1 class="mb-3 text-2xl sm:text-3xl font-bold">
               All US Hedge Funds
             </h1>
-            <div class="w-full pb-3">
-              <div class="relative right-0">
-                <ul
-                  class="relative grid grid-cols-1 sm:grid-cols-4 gap-y-3 gap-x-3 flex flex-wrap p-1 list-none rounded-[3px]"
-                >
-                  <li
-                    class="pl-3 py-1.5 flex-auto text-center shadow-sm bg-gray-100 dark:bg-[#2E3238] rounded-[3px]"
+            <div class="w-full pt-2">
+              <div class="w-full flex flex-row items-center">
+                <div class="relative w-fit">
+                  <div
+                    class="absolute inset-y-0 left-3 flex items-center pointer-events-none"
                   >
-                    <label class="flex flex-row items-center">
-                      <input
-                        id="modal-search"
-                        class=" ml-2 text-[1rem] dark:placeholder-gray-400 focus:outline-none bg-inherit border-transparent focus:border-transparent focus:ring-0 flex items-center justify-center w-full px-0 py-1"
-                        placeholder="Find by name"
-                        bind:value={filterQuery}
-                        on:input={handleInput}
-                        autocomplete="off"
-                      />
-                      <svg
-                        class="ml-auto mr-5 h-8 w-8 inline-block mr-2"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        ><path
-                          fill="currentColor"
-                          d="m19.485 20.154l-6.262-6.262q-.75.639-1.725.989t-1.96.35q-2.402 0-4.066-1.663T3.808 9.503T5.47 5.436t4.064-1.667t4.068 1.664T15.268 9.5q0 1.042-.369 2.017t-.97 1.668l6.262 6.261zM9.539 14.23q1.99 0 3.36-1.37t1.37-3.361t-1.37-3.36t-3.36-1.37t-3.361 1.37t-1.37 3.36t1.37 3.36t3.36 1.37"
-                        /></svg
-                      >
-                    </label>
-                  </li>
-                </ul>
+                    <svg
+                      class="h-5 w-5 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <input
+                    bind:value={inputValue}
+                    on:input={search}
+                    type="text"
+                    placeholder="Search Hedge Fund"
+                    class="w-fit py-[5.5px] pl-10 border bg-inherit shadow-sm focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-300 px-3 focus:outline-none focus:ring-0 focus:border-gray-600 grow w-full sm:min-w-56 sm:max-w-xs"
+                  />
+                </div>
               </div>
             </div>
 

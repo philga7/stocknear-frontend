@@ -2,7 +2,7 @@ import { compareTwoStrings } from "string-similarity";
 
 onmessage = async (event: MessageEvent) => {
   const rawData = event.data?.rawData;
-  const filterQuery = event.data?.filterQuery;
+  const filterQuery = event.data?.inputValue;
 
   const output = rawData?.filter((item) => {
     const name = item?.name?.toLowerCase();
