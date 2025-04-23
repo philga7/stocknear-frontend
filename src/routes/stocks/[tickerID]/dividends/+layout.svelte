@@ -57,16 +57,15 @@
               Dividends do not account for retained earnings or reinvestments
               and are therefore different from a company's total profits.
             </div>
-            <!--
+
             <div class="px-2">
               <a
-                href="/blog/article/revenue"
+                href="/blog/article/dividends"
                 class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-white dark:text-black m-auto sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 bg-[#3B82F6] dark:bg-[#fff] transition duration-100"
               >
                 Full Definition
               </a>
             </div>
-            -->
           </div>
           {#if similarStocks?.length > 0}
             <div
@@ -98,7 +97,7 @@
                           ><a
                             href={`/stocks/${item?.symbol}/dividends`}
                             class="text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
-                            >{item?.name}</a
+                            >{removeCompanyStrings(item?.name)}</a
                           ></td
                         >
                         <td class="text-right cursor-normal text-[1rem] px-2"
