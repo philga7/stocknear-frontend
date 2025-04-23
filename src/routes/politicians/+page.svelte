@@ -29,7 +29,6 @@
   let animationId = "";
   let favoriteList = [];
   let inputValue = "";
-  let touchedInput = false;
   let filterList = [];
   let checkedItems: Set<any> = new Set();
 

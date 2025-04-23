@@ -1,7 +1,14 @@
 <script lang="ts">
   import { displayCompanyName, stockTicker } from "$lib/store";
-  import { formatString, abbreviateNumber } from "$lib/utils";
+  import {
+    formatString,
+    abbreviateNumber,
+    removeCompanyStrings,
+  } from "$lib/utils";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
+  import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
+  import { Button } from "$lib/components/shadcn/button/index.js";
+
   import { onMount } from "svelte";
 
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
@@ -9,18 +16,65 @@
   import Infobox from "$lib/components/Infobox.svelte";
 
   export let data;
-  let isLoaded = true;
 
-  let rawData = data?.getInsiderTrading?.sort(
-    (a, b) => new Date(b?.transactionDate) - new Date(a?.transactionDate),
-  );
+  let rawData = data?.getInsiderTrading;
+  let filterList = [];
+  let checkedItems = new Set();
+  let syncWorker: Worker | undefined;
+  let transactionList = [
+    "P-Purchase",
+    "A-Award",
+    "D-Return",
+    "G-Gift",
+    "S-Sale",
+    "M-Exempt",
+    "X-InTheMoney",
+    "C-Conversion",
+    "F-InKind",
+    "J-Other",
+  ];
 
-  let insiderTradingList = rawData?.slice(0, 50);
-  function backToTop() {
-    window.scrollTo({
-      top: 0,
-    });
+  let displayList = rawData?.slice(0, 50);
+
+  async function handleChangeValue(value) {
+    if (checkedItems.has(value)) {
+      checkedItems.delete(value);
+    } else {
+      checkedItems.add(value);
+    }
+    const filterSet = new Set(filterList);
+    filterSet.has(value) ? filterSet.delete(value) : filterSet.add(value);
+    filterList = Array.from(filterSet);
+
+    if (filterList.length > 0) {
+      await loadWorker();
+    } else {
+      rawData = [...data?.getInsiderTrading];
+
+      displayList = rawData?.slice(0, 50) ?? [];
+    }
+
+    transactionList = [...transactionList];
   }
+
+  // Handle messages from our filtering web worker.
+  const handleMessage = (event) => {
+    rawData = event.data?.output || [];
+    if (filterList?.length > 0) {
+      displayList = rawData?.slice(0, 50) || [];
+    } else {
+      rawData = data?.getInsiderTrading;
+      displayList = rawData?.slice(0, 50) || [];
+    }
+  };
+
+  // Tell the web worker to filter our data
+  const loadWorker = async () => {
+    syncWorker?.postMessage({
+      rawData: data?.getInsiderTrading,
+      filterList: filterList,
+    });
+  };
 
   function extractOfficeInfo(inputString) {
     const indexOfficer = inputString?.toLowerCase()?.indexOf("officer:");
@@ -41,14 +95,20 @@
   async function handleScroll() {
     const scrollThreshold = document.body.offsetHeight * 0.8; // 80% of the website height
     const isBottom = window.innerHeight + window.scrollY >= scrollThreshold;
-    if (isBottom && insiderTradingList?.length !== rawData?.length) {
-      const nextIndex = insiderTradingList?.length;
+    if (isBottom && displayList?.length !== rawData?.length) {
+      const nextIndex = displayList?.length;
       const filteredNewResults = rawData?.slice(nextIndex, nextIndex + 50);
-      insiderTradingList = [...insiderTradingList, ...filteredNewResults];
+      displayList = [...displayList, ...filteredNewResults];
     }
   }
 
-  onMount(() => {
+  onMount(async () => {
+    if (!syncWorker) {
+      const SyncWorker = await import("./workers/filterWorker?worker");
+      syncWorker = new SyncWorker.default();
+      syncWorker.onmessage = handleMessage;
+    }
+
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -93,7 +153,7 @@
 
     // Reset to original data when 'none' and stop further sorting
     if (sortOrder === "none") {
-      insiderTradingList = [...originalData]?.slice(0, 50); // Reset to original data (spread to avoid mutation)
+      displayList = [...originalData]?.slice(0, 50); // Reset to original data (spread to avoid mutation)
       return;
     }
 
@@ -128,13 +188,17 @@
     };
 
     // Sort using the generic comparison function
-    insiderTradingList = [...originalData].sort(compareValues)?.slice(0, 50);
+    displayList = [...originalData].sort(compareValues)?.slice(0, 50);
   };
+
+  function isChecked(item) {
+    return checkedItems.has(item);
+  }
 </script>
 
 <SEO
-  title={`${$displayCompanyName} (${$stockTicker}) US Congress & Senate Trading · Stocknear`}
-  description={`Get the latest US congress & senate trading of ${$displayCompanyName} (${$stockTicker}) from democrates and republicans.`}
+  title={`${$displayCompanyName} (${$stockTicker}) Insider Trading Transactions by Executives & Key Insiders | Stocknear`}
+  description={`Stay up-to-date with the latest insider trading activity of ${$displayCompanyName} (${$stockTicker}). View real-time SEC filings, executive and officer trades, transaction details, and insider holdings on Stocknear.`}
 />
 
 <section class="w-full overflow-hidden h-full">
@@ -145,114 +209,147 @@
       <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
         <div class="w-full mb-6">
           <h1 class="text-xl sm:text-2xl font-bold mb-4">Insider Trading</h1>
-          {#if insiderTradingList?.length === 0}
-            <Infobox
-              text={`No trading history available for ${$displayCompanyName}. Likely no
-              insider trading has happened yet.`}
-            />
-          {/if}
         </div>
 
-        {#if isLoaded}
-          {#if insiderTradingList?.length !== 0}
-            <div
-              class="mt-5 flex justify-start items-center w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto no-scrollbar"
+        <div class="w-full flex flex-row justify-between items-center">
+          <h3 class="text-xl font-semibold">
+            {(rawData?.length || 0)?.toLocaleString("en-US")} Transactions
+          </h3>
+          <DropdownMenu.Root>
+            <DropdownMenu.Trigger asChild let:builder>
+              <Button
+                builders={[builder]}
+                class=" border-gray-300 dark:border-gray-600 border border-gray-300 shadow-sm sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  px-3 py-2  rounded-md "
+              >
+                <span class="truncate">Filter Type</span>
+                <svg
+                  class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  style="max-width:40px"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </Button>
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Content
+              class="w-56 h-fit max-h-72 overflow-y-auto scroller"
             >
-              <table
-                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
-              >
-                <thead>
-                  <TableHeader {columns} {sortOrders} {sortData} />
-                </thead>
-                <tbody>
-                  {#each insiderTradingList as item, index}
-                    {#if item?.price > 0}
-                      <tr
-                        class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
-                          1 ===
-                          insiderTradingList?.slice(0, 6)?.length &&
-                        !['Pro', 'Plus']?.includes(data?.user?.tier)
-                          ? 'opacity-[0.1]'
-                          : ''}"
+              <DropdownMenu.Group>
+                {#each transactionList as item}
+                  <DropdownMenu.Item
+                    class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                  >
+                    <div
+                      on:click|capture={(event) => event.preventDefault()}
+                      class="flex items-center"
+                    >
+                      <label
+                        class="cursor-pointer"
+                        on:click={() => handleChangeValue(item)}
+                        for={item}
                       >
-                        <td class=" text-sm sm:text-[1rem] ] whitespace-nowrap">
-                          <div class="flex flex-col">
-                            <span class=""
-                              >{formatString(item?.reportingName)?.replace(
-                                "/de/",
-                                "",
-                              )}</span
-                            >
-                            <span class="text-sm"
-                              >{extractOfficeInfo(item?.typeOfOwner)}</span
-                            >
-                          </div>
-                        </td>
+                        <input type="checkbox" checked={isChecked(item)} />
+                        <span class="ml-2">{item}</span>
+                      </label>
+                    </div>
+                  </DropdownMenu.Item>
+                {/each}
+              </DropdownMenu.Group>
+            </DropdownMenu.Content>
+          </DropdownMenu.Root>
+        </div>
+        {#if displayList?.length > 0}
+          <div
+            class="mt-3 flex justify-start items-center w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto no-scrollbar"
+          >
+            <table
+              class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
+            >
+              <thead>
+                <TableHeader {columns} {sortOrders} {sortData} />
+              </thead>
+              <tbody>
+                {#each displayList as item, index}
+                  {#if item?.price > 0}
+                    <tr
+                      class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
+                        1 ===
+                        displayList?.slice(0, 6)?.length &&
+                      !['Pro', 'Plus']?.includes(data?.user?.tier)
+                        ? 'opacity-[0.1]'
+                        : ''}"
+                    >
+                      <td class=" text-sm sm:text-[1rem] ] whitespace-nowrap">
+                        <div class="flex flex-col">
+                          <span class=""
+                            >{formatString(item?.reportingName)?.replace(
+                              "/de/",
+                              "",
+                            )}</span
+                          >
+                          <span class="text-sm"
+                            >{extractOfficeInfo(item?.typeOfOwner)}</span
+                          >
+                        </div>
+                      </td>
 
-                        <td
-                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap ]"
-                        >
-                          {new Date(item?.transactionDate)?.toLocaleString(
-                            "en-US",
-                            {
-                              month: "short",
-                              day: "numeric",
-                              year: "numeric",
-                              daySuffix: "2-digit",
-                            },
-                          )}
-                        </td>
+                      <td
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap ]"
+                      >
+                        {new Date(item?.transactionDate)?.toLocaleString(
+                          "en-US",
+                          {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                            daySuffix: "2-digit",
+                          },
+                        )}
+                      </td>
 
-                        <td
-                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
-                        >
-                          {item?.securitiesTransacted?.toLocaleString("en-US")}
-                        </td>
-                        <td
-                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
-                        >
-                          ${item?.price?.toFixed(2)}
-                        </td>
-                        <td
-                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
-                        >
-                          ${abbreviateNumber(item?.value)}
-                        </td>
-                        <td
-                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
-                        >
-                          {item?.transactionType}
-                        </td>
-                      </tr>
-                    {/if}
-                  {/each}
-                </tbody>
-              </table>
-            </div>
-
-            {#if rawData?.length > 5 && rawData?.length === insiderTradingList?.length && ["Pro", "Plus"]?.includes(data?.user?.tier)}
-              <label
-                on:click={backToTop}
-                class="w-32 py-1.5 mt-10 hover:bg-white hover:bg-opacity-[0.05] cursor-pointer m-auto flex justify-center items-center border border-gray-300 dark:border-gray-600 rounded-full"
-              >
-                Back to top
-              </label>
-            {/if}
-
-            <UpgradeToPro {data} />
-          {/if}
-        {:else}
-          <div class="flex justify-center items-center h-80">
-            <div class="relative">
-              <label
-                class="shadow-sm bg-gray-300 dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-              >
-                <span
-                  class="loading loading-spinner loading-md text-muted dark:text-gray-400"
-                ></span>
-              </label>
-            </div>
+                      <td
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                      >
+                        {item?.securitiesTransacted?.toLocaleString("en-US")}
+                      </td>
+                      <td
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                      >
+                        ${item?.price?.toFixed(2)}
+                      </td>
+                      <td
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                      >
+                        ${abbreviateNumber(item?.value)}
+                      </td>
+                      <td
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                      >
+                        {item?.transactionType}
+                      </td>
+                    </tr>
+                  {/if}
+                {/each}
+              </tbody>
+            </table>
           </div>
+
+          <UpgradeToPro {data} />
+        {:else if displayList?.length === 0 && filterList?.length > 0}
+          <Infobox
+            text={`No Transaction Type found for ${removeCompanyStrings($displayCompanyName)}. Try a different filter...`}
+          />
+        {:else}
+          <Infobox
+            text={`No trading history available for ${$displayCompanyName}. Likely no
+              insider trading has happened yet.`}
+          />
         {/if}
       </div>
     </div>

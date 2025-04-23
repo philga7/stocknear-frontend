@@ -45,7 +45,7 @@ export const load = async ({ locals, params }) => {
 
     let output = await response.json();
 
-    output = user?.tier !== "Pro" ? output?.slice(0, 6) : output;
+    output = !['Pro','Plus']?.includes(user?.tier) ? output?.slice(0, 6) : output;
     
     output = output?.reduce((acc, item) => {
       const newTransactionType =
@@ -67,7 +67,10 @@ export const load = async ({ locals, params }) => {
 
       return acc;
     }, []);
-  
+    
+    output?.sort(
+    (a, b) => new Date(b?.transactionDate) - new Date(a?.transactionDate),
+  );
   
     return output;
   };
