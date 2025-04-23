@@ -13,6 +13,7 @@
 
   let rawData = [];
   let rawDataPressRelease = [];
+  let rawNewsVideos = [];
 
   let newsList = [];
   let displaySection = "all";
@@ -34,6 +35,26 @@
 
       rawDataPressRelease = await response?.json();
       setCache($stockTicker, rawDataPressRelease, "getPressRelease");
+    }
+  }
+
+  async function getNewsVideos() {
+    displaySection = "videos";
+    const cachedData = getCache($stockTicker, "getNewsVideos");
+    if (cachedData) {
+      rawNewsVideos = cachedData;
+    } else {
+      const postData = { ticker: $stockTicker, path: "news-videos" };
+      const response = await fetch("/api/ticker-data", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postData),
+      });
+
+      rawNewsVideos = await response?.json();
+      setCache($stockTicker, rawNewsVideos, "getNewsVideos");
     }
   }
 
@@ -70,9 +91,7 @@
   $: filteredNewsList = (() => {
     switch (displaySection) {
       case "videos":
-        return newsList.filter(
-          (item) => checkIfYoutubeVideo(item.url) !== null,
-        );
+        return rawNewsVideos;
       case "press-releases":
         return rawDataPressRelease;
       default:
@@ -135,7 +154,7 @@
           {#if hasVideos}
             <li>
               <button
-                on:click={() => (displaySection = "videos")}
+                on:click={() => getNewsVideos()}
                 class="ml-1 cursor-pointer rounded-md px-3 py-0.5 sm:hover:bg-blue-50 dark:sm:hover:bg-secondary {displaySection ===
                 'videos'
                   ? 'bg-blue-50 dark:bg-secondary'
