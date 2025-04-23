@@ -470,7 +470,6 @@
                           on:input={handleInput}
                           autocomplete="off"
                           class="focus:outline-none text-sm absolute sticky w-full border-0 focus:border-gray-200 focus:ring-0 placeholder-gray-500 dark:placeholder:text-gray-300"
-                          type="search"
                           placeholder="Search..."
                         />
                         {#if searchQuery?.length > 0}

@@ -494,7 +494,6 @@
         <input
           id="modal-search"
           class="focus:outline-none rounded-md w-full bg-gray-300 dark:bg-secondary border border-gray-300 dark:border-gray-600 focus:ring-transparent placeholder-gray-600 dark:placeholder-gray-200 py-3 pl-10 pr-4"
-          type="search"
           placeholder="Company or stock symbol..."
           bind:value={inputValue}
           bind:this={inputElement}

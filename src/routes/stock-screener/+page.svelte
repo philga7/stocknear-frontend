@@ -3091,7 +3091,6 @@ const handleKeyDown = (event) => {
                                 ? 'hidden'
                                 : ''} text-sm p-2 absolute fixed sticky w-full border-0 bg-white dark:bg-default border-b border-gray-200 dark:border-gray-600
                                       focus:outline-none placeholder:text-gray-500 dark:placeholder:text-gray-300"
-                              type="search"
                               placeholder="Search..."
                             />
                           </div>
@@ -3755,7 +3754,6 @@ const handleKeyDown = (event) => {
 
             <input
               autocomplete="off"
-              type="search"
               id="search"
               class="focus:outline-none placeholder-gray-800 dark:placeholder-gray-300 block w-full p-2 ps-10 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-100 dark:bg-secondary border border-blue-500"
               placeholder="Search..."

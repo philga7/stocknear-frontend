@@ -915,7 +915,6 @@
                 <label class="flex flex-row items-center">
                   <input
                     id="modal-search"
-                    type="search"
                     class="focus:outline-none sm:ml-2 text-[1rem] placeholder-gray-500 dark:placeholder-gray-300 border-transparent bg-white dark:bg-secondary focus:border-transparent focus:ring-0 flex items-center justify-center w-full px-0 py-1.5"
                     placeholder="Stock or ETF symbol..."
                     bind:value={filterQuery}
@@ -1735,7 +1734,6 @@
 
             <input
               autocomplete="off"
-              type="search"
               id="search"
               class="focus:outline-none placeholder-gray-500 dark:placeholder-gray-300 block w-full p-2 ps-10 text-sm text-muted dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-100 dark:bg-primary border border-blue-500"
               placeholder="Search"

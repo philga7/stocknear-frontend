@@ -112,7 +112,6 @@
                     <label class="flex flex-row items-center">
                       <input
                         id="modal-search"
-                        type="search"
                         class=" ml-2 text-[1rem] dark:placeholder-gray-400 focus:outline-none bg-inherit border-transparent focus:border-transparent focus:ring-0 flex items-center justify-center w-full px-0 py-1"
                         placeholder="Find by name"
                         bind:value={filterQuery}
