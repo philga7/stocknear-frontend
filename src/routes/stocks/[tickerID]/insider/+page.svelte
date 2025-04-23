@@ -8,6 +8,7 @@
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
+  import Tutorial from "$lib/components/Tutorial.svelte";
 
   import { onMount } from "svelte";
 
@@ -194,6 +195,53 @@
   function isChecked(item) {
     return checkedItems.has(item);
   }
+
+  let steps = [
+    {
+      popover: {
+        title: "Insider Trading",
+        description: `This dashboard aggregates every insider stock transaction filed for ${$stockTicker}. Use these to spot insider buying or selling trends that may signal executive confidence (or concern) in the stock.`,
+        side: "center",
+        align: "center",
+      },
+    },
+    {
+      element: ".transactions-count-driver",
+      popover: {
+        title: "Total Transactions",
+        description: `The total number of insider trades recorded. A high count can indicate active insider buying or selling over time.`,
+        side: "bottom",
+        align: "start",
+      },
+    },
+    {
+      element: ".filter-type-driver",
+      popover: {
+        title: "Filter Type",
+        description: `Filter by transaction type (e.g. “S-Sale” for scheduled sales, “P-Purchase,” or “F-InKind”). Use this to hone in on buys versus sells or other special transactions.`,
+        side: "left",
+        align: "start",
+      },
+    },
+    {
+      element: ".insider-table-driver",
+      popover: {
+        title: "Transactions Table",
+        description: `Lists each insider transaction with key details. Scroll or filter to quickly zero in on the trades you care about.`,
+        side: "right",
+        align: "start",
+      },
+    },
+
+    {
+      popover: {
+        title: "You’re All Set!",
+        description: `Now you know how to read this page and filter insider trades. Use this to monitor insider activity and be up-to-date with your trading decisions.`,
+        side: "center",
+        align: "center",
+      },
+    },
+  ];
 </script>
 
 <SEO
@@ -207,19 +255,22 @@
       class="w-full relative flex justify-center items-center overflow-hidden"
     >
       <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
-        <div class="w-full mb-6">
-          <h1 class="text-xl sm:text-2xl font-bold mb-4">Insider Trading</h1>
+        <div class="w-full flex flex-row justify-between mb-10">
+          <h1 class="text-xl sm:text-2xl font-bold">
+            {$stockTicker} Insider Trading
+          </h1>
+          <Tutorial {steps} />
         </div>
 
         <div class="w-full flex flex-row justify-between items-center">
-          <h3 class="text-xl font-semibold">
+          <h3 class="transactions-count-driver text-xl font-semibold">
             {(rawData?.length || 0)?.toLocaleString("en-US")} Transactions
           </h3>
           <DropdownMenu.Root>
             <DropdownMenu.Trigger asChild let:builder>
               <Button
                 builders={[builder]}
-                class=" border-gray-300 dark:border-gray-600 border border-gray-300 shadow-sm sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  px-3 py-2  rounded-md "
+                class="filter-type-driver border-gray-300 dark:border-gray-600 border border-gray-300 shadow-sm sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  px-3 py-2  rounded-md "
               >
                 <span class="truncate">Filter Type</span>
                 <svg
@@ -271,7 +322,7 @@
             <table
               class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
             >
-              <thead>
+              <thead class="insider-table-driver">
                 <TableHeader {columns} {sortOrders} {sortData} />
               </thead>
               <tbody>
