@@ -167,6 +167,9 @@ export const actions = {
 
     const apiKey = import.meta.env.VITE_LEMON_SQUEEZY_API_KEY;
     const subscriptionId = formData?.get("subscriptionId");
+    const newPlan = formData?.get("newPlan")
+
+    const variantID = newPlan === 'plusAnnual' ? import.meta.env.VITE_LEMON_SQUEEZY_PLUS_ANNUAL_VARIANT_ID : newPlan === 'proAnnual' ? import.meta.env.VITE_LEMON_SQUEEZY_PRO_ANNUAL_VARIANT_ID : '';
 
     try {
       const url = `https://api.lemonsqueezy.com/v1/subscriptions/${subscriptionId}`;
@@ -182,7 +185,7 @@ export const actions = {
           type: "subscriptions",
           id: subscriptionId,
           attributes: {
-            variant_id: import.meta.env.VITE_LEMON_SQUEEZY_ANNUAL_VARIANT_ID, // Change from monthly to annually plan
+            variant_id: variantID, // Change from monthly to annually plan
           },
         },
       };

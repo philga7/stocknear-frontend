@@ -497,7 +497,7 @@
                 })}
               </span>
             {/if}
-            <div class="flex flex-col justify-start items-start mt-4 mb-4">
+            <div class="flex flex-col justify-start items-start mt-4 mb-3">
               <span class=" mr-2 text-lg"> Current Plan: </span>
               <span class="text-[1rem]">
                 {#if subscriptionData?.first_order_item?.product_name === "Pro Subscription (Life Time Access)"}
@@ -524,9 +524,16 @@
                 >
                   Cancel Subscription
                 </label>
-                {#if subscriptionData?.product_name !== "Pro Subscription (Annually)"}
+                {#if subscriptionData?.product_name === "Plus Subscription (Monthly)"}
                   <label
-                    for="changeSubscriptionModal"
+                    for="changeSubscriptionPlusAnnualModal"
+                    class="mt-3 sm:mt-0 sm:ml-3 cursor-pointer border border-gray-300 shadow-sshadow-sm m dark:border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded"
+                  >
+                    Upgrade to Plus (Annual Plan)
+                  </label>
+                {:else if subscriptionData?.product_name === "Plus Subscription (Annually)" || subscriptionData?.product_name === "Pro Subscription (Monthly)"}
+                  <label
+                    for="changeSubscriptionProAnnualModal"
                     class="mt-3 sm:mt-0 sm:ml-3 cursor-pointer border border-gray-300 shadow-sshadow-sm m dark:border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded"
                   >
                     Upgrade to Pro (Annual Plan)
@@ -544,20 +551,7 @@
               <span class=" mt-5">
                 Please wait a moment; you will be updated to Pro in a second.
               </span>
-            {:else if subscriptionData?.first_order_item?.product_name?.includes("Life Time")}{:else if subscriptionData?.first_order_item?.product_name?.includes("Plus") || subscriptionData?.first_order_item?.product_name?.includes("Pro Monthly")}
-              <div class="mt-2">
-                <p class="mb-5">
-                  You’ll only be charged the difference between your current
-                  plan and the new one.
-                </p>
-                <label
-                  for="changeSubscriptionModal"
-                  class="cursor-pointer border border-gray-300 shadow-sshadow-sm m dark:border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
-                >
-                  Upgrade to Pro (Annual Plan)
-                </label>
-              </div>
-            {:else}
+            {:else if subscriptionData?.first_order_item?.product_name?.includes("Life Time")}{:else}
               <a
                 href="/pricing"
                 class="sm:hover:text-muted dark:sm:hover:text-white text-blue-700 dark:text-blue-400"
@@ -756,13 +750,79 @@
 </dialog>
 <!-- End Cancel Subscription Modal -->
 
-<!--Start Change Plans-->
-<input type="checkbox" id="changeSubscriptionModal" class="modal-toggle" />
+<!--Change Plan to Plus Annual -->
+<input
+  type="checkbox"
+  id="changeSubscriptionPlusAnnualModal"
+  class="modal-toggle"
+/>
 <dialog
-  id="changeSubscriptionModal"
+  id="changeSubscriptionPlusAnnualModal"
   class="modal overflow-hidden p-3 sm:p-0 bg-[#000]/40"
 >
-  <label for="changeSubscriptionModal" class="cursor-pointer modal-backdrop"
+  <label
+    for="changeSubscriptionPlusAnnualModal"
+    class="cursor-pointer modal-backdrop"
+  ></label>
+
+  <!-- Desktop modal content -->
+  <form
+    method="POST"
+    action="?/changeSubscription"
+    use:enhance={submitChangePlan}
+    class="modal-box w-full bg-white dark:bg-secondary shadow-sm border border-gray-300 dark:border-gray-600 flex flex-col items-center"
+  >
+    <div
+      class="mx-auto mb-8 h-1.5 w-20 flex-shrink-0 rounded-full bg-[#404040]"
+    />
+    <div class=" mb-5 text-center">
+      <h3 class="font-bold text-2xl mb-5">Are you sure?</h3>
+      <span class=" text-[1rem] font-normal">
+        You're Account will be upgraded to Plus (Annual Plan). You’ll only be
+        charged the difference between your current plan and the new one.
+      </span>
+    </div>
+
+    <button
+      on:click={() => (isClicked = !isClicked)}
+      class="{!isClicked
+        ? ''
+        : 'hidden'} cursor-pointer px-7 py-2 mb-5 rounded bg-blue-500 sm:hover:bg-blue-600 dark:bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-white dark:text-black text-[1rem] font-normal"
+    >
+      Upgrade to Plus (Annual)
+      <input
+        class="hidden"
+        name="subscriptionId"
+        value={subscriptionData?.first_subscription_item?.subscription_id}
+      />
+      <input class="hidden" name="newPlan" value={"plusAnnual"} />
+    </button>
+    {#if isClicked === true}
+      <label
+        class="cursor-pointer px-7 py-2 mb-5 rounded bg-blue-500 sm:hove:bg-blue-600 dark:bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-white dark:text-black text-[1rem] font-normal"
+      >
+        <div class="flex flex-row m-auto">
+          <span class="loading loading-infinity"></span>
+          <span class="text-white dark:text-black ml-2">Proceeding</span>
+        </div>
+      </label>
+    {/if}
+  </form>
+</dialog>
+
+<!--Change Plan to Pro Annual-->
+<input
+  type="checkbox"
+  id="changeSubscriptionProAnnualModal"
+  class="modal-toggle"
+/>
+<dialog
+  id="changeSubscriptionProAnnualModal"
+  class="modal overflow-hidden p-3 sm:p-0 bg-[#000]/40"
+>
+  <label
+    for="changeSubscriptionProAnnualModal"
+    class="cursor-pointer modal-backdrop"
   ></label>
 
   <!-- Desktop modal content -->
@@ -795,6 +855,7 @@
         name="subscriptionId"
         value={subscriptionData?.first_subscription_item?.subscription_id}
       />
+      <input class="hidden" name="newPlan" value={"proAnnual"} />
     </button>
     {#if isClicked === true}
       <label
