@@ -580,6 +580,12 @@
                   </tbody>
                 </table>
               </div>
+              <span class="text-sm mt-2">
+                Sources: Historical revenue is based on company filings
+                submitted to the U.S. Securities and Exchange Commission (SEC).
+                The most recent revenue numbers may be taken from company press
+                releases.
+              </span>
             </div>
           {:else}
             <Infobox text="No data available" />

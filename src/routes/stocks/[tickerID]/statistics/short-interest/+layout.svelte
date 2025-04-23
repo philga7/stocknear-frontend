@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { abbreviateNumber } from "$lib/utils";
+  import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
 
   export let data;
   const similarStocks = data?.getSimilarStocks;
@@ -90,7 +90,7 @@
                           ><a
                             href={`/stocks/${item?.symbol}`}
                             class="text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
-                            >{item?.name}</a
+                            >{removeCompanyStrings(item?.name)}</a
                           ></td
                         >
                         <td class="text-right cursor-normal text-[1rem] px-2"

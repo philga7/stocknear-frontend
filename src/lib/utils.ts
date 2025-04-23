@@ -19,7 +19,7 @@ type FlyAndScaleParams = {
 };
 
 export function removeCompanyStrings(name) {
-  const wordsToRemove = ["Technologies", "Inc.","Corp.","Corporation","Holding","Limited","Group","N.V.","Co. Ltd.","Co.", "Ltd."];
+  const wordsToRemove = ["Technologies", "AG", ", Inc.","Inc.","Corp.","Corporation","Holding","Limited","Group","N.V.","Co. Ltd.","Co.", "Ltd."];
 if (!name) return "";
     return wordsToRemove?.reduce((acc, word) => acc.replace(word, "").trim(), name);
 }
