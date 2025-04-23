@@ -31,7 +31,8 @@
 
   let displayRules = [];
   let filteredData = [];
-  let filterQuery = $page.url.searchParams.get("query") || "";
+  let filterQuery =
+    data?.user?.tier === "Pro" ? $page.url.searchParams.get("query") || "" : "";
 
   let syncWorker: Worker | undefined;
   let ruleName = "";
