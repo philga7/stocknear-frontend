@@ -540,7 +540,7 @@
 
           rawData = [...newData, ...rawData];
 
-          if (ruleOfList?.length > 0) {
+          if (ruleOfList?.length > 0 || filterQuery?.length > 0) {
             shouldLoadWorker.set(true);
           } else {
             displayedData = [...rawData];
@@ -594,7 +594,7 @@
     if (intervalId) {
       clearInterval(intervalId);
     }
-    intervalId = setInterval(updateOptionsFlowData, 8000);
+    intervalId = setInterval(updateOptionsFlowData, 6000);
   }
 
   onMount(async () => {
