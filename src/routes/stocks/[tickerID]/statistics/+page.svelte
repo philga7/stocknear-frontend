@@ -225,7 +225,7 @@
                       ><span>PS Ratio</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.priceToSalesRatio}</td
+                      >{rawData?.priceToSalesRatio ?? "n/a"}</td
                     >
                   </tr><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -233,7 +233,7 @@
                       ><span>Forward PS</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.forwardPS}</td
+                      >{rawData?.forwardPS ?? "n/a"}</td
                     >
                   </tr><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -241,7 +241,7 @@
                       ><span>PB Ratio</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.priceToBookRatio}</td
+                      >{rawData?.priceToBookRatio ?? "n/a"}</td
                     >
                   </tr><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -249,7 +249,7 @@
                       ><span>P/FCF Ratio</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.priceToFreeCashFlowRatio}</td
+                      >{rawData?.priceToFreeCashFlowRatio ?? "n/a"}</td
                     >
                   </tr><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"

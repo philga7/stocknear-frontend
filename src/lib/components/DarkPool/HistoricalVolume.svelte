@@ -66,11 +66,15 @@
 
     // Compute averages (these remain global if used elsewhere)
     avgVolume =
-      totalVolumeList.reduce((acc, val) => acc + val, 0) /
-        totalVolumeList.length || 0;
+      Math.floor(
+        totalVolumeList.reduce((acc, val) => acc + val, 0) /
+          totalVolumeList?.length,
+      ) || 0;
     avgShortVolume =
-      shortVolumeList.reduce((acc, val) => acc + val, 0) /
-        shortVolumeList.length || 0;
+      Math.floor(
+        shortVolumeList?.reduce((acc, val) => acc + val, 0) /
+          shortVolumeList?.length,
+      ) || 0;
 
     const options = {
       credits: {
@@ -272,8 +276,8 @@
     {#if rawData?.length !== 0}
       <div class="w-full flex flex-col items-start">
         <div class=" text-[1rem] mt-2 mb-2 w-full">
-          Over the past 12 months, {$displayCompanyName} has experienced an average
-          dark pool trading volume of
+          Over the past 12 months, {removeCompanyStrings($displayCompanyName)} has
+          experienced an average dark pool trading volume of
           <span class="font-semibold">{abbreviateNumber(avgVolume)}</span>
           shares. Out of this total, an average of
           <span class="font-semibold">{abbreviateNumber(avgShortVolume)}</span>

@@ -1516,10 +1516,9 @@
                   <p
                     class="text-sm sm:text-[1rem] pb-5 dark:text-gray-200 transition-all duration-300 ease-in-out"
                   >
-                    If you're a Plus subscriber (Monthly or Annual) or a Pro
-                    Monthly subscriber, you can easily upgrade to the Pro Annual
-                    plan on your Account Page. Or simply reach out to us via
-                    email, and we’ll take care of it for you.
+                    Yes, you can easily upgrade your plan on your Account Page.
+                    Or simply reach out to us via email, and we’ll take care of
+                    it for you.
                     <a
                       href={`mailto:${emailAddress}`}
                       class="text-blue-700 dark:text-blue-400 underline"
