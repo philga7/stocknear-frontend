@@ -61,7 +61,7 @@
     { key: "securitiesTransacted", label: "Shares", align: "right" },
     { key: "price", label: "Price", align: "right" },
     { key: "value", label: "Value", align: "right" },
-    { key: "transactionType", label: "Trade Type", align: "right" },
+    { key: "transactionType", label: "Type", align: "right" },
   ];
 
   let sortOrders = {
@@ -204,29 +204,24 @@
                         </td>
 
                         <td
-                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap ]"
+                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                         >
                           {item?.securitiesTransacted?.toLocaleString("en-US")}
                         </td>
                         <td
-                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap ]"
+                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                         >
                           ${item?.price?.toFixed(2)}
                         </td>
                         <td
-                          class=" text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                         >
                           ${abbreviateNumber(item?.value)}
                         </td>
-                        <td class="text-end flex justify-end whitespace-nowrap">
-                          <div
-                            class="w-auto px-4 py-1 rounded-full uppercase {item?.transactionType ===
-                            'Bought'
-                              ? 'bg-[#75D377] text-muted'
-                              : 'bg-[#cd4050] '} font-semibold"
-                          >
-                            {item?.transactionType}
-                          </div>
+                        <td
+                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                        >
+                          {item?.transactionType}
                         </td>
                       </tr>
                     {/if}

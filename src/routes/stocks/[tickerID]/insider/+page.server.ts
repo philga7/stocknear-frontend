@@ -46,7 +46,7 @@ export const load = async ({ locals, params }) => {
     let output = await response.json();
 
     output = user?.tier !== "Pro" ? output?.slice(0, 6) : output;
-  
+    
     output = output?.reduce((acc, item) => {
       const newTransactionType =
         typeof transactionTypeMap[item?.transactionType] === "function"
@@ -59,7 +59,7 @@ export const load = async ({ locals, params }) => {
         if (value > 0) {
           acc.push({
             ...item,
-            transactionType: newTransactionType,
+           //transactionType: newTransactionType,
             value: value, // new key 'value'
           });
         }
@@ -67,6 +67,7 @@ export const load = async ({ locals, params }) => {
 
       return acc;
     }, []);
+  
   
     return output;
   };
