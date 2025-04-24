@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
 
   import SEO from "$lib/components/SEO.svelte";
-  import Discount from "$lib/components/Discount.svelte";
+  //import Discount from "$lib/components/Discount.svelte";
   export let data;
   export let form;
 
@@ -109,7 +109,7 @@
   class=" min-h-screen mb-40 w-full max-w-3xl sm:max-w-6xl m-auto text-muted dark:text-white"
 >
   <div
-    class="flex flex-col sm:flex-row w-full mx-auto justify-center items-center sm:space-x-8 text-sm relative pt-5 pb-20"
+    class="flex flex-col sm:flex-row w-full mx-auto justify-center items-center sm:space-x-8 text-sm relative pt-5 pb-10"
   >
     <div class="flex items-center" style="opacity: 1; transform: none;">
       <svg
@@ -164,7 +164,7 @@
       </h1>
     </div>
 
-    <Discount />
+    <!--<Discount />-->
 
     <div class="flex flex-row items-center justify-center mb-5 sm:mb-0">
       <div class="flex flex-row items-center ml-auto">
@@ -752,12 +752,13 @@
           Best for Intermediate Traders
         </p>
         <div class="mt-4">
-          <span class="text-4xl font-bold line-through"
-            >{mode ? "$7.50" : "$10"}</span
-          ><span
+          <span class="text-4xl font-bold">{mode ? "$7.50" : "$10"}</span>
+          <!--<span
             class="text-pink-700 dark:text-pink-500 text-4xl font-bold ml-1"
             >{mode ? "$3.75" : "$5"}</span
-          ><span class=" text-xl ml-1">/Month</span>
+          >--><span
+            class=" text-xl">/Month</span
+          >
         </div>
         <p
           class="text-muted dark:text-gray-400 text-sm mt-1 mx-4 {!mode
@@ -1072,12 +1073,13 @@
           Best for Professional Traders
         </p>
         <div class="mt-4">
-          <span class="text-4xl font-bold line-through"
-            >{mode ? "$15" : "$20"}</span
-          ><span
+          <span class="text-4xl font-bold">{mode ? "$15" : "$20"}</span
+          ><!--<span
             class="text-pink-700 dark:text-pink-500 text-4xl font-bold ml-1"
             >{mode ? "$7.5" : "$10"}</span
-          ><span class=" text-xl ml-1">/Month</span>
+          >--><span
+            class=" text-xl ml-1">/Month</span
+          >
         </div>
         <p
           class="text-muted dark:text-gray-400 text-sm mt-1 mx-4 {!mode
@@ -1209,12 +1211,13 @@
         <div class="flex flex-row items-center justify-between">
           <h3 class="text-2xl md:text-3xl font-bold">Lifetime</h3>
           <div>
-            <span class="text-3xl md:text-4xl font-bold line-through">$999</span
-            >
+            <span class="text-3xl md:text-4xl font-bold">$999</span>
+            <!--
             <span
               class="text-pink-700 dark:text-pink-500 text-3xl md:text-4xl font-bold ml-1"
               >$499</span
             >
+              -->
           </div>
         </div>
         <p class=" md:text-lg mt-4 lg:mt-2">
