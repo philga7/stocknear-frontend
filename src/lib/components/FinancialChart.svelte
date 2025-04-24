@@ -1,9 +1,7 @@
 <script lang="ts">
   import highcharts from "$lib/highcharts.ts";
   import { abbreviateNumber } from "$lib/utils";
-  import Lazy from "svelte-lazy";
   import { mode } from "mode-watcher";
-  import { onMount } from "svelte";
 
   export let data;
   export let displayStatement;
@@ -147,13 +145,16 @@
     }, 100);
   }
 
-  onMount(() => {
-    updateChart();
-  });
-
   // Watch for changes in props and update chart accordingly
-  $: if (filterRule || displayStatement || data || processedData || $mode) {
+  $: if (
+    filterRule ||
+    displayStatement ||
+    data ||
+    processedData ||
+    ($mode && typeof window !== "undefined")
+  ) {
     updateChart();
+    console.log("afds");
   }
 </script>
 
@@ -164,11 +165,9 @@
     <span class="loading loading-bars loading-sm"></span>
   </div>
 {:else}
-  <Lazy fadeOption={{ delay: 50, duration: 50 }} keep={true}>
-    <div
-      class="shadow-sm border border-gray-300 dark:border-gray-800 rounded w-full"
-      use:highcharts={config}
-      bind:this={chartElement}
-    ></div>
-  </Lazy>
+  <div
+    class="shadow-sm border border-gray-300 dark:border-gray-800 rounded w-full"
+    use:highcharts={config}
+    bind:this={chartElement}
+  ></div>
 {/if}
