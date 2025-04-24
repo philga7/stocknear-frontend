@@ -79,19 +79,20 @@
             class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
-              href="/analysts"
+              href="/stock-screener"
               class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
             >
               <div class="w-full flex justify-between items-center p-3 mt-3">
                 <h2 class="text-start text-xl font-semibold e ml-3">
-                  Top Analyst
+                  Stock Screener
                 </h2>
                 <ArrowLogo
                   class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
                 />
               </div>
               <span class="e p-3 ml-3 mr-3">
-                Get the latest top Wall Street analyst ratings
+                Filter, sort and analyze all stocks to find your next
+                investment.
               </span>
             </a>
           </div>
@@ -100,19 +101,19 @@
             class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
-              href="/analysts/top-stocks"
+              href="/watchlist/stocks"
               class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
             >
               <div class="w-full flex justify-between items-center p-3 mt-3">
                 <h2 class="text-start text-xl font-semibold e ml-3">
-                  Top Stocks Picks
+                  Watchlist
                 </h2>
                 <ArrowLogo
                   class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
                 />
               </div>
               <span class="e p-3 ml-3 mr-3">
-                Get the latest top Wall Street analyst ratings.
+                Keep track of your favorite stocks in realt-time.
               </span>
             </a>
           </div>
