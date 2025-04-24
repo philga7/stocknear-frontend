@@ -693,7 +693,6 @@
     if (filterQuery?.length > 0 || ruleOfList?.length !== 0) {
       console.log("Initial filter/query detected, triggering worker load.");
       // Use non-debounced version for immediate initial load
-      await loadWorker();
     } else {
       // If no initial filter, set displayedData directly and mark as loaded
       console.log("No initial filter/query. Displaying raw data.");
