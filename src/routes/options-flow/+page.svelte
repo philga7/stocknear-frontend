@@ -20,10 +20,8 @@
   import { page } from "$app/stores";
 
   import OptionsFlowTable from "$lib/components/Table/OptionsFlowTable.svelte";
-  import { writable } from "svelte/store";
 
   export let data;
-  let shouldLoadWorker = writable(false);
   let timeoutId = null;
   let isComponentDestroyed = false;
 
@@ -199,7 +197,8 @@
     displayRules = allRows?.filter((row) =>
       ruleOfList?.some((rule) => rule.name === row.rule),
     );
-    shouldLoadWorker.set(true);
+    debouncedTriggerWorker();
+
     await saveCookieRuleOfList();
   }
 
@@ -291,19 +290,18 @@
     } else {
       ruleOfList = [...ruleOfList, newRule];
 
-      shouldLoadWorker.set(true);
+      debouncedTriggerWorker();
     }
   }
 
-  const loadWorker = async () => {
-    syncWorker.postMessage({ rawData, ruleOfList, filterQuery });
-  };
-
   const handleMessage = (event) => {
     isLoaded = false;
-    displayRules = allRows?.filter((row) =>
-      ruleOfList?.some((rule) => rule.name === row.rule),
-    );
+    displayRules = [
+      ...allRows?.filter((row) =>
+        ruleOfList?.some((rule) => rule.name === row.rule),
+      ),
+    ];
+
     filteredData = event.data?.filteredData || [];
     displayedData = [...filteredData];
     console.log("handle Message");
@@ -431,7 +429,7 @@
     }
 
     // Trigger worker load and save cookie
-    shouldLoadWorker.set(true);
+    debouncedTriggerWorker();
     await saveCookieRuleOfList();
   }
 
@@ -511,7 +509,7 @@
         selectedDate = undefined;
         rawData = data?.getOptionsFlowFeed;
         displayedData = [...rawData];
-        shouldLoadWorker.set(true);
+        debouncedTriggerWorker();
       }
     } else {
       toast?.error(`Market is closed`, {
@@ -549,9 +547,6 @@
 
   // --- Reactive statement now only handles stopping/starting based on $isOpen ---
   $: if ($isOpen) {
-    // If becoming open, ensure updates are scheduled if they aren't already running
-    // This is primarily handled by the onMount call and the recursive scheduling,
-    // but we clear/reschedule if $isOpen changes while mounted.
     console.log("$isOpen is true. Ensuring updates are scheduled.");
     // Clear any pending timeout just in case, then schedule the next one
     clearScheduledUpdate();
@@ -620,7 +615,8 @@
           rawData = [...newData, ...rawData];
 
           if (ruleOfList?.length > 0 || filterQuery?.length > 0) {
-            shouldLoadWorker.set(true);
+            debouncedTriggerWorker();
+
             console.log("Should load worker set to true");
           } else {
             // Ensure displayedData exists
@@ -684,32 +680,22 @@
 
     audio = new Audio(notifySound);
 
+    // Initialize the worker only once on mount
     if (!syncWorker) {
+      console.log("Initializing web worker...");
       const SyncWorker = await import("./workers/filterWorker?worker");
       syncWorker = new SyncWorker.default();
       syncWorker.onmessage = handleMessage;
+
+      // Trigger the initial worker load immediately after initialization
+      // Use the non-debounced version for the initial load
+      triggerWorker();
     }
 
-    if (filterQuery?.length > 0 || ruleOfList?.length !== 0) {
-      console.log("Initial filter/query detected, triggering worker load.");
-      // Use non-debounced version for immediate initial load
-    } else {
-      // If no initial filter, set displayedData directly and mark as loaded
-      console.log("No initial filter/query. Displaying raw data.");
-      displayedData = [...rawData];
-      calculateStats(rawData);
+    // Start the polling loop if market is open and in live mode
+    if ($isOpen && modeStatus) {
+      scheduleNextUpdate(0); // Start polling immediately
     }
-
-    await loadWorker();
-
-    scheduleNextUpdate(0); // Start polling immediately if market is open
-
-    shouldLoadWorker.subscribe(async (value) => {
-      if (value) {
-        await loadWorker();
-        shouldLoadWorker.set(false); // Reset after worker is loaded
-      }
-    });
   });
 
   onDestroy(async () => {
@@ -717,6 +703,12 @@
     isComponentDestroyed = true;
     // --- Clear any pending timeout on destroy ---
     clearScheduledUpdate();
+
+    if (syncWorker) {
+      console.log("Terminating web worker...");
+      syncWorker.terminate();
+      syncWorker = undefined;
+    }
 
     if (audio) {
       audio?.pause();
@@ -810,7 +802,7 @@
           rawData?.forEach((item) => {
             item.dte = daysLeft(item?.date_expiration);
           });
-          shouldLoadWorker.set(true);
+          debouncedTriggerWorker();
         }
       } else {
         const postData = { selectedDate: formattedDate };
@@ -829,7 +821,7 @@
             rawData?.forEach((item) => {
               item.dte = daysLeft(item?.date_expiration);
             });
-            shouldLoadWorker.set(true);
+            debouncedTriggerWorker();
           }
         } catch (error) {
           console.error("Error fetching historical flow:", error);
@@ -839,7 +831,7 @@
         }
       }
     } else {
-      toast.error("Unlock Feature with Pro Tier 🔥", {
+      toast.error("Unlock Feature with Pro Subscription", {
         style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
     }
@@ -848,9 +840,7 @@
   function handleInput(event) {
     filterQuery = event.target.value;
 
-    setTimeout(() => {
-      shouldLoadWorker.set(true);
-    }, 0);
+    debouncedTriggerWorker();
   }
 
   function debounce(fn, delay) {
@@ -882,6 +872,28 @@
         ruleOfList = [...ruleOfList];
         //shouldLoadWorker.set(true);
       }
+    }
+  }
+
+  const triggerWorker = () => {
+    if (syncWorker && rawData) {
+      // Ensure worker and rawData are available
+      console.log("Triggering worker with updated data/rules");
+      syncWorker.postMessage({ rawData, ruleOfList, filterQuery });
+    } else {
+      console.log("Worker not ready or no raw data, skipping trigger.");
+    }
+  };
+
+  const debouncedTriggerWorker = debounce(triggerWorker, 200);
+
+  $: {
+    // Watch rawData, ruleOfList, and filterQuery.
+    // When any of these change, the block runs.
+    // The debounced function ensures it doesn't run too frequently.
+    // Also ensure syncWorker and rawData are initialized before trying to trigger.
+    if (syncWorker && rawData) {
+      debouncedTriggerWorker();
     }
   }
 </script>
@@ -1011,7 +1023,7 @@
                       class="cursor-pointer"
                       on:click={() => {
                         filterQuery = "";
-                        shouldLoadWorker.set(true);
+                        debouncedTriggerWorker();
                       }}
                     >
                       <svg
