@@ -372,6 +372,7 @@ onmessage = async (event: MessageEvent) => {
     new Map(filteredData?.map((item) => [item?.id, item]))?.values()
   );
 
+  console.log(filterQuery)
   postMessage({ message: "success", filteredData });
 };
 

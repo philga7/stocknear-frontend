@@ -22,6 +22,8 @@
   import OptionsFlowTable from "$lib/components/Table/OptionsFlowTable.svelte";
   import { writable } from "svelte/store";
 
+  import FilterWorker from "./workers/filterWorker?worker"; // Vite will bundle this for you
+
   export let data;
   let shouldLoadWorker = writable(false);
 
@@ -599,6 +601,11 @@
   }
 
   onMount(async () => {
+    audio = new Audio(notifySound);
+
+    displayedData = [...rawData];
+    calculateStats(rawData);
+
     if (filterQuery?.length > 0) {
       shouldLoadWorker.set(true);
     }
@@ -611,13 +618,8 @@
       ruleOfList?.some((rule) => rule?.name === row?.rule),
     );
 
-    audio = new Audio(notifySound);
-    displayedData = [...rawData];
-    calculateStats(rawData);
-
     if (!syncWorker) {
-      const SyncWorker = await import("./workers/filterWorker?worker");
-      syncWorker = new SyncWorker.default();
+      syncWorker = new FilterWorker();
       syncWorker.onmessage = handleMessage;
     }
 
