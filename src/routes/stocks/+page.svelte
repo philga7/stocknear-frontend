@@ -6,6 +6,12 @@
   export let data;
 
   let rawData = data?.getStockList;
+
+  const defaultList = [
+    { name: "Industry", rule: "industry" },
+    { name: "Market Cap", rule: "marketCap" },
+    { name: "Revenue", rule: "revenue" },
+  ];
 </script>
 
 <SEO
@@ -41,7 +47,7 @@
           <div class="w-full m-auto">
             <!--Start Top Winners/Losers-->
             <div class="flex flex-col justify-center items-center">
-              <Table {data} {rawData} />
+              <Table {data} {rawData} {defaultList} />
             </div>
           </div>
         </main>
