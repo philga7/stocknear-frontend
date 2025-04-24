@@ -701,6 +701,8 @@
       calculateStats(rawData);
     }
 
+    await loadWorker();
+
     scheduleNextUpdate(0); // Start polling immediately if market is open
 
     shouldLoadWorker.subscribe(async (value) => {
