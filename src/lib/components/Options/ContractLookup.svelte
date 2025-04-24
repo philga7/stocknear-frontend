@@ -107,15 +107,17 @@
       [];
 
     // Filter out data points that have an undefined price so they don't appear in any series
-    const filteredData = sortedData.filter((item) => item?.price !== undefined);
+    //const filteredData = sortedData.filter((item) => item?.price !== undefined);
+    const filteredData = sortedData;
 
     // Build series based on the selected graph type, using filteredData
     let series = [];
-    const fillColorStart = "rgb(70, 129, 244,0.5)";
-    const fillColorEnd = "rgb(70, 129, 244,0.001)";
+    //const fillColorStart = "rgb(70, 129, 244,0.5)";
+    //const fillColorEnd = "rgb(70, 129, 244,0.001)";
 
     if (selectGraphType == "Vol/OI") {
       series = [
+        /*
         {
           name: "Stock Price",
           type: "area",
@@ -137,12 +139,13 @@
           marker: { enabled: false },
           animation: false,
         },
+        */
         {
-          name: "Avg Fill",
+          name: "Opiton Price",
           type: "spline", // smooth line
           data: filteredData.map((item) => [
             new Date(item.date).getTime(),
-            item.mark,
+            item?.mark,
           ]),
           color: "#F21C64",
           yAxis: 2,
@@ -179,6 +182,7 @@
       ];
     } else {
       series = [
+        /*
         {
           name: "Stock Price",
           type: "area",
@@ -200,12 +204,13 @@
           marker: { enabled: false },
           animation: false,
         },
+        */
         {
-          name: "Avg Fill",
+          name: "Option Price",
           type: "spline", // smooth line
           data: filteredData?.map((item) => [
             new Date(item.date).getTime(),
-            item.mark,
+            item?.mark,
           ]),
           color: "#F21C64",
           yAxis: 2,
@@ -218,7 +223,7 @@
           type: "spline",
           data: filteredData?.map((item) => [
             new Date(item.date).getTime(),
-            Math.floor(item.implied_volatility * 100),
+            Math.floor(item?.implied_volatility * 100),
           ]),
           color: $mode === "light" ? "black" : "white",
           yAxis: 0,
@@ -312,8 +317,8 @@
       tooltip: {
         shared: true,
         useHTML: true,
-        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
-        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        borderColor: "rgba(255, 255, 255, 0.2)",
         borderWidth: 1,
         style: {
           color: "#fff",
@@ -322,20 +327,23 @@
         },
         borderRadius: 4,
         formatter: function () {
-          // Format the x value to display time in a custom format
+          // Header with formatted date
           let tooltipContent = `<span class="m-auto text-[1rem] font-[501]">${new Date(
-            this?.x,
+            this.x,
           ).toLocaleDateString("en-US", {
             year: "numeric",
             month: "short",
             day: "numeric",
           })}</span><br>`;
 
-          // Loop through each point in the shared tooltip
+          // Add each series entry, appending "%" when series.name === "IV"
           this.points.forEach((point) => {
+            const raw = abbreviateNumber(point.y);
+            const suffix = point.series.name === "IV" ? "%" : "";
             tooltipContent += `
-        <span class="font-semibold text-sm">${point.series.name}:</span> 
-        <span class="font-normal text-sm">${abbreviateNumber(point.y)}</span><br>`;
+                    <span style="display:inline-block; width:10px; height:10px; background-color:${point.color}; border-radius:50%; margin-right:5px;"></span>
+        <span class="font-normal text-sm">${point.series.name}:</span>
+        <span class="font-normal text-sm">${raw}${suffix}</span><br>`;
           });
 
           return tooltipContent;
@@ -433,6 +441,7 @@
     rawDataHistory = output?.history;
 
     if (rawDataHistory?.length > 0) {
+      /*
       rawDataHistory.forEach((entry) => {
         const matchingData = data?.getHistoricalPrice?.find(
           (d) => d?.time === entry?.date,
@@ -441,6 +450,7 @@
           entry.price = matchingData?.close;
         }
       });
+      */
 
       rawDataHistory = calculateDTE(rawDataHistory, selectedDate);
       config = plotData();

@@ -23,7 +23,7 @@ export const load = async ({ locals, params }) => {
     return output;
   }; 
 
-
+/*
    const getHistoricalPrice = async () => {
      const postData = { ticker: params.tickerID, timePeriod: "six-months" };
   const response = await fetch(apiURL + "/historical-price", {
@@ -38,13 +38,13 @@ export const load = async ({ locals, params }) => {
     const output = await response.json();
     return output;
   }; 
-
+*/
   
 
   // Make sure to return a promise
   return {
     getData: await getData(),
-    getHistoricalPrice: await getHistoricalPrice(),
+    //getHistoricalPrice: await getHistoricalPrice(),
   };
 };
 
