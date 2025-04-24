@@ -74,14 +74,13 @@
   } else {
     setDefault();
   }
-
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "2-digit",
-      year: "numeric",
-      timeZone: "America/New_York",
+      month: "short", // e.g. "Jan"
+      day: "2-digit", // e.g. "05"
+      year: "numeric", // e.g. "2025"
+      timeZone: "UTC", // ALWAYS use UTC
     });
   };
 
