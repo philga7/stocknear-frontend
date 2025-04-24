@@ -601,6 +601,9 @@
   }
 
   onMount(async () => {
+    syncWorker = new FilterWorker();
+    syncWorker.onmessage = handleMessage;
+
     audio = new Audio(notifySound);
 
     displayedData = [...rawData];
@@ -617,11 +620,6 @@
     displayRules = allRows?.filter((row) =>
       ruleOfList?.some((rule) => rule?.name === row?.rule),
     );
-
-    if (!syncWorker) {
-      syncWorker = new FilterWorker();
-      syncWorker.onmessage = handleMessage;
-    }
 
     shouldLoadWorker.subscribe(async (value) => {
       if (value) {
