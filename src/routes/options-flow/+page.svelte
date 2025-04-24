@@ -532,12 +532,12 @@
   function scheduleNextUpdate(delay = 6000) {
     // Only schedule if component is not destroyed and $isOpen is true
     if (!isComponentDestroyed && $isOpen) {
-      console.log(`Scheduling next update in ${delay}ms.`);
+      //console.log(`Scheduling next update in ${delay}ms.`);
       // Clear any existing timeout before setting a new one (safety)
       clearScheduledUpdate();
       timeoutId = setTimeout(updateOptionsFlowData, delay);
     } else if (isComponentDestroyed) {
-      console.log("Not scheduling next update because component is destroyed.");
+      //console.log("Not scheduling next update because component is destroyed.");
     } else if (!$isOpen) {
       console.log("Not scheduling next update because $isOpen is false.");
     }
@@ -554,7 +554,7 @@
     clearScheduledUpdate();
     // Schedule the next update after a small delay to react to the change
     if (!isComponentDestroyed) {
-      scheduleNextUpdate(100); // Schedule next update soon after becoming open
+      scheduleNextUpdate(500); // Schedule next update soon after becoming open
     }
   } else {
     // If $isOpen becomes false, clear any pending timeout
@@ -563,13 +563,8 @@
   }
 
   async function updateOptionsFlowData() {
-    console.log("updateOptionsFlowData function started.");
-
     // --- Check the destroy flag immediately ---
     if (isComponentDestroyed) {
-      console.log(
-        "updateOptionsFlowData called but component is destroyed. Aborting.",
-      );
       // Ensure no further updates are scheduled if we abort due to destruction
       clearScheduledUpdate();
       return;
@@ -587,13 +582,8 @@
     }
     // ---------------------------------------------------
 
-    console.log("updateOptionsFlowData executing logic. timeoutId:", timeoutId); // Added log here
-
     try {
       if (!modeStatus) {
-        console.log(
-          "modeStatus is false, returning from updateOptionsFlowData",
-        );
         // --- Schedule the next update even if modeStatus is false ---
         // You might want to adjust this logic: if modeStatus is false, maybe you don't want to poll?
         // If you want to stop polling when modeStatus is false, remove this line:
@@ -654,9 +644,7 @@
       console.error("Update Realtime Data connection error:", error);
     } finally {
       // --- Schedule the next update regardless of success or failure ---
-      console.log(
-        "updateOptionsFlowData function finished. Scheduling next update.",
-      );
+
       scheduleNextUpdate();
       // -------------------------------------------------------------
     }
@@ -687,21 +675,11 @@
   }
 
   onMount(async () => {
-    if (filterQuery?.length > 0) {
-      shouldLoadWorker.set(true);
-    }
-    if (ruleOfList?.length !== 0) {
-      shouldLoadWorker.set(true);
-      console.log("initial filter");
-    }
-
     displayRules = allRows?.filter((row) =>
       ruleOfList?.some((rule) => rule?.name === row?.rule),
     );
 
     audio = new Audio(notifySound);
-    displayedData = [...rawData];
-    calculateStats(rawData);
 
     if (!syncWorker) {
       const SyncWorker = await import("./workers/filterWorker?worker");
@@ -709,7 +687,20 @@
       syncWorker.onmessage = handleMessage;
     }
 
-    scheduleNextUpdate(0);
+    if (filterQuery?.length > 0 || ruleOfList?.length !== 0) {
+      console.log("Initial filter/query detected, triggering worker load.");
+      // Use non-debounced version for immediate initial load
+      await loadWorker();
+    } else {
+      // If no initial filter, set displayedData directly and mark as loaded
+      console.log("No initial filter/query. Displaying raw data.");
+      displayedData = [...rawData];
+      calculateStats(rawData);
+    }
+
+    scheduleNextUpdate(0); // Start polling immediately if market is open
+
+    isLoaded = true;
 
     shouldLoadWorker.subscribe(async (value) => {
       if (value) {
@@ -719,8 +710,6 @@
         isLoaded = true;
       }
     });
-
-    isLoaded = true;
   });
 
   onDestroy(async () => {
@@ -1504,204 +1493,204 @@
       </div>
 
       {#if isLoaded}
-        <div class="w-full mt-5 m-auto flex justify-center items-center">
-          <div class="w-full grid grid-cols-1 lg:grid-cols-4 gap-y-3 gap-x-3">
-            <!--Start Flow Sentiment-->
-            <div
-              class="shadow-sm flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded-md h-20"
-            >
-              <div class="flex flex-col items-start">
-                <span
-                  class="font-semibold text-muted dark:text-gray-200 text-sm sm:text-[1rem]"
-                  >Flow Sentiment</span
-                >
-                <span
-                  class="text-start text-[1rem] font-semibold {flowSentiment ===
-                  'Bullish'
-                    ? 'text-green-800 dark:text-[#00FC50]'
-                    : flowSentiment === 'Bearish'
-                      ? 'text-red-800 dark:text-[#FF2F1F]'
-                      : flowSentiment === 'Neutral'
-                        ? 'text-[#fff]'
-                        : ''}">{flowSentiment}</span
-                >
-              </div>
-            </div>
-            <!--End Flow Sentiment-->
-            <!--Start Put/Call-->
-            <div
-              class="shadow-sm flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded-md h-20"
-            >
-              <div class="flex flex-col items-start">
-                <span
-                  class="font-semibold text-muted dark:text-gray-200 text-sm sm:text-[1rem]"
-                  >Put/Call</span
-                >
-                <span class="text-start text-[1rem] font-semibold">
-                  {putCallRatio?.toFixed(3)}
-                </span>
-              </div>
-              <!-- Circular Progress -->
-              <div class="relative size-14 ml-auto">
-                <svg
-                  class="size-full w-14 h-14"
-                  viewBox="0 0 36 36"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <!-- Background Circle -->
-                  <circle
-                    cx="18"
-                    cy="18"
-                    r="16"
-                    fill="none"
-                    class="stroke-current text-gray-300 dark:text-[#3E3E3E]"
-                    stroke-width="3"
-                  ></circle>
-                  <!-- Progress Circle inside a group with rotation -->
-                  <g class="origin-center -rotate-90 transform">
-                    <circle
-                      cx="18"
-                      cy="18"
-                      r="16"
-                      fill="none"
-                      class="stroke-current text-blue-700"
-                      stroke-width="3"
-                      stroke-dasharray="100"
-                      stroke-dashoffset={putCallRatio >= 1
-                        ? 0
-                        : 100 - (putCallRatio * 100)?.toFixed(2)}
-                    ></circle>
-                  </g>
-                </svg>
-                <!-- Percentage Text -->
-                <div
-                  class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
-                >
-                  <span class="text-center text-sm"
-                    >{putCallRatio?.toFixed(2)}</span
+        {#if displayedData?.length > 0}
+          <div class="w-full mt-5 m-auto flex justify-center items-center">
+            <div class="w-full grid grid-cols-1 lg:grid-cols-4 gap-y-3 gap-x-3">
+              <!--Start Flow Sentiment-->
+              <div
+                class="shadow-sm flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded-md h-20"
+              >
+                <div class="flex flex-col items-start">
+                  <span
+                    class="font-semibold text-muted dark:text-gray-200 text-sm sm:text-[1rem]"
+                    >Flow Sentiment</span
+                  >
+                  <span
+                    class="text-start text-[1rem] font-semibold {flowSentiment ===
+                    'Bullish'
+                      ? 'text-green-800 dark:text-[#00FC50]'
+                      : flowSentiment === 'Bearish'
+                        ? 'text-red-800 dark:text-[#FF2F1F]'
+                        : flowSentiment === 'Neutral'
+                          ? 'text-[#fff]'
+                          : ''}">{flowSentiment}</span
                   >
                 </div>
               </div>
-              <!-- End Circular Progress -->
-            </div>
-            <!--End Put/Call-->
-            <!--Start Call Flow-->
-            <div
-              class="shadow-sm flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded-md h-20"
-            >
-              <div class="flex flex-col items-start">
-                <span
-                  class="font-semibold text-muted dark:text-gray-200 text-sm sm:text-[1rem]"
-                  >Call Flow</span
-                >
-                <span class="text-start text-[1rem] font-semibold">
-                  {new Intl.NumberFormat("en", {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0,
-                  }).format(displayCallVolume)}
-                </span>
-              </div>
-              <!-- Circular Progress -->
-              <div class="relative size-14 ml-auto">
-                <svg
-                  class="size-full w-14 h-14"
-                  viewBox="0 0 36 36"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <!-- Background Circle -->
-                  <circle
-                    cx="18"
-                    cy="18"
-                    r="16"
-                    fill="none"
-                    class="stroke-current text-gray-300 dark:text-[#3E3E3E]"
-                    stroke-width="3"
-                  ></circle>
-                  <!-- Progress Circle inside a group with rotation -->
-                  <g class="origin-center -rotate-90 transform">
+              <!--End Flow Sentiment-->
+              <!--Start Put/Call-->
+              <div
+                class="shadow-sm flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded-md h-20"
+              >
+                <div class="flex flex-col items-start">
+                  <span
+                    class="font-semibold text-muted dark:text-gray-200 text-sm sm:text-[1rem]"
+                    >Put/Call</span
+                  >
+                  <span class="text-start text-[1rem] font-semibold">
+                    {putCallRatio?.toFixed(3)}
+                  </span>
+                </div>
+                <!-- Circular Progress -->
+                <div class="relative size-14 ml-auto">
+                  <svg
+                    class="size-full w-14 h-14"
+                    viewBox="0 0 36 36"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <!-- Background Circle -->
                     <circle
                       cx="18"
                       cy="18"
                       r="16"
                       fill="none"
-                      class="stroke-current text-green-800 dark:text-[#00FC50]"
+                      class="stroke-current text-gray-300 dark:text-[#3E3E3E]"
                       stroke-width="3"
-                      stroke-dasharray="100"
-                      stroke-dashoffset={100 - callPercentage?.toFixed(2)}
                     ></circle>
-                  </g>
-                </svg>
-                <!-- Percentage Text -->
-                <div
-                  class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
-                >
-                  <span class="text-center text-sm">{callPercentage}%</span>
+                    <!-- Progress Circle inside a group with rotation -->
+                    <g class="origin-center -rotate-90 transform">
+                      <circle
+                        cx="18"
+                        cy="18"
+                        r="16"
+                        fill="none"
+                        class="stroke-current text-blue-700"
+                        stroke-width="3"
+                        stroke-dasharray="100"
+                        stroke-dashoffset={putCallRatio >= 1
+                          ? 0
+                          : 100 - (putCallRatio * 100)?.toFixed(2)}
+                      ></circle>
+                    </g>
+                  </svg>
+                  <!-- Percentage Text -->
+                  <div
+                    class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
+                  >
+                    <span class="text-center text-sm"
+                      >{putCallRatio?.toFixed(2)}</span
+                    >
+                  </div>
                 </div>
+                <!-- End Circular Progress -->
               </div>
-              <!-- End Circular Progress -->
-            </div>
-            <!--End Call Flow-->
-            <!--Start Put Flow-->
-            <div
-              class="shadow-sm flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded-md h-20"
-            >
-              <div class="flex flex-col items-start">
-                <span
-                  class="font-semibold text-muted dark:text-gray-200 text-sm sm:text-[1rem]"
-                  >Put Flow</span
-                >
-                <span class="text-start text-[1rem] font-semibold">
-                  {new Intl.NumberFormat("en", {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0,
-                  }).format(displayPutVolume)}
-                </span>
-              </div>
-              <!-- Circular Progress -->
-              <div class="relative size-14 ml-auto">
-                <svg
-                  class="size-full w-14 h-14"
-                  viewBox="0 0 36 36"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <!-- Background Circle -->
-                  <circle
-                    cx="18"
-                    cy="18"
-                    r="16"
-                    fill="none"
-                    class="stroke-current text-gray-300 dark:text-[#3E3E3E]"
-                    stroke-width="3"
-                  ></circle>
-                  <!-- Progress Circle inside a group with rotation -->
-                  <g class="origin-center -rotate-90 transform">
+              <!--End Put/Call-->
+              <!--Start Call Flow-->
+              <div
+                class="shadow-sm flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded-md h-20"
+              >
+                <div class="flex flex-col items-start">
+                  <span
+                    class="font-semibold text-muted dark:text-gray-200 text-sm sm:text-[1rem]"
+                    >Call Flow</span
+                  >
+                  <span class="text-start text-[1rem] font-semibold">
+                    {new Intl.NumberFormat("en", {
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 0,
+                    }).format(displayCallVolume)}
+                  </span>
+                </div>
+                <!-- Circular Progress -->
+                <div class="relative size-14 ml-auto">
+                  <svg
+                    class="size-full w-14 h-14"
+                    viewBox="0 0 36 36"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <!-- Background Circle -->
                     <circle
                       cx="18"
                       cy="18"
                       r="16"
                       fill="none"
-                      class="stroke-current text-[#EE5365]"
+                      class="stroke-current text-gray-300 dark:text-[#3E3E3E]"
                       stroke-width="3"
-                      stroke-dasharray="100"
-                      stroke-dashoffset={100 - putPercentage?.toFixed(2)}
                     ></circle>
-                  </g>
-                </svg>
-                <!-- Percentage Text -->
-                <div
-                  class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
-                >
-                  <span class="text-center text-sm">{putPercentage}%</span>
+                    <!-- Progress Circle inside a group with rotation -->
+                    <g class="origin-center -rotate-90 transform">
+                      <circle
+                        cx="18"
+                        cy="18"
+                        r="16"
+                        fill="none"
+                        class="stroke-current text-green-800 dark:text-[#00FC50]"
+                        stroke-width="3"
+                        stroke-dasharray="100"
+                        stroke-dashoffset={100 - callPercentage?.toFixed(2)}
+                      ></circle>
+                    </g>
+                  </svg>
+                  <!-- Percentage Text -->
+                  <div
+                    class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
+                  >
+                    <span class="text-center text-sm">{callPercentage}%</span>
+                  </div>
                 </div>
+                <!-- End Circular Progress -->
               </div>
-              <!-- End Circular Progress -->
+              <!--End Call Flow-->
+              <!--Start Put Flow-->
+              <div
+                class="shadow-sm flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded-md h-20"
+              >
+                <div class="flex flex-col items-start">
+                  <span
+                    class="font-semibold text-muted dark:text-gray-200 text-sm sm:text-[1rem]"
+                    >Put Flow</span
+                  >
+                  <span class="text-start text-[1rem] font-semibold">
+                    {new Intl.NumberFormat("en", {
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 0,
+                    }).format(displayPutVolume)}
+                  </span>
+                </div>
+                <!-- Circular Progress -->
+                <div class="relative size-14 ml-auto">
+                  <svg
+                    class="size-full w-14 h-14"
+                    viewBox="0 0 36 36"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <!-- Background Circle -->
+                    <circle
+                      cx="18"
+                      cy="18"
+                      r="16"
+                      fill="none"
+                      class="stroke-current text-gray-300 dark:text-[#3E3E3E]"
+                      stroke-width="3"
+                    ></circle>
+                    <!-- Progress Circle inside a group with rotation -->
+                    <g class="origin-center -rotate-90 transform">
+                      <circle
+                        cx="18"
+                        cy="18"
+                        r="16"
+                        fill="none"
+                        class="stroke-current text-[#EE5365]"
+                        stroke-width="3"
+                        stroke-dasharray="100"
+                        stroke-dashoffset={100 - putPercentage?.toFixed(2)}
+                      ></circle>
+                    </g>
+                  </svg>
+                  <!-- Percentage Text -->
+                  <div
+                    class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
+                  >
+                    <span class="text-center text-sm">{putPercentage}%</span>
+                  </div>
+                </div>
+                <!-- End Circular Progress -->
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Page wrapper -->
-        <div class="flex w-full m-auto h-full overflow-hidden">
-          {#if displayedData?.length > 0}
+          <!-- Page wrapper -->
+          <div class="flex w-full m-auto h-full overflow-hidden">
             <div class="mt-8 w-full overflow-x-auto h-[850px] overflow-hidden">
               <OptionsFlowTable
                 {data}
@@ -1712,12 +1701,12 @@
               />
               <UpgradeToPro {data} display={true} />
             </div>
-          {:else}
-            <Infobox
-              text="Looks like your taste is one-of-a-kind! No matches found... yet!"
-            />
-          {/if}
-        </div>
+          </div>
+        {:else}
+          <Infobox
+            text="Looks like your taste is one-of-a-kind! No matches found... yet!"
+          />
+        {/if}
       {:else}
         <div class="flex justify-center items-center h-80">
           <div class="relative">
