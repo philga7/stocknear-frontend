@@ -22,10 +22,10 @@
   import OptionsFlowTable from "$lib/components/Table/OptionsFlowTable.svelte";
   import { writable } from "svelte/store";
 
-  import FilterWorker from "./workers/filterWorker?worker"; // Vite will bundle this for you
-
   export let data;
   let shouldLoadWorker = writable(false);
+  let timeoutId = null;
+  let isComponentDestroyed = false;
 
   let optionsWatchlist = data?.getOptionsWatchlist;
 
@@ -517,9 +517,91 @@
     }
   }
 
+  // --- Function to clear the currently scheduled timeout ---
+  function clearScheduledUpdate() {
+    if (timeoutId !== null) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    } else {
+      console.log("No scheduled update timeout to clear.");
+    }
+  }
+  // -------------------------------------------------------
+
+  // --- Function to schedule the *next* update ---
+  function scheduleNextUpdate(delay = 6000) {
+    // Only schedule if component is not destroyed and $isOpen is true
+    if (!isComponentDestroyed && $isOpen) {
+      console.log(`Scheduling next update in ${delay}ms.`);
+      // Clear any existing timeout before setting a new one (safety)
+      clearScheduledUpdate();
+      timeoutId = setTimeout(updateOptionsFlowData, delay);
+    } else if (isComponentDestroyed) {
+      console.log("Not scheduling next update because component is destroyed.");
+    } else if (!$isOpen) {
+      console.log("Not scheduling next update because $isOpen is false.");
+    }
+  }
+  // --------------------------------------------
+
+  // --- Reactive statement now only handles stopping/starting based on $isOpen ---
+  $: if ($isOpen) {
+    // If becoming open, ensure updates are scheduled if they aren't already running
+    // This is primarily handled by the onMount call and the recursive scheduling,
+    // but we clear/reschedule if $isOpen changes while mounted.
+    console.log("$isOpen is true. Ensuring updates are scheduled.");
+    // Clear any pending timeout just in case, then schedule the next one
+    clearScheduledUpdate();
+    // Schedule the next update after a small delay to react to the change
+    if (!isComponentDestroyed) {
+      scheduleNextUpdate(100); // Schedule next update soon after becoming open
+    }
+  } else {
+    // If $isOpen becomes false, clear any pending timeout
+    console.log("$isOpen is false. Clearing scheduled update.");
+    clearScheduledUpdate();
+  }
+
   async function updateOptionsFlowData() {
+    console.log("updateOptionsFlowData function started.");
+
+    // --- Check the destroy flag immediately ---
+    if (isComponentDestroyed) {
+      console.log(
+        "updateOptionsFlowData called but component is destroyed. Aborting.",
+      );
+      // Ensure no further updates are scheduled if we abort due to destruction
+      clearScheduledUpdate();
+      return;
+    }
+    // ------------------------------------------
+
+    // --- Check $isOpen before proceeding (double check) ---
+    if (!$isOpen) {
+      console.log(
+        "updateOptionsFlowData called but $isOpen is false. Aborting.",
+      );
+      // Ensure no further updates are scheduled if $isOpen is false
+      clearScheduledUpdate();
+      return;
+    }
+    // ---------------------------------------------------
+
+    console.log("updateOptionsFlowData executing logic. timeoutId:", timeoutId); // Added log here
+
     try {
-      if (!modeStatus) return;
+      if (!modeStatus) {
+        console.log(
+          "modeStatus is false, returning from updateOptionsFlowData",
+        );
+        // --- Schedule the next update even if modeStatus is false ---
+        // You might want to adjust this logic: if modeStatus is false, maybe you don't want to poll?
+        // If you want to stop polling when modeStatus is false, remove this line:
+        scheduleNextUpdate();
+        // Instead, maybe clearScheduledUpdate() if modeStatus becomes false?
+        // For now, assuming it should still schedule the next check.
+        return;
+      }
 
       const orderList = rawData?.map((item) => item?.id);
       const postData = { orderList: orderList };
@@ -537,6 +619,7 @@
         const newData = (await response.json()) || [];
 
         if (newData?.length > 0) {
+          console.log("Received new data, length:", newData.length);
           newData?.forEach((item) => {
             item.dte = daysLeft(item?.date_expiration);
           });
@@ -545,12 +628,17 @@
 
           if (ruleOfList?.length > 0 || filterQuery?.length > 0) {
             shouldLoadWorker.set(true);
+            console.log("Should load worker set to true");
           } else {
+            // Ensure displayedData exists
+            // let displayedData; // If not imported, declare it
             displayedData = [...rawData];
             calculateStats(displayedData);
+            console.log("Updating displayedData and calculating stats");
           }
 
           if (!muted && audio) {
+            console.log("Attempting to play audio...");
             audio?.play()?.catch((error) => {
               console.log("Audio play failed:", error);
             });
@@ -564,6 +652,13 @@
       }
     } catch (error) {
       console.error("Update Realtime Data connection error:", error);
+    } finally {
+      // --- Schedule the next update regardless of success or failure ---
+      console.log(
+        "updateOptionsFlowData function finished. Scheduling next update.",
+      );
+      scheduleNextUpdate();
+      // -------------------------------------------------------------
     }
   }
 
@@ -591,24 +686,7 @@
     }); // make a POST request to the server with the FormData object
   }
 
-  let intervalId;
-
-  $: if ($isOpen) {
-    if (intervalId) {
-      clearInterval(intervalId);
-    }
-    intervalId = setInterval(updateOptionsFlowData, 6000);
-  }
-
   onMount(async () => {
-    syncWorker = new FilterWorker();
-    syncWorker.onmessage = handleMessage;
-
-    audio = new Audio(notifySound);
-
-    displayedData = [...rawData];
-    calculateStats(rawData);
-
     if (filterQuery?.length > 0) {
       shouldLoadWorker.set(true);
     }
@@ -620,6 +698,18 @@
     displayRules = allRows?.filter((row) =>
       ruleOfList?.some((rule) => rule?.name === row?.rule),
     );
+
+    audio = new Audio(notifySound);
+    displayedData = [...rawData];
+    calculateStats(rawData);
+
+    if (!syncWorker) {
+      const SyncWorker = await import("./workers/filterWorker?worker");
+      syncWorker = new SyncWorker.default();
+      syncWorker.onmessage = handleMessage;
+    }
+
+    scheduleNextUpdate(0);
 
     shouldLoadWorker.subscribe(async (value) => {
       if (value) {
@@ -634,6 +724,11 @@
   });
 
   onDestroy(async () => {
+    // --- Set the flag on destroy ---
+    isComponentDestroyed = true;
+    // --- Clear any pending timeout on destroy ---
+    clearScheduledUpdate();
+
     if (audio) {
       audio?.pause();
       audio = null;
