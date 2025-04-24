@@ -116,8 +116,7 @@
       },
       xAxis: {
         categories: strikes,
-        lineColor: $mode === "light" ? "black" : "white",
-        endOnTick: false,
+        gridLineWidth: 0,
         crosshair: {
           color: $mode === "light" ? "black" : "white", // Set the color of the crosshair line
           width: 1, // Adjust the line width as needed

@@ -149,6 +149,7 @@
           width: 1, // Adjust the line width as needed
           dashStyle: "Solid",
         },
+        gridLineWidth: 0,
         labels: {
           style: {
             color: $mode === "light" ? "#545454" : "white",
@@ -182,6 +183,7 @@
           data: putValues,
           color: "#9B5DC4",
           borderColor: "#9B5DC4",
+          borderRadius: "1px",
           animation: false,
         },
         {
@@ -189,6 +191,7 @@
           data: netValues,
           color: "#FF2F1F",
           borderColor: "#FF2F1F",
+          borderRadius: "1px",
           animation: false,
         },
         {
@@ -196,6 +199,7 @@
           data: callValues,
           color: "#C4E916",
           borderColor: "#C4E916",
+          borderRadius: "1px",
           animation: false,
         },
       ],

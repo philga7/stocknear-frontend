@@ -56,8 +56,7 @@
       },
       xAxis: {
         categories: strikes,
-        lineColor: $mode === "light" ? "black" : "white",
-        endOnTick: false,
+        gridLineWidth: 0,
         crosshair: {
           color: $mode === "light" ? "black" : "white", // Set the color of the crosshair line
           width: 1, // Adjust the line width as needed
@@ -125,6 +124,7 @@
           data: putValues,
           color: "#FF2F1F",
           borderColor: "#FF2F1F",
+          borderRadius: "1px",
           animation: false,
         },
         {
@@ -133,6 +133,7 @@
           data: callValues,
           color: "#00FC50",
           borderColor: "#00FC50",
+          borderRadius: "1px",
           animation: false,
         },
       ],

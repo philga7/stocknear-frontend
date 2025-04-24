@@ -150,7 +150,7 @@
           data: putValues,
           color: "#FF2F1F",
           borderColor: "#FF2F1F",
-          borderRadius: "2px",
+          borderRadius: "1px",
           animation: false,
         },
         {
@@ -159,7 +159,7 @@
           data: callValues,
           color: "#00FC50",
           borderColor: "#00FC50",
-          borderRadius: "2px",
+          borderRadius: "1px",
           animation: false,
         },
       ],
