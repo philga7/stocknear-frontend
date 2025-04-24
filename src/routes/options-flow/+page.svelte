@@ -300,6 +300,7 @@
   };
 
   const handleMessage = (event) => {
+    isLoaded = false;
     displayRules = allRows?.filter((row) =>
       ruleOfList?.some((rule) => rule.name === row.rule),
     );
@@ -307,6 +308,8 @@
     displayedData = [...filteredData];
     console.log("handle Message");
     calculateStats(displayedData);
+
+    isLoaded = true;
   };
 
   async function changeRuleCondition(name: string, state: string) {
@@ -700,14 +703,10 @@
 
     scheduleNextUpdate(0); // Start polling immediately if market is open
 
-    isLoaded = true;
-
     shouldLoadWorker.subscribe(async (value) => {
       if (value) {
-        isLoaded = false;
         await loadWorker();
         shouldLoadWorker.set(false); // Reset after worker is loaded
-        isLoaded = true;
       }
     });
   });
