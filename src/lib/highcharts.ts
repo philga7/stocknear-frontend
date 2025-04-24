@@ -1,15 +1,23 @@
-
 import Highcharts from 'highcharts';
-import HighchartsMore from 'highcharts/highcharts-more'; // Add this import
-//import HighchartsAnnotations from 'highcharts/modules/annotations';
+import HighchartsMore from 'highcharts/highcharts-more';
+import Boost from 'highcharts/modules/boost'; // Add this import
+// import HighchartsAnnotations from 'highcharts/modules/annotations';
 import { browser } from '$app/environment';
 
 if (browser) {
-  HighchartsMore(Highcharts); // Initialize the extension
-  //HighchartsAnnotations(Highcharts); // Initialize annotations module
-  Highcharts.setOptions({
+  // Initialize modules
+  HighchartsMore(Highcharts);
+  Boost(Highcharts);
+  // HighchartsAnnotations(Highcharts);
+
+Highcharts.setOptions({
     lang: {
       numericSymbols: ['K', 'M', 'B', 'T', 'P', 'E']
+    },
+    // Global performance options
+    boost: {
+      useGPUTranslations: true,
+      usePreallocated: true
     }
   });
 }
@@ -22,9 +30,7 @@ export default (node, config) => {
   const createChart = () => {
     chart = Highcharts.chart(node, {
       ...config,
-      accessibility: {
-        enabled: false,
-      },
+      accessibility: { enabled: false },
       chart: {
         ...(config.chart || {}),
         events: {
@@ -64,17 +70,16 @@ export default (node, config) => {
   createChart();
 
   // Resize observer remains the same
-const resizeObserver = new ResizeObserver(() => {
-  if (chart && browser) {
-    const newWidth = node.clientWidth;
-    // Set height based on viewport width: 300 for mobile, 360 for desktop
-    const newHeight = (node.clientWidth < 600) ? 300 : 330;
+  const resizeObserver = new ResizeObserver(() => {
+    if (chart && browser) {
+      const newWidth = node.clientWidth;
+      // Set height based on viewport width: 300 for mobile, 360 for desktop
+      const newHeight = (node.clientWidth < 600) ? 300 : 330;
 
-    chart?.setSize(newWidth, newHeight, false);
-  }
-});
-resizeObserver.observe(node);
-
+      chart?.setSize(newWidth, newHeight, false);
+    }
+  });
+  resizeObserver.observe(node);
 
   return {
     update(newConfig) {

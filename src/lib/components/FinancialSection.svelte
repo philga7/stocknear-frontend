@@ -240,10 +240,10 @@
                   >
                     {#if $coolMode}
                       <TableMode class="w-4.5 h-4.5" />
-                      <span class="ml-2 text-sm"> Table Mode </span>
+                      <span class="ml-2 mr-auto text-sm"> Table Mode </span>
                     {:else}
                       <ChartMode class="w-4.5 h-4.5" />
-                      <span class="ml-2 text-sm"> Chart Mode </span>
+                      <span class="ml-2 mr-auto text-sm"> Chart Mode </span>
                     {/if}</Button
                   >
 

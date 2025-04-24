@@ -26,8 +26,13 @@
       },
       credits: { enabled: false },
       legend: { enabled: false },
+
       plotOptions: {
         series: {
+          marker: {
+            enabled: false,
+            radius: 0,
+          },
           color: "white",
           animation: false,
           dataLabels: {
