@@ -42,8 +42,8 @@ function convertUnitToValue(
     "otm",
     "repeated flow"
   ]);
-  if (nonNumericValues.has(lowerInput)) return input;
-  if (input.endsWith("%")) {
+  if (nonNumericValues?.has(lowerInput)) return input;
+  if (input?.endsWith("%")) {
     const numericValue = parseFloat(input?.slice(0, -1));
     if (isNaN(numericValue)) {
       throw new Error(`Unable to convert ${input} to a number`);
@@ -330,7 +330,7 @@ async function filterRawData(rawData, ruleOfList, filterQuery) {
 
   // Preprocess filter tickers
   const filterTickers = filterQuery
-    ? filterQuery?.split(",").map((ticker) => ticker.trim().toUpperCase())
+    ? filterQuery?.split(",")?.map((ticker) => ticker?.trim()?.toUpperCase())
     : [];
 
   // Initialize context with optional flowTypeCache
@@ -368,7 +368,7 @@ onmessage = async (event: MessageEvent) => {
   // Filter the data
   let filteredData = await filterRawData(rawData, ruleOfList, filterQuery);
   
-  filteredData = Array.from(
+  filteredData = Array?.from(
     new Map(filteredData?.map((item) => [item?.id, item]))?.values()
   );
 
