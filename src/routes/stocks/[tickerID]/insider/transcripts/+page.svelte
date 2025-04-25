@@ -17,7 +17,9 @@
   const now = new Date();
   let year = now.getFullYear();
   let quarter = Math.floor(now.getMonth() / 3) + 1;
-  let yearRange = ["2024", "2023", "2022", "2021"];
+  const currentYear = new Date().getFullYear();
+  let yearRange = Array.from({ length: 5 }, (_, i) => String(currentYear - i));
+
   let displayQuarter = quarter;
   let displayYear = year;
   let isLoaded = false;

@@ -63,10 +63,8 @@
 
     if (state !== "insider" && subSectionMap[state]) {
       displaySubSection = state;
-      //goto(`/stocks/${$stockTicker}${subSectionMap[state]}`);
     } else {
       displaySubSection = state;
-      //goto(`/stocks/${$stockTicker}/insider`);
     }
   }
 </script>
@@ -102,7 +100,7 @@
               >
                 13F Institute
               </a>
-
+              <!--
               <a
                 href={`/stocks/${$stockTicker}/insider/congress-trading`}
                 on:click={() => changeSubSection("congress-trading")}
@@ -113,6 +111,7 @@
               >
                 Congress Trading
               </a>
+              -->
               <a
                 href={`/stocks/${$stockTicker}/insider/transcripts`}
                 on:click={() => changeSubSection("transcripts")}

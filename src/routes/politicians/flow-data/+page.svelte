@@ -277,36 +277,36 @@
             class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
-              href={"/analysts"}
-              class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
-            >
-              <div class="w-full flex justify-between items-center p-3 mt-3">
-                <h2 class="text-start text-xl font-semibold ml-3">
-                  Top Analyst
-                </h2>
-                <ArrowLogo class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:" />
-              </div>
-              <span class="p-3 ml-3 mr-3">
-                Get the latest top Wall Street analyst ratings
-              </span>
-            </a>
-          </div>
-
-          <div
-            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
-          >
-            <a
               href={"/politicians"}
               class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
             >
               <div class="w-full flex justify-between items-center p-3 mt-3">
                 <h2 class="text-start text-xl font-semibold ml-3">
-                  Congress Trading
+                  All Congress Trading
                 </h2>
                 <ArrowLogo class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:" />
               </div>
               <span class="p-3 ml-3 mr-3">
-                Get the latest top Congress trading insights.
+                Get detailed reports on latest Congress trading transactions.
+              </span>
+            </a>
+          </div>
+          <div
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
+          >
+            <a
+              href={"/stock-screener"}
+              class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
+            >
+              <div class="w-full flex justify-between items-center p-3 mt-3">
+                <h2 class="text-start text-xl font-semibold ml-3">
+                  Stock Screener
+                </h2>
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:" />
+              </div>
+              <span class="p-3 ml-3 mr-3">
+                Filter, sort and analyze all stocks to find your next
+                investment.
               </span>
             </a>
           </div>
