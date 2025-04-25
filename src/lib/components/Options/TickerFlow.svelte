@@ -302,7 +302,7 @@
                   class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
                 >
                   <div class=" text-sm mb-2 flex items-center">
-                    <span>Volume</span>
+                    <span>Net Volume</span>
                   </div>
                   <div class="flex items-baseline">
                     <span class="text-xl font-bold">

@@ -34,16 +34,11 @@
   //let sectorData = data?.getData?.sectorData || [];
   let topPosNetPremium =
     data?.getData?.topPosNetPremium[sectorDict[selectedSector]] || [];
-  let topNegNetPremium =
-    data?.getData?.topNegNetPremium[sectorDict[selectedSector]] || [];
 
   let marketTideData =
     data?.getData?.sectorFlow[sectorDict[selectedSector]] || {};
   let originalPosTickers = topPosNetPremium;
   let displayPosTickers = topPosNetPremium;
-
-  let originalNegTickers = topNegNetPremium;
-  let displayNegTickers = topNegNetPremium;
 
   function findLastNonNull(dataArray, key) {
     for (let i = dataArray.length - 1; i >= 0; i--) {
@@ -170,65 +165,6 @@
 
     // Sort using the generic comparison function
     displayPosTickers = [...originalPosTickers]
-      .sort(compareValues)
-      ?.slice(0, 50);
-  };
-
-  const sortNegTickers = (key) => {
-    // Reset all other keys to 'none' except the current key
-    for (const k in sortOrders) {
-      if (k !== key) {
-        sortOrders[k].order = "none";
-      }
-    }
-
-    // Cycle through 'none', 'asc', 'desc' for the clicked key
-    const orderCycle = ["none", "asc", "desc"];
-
-    const currentOrderIndex = orderCycle.indexOf(sortOrders[key].order);
-    sortOrders[key].order =
-      orderCycle[(currentOrderIndex + 1) % orderCycle.length];
-    const sortOrder = sortOrders[key].order;
-
-    // Reset to original data when 'none' and stop further sorting
-    if (sortOrder === "none") {
-      originalNegTickers = [...topNegNetPremium];
-      displayNegTickers = originalNegTickers?.slice(0, 50);
-      return;
-    }
-
-    // Define a generic comparison function
-    const compareValues = (a, b) => {
-      const { type } = sortOrders[key];
-      let valueA, valueB;
-
-      switch (type) {
-        case "date":
-          valueA = new Date(a[key]);
-          valueB = new Date(b[key]);
-          break;
-        case "string":
-          valueA = a[key].toUpperCase();
-          valueB = b[key].toUpperCase();
-          return sortOrder === "asc"
-            ? valueA.localeCompare(valueB)
-            : valueB.localeCompare(valueA);
-        case "number":
-        default:
-          valueA = parseFloat(a[key]);
-          valueB = parseFloat(b[key]);
-          break;
-      }
-
-      if (sortOrder === "asc") {
-        return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
-      } else {
-        return valueA > valueB ? -1 : valueA < valueB ? 1 : 0;
-      }
-    };
-
-    // Sort using the generic comparison function
-    displayNegTickers = [...originalNegTickers]
       .sort(compareValues)
       ?.slice(0, 50);
   };
@@ -472,16 +408,12 @@
     if (selectedSector || $mode) {
       topPosNetPremium =
         data?.getData?.topPosNetPremium[sectorDict[selectedSector]] || [];
-      topNegNetPremium =
-        data?.getData?.topNegNetPremium[sectorDict[selectedSector]] || [];
 
       marketTideData =
         data?.getData?.sectorFlow[sectorDict[selectedSector]] || {};
       originalPosTickers = topPosNetPremium;
       displayPosTickers = topPosNetPremium;
 
-      originalNegTickers = topNegNetPremium;
-      displayNegTickers = topNegNetPremium;
       config = marketTideData ? plotData() : null;
     }
   }
@@ -656,10 +588,10 @@
                     for="topPosNetPrem"
                     class="mr-1 cursor-pointer flex flex-row items-center text-xl font-bold"
                   >
-                    Top Stocks by Positive Net Prem
+                    Top Tickers by Net Premium
                   </label>
                   <InfoModal
-                    title={"Top Stocks by Positive Net Prem"}
+                    title={"Top Tickers by Net Premium"}
                     content={"This list showcases top stocks with a positive net premium, indicating bullish sentiment. Track price movements, analyze options activity, and uncover the stocks leading their sectors with detailed options data."}
                     id={"topPosNetPrem"}
                   />
@@ -722,111 +654,6 @@
                             : 'text-red-800 dark:text-[#FF2F1F]'} text-end"
                         >
                           {item?.changesPercentage?.toFixed(2)}%
-                        </td>
-
-                        <td class="text-sm sm:text-[1rem] text-end">
-                          {@html abbreviateNumber(
-                            item?.net_premium,
-                            false,
-                            true,
-                          )}
-                        </td>
-                        <td class="text-sm sm:text-[1rem] text-end">
-                          {@html abbreviateNumber(
-                            item?.net_call_premium,
-                            false,
-                            true,
-                          )}
-                        </td>
-                        <td class="text-sm sm:text-[1rem] text-end">
-                          {@html abbreviateNumber(
-                            item?.net_put_premium,
-                            false,
-                            true,
-                          )}
-                        </td>
-
-                        <td class="text-sm sm:text-[1rem] text-end">
-                          {item?.iv_rank}
-                        </td>
-                      </tr>
-                    {/each}
-                  </tbody>
-                </table>
-              </div>
-
-              <div class="mb-3 mt-10">
-                <div class="flex flex-row items-center">
-                  <label
-                    for="topNegNetPrem"
-                    class="mr-1 cursor-pointer flex flex-row items-center text-xl font-bold"
-                  >
-                    Top Stocks by Negative Net Prem
-                  </label>
-                  <InfoModal
-                    title={"Top Stocks by Negative Net Prem"}
-                    content={"This list showcases top stocks with a negative net premium, indicating bullish sentiment. Track price movements, analyze options activity, and uncover the stocks leading their sectors with detailed options data."}
-                    id={"topNegNetPrem"}
-                  />
-                </div>
-              </div>
-
-              <div
-                class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
-              >
-                <table
-                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
-                >
-                  <thead>
-                    <TableHeader
-                      columns={topColumns}
-                      {sortOrders}
-                      sortData={sortNegTickers}
-                    />
-                  </thead>
-                  <tbody>
-                    {#each displayNegTickers as item, index}
-                      <tr
-                        class=" dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
-                          1 ===
-                          originalNegTickers?.length &&
-                        !['Pro']?.includes(data?.user?.tier)
-                          ? 'opacity-[0.1]'
-                          : ''}"
-                      >
-                        <td
-                          class="text-start text-sm sm:text-[1rem] whitespace-nowrap"
-                        >
-                          {item?.rank}
-                        </td>
-
-                        <td
-                          class="text-sm sm:text-[1rem] text-start whitespace-nowrap"
-                        >
-                          <HoverStockChart symbol={item?.symbol} />
-                        </td>
-
-                        <td
-                          class="text-start text-sm sm:text-[1rem] whitespace-nowrap"
-                        >
-                          {item?.name?.length > 20
-                            ? item?.name?.slice(0, 20) + "..."
-                            : item?.name}
-                        </td>
-
-                        <td
-                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
-                        >
-                          {item?.price}
-                        </td>
-
-                        <td
-                          class="text-sm sm:text-[1rem] {item?.changesPercentage >=
-                          0
-                            ? "text-[#00FC50] before:content-['+'] "
-                            : 'text-red-800 dark:text-[#FF2F1F]'} text-end"
-                        >
-                          {item?.changesPercentage}%
                         </td>
 
                         <td class="text-sm sm:text-[1rem] text-end">
