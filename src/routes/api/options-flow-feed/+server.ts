@@ -2,6 +2,11 @@ import type { RequestHandler } from "./$types";
 
 export const POST: RequestHandler = async ({ request, locals }) => {
   const { apiURL, apiKey, user } = locals;
+
+  let output = []
+  if (user?.tier === 'Pro') {
+
+  
   const data = await request.json();
     const postData = {'orderList': data?.orderList}
    const response = await fetch(apiURL + "/options-flow-feed", {
@@ -14,8 +19,9 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
     });
 
-    let output = await response.json();
-    output = user?.tier !== "Pro" ? output?.slice(0, 6) : output;
+     output = await response.json() || [];
+
+    }
 
   return new Response(JSON.stringify(output));
 };

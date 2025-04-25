@@ -596,52 +596,54 @@
         return;
       }
 
-      const orderList = rawData?.map((item) => item?.id);
-      const postData = { orderList: orderList };
-      const response = await fetch("/api/options-flow-feed", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(postData),
-      });
+      if (data?.user?.tier === "Pro") {
+        const orderList = rawData?.map((item) => item?.id);
+        const postData = { orderList: orderList };
+        const response = await fetch("/api/options-flow-feed", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(postData),
+        });
 
-      const totalVolume = displayCallVolume + displayPutVolume;
+        const totalVolume = displayCallVolume + displayPutVolume;
 
-      try {
-        const newData = (await response.json()) || [];
+        try {
+          const newData = (await response.json()) || [];
 
-        if (newData?.length > 0) {
-          console.log("Received new data, length:", newData.length);
-          newData?.forEach((item) => {
-            item.dte = daysLeft(item?.date_expiration);
-          });
-
-          rawData = [...newData, ...rawData];
-
-          if (ruleOfList?.length > 0 || filterQuery?.length > 0) {
-            shouldLoadWorker.set(true);
-            console.log("Should load worker set to true");
-          } else {
-            // Ensure displayedData exists
-            // let displayedData; // If not imported, declare it
-            displayedData = [...rawData];
-            calculateStats(displayedData);
-            console.log("Updating displayedData and calculating stats");
-          }
-
-          if (!muted && audio) {
-            console.log("Attempting to play audio...");
-            audio?.play()?.catch((error) => {
-              console.log("Audio play failed:", error);
+          if (newData?.length > 0) {
+            console.log("Received new data, length:", newData.length);
+            newData?.forEach((item) => {
+              item.dte = daysLeft(item?.date_expiration);
             });
+
+            rawData = [...newData, ...rawData];
+
+            if (ruleOfList?.length > 0 || filterQuery?.length > 0) {
+              shouldLoadWorker.set(true);
+              console.log("Should load worker set to true");
+            } else {
+              // Ensure displayedData exists
+              // let displayedData; // If not imported, declare it
+              displayedData = [...rawData];
+              calculateStats(displayedData);
+              console.log("Updating displayedData and calculating stats");
+            }
+
+            if (!muted && audio) {
+              console.log("Attempting to play audio...");
+              audio?.play()?.catch((error) => {
+                console.log("Audio play failed:", error);
+              });
+            }
+          } else {
+            console.log("No new data received!");
           }
-        } else {
-          console.log("No new data received!");
+          previousVolume = totalVolume;
+        } catch (e) {
+          console.error("Message processing error:", e);
         }
-        previousVolume = totalVolume;
-      } catch (e) {
-        console.error("Message processing error:", e);
       }
     } catch (error) {
       console.error("Update Realtime Data connection error:", error);
