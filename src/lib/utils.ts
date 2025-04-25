@@ -1353,6 +1353,8 @@ export function getPartyForPoliticians(name) {
     "Kelly Morrison": "Democratic",
     "Jamie Raskin": "Democratic",
     "Bruce Westerman": "Republican",
+    "George Whitesides": "Democratic",
+    "Dave Min": "Democratic",
   };
 
   // Combine first and last name to form the key
