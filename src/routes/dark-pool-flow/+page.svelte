@@ -950,7 +950,7 @@
             {#each displayRules as row (row?.rule)}
               <!--Start Added Rules-->
               <div
-                class="flex items-center justify-between space-x-2 px-1 py-1.5 text-smaller leading-tight"
+                class="flex items-center justify-between space-x-2 px-1 py-1.5 text-[0.95rem] leading-tight"
               >
                 <div class="hide-scroll">
                   {row?.label?.length > 20

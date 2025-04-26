@@ -1158,7 +1158,7 @@
             {#each displayRules as row (row?.rule)}
               <!--Start Added Rules-->
               <div
-                class="flex items-center justify-between space-x-2 px-1 py-1.5 text-smaller leading-tight"
+                class="flex items-center justify-between space-x-2 px-1 py-1.5 text-[0.95rem] leading-tight"
               >
                 <div class="hide-scroll">
                   {row?.label?.length > 20
@@ -1218,7 +1218,7 @@
                             builders={[builder]}
                             class="shadow-sm h-[40px] flex flex-row justify-between items-center w-[150px] xs:w-[140px] sm:w-[150px] px-3 rounded-md truncate"
                           >
-                            <span class="truncate ml-2 text-sm sm:text-[1rem]">
+                            <span class="truncate ml-2 text-sm">
                               {#if valueMappings[row?.rule] === "any"}
                                 Any
                               {:else if ruleCondition[row?.rule] === "between"}
@@ -1321,7 +1321,7 @@
                                         : ""}
                                       on:input={(e) =>
                                         handleValueInput(e, row?.rule, 0)}
-                                      class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder:text-muted dark:text-gray-200 font-normal p-1 text-sm shadow-xs focus:border-blue-500 focus:ring-blue-500 bg-gray-100 dark:bg-primary"
+                                      class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder:text-muted dark:placeholder:text-gray-400 dark:text-gray-200 font-normal p-1 text-sm shadow-xs focus:border-blue-500 focus:ring-blue-500 bg-gray-100 dark:bg-primary"
                                     />
                                     <span class=" text-[1rem] font-normal mt-1">
                                       &
@@ -1336,7 +1336,7 @@
                                         : ""}
                                       on:input={(e) =>
                                         handleValueInput(e, row?.rule, 1)}
-                                      class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder:text-muted dark:text-gray-200 font-normal p-1 text-sm shadow-xs focus:border-blue-500 focus:ring-blue-500 bg-gray-100 dark:bg-primary"
+                                      class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder:text-muted dark:placeholder:text-gray-400 dark:text-gray-200 font-normal p-1 text-sm shadow-xs focus:border-blue-500 focus:ring-blue-500 bg-gray-100 dark:bg-primary"
                                     />
                                   </div>
                                 {:else}
@@ -1348,7 +1348,7 @@
                                       : valueMappings[row?.rule]}
                                     on:input={(e) =>
                                       handleValueInput(e, row?.rule)}
-                                    class="ios-zoom-fix block max-w-[4.8rem] rounded-sm placeholder:text-muted dark:placeholder:text-gray-200 font-normal p-1 text-sm shadow-xs focus:border-blue-500 focus:ring-blue-500 bg-gray-100 dark:bg-primary"
+                                    class="ios-zoom-fix block max-w-[4.8rem] rounded-sm placeholder:text-muted dark:placeholder:text-gray-400 dark:placeholder:text-gray-200 font-normal p-1 text-sm shadow-xs focus:border-blue-500 focus:ring-blue-500 bg-gray-100 dark:bg-primary"
                                   />
                                 {/if}
 
@@ -1424,7 +1424,7 @@
                                             row?.step[index + 1],
                                           ]);
                                         }}
-                                        class="block w-full bg-white dark:bg-default border-b border-gray-300 dark:border-gray-600 px-4 py-1.5 text-left text-sm sm:text-[1rem] rounded last:border-0 sm:hover:bg-gray-100 focus:bg-blue-100 focus:text-gray-900 focus:outline-hidden"
+                                        class="block w-full cursor-pointer border-b border-gray-300 dark:border-gray-600 px-4 py-1.5 text-left text-sm rounded last:border-0 focus:outline-hidden"
                                       >
                                         {ruleCondition[row?.rule]?.replace(
                                           "between",
@@ -1444,7 +1444,7 @@
                                       on:click={() => {
                                         handleChangeValue(newValue);
                                       }}
-                                      class="block w-full cursor-pointer border-b border-gray-300 dark:border-gray-600 px-4 py-1.5 text-left text-sm sm:text-[1rem] rounded last:border-0 focus:bg-blue-100 focus:text-gray-900 focus:outline-hidden"
+                                      class="block w-full cursor-pointer border-b border-gray-300 dark:border-gray-600 px-4 py-1.5 text-left text-sm rounded last:border-0 focus:outline-hidden"
                                     >
                                       {ruleCondition[row?.rule]
                                         ?.replace("under", "Under")
@@ -1509,16 +1509,34 @@
                     class="font-semibold text-muted dark:text-gray-200 text-sm sm:text-[1rem]"
                     >Flow Sentiment</span
                   >
-                  <span
-                    class="text-start text-[1rem] font-semibold {flowSentiment ===
-                    'Bullish'
-                      ? 'text-green-800 dark:text-[#00FC50]'
-                      : flowSentiment === 'Bearish'
-                        ? 'text-red-800 dark:text-[#FF2F1F]'
-                        : flowSentiment === 'Neutral'
-                          ? 'text-[#fff]'
-                          : ''}">{flowSentiment}</span
-                  >
+                  {#if data?.user?.tier === "Pro"}
+                    <span
+                      class="text-start text-[1rem] font-semibold {flowSentiment ===
+                      'Bullish'
+                        ? 'text-green-800 dark:text-[#00FC50]'
+                        : flowSentiment === 'Bearish'
+                          ? 'text-red-800 dark:text-[#FF2F1F]'
+                          : flowSentiment === 'Neutral'
+                            ? 'text-[#fff]'
+                            : ''}">{flowSentiment}</span
+                    >
+                  {:else}
+                    <a href="/pricing" class="flex mt-2">
+                      <svg
+                        class="size-5 text-muted dark:text-[#fff]"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        style="max-width: 40px;"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                          clip-rule="evenodd"
+                        >
+                        </path>
+                      </svg>
+                    </a>
+                  {/if}
                 </div>
               </div>
               <!--End Flow Sentiment-->
@@ -1531,9 +1549,27 @@
                     class="font-semibold text-muted dark:text-gray-200 text-sm sm:text-[1rem]"
                     >Put/Call</span
                   >
-                  <span class="text-start text-[1rem] font-semibold">
-                    {putCallRatio?.toFixed(3)}
-                  </span>
+                  {#if data?.user?.tier === "Pro"}
+                    <span class="text-start text-[1rem] font-semibold">
+                      {putCallRatio?.toFixed(3)}
+                    </span>
+                  {:else}
+                    <a href="/pricing" class="flex mt-2">
+                      <svg
+                        class="size-5 text-muted dark:text-[#fff]"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        style="max-width: 40px;"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                          clip-rule="evenodd"
+                        >
+                        </path>
+                      </svg>
+                    </a>
+                  {/if}
                 </div>
                 <!-- Circular Progress -->
                 <div class="relative size-14 ml-auto">
@@ -1561,9 +1597,11 @@
                         class="stroke-current text-blue-700"
                         stroke-width="3"
                         stroke-dasharray="100"
-                        stroke-dashoffset={putCallRatio >= 1
-                          ? 0
-                          : 100 - (putCallRatio * 100)?.toFixed(2)}
+                        stroke-dashoffset={data?.user.tier === "Pro"
+                          ? putCallRatio >= 1
+                            ? 0
+                            : 100 - (putCallRatio * 100)?.toFixed(2)
+                          : 100}
                       ></circle>
                     </g>
                   </svg>
@@ -1571,9 +1609,27 @@
                   <div
                     class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
                   >
-                    <span class="text-center text-sm"
-                      >{putCallRatio?.toFixed(2)}</span
-                    >
+                    {#if data?.user?.tier === "Pro"}
+                      <span class="text-center text-sm"
+                        >{putCallRatio?.toFixed(2)}</span
+                      >
+                    {:else}
+                      <a href="/pricing" class="flex">
+                        <svg
+                          class="size-4 text-muted dark:text-[#fff]"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          style="max-width: 40px;"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                            clip-rule="evenodd"
+                          >
+                          </path>
+                        </svg>
+                      </a>
+                    {/if}
                   </div>
                 </div>
                 <!-- End Circular Progress -->
@@ -1588,12 +1644,30 @@
                     class="font-semibold text-muted dark:text-gray-200 text-sm sm:text-[1rem]"
                     >Call Flow</span
                   >
-                  <span class="text-start text-[1rem] font-semibold">
-                    {new Intl.NumberFormat("en", {
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 0,
-                    }).format(displayCallVolume)}
-                  </span>
+                  {#if data?.user?.tier === "Pro"}
+                    <span class="text-start text-[1rem] font-semibold">
+                      {new Intl.NumberFormat("en", {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0,
+                      }).format(displayCallVolume)}
+                    </span>
+                  {:else}
+                    <a href="/pricing" class="flex mt-2">
+                      <svg
+                        class="size-5 text-muted dark:text-[#fff]"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        style="max-width: 40px;"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                          clip-rule="evenodd"
+                        >
+                        </path>
+                      </svg>
+                    </a>
+                  {/if}
                 </div>
                 <!-- Circular Progress -->
                 <div class="relative size-14 ml-auto">
@@ -1621,7 +1695,9 @@
                         class="stroke-current text-green-800 dark:text-[#00FC50]"
                         stroke-width="3"
                         stroke-dasharray="100"
-                        stroke-dashoffset={100 - callPercentage?.toFixed(2)}
+                        stroke-dashoffset={data?.user?.tier === "Pro"
+                          ? 100 - callPercentage?.toFixed(2)
+                          : 100}
                       ></circle>
                     </g>
                   </svg>
@@ -1629,7 +1705,25 @@
                   <div
                     class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
                   >
-                    <span class="text-center text-sm">{callPercentage}%</span>
+                    {#if data?.user?.tier === "Pro"}
+                      <span class="text-center text-sm">{callPercentage}%</span>
+                    {:else}
+                      <a href="/pricing" class="flex">
+                        <svg
+                          class="size-4 text-muted dark:text-[#fff]"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          style="max-width: 40px;"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                            clip-rule="evenodd"
+                          >
+                          </path>
+                        </svg>
+                      </a>
+                    {/if}
                   </div>
                 </div>
                 <!-- End Circular Progress -->
@@ -1644,12 +1738,30 @@
                     class="font-semibold text-muted dark:text-gray-200 text-sm sm:text-[1rem]"
                     >Put Flow</span
                   >
-                  <span class="text-start text-[1rem] font-semibold">
-                    {new Intl.NumberFormat("en", {
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 0,
-                    }).format(displayPutVolume)}
-                  </span>
+                  {#if data?.user?.tier === "Pro"}
+                    <span class="text-start text-[1rem] font-semibold">
+                      {new Intl.NumberFormat("en", {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0,
+                      }).format(displayPutVolume)}
+                    </span>
+                  {:else}
+                    <a href="/pricing" class="flex mt-2">
+                      <svg
+                        class="size-5 text-muted dark:text-[#fff]"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        style="max-width: 40px;"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                          clip-rule="evenodd"
+                        >
+                        </path>
+                      </svg>
+                    </a>
+                  {/if}
                 </div>
                 <!-- Circular Progress -->
                 <div class="relative size-14 ml-auto">
@@ -1677,7 +1789,9 @@
                         class="stroke-current text-[#EE5365]"
                         stroke-width="3"
                         stroke-dasharray="100"
-                        stroke-dashoffset={100 - putPercentage?.toFixed(2)}
+                        stroke-dashoffset={data?.user?.tier === "Pro"
+                          ? 100 - putPercentage?.toFixed(2)
+                          : 100}
                       ></circle>
                     </g>
                   </svg>
@@ -1685,7 +1799,25 @@
                   <div
                     class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2"
                   >
-                    <span class="text-center text-sm">{putPercentage}%</span>
+                    {#if data?.user?.tier === "Pro"}
+                      <span class="text-center text-sm">{putPercentage}%</span>
+                    {:else}
+                      <a href="/pricing" class="flex">
+                        <svg
+                          class="size-4 text-muted dark:text-[#fff]"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          style="max-width: 40px;"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                            clip-rule="evenodd"
+                          >
+                          </path>
+                        </svg>
+                      </a>
+                    {/if}
                   </div>
                 </div>
                 <!-- End Circular Progress -->

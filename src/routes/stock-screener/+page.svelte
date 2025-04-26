@@ -2796,20 +2796,6 @@ const handleKeyDown = (event) => {
               <div>Reset All</div>
             </label>
           {/if}
-
-          <!--
-                    <div class="relative sm:ml-2">
-                        <div class="absolute inset-y-0 left-0 flex items-center pl-2.5">
-                            <svg class="h-4 w-4 text-gray-400 xs:h-5 xs:w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" stroke="currentColor" viewBox="0 0 24 24" style="max-width: 40px" aria-hidden="true">
-                                <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                            </svg>
-                        </div>
-                        
-                        <input type="text" placeholder="Search {allRows?.length} filters..." class="controls-input rounded-md w-full py-2 pl-10 placeholder:text-gray-300 bg-secondary sm:w-72"> 
-                        <div class="absolute inset-y-0 right-0 flex items-center pr-2"></div> 
-                      
-                    </div> 
-                  -->
         </div>
 
         <div
@@ -2818,7 +2804,7 @@ const handleKeyDown = (event) => {
           {#each displayRules as row (row?.rule)}
             <!--Start Added Rules-->
             <div
-              class="flex items-center justify-between space-x-2 px-1 py-1.5 text-smaller leading-tight"
+              class="flex items-center justify-between space-x-2 px-1 py-1.5 text-[0.95rem] leading-tight"
             >
               <div class="hide-scroll">
                 {row?.label?.length > 20
@@ -2892,7 +2878,7 @@ const handleKeyDown = (event) => {
                           builders={[builder]}
                           class="border-gray-300 dark:border-none shadow-sm bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center w-[140px] xs:w-[130px] sm:w-[140px] px-3  rounded-md truncate"
                         >
-                          <span class="truncate ml-2 text-sm sm:text-[1rem]">
+                          <span class="truncate ml-2 text-sm">
                             {#if valueMappings[row?.rule] === "any"}
                               Any
                             {:else if ruleCondition[row?.rule] === "between"}
