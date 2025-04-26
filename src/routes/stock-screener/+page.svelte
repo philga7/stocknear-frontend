@@ -1365,7 +1365,7 @@
       const closePopup = document.getElementById("addStrategy");
       closePopup?.dispatchEvent(new MouseEvent("click"));
     } else {
-      toast.info("Available only to Plus & Pro Member", {
+      toast.info("Available only to Plus or Pro Member", {
         style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
     }
@@ -1385,7 +1385,7 @@
     const output = await response.json();
 
     if (output === "success") {
-      toast.success("Strategy deleted successfully!", {
+      toast.success("Screener deleted successfully!", {
         style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
 
@@ -1435,17 +1435,14 @@
 
     formData.append("user", data?.user?.id);
     formData.append("rules", "[]");
-    const title = formData.get("title");
+    let title = formData.get("title");
 
     if (!title || title.length === 0) {
-      toast.error("Title cannot be empty!", {
-        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
-      });
-      return;
+      title = "My Screener";
     }
 
     if (title?.length > 100) {
-      toast.error("Title is too long. Keep it simple and concise bruv!", {
+      toast.error("Title is too long. Please keep it under 100 characters.", {
         style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
       return;
@@ -1468,7 +1465,7 @@
 
     const output = await response?.json();
     if (output?.id && output?.id?.length !== 0) {
-      toast.success("Strategy created successfully!", {
+      toast.success("Screener created successfully!", {
         style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
 
@@ -1820,7 +1817,7 @@ const handleKeyDown = (event) => {
         });
 
         if (printToast === true) {
-          toast.success("Strategy saved!", {
+          toast.success("Screener saved!", {
             style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
           });
         }
@@ -2610,7 +2607,7 @@ const handleKeyDown = (event) => {
                   builders={[builder]}
                   class="min-w-[110px] shadow-sm w-full border-gray-300 dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                 >
-                  <span class="truncate max-w-16"
+                  <span class="truncate max-w-48"
                     >{selectedStrategy?.length !== 0
                       ? strategyList?.find(
                           (item) => item.id === selectedStrategy,
@@ -3848,7 +3845,7 @@ const handleKeyDown = (event) => {
   <div
     class="modal-box w-full shadow-sm bg-white dark:bg-secondary border border-gray-300 dark:border-gray-600"
   >
-    <h1 class="text-2xl font-bold">New Strategy</h1>
+    <h1 class="text-2xl font-bold">New Screener</h1>
 
     <form
       on:submit={createStrategy}
@@ -3859,7 +3856,7 @@ const handleKeyDown = (event) => {
         id="title"
         type="text"
         errors=""
-        label="Strategy Name"
+        label="Screener Name"
         required={true}
       />
 
@@ -3867,7 +3864,7 @@ const handleKeyDown = (event) => {
         type="submit"
         class="cursor-pointer mt-2 py-2.5 bg-blue-500 sm:hover:bg-blue-600 dark:bg-[#fff] dark:sm:hover:bg-gray-300 duration-100 w-full rounded-md m-auto text-white dark:text-black font-semibold text-md"
       >
-        Create Strategy
+        Create Screener
       </button>
     </form>
   </div>
@@ -3925,7 +3922,7 @@ const handleKeyDown = (event) => {
             x2="14"
             y2="17"
           ></line></svg
-        >Delete Watchlist</label
+        >Delete Screener</label
       >
     </div>
   </div>
