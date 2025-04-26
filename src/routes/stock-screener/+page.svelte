@@ -34,6 +34,7 @@
   let searchQuery = "";
   let infoText = {};
   let tooltipTitle;
+  let removeList = false;
 
   $: testList = [];
 
@@ -1302,7 +1303,6 @@
 
   let filteredData = [];
   let displayResults = [];
-  let isSaved = false;
 
   // Generate allRows from allRules
   $: allRows = Object?.entries(allRules)
@@ -1472,11 +1472,14 @@
       const closePopup = document.getElementById("addStrategy");
       closePopup?.dispatchEvent(new MouseEvent("click"));
       selectedStrategy = output?.id;
-      if (strategyList?.length !== 0) {
-        ruleOfList = [];
-      }
+
       strategyList?.unshift(output);
       selectedPopularStrategy = "";
+      if (removeList) {
+        removeList = false;
+        ruleOfList = [];
+      }
+      handleSave(false);
     } else {
       toast.error("Something went wrong. Please try again later!", {
         style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
@@ -1797,9 +1800,13 @@ const handleKeyDown = (event) => {
     clearCache();
   });
 
-  async function handleSave(printToast) {
+  async function handleSave(showMessage) {
     if (data?.user) {
-      if (isSaved === false && strategyList?.length > 0) {
+      if (strategyList?.length === 0) {
+        handleCreateStrategy();
+      }
+
+      if (strategyList?.length > 0) {
         strategyList.find((item) => item.id === selectedStrategy).rules =
           ruleOfList;
 
@@ -1816,13 +1823,11 @@ const handleKeyDown = (event) => {
           body: JSON.stringify(postData),
         });
 
-        if (printToast === true) {
+        if (showMessage) {
           toast.success("Screener saved!", {
             style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
           });
         }
-
-        //isSaved = true;
       }
     }
   }
@@ -1853,8 +1858,6 @@ const handleKeyDown = (event) => {
       filteredGroupedRules = groupScreenerRules(allRows);
     }
   }
-
-  $: isSaved = !ruleOfList;
 
   $: charNumber = $screenWidth < 640 ? 20 : 40;
 
@@ -2637,7 +2640,10 @@ const handleKeyDown = (event) => {
                 >
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
-                      on:click={handleCreateStrategy}
+                      on:click={() => {
+                        removeList = true;
+                        handleCreateStrategy();
+                      }}
                       builders={[builder]}
                       class="p-0 -mb-2 -mt-2 text-sm inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap   bg-[#0909B] focus:outline-hidden "
                     >
@@ -2749,7 +2755,7 @@ const handleKeyDown = (event) => {
             <div>Add Filters</div>
           </label>
 
-          {#if data?.user && selectedStrategy?.length !== 0}
+          {#if data?.user}
             <label
               for={!data?.user ? "userLogin" : ""}
               on:click={() => handleSave(true)}
@@ -2765,22 +2771,6 @@ const handleKeyDown = (event) => {
                 /></svg
               >
               <div>Save</div>
-            </label>
-
-            <label
-              for="deleteStrategy"
-              class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-sm bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out sm:hover:text-red-500 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
-            >
-              <svg
-                class="h-5 w-5"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 1024 1024"
-                ><path
-                  fill="currentColor"
-                  d="M360 184h-8c4.4 0 8-3.6 8-8zh304v-8c0 4.4 3.6 8 8 8h-8v72h72v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80h72zm504 72H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32M731.3 840H292.7l-24.2-512h487z"
-                /></svg
-              >
-              <div>Delete</div>
             </label>
           {/if}
 
