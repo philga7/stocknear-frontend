@@ -714,7 +714,7 @@
         >
           Dark Pool Live flow of {data?.user?.tier === "Pro" && selectedDate
             ? df.format(selectedDate?.toDate())
-            : nyseDate} (NYSE Time)
+            : nyseDate}
         </div>
       {/if}
       <div
