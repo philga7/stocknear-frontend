@@ -2610,7 +2610,7 @@ const handleKeyDown = (event) => {
                   builders={[builder]}
                   class="min-w-[110px] shadow-sm w-full border-gray-300 dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                 >
-                  <span class="truncate"
+                  <span class="truncate max-w-16"
                     >{selectedStrategy?.length !== 0
                       ? strategyList?.find(
                           (item) => item.id === selectedStrategy,
@@ -2633,7 +2633,7 @@ const handleKeyDown = (event) => {
                 </Button>
               </DropdownMenu.Trigger>
               <DropdownMenu.Content
-                class="w-56 h-fit max-h-72 overflow-y-auto scroller"
+                class="w-full max-w-56 h-fit max-h-72 overflow-y-auto scroller"
               >
                 <DropdownMenu.Label
                   class="text-muted dark:text-gray-400 font-normal"
@@ -2666,11 +2666,32 @@ const handleKeyDown = (event) => {
                   {#each strategyList as item}
                     <DropdownMenu.Item
                       on:click={() => switchStrategy(item)}
-                      class="{item?.id === selectedStrategy
+                      class=" {item?.id === selectedStrategy
                         ? 'bg-gray-300 dark:bg-primary'
                         : ''} cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                     >
-                      {item?.title} ({item?.rules?.length})
+                      {item?.title?.length > 20
+                        ? item?.title?.slice(0, 20) + "..."
+                        : item?.title} ({item?.rules?.length})
+
+                      <label
+                        for="deleteStrategy"
+                        class="ml-auto inline-block cursor-pointer sm:hover:text-red-500"
+                      >
+                        <svg
+                          class="size-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          style="max-width:40px"
+                          ><path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                          ></path></svg
+                        >
+                      </label>
                     </DropdownMenu.Item>
                   {/each}
                 </DropdownMenu.Group>
@@ -3865,9 +3886,9 @@ const handleKeyDown = (event) => {
     class="modal-box w-full p-6 rounded shadow-sm border
         bg-white dark:bg-[#17181C] border border-gray-300 dark:border-gray-800"
   >
-    <h3 class="text-lg font-medium mb-2">Delete Watchlist</h3>
+    <h3 class="text-lg font-medium mb-2">Delete Screener</h3>
     <p class="text-sm mb-6">
-      Are you sure you want to delete this watchlist? This action cannot be
+      Are you sure you want to delete this screener? This action cannot be
       undone.
     </p>
     <div class="flex justify-end space-x-3">
