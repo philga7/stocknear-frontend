@@ -61,6 +61,10 @@ function convertUnitToValue(input: string | number | string[]) {
       ...sectorList,
       ...industryList,
       ...listOfRelevantCountries,
+      'quarterly',
+      'monthly',
+      'annual',
+      'semi-annual',
       "hold",
       "sell",
       "buy",
@@ -112,7 +116,7 @@ function createRuleCheck(rule, ruleName, ruleValue) {
   // Categorical checks
   const categoricalFields = [
     'analystRating', 'topAnalystRating', 'halalStocks', 'score', 
-    'sector', 'industry', 'country'
+    'sector', 'industry', 'country','payoutFrequency'
   ];
 
   if (categoricalFields.includes(rule.name)) {
@@ -129,7 +133,7 @@ function createRuleCheck(rule, ruleName, ruleValue) {
   const movingAverageFields = [
     'ema20', 'ema50', 'ema100', 'ema200', 
     'sma20', 'sma50', 'sma100', 'sma200', 
-    'grahamnumber'
+    'grahamnumber',
   ];
 
   if (movingAverageFields.includes(ruleName)) {

@@ -29,7 +29,7 @@
           ? 'text-start'
           : 'text-center'}"
     >
-      {column?.label}
+      {column?.label?.replace("Dividend Payout Frequency", "Payout Frequency")}
       {@html SortIcon({ sortOrder: sortOrders[column.key]?.order })}
     </th>
   {/each}

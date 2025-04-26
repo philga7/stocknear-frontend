@@ -45,6 +45,16 @@
   let groupedRules = {};
   let displayRules = [];
   let selectedPopularStrategy = "";
+  const popularStrategyList = [
+    { key: "dividendGrowth", label: "Dividend Growth" },
+    { key: "monthlyDividends", label: "Monthly Dividends" },
+    { key: "topGainers1Y", label: "Top Gainers 1Y" },
+    { key: "topShortedStocks", label: "Top Shorted Stocks" },
+    { key: "momentumTAStocks", label: "Momentum TA Stocks" },
+    { key: "underValuedStocks", label: "Undervalued Stocks" },
+    { key: "strongCashFlow", label: "Strong Cash Flow" },
+  ];
+
   let displayTableTab = "general";
   let otherTabRules = [];
 
@@ -474,6 +484,13 @@
       defaultValue: "any",
       varType: "percent",
       category: ["Most Popular", "Dividends"],
+    },
+    payoutFrequency: {
+      label: "Dividend Payout Frequency",
+      step: ["Monthly", "Quarterly", "Semi-Annual", "Annual"],
+      defaultCondition: "",
+      defaultValue: "any",
+      category: "Dividends",
     },
     annualDividend: {
       label: "Annual Dividend",
@@ -1414,6 +1431,7 @@
               "topAnalystRating",
               "halalStocks",
               "sector",
+              "payoutFrequency",
               "country",
               "score",
               "industry",
@@ -1618,6 +1636,7 @@
 
     switch (ruleName) {
       case "analystRating":
+      case "payoutFrequency":
       case "topAnalystRating":
       case "halalStocks":
       case "score":
@@ -1884,14 +1903,23 @@ const handleKeyDown = (event) => {
     ruleOfList
       ?.filter((rule) =>
         [
+          "sma20",
+          "sma50",
+          "sma100",
+          "sma200",
+          "ema20",
+          "ema50",
+          "ema100",
+          "ema200",
+          "grahamNumber",
           "analystRating",
+          "payoutFrequency",
           "topAnalystRating",
           "halalStocks",
-          "sector",
-          "country",
           "score",
+          "sector",
           "industry",
-          "grahamNumber",
+          "country",
         ]?.includes(rule.name),
       ) // Only include specific rules
       ?.map((rule) => [rule.name, new Set(rule.value)]), // Create Map from filtered rules
@@ -1990,6 +2018,7 @@ const handleKeyDown = (event) => {
         "ema200",
         "grahamNumber",
         "analystRating",
+        "payoutFrequency",
         "topAnalystRating",
         "halalStocks",
         "score",
@@ -2107,6 +2136,13 @@ const handleKeyDown = (event) => {
           { condition: "over", name: "growthRevenue", value: "5%" },
         ],
       },
+      monthlyDividends: {
+        name: "Monthly Dividends",
+        rules: [
+          { condition: "over", name: "payoutFrequency", value: "Monthly" },
+          { condition: "over", name: "dividendYield", value: "0%" },
+        ],
+      },
       topGainers1Y: {
         name: "Top Gainers 1Y",
         rules: [
@@ -2191,7 +2227,7 @@ const handleKeyDown = (event) => {
                       ruleName,
                     )
                   ? ["Strong Buy", "Buy", "Hold", "Sell", "Strong Sell"]
-                  : ["Compliant", "Non-Compliant"];
+                  : []; //["Compliant", "Non-Compliant"];
         testList =
           rawList?.filter((item) => {
             const index = item?.toLowerCase();
@@ -2292,6 +2328,7 @@ const handleKeyDown = (event) => {
     "analystRating",
     "topAnalystRating",
     "halalStocks",
+    "payoutFrequency",
   ];
 
   // Helper to determine the type based on stringTypeRules
@@ -2555,43 +2592,14 @@ const handleKeyDown = (event) => {
                 </DropdownMenu.Label>
                 <DropdownMenu.Separator />
                 <DropdownMenu.Group>
-                  <DropdownMenu.Item
-                    on:click={() => popularStrategy("dividendGrowth")}
-                    class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
-                  >
-                    Dividend Growth
-                  </DropdownMenu.Item>
-                  <DropdownMenu.Item
-                    on:click={() => popularStrategy("topGainers1Y")}
-                    class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
-                  >
-                    Top Gainers 1Y
-                  </DropdownMenu.Item>
-                  <DropdownMenu.Item
-                    on:click={() => popularStrategy("topShortedStocks")}
-                    class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
-                  >
-                    Top Shorted Stocks
-                  </DropdownMenu.Item>
-
-                  <DropdownMenu.Item
-                    on:click={() => popularStrategy("momentumTAStocks")}
-                    class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
-                  >
-                    Momentum TA Stocks
-                  </DropdownMenu.Item>
-                  <DropdownMenu.Item
-                    on:click={() => popularStrategy("underValuedStocks")}
-                    class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
-                  >
-                    Undervalued Stocks
-                  </DropdownMenu.Item>
-                  <DropdownMenu.Item
-                    on:click={() => popularStrategy("strongCashFlow")}
-                    class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
-                  >
-                    Strong Cash Flow
-                  </DropdownMenu.Item>
+                  {#each popularStrategyList as item}
+                    <DropdownMenu.Item
+                      on:click={() => popularStrategy(item?.key)}
+                      class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                    >
+                      {item?.label}
+                    </DropdownMenu.Item>
+                  {/each}
                 </DropdownMenu.Group>
               </DropdownMenu.Content>
             </DropdownMenu.Root>
@@ -2822,8 +2830,8 @@ const handleKeyDown = (event) => {
               class="flex items-center justify-between space-x-2 px-1 py-1.5 text-[0.95rem] leading-tight"
             >
               <div class="hide-scroll">
-                {row?.label?.length > 20
-                  ? row?.label?.slice(0, 20)?.replace("[%]", "") + "..."
+                {row?.label?.length > 30
+                  ? row?.label?.slice(0, 30)?.replace("[%]", "") + "..."
                   : row?.label?.replace("[%]", "")}
                 <span class="relative" role="tooltip"
                   ><label
@@ -2926,7 +2934,7 @@ const handleKeyDown = (event) => {
                       <DropdownMenu.Content
                         class="w-64 min-h-auto max-h-72 overflow-y-auto scroller"
                       >
-                        {#if !["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber", "analystRating", "topAnalystRating", "halalStocks", "score", "sector", "industry", "country"]?.includes(row?.rule)}
+                        {#if !["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber", "analystRating", "payoutFrequency", "topAnalystRating", "halalStocks", "score", "sector", "industry", "country"]?.includes(row?.rule)}
                           <DropdownMenu.Label
                             class="absolute mt-2 h-11 border-gray-300 dark:border-gray-800 border-b -top-1 z-20 fixed sticky bg-white dark:bg-default"
                           >
@@ -2943,9 +2951,7 @@ const handleKeyDown = (event) => {
                                       builders={[builder]}
                                       class="w-fit -mt-1 -ml-2  flex flex-row justify-between items-center "
                                     >
-                                      <span
-                                        class="truncate ml-2 text-sm sm:text-[1rem]"
-                                      >
+                                      <span class="truncate ml-2 text-sm">
                                         {ruleCondition[ruleName]
                                           ?.replace("under", "Under")
                                           ?.replace("over", "Over")
@@ -2975,7 +2981,7 @@ const handleKeyDown = (event) => {
                                               row?.rule,
                                               item,
                                             )}
-                                          class="cursor-pointer text-[1rem] font-normal"
+                                          class="cursor-pointer text-sm font-normal"
                                           >{item}</DropdownMenu.Item
                                         >
                                       {/each}
@@ -3104,7 +3110,7 @@ const handleKeyDown = (event) => {
                           </div>
                         {/if}
                         <DropdownMenu.Group class="min-h-10 mt-2">
-                          {#if !["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber", "analystRating", "topAnalystRating", "halalStocks", "score", "sector", "industry", "country"]?.includes(row?.rule)}
+                          {#if !["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber", "analystRating", "payoutFrequency", "topAnalystRating", "halalStocks", "score", "sector", "industry", "country"]?.includes(row?.rule)}
                             {#each row?.step as newValue, index}
                               {#if ruleCondition[row?.rule] === "between"}
                                 {#if newValue && row?.step[index + 1]}
@@ -3149,7 +3155,7 @@ const handleKeyDown = (event) => {
                                 </DropdownMenu.Item>
                               {/if}
                             {/each}
-                          {:else if ["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber"]?.includes(row?.rule)}
+                          {:else if ["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber", "payoutFrequency"]?.includes(row?.rule)}
                             {#each row?.step as item}
                               <DropdownMenu.Item
                                 class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
@@ -3177,7 +3183,7 @@ const handleKeyDown = (event) => {
                               </DropdownMenu.Item>
                             {/each}
                           {:else}
-                            {#each testList.length > 0 && searchQuery?.length > 0 ? testList : searchQuery?.length > 0 && testList?.length === 0 ? [] : row?.rule === "country" ? listOfRelevantCountries : row?.rule === "sector" ? sectorList : row?.rule === "industry" ? industryList : ["analystRating", "topAnalystRating", "score"]?.includes(ruleName) ? ["Strong Buy", "Buy", "Hold", "Sell", "Strong Sell"] : ["Compliant", "Non-Compliant"] as item}
+                            {#each testList.length > 0 && searchQuery?.length > 0 ? testList : searchQuery?.length > 0 && testList?.length === 0 ? [] : row?.rule === "country" ? listOfRelevantCountries : row?.rule === "sector" ? sectorList : row?.rule === "industry" ? industryList : ["analystRating", "topAnalystRating", "score"]?.includes(ruleName) ? ["Strong Buy", "Buy", "Hold", "Sell", "Strong Sell"] : [] as item}
                               <DropdownMenu.Item
                                 class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                               >
@@ -3421,7 +3427,7 @@ const handleKeyDown = (event) => {
                       <td
                         class="whitespace-nowrap text-sm sm:text-[1rem] text-end"
                       >
-                        {#if ["ema20", "ema50", "ema100", "ema200", "halalStocks", "sector", "industry", "country"]?.includes(row?.rule)}
+                        {#if ["ema20", "ema50", "ema100", "ema200", "halalStocks", "sector", "industry", "country", "payoutFrequency"]?.includes(row?.rule)}
                           {item[row?.rule]}
                         {:else if row?.varType && row?.varType === "percentSign"}
                           <span
