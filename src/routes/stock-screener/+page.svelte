@@ -2996,7 +2996,7 @@ const handleKeyDown = (event) => {
                                       : ""}
                                     on:input={(e) =>
                                       handleValueInput(e, row?.rule, 0)}
-                                    class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder-gray-500 dark:placeholder:text-gray-200 font-normal p-1 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-white dark:bg-secondary"
+                                    class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder-gray-500 dark:placeholder:text-gray-200 font-normal p-1 text-sm shadow-xs bg-white dark:bg-secondary border border-gray-400 dark:border-gray-800"
                                   />
                                   <span class=" text-[1rem] font-normal mt-1">
                                     &
@@ -3011,7 +3011,7 @@ const handleKeyDown = (event) => {
                                       : ""}
                                     on:input={(e) =>
                                       handleValueInput(e, row?.rule, 1)}
-                                    class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder-gray-500 dark:placeholder:text-gray-200 font-normal p-1 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-white dark:bg-secondary"
+                                    class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder-gray-500 dark:placeholder:text-gray-200 font-normal p-1 text-sm shadow-xs bg-white dark:bg-secondary border border-gray-400 dark:border-gray-800"
                                   />
                                 </div>
                               {:else}
@@ -3023,7 +3023,7 @@ const handleKeyDown = (event) => {
                                     : ""}
                                   on:input={(e) =>
                                     handleValueInput(e, row?.rule)}
-                                  class="ios-zoom-fix block max-w-[4.8rem] rounded-sm placeholder-gray-500 dark:placeholder:text-gray-200 font-normal p-1 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-white dark:bg-secondary"
+                                  class="ios-zoom-fix block max-w-[4.8rem] rounded-sm placeholder-gray-500 dark:placeholder:text-gray-200 font-normal p-1 text-sm shadow-xs bg-white dark:bg-secondary border border-gray-300 dark:border-gray-800"
                                 />
                               {/if}
 
@@ -3038,7 +3038,7 @@ const handleKeyDown = (event) => {
                                         "add",
                                       )}
                                     ><svg
-                                      class="size-6 cursor-pointer"
+                                      class="size-6 cursor-pointer text-gray-500 dark:text-gray-300"
                                       fill="none"
                                       viewBox="0 0 24 24"
                                       stroke="currentColor"
@@ -3058,7 +3058,7 @@ const handleKeyDown = (event) => {
                                         "minus",
                                       )}
                                     ><svg
-                                      class="size-6 cursor-pointer"
+                                      class="size-6 cursor-pointer text-gray-500 dark:text-gray-300"
                                       fill="none"
                                       viewBox="0 0 24 24"
                                       stroke="currentColor"
@@ -3118,7 +3118,7 @@ const handleKeyDown = (event) => {
                                           row?.step[index + 1],
                                         ]);
                                       }}
-                                      class="block w-full border-b border-gray-300 dark:border-gray-600 px-4 py-1.5 text-left text-sm sm:text-[1rem] rounded last:border-0 sm:hover:bg-primary focus:bg-blue-100 focus:text-gray-900 focus:outline-hidden"
+                                      class="cursor-pointer block w-full border-b border-gray-300 dark:border-gray-600 px-4 py-1.5 text-left text-sm rounded last:border-0 dark:sm:hover:bg-primary"
                                     >
                                       {ruleCondition[row?.rule]?.replace(
                                         "between",
@@ -3138,7 +3138,7 @@ const handleKeyDown = (event) => {
                                     on:click={() => {
                                       handleChangeValue(newValue);
                                     }}
-                                    class="cursor-pointer block w-full border-b border-gray-300 dark:border-gray-600 px-4 py-1.5 text-left text-sm sm:text-[1rem] rounded last:border-0 focus:bg-blue-100 focus:text-gray-900 focus:outline-hidden"
+                                    class="cursor-pointer block w-full border-b border-gray-300 dark:border-gray-600 px-4 py-1.5 text-left text-sm rounded last:border-0"
                                   >
                                     {ruleCondition[row?.rule]
                                       ?.replace("under", "Under")
