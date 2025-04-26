@@ -3,10 +3,14 @@
   export let description =
     "Stocknear has everything you need to analyze stocks with help of AI, including detailed financial data, statistics, news and charts.";
   export let image = null;
+  export let canonical = null;
 </script>
 
 <svelte:head>
   <meta charset="utf-8" />
+  {#if canonical}
+    <link rel="canonical" href={canonical} />
+  {/if}
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0"

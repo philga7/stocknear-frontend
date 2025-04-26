@@ -81,6 +81,7 @@
   title="All
     listed Hedge Funds"
   description="Find all listed Hedge Funds based on the US Market."
+  canonical={data.canonical}
 />
 
 <section
