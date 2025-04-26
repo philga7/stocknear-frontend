@@ -1010,7 +1010,7 @@
                             builders={[builder]}
                             class="bg-white dark:bg-[#000] shadow-sm h-[40px] flex flex-row justify-between items-center w-[150px] xs:w-[140px] sm:w-[150px] px-3  rounded-md truncate"
                           >
-                            <span class="truncate ml-2 text-sm sm:text-[1rem]">
+                            <span class="truncate ml-2 text-sm">
                               {#if valueMappings[row?.rule] === "any"}
                                 Any
                               {:else if ruleCondition[row?.rule] === "between"}
@@ -1113,7 +1113,7 @@
                                         : ""}
                                       on:input={(e) =>
                                         handleValueInput(e, row?.rule, 0)}
-                                      class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder:text-muted dark:text-gray-200 font-normal p-1 text-sm shadow-xs focus:border-blue-500 focus:ring-blue-500 bg-gray-100 dark:bg-primary"
+                                      class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder:text-muted dark:placeholder:text-gray-300 dark:text-gray-200 font-normal p-1 text-sm shadow-xs focus:border-blue-500 focus:ring-blue-500 bg-gray-100 dark:bg-primary"
                                     />
                                     <span class=" text-[1rem] font-normal mt-1">
                                       &
@@ -1128,7 +1128,7 @@
                                         : ""}
                                       on:input={(e) =>
                                         handleValueInput(e, row?.rule, 1)}
-                                      class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder:text-muted dark:text-gray-200 font-normal p-1 text-sm shadow-xs focus:border-blue-500 focus:ring-blue-500 bg-gray-100 dark:bg-primary"
+                                      class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder:text-muted dark:placeholder:text-gray-300 dark:text-gray-200 font-normal p-1 text-sm shadow-xs focus:border-blue-500 focus:ring-blue-500 bg-gray-100 dark:bg-primary"
                                     />
                                   </div>
                                 {:else}
@@ -1216,7 +1216,7 @@
                                             row?.step[index + 1],
                                           ]);
                                         }}
-                                        class="cursor-pointer block w-full border-b border-gray-300 dark:border-gray-600 px-4 py-1.5 text-left text-sm sm:text-[1rem] rounded last:border-0 focus:bg-blue-100 focus:text-gray-900 focus:outline-hidden"
+                                        class="cursor-pointer block w-full border-b border-gray-300 dark:border-gray-600 px-4 py-1.5 text-left text-sm rounded last:border-0 focus:outline-hidden"
                                       >
                                         {ruleCondition[row?.rule]?.replace(
                                           "between",
@@ -1236,7 +1236,7 @@
                                       on:click={() => {
                                         handleChangeValue(newValue);
                                       }}
-                                      class="cursor-pointer block w-full border-b border-gray-300 dark:border-gray-600 px-4 py-1.5 text-left text-sm sm:text-[1rem] rounded last:border-0 focus:bg-blue-100 focus:text-gray-900 focus:outline-hidden"
+                                      class="cursor-pointer block w-full border-b border-gray-300 dark:border-gray-600 px-4 py-1.5 text-left text-sm rounded last:border-0 focus:outline-hidden"
                                     >
                                       {ruleCondition[row?.rule]
                                         ?.replace("under", "Under")
