@@ -1,5 +1,5 @@
 import { redirect } from "@sveltejs/kit";
 
 export const load = async ({ params}) => {
-    redirect(303, "/stocks/"+params.slug);
+    redirect(301, "/stocks/"+params.slug);
 };
