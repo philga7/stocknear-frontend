@@ -2,6 +2,7 @@
   import { onMount, onDestroy } from "svelte";
   import { goto } from "$app/navigation";
   import { clearCache, screenWidth, getCache, setCache } from "$lib/store";
+  import Copy from "lucide-svelte/icons/copy";
   import { toast } from "svelte-sonner";
   import { mode } from "mode-watcher";
 
@@ -1435,7 +1436,7 @@
 
     formData.append("user", data?.user?.id);
     formData.append("rules", "[]");
-    let title = formData.get("title");
+    title = formData.get("title");
 
     if (!title || title.length === 0) {
       title = "My Screener";
@@ -1479,6 +1480,7 @@
         removeList = false;
         ruleOfList = [];
       }
+
       handleSave(false);
     } else {
       toast.error("Something went wrong. Please try again later!", {
@@ -2736,7 +2738,7 @@ const handleKeyDown = (event) => {
         <div class="mt-3 flex flex-col gap-y-2.5 sm:flex-row lg:gap-y-2">
           <label
             for="ruleModal"
-            class="text-white inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-sm bg-blue-500 sm:hover:bg-blue-600 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+            class="text-[0.95rem] text-white inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-sm bg-blue-500 sm:hover:bg-blue-600 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
           >
             <svg
               class="h-5 w-5"
@@ -2758,7 +2760,7 @@ const handleKeyDown = (event) => {
             <label
               for={!data?.user ? "userLogin" : ""}
               on:click={() => handleSave(true)}
-              class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-sm bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+              class="text-[0.95rem] sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-sm bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
             >
               <svg
                 class="h-5 w-5"
@@ -2771,12 +2773,25 @@ const handleKeyDown = (event) => {
               >
               <div>Save</div>
             </label>
+
+            {#if strategyList?.length > 0}
+              <label
+                for={!data?.user ? "userLogin" : ""}
+                on:click={() => {
+                  handleCreateStrategy();
+                }}
+                class="text-[0.95rem] sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-sm bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+              >
+                <Copy class="w-4 h-4 inline-block mr-2" />
+                <div>Save as New</div>
+              </label>
+            {/if}
           {/if}
 
           {#if ruleOfList?.length !== 0}
             <label
               on:click={handleResetAll}
-              class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-sm bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:text-red-500 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+              class="text-[0.95rem] sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-sm bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:text-red-500 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
             >
               <svg
                 class="h-4 w-4"
