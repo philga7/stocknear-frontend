@@ -194,7 +194,7 @@
 
           <div class="w-full m-auto mt-20 sm:mt-10">
             <div
-              class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto sm:overflow-hidden"
+              class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
             >
               <table
                 class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
