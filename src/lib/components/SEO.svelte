@@ -1,16 +1,19 @@
 <script lang="ts">
   export let title = "Free Online Stock Analysis for Investors";
+  import { page } from "$app/stores";
+
   export let description =
     "Stocknear has everything you need to analyze stocks with help of AI, including detailed financial data, statistics, news and charts.";
   export let image = null;
-  export let canonical = null;
+
+  const baseURL = "https://stocknear.com";
+  const canonical = baseURL + $page.url.pathname;
 </script>
 
 <svelte:head>
   <meta charset="utf-8" />
-  {#if canonical}
-    <link rel="canonical" href={canonical} />
-  {/if}
+  <link rel="canonical" href={canonical} />
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
@@ -29,7 +32,7 @@
     <meta property="og:image" content={image} />
     <meta property="og:image:alt" content={title} />
   {:else}
-    <meta property="og:image" content="/img/astronaut.png" />
+    <meta property="og:image" content="img/astronaut.png" />
   {/if}
 
   <!-- Twitter meta tags -->

@@ -83,13 +83,18 @@ const getDashboard = async (apiURL, apiKey) => {
   }
 };
 
+
+
 // Main load function
-export const load = async ({ locals }) => {
+export const load = async ({ locals}) => {
   const { apiKey, apiURL } = locals;
+
+
 
   try {
     return {
-      getDashboard: await getDashboard(apiURL, apiKey)
+      getDashboard: await getDashboard(apiURL, apiKey),
+      canonical: await canonical(),
     };
   } catch (error) {
     console.error('Error in dashboard load:', error);
