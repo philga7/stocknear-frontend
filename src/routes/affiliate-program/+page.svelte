@@ -4,8 +4,8 @@
   export let data;
 </script>
 
+<!--
 <svelte:head>
-  <!-- Structured Data for FAQ -->
   <script type="application/ld+json">
     {@html JSON.stringify({
       "@context": "https://schema.org",
@@ -63,9 +63,9 @@
     })}
   </script>
 
-  <!-- Canonical URL -->
   <link rel="canonical" href="https://stocknear.com/affiliate-program" />
 </svelte:head>
+-->
 
 <SEO
   title="Affiliate Program - Earn Up to 20% Commission | Stocknear"
