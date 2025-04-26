@@ -3,6 +3,7 @@
   import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
   import SEO from "$lib/components/SEO.svelte";
   import Tutorial from "$lib/components/Tutorial.svelte";
+  import TableHeader from "$lib/components/Table/TableHeader.svelte";
 
   import Infobox from "$lib/components/Infobox.svelte";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
@@ -129,6 +130,29 @@
     return change;
   }
 
+  function addChangesPercentage(data) {
+    // First, sort by date ascending
+    const sorted = [...data].sort(
+      (a, b) => new Date(b?.date) - new Date(a?.date),
+    );
+
+    // Then, calculate changesPercentage compared to next item
+    return sorted.map((item, index, arr) => {
+      if (index === arr.length - 1) {
+        return { ...item, changesPercentage: null };
+      }
+
+      const nextMarketCap = arr[index + 1]?.marketCap;
+      const pctChange =
+        ((item.marketCap - nextMarketCap) / nextMarketCap) * 100;
+
+      return {
+        ...item,
+        changesPercentage: parseFloat(pctChange?.toFixed(2)),
+      };
+    });
+  }
+
   function filterEndOfYearDates(data) {
     // Step 1: Group data by year
     const groupedByYear = data.reduce((acc, item) => {
@@ -141,13 +165,15 @@
     }, {});
 
     // Step 2: For each year, find the entry with the latest date
-    const annualData = Object.values(groupedByYear).map((yearData) => {
+    let annualData = Object.values(groupedByYear).map((yearData) => {
       return yearData.reduce((latest, current) => {
         return new Date(latest.date) > new Date(current.date)
           ? latest
           : current;
       });
     });
+
+    annualData = addChangesPercentage(annualData);
 
     return annualData;
   }
@@ -168,16 +194,15 @@
     }, {});
 
     // Step 2: For each year-quarter group, find the entry with the latest date
-    const quarterlyData = Object?.values(groupedByQuarter)?.map(
-      (quarterData) => {
-        return quarterData?.reduce((latest, current) => {
-          return new Date(latest?.date) > new Date(current?.date)
-            ? latest
-            : current;
-        });
-      },
-    );
+    let quarterlyData = Object?.values(groupedByQuarter)?.map((quarterData) => {
+      return quarterData?.reduce((latest, current) => {
+        return new Date(latest?.date) > new Date(current?.date)
+          ? latest
+          : current;
+      });
+    });
 
+    quarterlyData = addChangesPercentage(quarterlyData);
     return quarterlyData;
   }
 
@@ -188,6 +213,7 @@
     } else {
       tableList = filterEndOfQuarterDates(rawData);
     }
+
     tableList?.sort((a, b) => new Date(b?.date) - new Date(a?.date));
   }
 
@@ -204,6 +230,7 @@
   function filterDataByTimePeriod(rawData, timePeriod) {
     let dates = [];
     let marketCapList = [];
+    let changesPercentageList = [];
     const now = new Date();
 
     // Calculate the date threshold based on the selected time period
@@ -245,10 +272,11 @@
       if (itemDate >= thresholdDate) {
         dates?.push(item?.date);
         marketCapList?.push(item?.marketCap);
+        changesPercentageList?.push(item?.changesPercentage);
       }
     });
 
-    return { dates, marketCapList };
+    return { dates, marketCapList, changesPercentageList };
   }
 
   function plotData() {
@@ -264,7 +292,6 @@
       chart: {
         backgroundColor: $mode === "light" ? "#fff" : "#09090B",
         plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
-        height: 360, // Set the maximum height for the chart
       },
       title: {
         text: `<h3 class="mt-3 mb-1 ">${removeCompanyStrings($displayCompanyName)} Market Cap</h3>`,
@@ -371,7 +398,7 @@
           type: "area",
           data: filteredData?.marketCapList,
           color: "#4681f4",
-          lineWidth: 1.3,
+          lineWidth: 1.2,
           marker: {
             enabled: false,
           },
@@ -390,30 +417,33 @@
   }
 
   const exportData = (format = "csv") => {
-    if (["Pro", "Plus"]?.includes(data?.user?.tier)) {
-      // Add headers row
+    if (["Pro", "Plus"].includes(data?.user?.tier)) {
+      // Build CSV rows
       const csvRows = [];
-      csvRows.push("date,market-cap");
 
-      // Add data rows
-      const filteredData = filterDataByTimePeriod(rawData, "Max");
-      const { dates, marketCapList } = filteredData;
+      // 1) Single header row with all three columns
+      csvRows.push("date,market_cap,changes_percentage");
 
-      dates.forEach((date, index) => {
-        csvRows.push(`${date},${marketCapList[index]}`);
+      // 2) Compute & filter your data
+      const newData = addChangesPercentage(rawData);
+      const filteredData = filterDataByTimePeriod(newData, "Max");
+      const { dates, marketCapList, changesPercentageList } = filteredData;
+
+      // 3) Emit one row per date, comma-joined with no extra spaces
+      dates.forEach((date, idx) => {
+        csvRows.push(
+          `${date},${marketCapList[idx]},${changesPercentageList[idx]}`,
+        );
       });
 
-      // Create CSV blob and trigger download
+      // 4) Download
       const csv = csvRows.join("\n");
       const blob = new Blob([csv], { type: "text/csv" });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
-      a.setAttribute("hidden", "");
-      a.setAttribute("href", url);
-      a.setAttribute(
-        "download",
-        `${$stockTicker?.toLowerCase()}_market_cap.csv`,
-      );
+      a.hidden = true;
+      a.href = url;
+      a.download = `${$stockTicker.toLowerCase()}_market_cap.csv`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -430,6 +460,83 @@
     }
   }
   $: capCategory = getMarketCapCategory(data?.getStockQuote?.marketCap);
+
+  let columns = [
+    { key: "date", label: "Date", align: "left" },
+    { key: "marketCap", label: "Market Cap", align: "right" },
+    { key: "changesPercentage", label: "% Change", align: "right" },
+  ];
+
+  let sortOrders = {
+    date: { order: "none", type: "date" },
+    marketCap: { order: "none", type: "number" },
+    changesPercentage: { order: "none", type: "number" },
+  };
+
+  const sortData = (key) => {
+    // Reset all other keys to 'none' except the current key
+    for (const k in sortOrders) {
+      if (k !== key) {
+        sortOrders[k].order = "none";
+      }
+    }
+
+    // Cycle through 'none', 'asc', 'desc' for the clicked key
+    const orderCycle = ["none", "asc", "desc"];
+
+    let originalData = [];
+    if (activeIdx === 0) {
+      originalData = filterEndOfYearDates(rawData);
+    } else {
+      originalData = filterEndOfQuarterDates(rawData);
+    }
+
+    tableList?.sort((a, b) => new Date(b?.date) - new Date(a?.date));
+
+    const currentOrderIndex = orderCycle.indexOf(sortOrders[key].order);
+    sortOrders[key].order =
+      orderCycle[(currentOrderIndex + 1) % orderCycle.length];
+    const sortOrder = sortOrders[key].order;
+
+    // Reset to original data when 'none' and stop further sorting
+    if (sortOrder === "none") {
+      tableList = [...originalData]; // Reset to original data (spread to avoid mutation)
+      return;
+    }
+
+    // Define a generic comparison function
+    const compareValues = (a, b) => {
+      const { type } = sortOrders[key];
+      let valueA, valueB;
+
+      switch (type) {
+        case "date":
+          valueA = new Date(a[key]);
+          valueB = new Date(b[key]);
+          break;
+        case "string":
+          valueA = a[key].toUpperCase();
+          valueB = b[key].toUpperCase();
+          return sortOrder === "asc"
+            ? valueA.localeCompare(valueB)
+            : valueB.localeCompare(valueA);
+        case "number":
+        default:
+          valueA = parseFloat(a[key]);
+          valueB = parseFloat(b[key]);
+          break;
+      }
+
+      if (sortOrder === "asc") {
+        return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
+      } else {
+        return valueA > valueB ? -1 : valueA < valueB ? 1 : 0;
+      }
+    };
+
+    // Sort using the generic comparison function
+    tableList = [...originalData].sort(compareValues);
+  };
 
   let steps = [
     {
@@ -799,19 +906,8 @@
                 <table
                   class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-2"
                 >
-                  <thead class="text-muted dark:text-white dark:bg-default">
-                    <tr>
-                      <th
-                        class=" font-semibold text-start text-sm sm:text-[1rem]"
-                        >Date</th
-                      >
-                      <th class=" font-semibold text-end text-sm sm:text-[1rem]"
-                        >Market Cap</th
-                      >
-                      <th class=" font-semibold text-end text-sm sm:text-[1rem]"
-                        >% Change</th
-                      >
-                    </tr>
+                  <thead>
+                    <TableHeader {columns} {sortOrders} {sortData} />
                   </thead>
                   <tbody>
                     {#each tableList as item, index}
@@ -836,26 +932,15 @@
                         <td
                           class=" text-sm sm:text-[1rem] whitespace-nowrap text-end"
                         >
-                          {#if index === tableList?.length - 1}
-                            n/a
-                          {:else if item?.marketCap > tableList[index + 1]?.marketCap}
-                            <span class="text-green-800 dark:text-[#00FC50]">
-                              +{(
-                                ((item?.marketCap -
-                                  tableList[index + 1]?.marketCap) /
-                                  tableList[index + 1]?.marketCap) *
-                                100
-                              )?.toFixed(2)}%
-                            </span>
-                          {:else if item?.marketCap < tableList[index + 1]?.marketCap}
-                            <span class="text-red-800 dark:text-[#FF2F1F]">
-                              -{(
-                                Math.abs(
-                                  (item?.marketCap -
-                                    tableList[index + 1]?.marketCap) /
-                                    tableList[index + 1]?.marketCap,
-                                ) * 100
-                              )?.toFixed(2)}%
+                          {#if item?.changesPercentage}
+                            <span
+                              class={item?.changesPercentage >= 0
+                                ? "text-green-800 dark:text-[#00FC50] before:content-['+']"
+                                : "text-red-800 dark:text-[#FF2F1F]"}
+                            >
+                              {item?.changesPercentage
+                                ? item?.changesPercentage + "%"
+                                : "n/a"}
                             </span>
                           {:else}
                             n/a
