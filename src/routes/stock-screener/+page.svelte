@@ -558,7 +558,7 @@
       category: "Other Profits",
     },
     growthFreeCashFlow: {
-      label: "Free Cash Flow Growth",
+      label: "FCF Growth",
       step: ["200%", "100%", "50%", "20%", "10%", "5%", "1%"],
       defaultCondition: "over",
       defaultValue: "any",
@@ -2148,12 +2148,11 @@ const handleKeyDown = (event) => {
         // New Strategy Added
         name: "Strong Cash Flow",
         rules: [
-          { condition: "over", name: "marketCap", value: "1B" },
-          { condition: "over", name: "freeCashFlow", value: "50B" },
-          { condition: "over", name: "operatingCashFlowPerShare", value: 5 },
-          { condition: "over", name: "operatingCashFlow", value: "50B" },
-          { condition: "over", name: "freeCashFlowPerShare", value: 2 },
-          { condition: "over", name: "freeCashFlowMargin", value: "50%" },
+          { condition: "over", name: "marketCap", value: "300M" },
+          { condition: "over", name: "freeCashFlow", value: "100M" },
+          { condition: "over", name: "growthFreeCashFlow", value: "10%" },
+          { condition: "over", name: "operatingCashFlow", value: "100M" },
+          { condition: "over", name: "freeCashFlowMargin", value: "10%" },
         ],
       },
     };
@@ -3547,7 +3546,10 @@ const handleKeyDown = (event) => {
                       {#if row?.rule === "marketCap"}
                         {abbreviateNumber(item[row?.rule])}
                       {:else if ["analystCounter", "priceTarget"]?.includes(row?.rule)}
-                        <span class="">{abbreviateNumber(item[row?.rule])}</span
+                        <span class=""
+                          >{item[row?.rule]
+                            ? abbreviateNumber(item[row?.rule])
+                            : "n/a"}</span
                         >
                       {:else if row?.rule === "upside"}
                         {#if item[row?.rule] > 0}
@@ -3618,7 +3620,9 @@ const handleKeyDown = (event) => {
                       {#if row?.rule === "marketCap"}
                         {abbreviateNumber(item[row?.rule])}
                       {:else if row?.varType && row?.varType === "percent"}
-                        {abbreviateNumber(item[row?.rule])}%
+                        {item[row?.rule]
+                          ? abbreviateNumber(item[row?.rule]) + "%"
+                          : "n/a"}
                       {:else}
                         {item[row?.rule]
                           ? abbreviateNumber(item[row?.rule])
