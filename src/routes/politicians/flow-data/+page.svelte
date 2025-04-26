@@ -6,6 +6,7 @@
   //import UpgradeToPro from '$lib/components/UpgradeToPro.svelte';
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
   import Infobox from "$lib/components/Infobox.svelte";
+  import TableHeader from "$lib/components/Table/TableHeader.svelte";
 
   import SEO from "$lib/components/SEO.svelte";
 
@@ -14,15 +15,15 @@
   let cloudFrontUrl = import.meta.env.VITE_IMAGE_URL;
 
   let rawData = data?.getPoliticianRSS;
-  let displayList = rawData?.slice(0, 50) || [];
+  let stockList = rawData?.slice(0, 50) || [];
 
   async function handleScroll() {
     const scrollThreshold = document.body.offsetHeight * 0.8; // 80% of the website height
     const isBottom = window.innerHeight + window.scrollY >= scrollThreshold;
-    if (isBottom && displayList?.length !== rawData?.length) {
-      const nextIndex = displayList?.length;
+    if (isBottom && stockList?.length !== rawData?.length) {
+      const nextIndex = stockList?.length;
       const filteredNewResults = rawData?.slice(nextIndex, nextIndex + 9);
-      displayList = [...displayList, ...filteredNewResults];
+      stockList = [...stockList, ...filteredNewResults];
     }
   }
 
@@ -56,6 +57,80 @@
     const lastName = names[names?.length - 1];
     return `${firstName?.charAt(0)}. ${lastName}`;
   }
+
+  let columns = [
+    { key: "representative", label: "Person", align: "left" },
+    { key: "ticker", label: "Company", align: "left" },
+    { key: "disclosureDate", label: "Filing Date", align: "right" },
+    { key: "amount", label: "Amount", align: "right" },
+    { key: "type", label: "Type", align: "right" },
+  ];
+
+  let sortOrders = {
+    representative: { order: "none", type: "string" },
+    ticker: { order: "none", type: "string" },
+    disclosureDate: { order: "none", type: "date" },
+    amount: { order: "none", type: "string" },
+    type: { order: "none", type: "string" },
+  };
+
+  const sortData = (key) => {
+    // Reset all other keys to 'none' except the current key
+    for (const k in sortOrders) {
+      if (k !== key) {
+        sortOrders[k].order = "none";
+      }
+    }
+
+    // Cycle through 'none', 'asc', 'desc' for the clicked key
+    const orderCycle = ["none", "asc", "desc"];
+
+    let originalData = rawData;
+
+    const currentOrderIndex = orderCycle.indexOf(sortOrders[key].order);
+    sortOrders[key].order =
+      orderCycle[(currentOrderIndex + 1) % orderCycle.length];
+    const sortOrder = sortOrders[key].order;
+
+    // Reset to original data when 'none' and stop further sorting
+    if (sortOrder === "none") {
+      stockList = [...originalData]?.slice(0, 50); // Reset to original data (spread to avoid mutation)
+      return;
+    }
+
+    // Define a generic comparison function
+    const compareValues = (a, b) => {
+      const { type } = sortOrders[key];
+      let valueA, valueB;
+
+      switch (type) {
+        case "date":
+          valueA = new Date(a[key]);
+          valueB = new Date(b[key]);
+          break;
+        case "string":
+          valueA = a[key].toUpperCase();
+          valueB = b[key].toUpperCase();
+          return sortOrder === "asc"
+            ? valueA.localeCompare(valueB)
+            : valueB.localeCompare(valueA);
+        case "number":
+        default:
+          valueA = parseFloat(a[key]);
+          valueB = parseFloat(b[key]);
+          break;
+      }
+
+      if (sortOrder === "asc") {
+        return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
+      } else {
+        return valueA > valueB ? -1 : valueA < valueB ? 1 : 0;
+      }
+    };
+
+    // Sort using the generic comparison function
+    stockList = [...originalData].sort(compareValues)?.slice(0, 50);
+  };
 
   $: charNumber = $screenWidth < 640 ? 20 : 40;
 </script>
@@ -106,30 +181,11 @@
                         <table
                           class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
                         >
-                          <thead
-                            class="text-muted dark:text-white dark:bg-default"
-                          >
-                            <tr class="">
-                              <th class=" text-start text-sm sm:font-semibold">
-                                Person
-                              </th>
-                              <td class="text-start text-sm sm:font-semibold">
-                                Company
-                              </td>
-
-                              <td class="text-end text-sm sm:font-semibold">
-                                Date
-                              </td>
-                              <td class="text-center text-sm sm:font-semibold">
-                                Amount
-                              </td>
-                              <td class=" text-end text-sm sm:font-semibold"
-                                >Type</td
-                              >
-                            </tr>
+                          <thead>
+                            <TableHeader {columns} {sortOrders} {sortData} />
                           </thead>
                           <tbody>
-                            {#each displayList as item, index}
+                            {#each stockList as item, index}
                               <tr
                                 class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
                                   1 ===
@@ -213,7 +269,7 @@
                                 </td>
 
                                 <td
-                                  class="text-center text-sm sm:text-[1rem] whitespace-nowrap"
+                                  class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                                 >
                                   {item?.amount?.replace(
                                     "$1,000,001 - $5,000,000",
