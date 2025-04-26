@@ -2139,7 +2139,7 @@ const handleKeyDown = (event) => {
       monthlyDividends: {
         name: "Monthly Dividends",
         rules: [
-          { condition: "over", name: "payoutFrequency", value: "Monthly" },
+          { name: "payoutFrequency", value: "Monthly" },
           { condition: "over", name: "dividendYield", value: "0%" },
         ],
       },
