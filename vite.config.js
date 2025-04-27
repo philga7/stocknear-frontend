@@ -1,5 +1,5 @@
 import { sveltekit } from "@sveltejs/kit/vite";
-import { partytownVite } from '@builder.io/partytown/utils';
+//import { partytownVite } from '@builder.io/partytown/utils';
 //import { visualizer } from "rollup-plugin-visualizer";
 
 /** @type {import('vite').UserConfig} */
@@ -7,16 +7,21 @@ const config = {
   plugins: [
     //visualizer({ open: true }) // Plugin to visualize the bundle
     sveltekit(),
-    partytownVite(),
+    //partytownVite(),
   ],
 
   server: {
     cors: true,
+     watch: {
+        usePolling: false, // Use native FS events for better performance
+      },
   },
 
   build: {
     target: "esnext",
-    minify: true,
+    minify: 'esbuild',
+    sourcemap: false,
+    cssCodeSplit: true, // Extract CSS into separate files
     chunkSizeWarningLimit: 500, // Lower this to ensure chunks are appropriately sized
     rollupOptions: {
       output: {
