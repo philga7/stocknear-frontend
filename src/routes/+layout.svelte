@@ -278,6 +278,14 @@
 
 <ModeWatcher defaultMode={data?.themeMode} />
 
+<svelte:head>
+  <script
+    async
+    custom-element="amp-ad"
+    src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"
+  ></script>
+</svelte:head>
+
 <!-- Google Tag Manager (noscript) -->
 <noscript
   ><iframe

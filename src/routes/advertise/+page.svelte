@@ -1,6 +1,7 @@
 <script>
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
   import SEO from "$lib/components/SEO.svelte";
+  import HeaderAd from "$lib/components/Ads/HeaderAd.svelte";
 </script>
 
 <SEO
@@ -9,23 +10,18 @@
   description="Advertise with Stocknear, the first fully open-source financial research platform for retail investors. Gain unparalleled visibility among traders, analysts, and investors worldwide with our high-engagement newsletter and dynamic investment tools."
 />
 
-<section
-  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pt-5 px-4 lg:px-3 text-muted dark:text-white"
->
-  <div class="text-sm sm:text-[1rem] breadcrumbs">
-    <ul>
-      <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
-      <li class="text-muted dark:text-gray-300">Advertise</li>
-    </ul>
-  </div>
+<HeaderAd />
 
+<section
+  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen px-4 lg:px-3 text-muted dark:text-white pb-20"
+>
   <div class="w-full overflow-hidden m-auto mt-5">
     <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
       <div
         class="relative flex justify-center items-start overflow-hidden w-full"
       >
         <main class="w-full lg:w-3/4 lg:pr-5">
-          <div class="mb-6 border-b-[2px]">
+          <div class="mb-6 border-[#2C6288] dark:border-white border-b-[2px]">
             <h1 class="mb-1 text-2xl sm:text-3xl font-bold">
               Advertise With Us
             </h1>
