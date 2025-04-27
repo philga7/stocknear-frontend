@@ -94,7 +94,6 @@ export const load = async ({ locals}) => {
   try {
     return {
       getDashboard: await getDashboard(apiURL, apiKey),
-      canonical: await canonical(),
     };
   } catch (error) {
     console.error('Error in dashboard load:', error);

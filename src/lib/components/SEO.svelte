@@ -7,13 +7,13 @@
   export let image = null;
 
   const baseURL = "https://stocknear.com";
-  const canonical = baseURL + $page.url.pathname;
 </script>
 
 <svelte:head>
   <meta charset="utf-8" />
-  <link rel="canonical" href={canonical} />
-
+  {#if $page?.url?.pathname}
+    <link rel="canonical" href={baseURL + $page?.url?.pathname} />
+  {/if}
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
