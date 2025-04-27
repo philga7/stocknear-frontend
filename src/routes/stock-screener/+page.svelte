@@ -167,7 +167,7 @@
       defaultValue: "any",
     },
     ema20: {
-      label: "EMA20",
+      label: "20-Day Exp. Moving Average",
       step: [
         "Stock Price > EMA20",
         "EMA20 > EMA50",
@@ -178,7 +178,7 @@
       defaultValue: "any",
     },
     ema50: {
-      label: "EMA50",
+      label: "50-Day Exp. Moving Average",
       step: [
         "Stock Price > EMA50",
         "EMA50 > EMA20",
@@ -189,7 +189,7 @@
       defaultValue: "any",
     },
     ema100: {
-      label: "EMA100",
+      label: "100-Day Exp. Moving Average",
       step: [
         "Stock Price > EMA100",
         "EMA100 > EMA20",
@@ -200,7 +200,7 @@
       defaultValue: "any",
     },
     ema200: {
-      label: "EMA200",
+      label: "200-Day Exp. Moving Average",
       step: [
         "Stock Price > EMA200",
         "EMA200 > EMA20",
@@ -405,6 +405,7 @@
       step: ["100B", "50B", "10B", "1B", "300M", "100M", "10M"],
       defaultCondition: "over",
       defaultValue: "any",
+      category: "Expenses",
     },
     growthCostOfRevenue: {
       label: "Cost of Revenue Growth",
@@ -412,12 +413,14 @@
       defaultCondition: "over",
       varType: "percentSign",
       defaultValue: "any",
+      category: "Expenses",
     },
     costAndExpenses: {
       label: "Cost & Expenses",
       step: ["100B", "50B", "10B", "1B", "300M", "100M", "10M"],
       defaultCondition: "over",
       defaultValue: "any",
+      category: "Expenses",
     },
     growthCostAndExpenses: {
       label: "Cost & Expenses Growth",
@@ -425,6 +428,7 @@
       defaultCondition: "over",
       varType: "percentSign",
       defaultValue: "any",
+      category: "Expenses",
     },
     netIncome: {
       label: "Net Income",
@@ -461,6 +465,7 @@
       step: ["10B", "1B", "100M", "10M", "1M", 0],
       defaultCondition: "over",
       defaultValue: "any",
+      category: "Expenses",
     },
     growthResearchAndDevelopmentExpenses: {
       label: "R&D Growth",
@@ -468,6 +473,7 @@
       defaultCondition: "over",
       varType: "percentSign",
       defaultValue: "any",
+      category: "Expenses",
     },
     payoutRatio: {
       label: "Payout Ratio",
@@ -533,6 +539,7 @@
       step: ["100B", "50B", "10B", "1B", "300M", "100M", "10M"],
       defaultCondition: "over",
       defaultValue: "any",
+      category: "Expenses",
     },
     growthInterestExpense: {
       label: "Interest Expenses Growth",
@@ -540,12 +547,14 @@
       defaultCondition: "over",
       varType: "percentSign",
       defaultValue: "any",
+      category: "Expenses",
     },
     operatingExpenses: {
       label: "Operating Expenses",
       step: ["100B", "50B", "10B", "1B", "300M", "100M", "10M"],
       defaultCondition: "over",
       defaultValue: "any",
+      category: "Expenses",
     },
     growthOperatingExpenses: {
       label: "Operating Expenses Growth",
@@ -553,12 +562,14 @@
       defaultCondition: "over",
       varType: "percentSign",
       defaultValue: "any",
+      category: "Expenses",
     },
     ebit: {
       label: "EBIT",
       step: ["100B", "50B", "10B", "1B", "300M", "100M", "10M"],
       defaultCondition: "over",
       defaultValue: "any",
+      category: "Other Profits",
     },
     operatingIncome: {
       label: "Operating Income",
@@ -592,11 +603,12 @@
       category: "Cash Flow",
     },
     growthStockBasedCompensation: {
-      label: "Stock-Based Compensation Growth",
+      label: "SBC Growth",
       step: ["200%", "100%", "50%", "20%", "10%", "5%", "1%"],
       defaultCondition: "over",
       varType: "percentSign",
       defaultValue: "any",
+      category: "Expenses",
     },
     growthTotalLiabilities: {
       label: "Total Liabilities Growth",
@@ -668,6 +680,15 @@
       defaultCondition: "over",
       varType: "percentSign",
       defaultValue: "any",
+      category: "Financial Performance",
+    },
+    returnOnCapitalEmployed: {
+      label: "Return On Capital Employed",
+      step: ["100%", "50%", "20%", "10%", "5%", "0%"],
+      defaultCondition: "over",
+      varType: "percentSign",
+      defaultValue: "any",
+      category: "Financial Performance",
     },
     relativeVolume: {
       label: "Relative Volume",
@@ -732,6 +753,7 @@
       step: ["100B", "50B", "10B", "1B", "300M", "100M", "10M"],
       defaultCondition: "over",
       defaultValue: "any",
+      category: "Other Profits",
     },
     growthEBITDA: {
       label: "EBITDA Growth",
@@ -739,6 +761,7 @@
       defaultCondition: "over",
       varType: "percentSign",
       defaultValue: "any",
+      category: "Other Profits",
     },
     var: {
       label: "Value-at-Risk",
@@ -760,6 +783,7 @@
       step: [50, 40, 30, 20, 10, 5, 1],
       defaultCondition: "over",
       defaultValue: "any",
+      category: "Valuation & Ratios",
     },
     debtToEquityRatio: {
       label: "Debt / Equity",
@@ -780,6 +804,7 @@
       defaultCondition: "over",
       varType: "percentSign",
       defaultValue: "any",
+      category: "Financial Performance",
     },
     returnOnEquity: {
       label: "Return on Equity",
@@ -787,6 +812,7 @@
       defaultCondition: "over",
       varType: "percentSign",
       defaultValue: "any",
+      category: "Financial Performance",
     },
     returnOnTangibleAssets: {
       label: "Return on Tangible Assets",
@@ -794,6 +820,7 @@
       defaultCondition: "over",
       varType: "percentSign",
       defaultValue: "any",
+      category: "Financial Performance",
     },
     enterpriseValue: {
       label: "Enterprise Value",
@@ -859,6 +886,7 @@
       step: [10, 5, 3, 2, 1, 0],
       defaultCondition: "over",
       defaultValue: "any",
+      category: "Valuation & Ratios",
     },
     sharesShort: {
       label: "Short Interest",
@@ -1005,6 +1033,15 @@
       step: ["10B", "1B", "100M", "10M", "1M", 0],
       defaultCondition: "over",
       defaultValue: "any",
+      category: "Expenses",
+    },
+    stockBasedCompensationToRevenue: {
+      label: "SBC / Revenue",
+      step: ["20%", "10%", "5%", "1%", "0%"],
+      defaultCondition: "over",
+      defaultValue: "any",
+      varType: "percent",
+      category: "Expenses",
     },
     totalStockholdersEquity: {
       label: "Shareholders Equity",
@@ -1113,6 +1150,7 @@
       defaultCondition: "over",
       varType: "percent",
       defaultValue: "any",
+      category: "Taxes",
     },
     fixedAssetTurnover: {
       label: "Fixed Asset Turnover",

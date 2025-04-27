@@ -176,7 +176,7 @@ export const computeGrowthSingleList = (data, actualList) => {
 export const groupScreenerRules = (allRows) => {
   const categoryOrder = [
     "Most Popular", "Company Info","Price & Volume", "Options Activity","Valuation & Ratios", "Valuation & Price Targets", "Margins", 
-    "Performance","Technical Analysis","Forecasts, Analysts & Price Targets", "Dividends", "Revenue / Sales", "Net Income", "Other Profits","Cash Flow", "Debt", "Shares Statistics", "Short Selling Statistics", "Others"
+    "Performance","Technical Analysis","Forecasts, Analysts & Price Targets", "Dividends", "Revenue / Sales", "Net Income", "Financial Performance","Other Profits","Cash Flow", "Expenses", "Debt", "Shares Statistics", "Short Selling Statistics", "Taxes", "Others"
   ];
 
   // Group rows by category
