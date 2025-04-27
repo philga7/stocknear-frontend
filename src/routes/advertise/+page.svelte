@@ -1,7 +1,10 @@
 <script>
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
   import SEO from "$lib/components/SEO.svelte";
-  import HeaderAd from "$lib/components/Ads/HeaderAd.svelte";
+  import HorizontalAd from "$lib/components/Ads/HorizontalAd.svelte";
+  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
+
+  export let data;
 </script>
 
 <SEO
@@ -10,23 +13,24 @@
   description="Advertise with Stocknear, the first fully open-source financial research platform for retail investors. Gain unparalleled visibility among traders, analysts, and investors worldwide with our high-engagement newsletter and dynamic investment tools."
 />
 
-<HeaderAd />
+{#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+  <HorizontalAd />
+{/if}
 
 <section
   class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen px-4 lg:px-3 text-muted dark:text-white pb-20"
 >
   <div class="w-full overflow-hidden m-auto mt-5">
-    <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
+    <div class="sm:p-0 w-full m-auto overflow-hidden">
+      <div class="w-full">
+        <div class="mb-6 border-[#2C6288] dark:border-white border-b-[2px]">
+          <h1 class="mb-1 text-2xl sm:text-3xl font-bold">Advertise With Us</h1>
+        </div>
+      </div>
       <div
-        class="relative flex justify-center items-start overflow-hidden w-full"
+        class="relative flex flex-col lg:flex-row justify-center items-start overflow-hidden w-full"
       >
-        <main class="w-full lg:w-3/4 lg:pr-5">
-          <div class="mb-6 border-[#2C6288] dark:border-white border-b-[2px]">
-            <h1 class="mb-1 text-2xl sm:text-3xl font-bold">
-              Advertise With Us
-            </h1>
-          </div>
-
+        <main class="w-full lg:w-3/4 lg:pr-10">
           <div class="w-full m-auto">
             <div>
               <p class=" mb-3 text-lg">
@@ -83,9 +87,9 @@
           </div>
         </main>
 
-        <aside class="hidden lg:block relative fixed w-1/4 ml-4">
+        <aside class="inline-block relative w-full lg:w-1/4 mt-6 lg:mt-0">
           <div
-            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href="/donation"
@@ -125,6 +129,9 @@
               </span>
             </a>
           </div>
+          {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+            <SquareAd />
+          {/if}
         </aside>
       </div>
     </div>

@@ -131,33 +131,24 @@
     }
 
     await checkMarketHour();
-    /*
-    if ($showCookieConsent === true) {
-      Cookie = (await import("$lib/components/Cookie.svelte")).default;
-    }
-      */
 
-    /*
-    if (window?.innerWidth <= 768) {
-      await detectSWUpdate();
-    }
-      */
+    // Your cookie/detectSWUpdate logic (commented)
 
-    // Initialize dataLayer in main thread
+    // Initialize dataLayer
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       "gtm.start": new Date().getTime(),
       event: "gtm.js",
     });
 
-    // Create inline web worker
+    // Inline web worker to load GTM
     const workerCode = `
-      self.postMessage({
-        action: 'loadGTM',
-        url: 'https://www.googletagmanager.com/gtm.js?id=GTM-NZBJ9W63'
-      });
-      self.close();
-    `;
+    self.postMessage({
+      action: 'loadGTM',
+      url: 'https://www.googletagmanager.com/gtm.js?id=GTM-NZBJ9W63'
+    });
+    self.close();
+  `;
 
     const blob = new Blob([workerCode], { type: "application/javascript" });
     const worker = new Worker(URL.createObjectURL(blob));
@@ -171,13 +162,21 @@
       }
     };
 
-    // Clear all the cache every 20 min
+    // Clear cache every 20 min
     const interval = setInterval(
       () => {
         clearCache();
       },
       20 * 60 * 1000,
     );
+
+    if (!["Plus", "Pro"].includes(data?.user?.tier)) {
+      const ampScript = document.createElement("script");
+      ampScript.async = true;
+      ampScript.setAttribute("custom-element", "amp-ad");
+      ampScript.src = "https://cdn.ampproject.org/v0/amp-ad-0.1.js";
+      document.head.appendChild(ampScript);
+    }
 
     return () => clearInterval(interval);
   });
@@ -277,14 +276,6 @@
 <svelte:window bind:innerWidth={$screenWidth} />
 
 <ModeWatcher defaultMode={data?.themeMode} />
-
-<svelte:head>
-  <script
-    async
-    custom-element="amp-ad"
-    src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"
-  ></script>
-</svelte:head>
 
 <!-- Google Tag Manager (noscript) -->
 <noscript

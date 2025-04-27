@@ -60,13 +60,23 @@
 
               <h2 class="mb-1 text-2xl sm:text-3xl font-bold mb-3">Cookies</h2>
 
-              <p class=" mb-10">
+              <p class="">
                 Our website utilizes cookies to enhance your browsing
                 experience. By visiting stocknear.com, you consent to our use of
                 cookies in accordance with our Privacy Policy. Cookies enable us
                 to retrieve user information for each visit and improve the
                 functionality of specific sections of our site.
               </p>
+              <br />
+              <div id="fcConsentRevocation" class="mb-10">
+                You can update your cookie preferences anytime here:
+                <br />
+                <button
+                  class="py-2 px-3 rounded mt-3 bg-blue-500 cursor-pointer sm:hover:bg-blue-600 text-white"
+                  on="googleFC.prompt(consent=googleFC, expireCache=true)"
+                  >Privacy and cookie settings</button
+                >
+              </div>
 
               <h2 class="mb-1 text-2xl sm:text-3xl font-bold mb-3">
                 Links to Other Sites
