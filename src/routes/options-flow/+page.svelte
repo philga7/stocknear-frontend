@@ -933,48 +933,13 @@
     {
       element: ".filter-driver",
       popover: {
-        title: "Add Filters",
+        title: "Apply Filters",
         description: `Drill into the exact conditions you trade—filter by expiry, DTE, strike, trade type or minimum size to reveal the specific opportunity sets you care about.`,
         side: "right",
         align: "start",
       },
     },
-    {
-      element: ".sentiment-driver",
-      popover: {
-        title: "Flow Sentiment",
-        description: `Instantly validate your directional bias—green “Bullish” when call volume surges, red “Bearish” when puts dominate, so you can confirm or rethink your view.`,
-        side: "left",
-        align: "start",
-      },
-    },
-    {
-      element: ".put-call-driver",
-      popover: {
-        title: "Put / Call Ratio",
-        description: `Gauge extremes in demand—ratios below 1 can highlight opportunistic bullish setups, while spikes above 1 may flag optimal hedging or contrarian shorts.`,
-        side: "right",
-        align: "start",
-      },
-    },
-    {
-      element: ".call-flow-driver",
-      popover: {
-        title: "Call Flow",
-        description: `Track total call contracts and their share of overall volume to time your bullish plays—identify when smart money is stacking calls at scale.`,
-        side: "right",
-        align: "start",
-      },
-    },
-    {
-      element: ".put-flow-driver",
-      popover: {
-        title: "Put Flow",
-        description: `See where puts are piling up and measure downside conviction—helping you size hedges or time bearish trades when professional pressure builds.`,
-        side: "right",
-        align: "start",
-      },
-    },
+
     {
       element: ".table-driver",
       popover: {
@@ -987,7 +952,7 @@
     {
       popover: {
         title: "You’re All Set!",
-        description: `Armed with live and historical flow insights, you can now fine-tune your timing, confirm bias, and execute trades with the confidence of knowing where the big money is moving.`,
+        description: `Armed with live and historical flow insights, you can now fine-tune your timing, confirm bias and execute trades with the confidence of knowing where the big money is moving.`,
         side: "center",
         align: "center",
       },

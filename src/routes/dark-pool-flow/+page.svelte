@@ -2,10 +2,11 @@
   import notifySound from "$lib/audio/options-flow-reader.mp3";
   import { getCache, setCache, isOpen } from "$lib/store";
 
-  import { cn, sectorList } from "$lib/utils";
+  import { sectorList } from "$lib/utils";
   import { onMount, onDestroy } from "svelte";
   import { toast } from "svelte-sonner";
   import { mode } from "mode-watcher";
+  import Tutorial from "$lib/components/Tutorial.svelte";
 
   import { DateFormatter, type DateValue } from "@internationalized/date";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
@@ -415,18 +416,9 @@
 
   let displayedData = [];
 
-  let flowSentiment;
-  let putCallRatio;
-  let displayCallVolume;
-  let displayPutVolume;
-  let callPercentage;
-  let putPercentage;
-
   let audio;
   let muted = false;
-  let newData = [];
-  let previousVolume = 0; //This is needed to play the sound only if it changes.
-  let notFound = false;
+
   let isLoaded = false;
   $: modeStatus = $isOpen === true ? true : false;
 
@@ -445,75 +437,6 @@
       });
     }
   }
-  /*
-  async function websocketRealtimeData() {
-    newData = [];
-    try {
-      socket = new WebSocket(data?.wsURL + "/options-flow-reader");
-
-
-      socket.addEventListener("message", (event) => {
-        const totalVolume = displayCallVolume + displayPutVolume;
-        if (mode === true) {
-          try {
-            newData = JSON?.parse(event.data) ?? [];
-            if (newData?.length > 0) {
-              newData?.forEach((item) => {
-                item.dte = daysLeft(item?.date_expiration);
-              });
-
-              //calculateStats(newData);
-              //console.log(previousVolume);
-              if (
-                newData?.length > rawData?.length &&
-                previousVolume !== totalVolume
-              ) {
-                //console.log(previousVolume,totalVolume,);
-                rawData = newData;
-                shouldLoadWorker.set(true);
-                //console.log('loading worker')
-                //displayedData = rawData;
-
-                if (!muted) {
-                  audio?.play();
-                }
-              }
-            }
-
-   
-          } catch (e) {
-            console.error("Error processing WebSocket message:", e);
-          }
-          newData = [];
-          previousVolume = totalVolume;
-        }
-      });
-
-      socket.addEventListener("close", (event) => {
-        console.log("WebSocket connection closed:", event.reason);
-
-        // Explicitly nullify the socket and remove all event listeners
-        if (socket) {
-          socket.onmessage = null;
-          socket.onopen = null;
-          socket.onclose = null;
-          socket.onerror = null;
-          socket = null;
-        }
-      });
-
-      socket.addEventListener("error", (error) => {
-        console.error("WebSocket error:", error);
-        // Handle WebSocket errors here
-      });
-    } catch (error) {
-      console.error("WebSocket connection error:", error);
-      // Handle connection errors here
-      setTimeout(() => websocketRealtimeData(), 400);
-    }
-  }
-    */
-
   function saveRules() {
     try {
       // Save the version along with the rules
@@ -686,12 +609,86 @@
       }
     }
   }
+
+  let steps = [
+    {
+      popover: {
+        title: "Dark Pool (15 min delayed)",
+        description: `Discover hidden institutional activity—see large block trades executed away from public exchanges. This provides a glimpse into where big money is positioning *before* the trend will be seen by other retail investors,
+        giving you a huge early advantage.`,
+        side: "center",
+        align: "center",
+      },
+    },
+    {
+      element: ".mute-driver",
+      popover: {
+        title: "Mute Alerts",
+        description: `Silence the audio feed when you need uninterrupted time to review your strategy—unmute anytime to catch fresh flow that can validate or reshape your thesis.`,
+        side: "left",
+        align: "start",
+      },
+    },
+    {
+      element: ".live-flow-driver",
+      popover: {
+        title: "Toggle Live Flow",
+        description: `Freeze incoming trades and lock the table to analyze a snapshot of flow against your watchlist—unpause when you’re ready to jump back into live, actionable order data.`,
+        side: "bottom",
+        align: "start",
+      },
+    },
+    {
+      element: ".search-driver",
+      popover: {
+        title: "Search Specific Tickers",
+        description: `Prioritize the symbols that matter to your portfolio or watchlist by adding the tickers you intend to trade.`,
+        side: "right",
+        align: "start",
+      },
+    },
+    {
+      element: ".date-picker-driver",
+      popover: {
+        title: "Pick a Date",
+        description: `Pull up historical flow to backtest how institutional activity aligned with market moves—validate your edge on past data before you deploy new strategies.`,
+        side: "bottom",
+        align: "start",
+      },
+    },
+    {
+      element: ".filter-driver", // Assuming a class like this exists for the filters button
+      popover: {
+        title: "Apply Filters",
+        description: `Refine the data based on criteria like size, volume percentages, or sector. Focus only on the most impactful or relevant institutional trades that align with your specific trading criteria.`,
+        side: "right", // Adjust side based on actual element position
+        align: "start",
+      },
+    },
+    {
+      element: ".table-driver", // Assuming a class like this exists for the main data table
+      popover: {
+        title: "Dark Pool Prints Table",
+        description: `Examine the details of each Dark Pool trade, including price, size (critical for identifying institutional activity), volume percentages, and asset type. Use this granular data to confirm the significance of the flow and inform potential entry/exit points.`,
+        side: "center", // Adjust side based on actual element position
+        align: "start",
+      },
+    },
+    {
+      popover: {
+        title: "You’re All Set!",
+        description: `By monitoring Realtime Dark Pool Flow, you gain a powerful edge by seeing the hidden hand of institutional trading. Use this data to confirm your bias, identify potential trend beginnings or reversals, and trade with greater confidence.`,
+        side: "center",
+        align: "center",
+      },
+    },
+  ];
 </script>
 
 <SEO
   title="Dark
     Pool Flow Feed"
-  description="Explore unusual dark pool trades from big institutional traders and hedge funds."
+  description="Explore unusual dark pool trades from big institutional traders and hedge funds in realtime."
 />
 
 <body class="overflow-y-auto">
@@ -708,15 +705,10 @@
         </div>
         -->
 
-      {#if !$isOpen}
-        <div
-          class=" text-sm sm:text-[1rem] italic text-center sm:text-start w-full ml-2 mb-3"
-        >
-          Dark Pool Live flow of {data?.user?.tier === "Pro" && selectedDate
-            ? df.format(selectedDate?.toDate())
-            : nyseDate}
-        </div>
-      {/if}
+      <div class="w-full flex flex-row items-center justify-between mb-3">
+        <h1 class="text-xl sm:text-2xl font-bold">Realtime Dark Pool Flow</h1>
+        <Tutorial {steps} />
+      </div>
       <div
         class="rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-100 dark:bg-primary p-2"
       >
@@ -729,7 +721,7 @@
             <label
               data-tip="Audio Preference"
               on:click={() => (muted = !muted)}
-              class="xl:tooltip xl:tooltip-bottom flex flex-col items-center mr-3 cursor-pointer"
+              class="mute-driver xl:tooltip xl:tooltip-bottom flex flex-col items-center mr-3 cursor-pointer"
             >
               <div
                 class="rounded-full w-10 h-10 relative bg-gray-400 dark:bg-[#000] flex items-center justify-center"
@@ -767,7 +759,7 @@
             </span>
 
             <label
-              class="inline-flex items-center cursor-pointer focus-none focus:outline-hidden"
+              class="live-flow-driver inline-flex items-center cursor-pointer focus-none focus:outline-hidden"
             >
               <input
                 on:click={() =>
@@ -799,9 +791,9 @@
           <div class="sm:ml-auto w-full sm:w-fit pt-5">
             <div class="relative flex flex-col sm:flex-row items-center">
               <div
-                class="relative w-full sm:w-fit pl-3 sm:mr-5 mb-4 sm:mb-0 flex-auto text-center shadow-sm bg-white dark:bg-secondary rounded-md border border-gray-300 dark:border-gray-600"
+                class="search-driver relative w-full sm:w-fit pl-3 sm:mr-5 mb-4 sm:mb-0 flex-auto text-center shadow-sm bg-white dark:bg-secondary rounded-md border border-gray-300 dark:border-gray-600"
               >
-                <label class="flex flex-row items-center">
+                <label class=" flex flex-row items-center">
                   <input
                     id="modal-search"
                     class="focus:outline-none sm:ml-2 text-[1rem] placeholder-gray-500 dark:placeholder-gray-300 border-transparent bg-white dark:bg-secondary focus:border-transparent focus:ring-0 flex items-center justify-center w-full px-0 py-1.5"
@@ -840,13 +832,6 @@
                     >
                   {/if}
                 </label>
-                {#if notFound === true}
-                  <span
-                    class="absolute left-1 -bottom-6 label-text text-error text-[0.65rem] mt-2"
-                  >
-                    No Results Found
-                  </span>
-                {/if}
               </div>
 
               <Popover.Root>
@@ -856,10 +841,7 @@
                       toast?.info("Feature is coming soon 🔥", {
                         style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
                       })}
-                    class={cn(
-                      "w-full sm:w-[160px] truncate sm:mr-3 py-3 shadow-sm border-gray-300 justify-center sm:justify-start text-center sm:text-left font-normal border-none rounded-md",
-                      !selectedDate && "text-muted dark:text-gray-300",
-                    )}
+                    class="date-picker-driver  w-full sm:w-[160px] truncate sm:mr-3 py-3 shadow-sm dark:bg-[#000] border-gray-300 justify-center sm:justify-start text-center sm:text-left  border-none rounded-md"
                     builders={[builder]}
                   >
                     <CalendarIcon class="mr-2 h-4 w-4" />
@@ -901,7 +883,7 @@
           >
             <label
               for="ruleModal"
-              class="inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none py-2 pl-3 pr-4 font-semibold shadow-sm bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+              class="filter-driver inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none py-2 pl-3 pr-4 font-semibold shadow-sm bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
             >
               <svg
                 class="h-5 w-5"
