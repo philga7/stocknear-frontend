@@ -1608,7 +1608,7 @@
                         class="stroke-current text-blue-700"
                         stroke-width="3"
                         stroke-dasharray="100"
-                        stroke-dashoffset={data?.user.tier === "Pro"
+                        stroke-dashoffset={data?.user?.tier === "Pro"
                           ? putCallRatio >= 1
                             ? 0
                             : 100 - (putCallRatio * 100)?.toFixed(2)
