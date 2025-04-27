@@ -123,7 +123,7 @@
       defaultValue: "any",
     },
     sma20: {
-      label: "SMA20",
+      label: "20-Day Moving Average",
       step: [
         "Stock Price > SMA20",
         "SMA20 > SMA50",
@@ -134,7 +134,7 @@
       defaultValue: "any",
     },
     sma50: {
-      label: "SMA50",
+      label: "50-Day Moving Average",
       step: [
         "Stock Price > SMA50",
         "SMA50 > SMA20",
@@ -145,7 +145,7 @@
       defaultValue: "any",
     },
     sma100: {
-      label: "SMA100",
+      label: "100-Day Moving Average",
       step: [
         "Stock Price > SMA100",
         "SMA100 > SMA20",
@@ -156,7 +156,7 @@
       defaultValue: "any",
     },
     sma200: {
-      label: "SMA200",
+      label: "200-Day Moving Average",
       step: [
         "Stock Price > SMA200",
         "SMA200 > SMA20",
@@ -584,7 +584,7 @@
       category: "Cash Flow",
     },
     growthOperatingCashFlow: {
-      label: "Operating Cash Flow Growth",
+      label: "OCF Growth",
       step: ["200%", "100%", "50%", "20%", "10%", "5%", "1%"],
       defaultCondition: "over",
       defaultValue: "any",
@@ -684,13 +684,7 @@
       varType: "percent",
       category: "Shares Statistics",
     },
-    pe: {
-      label: "Price / Earnings (ttm)",
-      step: [50, 40, 30, 20, 10, 5, 1],
-      defaultCondition: "over",
-      defaultValue: "any",
-      category: "Valuation & Ratios",
-    },
+
     priceToEarningsGrowthRatio: {
       label: "PEG Ratio",
       step: [100, 10, 5, 3, 1, 0.5, 0],
@@ -1000,7 +994,7 @@
       category: "Valuation & Ratios",
     },
     priceToEarningsRatio: {
-      label: "Price / Earnings",
+      label: "PE Ratio",
       step: [100, 50, 20, 10, 5, 0],
       defaultCondition: "over",
       defaultValue: "any",
@@ -2307,7 +2301,7 @@ const handleKeyDown = (event) => {
     { key: "price", label: "Price", align: "right" },
     { key: "changesPercentage", label: "% Change", align: "right" },
     { key: "volume", label: "Volume", align: "right" },
-    { key: "pe", label: "PE Ratio", align: "right" },
+    { key: "priceToEarningsRatio", label: "PE Ratio", align: "right" },
   ];
 
   const generalSortOrders = {
@@ -2317,7 +2311,7 @@ const handleKeyDown = (event) => {
     changesPercentage: { order: "none", type: "number" },
     price: { order: "none", type: "number" },
     volume: { order: "none", type: "number" },
-    pe: { order: "none", type: "number" },
+    priceToEarningsRatio: { order: "none", type: "number" },
   };
 
   const stringTypeRules = [
@@ -3383,11 +3377,11 @@ const handleKeyDown = (event) => {
                   </td>
 
                   <td class=" text-sm sm:text-[1rem] text-end">
-                    {item?.volume === 0 ? "-" : abbreviateNumber(item?.volume)}
+                    {item?.volume ? abbreviateNumber(item?.volume) : "n/a"}
                   </td>
 
                   <td class=" text-sm sm:text-[1rem] text-end">
-                    {item?.pe}
+                    {item?.priceToEarningsRatio ?? "n/a"}
                   </td>
                 </tr>
               {/each}
