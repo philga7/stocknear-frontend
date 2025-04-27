@@ -31,7 +31,7 @@
   <link
     rel="apple-touch-icon"
     sizes="180x180"
-    href={baseURL + "/img/apple-touch-icon.png"}
+    href={baseURL + "/apple-touch-icon.png"}
   />
   <meta name="theme-color" content="#09090B" />
 
