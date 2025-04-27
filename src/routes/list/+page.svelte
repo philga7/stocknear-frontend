@@ -17,12 +17,6 @@
     <li>
       <a
         class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
-        href="/list/top-rated-dividend-stocks">Top-Rated Dividend Stocks</a
-      >
-    </li>
-    <li>
-      <a
-        class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
         href="/list/highest-revenue">U.S. Companies With The Most Revenue</a
       >
     </li>
@@ -42,7 +36,8 @@
     <li>
       <a
         class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
-        href="/list/most-ftd-shares">U.S. Companies With The Most FTD Shares</a
+        href="/list/most-ftd-shares"
+        >U.S. Companies With The Most Fail-to-Deliver Shares</a
       >
     </li>
   </ul>
@@ -92,6 +87,39 @@
   </ul>
 </div>
 
+<div>
+  <h2 class="mb-2 text-xl font-bold pt-10">Dividends Lists</h2>
+  <ul
+    class="list-outside list-disc space-y-1 p-1 pl-6 md:columns-2 md:gap-x-8 md:text-lg"
+  >
+    <li>
+      <a
+        class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
+        href="/list/top-rated-dividend-stocks">Top-Rated Dividend Stocks</a
+      >
+    </li>
+    <li>
+      <a
+        class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
+        href="/list/monthly-dividend-stocks"
+        >Stocks That Pay Monthly Dividends</a
+      >
+    </li>
+
+    <li>
+      <a
+        class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
+        href="/list/dividend/dividend-kings">Dividend Kings</a
+      >
+    </li>
+    <li>
+      <a
+        class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
+        href="/list/dividend/dividend-aristocrats">Dividend Aristocrats</a
+      >
+    </li>
+  </ul>
+</div>
 <!--End Market Cap Group-->
 
 <div>
@@ -199,18 +227,6 @@
       <a
         class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
         href="/list/magnificent-seven">Magnificent Seven</a
-      >
-    </li>
-    <li>
-      <a
-        class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
-        href="/list/dividend/dividend-kings">Dividend Kings</a
-      >
-    </li>
-    <li>
-      <a
-        class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
-        href="/list/dividend/dividend-aristocrats">Dividend Aristocrats</a
       >
     </li>
 

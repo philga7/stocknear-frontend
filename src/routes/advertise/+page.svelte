@@ -20,6 +20,13 @@
 <section
   class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen px-4 lg:px-3 text-muted dark:text-white pb-20"
 >
+  <div class="text-sm sm:text-[1rem] breadcrumbs">
+    <ul>
+      <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
+      <li class="text-muted dark:text-gray-300">Advertise</li>
+    </ul>
+  </div>
+
   <div class="w-full overflow-hidden m-auto mt-5">
     <div class="sm:p-0 w-full m-auto overflow-hidden">
       <div class="w-full">

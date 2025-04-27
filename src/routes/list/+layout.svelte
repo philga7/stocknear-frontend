@@ -285,6 +285,10 @@
       title: "Biggest U.S. Companies with Highest Buybacks",
       link: "/list/most-buybacks",
     },
+    {
+      title: "Stocks That Pay Monthly Dividends",
+      link: "/list/monthly-dividend-stocks",
+    },
   ];
 
   navigation = [...navigationIndustry, ...navigation];

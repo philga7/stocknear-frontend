@@ -42,10 +42,6 @@
       link: "/economic-calendar",
     },
     {
-      title: "Economic Indicators",
-      link: "/economic-indicator",
-    },
-    {
       title: "Market News",
       link: "/market-news",
     },

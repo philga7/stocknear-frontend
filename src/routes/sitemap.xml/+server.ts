@@ -19,6 +19,7 @@ const pages = [
   { title: "/ipos" },
   { title: "/ipos/news" },
   { title: "/list" },
+  { title: "/list/monthly-dividend-stocks" },
   { title: "/list/dividend/dividend-kings" },
   { title: "/list/dividend/dividend-aristocrats" },
   { title: "/list/magnificent-seven" },
