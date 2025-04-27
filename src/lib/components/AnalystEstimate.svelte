@@ -2,6 +2,7 @@
   import { analystEstimateComponent, stockTicker } from "$lib/store";
   import { abbreviateNumber, computeGrowthSingleList } from "$lib/utils";
   import EstimationGraph from "$lib/components/EstimationGraph.svelte";
+
   import Lazy from "svelte-lazy";
   import { mode } from "mode-watcher";
 

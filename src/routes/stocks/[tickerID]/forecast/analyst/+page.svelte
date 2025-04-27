@@ -400,13 +400,13 @@
                           href={item?.analystId !== null
                             ? `/analysts/${item?.analystId}`
                             : "#"}
-                          class="font-semibold dark:font-normal text-blue-700 sm:hover:text-muted dark:sm:hover: dark:text-blue-400"
+                          class="font-semibold dark:font-normal text-blue-800 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
                           >{item?.analyst_name}
                         </a>
 
                         <div class="flex flex-row items-center mt-1">
                           {#each Array.from({ length: 5 }) as _, i}
-                            {#if item?.analystScore === 0 && i === 0}
+                            {#if item?.analystScore < 1 && item?.analystScore > 0 && i === 0}
                               <!-- Render a half-filled star when analystScore is 0 -->
                               <svg
                                 class="w-4 h-4"

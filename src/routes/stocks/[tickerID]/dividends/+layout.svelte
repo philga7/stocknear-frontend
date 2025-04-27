@@ -67,7 +67,7 @@
               </a>
             </div>
           </div>
-          {#if similarStocks?.length > 0}
+          {#if similarStocks?.length > 0 && similarStocks?.at(0)?.dividendYield}
             <div
               class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4"
             >

@@ -3,6 +3,7 @@
   import InfoModal from "$lib/components/InfoModal.svelte";
   import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
+  import TableHeader from "$lib/components/Table/TableHeader.svelte";
 
   import highcharts from "$lib/highcharts.ts";
   import { goto } from "$app/navigation";
@@ -10,6 +11,60 @@
 
   export let data;
   export let rawData = [];
+
+  function addChangesPercentage(data) {
+    // First, sort by date ascending
+    const sorted = [...data].sort(
+      (a, b) => new Date(b?.date) - new Date(a?.date),
+    );
+
+    // Then, calculate changesPercentage compared to next item
+    return sorted.map((item, index, arr) => {
+      if (index === arr.length - 1) {
+        return { ...item, changesPercentage: null };
+      }
+
+      const nextValue = arr[index + 1]?.shortVolume;
+      const pctChange = ((item.shortVolume - nextValue) / nextValue) * 100;
+
+      return {
+        ...item,
+        changesPercentage: parseFloat(pctChange?.toFixed(2)),
+      };
+    });
+  }
+
+  const toNum = (x) => (typeof x === "number" ? x : 0);
+
+  function computeWithLongVolume(rawData) {
+    if (!Array.isArray(rawData) || rawData.length === 0) return [];
+
+    const n = rawData.length;
+    const out = new Array(n);
+
+    for (let i = 0; i < n; i++) {
+      const item = rawData[i] || {};
+      const total = toNum(item.totalVolume);
+      const short = toNum(item.shortVolume);
+
+      // compute longVolume once
+      const longVolume = total - short;
+      // avoid division by zero
+      const longShortRatio = short !== 0 ? longVolume / short : null; // or Infinity, 0, whatever makes sense for you
+
+      out[i] = {
+        ...item,
+        longVolume,
+        longShortRatio,
+      };
+    }
+
+    return out;
+  }
+
+  rawData = computeWithLongVolume(rawData);
+  rawData = addChangesPercentage(rawData);
+
   const originalData = rawData;
   let activeIdx = 0;
   const tabs = [
@@ -232,6 +287,8 @@
     if (activeIdx === 1) {
       tableList = filterByPeriod([...tableList]);
     }
+
+    tableList = addChangesPercentage(tableList);
   }
 
   function filterByPeriod(data) {
@@ -251,6 +308,84 @@
       return false;
     });
   }
+
+  let columns = [
+    { key: "date", label: "Date", align: "left" },
+    { key: "longVolume", label: "Long Volume", align: "right" },
+    { key: "shortVolume", label: "Short Volume", align: "right" },
+    { key: "longShortRatio", label: "Long / Short", align: "right" },
+    { key: "changesPercentage", label: "% Short Change", align: "right" },
+  ];
+
+  let sortOrders = {
+    date: { order: "none", type: "date" },
+    longVolume: { order: "none", type: "number" },
+    shortVolume: { order: "none", type: "number" },
+    longShortRatio: { order: "none", type: "number" },
+    changesPercentage: { order: "none", type: "number" },
+  };
+
+  const sortData = (key) => {
+    // Reset all other keys to 'none' except the current key
+    for (const k in sortOrders) {
+      if (k !== key) {
+        sortOrders[k].order = "none";
+      }
+    }
+
+    // Cycle through 'none', 'asc', 'desc' for the clicked key
+    const orderCycle = ["none", "asc", "desc"];
+
+    tableList = tableList?.sort(
+      (a, b) => new Date(b?.date) - new Date(a?.date),
+    );
+
+    let originalData = tableList;
+
+    const currentOrderIndex = orderCycle.indexOf(sortOrders[key].order);
+    sortOrders[key].order =
+      orderCycle[(currentOrderIndex + 1) % orderCycle.length];
+    const sortOrder = sortOrders[key].order;
+
+    // Reset to original data when 'none' and stop further sorting
+    if (sortOrder === "none") {
+      tableList = [...originalData]; // Reset to original data (spread to avoid mutation)
+      return;
+    }
+
+    // Define a generic comparison function
+    const compareValues = (a, b) => {
+      const { type } = sortOrders[key];
+      let valueA, valueB;
+
+      switch (type) {
+        case "date":
+          valueA = new Date(a[key]);
+          valueB = new Date(b[key]);
+          break;
+        case "string":
+          valueA = a[key].toUpperCase();
+          valueB = b[key].toUpperCase();
+          return sortOrder === "asc"
+            ? valueA.localeCompare(valueB)
+            : valueB.localeCompare(valueA);
+        case "number":
+        default:
+          valueA = parseFloat(a[key]);
+          valueB = parseFloat(b[key]);
+          break;
+      }
+
+      if (sortOrder === "asc") {
+        return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
+      } else {
+        return valueA > valueB ? -1 : valueA < valueB ? 1 : 0;
+      }
+    };
+
+    // Sort using the generic comparison function
+    tableList = [...originalData].sort(compareValues);
+  };
 
   $: if ($stockTicker || $etfTicker || $mode) {
     config = getPlotOptions() || null;
@@ -386,21 +521,8 @@
         <table
           class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
         >
-          <thead class="text-muted dark:text-white dark:bg-default">
-            <tr>
-              <th class=" font-semibold text-start text-sm sm:text-[1rem]"
-                >Date</th
-              >
-              <th class=" font-semibold text-end text-sm sm:text-[1rem]"
-                >Total Volume</th
-              >
-              <th class=" font-semibold text-end text-sm sm:text-[1rem]"
-                >Short Volume</th
-              >
-              <th class=" font-semibold text-end text-sm sm:text-[1rem]"
-                >% Short Volume Change</th
-              >
-            </tr>
+          <thead>
+            <TableHeader {columns} {sortOrders} {sortData} />
           </thead>
           <tbody>
             {#each data?.user?.tier === "Pro" ? tableList : tableList?.slice(0, 3) as item, index}
@@ -424,7 +546,7 @@
                 <td
                   class=" text-sm sm:text-[1rem] text-right whitespace-nowrap"
                 >
-                  {abbreviateNumber(item?.totalVolume)}
+                  {abbreviateNumber(item?.longVolume)}
                 </td>
 
                 <td
@@ -433,27 +555,24 @@
                   {abbreviateNumber(item?.shortVolume)}
                 </td>
 
+                <td
+                  class=" text-sm sm:text-[1rem] text-right whitespace-nowrap"
+                >
+                  {item?.longShortRatio
+                    ? item?.longShortRatio?.toFixed(2)
+                    : "n/a"}
+                </td>
+
                 <td class=" text-sm sm:text-[1rem] whitespace-nowrap text-end">
-                  {#if index === tableList?.length - 1}
-                    n/a
-                  {:else if item?.shortVolume > tableList[index + 1]?.shortVolume}
-                    <span class="text-green-800 dark:text-[#00FC50]">
-                      +{(
-                        ((item?.shortVolume -
-                          tableList[index + 1]?.shortVolume) /
-                          tableList[index + 1]?.shortVolume) *
-                        100
-                      )?.toFixed(2)}%
-                    </span>
-                  {:else if item?.shortVolume < tableList[index + 1]?.shortVolume}
-                    <span class="text-red-800 dark:text-[#FF2F1F]">
-                      -{(
-                        Math.abs(
-                          (item?.shortVolume -
-                            tableList[index + 1]?.shortVolume) /
-                            tableList[index + 1]?.shortVolume,
-                        ) * 100
-                      )?.toFixed(2)}%
+                  {#if item?.changesPercentage}
+                    <span
+                      class={item?.changesPercentage >= 0
+                        ? "text-green-800 dark:text-[#00FC50] before:content-['+']"
+                        : "text-red-800 dark:text-[#FF2F1F]"}
+                    >
+                      {item?.changesPercentage
+                        ? item?.changesPercentage + "%"
+                        : "n/a"}
                     </span>
                   {:else}
                     n/a
