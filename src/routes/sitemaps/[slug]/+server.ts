@@ -122,6 +122,7 @@ const tutorialSettings = { changefreq: "daily", priority: "0.7" };
 const stockSettings = { changefreq: "daily", priority: "0.6" };
 
 // Define extra subdirectories for stocks.
+/*
 const stockExtraSubPaths = [
   "/financials",
   "/financials/balance-sheet",
@@ -153,6 +154,7 @@ const stockExtraSubPaths = [
   "/profile",
   "/profile/employees"
 ];
+
 const etfExtraSubPaths = [
   "/holdings",
   "/dark-pool",
@@ -166,6 +168,8 @@ const etfExtraSubPaths = [
   "/dividends",
   "/history"
 ];
+*/
+
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ params, locals }) {
@@ -269,6 +273,7 @@ const sitemap = (stocks, articles, pages, tutorials) => `<?xml version="1.0" enc
       let urlElements = createUrlElement(`${website}${basePath}${ticker.id}`, stockSettings);
       
       // For stocks only, add extra subdirectory URLs.
+      /*
       if (ticker.type === "Stock") {
         stockExtraSubPaths?.forEach((subPath) => {
           urlElements += createUrlElement(`${website}${basePath}${ticker.id}${subPath}`, stockSettings);
@@ -278,6 +283,7 @@ const sitemap = (stocks, articles, pages, tutorials) => `<?xml version="1.0" enc
           urlElements += createUrlElement(`${website}${basePath}${ticker.id}${subPath}`, stockSettings);
         });
       }
+        */
       
       return urlElements;
     })
