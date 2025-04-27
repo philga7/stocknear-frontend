@@ -2,10 +2,10 @@
   import notifySound from "$lib/audio/options-flow-reader.mp3";
   import { getCache, setCache, isOpen } from "$lib/store";
 
-  import { cn } from "$lib/utils";
   import { onMount, onDestroy } from "svelte";
   import { toast } from "svelte-sonner";
   import { mode } from "mode-watcher";
+  import Tutorial from "$lib/components/Tutorial.svelte";
 
   import { DateFormatter, type DateValue } from "@internationalized/date";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
@@ -70,13 +70,13 @@
       defaultValue: "any",
     },
     volumeOIRatio: {
-      label: "Volume / Open Interest",
+      label: "Volume / OI",
       step: ["100%", "80%", "60%", "50%", "30%", "15%", "10%", "5%"],
       defaultCondition: "over",
       defaultValue: "any",
     },
     sizeOIRatio: {
-      label: "Size / Open Interest",
+      label: "Size / OI",
       step: ["100%", "80%", "60%", "50%", "30%", "15%", "10%", "5%"],
       defaultCondition: "over",
       defaultValue: "any",
@@ -733,7 +733,7 @@
       neutralCount,
     } = data?.reduce(
       (acc, item) => {
-        const volume = parseInt(item?.volume);
+        const volume = parseInt(item?.size);
 
         if (item?.put_call === "Calls") {
           acc.callVolumeSum += volume;
@@ -884,6 +884,115 @@
       }
     }
   }
+
+  let steps = [
+    {
+      popover: {
+        title: "Realtime Options Flow",
+        description: `See exactly where big hedge funds and institutions are placing their bets—spot early momentum shifts and align your own entries and exits with professional order flow in real time.`,
+        side: "center",
+        align: "center",
+      },
+    },
+    {
+      element: ".mute-driver",
+      popover: {
+        title: "Mute Alerts",
+        description: `Silence the audio feed when you need uninterrupted time to review your strategy—unmute anytime to catch fresh flow that can validate or reshape your thesis.`,
+        side: "left",
+        align: "start",
+      },
+    },
+    {
+      element: ".live-flow-driver",
+      popover: {
+        title: "Toggle Live Flow",
+        description: `Freeze incoming trades and lock the table to analyze a snapshot of flow against your watchlist—unpause when you’re ready to jump back into live, actionable order data.`,
+        side: "bottom",
+        align: "start",
+      },
+    },
+    {
+      element: ".search-driver",
+      popover: {
+        title: "Search Specific Tickers",
+        description: `Prioritize the symbols that matter to your portfolio or watchlist by adding the tickers you intend to trade.`,
+        side: "right",
+        align: "start",
+      },
+    },
+    {
+      element: ".date-picker-driver",
+      popover: {
+        title: "Pick a Date",
+        description: `Pull up historical flow to backtest how institutional activity aligned with market moves—validate your edge on past data before you deploy new strategies.`,
+        side: "bottom",
+        align: "start",
+      },
+    },
+    {
+      element: ".filter-driver",
+      popover: {
+        title: "Add Filters",
+        description: `Drill into the exact conditions you trade—filter by expiry, DTE, strike, trade type or minimum size to reveal the specific opportunity sets you care about.`,
+        side: "right",
+        align: "start",
+      },
+    },
+    {
+      element: ".sentiment-driver",
+      popover: {
+        title: "Flow Sentiment",
+        description: `Instantly validate your directional bias—green “Bullish” when call volume surges, red “Bearish” when puts dominate, so you can confirm or rethink your view.`,
+        side: "left",
+        align: "start",
+      },
+    },
+    {
+      element: ".put-call-driver",
+      popover: {
+        title: "Put / Call Ratio",
+        description: `Gauge extremes in demand—ratios below 1 can highlight opportunistic bullish setups, while spikes above 1 may flag optimal hedging or contrarian shorts.`,
+        side: "right",
+        align: "start",
+      },
+    },
+    {
+      element: ".call-flow-driver",
+      popover: {
+        title: "Call Flow",
+        description: `Track total call contracts and their share of overall volume to time your bullish plays—identify when smart money is stacking calls at scale.`,
+        side: "right",
+        align: "start",
+      },
+    },
+    {
+      element: ".put-flow-driver",
+      popover: {
+        title: "Put Flow",
+        description: `See where puts are piling up and measure downside conviction—helping you size hedges or time bearish trades when professional pressure builds.`,
+        side: "right",
+        align: "start",
+      },
+    },
+    {
+      element: ".table-driver",
+      popover: {
+        title: "Options Flow Table",
+        description: `Examine each trade’s time, strike, size, premium, execution side and more—use these granular details to refine your entry points, position sizing, and risk management.`,
+        side: "center",
+        align: "start",
+      },
+    },
+    {
+      popover: {
+        title: "You’re All Set!",
+        description: `Armed with live and historical flow insights, you can now fine-tune your timing, confirm bias, and execute trades with the confidence of knowing where the big money is moving.`,
+        side: "center",
+        align: "center",
+      },
+    },
+  ];
 </script>
 
 <SEO
@@ -904,16 +1013,10 @@
           </ul>
         </div>
         -->
-
-      {#if !$isOpen}
-        <div
-          class=" text-sm sm:text-[1rem] italic text-center sm:text-start w-full ml-2 mb-3"
-        >
-          Options Live flow of {data?.user?.tier === "Pro" && selectedDate
-            ? df.format(selectedDate?.toDate())
-            : formattedNyseDate} (EST timezone)
-        </div>
-      {/if}
+      <div class="w-full flex flex-row items-center justify-between mb-3">
+        <h1 class="text-xl sm:text-2xl font-bold">Realtime Options Flow</h1>
+        <Tutorial {steps} />
+      </div>
 
       <div
         class="rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-100 dark:bg-primary p-2"
@@ -935,7 +1038,7 @@
                   },
                 );
               }}
-              class="xl:tooltip xl:tooltip-bottom flex flex-col items-center mr-3 cursor-pointer"
+              class="mute-driver xl:tooltip xl:tooltip-bottom flex flex-col items-center mr-3 cursor-pointer"
             >
               <div
                 class="rounded-full w-10 h-10 relative bg-gray-400 dark:bg-[#000] flex items-center justify-center"
@@ -965,7 +1068,7 @@
             </label>
 
             <span
-              class="text-xs sm:text-sm sm:text-lg {!mode
+              class=" text-xs sm:text-sm sm:text-lg {!mode
                 ? ''
                 : 'text-muted dark:text-gray-400'} mr-3"
             >
@@ -980,7 +1083,7 @@
                   });
                 }
               }}
-              class="inline-flex items-center cursor-pointer focus-none focus:outline-hidden"
+              class="live-flow-driver inline-flex items-center cursor-pointer focus-none focus:outline-hidden"
             >
               <input
                 on:click={toggleMode}
@@ -996,7 +1099,7 @@
               ></div>
             </label>
 
-            <div class="ml-3 flex flex-col items-start">
+            <div class=" ml-3 flex flex-col items-start">
               <span
                 class="text-xs sm:text-sm sm:text-lg {modeStatus
                   ? ''
@@ -1012,7 +1115,7 @@
               <div
                 class="relative w-full sm:w-fit pl-3 sm:mr-5 mb-4 sm:mb-0 flex-auto text-center shadow-sm bg-white dark:bg-secondary rounded-md border border-gray-300 dark:border-gray-600"
               >
-                <label class="flex flex-row items-center">
+                <label class="search-driver flex flex-row items-center">
                   <input
                     id="modal-search"
                     class="focus:outline-none sm:ml-2 text-[1rem] placeholder-gray-500 dark:placeholder-gray-300 border-transparent bg-white dark:bg-secondary focus:border-transparent focus:ring-0 flex items-center justify-center w-full px-0 py-1.5"
@@ -1063,16 +1166,15 @@
               <Popover.Root>
                 <Popover.Trigger asChild let:builder>
                   <Button
-                    class={cn(
-                      "w-full sm:w-[160px] truncate sm:mr-3 py-3 shadow-sm border-gray-300 justify-center sm:justify-start text-center sm:text-left font-normal border-none rounded-md",
-                      !selectedDate && "text-muted dark:text-gray-300",
-                    )}
+                    class="date-picker-driver  w-full sm:w-[160px] truncate sm:mr-3 py-3 shadow-sm dark:bg-[#000] border-gray-300 justify-center sm:justify-start text-center sm:text-left  border-none rounded-md"
                     builders={[builder]}
                   >
                     <CalendarIcon class="mr-2 h-4 w-4" />
-                    {selectedDate
-                      ? df.format(selectedDate?.toDate())
-                      : "Pick a date"}
+                    <span class="text-[1rem] sm:text-sm font-semibold">
+                      {selectedDate
+                        ? df.format(selectedDate?.toDate())
+                        : "Pick a date"}
+                    </span>
                   </Button>
                 </Popover.Trigger>
                 <Popover.Content
@@ -1115,12 +1217,10 @@
         </div>
 
         {#if showFilters}
-          <div
-            class="sm:mt-3 flex flex-col gap-y-2.5 sm:flex-row lg:gap-y-2 pb-1"
-          >
+          <div class="mt-3 flex flex-col gap-y-2.5 sm:flex-row lg:gap-y-2 pb-1">
             <label
               for="ruleModal"
-              class="inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none py-2 pl-3 pr-4 font-semibold shadow-sm bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+              class="filter-driver inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none py-2 pl-3 pr-4 font-semibold shadow-sm bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
             >
               <svg
                 class="h-5 w-5"
@@ -1513,7 +1613,7 @@
             <div class="w-full grid grid-cols-1 lg:grid-cols-4 gap-y-3 gap-x-3">
               <!--Start Flow Sentiment-->
               <div
-                class="shadow-sm flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded-md h-20"
+                class="sentiment-driver shadow-sm flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded-md h-20"
               >
                 <div class="flex flex-col items-start">
                   <span
@@ -1553,7 +1653,7 @@
               <!--End Flow Sentiment-->
               <!--Start Put/Call-->
               <div
-                class="shadow-sm flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded-md h-20"
+                class="put-call-driver shadow-sm flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded-md h-20"
               >
                 <div class="flex flex-col items-start">
                   <span
@@ -1648,7 +1748,7 @@
               <!--End Put/Call-->
               <!--Start Call Flow-->
               <div
-                class="shadow-sm flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded-md h-20"
+                class="call-flow-driver shadow-sm flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded-md h-20"
               >
                 <div class="flex flex-col items-start">
                   <span
@@ -1742,7 +1842,7 @@
               <!--End Call Flow-->
               <!--Start Put Flow-->
               <div
-                class="shadow-sm flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded-md h-20"
+                class="put-flow-driver shadow-sm flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded-md h-20"
               >
                 <div class="flex flex-col items-start">
                   <span

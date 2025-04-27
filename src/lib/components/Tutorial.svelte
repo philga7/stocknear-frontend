@@ -11,12 +11,12 @@
 </script>
 
 <button
-  class="ml-auto font-semibold cursor-pointer text-pink-700 dark:text-pink-600"
+  class="ml-auto font-semibold cursor-pointer text-pink-700 dark:text-pink-600 flex flex-row items-center"
   on:click={() => {
     driverObj.drive();
   }}
   >Tutorial<svg
-    class="ml-1 -mt-1 inline-block size-[22px] texneont-pink-600 cursor-pointer"
+    class="ml-1 inline-block size-[22px] texneont-pink-600 cursor-pointer"
     viewBox="0 0 20 20"
     fill="currentColor"
     style="max-width:40px"
