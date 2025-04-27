@@ -24,13 +24,22 @@
 
   <meta name="description" content={description} />
 
+  <!-- Google / Search Engine Tags -->
+  <meta itemprop="name" content={title} />
+  <meta itemprop="description" content={description} />
+  {#if image}
+    <meta itemprop="image" content={image} />
+  {:else}
+    <meta itemprop="image" content={baseURL + "/img/astronaut.png"} />
+  {/if}
+
   <!-- Open Graph meta tags -->
+  <meta property="og:url" content={baseURL + $page?.url?.pathname} />
   <meta property="og:title" content={`${title} - Stocknear`} />
   <meta property="og:description" content={description} />
   <meta property="og:type" content="website" />
   {#if image}
     <meta property="og:image" content={image} />
-    <meta property="og:image:alt" content={title} />
   {:else}
     <meta property="og:image" content={baseURL + "/img/astronaut.png"} />
   {/if}
@@ -42,6 +51,6 @@
   {#if image}
     <meta name="twitter:image" content={image} />
   {:else}
-    <meta property="twitter:image" content="/img/astronaut.png" />
+    <meta property="twitter:image" content={baseURL + "/img/astronaut.png"} />
   {/if}
 </svelte:head>
