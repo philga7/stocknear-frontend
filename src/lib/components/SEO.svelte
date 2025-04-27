@@ -32,7 +32,7 @@
     <meta property="og:image" content={image} />
     <meta property="og:image:alt" content={title} />
   {:else}
-    <meta property="og:image" content="img/astronaut.png" />
+    <meta property="og:image" content={baseURL + "/img/astronaut.png"} />
   {/if}
 
   <!-- Twitter meta tags -->
