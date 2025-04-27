@@ -1,56 +1,72 @@
 <script lang="ts">
   export let title = "Free Online Stock Analysis for Investors";
-  import { page } from "$app/stores";
-
   export let description =
-    "Stocknear has everything you need to analyze stocks with help of AI, including detailed financial data, statistics, news and charts.";
-  export let image = null;
+    "Stocknear gives you AI-powered stock analysis with up-to-date financials, news, and interactive charts.";
+  export let image: string | null = null;
 
+  import { page } from "$app/stores";
   const baseURL = "https://stocknear.com";
+  const canonical = baseURL + ($page?.url?.pathname || "");
+  const defaultImage = `${baseURL}/img/astronaut.png`;
+  const shareImage = image ?? defaultImage;
+  const siteName = "Stocknear";
+  const twitterHandle = "@stocknear"; // your Twitter handle
 </script>
 
 <svelte:head>
+  <!-- Character set & viewport -->
   <meta charset="utf-8" />
-  {#if $page?.url?.pathname}
-    <link rel="canonical" href={baseURL + $page?.url?.pathname} />
-  {/if}
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
-  />
-  <title>
-    {title} - Stocknear
-  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="index, follow" />
 
+  <!-- Canonical URL -->
+  <link rel="canonical" href={canonical} />
+
+  <!-- Title & description -->
+  <title>{title} - {siteName}</title>
   <meta name="description" content={description} />
 
-  <!-- Google / Search Engine Tags -->
-  <meta itemprop="name" content={title} />
-  <meta itemprop="description" content={description} />
-  {#if image}
-    <meta itemprop="image" content={image} />
-  {:else}
-    <meta itemprop="image" content={baseURL + "/img/astronaut.png"} />
-  {/if}
+  <!-- Favicons & theme -->
+  <link rel="icon" href="/favicon.ico" />
+  <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href={baseURL + "/img/apple-touch-icon.png"}
+  />
+  <meta name="theme-color" content="#09090B" />
 
-  <!-- Open Graph meta tags -->
-  <meta property="og:url" content={baseURL + $page?.url?.pathname} />
-  <meta property="og:title" content={`${title} - Stocknear`} />
-  <meta property="og:description" content={description} />
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "url": baseURL,
+      "name": siteName,
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": `${baseURL}/search?q={search_term_string}`,
+        "query-input": "required name=search_term_string"
+      }
+    })}
+  </script>
+
+  <!-- Open Graph -->
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content={siteName} />
   <meta property="og:type" content="website" />
-  {#if image}
-    <meta property="og:image" content={image} />
-  {:else}
-    <meta property="og:image" content={baseURL + "/img/astronaut.png"} />
-  {/if}
+  <meta property="og:url" content={canonical} />
+  <meta property="og:title" content={`${title} - ${siteName}`} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={shareImage} />
 
-  <!-- Twitter meta tags -->
+  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={`${title} - Stocknear`} />
+  <meta name="twitter:site" content={twitterHandle} />
+  <meta name="twitter:creator" content={twitterHandle} />
+  <meta name="twitter:title" content={`${title} - ${siteName}`} />
   <meta name="twitter:description" content={description} />
-  {#if image}
-    <meta name="twitter:image" content={image} />
-  {:else}
-    <meta property="twitter:image" content={baseURL + "/img/astronaut.png"} />
-  {/if}
+  <meta name="twitter:image" content={shareImage} />
+
+  <!-- Apple mobile web-app -->
+  <meta name="apple-mobile-web-app-title" content={siteName} />
 </svelte:head>
