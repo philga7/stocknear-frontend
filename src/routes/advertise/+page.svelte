@@ -14,7 +14,7 @@
 />
 
 <section
-  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden px-4 lg:px-3 text-muted dark:text-white pb-20"
+  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden px-4 lg:px-3 min-h-screen text-muted dark:text-white pb-20"
 >
   {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
     <HorizontalAd />
