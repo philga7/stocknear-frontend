@@ -10,6 +10,8 @@
   import Infobox from "$lib/components/Infobox.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import { page } from "$app/stores";
+  import { deferFunction } from "$lib/utils";
+  import { browser } from "$app/environment";
 
   import { onMount } from "svelte";
 
@@ -271,8 +273,9 @@
           distance: 20,
           formatter: function () {
             return new Date(this.value).toLocaleDateString("en-US", {
-              month: "short",
-              year: "numeric",
+              month: "long", // “April”
+              day: "numeric", // “11”
+              timeZone: "UTC",
             });
           },
         },
@@ -485,7 +488,11 @@
   }
 
   onMount(async () => {
-    await loadData("default");
+    if (!browser) return;
+    deferFunction(async () => {
+      // Only load worker if user is logged in
+      await loadData("default");
+    }, 500);
 
     window.addEventListener("scroll", handleScroll);
     return () => {
@@ -754,372 +761,387 @@
         >
           {optionSymbol}
         </h3>
-
-        <div
-          class="mt-5 order-5 lg:order-1 flex flex-row space-x-2 sm:space-x-3 xs:space-x-4"
-        >
-          <table class="w-[50%] text-sm sm:text-[1rem] xl:min-w-[300px]">
-            <tbody
-              ><tr
-                class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
-                ><td
-                  class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
-                  >Last</td
-                >
-                <td
-                  class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                  >{rawDataHistory?.at(0)?.close || "n/a"}</td
-                ></tr
-              >
-
-              <tr
-                class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
-                ><td
-                  class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
-                  >High</td
-                >
-                <td
-                  class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                  >{rawDataHistory?.at(0)?.high || "n/a"}</td
-                ></tr
-              >
-
-              <tr
-                class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
-                ><td
-                  class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
-                  >Low</td
-                >
-                <td
-                  class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                  >{rawDataHistory?.at(0)?.low || "n/a"}</td
-                ></tr
-              >
-
-              <tr
-                class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
-                ><td
-                  class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
-                  >Open
-                </td>
-                <td
-                  class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                  >{rawDataHistory?.at(0)?.open || "n/a"}</td
-                ></tr
-              >
-              <tr
-                class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
-                ><td
-                  class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
-                  >Volume
-                </td>
-                <td
-                  class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                  >{rawDataHistory?.at(0)?.volume?.toLocaleString("en-US") ||
-                    "n/a"}</td
-                ></tr
-              >
-              <tr
-                class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
-                ><td
-                  class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
-                  >Open Interest
-                </td>
-                <td
-                  class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                  >{rawDataHistory
-                    ?.at(0)
-                    ?.open_interest?.toLocaleString("en-US") || "n/a"}</td
-                ></tr
-              >
-            </tbody>
-          </table>
-          <table class="w-[50%] text-sm xl:min-w-[300px]">
-            <tbody
-              ><tr
-                class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
-                ><td
-                  class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
-                  >Implied Volatility (IV)</td
-                >
-                <td
-                  class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                  >{Math.floor(
-                    rawDataHistory?.at(0)?.implied_volatility * 100,
-                  ) + "%" || "n/a"}</td
-                ></tr
-              >
-
-              <tr
-                class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
-                ><td
-                  class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
-                  >Delta</td
-                >
-                <td
-                  class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                  >{rawDataHistory?.at(0)?.delta || "n/a"}</td
-                ></tr
-              >
-
-              <tr
-                class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
-                ><td
-                  class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
-                  >Gamma</td
-                >
-                <td
-                  class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                  >{rawDataHistory?.at(0)?.gamma || "n/a"}</td
-                ></tr
-              >
-
-              <tr
-                class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
-                ><td
-                  class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
-                  >Theta</td
-                >
-                <td
-                  class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                >
-                  {rawDataHistory?.at(0)?.theta || "n/a"}
-                </td></tr
-              >
-              <tr
-                class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
-                ><td
-                  class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
-                  >Vega</td
-                >
-                <td
-                  class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                >
-                  {rawDataHistory?.at(0)?.vega || "n/a"}
-                </td></tr
-              >
-              <tr class="flex flex-col py-1 sm:table-row sm:py-0"
-                ><td
-                  class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem] invisible"
-                  >XXX</td
-                >
-                <td
-                  class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem] invisible"
-                >
-                  XXX
-                </td></tr
-              >
-            </tbody>
-          </table>
-        </div>
-
-        <div class="mt-5 pb-2 rounded-md overflow-hidden">
-          <div class="flex flex-row items-center justify-between w-full mt-2">
-            <h2 class="text-xl sm:text-2xl font-bold text-start">
-              Contract Chart
-            </h2>
-            <div class="w-fit ml-auto">
-              {#each ["Vol/OI", "IV"] as item, index}
-                <label
-                  on:click={() => {
-                    selectGraphType = item;
-                    loadData("default");
-                  }}
-                  class="px-3 py-1.5 text-sm {index === 0
-                    ? 'mr-2'
-                    : ''} {selectGraphType === item
-                    ? 'shadow-sm border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-white text-black '
-                    : 'shadow-sm text-opacity-[0.6] border border-gray-300 dark:border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
-                >
-                  {item}
-                </label>
-              {/each}
-            </div>
-          </div>
-          {#if config}
-            <div>
-              <div class="grow pt-3">
-                <div class="relative">
-                  <!-- Apply the blur class to the chart -->
-                  <div
-                    class="{!['Pro']?.includes(data?.user?.tier)
-                      ? 'blur-[3px]'
-                      : ''} mt-5 shadow-sm sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
-                    use:highcharts={config}
-                  ></div>
-                  <!-- Overlay with "Upgrade to Pro" -->
-                  {#if !["Pro"]?.includes(data?.user?.tier)}
-                    <div
-                      class="font-bold text-lg sm:text-xl absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center text-muted dark:text-white"
-                    >
-                      <a
-                        href="/pricing"
-                        class="sm:hover:text-blue-700 dark:sm:hover:text-white dark:text-white flex flex-row items-center"
-                      >
-                        <span>Upgrade to Pro</span>
-                        <svg
-                          class="ml-1 w-5 h-5 sm:w-6 sm:h-6 inline-block"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          ><path
-                            fill="currentColor"
-                            d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                          /></svg
-                        >
-                      </a>
-                    </div>
-                  {/if}
-                </div>
-              </div>
-            </div>
-          {/if}
-        </div>
-
-        {#if isLoaded && displayList?.length > 0}
-          <h2 class="text-xl sm:text-2xl font-bold text-start mt-5">
-            Contract History
-          </h2>
-
+        {#if isLoaded}
           <div
-            class="flex justify-start items-center m-auto overflow-x-auto cursor-normal"
+            class="mt-5 order-5 lg:order-1 flex flex-row space-x-2 sm:space-x-3 xs:space-x-4"
           >
-            <table
-              class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
-            >
-              <thead class="text-muted dark:text-white dark:bg-default">
-                <tr class="">
-                  <td class=" font-semibold text-sm text-start">Date</td>
-                  <td class=" font-semibold text-sm text-end">Vol</td>
-                  <td class=" font-semibold text-sm text-end">OI</td>
-                  <td class=" font-semibold text-sm text-end">OI Change</td>
-                  <td class=" font-semibold text-sm text-end">% Change OI</td>
-                  <td class=" font-semibold text-sm text-end">Last Price</td>
-                  <td class=" font-semibold text-sm text-end">Avg Price</td>
-                  <td class=" font-semibold text-sm text-end">IV</td>
-                  <td class=" font-semibold text-sm text-end">Total Prem</td>
-                  <td class=" font-semibold text-sm text-end">GEX</td>
-                  <td class=" font-semibold text-sm text-end">DEX</td>
-                </tr>
-              </thead>
-              <tbody>
-                {#each data?.user?.tier === "Pro" ? displayList : displayList?.slice(0, 3) as item, index}
-                  <tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
-                      1 ===
-                      displayList?.slice(0, 3)?.length &&
-                    !['Pro']?.includes(data?.user?.tier)
-                      ? 'opacity-[0.1]'
-                      : ''}"
+            <table class="w-[50%] text-sm sm:text-[1rem] xl:min-w-[300px]">
+              <tbody
+                ><tr
+                  class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+                  ><td
+                    class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
+                    >Last</td
                   >
-                    <td
-                      class="text-sm sm:text-[1rem] text-start whitespace-nowrap"
-                    >
-                      {formatDate(item?.date)}
-                    </td>
+                  <td
+                    class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+                    >{rawDataHistory?.at(0)?.close ?? "n/a"}</td
+                  ></tr
+                >
 
-                    <td class="text-sm sm:text-[1rem] text-end">
-                      {item?.volume !== null
-                        ? item?.volume?.toLocaleString("en-US")
-                        : 0}
-                    </td>
+                <tr
+                  class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+                  ><td
+                    class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
+                    >High</td
+                  >
+                  <td
+                    class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+                    >{rawDataHistory?.at(0)?.high ?? "n/a"}</td
+                  ></tr
+                >
 
-                    <td class="text-sm sm:text-[1rem] text-end">
-                      {item?.open_interest !== undefined
-                        ? item?.open_interest?.toLocaleString("en-US")
-                        : "n/a"}
-                    </td>
-                    <td class="text-sm sm:text-[1rem] text-end">
-                      {#if item?.changeOI >= 0 && item?.changeOI !== null}
-                        <span class="text-green-800 dark:text-[#00FC50]"
-                          >+{item?.changeOI?.toLocaleString("en-US")}</span
-                        >
-                      {:else if item?.changeOI < 0 && item?.changeOI !== null}
-                        <span class="text-red-800 dark:text-[#FF2F1F]"
-                          >{item?.changeOI?.toLocaleString("en-US")}</span
-                        >
-                      {:else}
-                        n/a
-                      {/if}
-                    </td>
+                <tr
+                  class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+                  ><td
+                    class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
+                    >Low</td
+                  >
+                  <td
+                    class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+                    >{rawDataHistory?.at(0)?.low ?? "n/a"}</td
+                  ></tr
+                >
 
-                    <td class="text-sm sm:text-[1rem] text-end">
-                      {#if item?.changesPercentageOI > 0 && item?.changesPercentageOI !== undefined}
-                        <span class="text-green-800 dark:text-[#00FC50]"
-                          >+{item?.changesPercentageOI + "%"}</span
-                        >
-                      {:else if item?.changesPercentageOI < 0 && item?.changesPercentageOI !== undefined}
-                        <span class="text-red-800 dark:text-[#FF2F1F]"
-                          >{item?.changesPercentageOI + "%"}</span
-                        >
-                      {:else if item?.changesPercentageOI === 0 && item?.changesPercentageOI !== undefined}
-                        0%
-                      {:else}
-                        n/a
-                      {/if}
-                    </td>
+                <tr
+                  class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+                  ><td
+                    class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
+                    >Open
+                  </td>
+                  <td
+                    class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+                    >{rawDataHistory?.at(0)?.open ?? "n/a"}</td
+                  ></tr
+                >
+                <tr
+                  class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+                  ><td
+                    class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
+                    >Volume
+                  </td>
+                  <td
+                    class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+                    >{rawDataHistory?.at(0)?.volume?.toLocaleString("en-US") ??
+                      "n/a"}</td
+                  ></tr
+                >
+                <tr
+                  class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+                  ><td
+                    class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
+                    >Open Interest
+                  </td>
+                  <td
+                    class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+                    >{rawDataHistory
+                      ?.at(0)
+                      ?.open_interest?.toLocaleString("en-US") ?? "n/a"}</td
+                  ></tr
+                >
+              </tbody>
+            </table>
+            <table class="w-[50%] text-sm xl:min-w-[300px]">
+              <tbody
+                ><tr
+                  class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+                  ><td
+                    class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
+                    >Implied Volatility (IV)</td
+                  >
+                  <td
+                    class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+                    >{Math.floor(
+                      rawDataHistory?.at(0)?.implied_volatility * 100,
+                    ) + "%" || "n/a"}</td
+                  ></tr
+                >
 
-                    <td class="text-sm sm:text-[1rem] text-end">
-                      {item?.close}
-                    </td>
+                <tr
+                  class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+                  ><td
+                    class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
+                    >Delta</td
+                  >
+                  <td
+                    class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+                    >{rawDataHistory?.at(0)?.delta ?? "n/a"}</td
+                  ></tr
+                >
 
-                    <td class="text-sm sm:text-[1rem] text-end">
-                      {item?.mark}
-                    </td>
+                <tr
+                  class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+                  ><td
+                    class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
+                    >Gamma</td
+                  >
+                  <td
+                    class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+                    >{rawDataHistory?.at(0)?.gamma ?? "n/a"}</td
+                  ></tr
+                >
 
-                    <td class="text-sm sm:text-[1rem] text-end">
-                      {(item?.implied_volatility * 100)?.toLocaleString(
-                        "en-US",
-                      ) + "%"}
-                    </td>
-
-                    <td class="text-sm sm:text-[1rem] text-end">
-                      {abbreviateNumber(item?.total_premium)}
-                    </td>
-                    <td class="text-sm sm:text-[1rem] text-end">
-                      {abbreviateNumber(item?.gex?.toFixed(2))}
-                    </td>
-                    <td class="text-sm sm:text-[1rem] text-end">
-                      {abbreviateNumber(item?.dex?.toFixed(2))}
-                    </td>
-                  </tr>
-                {/each}
+                <tr
+                  class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+                  ><td
+                    class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
+                    >Theta</td
+                  >
+                  <td
+                    class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+                  >
+                    {rawDataHistory?.at(0)?.theta ?? "n/a"}
+                  </td></tr
+                >
+                <tr
+                  class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+                  ><td
+                    class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
+                    >Vega</td
+                  >
+                  <td
+                    class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+                  >
+                    {rawDataHistory?.at(0)?.vega ?? "n/a"}
+                  </td></tr
+                >
+                <tr class="flex flex-col py-1 sm:table-row sm:py-0"
+                  ><td
+                    class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem] invisible"
+                    >XXX</td
+                  >
+                  <td
+                    class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem] invisible"
+                  >
+                    XXX
+                  </td></tr
+                >
               </tbody>
             </table>
           </div>
+
+          <div class="mt-5 pb-2 rounded-md overflow-hidden">
+            <div class="flex flex-row items-center justify-between w-full mt-2">
+              <h2 class="text-xl sm:text-2xl font-bold text-start">
+                Contract Chart
+              </h2>
+              <div class="w-fit ml-auto">
+                {#each ["Vol/OI", "IV"] as item, index}
+                  <label
+                    on:click={() => {
+                      selectGraphType = item;
+                      loadData("default");
+                    }}
+                    class="px-3 py-1.5 text-sm {index === 0
+                      ? 'mr-2'
+                      : ''} {selectGraphType === item
+                      ? 'shadow-sm border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-white text-black '
+                      : 'shadow-sm text-opacity-[0.6] border border-gray-300 dark:border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+                  >
+                    {item}
+                  </label>
+                {/each}
+              </div>
+            </div>
+            {#if config}
+              <div>
+                <div class="grow pt-3">
+                  <div class="relative">
+                    <!-- Apply the blur class to the chart -->
+                    <div
+                      class="{!['Pro']?.includes(data?.user?.tier)
+                        ? 'blur-[3px]'
+                        : ''} mt-5 shadow-sm sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
+                      use:highcharts={config}
+                    ></div>
+                    <!-- Overlay with "Upgrade to Pro" -->
+                    {#if !["Pro"]?.includes(data?.user?.tier)}
+                      <div
+                        class="font-bold text-lg sm:text-xl absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center text-muted dark:text-white"
+                      >
+                        <a
+                          href="/pricing"
+                          class="sm:hover:text-blue-700 dark:sm:hover:text-white dark:text-white flex flex-row items-center"
+                        >
+                          <span>Upgrade to Pro</span>
+                          <svg
+                            class="ml-1 w-5 h-5 sm:w-6 sm:h-6 inline-block"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            ><path
+                              fill="currentColor"
+                              d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                            /></svg
+                          >
+                        </a>
+                      </div>
+                    {/if}
+                  </div>
+                </div>
+              </div>
+            {/if}
+          </div>
+
+          {#if displayList?.length > 0}
+            <h2 class="text-xl sm:text-2xl font-bold text-start mt-5">
+              Contract History
+            </h2>
+
+            <div
+              class="flex justify-start items-center m-auto overflow-x-auto cursor-normal"
+            >
+              <table
+                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
+              >
+                <thead class="text-muted dark:text-white dark:bg-default">
+                  <tr class="">
+                    <td class=" font-semibold text-sm text-start">Date</td>
+                    <td class=" font-semibold text-sm text-end">Vol</td>
+                    <td class=" font-semibold text-sm text-end">OI</td>
+                    <td class=" font-semibold text-sm text-end">OI Change</td>
+                    <td class=" font-semibold text-sm text-end">% Change OI</td>
+                    <td class=" font-semibold text-sm text-end">Last Price</td>
+                    <td class=" font-semibold text-sm text-end">Avg Price</td>
+                    <td class=" font-semibold text-sm text-end">IV</td>
+                    <td class=" font-semibold text-sm text-end">Total Prem</td>
+                    <td class=" font-semibold text-sm text-end">GEX</td>
+                    <td class=" font-semibold text-sm text-end">DEX</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {#each data?.user?.tier === "Pro" ? displayList : displayList?.slice(0, 3) as item, index}
+                    <tr
+                      class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
+                        1 ===
+                        displayList?.slice(0, 3)?.length &&
+                      !['Pro']?.includes(data?.user?.tier)
+                        ? 'opacity-[0.1]'
+                        : ''}"
+                    >
+                      <td
+                        class="text-sm sm:text-[1rem] text-start whitespace-nowrap"
+                      >
+                        {formatDate(item?.date)}
+                      </td>
+
+                      <td class="text-sm sm:text-[1rem] text-end">
+                        {item?.volume !== null
+                          ? item?.volume?.toLocaleString("en-US")
+                          : 0}
+                      </td>
+
+                      <td class="text-sm sm:text-[1rem] text-end">
+                        {item?.open_interest !== undefined
+                          ? item?.open_interest?.toLocaleString("en-US")
+                          : "n/a"}
+                      </td>
+                      <td class="text-sm sm:text-[1rem] text-end">
+                        {#if item?.changeOI >= 0 && item?.changeOI !== null}
+                          <span class="text-green-800 dark:text-[#00FC50]"
+                            >+{item?.changeOI?.toLocaleString("en-US")}</span
+                          >
+                        {:else if item?.changeOI < 0 && item?.changeOI !== null}
+                          <span class="text-red-800 dark:text-[#FF2F1F]"
+                            >{item?.changeOI?.toLocaleString("en-US")}</span
+                          >
+                        {:else}
+                          n/a
+                        {/if}
+                      </td>
+
+                      <td class="text-sm sm:text-[1rem] text-end">
+                        {#if item?.changesPercentageOI > 0 && item?.changesPercentageOI !== undefined}
+                          <span class="text-green-800 dark:text-[#00FC50]"
+                            >+{item?.changesPercentageOI + "%"}</span
+                          >
+                        {:else if item?.changesPercentageOI < 0 && item?.changesPercentageOI !== undefined}
+                          <span class="text-red-800 dark:text-[#FF2F1F]"
+                            >{item?.changesPercentageOI + "%"}</span
+                          >
+                        {:else if item?.changesPercentageOI === 0 && item?.changesPercentageOI !== undefined}
+                          0%
+                        {:else}
+                          n/a
+                        {/if}
+                      </td>
+
+                      <td class="text-sm sm:text-[1rem] text-end">
+                        {item?.close}
+                      </td>
+
+                      <td class="text-sm sm:text-[1rem] text-end">
+                        {item?.mark}
+                      </td>
+
+                      <td class="text-sm sm:text-[1rem] text-end">
+                        {(item?.implied_volatility * 100)?.toLocaleString(
+                          "en-US",
+                        ) + "%"}
+                      </td>
+
+                      <td class="text-sm sm:text-[1rem] text-end">
+                        {abbreviateNumber(item?.total_premium)}
+                      </td>
+                      <td class="text-sm sm:text-[1rem] text-end">
+                        {abbreviateNumber(item?.gex?.toFixed(2))}
+                      </td>
+                      <td class="text-sm sm:text-[1rem] text-end">
+                        {abbreviateNumber(item?.dex?.toFixed(2))}
+                      </td>
+                    </tr>
+                  {/each}
+                </tbody>
+              </table>
+            </div>
+          {/if}
+          <UpgradeToPro {data} display={true} />
+        {:else}
+          <div class="flex justify-center items-center h-80">
+            <div class="relative">
+              <label
+                class="shadow-sm bg-gray-300 dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+              >
+                <span
+                  class="loading loading-spinner loading-md text-muted dark:text-gray-400"
+                ></span>
+              </label>
+            </div>
+          </div>
         {/if}
-        <UpgradeToPro {data} display={true} />
       </div>
     </div>
   </div>
 </section>
 
-<input type="checkbox" id="mobileTooltip" class="modal-toggle" />
+{#if isLoaded}
+  <input type="checkbox" id="mobileTooltip" class="modal-toggle" />
 
-<dialog id="mobileTooltip" class="modal p-3">
-  <label for="mobileTooltip" class="cursor-pointer modal-backdrop"></label>
+  <dialog id="mobileTooltip" class="modal p-3">
+    <label for="mobileTooltip" class="cursor-pointer modal-backdrop"></label>
 
-  <!-- Desktop modal content -->
-  <div
-    class="modal-box rounded-md border border-gray-300 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
-  >
-    <div class=" mb-5 text-center">
-      <h3 class="font-bold text-2xl mb-5">{tooltipTitle}</h3>
-      <span class=" text-[1rem] font-normal">{infoText?.text ?? "n/a"}</span>
-      {#if infoText?.equation !== undefined}
-        <div class="w-5/6 m-auto mt-5"></div>
-        <div class="text-[1rem] w-full pt-3 pb-3 m-auto">
-          {infoText?.equation}
-        </div>
-      {/if}
+    <!-- Desktop modal content -->
+    <div
+      class="modal-box rounded-md border border-gray-300 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
+    >
+      <div class=" mb-5 text-center">
+        <h3 class="font-bold text-2xl mb-5">{tooltipTitle}</h3>
+        <span class=" text-[1rem] font-normal">{infoText?.text ?? "n/a"}</span>
+        {#if infoText?.equation !== undefined}
+          <div class="w-5/6 m-auto mt-5"></div>
+          <div class="text-[1rem] w-full pt-3 pb-3 m-auto">
+            {infoText?.equation}
+          </div>
+        {/if}
+      </div>
+
+      <div class="border-t border-gray-300 dark:border-gray-600 mt-2 w-full">
+        <label
+          for="mobileTooltip"
+          class="cursor-pointer mt-4 font-semibold text-xl m-auto flex justify-center"
+        >
+          Close
+        </label>
+      </div>
     </div>
-
-    <div class="border-t border-gray-300 dark:border-gray-600 mt-2 w-full">
-      <label
-        for="mobileTooltip"
-        class="cursor-pointer mt-4 font-semibold text-xl m-auto flex justify-center"
-      >
-        Close
-      </label>
-    </div>
-  </div>
-</dialog>
+  </dialog>
+{/if}

@@ -18,20 +18,38 @@ type FlyAndScaleParams = {
   duration?: number;
 };
 
-export const deferFunction = (cb: () => Promise<void> | void, opts = { timeout: 1000 }): Promise<void> => {
-  return new Promise((resolve) => {
-    const wrappedCallback = async () => {
+type IdleOptions = { timeout?: number };
+
+export const deferFunction = (
+  cb: () => Promise<void> | void,
+  timeoutOrOpts: number | IdleOptions = 1000
+): Promise<void> => {
+  // Normalize: if caller passed a number, turn it into { timeout: number }
+  const opts: IdleOptions =
+    typeof timeoutOrOpts === "number"
+      ? { timeout: timeoutOrOpts }
+      : timeoutOrOpts;
+
+  // Ensure we always have a numeric timeout fallback
+  const timeout = opts.timeout ?? 1000;
+
+  return new Promise<void>((resolve) => {
+    const wrapped = async () => {
       await Promise.resolve(cb());
       resolve();
     };
-    
-    if ('requestIdleCallback' in window) {
-      window.requestIdleCallback(wrappedCallback, opts);
+
+    if ("requestIdleCallback" in window) {
+      // Always pass a plain object here
+      window.requestIdleCallback(wrapped, { timeout });
     } else {
-      setTimeout(wrappedCallback, opts.timeout);
+      setTimeout(wrapped, timeout);
     }
   });
 };
+
+
+
 export function removeCompanyStrings(name) {
   const wordsToRemove = ["Technologies", "AG", ", Inc.","Inc.","Corp.","Corporation","Holding","Limited","Group","N.V.","Co. Ltd.","Co.", "Ltd."];
 if (!name) return "";
