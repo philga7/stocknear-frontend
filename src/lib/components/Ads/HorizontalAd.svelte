@@ -50,7 +50,7 @@
   </h3>
 
   <div
-    class="mx-auto min-h-[68px] md:h-[90px] max-h-[90px] md:w-[728px] border border-gray-300 dark:border-gray-800 rounded bg-gray-100 dark:bg-gray-800"
+    class="mx-auto min-h-[68px] md:h-[90px] max-h-[90px] md:w-[728px] border border-gray-300 dark:border-gray-800 rounded bg-gray-100 dark:bg-[#2A2E39]"
   >
     <!-- Always present for AdSense to render into -->
     <ins

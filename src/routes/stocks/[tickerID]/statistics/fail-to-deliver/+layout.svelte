@@ -1,5 +1,6 @@
 <script lang="ts">
   import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
+  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   export let data;
   const similarStocks = data?.getSimilarStocks?.sort(
@@ -94,6 +95,10 @@
                 </a>
               </div>
             </div>
+          {/if}
+
+          {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+            <SquareAd />
           {/if}
         </aside>
       </div>

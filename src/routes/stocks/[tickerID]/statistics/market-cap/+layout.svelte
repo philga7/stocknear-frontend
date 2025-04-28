@@ -1,5 +1,6 @@
 <script lang="ts">
   import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
+  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   export let data;
   const similarStocks = data?.getSimilarStocks;
@@ -95,10 +96,15 @@
                   </h2>
                 </div>
                 <span class=" p-3 sm:ml-3 sm:mr-3 -mt-4">
-                  Upgrade now for unlimited access to all data and tools.
+                  Upgrade now for unlimited access to all data, tools and no
+                  ads.
                 </span>
               </a>
             </div>
+          {/if}
+
+          {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+            <SquareAd />
           {/if}
 
           <div
