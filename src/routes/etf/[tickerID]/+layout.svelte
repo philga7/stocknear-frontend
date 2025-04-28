@@ -721,7 +721,7 @@
                       <!-- svelte-ignore a11y-click-events-have-key-events -->
                       <!-- svelte-ignore a11y-label-has-associated-control -->
 
-                      <div class="flex items-center w-full mt-5">
+                      <div class="flex items-center w-full mt-10">
                         <div
                           class="flex flex-row justify-start w-full items-center"
                         >

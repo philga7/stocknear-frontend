@@ -50,7 +50,7 @@
   </h3>
 
   <div
-    class="mx-auto h-[280px] w-full border border-gray-300 dark:border-gray-800 rounded-md bg-gray-100 dark:bg-[#2A2E39]"
+    class="mx-auto min-h-[280px] w-full border border-gray-300 dark:border-gray-800 rounded-md bg-gray-100 dark:bg-[#2A2E39]"
   >
     <!-- ALWAYS render the <ins> so adsbygoogle.push() can “see” it -->
     <ins
