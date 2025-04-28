@@ -162,14 +162,6 @@
       }
     };
 
-    const observer = new MutationObserver(() => {
-      document.querySelector(".ipr-container")?.remove();
-    });
-
-    observer.observe(document.body, {
-      childList: true,
-    });
-
     // Clear cache every 20 min
     const interval = setInterval(
       () => {

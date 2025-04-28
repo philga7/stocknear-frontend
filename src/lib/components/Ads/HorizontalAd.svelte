@@ -1,48 +1,50 @@
+<!-- BannerAdComponent.svelte -->
 <script>
   import { browser } from "$app/environment";
   import { onMount } from "svelte";
 
-  // State to track if the ad is loaded
-  let adLoaded = false;
-
-  onMount(() => {
-    if (browser) {
-      // Check if AdSense script is already loaded
-      if (!document.querySelector('script[src*="adsbygoogle.js"]')) {
-        // Load Google AdSense script dynamically
-        const script = document.createElement("script");
-        script.src =
-          "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7722951169931877";
+  // Returns a promise that resolves once the AdSense script is loaded.
+  function loadAdSense() {
+    const SRC =
+      "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7722951169931877";
+    return new Promise((resolve, reject) => {
+      let script = document.querySelector(`script[src="${SRC}"]`);
+      if (!script) {
+        script = document.createElement("script");
+        script.src = SRC;
         script.async = true;
         script.crossOrigin = "anonymous";
-        script.onload = () => {
-          adLoaded = true;
-          initializeAd();
-        };
+        script.onload = resolve;
+        script.onerror = reject;
         document.head.appendChild(script);
+      } else if ((script.getAttribute("data-loaded") || "") === "true") {
+        resolve();
       } else {
-        // AdSense script already exists, just initialize the ad
-        adLoaded = true;
-        initializeAd();
+        script.addEventListener("load", resolve);
+        script.addEventListener("error", reject);
       }
+    });
+  }
+
+  onMount(async () => {
+    if (!browser) return;
+    try {
+      await loadAdSense();
+      // Render all <ins class="adsbygoogle"> placeholders
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+      // Mark as loaded for future navigations
+      document
+        .querySelector('script[src*="adsbygoogle.js"]')
+        ?.setAttribute("data-loaded", "true");
+    } catch (e) {
+      console.error("AdSense failed to load:", e);
     }
   });
-
-  function initializeAd() {
-    // Push the ad after a slight delay to ensure AdSense is fully loaded
-    setTimeout(() => {
-      try {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-      } catch (error) {
-        console.error("AdSense error:", error);
-      }
-    }, 100);
-  }
 </script>
 
 <div class="mt-3 text-center xl:max-w-screen-xl px-3 sm:px-0">
   <h3
-    class="uppercase text-center text-[9px] font-semibold text-gray-500 dark:text-gray-300"
+    class="uppercase text-[9px] font-semibold text-gray-500 dark:text-gray-300"
   >
     Advertisement
   </h3>
@@ -50,13 +52,12 @@
   <div
     class="mx-auto min-h-[68px] md:h-[90px] max-h-[90px] md:w-[728px] border border-gray-300 dark:border-gray-800 rounded bg-gray-100 dark:bg-gray-800"
   >
-    {#if adLoaded}
-      <ins
-        class="adsbygoogle"
-        style="display:inline-block;width:728px;height:90px"
-        data-ad-client="ca-pub-7722951169931877"
-        data-ad-slot="4890164325"
-      ></ins>
-    {/if}
+    <!-- Always present for AdSense to render into -->
+    <ins
+      class="adsbygoogle"
+      style="display:inline-block;width:728px;height:90px"
+      data-ad-client="ca-pub-7722951169931877"
+      data-ad-slot="4890164325"
+    ></ins>
   </div>
 </div>
