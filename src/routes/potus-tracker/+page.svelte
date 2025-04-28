@@ -10,6 +10,7 @@
   import { goto } from "$app/navigation";
   //import html2canvas from "html2canvas-pro";
   import Tutorial from "$lib/components/Tutorial.svelte";
+  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   export let data;
 
@@ -933,24 +934,32 @@
           </div>
 
           <div class="order-4 shrink-0 lg:float-right lg:w-[336px]">
-            <div
-              class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
-            >
-              <a
-                href={`/newsletter`}
-                class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
+            {#if !["Pro", "Plus"]?.includes(data?.user?.tier) || data?.user?.freeTrial}
+              <div
+                class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
               >
-                <div class="w-full flex justify-between items-center p-3 mt-3">
-                  <h2 class="text-start text-xl font-semibold ml-3">
-                    Market Newsletter
-                  </h2>
-                </div>
-                <span class=" p-3 ml-3 mr-3">
-                  Get a daily email with the top market news in bullet point
-                  format.
-                </span>
-              </a>
-            </div>
+                <a
+                  href="/pricing"
+                  class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
+                >
+                  <div
+                    class="w-full flex justify-between items-center p-3 mt-3"
+                  >
+                    <h2 class="text-start text-xl font-semibold sm:ml-3">
+                      Pro Subscription
+                    </h2>
+                  </div>
+                  <span class=" p-3 sm:ml-3 sm:mr-3 -mt-4">
+                    Upgrade now for unlimited access to all data, tools and no
+                    ads.
+                  </span>
+                </a>
+              </div>
+            {/if}
+
+            {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+              <SquareAd />
+            {/if}
 
             <div
               class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
