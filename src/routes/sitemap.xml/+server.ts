@@ -9,7 +9,6 @@ const pages = [
   { title: "/etf/etf-providers" },
   { title: "/etf/new-launches" },
   { title: "/price-alert" },
-  { title: "/donation" },
   { title: "/insider-tracker" },
   { title: "/industry" },
   { title: "/industry/sectors" },

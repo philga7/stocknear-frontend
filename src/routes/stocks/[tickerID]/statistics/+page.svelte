@@ -4,6 +4,7 @@
   import ScrollToTop from "$lib/components/ScrollToTop.svelte";
   import SEO from "$lib/components/SEO.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
+  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   export let data;
   let rawData = data?.getStatistics ?? {};
@@ -1142,6 +1143,10 @@
                 >
               </table>
             </div>
+
+            {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+              <SquareAd />
+            {/if}
           </div>
         </div>
       {:else}

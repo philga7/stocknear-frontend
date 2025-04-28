@@ -1,6 +1,7 @@
 <script lang="ts">
   import { stockTicker } from "$lib/store";
   import { formatDate, removeCompanyStrings } from "$lib/utils";
+  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   export let data;
 
@@ -45,6 +46,10 @@
                 </span>
               </a>
             </div>
+          {/if}
+
+          {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+            <SquareAd />
           {/if}
 
           <div

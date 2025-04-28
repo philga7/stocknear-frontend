@@ -2,6 +2,7 @@
   import { stockTicker, displayCompanyName } from "$lib/store";
   import { sectorNavigation } from "$lib/utils";
   import SEO from "$lib/components/SEO.svelte";
+  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   export let data;
 
@@ -165,6 +166,11 @@ ${paragraphs.join("\n")}
                 >
               </table>
             </div>
+
+            {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+              <SquareAd />
+            {/if}
+
             <h2 class="mt-6 xs:mt-8 font-bold text-2xl mb-2">
               Contact Details
             </h2>

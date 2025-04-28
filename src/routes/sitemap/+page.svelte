@@ -158,10 +158,6 @@
       link: "/privacy-policy",
     },
     {
-      title: "Sponsor Us",
-      link: "/donation",
-    },
-    {
       title: "Pricing",
       link: "/pricing",
     },
