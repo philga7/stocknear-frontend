@@ -1,27 +1,62 @@
+<script>
+  import { browser } from "$app/environment";
+  import { onMount } from "svelte";
+
+  // State to track if the ad is loaded
+  let adLoaded = false;
+
+  onMount(() => {
+    if (browser) {
+      // Check if AdSense script is already loaded
+      if (!document.querySelector('script[src*="adsbygoogle.js"]')) {
+        // Load Google AdSense script dynamically
+        const script = document.createElement("script");
+        script.src =
+          "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7722951169931877";
+        script.async = true;
+        script.crossOrigin = "anonymous";
+        script.onload = () => {
+          adLoaded = true;
+          initializeAd();
+        };
+        document.head.appendChild(script);
+      } else {
+        // AdSense script already exists, just initialize the ad
+        adLoaded = true;
+        initializeAd();
+      }
+    }
+  });
+
+  function initializeAd() {
+    // Push the ad after a slight delay to ensure AdSense is fully loaded
+    setTimeout(() => {
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (error) {
+        console.error("AdSense error:", error);
+      }
+    }, 100);
+  }
+</script>
+
 <div class="mt-3 text-center xl:max-w-screen-xl px-3 sm:px-0">
   <h3
-    class="uppercase text-center text-[10px] font-semibold text-gray-500 dark:text-gray-300"
+    class="uppercase text-center text-[9px] font-semibold text-gray-500 dark:text-gray-300"
   >
-    Advertisment
+    Advertisement
   </h3>
 
   <div
-    class=" mx-auto min-h-[68px] md:h-[90px] md:w-[728px] border border-gray-300 dark:border-gray-800 rounded bg-[#F3F4F6] dark:bg-[#2A2E39]"
+    class="mx-auto min-h-[68px] md:h-[90px] max-h-[90px] md:w-[728px] border border-gray-300 dark:border-gray-800 rounded bg-gray-100 dark:bg-gray-800"
   >
-    <script
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7722951169931877"
-      crossorigin="anonymous"
-    ></script>
-    <!-- Header -->
-    <ins
-      class="adsbygoogle"
-      style="display:inline-block;width:728px;height:90px"
-      data-ad-client="ca-pub-7722951169931877"
-      data-ad-slot="4890164325"
-    ></ins>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    {#if adLoaded}
+      <ins
+        class="adsbygoogle"
+        style="display:inline-block;width:728px;height:90px"
+        data-ad-client="ca-pub-7722951169931877"
+        data-ad-slot="4890164325"
+      ></ins>
+    {/if}
   </div>
 </div>

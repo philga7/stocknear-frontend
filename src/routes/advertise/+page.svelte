@@ -13,13 +13,13 @@
   description="Advertise with Stocknear, the first fully open-source financial research platform for retail investors. Gain unparalleled visibility among traders, analysts, and investors worldwide with our high-engagement newsletter and dynamic investment tools."
 />
 
-{#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
-  <HorizontalAd />
-{/if}
-
 <section
-  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen px-4 lg:px-3 text-muted dark:text-white pb-20"
+  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden px-4 lg:px-3 text-muted dark:text-white pb-20"
 >
+  {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+    <HorizontalAd />
+  {/if}
+
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
       <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
