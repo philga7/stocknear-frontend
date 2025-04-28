@@ -18,7 +18,31 @@
         </main>
 
         <aside class="hidden lg:block relative fixed w-1/4 mt-3">
-          {#if similarStocks?.length > 0}
+          <div
+            class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4"
+          >
+            <h3 class="p-2 pt-4 text-xl font-semibold">
+              Fail-to-Deliver Definition
+            </h3>
+            <div class=" p-2">
+              A fail-to-deliver occurs when securities sold are not delivered to
+              the buyer by the agreed settlement date. FTD metrics help traders
+              identify market stress and elevated short interest—sudden spikes
+              may presage short squeezes or liquidity bottlenecks.
+            </div>
+            <!--
+            <div class="px-2">
+              <a
+                href="/blog/article/revenue"
+                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-white dark:text-black m-auto sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 bg-[#3B82F6] dark:bg-[#fff] transition duration-100"
+              >
+                Full Definition
+              </a>
+            </div>
+            -->
+          </div>
+
+          {#if similarStocks?.length > 0 && similarStocks?.at(0)?.relativeFTD}
             <div
               class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer"
             >

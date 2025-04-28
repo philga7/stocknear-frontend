@@ -1,24 +1,18 @@
 import Highcharts from 'highcharts';
 import HighchartsMore from 'highcharts/highcharts-more';
-import Boost from 'highcharts/modules/boost'; // Add this import
 // import HighchartsAnnotations from 'highcharts/modules/annotations';
 import { browser } from '$app/environment';
 
 if (browser) {
   // Initialize modules
   HighchartsMore(Highcharts);
-  Boost(Highcharts);
   // HighchartsAnnotations(Highcharts);
 
 Highcharts.setOptions({
     lang: {
       numericSymbols: ['K', 'M', 'B', 'T', 'P', 'E']
     },
-    // Global performance options
-    boost: {
-      useGPUTranslations: true,
-      usePreallocated: true
-    }
+   
   });
 }
 
