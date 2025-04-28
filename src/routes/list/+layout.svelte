@@ -2,6 +2,7 @@
   import { page } from "$app/stores";
   import { industryList } from "$lib/utils";
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
+  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   export let data;
 
@@ -303,7 +304,7 @@
 </script>
 
 <section
-  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden pb-40 pt-5 px-4 lg:px-3 mb-20"
+  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden pb-40 pt-5 px-4 lg:px-3"
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
@@ -343,13 +344,18 @@
       </div>
 
       <div class="border-b-[2px] w-full mb-4" />
-
-      <div class="flex justify-center w-full m-auto overflow-hidden">
+      <div
+        class="relative flex flex-col lg:flex-row justify-center items-start overflow-hidden w-full"
+      >
         <main class="w-full lg:w-3/4 lg:pr-10">
           <slot />
         </main>
 
-        <aside class="hidden lg:block relative fixed w-1/4">
+        <aside class="inline-block relative w-full lg:w-1/4 mt-3">
+          {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+            <SquareAd />
+          {/if}
+
           <div
             class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >

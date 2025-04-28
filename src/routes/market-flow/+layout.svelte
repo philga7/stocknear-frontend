@@ -2,6 +2,7 @@
   import ScrollToTop from "$lib/components/ScrollToTop.svelte";
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
   import { page } from "$app/stores";
+  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   export let data;
 
@@ -39,7 +40,7 @@
   <div class="w-full overflow-hidden m-auto mt-5 sm:max-w-[1400px]">
     <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
       <div
-        class="relative flex justify-center items-start overflow-hidden w-full"
+        class="relative flex flex-col lg:flex-row justify-center items-start overflow-hidden w-full"
       >
         <main class="w-full lg:w-3/4 lg:pr-10">
           <h1 class="mb-3 text-2xl sm:text-3xl font-bold">
@@ -67,7 +68,11 @@
 
           <ScrollToTop />
         </main>
-        <aside class="hidden lg:block relative fixed w-1/4 ml-4">
+        <aside class="inline-block relative w-full lg:w-1/4 mt-3">
+          {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+            <SquareAd />
+          {/if}
+
           <div
             class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
