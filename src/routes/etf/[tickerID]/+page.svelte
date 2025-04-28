@@ -573,6 +573,19 @@
 
       output = (await response?.json()) ?? [];
 
+      const lastHistoric = output[output?.length - 1];
+      const lastOneDay = oneDayPrice[oneDayPrice?.length - 1];
+
+      // parse into Date objects
+      const historicDate = new Date(lastHistoric?.time);
+      const oneDayDate = new Date(lastOneDay?.time);
+
+      // if historicData is not newer than oneDayPrice, push it
+      // i.e. if historicDate <= oneDayDate
+      if (historicDate <= oneDayDate) {
+        output?.push(lastOneDay);
+      }
+
       try {
         switch (timePeriod) {
           case "one-week":
