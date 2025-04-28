@@ -163,7 +163,7 @@
     };
 
     const observer = new MutationObserver(() => {
-      document.querySelector(".google-revocation-link-placeholder")?.remove();
+      document.querySelector(".ipr-container")?.remove();
     });
 
     observer.observe(document.body, {
