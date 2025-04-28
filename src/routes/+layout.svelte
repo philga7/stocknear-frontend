@@ -128,7 +128,7 @@
   $showCookieConsent =
     typeof data?.cookieConsent !== "undefined" ? false : true;
 
-  // initialize GTM dataLayer
+  // Initialize GTM dataLayer
   function initDataLayer() {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
@@ -137,54 +137,49 @@
     });
   }
 
-  let gtmWorker: Worker;
-  function loadGTMWorker() {
-    if (gtmWorker) return; // only once per page
-    const code = `
-      self.postMessage({
-        action: 'loadGTM',
-        url: 'https://www.googletagmanager.com/gtm.js?id=GTM-NZBJ9W63'
-      });
-      self.close();
-    `;
-    const blob = new Blob([code], { type: "text/javascript" });
-    gtmWorker = new Worker(URL.createObjectURL(blob));
-    gtmWorker.onmessage = ({ data }) => {
-      if (data.action === "loadGTM") {
-        const s = document.createElement("script");
-        s.async = true;
-        s.src = data.url;
-        document.head.appendChild(s);
-      }
-    };
-  }
+  // Load GTM script in a non-blocking way
+  function loadGTMScript() {
+    const GTM_ID = "GTM-NZBJ9W63";
 
+    // Create script element with async attribute
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`;
+
+    // Append to document using requestAnimationFrame to avoid layout thrashing
+    requestAnimationFrame(() => {
+      document.head.appendChild(script);
+    });
+  }
   let cacheInterval: number;
 
   onMount(() => {
     if (!browser) return;
 
-    // defer everything till idle
-    deferFunction(async () => {
-      // 1) user-conditional worker
-      if (data?.user?.id) {
-        await loadWorker();
-      }
-      // 2) market check
-      await checkMarketHour();
-      // 3) GTM
-      initDataLayer();
-      loadGTMWorker();
+    deferFunction(() => {
+      checkMarketHour();
+
+      // Delay these tasks by 2 seconds to ensure they don't block main thread
+      setTimeout(async () => {
+        initDataLayer();
+        loadGTMScript();
+
+        // Only load worker if user is logged in
+        if (data?.user?.id) {
+          await loadWorker();
+        }
+      }, 2000);
     });
 
-    // clearCache every 20 min
-    cacheInterval = window.setInterval(clearCache, 20 * 60 * 1000);
+    // Cache clearing interval (independent of the deferred tasks)
+    const cacheInterval = window.setInterval(clearCache, 20 * 60 * 1000);
 
+    // Cleanup function
     return () => {
       clearInterval(cacheInterval);
-      gtmWorker?.terminate();
     };
   });
+
   onDestroy(() => {
     clearCache();
   });
@@ -216,7 +211,7 @@
     }
   }
 
-  const checkMarketHour = async () => {
+  const checkMarketHour = () => {
     const holidays = [
       "2025-01-01",
       "2025-01-09",
