@@ -2,6 +2,7 @@
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
   import Table from "$lib/components/Table/Table.svelte";
   import SEO from "$lib/components/SEO.svelte";
+  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   export let data;
 
@@ -69,10 +70,15 @@
                   />
                 </div>
                 <span class="e p-3 ml-3 mr-3">
-                  Upgrade now for unlimited access to all data and tools
+                  Upgrade now for unlimited access to all data, tools and no
+                  ads.
                 </span>
               </a>
             </div>
+          {/if}
+
+          {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+            <SquareAd />
           {/if}
 
           <div

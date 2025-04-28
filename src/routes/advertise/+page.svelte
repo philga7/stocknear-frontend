@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
   import SEO from "$lib/components/SEO.svelte";
   import HorizontalAd from "$lib/components/Ads/HorizontalAd.svelte";

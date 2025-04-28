@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import SEO from "$lib/components/SEO.svelte";
+  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   export let data;
 
@@ -80,10 +81,10 @@
   description="The latest news on individual stocks on the US stock market, gathered from trusted finance and investing websites."
 />
 
-<div class="w-full overflow-hidden m-auto mt-5 text-muted dark:text-white">
+<div class="w-full overflow-hidden m-auto mt-5">
   <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
     <div
-      class="relative flex justify-center items-start overflow-hidden w-full"
+      class="relative flex flex-col lg:flex-row justify-center items-start overflow-hidden w-full"
     >
       <main class="w-full lg:w-3/4 lg:pr-10">
         <div class="w-full m-auto">
@@ -189,10 +190,34 @@
           </div>
         </div>
       </main>
-      <aside class="hidden lg:block relative fixed w-1/4">
+      <aside class="inline-block relative w-full lg:w-1/4 mt-3">
+        {#if !["Pro", "Plus"]?.includes(data?.user?.tier) || data?.user?.freeTrial}
+          <div
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
+          >
+            <a
+              href="/pricing"
+              class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
+            >
+              <div class="w-full flex justify-between items-center p-3 mt-3">
+                <h2 class="text-start text-xl font-semibold sm:ml-3">
+                  Pro Subscription
+                </h2>
+              </div>
+              <span class=" p-3 sm:ml-3 sm:mr-3 -mt-4">
+                Upgrade now for unlimited access to all data, tools and no ads.
+              </span>
+            </a>
+          </div>
+        {/if}
+
+        {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+          <SquareAd />
+        {/if}
+
         {#if marketNews?.length !== 0}
           <div
-            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit mt-4 cursor-pointer"
           >
             <div class="p-4 text-sm">
               <h3 class="text-xl font-bold mb-3">Market News</h3>
@@ -210,6 +235,12 @@
                   </li>
                 {/each}
               </ul>
+              <a
+                href={`/market-news/general`}
+                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-5 text-[1rem] text-center font-semibold text-white dark:text-black m-auto sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 bg-[#3B82F6] dark:bg-[#fff] transition duration-100"
+              >
+                More Market News
+              </a>
             </div>
           </div>
         {/if}

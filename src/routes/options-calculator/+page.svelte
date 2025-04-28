@@ -10,6 +10,7 @@
   import Link from "lucide-svelte/icons/square-arrow-out-up-right";
   import Trash from "lucide-svelte/icons/trash";
   import { toast } from "svelte-sonner";
+  import HorizontalAd from "$lib/components/Ads/HorizontalAd.svelte";
 
   import { mode } from "mode-watcher";
   import highcharts from "$lib/highcharts.ts";
@@ -1174,7 +1175,7 @@
                             class="border border-gray-300 dark:border-gray-500 rounded px-2 py-1 w-24 focus:outline-none focus:ring-1 focus:ring-blue-500"
                           />
                         </td>
-                        <td class="px-4 whitespace-nowrap py-2">
+                        <td class="px-4 whitespace-nowrap py-2 select-none">
                           <div
                             class="flex flex-row items-center m-auto text-center justify-center"
                           >
@@ -1362,6 +1363,12 @@
               </div>
             </div>
           </div>
+
+          {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+            <div class="mt-10">
+              <HorizontalAd />
+            </div>
+          {/if}
         </div>
       </div>
     </div>

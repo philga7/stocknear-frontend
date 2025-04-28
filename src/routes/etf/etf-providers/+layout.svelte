@@ -2,6 +2,7 @@
   import { page } from "$app/stores";
   import { formatETFName } from "$lib/utils";
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
+  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   export let data;
   let currentPath = "";
@@ -39,7 +40,7 @@
   <div class="w-full overflow-hidden m-auto mt-5">
     <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
       <div
-        class="relative flex justify-center items-start overflow-hidden w-full"
+        class="relative flex flex-col lg:flex-row justify-center items-start overflow-hidden w-full"
       >
         <main class="w-full lg:w-3/4 lg:pr-5">
           <h1 class="text-2xl sm:text-3xl font-bold">ETF Providers</h1>
@@ -51,7 +52,32 @@
           </div>
         </main>
 
-        <aside class="hidden lg:block relative fixed w-1/4 ml-4">
+        <aside class="inline-block relative w-full lg:w-1/4 mt-3">
+          {#if !["Pro", "Plus"]?.includes(data?.user?.tier) || data?.user?.freeTrial}
+            <div
+              class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
+            >
+              <a
+                href="/pricing"
+                class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
+              >
+                <div class="w-full flex justify-between items-center p-3 mt-3">
+                  <h2 class="text-start text-xl font-semibold sm:ml-3">
+                    Pro Subscription
+                  </h2>
+                </div>
+                <span class=" p-3 sm:ml-3 sm:mr-3 -mt-4">
+                  Upgrade now for unlimited access to all data, tools and no
+                  ads.
+                </span>
+              </a>
+            </div>
+          {/if}
+
+          {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+            <SquareAd />
+          {/if}
+
           <div
             class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >

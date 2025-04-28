@@ -1,6 +1,7 @@
 <script lang="ts">
   import ScrollToTop from "$lib/components/ScrollToTop.svelte";
   import { page } from "$app/stores";
+  import HorizontalAd from "$lib/components/Ads/HorizontalAd.svelte";
 
   export let data;
 
@@ -46,6 +47,10 @@
 <section
   class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden pb-20 pt-5 px-4 lg:px-3 text-muted dark:text-white"
 >
+  {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+    <HorizontalAd />
+  {/if}
+
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
       <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
