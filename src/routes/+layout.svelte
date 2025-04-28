@@ -19,6 +19,9 @@
 
   import { beforeNavigate, afterNavigate } from "$app/navigation";
   import { onMount, onDestroy } from "svelte";
+  import { deferFunction } from "$lib/utils";
+  import { browser } from "$app/environment";
+
   import {
     clearCache,
     showCookieConsent,
@@ -125,54 +128,63 @@
   $showCookieConsent =
     typeof data?.cookieConsent !== "undefined" ? false : true;
 
-  onMount(async () => {
-    if (data?.user?.id) {
-      await loadWorker();
-    }
-
-    await checkMarketHour();
-
-    // Your cookie/detectSWUpdate logic (commented)
-
-    // Initialize dataLayer
+  // initialize GTM dataLayer
+  function initDataLayer() {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      "gtm.start": new Date().getTime(),
+      "gtm.start": Date.now(),
       event: "gtm.js",
     });
+  }
 
-    // Inline web worker to load GTM
-    const workerCode = `
-    self.postMessage({
-      action: 'loadGTM',
-      url: 'https://www.googletagmanager.com/gtm.js?id=GTM-NZBJ9W63'
-    });
-    self.close();
-  `;
-
-    const blob = new Blob([workerCode], { type: "application/javascript" });
-    const worker = new Worker(URL.createObjectURL(blob));
-
-    worker.onmessage = (event) => {
-      if (event.data.action === "loadGTM") {
-        const script = document.createElement("script");
-        script.async = true;
-        script.src = event.data.url;
-        document.head.appendChild(script);
+  let gtmWorker: Worker;
+  function loadGTMWorker() {
+    if (gtmWorker) return; // only once per page
+    const code = `
+      self.postMessage({
+        action: 'loadGTM',
+        url: 'https://www.googletagmanager.com/gtm.js?id=GTM-NZBJ9W63'
+      });
+      self.close();
+    `;
+    const blob = new Blob([code], { type: "text/javascript" });
+    gtmWorker = new Worker(URL.createObjectURL(blob));
+    gtmWorker.onmessage = ({ data }) => {
+      if (data.action === "loadGTM") {
+        const s = document.createElement("script");
+        s.async = true;
+        s.src = data.url;
+        document.head.appendChild(s);
       }
     };
+  }
 
-    // Clear cache every 20 min
-    const interval = setInterval(
-      () => {
-        clearCache();
-      },
-      20 * 60 * 1000,
-    );
+  let cacheInterval: number;
 
-    return () => clearInterval(interval);
+  onMount(() => {
+    if (!browser) return;
+
+    // defer everything till idle
+    deferFunction(async () => {
+      // 1) user-conditional worker
+      if (data?.user?.id) {
+        await loadWorker();
+      }
+      // 2) market check
+      await checkMarketHour();
+      // 3) GTM
+      initDataLayer();
+      loadGTMWorker();
+    });
+
+    // clearCache every 20 min
+    cacheInterval = window.setInterval(clearCache, 20 * 60 * 1000);
+
+    return () => {
+      clearInterval(cacheInterval);
+      gtmWorker?.terminate();
+    };
   });
-
   onDestroy(() => {
     clearCache();
   });

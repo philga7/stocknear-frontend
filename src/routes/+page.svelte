@@ -9,7 +9,6 @@
   import { compareTimes, formatTime, isPWAInstalled } from "$lib/utils";
   import Infobox from "$lib/components/Infobox.svelte";
   import { closedPWA } from "$lib/store";
-  import Feedback from "$lib/components/Feedback.svelte";
   import SEO from "$lib/components/SEO.svelte";
 
   export let data;
@@ -109,29 +108,10 @@
   <div class="flex flex-col m-auto justify-center items-center">
     <div class="text-center mb-10 w-full px-4 sm:px-3 mt-10">
       {#if data?.user}
-        <Feedback {data} />
+        {#await import("$lib/components/Feedback.svelte") then { default: Comp }}
+          <svelte:component this={Comp} {data} />
+        {/await}
       {/if}
-
-      <!--
-      <div
-        class="text-center mb-5 relative w-fit flex justify-center m-auto text-white"
-      >
-        <div class=" flex justify-center -mt-3 mb-3">
-          <a href="/stocks/GME/statistics/short-interest"
-            ><div
-              class="flex items-center justify-center sm:hover:text-muted dark:sm:hover:text-white text-blue-700 dark:text-blue-400"
-            >
-              <div class="text-lg sm:text-xl font-semibold">Short Interest</div>
-              <div
-                class="-mt-2 ml-1 -rotate-6 rounded-lg bg-red-500 px-1 py-0.5 text-xs font-semibold text-white"
-              >
-                New
-              </div>
-            </div></a
-          >
-        </div>
-      </div>
-      -->
 
       <h1
         class="hidden sm:block text-3xl lg:text-4xl text-muted dark:text-white font-bold text-center mb-10 relative w-fit flex justify-center m-auto"

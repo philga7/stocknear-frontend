@@ -18,6 +18,13 @@ type FlyAndScaleParams = {
   duration?: number;
 };
 
+export const deferFunction = (cb: () => void, opts = { timeout: 2000 }) =>
+    ('requestIdleCallback' in window)
+      ? (window as any).requestIdleCallback(cb, opts)
+      : setTimeout(cb, opts.timeout);
+
+
+
 export function removeCompanyStrings(name) {
   const wordsToRemove = ["Technologies", "AG", ", Inc.","Inc.","Corp.","Corporation","Holding","Limited","Group","N.V.","Co. Ltd.","Co.", "Ltd."];
 if (!name) return "";
