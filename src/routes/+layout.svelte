@@ -170,14 +170,6 @@
       20 * 60 * 1000,
     );
 
-    if (!["Plus", "Pro"].includes(data?.user?.tier)) {
-      const ampScript = document.createElement("script");
-      ampScript.async = true;
-      ampScript.setAttribute("custom-element", "amp-ad");
-      ampScript.src = "https://cdn.ampproject.org/v0/amp-ad-0.1.js";
-      document.head.appendChild(ampScript);
-    }
-
     return () => clearInterval(interval);
   });
 

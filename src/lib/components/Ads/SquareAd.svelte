@@ -8,16 +8,22 @@
   <div
     class=" mx-auto h-[280px] w-full border border-gray-300 dark:border-gray-800 rounded bg-[#F3F4F6] dark:bg-[#2A2E39]"
   >
-    <amp-ad
-      width="100vw"
-      height="320"
-      type="adsense"
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7722951169931877"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Square -->
+    <ins
+      class="adsbygoogle"
+      style="display:block"
       data-ad-client="ca-pub-7722951169931877"
       data-ad-slot="7703947777"
-      data-auto-format="rspv"
-      data-full-width=""
-    >
-      <div overflow=""></div>
-    </amp-ad>
+      data-ad-format="auto"
+      data-full-width-responsive="true"
+    ></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
   </div>
 </div>
