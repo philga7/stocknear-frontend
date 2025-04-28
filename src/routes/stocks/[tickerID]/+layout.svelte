@@ -26,7 +26,6 @@
   import { mode } from "mode-watcher";
 
   import { convertTimestamp } from "$lib/utils";
-  import AIScore from "$lib/components/AIScore.svelte";
   import PriceAlert from "$lib/components/PriceAlert.svelte";
 
   export let data;
@@ -727,7 +726,7 @@
                           </label>
                         </div>
                         <!--End Price Alert -->
-
+                        <!--
                         <div
                           class="hidden sm:flex items-end justify-end absolute right-1.5 top-12 {$scoreComponent ===
                           false
@@ -739,12 +738,13 @@
                             tier={data?.user?.tier}
                           />
                         </div>
+                        -->
                       </div>
 
                       <!-- svelte-ignore a11y-click-events-have-key-events -->
                       <!-- svelte-ignore a11y-label-has-associated-control -->
 
-                      <div class="flex items-center w-full mt-5">
+                      <div class="flex items-center w-full mt-10">
                         <div
                           class="flex flex-row justify-start w-full items-center"
                         >
@@ -761,6 +761,7 @@
                                   >({$stockTicker?.toUpperCase()})</span
                                 >
                               </h1>
+                              <!--
                               <div
                                 class="sm:hidden items-end justify-end absolute right-3 top-14 {$scoreComponent ===
                                 false
@@ -772,6 +773,7 @@
                                   tier={data?.user?.tier}
                                 />
                               </div>
+                              -->
                             </div>
 
                             <div
@@ -783,7 +785,7 @@
                                     prePostData,
                                   )?.length === 0
                                     ? 'inline'
-                                    : 'block sm:inline'}"
+                                    : 'block inline'}"
                                 >
                                   {displayLegend?.close}
                                 </div>
@@ -792,7 +794,7 @@
                                     prePostData,
                                   )?.length === 0
                                     ? 'inline'
-                                    : 'block sm:inline'} text-lg xs:text-xl sm:text-2xl"
+                                    : 'block inline'} text-lg xs:text-xl sm:text-2xl"
                                 >
                                   <span
                                     class={displayLegend?.change >= 0
@@ -821,14 +823,14 @@
                                     <span
                                       class="{Object?.keys(prePostData)
                                         ?.length !== 0
-                                        ? 'block sm:inline'
+                                        ? 'block inline'
                                         : 'inline'} mb-0.5 sm:mb-0"
                                       >- Market open</span
                                     >
                                   {/if}
                                 </div>
                               </div>
-                              {#if Object?.keys(prePostData)?.length !== 0 && !$isOpen}
+                              {#if Object?.keys(prePostData)?.length > 0 && !$isOpen}
                                 <div
                                   class="border-l border-default pl-3 bp:pl-5"
                                 >

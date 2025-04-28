@@ -3,6 +3,7 @@
   import { sectorNavigation } from "$lib/utils";
   import highcharts from "$lib/highcharts.ts";
   import { mode } from "mode-watcher";
+  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   export let data;
 
@@ -279,6 +280,10 @@
     </div>
   </div>
 </div>
+
+{#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+  <SquareAd />
+{/if}
 
 {#if Object?.keys(data?.getAnalystSummary ?? {})?.length !== 0}
   <div

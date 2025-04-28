@@ -9,6 +9,7 @@
 
   import { goto } from "$app/navigation";
   import HoverStockChart from "$lib/components/HoverStockChart.svelte";
+  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   export let data;
 
@@ -112,6 +113,10 @@
     </div>
   </div>
 </div>
+
+{#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+  <SquareAd />
+{/if}
 
 {#if topSectorList?.length !== 0}
   <div

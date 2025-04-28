@@ -1,6 +1,7 @@
 <script lang="ts">
   import { indexTicker } from "$lib/store";
   import { abbreviateNumber, sectorNavigation } from "$lib/utils";
+  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   export let data;
 
@@ -28,6 +29,10 @@
     {description}
   </p>
 </div>
+
+{#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+  <SquareAd />
+{/if}
 
 {#if topSectorList?.length !== 0}
   <div

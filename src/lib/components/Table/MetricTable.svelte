@@ -27,7 +27,7 @@
   };
 </script>
 
-<section class="my-10">
+<section class="my-5 pb-5">
   <h2 class="mt-5 text-xl sm:text-2xl font-bold mb-4">{title}</h2>
 
   <div

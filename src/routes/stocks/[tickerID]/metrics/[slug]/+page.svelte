@@ -199,9 +199,9 @@
       class="w-full relative flex justify-center items-center overflow-hidden"
     >
       <main class="w-full">
-        <div class="sm:pl-7 sm:pb-7 sm:pt-7 m-auto mt-2 sm:mt-0 w-full">
+        <div class="sm:pl-7 sm:pb-7 sm:pt-7 pt-3 m-auto mt-2 sm:mt-0 w-full">
           <div class="mb-3">
-            <h1 class="text-2xl font-bold">
+            <h1 class="text-xl sm:text-2xl font-bold">
               {convertToTitleCase(data?.getParams)} Revenue
             </h1>
           </div>
