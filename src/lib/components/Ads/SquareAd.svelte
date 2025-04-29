@@ -1,5 +1,5 @@
-<!-- SquareAdComponent.svelte -->
 <script>
+  /*
   import { browser } from "$app/environment";
   import { onMount } from "svelte";
 
@@ -40,8 +40,10 @@
       console.error("AdSense failed to load:", e);
     }
   });
+  */
 </script>
 
+<!--
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <div
@@ -77,3 +79,5 @@
     }
   }
 </style>
+
+-->

@@ -1,5 +1,5 @@
-<!-- BannerAdComponent.svelte -->
 <script>
+  /*
   import { browser } from "$app/environment";
   import { onMount } from "svelte";
 
@@ -40,8 +40,10 @@
       console.error("AdSense failed to load:", e);
     }
   });
+  */
 </script>
 
+<!--
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <div class="max-h-[90px] text-center xl:max-w-screen-xl px-3 sm:px-0 mb-3">
@@ -54,7 +56,6 @@
   <div
     class="ad-container mx-auto min-h-[90px] h-fit border border-gray-300 dark:border-gray-800 rounded bg-gray-100 dark:bg-[#2A2E39]"
   >
-    <!-- Always present for AdSense to render into -->
     <ins
       class="adsbygoogle"
       style="display:inline-block;width:728px;height:90px"
@@ -78,3 +79,4 @@
     }
   }
 </style>
+-->
