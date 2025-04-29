@@ -42,7 +42,7 @@
   });
 </script>
 
-<div class="mt-3 text-center xl:max-w-screen-xl px-3 sm:px-0">
+<div class=" text-center xl:max-w-screen-xl px-3 sm:px-0">
   <h3
     class="uppercase text-[9px] font-semibold text-gray-500 dark:text-gray-300"
   >

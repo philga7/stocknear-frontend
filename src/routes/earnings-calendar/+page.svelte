@@ -15,6 +15,7 @@
   import SEO from "$lib/components/SEO.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import { mode } from "mode-watcher";
+  import HorizontalAd from "$lib/components/Ads/HorizontalAd.svelte";
 
   export let data;
 
@@ -314,6 +315,10 @@
 <section
   class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pt-5 px-4 lg:px-3 mb-20"
 >
+  {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+    <HorizontalAd />
+  {/if}
+
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
       <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
@@ -452,15 +457,10 @@
                           <TableHeader {columns} {sortOrders} {sortData} />
                         </thead>
                         <tbody>
-                          {#each ["Pro", "Plus"]?.includes(data?.user?.tier) ? day : day?.slice(0, 6) as item, index}
+                          {#each day as item, index}
                             <!-- row -->
                             <tr
-                              class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
-                                1 ===
-                                day?.slice(0, 6)?.length &&
-                              !['Pro', 'Plus']?.includes(data?.user?.tier)
-                                ? 'opacity-[0.1]'
-                                : ''}"
+                              class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                             >
                               <td
                                 class="text-blue-400 text-start text-sm sm:text-[1rem]"

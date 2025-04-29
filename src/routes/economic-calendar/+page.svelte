@@ -8,6 +8,8 @@
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
   import SEO from "$lib/components/SEO.svelte";
+  import HorizontalAd from "$lib/components/Ads/HorizontalAd.svelte";
+  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   import { onMount } from "svelte";
   import { page } from "$app/stores";
@@ -307,6 +309,10 @@
 <section
   class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pt-5 px-4 lg:px-3 mb-20"
 >
+  {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+    <HorizontalAd />
+  {/if}
+
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
       <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
@@ -317,9 +323,9 @@
   <div class="w-full overflow-hidden m-auto mt-5">
     <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
       <div
-        class="relative flex justify-center items-start overflow-hidden w-full"
+        class="relative flex flex-col lg:flex-row justify-center items-start overflow-hidden w-full"
       >
-        <main class="w-full lg:w-3/4 lg:pr-5">
+        <main class="w-full lg:w-3/4 lg:pr-10">
           <div class="mb-6 border-b-[2px]">
             <h1 class="mb-1 text-2xl sm:text-3xl font-bold">
               Economic Calendar
@@ -809,7 +815,10 @@
           </div>
         </main>
 
-        <aside class="hidden lg:block relative fixed w-1/4 ml-4">
+        <aside class="inline-block relative w-full lg:w-1/4 mt-3">
+          {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+            <SquareAd />
+          {/if}
           <div
             class="w-full border border-gray-300 dark:border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >

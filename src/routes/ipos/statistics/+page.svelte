@@ -3,6 +3,7 @@
   import highcharts from "$lib/highcharts.ts";
   import { mode } from "mode-watcher";
   import IPOChart from "$lib/components/IPOChart.svelte";
+  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   export let data;
 
@@ -170,15 +171,15 @@
   description="Statistics and charts for initial public offerings (IPOs) on the US stock market. Annual data is available from 2015-2025 and monthly data for 2019-2025."
 />
 
-<div class="w-full overflow-hidden m-auto mt-5">
+<div class="w-full overflow-hidden m-auto">
   <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
     <div
-      class="relative flex justify-center items-start overflow-hidden w-full"
+      class="relative flex flex-col lg:flex-row justify-center items-start overflow-hidden w-full"
     >
       <main class="w-full lg:w-3/4 lg:pr-10">
         <div class="w-full m-auto">
           <div class="grid grid-cols-1 gap-y-3">
-            <div class="">
+            <div class="mt-5">
               This page provides statistics and charts on initial public
               offerings (IPOs) in the U.S. stock market. Annual data is
               available from 2015 to 2025, with monthly data starting from 2019.
@@ -208,7 +209,11 @@
           </div>
         </div>
       </main>
-      <aside class="hidden lg:block relative fixed w-1/4">
+      <aside class="inline-block relative w-full lg:w-1/4 mt-3">
+        {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+          <SquareAd />
+        {/if}
+
         {#if ipoNews?.length !== 0}
           <div
             class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit"

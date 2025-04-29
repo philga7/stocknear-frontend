@@ -5,6 +5,7 @@
   import { onMount } from "svelte";
   import Infobox from "$lib/components/Infobox.svelte";
   import SEO from "$lib/components/SEO.svelte";
+  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   export let data;
 
@@ -51,10 +52,10 @@
   description={`A list of all the initial public offerings (IPOs) on the US stock market in the year ${data?.getYear}.`}
 />
 
-<div class="w-full overflow-hidden min-h-screen pb-20 m-auto mt-5">
+<div class="w-full overflow-hidden m-auto mt-5 pb-20">
   <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
     <div
-      class="relative flex justify-center items-start overflow-hidden w-full"
+      class="relative flex flex-col lg:flex-row justify-center items-start overflow-hidden w-full"
     >
       <main class="w-full lg:w-3/4 lg:pr-10">
         <div class="flex flex-col justify-center items-center">
@@ -163,7 +164,11 @@
           {/if}
         </div>
       </main>
-      <aside class="hidden lg:block relative fixed w-1/4">
+      <aside class="inline-block relative w-full lg:w-1/4 mt-3">
+        {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+          <SquareAd />
+        {/if}
+
         {#if ipoNews?.length !== 0}
           <div
             class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit"
