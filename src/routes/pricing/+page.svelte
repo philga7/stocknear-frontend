@@ -162,9 +162,6 @@
       <h1 class="text-4xl sm:text-5xl font-bold pb-4">
         Stop Guessing, Start Knowing.
       </h1>
-      <h3 class="text-gray-600 dark:text-gray-300">
-        New user special: 20% off with code 'MAGIC'
-      </h3>
     </div>
 
     <!--<Discount />-->
