@@ -153,8 +153,24 @@
   }
   let cacheInterval: number;
 
-  onMount(() => {
+  onMount(async () => {
     if (!browser) return;
+
+    if ("serviceWorker" in navigator) {
+      // Gets all registrations for this origin (including outdated SWs)
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      for (const reg of registrations) {
+        await reg?.unregister(); // unregister them
+      }
+    }
+
+    if ("caches" in window) {
+      // Extra safeguard: clear any leftover Cache Storage
+      const keys = await caches?.keys();
+      for (const key of keys) {
+        await caches.delete(key);
+      }
+    }
 
     deferFunction(() => {
       checkMarketHour();

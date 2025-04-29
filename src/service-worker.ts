@@ -32,16 +32,12 @@ self.addEventListener('install', (event) => {
 
 // Activate event: Clean up old caches
 self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((keys) => {
-      return Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE) {
-            return caches.delete(key);
-          }
-        })
+  event?.waitUntil(
+    caches?.keys()?.then((keys) => {
+      return Promise?.all(
+        keys?.map((key) => caches?.delete(key))      // delete ALL caches
       );
-    }).then(() => self.clients.claim())
+    })?.then(() => self?.clients?.claim())
   );
 });
 
