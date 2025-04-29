@@ -372,29 +372,21 @@
   }
 
   const getContractHistory = async (contractId) => {
-    let output;
-    const cachedData = getCache(contractId, "getContractHistory");
-    if (cachedData) {
-      output = cachedData;
-    } else {
-      const postData = {
-        ticker: ticker,
-        contract: contractId,
-      };
+    const postData = {
+      ticker: ticker,
+      contract: contractId,
+    };
 
-      // make the POST request to the endpoint
-      const response = await fetch("/api/options-contract-history", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(postData),
-      });
+    // make the POST request to the endpoint
+    const response = await fetch("/api/options-contract-history", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(postData),
+    });
 
-      output = await response.json();
-
-      setCache(contractId, output, "getContractHistory");
-    }
+    const output = await response?.json();
 
     return output;
   };
@@ -423,11 +415,11 @@
 
     if (!strikeList?.includes(selectedStrike)) {
       selectedStrike = strikeList.reduce((closest, strike) => {
-        return Math.abs(strike - currentStockPrice) <
-          Math.abs(closest - currentStockPrice)
+        return Math?.abs(strike - currentStockPrice) <
+          Math?.abs(closest - currentStockPrice)
           ? strike
           : closest;
-      }, strikeList[0]);
+      }, strikeList?.at(0));
     }
 
     displayList = [];
@@ -499,6 +491,12 @@
       window.removeEventListener("scroll", handleScroll);
     };
   });
+
+  $: {
+    if (selectGraphType) {
+      config = plotData();
+    }
+  }
 </script>
 
 <section class="w-full overflow-hidden">
@@ -851,9 +849,11 @@
                   >
                   <td
                     class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                    >{Math.floor(
-                      rawDataHistory?.at(0)?.implied_volatility * 100,
-                    ) + "%" || "n/a"}</td
+                    >{rawDataHistory?.at(0)
+                      ? Math.floor(
+                          rawDataHistory?.at(0)?.implied_volatility * 100,
+                        ) + "%"
+                      : "n/a"}</td
                   ></tr
                 >
 
@@ -930,7 +930,6 @@
                   <label
                     on:click={() => {
                       selectGraphType = item;
-                      loadData("default");
                     }}
                     class="px-3 py-1.5 text-sm {index === 0
                       ? 'mr-2'
