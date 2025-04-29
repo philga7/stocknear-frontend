@@ -111,6 +111,11 @@
         target="_blank">Fund Home Page</a
       >
     </div>
+
+    <div class="col-span-1 whitespace-nowrap text-muted dark:text-gray-200">
+      <span class="block font-semibold">Exchange</span>
+      <span>{data?.getStockQuote?.exchange}</span>
+    </div>
   </div>
 </div>
 

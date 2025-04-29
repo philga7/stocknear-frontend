@@ -25,7 +25,7 @@
           </h1>
 
           <div class="mt-[1px] text-xs text-gray-600 dark:text-gray-300">
-            {data?.getStockDeck?.exchange}: {ticker}
+            {data?.getStockQuote?.exchange}: {ticker}
             · Real-Time Price · USD
           </div>
         </div>
@@ -63,7 +63,7 @@
               ({displayLegend?.changesPercentage}%)
             </span>
           </div>
-          <div class="mt-0.5 text-sm">
+          <div class="mt-0.5 text-[0.85rem] sm:text-sm">
             {#if !isOpen}
               <span class="block font-semibold sm:inline mb-0.5 sm:mb-0"
                 >At close:</span
