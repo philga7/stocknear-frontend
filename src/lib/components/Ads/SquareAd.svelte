@@ -44,7 +44,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<div class="mt-5 text-center xl:max-w-screen-xl px-3 sm:px-0">
+<div class="max-h-[280px] mt-5 text-center xl:max-w-screen-xl px-3 sm:px-0">
   <h3
     class="uppercase text-[9px] font-semibold text-gray-500 dark:text-gray-300"
   >
@@ -52,16 +52,26 @@
   </h3>
 
   <div
-    class="mx-auto min-h-[280px] w-full border border-gray-300 dark:border-gray-800 rounded-md bg-gray-100 dark:bg-[#2A2E39]"
+    class="ad-container mx-auto min-h-[280px] w-full border border-gray-300 dark:border-gray-800 rounded-md bg-gray-100 dark:bg-[#2A2E39]"
   >
-    <!-- ALWAYS render the <ins> so adsbygoogle.push() can “see” it -->
     <ins
       class="adsbygoogle"
-      style="display:block"
+      style="display:inline-block;width:728px;height:280px"
       data-ad-client="ca-pub-7722951169931877"
       data-ad-slot="7703947777"
-      data-ad-format="auto"
-      data-full-width-responsive="true"
     ></ins>
   </div>
 </div>
+
+<style>
+  .ad-container {
+    height: 280px;
+    overflow: hidden;
+  }
+  @media (max-width: 640px) {
+    .ad-container {
+      height: 280px;
+      overflow: hidden;
+    }
+  }
+</style>
