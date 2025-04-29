@@ -18,6 +18,7 @@
     priceChartData,
     previousPage,
   } from "$lib/store";
+  import HorizontalAd from "$lib/components/Ads/HorizontalAd.svelte";
 
   import { onMount, onDestroy, afterUpdate } from "svelte";
   import { page } from "$app/stores";
@@ -382,6 +383,12 @@
 <body
   class=" w-full max-w-screen sm:max-w-[1250px] min-h-screen overflow-hidden"
 >
+  {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+    <div class="hidden sm:block">
+      <HorizontalAd />
+    </div>
+  {/if}
+
   <!-- Page wrapper -->
   <div class=" flex flex-col w-full relative w-full sm:max-w-[1250px]">
     <main class="grow w-full">
