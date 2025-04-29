@@ -8,6 +8,7 @@
   import Infobox from "$lib/components/Infobox.svelte";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import SquareAd from "$lib/components/Ads/SquareAd.svelte";
+  import HorizontalAd from "$lib/components/Ads/HorizontalAd.svelte";
 
   import SEO from "$lib/components/SEO.svelte";
 
@@ -145,6 +146,10 @@
 <section
   class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pb-20 pt-5 px-4 lg:px-3"
 >
+  {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+    <HorizontalAd />
+  {/if}
+
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
       <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>

@@ -42,7 +42,9 @@
   });
 </script>
 
-<div class=" text-center xl:max-w-screen-xl px-3 sm:px-0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<div class=" text-center xl:max-w-screen-xl px-3 sm:px-0 mb-3">
   <h3
     class="uppercase text-[9px] font-semibold text-gray-500 dark:text-gray-300"
   >
@@ -53,11 +55,28 @@
     class="mx-auto min-h-[68px] md:h-[90px] max-h-[90px] md:w-[728px] border border-gray-300 dark:border-gray-800 rounded bg-gray-100 dark:bg-[#2A2E39]"
   >
     <!-- Always present for AdSense to render into -->
-    <ins
-      class="adsbygoogle"
-      style="display:inline-block;width:728px;height:90px"
-      data-ad-client="ca-pub-7722951169931877"
-      data-ad-slot="4890164325"
-    ></ins>
+    <div class="ad-container mx-auto border rounded overflow-hidden">
+      <ins
+        class="adsbygoogle"
+        style="display:inline-block;width:728px;height:90px"
+        data-ad-client="ca-pub-7722951169931877"
+        data-ad-slot="4890164325"
+      ></ins>
+    </div>
   </div>
 </div>
+
+<style>
+  .ad-container {
+    width: 728px;
+    height: 90px;
+    overflow: hidden;
+  }
+  @media (max-width: 640px) {
+    .ad-container {
+      width: 320px;
+      height: 90px;
+      overflow: hidden;
+    }
+  }
+</style>

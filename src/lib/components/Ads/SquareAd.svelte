@@ -42,6 +42,8 @@
   });
 </script>
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
 <div class="mt-5 text-center xl:max-w-screen-xl px-3 sm:px-0">
   <h3
     class="uppercase text-[9px] font-semibold text-gray-500 dark:text-gray-300"
