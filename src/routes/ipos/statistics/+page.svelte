@@ -4,11 +4,14 @@
   import { mode } from "mode-watcher";
   import IPOChart from "$lib/components/IPOChart.svelte";
   import SquareAd from "$lib/components/Ads/SquareAd.svelte";
+  import { deferFunction } from "$lib/utils";
+  import { browser } from "$app/environment";
+  import { onMount } from "svelte";
 
   export let data;
 
   let ipoNews = data?.getNews;
-
+  let isLoaded = false;
   let config = null;
 
   const startYear = 2019;
@@ -159,11 +162,14 @@
     return options;
   }
 
-  $: {
-    if ($mode) {
+  onMount(async () => {
+    if (!browser) return;
+    deferFunction(() => {
       config = plotData() || null;
-    }
-  }
+    }, 600);
+
+    isLoaded = true;
+  });
 </script>
 
 <SEO
@@ -198,10 +204,24 @@
               )} IPOs.
             </div>
 
-            <div
-              class="shadow-sm border border-gray-300 dark:border-gray-800 rounded"
-              use:highcharts={config}
-            ></div>
+            {#if isLoaded && config}
+              <div
+                class="shadow-sm border border-gray-300 dark:border-gray-800 rounded"
+                use:highcharts={config}
+              ></div>
+            {:else}
+              <div class="flex justify-center items-center h-80">
+                <div class="relative">
+                  <label
+                    class="shadow-sm bg-gray-300 dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                  >
+                    <span
+                      class="loading loading-spinner loading-md text-muted dark:text-gray-400"
+                    ></span>
+                  </label>
+                </div>
+              </div>
+            {/if}
 
             {#each yearList as year}
               <IPOChart {data} {year} />

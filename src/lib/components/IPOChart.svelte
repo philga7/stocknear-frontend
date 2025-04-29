@@ -1,6 +1,9 @@
 <script lang="ts">
   import highcharts from "$lib/highcharts.ts";
   import { mode } from "mode-watcher";
+  import { deferFunction } from "$lib/utils";
+  import { browser } from "$app/environment";
+  import { onMount } from "svelte";
 
   export let data;
   export let year;
@@ -12,6 +15,7 @@
   });
 
   let config = null;
+  let isLoaded = false;
 
   const monthDict = {
     1: "January",
@@ -182,14 +186,17 @@
     return options;
   }
 
-  $: {
-    if ($mode) {
+  onMount(async () => {
+    if (!browser) return;
+    deferFunction(() => {
       config = plotData(year) || null;
-    }
-  }
+    }, 600);
+
+    isLoaded = true;
+  });
 </script>
 
-<h2 class="text-xl sm:text-2xl font-bold mb-2 sm:mb-0 mt-2">
+<h2 class="text-xl sm:text-2xl font-bold mt-2">
   {year} Initial Public Offerings
 </h2>
 
@@ -205,7 +212,21 @@
   {/if}
 </div>
 
-<div
-  class="shadow-sm border border-gray-300 dark:border-gray-800 rounded"
-  use:highcharts={config}
-></div>
+{#if isLoaded && config}
+  <div
+    class="shadow-sm border border-gray-300 dark:border-gray-800 rounded"
+    use:highcharts={config}
+  ></div>
+{:else}
+  <div class="flex justify-center items-center h-80">
+    <div class="relative">
+      <label
+        class="shadow-sm bg-gray-300 dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+      >
+        <span
+          class="loading loading-spinner loading-md text-muted dark:text-gray-400"
+        ></span>
+      </label>
+    </div>
+  </div>
+{/if}
