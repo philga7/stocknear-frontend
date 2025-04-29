@@ -85,23 +85,31 @@
       timeZone: "UTC", // ALWAYS use UTC
     });
   };
-
+  /*
   function calculateDTE(data, dateExpiration) {
-    // Convert the expiration date to a Date object
+    if (!Array.isArray(data)) return [];
+
+    // Parse the expiration date and snap to UTC midnight
     const expirationDate = new Date(dateExpiration);
+    expirationDate.setUTCHours(0, 0, 0, 0);
 
-    return data.map((item) => {
-      const itemDate = new Date(item.date); // Convert item.date to a Date object
-      const timeDifference = expirationDate - itemDate; // Difference in milliseconds
-      const dte = Math.ceil(timeDifference / (1000 * 60 * 60 * 24)); // Convert ms to days
+    return data?.map((item) => {
+      // Parse each item’s date and snap to UTC midnight
+      const itemDate = new Date(item.date);
+      itemDate.setUTCHours(0, 0, 0, 0);
 
-      // Add the calculated DTE to the object
+      // Compute difference in milliseconds, then convert to days
+      const msPerDay = 1000 * 60 * 60 * 24;
+      const diffMs = expirationDate - itemDate;
+      const dte = Math.ceil(diffMs / msPerDay);
+
       return {
         ...item,
-        dte, // Add DTE as a new property
+        dte,
       };
     });
   }
+    */
 
   function plotData() {
     const sortedData =
@@ -447,7 +455,7 @@
       });
       */
 
-      rawDataHistory = calculateDTE(rawDataHistory, selectedDate);
+      //rawDataHistory = calculateDTE(rawDataHistory, selectedDate);
       config = plotData();
       rawDataHistory = rawDataHistory?.sort(
         (a, b) => new Date(b?.date) - new Date(a?.date),

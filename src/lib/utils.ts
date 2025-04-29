@@ -57,23 +57,24 @@ if (!name) return "";
 }
 
 export function buildOptionSymbol(ticker, dateExpiration, optionType, strikePrice) {
-    // Format the expiration date as YYMMDD
-    const date = new Date(dateExpiration);
-    const year = date.getFullYear() % 100; // Last two digits of the year
-    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are 0-indexed
-    const day = date.getDate().toString().padStart(2, "0");
-    const expirationStr = `${year}${month}${day}`;
+  // Parse the date and pull UTC components
+  const date = new Date(dateExpiration);
+  const year = date.getUTCFullYear() % 100;                   // Last two digits of the year, UTC
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // Months are 0-indexed; use UTC
+  const day = String(date.getUTCDate()).padStart(2, "0");        // Day of month, UTC
+  const expirationStr = `${year}${month}${day}`;
 
-    // Convert option type to a single uppercase letter (C for Call, P for Put)
-    const optionTypeChar = optionType.charAt(0).toUpperCase();
+  // Convert option type to a single uppercase letter (C for Call, P for Put)
+  const optionTypeChar = optionType.charAt(0).toUpperCase();
 
-    // Format strike price as 8 digits (multiply by 1000 and pad with leading zeros)
-    const strikePriceScaled = Math.round(strikePrice * 1000);
-    const strikeStr = strikePriceScaled.toString().padStart(8, "0");
+  // Format strike price as 8 digits (multiply by 1000 and pad with leading zeros)
+  const strikePriceScaled = Math.round(strikePrice * 1000);
+  const strikeStr = strikePriceScaled.toString().padStart(8, "0");
 
-    // Combine all components into the final option symbol
-    return `${ticker}${expirationStr}${optionTypeChar}${strikeStr}`;
-  }
+  // Combine all components into the final option symbol
+  return `${ticker}${expirationStr}${optionTypeChar}${strikeStr}`;
+}
+
 
   export function parseOptionSymbol(optionSymbol) {
   // Extract the ticker (everything before the 6-digit date + 1 character + 8-digit strike)
