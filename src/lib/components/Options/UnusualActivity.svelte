@@ -25,7 +25,7 @@
   let dateExpiration;
 
   const currentTime = new Date(
-    new Date().toLocaleString("en-US", { timeZone: "America/New_York" }),
+    new Date().toLocaleString("en-US", { timeZone: "UTC" }),
   )?.getTime();
 
   let rawData = data?.getData?.map((item) => ({
@@ -68,9 +68,8 @@
     // Convert the input date string to a Date object in New York time
     let date = new Date(dateStr + "T00:00:00Z"); // Assume input is in UTC
 
-    // Convert to New York Time Zone
     let options = {
-      timeZone: "Europe/Berlin",
+      timeZone: "UTC",
       month: "2-digit",
       day: "2-digit",
       year: "2-digit",
