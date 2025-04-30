@@ -78,12 +78,11 @@
     <svelte:component this={AppInstalled} />
   {/if}
 
-  <!--
-  {#if !["Pro", "Plus"]?.includes(data?.user?.tier) || data?.user?.freeTrial === true}
+  {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
     <div class="flex justify-center mb-5">
       <a
         href="/pricing"
-        class="cursor-pointer hidden sm:flex items-center gap-2 px-6 py-3.5 sm:px-3.5 sm:py-2.5 text-[1rem] font-medium bg-blue-100 dark:bg-blue-500/60 sm:hover:bg-blue-400/30 border border-indigo-500/20 shadow rounded-lg transition-all duration-100"
+        class="cursor-pointer hidden sm:flex items-center gap-2 px-6 py-3.5 sm:px-3.5 sm:py-2.5 text-[1rem] font-medium border border-gray-300 dark:border-gray-800 shadow rounded-md"
         tabindex="0"
       >
         <svg
@@ -99,11 +98,12 @@
             clip-rule="evenodd"
           ></path>
         </svg>
-        <strong>Spring Sale:</strong>Get<strong>50% OFF</strong> on Pro Membership!
+        <strong class="text-pink-500">Last Spring Sale:</strong>Get<strong
+          >50% OFF</strong
+        > on your Subscription!
       </a>
     </div>
   {/if}
-  -->
 
   <div class="flex flex-col m-auto justify-center items-center">
     <div class="text-center mb-10 w-full px-4 sm:px-3 mt-10">
@@ -114,7 +114,7 @@
       {/if}
 
       <h1
-        class="hidden sm:block text-3xl lg:text-4xl text-muted dark:text-white font-bold text-center mb-10 relative w-fit flex justify-center m-auto"
+        class="block text-2xl lg:text-4xl text-muted dark:text-white font-bold text-center mb-10 relative w-fit flex justify-center m-auto"
       >
         Real-Time Market Insights
       </h1>
