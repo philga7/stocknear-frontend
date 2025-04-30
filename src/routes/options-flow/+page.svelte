@@ -965,9 +965,9 @@
   description="Explore unusual options from big institutional traders and hedge funds."
 />
 
-<section class="overflow-y-auto">
+<section class="overflow-y-auto mb-10">
   <div
-    class="w-full max-w-screen sm:max-w-7xl sm:max-w-[1400px] flex justify-center items-center pb-20 10 p-3 sm:p-0"
+    class="w-full max-w-screen sm:max-w-7xl sm:max-w-[1400px] flex justify-center items-center p-3 sm:p-0"
   >
     <div class="w-full m-auto min-h-screen">
       <!--
@@ -1903,7 +1903,7 @@
 
           <!-- Page wrapper -->
           <div class="flex w-full m-auto h-full overflow-hidden">
-            <div class="mt-8 w-full overflow-x-auto h-[850px] overflow-hidden">
+            <div class="mt-8 w-full overflow-x-auto h-[900px] overflow-hidden">
               <OptionsFlowTable
                 {data}
                 {optionsWatchlist}
