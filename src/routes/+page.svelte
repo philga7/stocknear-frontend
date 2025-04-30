@@ -79,10 +79,10 @@
   {/if}
 
   {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
-    <div class="flex justify-center mb-5">
+    <div class="flex justify-center mb-5 whitespace-nowrap mt-10 sm:mt-0">
       <a
         href="/pricing"
-        class="cursor-pointer hidden sm:flex items-center gap-2 px-6 py-3.5 sm:px-3.5 sm:py-2.5 text-[1rem] font-medium border border-gray-300 dark:border-gray-800 shadow rounded-md"
+        class="cursor-pointer whitespace-nowrap flex items-center gap-2 px-3.5 py-2.5 text-sm sm:text-[1rem] font-medium border border-gray-300 dark:border-gray-800 shadow rounded-md"
         tabindex="0"
       >
         <svg
