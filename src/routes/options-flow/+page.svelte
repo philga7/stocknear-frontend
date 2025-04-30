@@ -961,8 +961,8 @@
 </script>
 
 <SEO
-  title="Options Flow Feed"
-  description="Explore unusual options from big institutional traders and hedge funds."
+  title="Real-Time Options Flow Feed | Unusual Activity from Institutional Traders"
+  description="Track live unusual options flow from major institutional traders and hedge funds. Get real-time alerts, in-depth analysis & actionable insights to stay ahead."
 />
 
 <section class="overflow-y-auto mb-10">

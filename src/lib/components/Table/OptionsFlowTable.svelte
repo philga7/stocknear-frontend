@@ -675,9 +675,9 @@
         <div
           class="p-2 text-center text-sm sm:text-[1rem] whitespace-nowrap {displayedData[
             index
-          ]?.roi >= 0
+          ]?.roi && displayedData[index]?.roi >= 0
             ? "text-green-800 dark:text-[#00FC50] before:content-['+']"
-            : displayedData[index]?.roi < 0
+            : displayedData[index]?.roi && displayedData[index]?.roi < 0
               ? 'text-red-800 dark:text-[#FF2F1F]'
               : ''}"
         >
