@@ -69,7 +69,7 @@
   let activeIdx = 0;
   const tabs = [
     {
-      title: "Daily",
+      title: "Weekly",
     },
     {
       title: "Quarterly",
@@ -275,32 +275,53 @@
     return options;
   }
 
-  let tableList = [...originalData]?.sort(
-    (a, b) => new Date(b?.date) - new Date(a?.date),
-  );
+  let tableList = [];
+
+  changeTimePeriod(activeIdx);
 
   function changeTimePeriod(i) {
     activeIdx = i;
-    tableList = originalData?.sort(
-      (a, b) => new Date(b?.date) - new Date(a?.date),
-    );
-    if (activeIdx === 1) {
-      tableList = filterByPeriod([...tableList]);
+    if (activeIdx === 0) {
+      tableList = filterByPeriod(originalData, "weekly");
+    } else if (activeIdx === 1) {
+      tableList = filterByPeriod(originalData);
     }
 
     tableList = addChangesPercentage(tableList);
   }
 
-  function filterByPeriod(data) {
+  function filterByPeriod(data, period = "quarterly") {
     if (!Array.isArray(data) || data.length === 0) return [];
 
-    // Quarterly: one result per year-quarter.
+    // Keep track of seen period keys
     const seenPeriods = new Set();
+
     return data.filter((item) => {
       const dt = new Date(item.date);
       const year = dt.getFullYear();
-      const quarter = Math.floor(dt.getMonth() / 3) + 1; // Quarter 1 to 4
-      const key = `${year}-Q${quarter}`;
+      let key;
+
+      switch (period) {
+        case "weekly":
+          // ISO week number calculation
+          const tmp = new Date(
+            Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate()),
+          );
+          const dayNum = tmp.getUTCDay() || 7; // Monday=1, Sunday=7
+          tmp.setUTCDate(tmp.getUTCDate() + 4 - dayNum);
+          const yearStart = new Date(Date.UTC(tmp.getUTCFullYear(), 0, 1));
+          const weekNo = Math.ceil(((tmp - yearStart) / 86400000 + 1) / 7);
+          key = `${year}-W${weekNo}`;
+          break;
+
+        case "quarterly":
+        default:
+          // Quarter calculation
+          const quarter = Math.floor(dt.getMonth() / 3) + 1; // 1 to 4
+          key = `${year}-Q${quarter}`;
+          break;
+      }
+
       if (!seenPeriods.has(key)) {
         seenPeriods.add(key);
         return true;
