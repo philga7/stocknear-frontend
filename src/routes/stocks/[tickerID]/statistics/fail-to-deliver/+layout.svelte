@@ -56,16 +56,15 @@
               identify market stress and elevated short interest—sudden spikes
               may presage short squeezes or liquidity bottlenecks.
             </div>
-            <!--
+
             <div class="px-2">
               <a
-                href="/blog/article/revenue"
+                href="/learning-center/article/failtodeliver-shares"
                 class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-white dark:text-black m-auto sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 bg-[#3B82F6] dark:bg-[#fff] transition duration-100"
               >
                 Full Definition
               </a>
             </div>
-            -->
           </div>
 
           {#if similarStocks?.length > 0 && similarStocks?.at(0)?.relativeFTD}
