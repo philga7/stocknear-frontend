@@ -24,7 +24,6 @@ export const load = async ({ params, locals }) => {
 
   // Find the ticker matching the slug (case insensitive)
   const ticker = data?.find((item) => item.symbol?.toLowerCase() === params.slug?.toLowerCase());
-  console.log(ticker)
 
   
   if (!ticker) {
