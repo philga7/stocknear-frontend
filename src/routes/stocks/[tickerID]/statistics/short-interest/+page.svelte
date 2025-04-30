@@ -5,6 +5,9 @@
   import Infobox from "$lib/components/Infobox.svelte";
   import Tutorial from "$lib/components/Tutorial.svelte";
   import { Button } from "$lib/components/shadcn/button/index.js";
+  import TableHeader from "$lib/components/Table/TableHeader.svelte";
+  import { onMount } from "svelte";
+
   //import * as XLSX from 'xlsx';
   import { goto } from "$app/navigation";
   import highcharts from "$lib/highcharts.ts";
@@ -14,7 +17,19 @@
 
   let rawData = data?.getData?.history || [];
   let tableList = rawData;
-  tableList?.sort((a, b) => new Date(b?.recordDate) - new Date(a?.recordDate));
+  tableList
+    ?.sort((a, b) => new Date(b?.recordDate) - new Date(a?.recordDate))
+    ?.slice(0, 20);
+
+  async function handleScroll() {
+    const scrollThreshold = document.body.offsetHeight * 0.8; // 80% of the website height
+    const isBottom = window.innerHeight + window.scrollY >= scrollThreshold;
+    if (isBottom && tableList?.length !== rawData?.history?.length) {
+      const nextIndex = tableList?.length;
+      const newResults = rawData?.slice(nextIndex, nextIndex + 20);
+      tableList = [...tableList, ...newResults];
+    }
+  }
 
   let steps = [
     {
@@ -351,6 +366,93 @@
 
   let config = null;
 
+  let columns = [
+    { key: "recordDate", label: "Date", align: "left" },
+    { key: "totalShortInterest", label: "Short Interest", align: "right" },
+    { key: "shortPriorMo", label: "Short Prior Month", align: "right" },
+    { key: "percentChangeMoMo", label: "% Change", align: "right" },
+    { key: "daysToCover", label: "Day to Cover", align: "right" },
+    { key: "shortPercentOfFloat", label: "Short % Float", align: "right" },
+    { key: "shortPercentOfOut", label: "Short % Out", align: "right" },
+  ];
+
+  let sortOrders = {
+    recordDate: { order: "none", type: "date" },
+    totalShortInterest: { order: "none", type: "number" },
+    shortPriorMo: { order: "none", type: "number" },
+    percentChangeMoMo: { order: "none", type: "number" },
+    daysToCover: { order: "none", type: "number" },
+    shortPercentOfFloat: { order: "none", type: "number" },
+    shortPercentOfOut: { order: "none", type: "number" },
+  };
+
+  const sortData = (key) => {
+    // Reset all other keys to 'none' except the current key
+    for (const k in sortOrders) {
+      if (k !== key) {
+        sortOrders[k].order = "none";
+      }
+    }
+
+    // Cycle through 'none', 'asc', 'desc' for the clicked key
+    const orderCycle = ["none", "asc", "desc"];
+
+    let originalData = rawData?.sort(
+      (a, b) => new Date(b?.date) - new Date(a?.date),
+    );
+
+    const currentOrderIndex = orderCycle.indexOf(sortOrders[key].order);
+    sortOrders[key].order =
+      orderCycle[(currentOrderIndex + 1) % orderCycle.length];
+    const sortOrder = sortOrders[key].order;
+
+    // Reset to original data when 'none' and stop further sorting
+    if (sortOrder === "none") {
+      tableList = [...originalData]?.slice(0, 20); // Reset to original data (spread to avoid mutation)
+      return;
+    }
+
+    // Define a generic comparison function
+    const compareValues = (a, b) => {
+      const { type } = sortOrders[key];
+      let valueA, valueB;
+
+      switch (type) {
+        case "date":
+          valueA = new Date(a[key]);
+          valueB = new Date(b[key]);
+          break;
+        case "string":
+          valueA = a[key].toUpperCase();
+          valueB = b[key].toUpperCase();
+          return sortOrder === "asc"
+            ? valueA.localeCompare(valueB)
+            : valueB.localeCompare(valueA);
+        case "number":
+        default:
+          valueA = parseFloat(a[key]);
+          valueB = parseFloat(b[key]);
+          break;
+      }
+
+      if (sortOrder === "asc") {
+        return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
+      } else {
+        return valueA > valueB ? -1 : valueA < valueB ? 1 : 0;
+      }
+    };
+
+    // Sort using the generic comparison function
+    tableList = [...originalData]?.sort(compareValues)?.slice(0, 20);
+  };
+
+  onMount(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  });
+
   $: {
     if ($mode) {
       config = plotData();
@@ -388,13 +490,13 @@
                 text={`${removeCompanyStrings($displayCompanyName)} has a total short interest of ${abbreviateNumber(
                   data?.getData?.sharesShort,
                 )}. Its short interest has ${
-                  tableList?.at(0)?.percentChangeMoMo > 0
+                  rawData?.at(0)?.percentChangeMoMo > 0
                     ? "increased"
-                    : tableList?.at(0)?.percentChangeMoMo < 0
+                    : rawData?.at(0)?.percentChangeMoMo < 0
                       ? "decreased"
                       : "unchanged"
                 } by ${abbreviateNumber(
-                  tableList?.at(0)?.percentChangeMoMo?.toFixed(2),
+                  rawData?.at(0)?.percentChangeMoMo?.toFixed(2),
                 )}% to the previous Month.`}
               />
 
@@ -418,13 +520,12 @@
                 </div>
                 <div class="changeMoM-driver">
                   % Change MoM <div
-                    class="mt-0.5 text-lg {tableList?.at(0)?.percentChangeMoMo >
-                    0
+                    class="mt-0.5 text-lg {rawData?.at(0)?.percentChangeMoMo > 0
                       ? "before:content-['+'] "
                       : ''} font-semibold bp:text-xl sm:mt-1.5 sm:text-2xl"
                   >
-                    {tableList?.at(0)?.percentChangeMoMo
-                      ? tableList?.at(0)?.percentChangeMoMo + "%"
+                    {rawData?.at(0)?.percentChangeMoMo
+                      ? rawData?.at(0)?.percentChangeMoMo + "%"
                       : "n/a"}
                   </div>
                 </div>
@@ -466,10 +567,41 @@
                 </h2>
               </div>
 
-              <div
-                class="chart-driver border border-gray-300 shadow-sm dark:border-gray-800 rounded"
-                use:highcharts={config}
-              ></div>
+              <div class="chart-driver">
+                <div class="grow">
+                  <div class="relative">
+                    <!-- Apply the blur class to the chart -->
+                    <div
+                      class="{!['Plus', 'Pro']?.includes(data?.user?.tier)
+                        ? 'blur-[3px]'
+                        : ''} mt-5 shadow-sm sm:mt-0 border border-gray-300 dark:border-gray-800 rounded"
+                      use:highcharts={config}
+                    ></div>
+                    <!-- Overlay with "Upgrade to Pro" -->
+                    {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+                      <div
+                        class="font-bold text-lg sm:text-xl absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center text-muted dark:text-white"
+                      >
+                        <a
+                          href="/pricing"
+                          class="sm:hover:text-blue-700 dark:sm:hover:text-white dark:text-white flex flex-row items-center"
+                        >
+                          <span>Upgrade to Pro</span>
+                          <svg
+                            class="ml-1 w-5 h-5 sm:w-6 sm:h-6 inline-block"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            ><path
+                              fill="currentColor"
+                              d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                            /></svg
+                          >
+                        </a>
+                      </div>
+                    {/if}
+                  </div>
+                </div>
+              </div>
 
               <div
                 class="flex flex-row items-center w-full justify-between mt-3"
@@ -503,31 +635,8 @@
                 <table
                   class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-2"
                 >
-                  <thead class="text-muted dark:text-white dark:bg-default">
-                    <tr>
-                      <th
-                        class=" font-semibold text-start text-sm sm:text-[1rem]"
-                        >Date</th
-                      >
-                      <th class=" font-semibold text-end text-sm sm:text-[1rem]"
-                        >Short Interest</th
-                      >
-                      <th class=" font-semibold text-end text-sm sm:text-[1rem]"
-                        >Short Prior Month</th
-                      >
-                      <th class=" font-semibold text-end text-sm sm:text-[1rem]"
-                        >% Change</th
-                      >
-                      <th class=" font-semibold text-end text-sm sm:text-[1rem]"
-                        >Days to Cover</th
-                      >
-                      <th class=" font-semibold text-end text-sm sm:text-[1rem]"
-                        >Short % Float</th
-                      >
-                      <th class=" font-semibold text-end text-sm sm:text-[1rem]"
-                        >Short % Out</th
-                      >
-                    </tr>
+                  <thead>
+                    <TableHeader {columns} {sortOrders} {sortData} />
                   </thead>
                   <tbody>
                     {#each tableList as item}
