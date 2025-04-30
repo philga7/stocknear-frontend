@@ -25,7 +25,7 @@
           </h1>
 
           <div class="mt-[1px] text-xs text-gray-600 dark:text-gray-300">
-            {data?.getStockQuote?.exchange}: {ticker}
+            {data?.getStockQuote?.exchange}: {ticker?.toUpperCase()}
             · Real-Time Price · USD
           </div>
         </div>
@@ -94,7 +94,7 @@
             >
               {prePostData?.changesPercentage?.toFixed(2)}%
             </div>
-            <div class="mt-1 text-[0.8rem] sm:flex">
+            <div class="mt-1 text-xs sm:text-[0.8rem] sm:flex">
               <span class="flex items-center">
                 {#if prePostData?.time?.includes("AM")}
                   <svg
