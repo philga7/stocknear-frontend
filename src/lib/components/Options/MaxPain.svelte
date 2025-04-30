@@ -11,14 +11,22 @@
   import highcharts from "$lib/highcharts.ts";
   import { mode } from "mode-watcher";
 
-  import { onMount } from "svelte";
-
   export let data;
   export let ticker = null;
 
   let isLoaded = false;
 
+  let currentPrice = data?.getStockQuote?.price;
   let rawData = data?.getData;
+
+  rawData = rawData?.map((item) => {
+    return {
+      ...item,
+      change: item?.maxPain - currentPrice,
+      changesPercentage: (item?.maxPain / currentPrice - 1) * 100,
+    };
+  });
+
   let dateList = rawData?.map((item) => item?.expiration);
   let selectedDate = dateList?.at(0);
   let selectedMaxPain = rawData?.at(0)?.maxPain;
@@ -54,7 +62,7 @@
     // Use the desired format and set timezone if needed
     let options = {
       timeZone: "UTC",
-      month: "long", // Full month name
+      month: "short", // Full month name
       day: "numeric", // Day without leading zero
       year: "numeric", // Full year
     };
@@ -63,7 +71,6 @@
 
     return formatter.format(date); // e.g., April 11, 2025
   }
-
   function plotStrikePrice() {
     const raw = rawData?.find((item) => item?.expiration === selectedDate);
     if (!raw) return {};
@@ -73,10 +80,9 @@
     let callData = raw.callPayouts;
     let putData = raw.putPayouts;
     selectedMaxPain = raw.maxPain;
-    let currPrice = data?.getStockQuote?.price;
 
     // Ensure current price and maxPain are in our categories
-    const extras = [currPrice, selectedMaxPain].filter(
+    const extras = [currentPrice, selectedMaxPain].filter(
       (s) => typeof s === "number",
     );
     const allStrikes = Array.from(new Set([...strikes, ...extras])).sort(
@@ -100,12 +106,12 @@
       chart: {
         backgroundColor: $mode === "light" ? "#fff" : "#09090B",
         plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
-        height: 360,
-        animation: false,
+
+        animation: false, // Disable initial animation
       },
 
       title: {
-        text: `<h3 class=\"mt-3 mb-1 text-[1rem] sm:text-lg\"> Max Pain By Strike</h3>`,
+        text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg"> Max Pain By Strike</h3>`,
         useHTML: true,
         style: { color: $mode === "light" ? "black" : "white" },
       },
@@ -114,20 +120,18 @@
         categories: allStrikes,
         plotLines: [
           {
-            // Underlying Price Line by index
-            value: allStrikes?.findIndex((s) => s === currPrice),
+            value: allStrikes.findIndex((s) => s === currentPrice),
             color: $mode === "light" ? "#000" : "#fff",
             dashStyle: "Dash",
             width: 1.5,
             label: {
-              text: `Current Price ${currPrice}`,
+              text: `Current Price ${currentPrice}`,
               style: { color: $mode === "light" ? "#000" : "#fff" },
             },
             zIndex: 5,
           },
           {
-            // Max Pain Line by index
-            value: allStrikes?.findIndex((s) => s === selectedMaxPain),
+            value: allStrikes.findIndex((s) => s === selectedMaxPain),
             color: $mode === "light" ? "#000" : "#fff",
             dashStyle: "Dash",
             width: 1.5,
@@ -143,6 +147,7 @@
           color: $mode === "light" ? "black" : "white",
           width: 1,
           dashStyle: "Solid",
+          snap: true, // snap crosshair without animation
         },
         labels: {
           style: { color: $mode === "light" ? "#545454" : "white" },
@@ -170,24 +175,28 @@
 
       plotOptions: {
         column: { groupPadding: 0.1, pointPadding: 0.1, borderWidth: 0 },
-        series: { animation: false, states: { hover: { enabled: false } } },
+        series: {
+          animation: false, // Disable per-series animation
+          states: { hover: { enabled: false } }, // Disable hover animation
+        },
       },
 
       tooltip: {
         shared: true,
         useHTML: true,
+        animation: false, // Disable tooltip animation
         backgroundColor: "rgba(0, 0, 0, 0.8)",
         borderColor: "rgba(255, 255, 255, 0.2)",
         borderWidth: 1,
         borderRadius: 4,
         style: { color: "#fff", fontSize: "16px", padding: "10px" },
         formatter() {
-          let s = `<span class=\"text-white font-[501]\">Strike ${this.x}</span><br>`;
+          let s = `<span class="text-white font-[501]">Strike ${this.x}</span><br>`;
           this.points.forEach((point) => {
             s +=
-              `<span style=\"display:inline-block;width:10px;height:10px;background-color:${point.color};border-radius:50%;margin-right:5px;\"></span>` +
-              `<span class=\"text-white font-semibold text-sm\">${point.series.name}:</span>` +
-              `<span class=\"text-white font-normal text-sm\">${abbreviateNumber(point.y)}</span><br>`;
+              `<span style="display:inline-block;width:10px;height:10px;background-color:${point.color};border-radius:50%;margin-right:5px;"></span>` +
+              `<span class="text-white font-semibold text-sm">${point.series.name}:</span>` +
+              `<span class="text-white font-normal text-sm">${abbreviateNumber(point.y)}</span><br>`;
           });
           return s;
         },
@@ -202,7 +211,7 @@
           borderColor: "#00FC50",
           borderRadius: 0,
           marker: { enabled: false },
-          animation: false,
+          animation: false, // Extra safeguard
         },
         {
           name: "Put",
@@ -212,47 +221,153 @@
           borderColor: "#EE5365",
           borderRadius: 0,
           marker: { enabled: false },
-          animation: false,
+          animation: false, // Extra safeguard
         },
       ],
 
       legend: {
         enabled: true,
-        align: "center", // Positions legend at the left edge
-        verticalAlign: "top", // Positions legend at the top
-        layout: "horizontal", // Align items horizontally (use 'vertical' if preferred)
+        align: "center",
+        verticalAlign: "top",
+        layout: "horizontal",
         itemStyle: {
           color: $mode === "light" ? "black" : "white",
         },
-        symbolWidth: 16, // Controls the width of the legend symbol
-        symbolRadius: 8, // Creates circular symbols (adjust radius as needed)
-        squareSymbol: false, // Ensures symbols are circular, not square
+        symbolWidth: 16,
+        symbolRadius: 8,
+        squareSymbol: false,
+      },
+    };
+  }
+
+  function plotExpiry() {
+    // Destructure strikes and payouts
+    let maxPainList = rawData?.map((item) => item?.maxPain);
+
+    // Build the Highcharts options
+    return {
+      credits: { enabled: false },
+      chart: {
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        animation: false, // Disable initial animation
+      },
+
+      title: {
+        text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg"> Max Pain By Expiry</h3>`,
+        useHTML: true,
+        style: { color: $mode === "light" ? "black" : "white" },
+      },
+
+      xAxis: {
+        endOnTick: false,
+        categories: dateList,
+        crosshair: {
+          color: $mode === "light" ? "black" : "white", // Set the color of the crosshair line
+          width: 1, // Adjust the line width as needed
+          dashStyle: "Solid",
+        },
+
+        labels: {
+          style: { color: $mode === "light" ? "black" : "white" },
+          distance: 10, // Increases space between label and axis
+          formatter: function () {
+            return new Date(this.value).toLocaleDateString("en-US", {
+              day: "2-digit", // Include day number
+              month: "short", // Display short month name
+              year: "numeric", // Include year
+            });
+          },
+        },
+      },
+      yAxis: {
+        plotLines: [
+          {
+            value: currentPrice,
+            color: $mode === "light" ? "#000" : "#fff",
+            dashStyle: "Dash",
+            width: 1.5,
+            label: {
+              text: `Current Price ${currentPrice}`,
+              style: { color: $mode === "light" ? "#000" : "#fff" },
+            },
+            zIndex: 5,
+          },
+        ],
+        gridLineWidth: 1,
+        gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
+        labels: { style: { color: $mode === "light" ? "#545454" : "white" } },
+        title: { text: null },
+        opposite: true,
+      },
+
+      plotOptions: {
+        column: { groupPadding: 0.1, pointPadding: 0.1, borderWidth: 0 },
+        series: {
+          animation: false, // Disable per-series animation
+          states: { hover: { enabled: false } }, // Disable hover animation
+        },
+      },
+
+      tooltip: {
+        shared: true,
+        useHTML: true,
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
+        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        borderWidth: 1,
+        style: {
+          color: "#fff",
+          fontSize: "16px",
+          padding: "10px",
+        },
+        borderRadius: 4,
+        formatter: function () {
+          // Format the x value to display time in a custom format
+          let tooltipContent = `<span class="m-auto text-[1rem] font-[501]">Max Pain ${this?.y?.toLocaleString("en-US")}</span><br>`;
+
+          // Loop through each point in the shared tooltip
+          this.points.forEach((point) => {
+            tooltipContent += `
+        <span class="font-normal text-sm mt-1">${formatDate(this?.x)}</span><br>`;
+          });
+
+          return tooltipContent;
+        },
+      },
+
+      series: [
+        {
+          name: "Max Pain",
+          type: "column",
+          data: maxPainList,
+          color: $mode === "light" ? "#2C6288" : "#fff",
+          borderColor: $mode === "light" ? "#2C6288" : "#fff",
+          borderRadius: 0,
+          marker: { enabled: false },
+          animation: false, // Extra safeguard
+        },
+      ],
+
+      legend: {
+        enabled: false,
       },
     };
   }
 
   $: columns = [
-    { key: "date", label: "Date", align: "left" },
-    { key: "optionSymbol", label: "Option Chain", align: "left" },
-    { key: "dte", label: "DTE", align: "right" },
-    { key: "unusualType", label: "Type", align: "right" },
-    { key: "executionEst", label: "Exec", align: "right" },
-    { key: "sentiment", label: "Sent.", align: "right" },
-    { key: "size", label: "Size", align: "right" },
-    { key: "price", label: "Spot", align: "right" },
-    { key: "premium", label: "Prem", align: "right" },
+    { key: "expiration", label: "Expiration Date", align: "left" },
+    { key: "maxPain", label: "Max Pain", align: "right" },
+    {
+      key: "changesPercentage",
+      label: "Max Pain vs Current Price",
+      align: "right",
+    },
   ];
 
   $: sortOrders = {
-    date: { order: "none", type: "date" },
-    optionSymbol: { order: "none", type: "string" },
-    unusualType: { order: "none", type: "string" },
-    executionEst: { order: "none", type: "string" },
-    dte: { order: "none", type: "number" },
-    sentiment: { order: "none", type: "sentiment" },
-    size: { order: "none", type: "number" },
-    price: { order: "none", type: "number" },
-    premium: { order: "none", type: "number" },
+    expiration: { order: "none", type: "date" },
+    maxPain: { order: "none", type: "number" },
+    changesPercentage: { order: "none", type: "number" },
   };
 
   const sortData = (key) => {
@@ -323,6 +438,8 @@
       configStrike = plotStrikePrice() || null;
     }
   }
+
+  let configExpiry = plotExpiry() || null;
 </script>
 
 <section class="w-full overflow-hidden min-h-screen pb-40">
@@ -334,10 +451,10 @@
         <h2
           class=" flex flex-row items-center text-xl sm:text-2xl font-bold w-fit mb-2 sm:mb-0"
         >
-          {removeCompanyStrings($displayCompanyName)} Max Pain
+          {removeCompanyStrings($displayCompanyName)} Max Pain By Strike
         </h2>
         <Infobox
-          text={`The Max Pain for NVDA options expiring on ${formatDate(
+          text={`The Max Pain for ${ticker} options expiring on ${formatDate(
             selectedDate,
           )} (${
             selectedDate ? daysLeft(selectedDate) : "n/a"
@@ -425,7 +542,54 @@
             </div>
           </div>
         </div>
-        <!--
+
+        <h2
+          class="mt-10 flex flex-row items-center text-xl sm:text-2xl font-bold w-fit mb-2 sm:mb-0"
+        >
+          {removeCompanyStrings($displayCompanyName)} Max Pain By Expiry
+        </h2>
+        <span class="text-sm text-gray-700 dark:text-gray-300">
+          The Max Pain for all expiration dates of {ticker}.
+        </span>
+
+        <div>
+          <div class="grow mt-3">
+            <div class="relative">
+              <!-- Apply the blur class to the chart -->
+              <div
+                class="{!['Pro']?.includes(data?.user?.tier)
+                  ? 'blur-[3px]'
+                  : ''} mt-5 shadow-sm sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
+                use:highcharts={configExpiry}
+              ></div>
+              <!-- Overlay with "Upgrade to Pro" -->
+              {#if !["Pro"]?.includes(data?.user?.tier)}
+                <div
+                  class="font-bold text-lg sm:text-xl absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center text-muted dark:text-white"
+                >
+                  <a
+                    href="/pricing"
+                    class="sm:hover:text-blue-700 dark:sm:hover:text-white dark:text-white flex flex-row items-center"
+                  >
+                    <span>Upgrade to Pro</span>
+                    <svg
+                      class="ml-1 w-5 h-5 sm:w-6 sm:h-6 inline-block"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      ><path
+                        fill="currentColor"
+                        d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                      /></svg
+                    >
+                  </a>
+                </div>
+              {/if}
+            </div>
+          </div>
+        </div>
+
+        <h3 class="text-xl sm:text-2xl font-bold mt-10">Max Pain Table</h3>
+
         <div class="w-full overflow-x-auto">
           <table
             class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
@@ -446,84 +610,28 @@
                   <td
                     class=" text-sm sm:text-[1rem] text-start whitespace-nowrap"
                   >
-                    {formatDate(item?.date)}
+                    {formatDate(item?.expiration)}
                   </td>
 
                   <td
-                    class="text-sm sm:text-[1rem] text-start whitespace-nowrap flex justify-between"
+                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
                   >
+                    {item?.maxPain}
+                  </td>
+
+                  <td
+                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                  >
+                    {item?.change ? item?.change?.toFixed(2) : "n/a"}
                     <span
-                      class="inline-block px-2 {item?.optionType === 'Calls'
-                        ? 'text-green-800 dark:text-[#00FC50]'
+                      class="ml-2 {item?.changesPercentage >= 0
+                        ? "text-green-800 dark:text-[#00FC50] before:content-['+']"
                         : 'text-red-800 dark:text-[#FF2F1F]'}"
                     >
-                      {item?.optionType}
-                    </span>
-                    <label
-                      on:click={() => handleViewData(item)}
-                      on:mouseover={() =>
-                        getContractHistory(item?.option_symbol)}
-                      class="cursor-pointer text-[#3B82F6] dark:text-[#04D9FF] dark:sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
+                      ({item?.changesPercentage
+                        ? item?.changesPercentage?.toFixed(2) + "%"
+                        : "n/a"})</span
                     >
-                      {item?.strike}
-
-                      {" " + item?.expiry}
-
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="inline-block w-4 h-4 -mt-1"
-                        viewBox="0 0 512 512"
-                        fill={$mode === "light" ? "#3B82F6" : "#04D9FF"}
-                        ><path
-                          d="M104 496H72a24 24 0 01-24-24V328a24 24 0 0124-24h32a24 24 0 0124 24v144a24 24 0 01-24 24zM328 496h-32a24 24 0 01-24-24V232a24 24 0 0124-24h32a24 24 0 0124 24v240a24 24 0 01-24 24zM440 496h-32a24 24 0 01-24-24V120a24 24 0 0124-24h32a24 24 0 0124 24v352a24 24 0 01-24 24zM216 496h-32a24 24 0 01-24-24V40a24 24 0 0124-24h32a24 24 0 0124 24v432a24 24 0 01-24 24z"
-                        ></path></svg
-                      >
-                    </label>
-                  </td>
-
-                  <td
-                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
-                  >
-                    {item?.dte}
-                  </td>
-
-                  <td
-                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
-                  >
-                    {item?.unusualType}
-                  </td>
-
-                  <td
-                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
-                  >
-                    {item?.executionEst}
-                  </td>
-
-                  <td
-                    class="text-sm sm:text-[1rem] text-end whitespace-nowrap {item?.sentiment ===
-                    'Bullish'
-                      ? 'text-green-800 dark:text-[#00FC50]'
-                      : item?.sentiment === 'Bearish'
-                        ? 'text-red-800 dark:text-[#FF2F1F]'
-                        : 'text-orange-600 dark:text-[#C8A32D]'} "
-                  >
-                    {item?.sentiment}
-                  </td>
-                  <td
-                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
-                  >
-                    {item?.size?.toLocaleString("en-US")}
-                  </td>
-
-                  <td
-                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
-                  >
-                    {item?.price}
-                  </td>
-                  <td
-                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
-                  >
-                    {abbreviateNumber(item?.premium, false, true)}
                   </td>
                 </tr>
               {/each}
@@ -532,7 +640,6 @@
         </div>
 
         <UpgradeToPro {data} display={true} />
-        -->
       </div>
     </div>
   </div>

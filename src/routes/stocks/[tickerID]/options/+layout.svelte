@@ -98,15 +98,7 @@
               >
                 Unusual Activity
               </a>
-              <a
-                href={`/stocks/${$stockTicker}/options/max-pain`}
-                on:click={() => changeSubSection("max-pain")}
-                class="p-2 px-5 cursor-pointer {displaySubSection === 'max-pain'
-                  ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
-                  : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
-              >
-                Max Pain
-              </a>
+
               <a
                 href={`/stocks/${$stockTicker}/options/hottest-contracts`}
                 on:click={() => changeSubSection("hottest-contracts")}
@@ -116,6 +108,15 @@
                   : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
               >
                 Hottest Contracts
+              </a>
+              <a
+                href={`/stocks/${$stockTicker}/options/max-pain`}
+                on:click={() => changeSubSection("max-pain")}
+                class="p-2 px-5 cursor-pointer {displaySubSection === 'max-pain'
+                  ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                  : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+              >
+                Max Pain
               </a>
               <a
                 href={`/stocks/${$stockTicker}/options/volatility`}

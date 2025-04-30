@@ -10,8 +10,8 @@
 </script>
 
 <SEO
-  title={`${$displayCompanyName} (${$stockTicker}) - Explore Unusual Option Activity`}
-  description={`Analyze historical unusual option trades with a minimum of 1 million dollar premium for ${$displayCompanyName} (${$stockTicker}).`}
+  title={`${$displayCompanyName} (${$stockTicker}) Options Max Pain Chart`}
+  description={`View the Max Pain chart for ${$displayCompanyName} (${$stockTicker}) to analyze options strike price pressure and market sentiment.`}
 />
 
 <section class="w-full overflow-hidden min-h-screen pb-40">
@@ -24,9 +24,7 @@
       {:else}
         <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
           <div class="mt-2">
-            <Infobox
-              text="No unusual options trading activity with a premium of at least $1 million was found."
-            />
+            <Infobox text="No Max Pain data available for the company." />
           </div>
         </div>
       {/if}
