@@ -54,14 +54,6 @@
   });
 
   $: charNumber = $screenWidth < 640 ? 20 : 30;
-
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    url: "https://stocknear.com",
-    name: "Stocknear",
-    logo: "https://stocknear.com/pwa-192x192.png",
-  };
 </script>
 
 <SEO
@@ -69,11 +61,15 @@
   description="Stocknear has everything you need to analyze stocks with help of AI, including detailed financial data, statistics, news and charts."
 />
 
-<svelte:head>
-  <script type="application/ld+json">
-    {JSON.stringify(structuredData)}
-  </script>
-</svelte:head>
+{@html `<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://stocknear.com",
+      "name": "Stocknear",
+      "logo": "https://stocknear.com/pwa-192x192.png"
+    }
+</script>`}
 
 <div
   class="w-full sm:max-w-[1400px] overflow-hidden m-auto min-h-screen bg-white dark:bg-default text-muted dark:text-white mb-16"
