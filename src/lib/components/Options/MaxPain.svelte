@@ -15,25 +15,28 @@
   export let ticker = null;
 
   let isLoaded = false;
+  let currentPrice = null;
+  let rawData = [];
 
-  let currentPrice = data?.getStockQuote?.price;
-  let rawData = data?.getData;
+  let dateList = [];
+  let selectedDate;
+  let selectedMaxPain;
 
-  rawData = rawData?.map((item) => {
-    return {
-      ...item,
-      change: item?.maxPain - currentPrice,
-      changesPercentage: (item?.maxPain / currentPrice - 1) * 100,
-    };
-  });
-
-  let dateList = rawData?.map((item) => item?.expiration);
-  let selectedDate = dateList?.at(0);
-  let selectedMaxPain = rawData?.at(0)?.maxPain;
-
-  let displayList = rawData?.slice(0, 150) || [];
+  let displayList = [];
 
   let configStrike = null;
+  let configExpiry = null;
+
+  function initialize() {
+    currentPrice = data?.getStockQuote?.price;
+    rawData = data?.getData;
+    dateList = rawData?.map((item) => item?.expiration);
+    selectedDate = dateList?.at(0);
+    selectedMaxPain = rawData?.at(0)?.maxPain;
+    displayList = rawData?.slice(0, 150) || [];
+
+    configExpiry = plotExpiry() || null;
+  }
 
   function daysLeft(targetDate) {
     // Parse the target date parts:
@@ -56,20 +59,21 @@
   }
 
   function formatDate(dateStr) {
-    // Convert the input date string to a Date object in UTC
-    let date = new Date(dateStr + "T00:00:00Z");
+    try {
+      let date = new Date(dateStr + "T00:00:00Z");
+      let options = {
+        timeZone: "UTC",
+        month: "short", // Full month name
+        day: "numeric", // Day without leading zero
+        year: "numeric", // Full year
+      };
 
-    // Use the desired format and set timezone if needed
-    let options = {
-      timeZone: "UTC",
-      month: "short", // Full month name
-      day: "numeric", // Day without leading zero
-      year: "numeric", // Full year
-    };
+      let formatter = new Intl.DateTimeFormat("en-US", options);
 
-    let formatter = new Intl.DateTimeFormat("en-US", options);
-
-    return formatter.format(date); // e.g., April 11, 2025
+      return formatter?.format(date);
+    } catch (e) {
+      return "n/a";
+    }
   }
   function plotStrikePrice() {
     const raw = rawData?.find((item) => item?.expiration === selectedDate);
@@ -434,12 +438,18 @@
   };
 
   $: {
-    if ($mode || selectedDate) {
+    if (($mode || selectedDate) && isLoaded) {
       configStrike = plotStrikePrice() || null;
     }
   }
 
-  let configExpiry = plotExpiry() || null;
+  $: {
+    if (ticker && typeof window !== "undefined") {
+      isLoaded = false;
+      initialize();
+      isLoaded = true;
+    }
+  }
 </script>
 
 <section class="w-full overflow-hidden min-h-screen pb-40">
@@ -453,160 +463,179 @@
         >
           {removeCompanyStrings($displayCompanyName)} Max Pain By Strike
         </h2>
-        <Infobox
-          text={`The Max Pain for ${ticker} options expiring on ${formatDate(
-            selectedDate,
-          )} (${
-            selectedDate ? daysLeft(selectedDate) : "n/a"
-          } days) is $${selectedMaxPain}.`}
-        />
 
-        <div class="mt-4">
-          <DropdownMenu.Root>
-            <DropdownMenu.Trigger asChild let:builder>
-              <Button
-                builders={[builder]}
-                class=" border-gray-300 dark:border-none shadow-sm bg-white dark:bg-[#2A2E39] h-[38px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
+        {#if isLoaded}
+          <Infobox
+            text={`The Max Pain for ${ticker} options expiring on ${formatDate(
+              selectedDate,
+            )} (${
+              selectedDate ? daysLeft(selectedDate) : "n/a"
+            } days) is $${selectedMaxPain}.`}
+          />
+
+          <div class="mt-4">
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger asChild let:builder>
+                <Button
+                  builders={[builder]}
+                  class=" border-gray-300 dark:border-none shadow-sm bg-white dark:bg-[#2A2E39] h-[38px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
+                >
+                  <span class="truncate text-sm"
+                    >Date Expiration | {formatDate(selectedDate)}</span
+                  >
+                  <svg
+                    class="-mr-1 ml-2 h-5 w-5 inline-block"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    style="max-width:40px"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </Button>
+              </DropdownMenu.Trigger>
+
+              <DropdownMenu.Content
+                class="min-w-56 w-auto max-w-60 max-h-[400px] overflow-y-auto scroller relative"
               >
-                <span class="truncate text-sm"
-                  >Date Expiration | {formatDate(selectedDate)}</span
-                >
-                <svg
-                  class="-mr-1 ml-2 h-5 w-5 inline-block"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  style="max-width:40px"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-              </Button>
-            </DropdownMenu.Trigger>
-
-            <DropdownMenu.Content
-              class="min-w-56 w-auto max-w-60 max-h-[400px] overflow-y-auto scroller relative"
-            >
-              <!-- Dropdown items -->
-              <DropdownMenu.Group class="pb-2"
-                >{#each dateList as item, index}
-                  {#if data?.user?.tier === "Pro" || index === 0}
-                    <DropdownMenu.Item
-                      on:click={() => {
-                        selectedDate = item;
-                      }}
-                      class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
-                    >
-                      {formatDate(item)}
-                    </DropdownMenu.Item>
-                  {:else}
-                    <DropdownMenu.Item
-                      on:click={() => goto("/pricing")}
-                      class="cursor-pointer sm:hover:bg-gray-200 dark:sm:hover:bg-primary"
-                    >
-                      {formatDate(item)}
-                      <svg
-                        class="ml-1 size-4"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        style="max-width: 40px;"
+                <!-- Dropdown items -->
+                <DropdownMenu.Group class="pb-2"
+                  >{#each dateList as item, index}
+                    {#if data?.user?.tier === "Pro" || index === 0}
+                      <DropdownMenu.Item
+                        on:click={() => {
+                          selectedDate = item;
+                        }}
+                        class="{selectedDate === item
+                          ? 'bg-gray-200 bg-primary'
+                          : ''} sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
                       >
-                        <path
-                          fill-rule="evenodd"
-                          d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                          clip-rule="evenodd"
+                        {formatDate(item)}
+                      </DropdownMenu.Item>
+                    {:else}
+                      <DropdownMenu.Item
+                        on:click={() => goto("/pricing")}
+                        class="cursor-pointer sm:hover:bg-gray-200 dark:sm:hover:bg-primary"
+                      >
+                        {formatDate(item)}
+                        <svg
+                          class="ml-1 size-4"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          style="max-width: 40px;"
                         >
-                        </path>
-                      </svg>
-                    </DropdownMenu.Item>
-                  {/if}
-                {/each}</DropdownMenu.Group
-              >
-            </DropdownMenu.Content>
-          </DropdownMenu.Root>
-        </div>
-
-        <div>
-          <div class="grow mt-3">
-            <div class="relative">
-              <!-- Apply the blur class to the chart -->
-              <div
-                class="mt-5 shadow-sm sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
-                use:highcharts={configStrike}
-              ></div>
-            </div>
-          </div>
-        </div>
-
-        <h2
-          class="mt-10 flex flex-row items-center text-xl sm:text-2xl font-bold w-fit mb-2 sm:mb-0"
-        >
-          {removeCompanyStrings($displayCompanyName)} Max Pain By Expiry
-        </h2>
-        <span class="text-sm text-gray-700 dark:text-gray-300">
-          The Max Pain for all expiration dates of {ticker}.
-        </span>
-
-        <div>
-          <div class="grow mt-3">
-            <div class="relative">
-              <!-- Apply the blur class to the chart -->
-              <div
-                class="mt-5 shadow-sm sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
-                use:highcharts={configExpiry}
-              ></div>
-            </div>
-          </div>
-        </div>
-
-        <h3 class="text-xl sm:text-2xl font-bold mt-10">Max Pain Table</h3>
-
-        <div class="w-full overflow-x-auto">
-          <table
-            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
-          >
-            <thead class="text-muted dark:text-white dark:bg-default">
-              <TableHeader {columns} {sortOrders} {sortData} />
-            </thead>
-            <tbody>
-              {#each displayList as item, index}
-                <tr
-                  class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
+                          <path
+                            fill-rule="evenodd"
+                            d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                            clip-rule="evenodd"
+                          >
+                          </path>
+                        </svg>
+                      </DropdownMenu.Item>
+                    {/if}
+                  {/each}</DropdownMenu.Group
                 >
-                  <td
-                    class=" text-sm sm:text-[1rem] text-start whitespace-nowrap"
-                  >
-                    {formatDate(item?.expiration)}
-                  </td>
+              </DropdownMenu.Content>
+            </DropdownMenu.Root>
+          </div>
 
-                  <td
-                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
-                  >
-                    {item?.maxPain}
-                  </td>
+          <div>
+            <div class="grow mt-3">
+              <div class="relative">
+                <!-- Apply the blur class to the chart -->
+                <div
+                  class="mt-5 shadow-sm sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
+                  use:highcharts={configStrike}
+                ></div>
+              </div>
+            </div>
+          </div>
 
-                  <td
-                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
-                  >
-                    {item?.change ? item?.change?.toFixed(2) : "n/a"}
-                    <span
-                      class="ml-2 {item?.changesPercentage >= 0
-                        ? "text-green-800 dark:text-[#00FC50] before:content-['+']"
-                        : 'text-red-800 dark:text-[#FF2F1F]'}"
+          <h2
+            class="mt-10 flex flex-row items-center text-xl sm:text-2xl font-bold w-fit mb-2 sm:mb-0"
+          >
+            {removeCompanyStrings($displayCompanyName)} Max Pain By Expiry
+          </h2>
+          <span class="text-sm text-gray-700 dark:text-gray-300">
+            The Max Pain for all expiration dates of {ticker}.
+          </span>
+
+          <div>
+            <div class="grow mt-3">
+              <div class="relative">
+                <!-- Apply the blur class to the chart -->
+                <div
+                  class="mt-5 shadow-sm sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
+                  use:highcharts={configExpiry}
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          {#if displayList?.length > 0}
+            <h3 class="text-xl sm:text-2xl font-bold mt-10">Max Pain Table</h3>
+
+            <div class="w-full overflow-x-auto">
+              <table
+                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
+              >
+                <thead class="text-muted dark:text-white dark:bg-default">
+                  <TableHeader {columns} {sortOrders} {sortData} />
+                </thead>
+                <tbody>
+                  {#each displayList as item, index}
+                    <tr
+                      class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                     >
-                      ({item?.changesPercentage
-                        ? item?.changesPercentage?.toFixed(2) + "%"
-                        : "n/a"})</span
-                    >
-                  </td>
-                </tr>
-              {/each}
-            </tbody>
-          </table>
-        </div>
+                      <td
+                        class=" text-sm sm:text-[1rem] text-start whitespace-nowrap"
+                      >
+                        {formatDate(item?.expiration)}
+                      </td>
+
+                      <td
+                        class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                      >
+                        {item?.maxPain}
+                      </td>
+
+                      <td
+                        class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
+                      >
+                        {item?.change ? item?.change?.toFixed(2) : "n/a"}
+                        <span
+                          class="ml-2 {item?.changesPercentage >= 0
+                            ? "text-green-800 dark:text-[#00FC50] before:content-['+']"
+                            : 'text-red-800 dark:text-[#FF2F1F]'}"
+                        >
+                          ({item?.changesPercentage
+                            ? item?.changesPercentage?.toFixed(2) + "%"
+                            : "n/a"})</span
+                        >
+                      </td>
+                    </tr>
+                  {/each}
+                </tbody>
+              </table>
+            </div>
+          {/if}
+        {:else}
+          <div class="m-auto flex justify-center items-center h-80">
+            <div class="relative">
+              <label
+                class="shadow-sm bg-gray-300 dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+              >
+                <span
+                  class="loading loading-spinner loading-md text-muted dark:text-gray-400"
+                ></span>
+              </label>
+            </div>
+          </div>
+        {/if}
       </div>
     </div>
   </div>

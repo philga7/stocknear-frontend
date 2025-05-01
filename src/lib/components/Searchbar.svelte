@@ -1,5 +1,6 @@
 <script lang="ts">
   import { screenWidth } from "$lib/store";
+  import { page } from "$app/stores";
   import { onMount } from "svelte";
   import Search from "lucide-svelte/icons/search";
   import { goto } from "$app/navigation";
@@ -49,38 +50,48 @@
     },
   ];
 
-  async function handleSearch(symbol, assetType) {
-    if (isNavigating) return; // Prevent double calls
+  async function handleSearch(symbol: string, assetType: string) {
+    if (isNavigating) return;
     isNavigating = true;
 
-    // Find the matching ticker data
+    const upperSymbol = symbol.toUpperCase();
+    const type = (assetType || "").toLowerCase();
+
+    // Update history (unchanged)
     const newSearchItem = searchBarData?.find(
-      (item) => item?.symbol === symbol?.toUpperCase(),
+      (item) => item.symbol.toUpperCase() === upperSymbol,
     );
     if (newSearchItem) {
       updatedSearchHistory = [
         newSearchItem,
         ...(searchHistory?.filter(
-          (item) => item?.symbol?.toUpperCase() !== symbol?.toUpperCase(),
+          (item) => item.symbol.toUpperCase() !== upperSymbol,
         ) || []),
       ].slice(0, 5);
     }
 
-    // Close search modal
+    // Close modal on mobile (unchanged)
     searchOpen = false;
     if ($screenWidth < 640) {
-      const closePopup = document.getElementById("searchBarModal");
-      closePopup?.dispatchEvent(new MouseEvent("click"));
+      document
+        .getElementById("searchBarModal")
+        ?.dispatchEvent(new MouseEvent("click"));
     }
 
-    await goto(
-      `/${assetType === "ETF" ? "etf" : assetType === "Index" ? "index" : "stocks"}/${symbol}`,
-    );
+    // Determine new root
+    const root = type === "etf" ? "etf" : type === "index" ? "index" : "stocks";
 
-    // Reset the flag after navigation
-    setTimeout(() => {
-      isNavigating = false;
-    }, 100);
+    // Pull current path’s “suffix” beyond the first two segments
+    const segments = $page.url.pathname.split("/").filter(Boolean);
+    const suffix = segments.slice(2); // e.g. ['overview'] or ['chart', '1d']
+
+    const newPath = `/${[root, upperSymbol, ...suffix].join("/")}`;
+
+    // Navigate without piling up history entries
+    await goto(newPath, { replaceState: true });
+
+    // Reset guard
+    setTimeout(() => (isNavigating = false), 100);
   }
 
   async function popularTicker(state) {

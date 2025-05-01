@@ -140,6 +140,27 @@ export function isPWAInstalled() {
 }
 
 
+export function calculateDTE(data, dateExpiration) {
+  // Parse the expiration date as UTC at 00:00
+  const [expYear, expMonth, expDay] = dateExpiration.split('-').map(Number);
+  const expirationUTCms = Date.UTC(expYear, expMonth - 1, expDay);
+
+  return data?.map(item => {
+    // Parse each item.date as UTC at 00:00
+    const [yr, mo, da] = item.date.split('-').map(Number);
+    const itemUTCms = Date.UTC(yr, mo - 1, da);
+
+    const diffMs = expirationUTCms - itemUTCms;                 // ms difference in UTC
+    const dte = Math.ceil(diffMs / (1000 * 60 * 60 * 24));      // convert to days
+
+    return {
+      ...item,
+      dte
+    };
+  });
+}
+
+
 export const computeGrowthSingleList = (data, actualList) => {
     // Initialize the result list
     let resultList = [];

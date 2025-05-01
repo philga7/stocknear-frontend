@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { abbreviateNumber } from "$lib/utils";
+  import { abbreviateNumber, calculateDTE } from "$lib/utils";
   import { setCache, getCache, screenWidth } from "$lib/store";
 
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
@@ -22,13 +22,37 @@
   let dateExpiration;
   let otmPercentage;
 
+  let rawDataVolume = [];
+  let rawDataOI = [];
+  let volumeList = [];
+  let openInterestList = [];
+
+  function initialize() {
+    selectGraphType = "Vol/OI";
+    rawDataHistory = [];
+
+    rawDataVolume = data?.getData?.volume?.map((item) => ({
+      ...item,
+      dte: daysLeft(item?.date_expiration),
+      otm: computeOTM(item?.strike_price, item?.option_type),
+    }));
+
+    rawDataOI = data?.getData?.openInterest?.map((item) => ({
+      ...item,
+      dte: daysLeft(item?.date_expiration),
+      otm: computeOTM(item?.strike_price, item?.option_type),
+    }));
+
+    volumeList = rawDataVolume;
+    openInterestList = rawDataOI;
+  }
   function formatDate(dateStr) {
     // Convert the input date string to a Date object in New York time
     let date = new Date(dateStr + "T00:00:00Z"); // Assume input is in UTC
 
     // Convert to New York Time Zone
     let options = {
-      timeZone: "Europe/Berlin",
+      timeZone: "UTC",
       month: "2-digit",
       day: "2-digit",
       year: "2-digit",
@@ -36,7 +60,7 @@
 
     let formatter = new Intl.DateTimeFormat("en-US", options);
 
-    return formatter.format(date);
+    return formatter?.format(date);
   }
 
   function computeOTM(strikePrice, optionType) {
@@ -83,7 +107,7 @@
   }
 
   const currentTime = new Date(
-    new Date().toLocaleString("en-US", { timeZone: "America/New_York" }),
+    new Date().toLocaleString("en-US", { timeZone: "UTC" }),
   )?.getTime();
 
   function daysLeft(targetDate) {
@@ -95,38 +119,6 @@
 
     return daysLeft + "D";
   }
-
-  function calculateDTE(data, dateExpiration) {
-    // Convert the expiration date to a Date object
-    const expirationDate = new Date(dateExpiration);
-
-    return data.map((item) => {
-      const itemDate = new Date(item.date); // Convert item.date to a Date object
-      const timeDifference = expirationDate - itemDate; // Difference in milliseconds
-      const dte = Math.ceil(timeDifference / (1000 * 60 * 60 * 24)); // Convert ms to days
-
-      // Add the calculated DTE to the object
-      return {
-        ...item,
-        dte, // Add DTE as a new property
-      };
-    });
-  }
-
-  let rawDataVolume = data?.getData?.volume?.map((item) => ({
-    ...item,
-    dte: daysLeft(item?.date_expiration),
-    otm: computeOTM(item?.strike_price, item?.option_type),
-  }));
-
-  let rawDataOI = data?.getData?.openInterest?.map((item) => ({
-    ...item,
-    dte: daysLeft(item?.date_expiration),
-    otm: computeOTM(item?.strike_price, item?.option_type),
-  }));
-
-  let volumeList = rawDataVolume;
-  let openInterestList = rawDataOI;
 
   $: columns = [
     { key: "strike_price", label: "Chain", align: "left" },
@@ -593,14 +585,19 @@
   }
 
   $: {
-    if (selectGraphType) {
-      isLoaded = false;
+    if (selectGraphType && isLoaded) {
       if (rawDataHistory?.length > 0) {
         config = plotContractHistory();
       } else {
         config = null;
       }
+    }
+  }
 
+  $: {
+    if (ticker && typeof window !== "undefined") {
+      isLoaded = false;
+      initialize();
       isLoaded = true;
     }
   }
