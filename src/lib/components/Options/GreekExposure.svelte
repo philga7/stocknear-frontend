@@ -140,6 +140,7 @@
             year: "numeric",
             month: "short",
             day: "numeric",
+            timeZone: "UTC",
           })}</span><br>`;
 
           // Loop through each point in the shared tooltip
@@ -173,6 +174,7 @@
               day: "2-digit", // Include day number
               month: "short", // Display short month name
               year: "numeric", // Include year
+              timeZone: "UTC",
             });
           },
         },
@@ -213,18 +215,10 @@
       series: [
         {
           name: "Stock Price",
-          type: "area",
+          type: "spline",
           data: priceList,
           yAxis: 1,
-          fillColor: {
-            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-            stops: [
-              [0, fillColorStart],
-              [1, fillColorEnd],
-            ],
-          },
-          color: "#4681f4",
-          borderColor: "4681f4",
+          color: $mode === "light" ? "#000" : "#fff",
           lineWidth: 1.3,
           zIndex: 10,
           marker: { enabled: false },
@@ -268,7 +262,7 @@
 
     // Convert to New York Time Zone
     let options = {
-      timeZone: "Europe/Berlin",
+      timeZone: "UTC",
       month: "2-digit",
       day: "2-digit",
       year: "2-digit",

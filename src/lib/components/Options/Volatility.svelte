@@ -10,11 +10,6 @@
   export let data;
 
   let rawData = data?.getData || [];
-  rawData = rawData?.map((item) => ({
-    ...item,
-    volatilitySpread:
-      item?.rv !== null ? (item?.iv - item?.rv)?.toFixed(2) : null,
-  }));
 
   const avgIV =
     rawData?.reduce((acc, entry) => acc + entry.iv, 0) / rawData?.length;
@@ -66,9 +61,6 @@
     const impliedVolatility = filteredData?.map((item) => item?.iv);
     const realizedVolatility = filteredData?.map((item) => item?.rv);
 
-    const volatilitySpread = filteredData?.map((item) =>
-      item?.volatilitySpread ? Number(item?.volatilitySpread) : null,
-    );
     const priceList = filteredData
       .map((item) => item.price)
       .filter((price) => price != null); // Filter out null/undefined
@@ -77,7 +69,6 @@
       dateList,
       impliedVolatility,
       realizedVolatility,
-      volatilitySpread,
       priceList,
     };
   }
@@ -85,13 +76,8 @@
   function plotData() {
     // Sort and filter the raw data as before
     const data = rawData?.sort((a, b) => new Date(a?.date) - new Date(b?.date));
-    const {
-      dateList,
-      impliedVolatility,
-      realizedVolatility,
-      volatilitySpread,
-      priceList,
-    } = filterDataByPeriod(data, timePeriod);
+    const { dateList, impliedVolatility, realizedVolatility, priceList } =
+      filterDataByPeriod(data, timePeriod);
 
     const fillColorStart = "rgb(70, 129, 244,0.5)";
     const fillColorEnd = "rgb(70, 129, 244,0.001)";
@@ -235,18 +221,10 @@
       series: [
         {
           name: "Stock Price",
-          type: "area", // smooth line
+          type: "spline", // smooth line
           data: priceList,
           yAxis: 1,
-          fillColor: {
-            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-            stops: [
-              [0, fillColorStart],
-              [1, fillColorEnd],
-            ],
-          },
-          color: "#4681f4",
-          borderColor: "4681f4",
+          color: $mode === "light" ? "#000" : "#fff",
           lineWidth: 1.3,
           animation: false,
         },
@@ -268,16 +246,6 @@
           color: "#007BFF",
           animation: false,
         },
-        {
-          name: "Vol. Spread",
-          type: "column", // Highcharts column chart for bars
-          yaxis: 2,
-          data: volatilitySpread,
-          color: "#9B5DC4",
-          borderColor: "#9B5DC4",
-          borderRadius: "1px",
-          animation: false,
-        },
       ],
     };
 
@@ -285,20 +253,20 @@
   }
 
   function formatDate(dateStr) {
-    // Convert the input date string to a Date object in New York time
-    let date = new Date(dateStr + "T00:00:00Z"); // Assume input is in UTC
+    // Convert the input date string to a Date object in UTC
+    let date = new Date(dateStr + "T00:00:00Z");
 
-    // Convert to New York Time Zone
+    // Use the desired format and set timezone if needed
     let options = {
-      timeZone: "Europe/Berlin",
-      month: "2-digit",
-      day: "2-digit",
-      year: "2-digit",
+      timeZone: "UTC",
+      month: "short", // Full month name
+      day: "numeric", // Day without leading zero
+      year: "numeric", // Full year
     };
 
     let formatter = new Intl.DateTimeFormat("en-US", options);
 
-    return formatter.format(date);
+    return formatter.format(date); // e.g., April 11, 2025
   }
 
   async function handleScroll() {
@@ -351,7 +319,6 @@
       label: "Realized Vol.",
       align: "right",
     },
-    { key: "volatilitySpread", label: "Vol. Spread", align: "right" },
   ];
 
   $: sortOrders = {
@@ -360,7 +327,6 @@
     putCallRatio: { order: "none", type: "number" },
     iv: { order: "none", type: "number" },
     rv: { order: "none", type: "number" },
-    volatilitySpread: { order: "none", type: "number" },
     total_open_interest: { order: "none", type: "number" },
     changesPercentageOI: { order: "none", type: "number" },
   };
@@ -558,10 +524,6 @@
             </td>
             <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
               {item?.rv ?? "n/a"}
-            </td>
-
-            <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
-              {item?.volatilitySpread ?? "n/a"}
             </td>
           </tr>
         {/each}

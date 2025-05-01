@@ -8,10 +8,10 @@
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
   import Infobox from "$lib/components/Infobox.svelte";
-  import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import { page } from "$app/stores";
   import { deferFunction } from "$lib/utils";
   import { browser } from "$app/environment";
+  import { goto } from "$app/navigation";
 
   import { onMount } from "svelte";
 
@@ -586,20 +586,44 @@
                   </DropdownMenu.Trigger>
 
                   <DropdownMenu.Content
-                    class="w-auto max-w-60 max-h-[400px] overflow-y-auto scroller relative"
+                    class="min-w-48 w-auto max-w-60 max-h-[400px] overflow-y-auto scroller relative"
                   >
                     <!-- Dropdown items -->
                     <DropdownMenu.Group class="pb-2"
-                      >{#each dateList as item}
-                        <DropdownMenu.Item
-                          on:click={() => {
-                            selectedDate = item;
-                            loadData("default");
-                          }}
-                          class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
-                        >
-                          {formatDate(item)}
-                        </DropdownMenu.Item>
+                      >{#each dateList as item, index}
+                        {#if data?.user?.tier === "Pro" || index == 0}
+                          <DropdownMenu.Item
+                            on:click={() => {
+                              selectedDate = item;
+                              loadData("default");
+                            }}
+                            class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
+                          >
+                            {formatDate(item)}
+                          </DropdownMenu.Item>
+                        {:else}
+                          <DropdownMenu.Item
+                            on:click={() => goto("/pricing")}
+                            class="cursor-pointer sm:hover:bg-gray-200 dark:sm:hover:bg-primary"
+                          >
+                            <div class="flex flex-row items-center gap-x-2">
+                              <span> {formatDate(item)}</span>
+                              <svg
+                                class="size-4"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                                style="max-width: 40px;"
+                              >
+                                <path
+                                  fill-rule="evenodd"
+                                  d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                                  clip-rule="evenodd"
+                                >
+                                </path>
+                              </svg>
+                            </div>
+                          </DropdownMenu.Item>
+                        {/if}
                       {/each}</DropdownMenu.Group
                     >
                   </DropdownMenu.Content>
@@ -956,33 +980,9 @@
                   <div class="relative">
                     <!-- Apply the blur class to the chart -->
                     <div
-                      class="{!['Pro']?.includes(data?.user?.tier)
-                        ? 'blur-[3px]'
-                        : ''} mt-5 shadow-sm sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
+                      class="mt-5 shadow-sm sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
                       use:highcharts={config}
                     ></div>
-                    <!-- Overlay with "Upgrade to Pro" -->
-                    {#if !["Pro"]?.includes(data?.user?.tier)}
-                      <div
-                        class="font-bold text-lg sm:text-xl absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center text-muted dark:text-white"
-                      >
-                        <a
-                          href="/pricing"
-                          class="sm:hover:text-blue-700 dark:sm:hover:text-white dark:text-white flex flex-row items-center"
-                        >
-                          <span>Upgrade to Pro</span>
-                          <svg
-                            class="ml-1 w-5 h-5 sm:w-6 sm:h-6 inline-block"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            ><path
-                              fill="currentColor"
-                              d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                            /></svg
-                          >
-                        </a>
-                      </div>
-                    {/if}
                   </div>
                 </div>
               </div>
@@ -1016,14 +1016,9 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {#each data?.user?.tier === "Pro" ? displayList : displayList?.slice(0, 3) as item, index}
+                  {#each displayList as item, index}
                     <tr
-                      class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
-                        1 ===
-                        displayList?.slice(0, 3)?.length &&
-                      !['Pro']?.includes(data?.user?.tier)
-                        ? 'opacity-[0.1]'
-                        : ''}"
+                      class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                     >
                       <td
                         class="text-sm sm:text-[1rem] text-start whitespace-nowrap"
@@ -1101,7 +1096,6 @@
               </table>
             </div>
           {/if}
-          <UpgradeToPro {data} display={true} />
         {:else}
           <div class="flex justify-center items-center h-80">
             <div class="relative">

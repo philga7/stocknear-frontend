@@ -104,9 +104,6 @@
     let priceList = [];
     let totalPremiums = [];
 
-    const fillColorStart = "rgb(70, 129, 244,0.5)";
-    const fillColorEnd = "rgb(70, 129, 244,0.001)";
-
     // Sort history by date
     const history = rawData?.sort(
       (a, b) => new Date(a?.date) - new Date(b?.date),
@@ -259,7 +256,7 @@
             tooltipContent += `
         <span style="display:inline-block; width:10px; height:10px; background-color:${point.color}; border-radius:50%; margin-right:5px;"></span>
         <span class="font-semibold text-sm">${point.series.name}:</span> 
-        <span class="font-normal text-sm">${abbreviateNumber(point.y)}</span><br>`;
+        <span class="font-normal text-sm">${point.y?.toLocaleString("en-US")}</span><br>`;
           });
 
           return tooltipContent;
@@ -268,23 +265,18 @@
       series: [
         {
           name: "Stock Price",
-          type: "area",
+          type: "spline",
           yAxis: 1,
           data: priceList,
           marker: {
             enabled: false,
           },
           animation: false,
-          fillColor: {
-            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-            stops: [
-              [0, fillColorStart],
-              [1, fillColorEnd],
-            ],
-          },
-          color: "#4681f4",
-          borderColor: "4681f4",
-          lineWidth: 1.3,
+
+          color: $mode === "light" ? "#000" : "#fff",
+          states: { hover: { enabled: false } },
+          lineWidth: 1.5,
+          crisp: true,
         },
         {
           name: "Call",
@@ -293,10 +285,13 @@
           color: "#00FC50",
           borderColor: "#00FC50",
           borderRadius: "0px",
+          animation: false,
+          states: { hover: { enabled: false } },
+          lineWidth: 1.5,
+          crisp: true,
           marker: {
             enabled: false,
           },
-          animation: false,
         },
         {
           name: "Put",
@@ -305,10 +300,13 @@
           color: "#EE5365",
           borderColor: "#EE5365",
           borderRadius: "0px",
+          animation: false,
+          states: { hover: { enabled: false } },
+          lineWidth: 1.5,
+          crisp: true,
           marker: {
             enabled: false,
           },
-          animation: false,
         },
       ],
       legend: {
@@ -338,76 +336,72 @@
   function plotContractHistory() {
     // Ensure rawDataHistory exists and sort it by date
     const sortedData =
-      rawDataHistory?.sort((a, b) => new Date(a?.date) - new Date(b?.date)) ||
-      [];
+      rawDataHistory?.sort((a, b) => new Date(a.date) - new Date(b.date)) || [];
 
     // Filter out data points that have an undefined price so they don't appear in any series
-    const filteredData = sortedData.filter((item) => item?.price !== undefined);
+    const filteredData = sortedData.filter((item) => item.price !== undefined);
 
-    // Build series based on the selected graph type, using filteredData
+    // Choose a strong contrasting color for the stock price line
+    const priceColor =
+      $mode === "light"
+        ? "#1E3A8A" /* deep indigo */
+        : "#3B82F6"; /* bright blue */
+
+    // Build series based on the selected graph type
     let series = [];
-    const fillColorStart = "rgb(70, 129, 244,0.5)";
-    const fillColorEnd = "rgb(70, 129, 244,0.001)";
-    if (selectGraphType == "Vol/OI") {
+
+    if (selectGraphType === "Vol/OI") {
       series = [
         {
           name: "Stock Price",
-          type: "area",
+          type: "spline",
           yAxis: 1,
           data: filteredData.map((item) => [
             new Date(item.date).getTime(),
             item.price,
           ]),
-          fillColor: {
-            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-            stops: [
-              [0, fillColorStart],
-              [1, fillColorEnd],
-            ],
-          },
-          color: "#4681f4",
-          borderColor: "4681f4",
-          lineWidth: 1.3,
+          color: priceColor,
+          lineWidth: 2,
           marker: { enabled: false },
           animation: false,
         },
         {
           name: "Avg Fill",
-          type: "spline", // smooth line
+          type: "spline",
+          yAxis: 2,
           data: filteredData.map((item) => [
             new Date(item.date).getTime(),
             item.mark,
           ]),
           color: "#F21C64",
-          yAxis: 2,
-          lineWidth: 1.3,
-          animation: false,
+          lineWidth: 1.8,
           marker: { enabled: false },
+          animation: false,
         },
         {
           name: "Volume",
           type: "column",
+          yAxis: 0,
           data: filteredData.map((item) => [
             new Date(item.date).getTime(),
             item.volume,
           ]),
           color: "#FD7E14",
           borderColor: "#FD7E14",
-          borderRadius: "2px",
-          yAxis: 0,
+          borderRadius: 2,
           animation: false,
         },
         {
           name: "OI",
           type: "column",
+          yAxis: 0,
           data: filteredData.map((item) => [
             new Date(item.date).getTime(),
             item.open_interest,
           ]),
           color: "#33B890",
           borderColor: "#33B890",
-          borderRadius: "2px",
-          yAxis: 0,
+          borderRadius: 2,
           animation: false,
         },
       ];
@@ -415,49 +409,45 @@
       series = [
         {
           name: "Stock Price",
-          type: "area",
+          type: "spline",
           yAxis: 1,
           data: filteredData.map((item) => [
             new Date(item.date).getTime(),
             item.price,
           ]),
-          fillColor: {
-            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-            stops: [
-              [0, fillColorStart],
-              [1, fillColorEnd],
-            ],
-          },
-          color: "#4681f4",
-          borderColor: "4681f4",
-          lineWidth: 1.3,
+          color: priceColor,
+          lineWidth: 2,
           marker: { enabled: false },
           animation: false,
         },
         {
           name: "Avg Fill",
-          type: "spline", // smooth line
-          data: filteredData?.map((item) => [
+          type: "spline",
+          yAxis: 2,
+          data: filteredData.map((item) => [
             new Date(item.date).getTime(),
             item.mark,
           ]),
           color: "#F21C64",
-          yAxis: 2,
-          lineWidth: 1.3,
-          animation: false,
+          lineWidth: 1.8,
           marker: { enabled: false },
+          animation: false,
         },
         {
           name: "IV",
           type: "spline",
-          data: filteredData?.map((item) => [
+          yAxis: 0,
+          data: filteredData.map((item) => [
             new Date(item.date).getTime(),
             Math.floor(item.implied_volatility * 100),
           ]),
-          color: $mode === "light" ? "black" : "white",
-          yAxis: 0,
-          animation: false,
+          color:
+            $mode === "light"
+              ? "#374151" /* dark gray */
+              : "#F9FAFB" /* light gray */,
+          lineWidth: 1.8,
           marker: { enabled: false },
+          animation: false,
         },
       ];
     }
@@ -465,7 +455,7 @@
     // Highcharts configuration object
     const options = {
       chart: {
-        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        backgroundColor: $mode === "light" ? "#FFFFFF" : "#09090B",
         animation: false,
         height: 360,
       },
@@ -473,44 +463,34 @@
       title: {
         text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">Contract History</h3>`,
         useHTML: true,
-        style: { color: $mode === "light" ? "black" : "white" },
+        style: { color: $mode === "light" ? "#111827" : "#F9FAFB" },
       },
-      // Disable markers globally on hover for all series
       plotOptions: {
         series: {
-          color: $mode === "light" ? "black" : "white",
-          animation: false, // Disable series animation
-          states: {
-            hover: {
-              enabled: false, // Disable hover effect globally
-            },
-          },
+          animation: false,
+          states: { hover: { enabled: false } },
         },
       },
       xAxis: {
         type: "datetime",
-        endOnTick: false,
         crosshair: {
-          color: $mode === "light" ? "black" : "white",
+          color: $mode === "light" ? "#111827" : "#F9FAFB",
           width: 1,
-          dashStyle: "Solid",
         },
         labels: {
-          style: { color: $mode === "light" ? "#545454" : "white" },
-          distance: 20,
-          formatter: function () {
+          style: { color: $mode === "light" ? "#4B5563" : "#F9FAFB" },
+          formatter() {
             return new Date(this.value).toLocaleDateString("en-US", {
               month: "short",
               year: "numeric",
             });
           },
         },
-        tickPositioner: function () {
+        tickPositioner() {
           const positions = [];
           const info = this.getExtremes();
-          const tickCount = 5; // Reduce number of ticks displayed
+          const tickCount = 5;
           const interval = Math.floor((info.max - info.min) / tickCount);
-
           for (let i = 0; i <= tickCount; i++) {
             positions.push(info.min + i * interval);
           }
@@ -520,75 +500,69 @@
       yAxis: [
         {
           gridLineWidth: 1,
-          gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
+          gridLineColor: $mode === "light" ? "#E5E7EB" : "#111827",
           labels: {
-            style: { color: $mode === "light" ? "#545454" : "white" },
+            style: { color: $mode === "light" ? "#4B5563" : "#F9FAFB" },
           },
           title: { text: null },
           opposite: true,
         },
-        {
-          title: { text: null },
-          gridLineWidth: 0,
-          labels: { enabled: false },
-        },
-        {
-          title: { text: null },
-          gridLineWidth: 0,
-          labels: { enabled: false },
-        },
-        {
-          title: { text: null },
-          gridLineWidth: 0,
-          labels: { enabled: false },
-        },
+        { title: { text: null }, gridLineWidth: 0, labels: { enabled: false } },
+        { title: { text: null }, gridLineWidth: 0, labels: { enabled: false } },
       ],
       tooltip: {
         shared: true,
         useHTML: true,
-        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
-        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        backgroundColor: "rgba(0,0,0,0.8)",
+        borderColor: "rgba(255,255,255,0.2)",
         borderWidth: 1,
-        style: {
-          color: "#fff",
-          fontSize: "16px",
-          padding: "10px",
-        },
+        style: { color: "#FFF", fontSize: "16px", padding: "10px" },
         borderRadius: 4,
-        formatter: function () {
-          // Format the x value to display time in a custom format
-          let tooltipContent = `<span class="m-auto text-[1rem] font-[501]">${new Date(
-            this?.x,
+        formatter() {
+          let content = `<span class="font-medium text-[1rem]">${new Date(
+            this.x,
           ).toLocaleDateString("en-US", {
             year: "numeric",
             month: "short",
             day: "numeric",
-          })}</span><br>`;
+          })}</span><br/>`;
 
-          // Loop through each point in the shared tooltip
-          this.points.forEach((point) => {
-            tooltipContent += `
-        <span class="font-semibold text-sm">${point.series.name}:</span> 
-        <span class="font-normal text-sm">${abbreviateNumber(point.y)}</span><br>`;
+          this.points.forEach((pt) => {
+            // Determine suffix: add “%” only for IV series
+            const suffix = pt.series.name === "IV" ? "%" : "";
+            const value = pt.y?.toLocaleString("en-US") + suffix;
+
+            content += `
+        <span
+          style="
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background-color: ${pt.color};
+            border-radius: 50%;
+            margin-right: 5px;
+            vertical-align: middle;
+          "
+        ></span>
+        <span class="font-semibold">${pt.series.name}:</span>
+        <span>${value}</span><br/>
+      `;
           });
 
-          return tooltipContent;
+          return content;
         },
       },
-
       legend: {
         enabled: true,
-        align: "center", // Positions legend at the left edge
-        verticalAlign: "top", // Positions legend at the top
-        layout: "horizontal", // Align items horizontally (use 'vertical' if preferred)
-        itemStyle: {
-          color: $mode === "light" ? "black" : "white",
-        },
-        symbolWidth: 16, // Controls the width of the legend symbol
-        symbolRadius: 8, // Creates circular symbols (adjust radius as needed)
-        squareSymbol: false, // Ensures symbols are circular, not square
+        align: "center",
+        verticalAlign: "top",
+        layout: "horizontal",
+        itemStyle: { color: $mode === "light" ? "#111827" : "#F9FAFB" },
+        symbolWidth: 16,
+        symbolRadius: 8,
+        squareSymbol: false,
       },
-      series: series,
+      series,
     };
 
     return options;
@@ -659,7 +633,7 @@
 
   $: columns = [
     { key: "date", label: "Date", align: "left" },
-    { key: "optionSymbol", label: "Option Chain", align: "left" },
+    { key: "optionSymbol", label: "Option Chain", align: "center" },
     { key: "dte", label: "DTE", align: "right" },
     { key: "unusualType", label: "Type", align: "right" },
     { key: "executionEst", label: "Exec", align: "right" },
@@ -776,7 +750,7 @@
           Unusual Activity
         </h2>
         <Infobox
-          text="Unusual Options trades with a premium of at least 1 million dollar from big whales."
+          text="Unusual options trades with premiums of $500,000 or more, made by hedge funds and major institutions."
         />
 
         <div>
@@ -784,33 +758,9 @@
             <div class="relative">
               <!-- Apply the blur class to the chart -->
               <div
-                class="{!['Pro']?.includes(data?.user?.tier)
-                  ? 'blur-[3px]'
-                  : ''} mt-5 shadow-sm sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
+                class="mt-5 shadow-sm sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
                 use:highcharts={configUnusual}
               ></div>
-              <!-- Overlay with "Upgrade to Pro" -->
-              {#if !["Pro"]?.includes(data?.user?.tier)}
-                <div
-                  class="font-bold text-lg sm:text-xl absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center text-muted dark:text-white"
-                >
-                  <a
-                    href="/pricing"
-                    class="sm:hover:text-blue-700 dark:sm:hover:text-white dark:text-white flex flex-row items-center"
-                  >
-                    <span>Upgrade to Pro</span>
-                    <svg
-                      class="ml-1 w-5 h-5 sm:w-6 sm:h-6 inline-block"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      ><path
-                        fill="currentColor"
-                        d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                      /></svg
-                    >
-                  </a>
-                </div>
-              {/if}
             </div>
           </div>
         </div>
@@ -819,7 +769,7 @@
           <table
             class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
           >
-            <thead class="text-muted dark:text-white dark:bg-default">
+            <thead>
               <TableHeader {columns} {sortOrders} {sortData} />
             </thead>
             <tbody>
@@ -987,7 +937,7 @@
         </div>
         <div class="mr-3 whitespace-nowrap">
           <span class="text-[var(--light-text-color)] font-normal">Prem:</span>
-          {abbreviateNumber(optionHistoryList?.at(0)?.total_premium, true)}
+          ${optionHistoryList?.at(0)?.total_premium?.toLocaleString("en-US")}
         </div>
         <div class="mr-3 whitespace-nowrap">
           <span class="text-[var(--light-text-color)] font-normal">IV:</span>
