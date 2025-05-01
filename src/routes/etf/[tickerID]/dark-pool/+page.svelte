@@ -9,9 +9,17 @@
   import SEO from "$lib/components/SEO.svelte";
 
   export let data;
-  let historicalDarkPool = data?.getHistoricalDarkPool || [];
-  let priceLevel = data?.getPriceLevel?.priceLevel || [];
-  let hottestTrades = data?.getPriceLevel?.hottestTrades || [];
+  let historicalDarkPool = [];
+  let priceLevel = [];
+  let hottestTrades = [];
+
+  $: {
+    if ($etfTicker) {
+      historicalDarkPool = data?.getHistoricalDarkPool || [];
+      priceLevel = data?.getPriceLevel?.priceLevel || [];
+      hottestTrades = data?.getPriceLevel?.hottestTrades || [];
+    }
+  }
 </script>
 
 <SEO
@@ -36,7 +44,7 @@
                 for="darkPoolInfo"
                 class="mr-1 cursor-pointer flex flex-row items-center text-xl sm:text-2xl font-bold"
               >
-                Dark Pool Data
+                {$etfTicker?.toUpperCase()} Dark Pool Data
               </label>
               <InfoModal
                 title={"Dark Pool Data"}
@@ -50,26 +58,30 @@
           {/if}
         </div>
         {#if priceLevel?.length > 0}
-          <PriceLevel
-            {data}
-            rawData={priceLevel}
-            metrics={data?.getPriceLevel?.metrics}
-          />
+          {#key $etfTicker}
+            <PriceLevel
+              {data}
+              rawData={priceLevel}
+              metrics={data?.getPriceLevel?.metrics}
+            />
+          {/key}
         {/if}
         {#if hottestTrades?.length > 0}
-          <HottestTrades
-            {data}
-            rawData={hottestTrades}
-            ticker={$etfTicker?.toUpperCase()}
-          />
+          {#key $etfTicker}
+            <HottestTrades
+              {data}
+              rawData={hottestTrades}
+              ticker={$etfTicker?.toUpperCase()}
+            />
+          {/key}
         {/if}
 
         {#if historicalDarkPool?.length > 10}
-          <HistoricalVolume {data} rawData={historicalDarkPool} />
+          {#key $etfTicker}
+            <HistoricalVolume {data} rawData={historicalDarkPool} />
+          {/key}
         {/if}
-        {#if data?.user?.tier === "Pro"}
-          <UpgradeToPro {data} />
-        {/if}
+        <UpgradeToPro {data} />
       </div>
     </div>
   </div>

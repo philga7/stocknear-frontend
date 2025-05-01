@@ -21,7 +21,7 @@
       hour: "numeric",
       minute: "numeric",
       second: "numeric",
-      timeZone: "America/New_York",
+      timeZone: "UTC",
       hour12: true, // Enable AM/PM format
     };
 

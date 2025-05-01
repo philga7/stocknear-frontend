@@ -11,16 +11,16 @@
   import SEO from "$lib/components/SEO.svelte";
 
   export let data;
-  let dailyStats = data?.getDailyStats;
-  let tickerFlow = data?.getTickerFlow;
+  let dailyStats = {};
+  let tickerFlow = [];
 
   let filteredList = [];
 
-  let displayData = "volume";
+  let displayData;
   let options;
 
-  let rawData = data?.getOptionsHistoricalData;
-  let optionList = rawData?.slice(0, 30);
+  let rawData = [];
+  let optionList = [];
 
   let dateList; //= data?.getOptionsPlotData?.dateList;
 
@@ -38,7 +38,7 @@
 
     // Convert to New York Time Zone
     let options = {
-      timeZone: "Europe/Berlin",
+      timeZone: "UTC",
       month: "2-digit",
       day: "2-digit",
       year: "2-digit",
@@ -47,10 +47,6 @@
     let formatter = new Intl.DateTimeFormat("en-US", options);
 
     return formatter.format(date);
-  }
-
-  function changeVolumeOI(event) {
-    displayData = event.target.value;
   }
 
   function plotData(callData, putData, priceList) {
@@ -268,8 +264,13 @@
   });
 
   $: {
-    if (displayTimePeriod || displayData) {
-      // Filter the raw plot data based on the selected time period
+    if (displayTimePeriod || displayData || $stockTicker) {
+      displayData = "volume";
+      dailyStats = data?.getDailyStats;
+      tickerFlow = data?.getTickerFlow;
+      rawData = data?.getOptionsHistoricalData;
+      optionList = rawData?.slice(0, 30);
+
       filteredList = filterDate(rawData, displayTimePeriod);
       // Process the filtered list to generate the plot data
       processPlotData(filteredList);
