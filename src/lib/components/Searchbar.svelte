@@ -78,14 +78,45 @@
         ?.dispatchEvent(new MouseEvent("click"));
     }
 
-    // Determine new root
-    const root = type === "etf" ? "etf" : type === "index" ? "index" : "stocks";
-
-    // Pull current path’s “suffix” beyond the first two segments
+    // Pull current path’s suffix beyond the first two segments
     const segments = $page.url.pathname.split("/").filter(Boolean);
+    const currentSymbol = segments[1]?.toUpperCase() || "";
     const suffix = segments.slice(2); // e.g. ['overview'] or ['chart', '1d']
 
-    const newPath = `/${[root, upperSymbol, ...suffix].join("/")}`;
+    const firstSuffix = suffix[0]?.toLowerCase() || "";
+
+    // Determine new root and suffix based on rules
+    let root = type === "etf" ? "etf" : type === "index" ? "index" : "stocks";
+    let newSuffix = suffix;
+
+    const blockedSubstrings = [
+      "metrics",
+      "profile",
+      "statistics",
+      "forecast",
+      "insider",
+      "financials",
+    ];
+
+    if (
+      root !== "stocks" &&
+      blockedSubstrings.some((blk) => firstSuffix.includes(blk))
+    ) {
+      newSuffix = [];
+    }
+
+    // Only apply fallback to /stocks if switching from ETF/Index to STOCK and suffix has 'holdings'
+    if (
+      type === "stock" &&
+      ["etf", "index"].includes(segments[0]?.toLowerCase()) &&
+      firstSuffix.includes("holdings")
+    ) {
+      root = "stocks";
+      newSuffix = [];
+    }
+
+    // Build new path
+    const newPath = `/${[root, upperSymbol, ...newSuffix].join("/")}`;
 
     // Navigate without piling up history entries
     await goto(newPath, { replaceState: true });
@@ -104,7 +135,7 @@
       return;
     }
 
-    const upperState = state.toUpperCase();
+    const upperState = state?.toUpperCase();
     const newSearchItem = searchBarData?.find(
       ({ symbol }) => symbol === upperState,
     );
