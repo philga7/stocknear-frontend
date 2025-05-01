@@ -612,7 +612,7 @@
         <h2
           class=" flex flex-row items-center text-xl sm:text-2xl font-bold w-fit mb-2 sm:mb-0"
         >
-          Hottest Contracts (Highest Volume)
+          {ticker} Hottest Contracts (Highest Volume)
         </h2>
         <div class="w-full overflow-x-auto">
           <table
@@ -728,7 +728,7 @@
         <h2
           class=" flex flex-row items-center text-xl sm:text-2xl font-bold w-fit mt-10"
         >
-          Highest OI Contracts
+          {ticker} Highest OI Contracts
         </h2>
         <div class="w-full overflow-x-auto">
           <table

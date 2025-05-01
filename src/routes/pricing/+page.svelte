@@ -160,7 +160,7 @@
   <div class="px-3">
     <div class="mx-auto text-center mb-8">
       <h1 class="text-4xl sm:text-5xl font-bold pb-4">
-        Stop Guessing, Start Knowing.
+        Big Insights for Pocket Change
       </h1>
     </div>
 
@@ -1203,6 +1203,7 @@
         </div>
       </div>
 
+      <!--
       <div
         class="relative text-left w-full col-span-1 lg:col-span-3 bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-200 dark:border-zinc-600 p-6 isolate translate-y-5 opacity-100"
       >
@@ -1218,82 +1219,10 @@
             >
           </div>
         </div>
+
         <p class=" md:text-lg mt-4 lg:mt-2">
           Everything in Pro, pay once, never again!
         </p>
-        <!--
-        <div class="max-w-[400px]">
-          <div class="mt-8 lg:absolute lg:bottom-0 lg:left-0 lg:p-4">
-            <div class="relative flex items-center space-x-10">
-              <div
-                class="absolute top-2 left-8 right-0 h-0.5 bg-zinc-500 dark:bg-zinc-700 z-0"
-              ></div>
-              <div class="relative flex flex-col items-center">
-                <div
-                  class="h-4 w-4 rounded-full bg-zinc-500 dark:bg-gray-600 relative z-10"
-                ></div>
-                <div class="mt-2 text-center">
-                  <div class="text-lg sm:text-xl font-semibold">
-                    <span class="text-gray-800 dark:text-gray-300 line-through"
-                      >$399</span
-                    >
-                  </div>
-                  <div
-                    class="text-xs sm:text-sm text-gray-800 dark:text-gray-300"
-                  >
-                    First 50 users
-                  </div>
-                </div>
-              </div>
-              <div class="relative flex flex-col items-center">
-                <div
-                  class="h-4 w-4 rounded-full bg-blue-500 relative z-10"
-                ></div>
-                <div class="mt-2 text-center">
-                  <div class="text-lg sm:text-xl font-semibold">
-                    <span>$599</span>
-                  </div>
-                  <div
-                    class="text-xs sm:text-sm text-gray-800 dark:text-gray-300"
-                  >
-                    First 100 users
-                  </div>
-                </div>
-              </div>
-              <div class="relative flex flex-col items-center">
-                <div
-                  class="h-4 w-4 rounded-full bg-zinc-500 dark:bg-gray-600 relative z-10"
-                ></div>
-                <div class="mt-2 text-center">
-                  <div class="text-lg sm:text-xl font-semibold">
-                    <span class="text-zinc-500 dark:text-zinc-400">$799</span>
-                  </div>
-                  <div
-                    class="text-xs sm:text-sm text-gray-800 dark:text-gray-300"
-                  >
-                    First 200 users
-                  </div>
-                </div>
-              </div>
-              <div class="relative flex flex-col items-center">
-                <div
-                  class="h-4 w-4 rounded-full bg-zinc-500 dark:bg-gray-600 relative z-10"
-                ></div>
-                <div class="mt-2 text-center">
-                  <div class="text-lg sm:text-xl font-semibold">
-                    <span class="text-zinc-500 dark:text-zinc-400">$999</span>
-                  </div>
-                  <div
-                    class="text-xs sm:text-sm text-gray-800 dark:text-gray-300"
-                  >
-                    Final price
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        -->
 
         <div class="mt-10 flex justify-center lg:justify-end mx-4 lg:mx-0">
           <button
@@ -1318,6 +1247,7 @@
           </button>
         </div>
       </div>
+    -->
     </div>
 
     <!--Feature Table-->

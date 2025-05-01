@@ -8,18 +8,30 @@
   import { mode } from "mode-watcher";
 
   export let data;
+  export let ticker;
 
-  let rawData = data?.getData || [];
+  let isLoaded = false;
+  let rawData;
 
-  const avgIV =
-    rawData?.reduce((acc, entry) => acc + entry.iv, 0) / rawData?.length;
-  const avgRV =
-    rawData?.reduce((acc, entry) => acc + entry.rv, 0) / rawData?.length;
-
-  let displayList = rawData?.slice(0, 150);
-  let timePeriod = "3M";
+  let avgIV;
+  let avgRV;
+  let displayList;
+  let timePeriod;
 
   let config = null;
+
+  function initialize() {
+    rawData = data?.getData || [];
+    avgIV =
+      rawData?.reduce((acc, entry) => acc + entry.iv, 0) / rawData?.length;
+    avgRV =
+      rawData?.reduce((acc, entry) => acc + entry.rv, 0) / rawData?.length;
+
+    displayList = rawData?.slice(0, 150);
+    timePeriod = "3M";
+
+    config = plotData();
+  }
 
   function filterDataByPeriod(historicalData, period = "3M") {
     const currentDate = new Date();
@@ -62,8 +74,8 @@
     const realizedVolatility = filteredData?.map((item) => item?.rv);
 
     const priceList = filteredData
-      .map((item) => item.price)
-      .filter((price) => price != null); // Filter out null/undefined
+      ?.map((item) => item.price)
+      ?.filter((price) => price != null); // Filter out null/undefined
 
     return {
       dateList,
@@ -78,9 +90,6 @@
     const data = rawData?.sort((a, b) => new Date(a?.date) - new Date(b?.date));
     const { dateList, impliedVolatility, realizedVolatility, priceList } =
       filterDataByPeriod(data, timePeriod);
-
-    const fillColorStart = "rgb(70, 129, 244,0.5)";
-    const fillColorEnd = "rgb(70, 129, 244,0.001)";
 
     const options = {
       chart: {
@@ -391,15 +400,24 @@
   };
 
   $: {
-    if (timePeriod || $mode) {
-      config = plotData();
+    if ((timePeriod || $mode) && isLoaded) {
+      config = plotData() || null;
+    }
+  }
+
+  $: {
+    if (ticker && typeof window !== "undefined") {
+      isLoaded = false;
+      initialize();
+
+      isLoaded = true;
     }
   }
 </script>
 
 <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
   <h2 class=" flex flex-row items-center text-xl sm:text-2xl font-bold w-fit">
-    Volatility Exposure
+    {ticker} Volatility Exposure
   </h2>
   <div class="w-full mt-2">
     {removeCompanyStrings($displayCompanyName)} has experienced an average implied
@@ -409,7 +427,7 @@
   </div>
 
   <div class="w-full overflow-hidden m-auto">
-    {#if config !== null}
+    {#if isLoaded && config}
       <div class="flex justify-end pt-5 pb-2 space-x-2 ml-auto z-10">
         {#each ["3M", "6M", "1Y"] as item, index}
           {#if data?.user?.tier === "Pro" || index === 0}
@@ -451,85 +469,87 @@
     {/if}
   </div>
 
-  <h3 class="mt-5 text-xl sm:text-2xl font-bold mb-2 sm:mb-0">
-    Volatility History
-  </h3>
-  <div class="w-full overflow-x-auto mt-5">
-    <table
-      class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
-    >
-      <thead>
-        <TableHeader {columns} {sortOrders} {sortData} />
-      </thead>
-      <tbody>
-        {#each data?.user?.tier === "Pro" ? displayList : displayList?.slice(0, 3) as item, index}
-          <tr
-            class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
-              1 ===
-              displayList?.slice(0, 3)?.length &&
-            !['Pro']?.includes(data?.user?.tier)
-              ? 'opacity-[0.1]'
-              : ''}"
-          >
-            <td class=" text-sm sm:text-[1rem] text-start whitespace-nowrap">
-              {formatDate(item?.date)}
-            </td>
+  {#if isLoaded}
+    <h3 class="mt-5 text-xl sm:text-2xl font-bold mb-2 sm:mb-0">
+      Volatility History
+    </h3>
+    <div class="w-full overflow-x-auto mt-5">
+      <table
+        class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
+      >
+        <thead>
+          <TableHeader {columns} {sortOrders} {sortData} />
+        </thead>
+        <tbody>
+          {#each data?.user?.tier === "Pro" ? displayList : displayList?.slice(0, 3) as item, index}
+            <tr
+              class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
+                1 ===
+                displayList?.slice(0, 3)?.length &&
+              !['Pro']?.includes(data?.user?.tier)
+                ? 'opacity-[0.1]'
+                : ''}"
+            >
+              <td class=" text-sm sm:text-[1rem] text-start whitespace-nowrap">
+                {formatDate(item?.date)}
+              </td>
 
-            <td class=" text-sm sm:text-[1rem] text-end">
-              {#if item?.changesPercentage >= 0 && item?.changesPercentage !== null}
-                <span class="text-green-800 dark:text-[#00FC50]"
-                  >+{item?.changesPercentage >= 1000
-                    ? abbreviateNumber(item?.changesPercentage)
-                    : item?.changesPercentage?.toFixed(2)}%</span
-                >
-              {:else if item?.changesPercentage < 0 && item?.changesPercentage !== null}
-                <span class="text-red-800 dark:text-[#FF2F1F]"
-                  >{item?.changesPercentage <= -1000
-                    ? abbreviateNumber(item?.changesPercentage)
-                    : item?.changesPercentage?.toFixed(2)}%
-                </span>
-              {:else}
-                n/a
-              {/if}
-            </td>
+              <td class=" text-sm sm:text-[1rem] text-end">
+                {#if item?.changesPercentage >= 0 && item?.changesPercentage !== null}
+                  <span class="text-green-800 dark:text-[#00FC50]"
+                    >+{item?.changesPercentage >= 1000
+                      ? abbreviateNumber(item?.changesPercentage)
+                      : item?.changesPercentage?.toFixed(2)}%</span
+                  >
+                {:else if item?.changesPercentage < 0 && item?.changesPercentage !== null}
+                  <span class="text-red-800 dark:text-[#FF2F1F]"
+                    >{item?.changesPercentage <= -1000
+                      ? abbreviateNumber(item?.changesPercentage)
+                      : item?.changesPercentage?.toFixed(2)}%
+                  </span>
+                {:else}
+                  n/a
+                {/if}
+              </td>
 
-            <td class="text-sm sm:text-[1rem] text-end">
-              {item?.putCallRatio}
-            </td>
+              <td class="text-sm sm:text-[1rem] text-end">
+                {item?.putCallRatio}
+              </td>
 
-            <td class="text-sm sm:text-[1rem] text-end">
-              {@html abbreviateNumber(item?.total_open_interest, false, true)}
-            </td>
+              <td class="text-sm sm:text-[1rem] text-end">
+                {@html abbreviateNumber(item?.total_open_interest, false, true)}
+              </td>
 
-            <td class=" text-sm sm:text-[1rem] text-end">
-              {#if item?.changesPercentageOI >= 0 && item?.changesPercentageOI !== null}
-                <span class="text-green-800 dark:text-[#00FC50]"
-                  >+{item?.changesPercentageOI >= 1000
-                    ? abbreviateNumber(item?.changesPercentageOI)
-                    : item?.changesPercentageOI?.toFixed(2)}%</span
-                >
-              {:else if item?.changesPercentageOI < 0 && item?.changesPercentageOI !== null}
-                <span class="text-red-800 dark:text-[#FF2F1F]"
-                  >{item?.changesPercentageOI <= -1000
-                    ? abbreviateNumber(item?.changesPercentageOI)
-                    : item?.changesPercentageOI?.toFixed(2)}%
-                </span>
-              {:else}
-                <span class=""> n/a </span>
-              {/if}
-            </td>
+              <td class=" text-sm sm:text-[1rem] text-end">
+                {#if item?.changesPercentageOI >= 0 && item?.changesPercentageOI !== null}
+                  <span class="text-green-800 dark:text-[#00FC50]"
+                    >+{item?.changesPercentageOI >= 1000
+                      ? abbreviateNumber(item?.changesPercentageOI)
+                      : item?.changesPercentageOI?.toFixed(2)}%</span
+                  >
+                {:else if item?.changesPercentageOI < 0 && item?.changesPercentageOI !== null}
+                  <span class="text-red-800 dark:text-[#FF2F1F]"
+                    >{item?.changesPercentageOI <= -1000
+                      ? abbreviateNumber(item?.changesPercentageOI)
+                      : item?.changesPercentageOI?.toFixed(2)}%
+                  </span>
+                {:else}
+                  <span class=""> n/a </span>
+                {/if}
+              </td>
 
-            <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
-              {item?.iv}
-            </td>
-            <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
-              {item?.rv ?? "n/a"}
-            </td>
-          </tr>
-        {/each}
-      </tbody>
-    </table>
-  </div>
+              <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
+                {item?.iv}
+              </td>
+              <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
+                {item?.rv ?? "n/a"}
+              </td>
+            </tr>
+          {/each}
+        </tbody>
+      </table>
+    </div>
 
-  <UpgradeToPro {data} display={true} />
+    <UpgradeToPro {data} display={true} />
+  {/if}
 </div>

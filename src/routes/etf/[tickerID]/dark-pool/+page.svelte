@@ -57,7 +57,11 @@
           />
         {/if}
         {#if hottestTrades?.length > 0}
-          <HottestTrades {data} rawData={hottestTrades} ticker={$etfTicker} />
+          <HottestTrades
+            {data}
+            rawData={hottestTrades}
+            ticker={$etfTicker?.toUpperCase()}
+          />
         {/if}
 
         {#if historicalDarkPool?.length > 10}
