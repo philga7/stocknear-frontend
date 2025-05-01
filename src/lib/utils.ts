@@ -51,7 +51,7 @@ export const deferFunction = (
 
 
 export function removeCompanyStrings(name) {
-  const wordsToRemove = ["Technologies", "AG", ", Inc.","Inc.","Corp.","Corporation","Holding","Limited","Group","N.V.","Co. Ltd.","Co.", "Ltd."];
+  const wordsToRemove = ["ETF Trust", "Technologies", "AG", ", Inc.","Inc.","Corp.","Corporation","Holding","Limited","Group","N.V.","Co. Ltd.","Co.", "Ltd."];
 if (!name) return "";
     return wordsToRemove?.reduce((acc, word) => acc.replace(word, "").trim(), name);
 }
