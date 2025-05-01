@@ -10,7 +10,7 @@
 </script>
 
 <SEO
-  title={`${$displayCompanyName} (${$etfTicker}) Volatility · Stocknear`}
+  title={`${$displayCompanyName} (${$etfTicker}) Volatility`}
   description={`Track volatility and implied volatility trends with our interactive chart. Analyze price movements, 30-day implied volatility, and realized volatility to make data-driven trading decisions.`}
 />
 

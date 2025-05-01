@@ -249,6 +249,7 @@
             year: "numeric",
             month: "short",
             day: "numeric",
+            timeZone: "UTC",
           })}</span><br>`;
 
           // Loop through each point in the shared tooltip
@@ -336,10 +337,11 @@
   function plotContractHistory() {
     // Ensure rawDataHistory exists and sort it by date
     const sortedData =
-      rawDataHistory?.sort((a, b) => new Date(a.date) - new Date(b.date)) || [];
+      rawDataHistory?.sort((a, b) => new Date(a?.date) - new Date(b?.date)) ||
+      [];
 
     // Filter out data points that have an undefined price so they don't appear in any series
-    const filteredData = sortedData.filter((item) => item.price !== undefined);
+    const filteredData = sortedData?.filter((item) => item.price !== undefined);
 
     // Choose a strong contrasting color for the stock price line
     const priceColor =
@@ -525,6 +527,7 @@
             year: "numeric",
             month: "short",
             day: "numeric",
+            timeZone: "UTC",
           })}</span><br/>`;
 
           this.points.forEach((pt) => {

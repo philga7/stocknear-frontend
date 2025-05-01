@@ -20,6 +20,8 @@
 
   let config = null;
 
+  initialize();
+
   function initialize() {
     rawData = data?.getData || [];
     avgIV =
@@ -400,17 +402,8 @@
   };
 
   $: {
-    if ((timePeriod || $mode) && isLoaded) {
+    if (timePeriod || $mode) {
       config = plotData() || null;
-    }
-  }
-
-  $: {
-    if (ticker && typeof window !== "undefined") {
-      isLoaded = false;
-      initialize();
-
-      isLoaded = true;
     }
   }
 </script>
@@ -427,7 +420,7 @@
   </div>
 
   <div class="w-full overflow-hidden m-auto">
-    {#if isLoaded && config}
+    {#if config}
       <div class="flex justify-end pt-5 pb-2 space-x-2 ml-auto z-10">
         {#each ["3M", "6M", "1Y"] as item, index}
           {#if data?.user?.tier === "Pro" || index === 0}
@@ -469,87 +462,85 @@
     {/if}
   </div>
 
-  {#if isLoaded}
-    <h3 class="mt-5 text-xl sm:text-2xl font-bold mb-2 sm:mb-0">
-      Volatility History
-    </h3>
-    <div class="w-full overflow-x-auto mt-5">
-      <table
-        class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
-      >
-        <thead>
-          <TableHeader {columns} {sortOrders} {sortData} />
-        </thead>
-        <tbody>
-          {#each data?.user?.tier === "Pro" ? displayList : displayList?.slice(0, 3) as item, index}
-            <tr
-              class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
-                1 ===
-                displayList?.slice(0, 3)?.length &&
-              !['Pro']?.includes(data?.user?.tier)
-                ? 'opacity-[0.1]'
-                : ''}"
-            >
-              <td class=" text-sm sm:text-[1rem] text-start whitespace-nowrap">
-                {formatDate(item?.date)}
-              </td>
+  <h3 class="mt-5 text-xl sm:text-2xl font-bold mb-2 sm:mb-0">
+    Volatility History
+  </h3>
+  <div class="w-full overflow-x-auto mt-5">
+    <table
+      class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
+    >
+      <thead>
+        <TableHeader {columns} {sortOrders} {sortData} />
+      </thead>
+      <tbody>
+        {#each data?.user?.tier === "Pro" ? displayList : displayList?.slice(0, 3) as item, index}
+          <tr
+            class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
+              1 ===
+              displayList?.slice(0, 3)?.length &&
+            !['Pro']?.includes(data?.user?.tier)
+              ? 'opacity-[0.1]'
+              : ''}"
+          >
+            <td class=" text-sm sm:text-[1rem] text-start whitespace-nowrap">
+              {formatDate(item?.date)}
+            </td>
 
-              <td class=" text-sm sm:text-[1rem] text-end">
-                {#if item?.changesPercentage >= 0 && item?.changesPercentage !== null}
-                  <span class="text-green-800 dark:text-[#00FC50]"
-                    >+{item?.changesPercentage >= 1000
-                      ? abbreviateNumber(item?.changesPercentage)
-                      : item?.changesPercentage?.toFixed(2)}%</span
-                  >
-                {:else if item?.changesPercentage < 0 && item?.changesPercentage !== null}
-                  <span class="text-red-800 dark:text-[#FF2F1F]"
-                    >{item?.changesPercentage <= -1000
-                      ? abbreviateNumber(item?.changesPercentage)
-                      : item?.changesPercentage?.toFixed(2)}%
-                  </span>
-                {:else}
-                  n/a
-                {/if}
-              </td>
+            <td class=" text-sm sm:text-[1rem] text-end">
+              {#if item?.changesPercentage >= 0 && item?.changesPercentage !== null}
+                <span class="text-green-800 dark:text-[#00FC50]"
+                  >+{item?.changesPercentage >= 1000
+                    ? abbreviateNumber(item?.changesPercentage)
+                    : item?.changesPercentage?.toFixed(2)}%</span
+                >
+              {:else if item?.changesPercentage < 0 && item?.changesPercentage !== null}
+                <span class="text-red-800 dark:text-[#FF2F1F]"
+                  >{item?.changesPercentage <= -1000
+                    ? abbreviateNumber(item?.changesPercentage)
+                    : item?.changesPercentage?.toFixed(2)}%
+                </span>
+              {:else}
+                n/a
+              {/if}
+            </td>
 
-              <td class="text-sm sm:text-[1rem] text-end">
-                {item?.putCallRatio}
-              </td>
+            <td class="text-sm sm:text-[1rem] text-end">
+              {item?.putCallRatio}
+            </td>
 
-              <td class="text-sm sm:text-[1rem] text-end">
-                {@html abbreviateNumber(item?.total_open_interest, false, true)}
-              </td>
+            <td class="text-sm sm:text-[1rem] text-end">
+              {@html abbreviateNumber(item?.total_open_interest, false, true)}
+            </td>
 
-              <td class=" text-sm sm:text-[1rem] text-end">
-                {#if item?.changesPercentageOI >= 0 && item?.changesPercentageOI !== null}
-                  <span class="text-green-800 dark:text-[#00FC50]"
-                    >+{item?.changesPercentageOI >= 1000
-                      ? abbreviateNumber(item?.changesPercentageOI)
-                      : item?.changesPercentageOI?.toFixed(2)}%</span
-                  >
-                {:else if item?.changesPercentageOI < 0 && item?.changesPercentageOI !== null}
-                  <span class="text-red-800 dark:text-[#FF2F1F]"
-                    >{item?.changesPercentageOI <= -1000
-                      ? abbreviateNumber(item?.changesPercentageOI)
-                      : item?.changesPercentageOI?.toFixed(2)}%
-                  </span>
-                {:else}
-                  <span class=""> n/a </span>
-                {/if}
-              </td>
+            <td class=" text-sm sm:text-[1rem] text-end">
+              {#if item?.changesPercentageOI >= 0 && item?.changesPercentageOI !== null}
+                <span class="text-green-800 dark:text-[#00FC50]"
+                  >+{item?.changesPercentageOI >= 1000
+                    ? abbreviateNumber(item?.changesPercentageOI)
+                    : item?.changesPercentageOI?.toFixed(2)}%</span
+                >
+              {:else if item?.changesPercentageOI < 0 && item?.changesPercentageOI !== null}
+                <span class="text-red-800 dark:text-[#FF2F1F]"
+                  >{item?.changesPercentageOI <= -1000
+                    ? abbreviateNumber(item?.changesPercentageOI)
+                    : item?.changesPercentageOI?.toFixed(2)}%
+                </span>
+              {:else}
+                <span class=""> n/a </span>
+              {/if}
+            </td>
 
-              <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
-                {item?.iv}
-              </td>
-              <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
-                {item?.rv ?? "n/a"}
-              </td>
-            </tr>
-          {/each}
-        </tbody>
-      </table>
-    </div>
+            <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
+              {item?.iv}
+            </td>
+            <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
+              {item?.rv ?? "n/a"}
+            </td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+  </div>
 
-    <UpgradeToPro {data} display={true} />
-  {/if}
+  <UpgradeToPro {data} display={true} />
 </div>

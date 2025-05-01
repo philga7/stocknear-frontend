@@ -7,6 +7,7 @@
   import { mode } from "mode-watcher";
 
   export let data;
+  export let ticker;
 
   let rawData = data?.getData || [];
 
@@ -61,7 +62,7 @@
         squareSymbol: false, // Ensures symbols are circular, not square
       },
       title: {
-        text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">Open Interest By Strike</h3>`,
+        text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">${ticker} Open Interest By Strike</h3>`,
         useHTML: true,
         style: { color: $mode === "light" ? "black" : "white" },
       },
@@ -264,7 +265,7 @@
 
 <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
   <h2 class=" flex flex-row items-center text-xl sm:text-2xl font-bold w-fit">
-    Open Interest Chart
+    {ticker} Open Interest Chart
   </h2>
 
   <div class="w-full overflow-hidden m-auto mt-3 shadow-sm">
