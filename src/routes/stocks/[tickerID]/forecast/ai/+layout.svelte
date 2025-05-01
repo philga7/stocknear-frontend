@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { stockTicker } from "$lib/store";
+
   export let data;
 </script>
 
@@ -9,7 +11,9 @@
         class="relative flex flex-col lg:flex-row justify-center items-start overflow-hidden w-full"
       >
         <main class="w-full lg:w-3/4 lg:pr-10">
-          <slot />
+          {#key $stockTicker}
+            <slot />
+          {/key}
         </main>
 
         <aside class="inline-block relative w-full lg:w-1/4 mt-3">

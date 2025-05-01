@@ -472,6 +472,8 @@
 
   $: {
     if ($stockTicker || $mode) {
+      configScore = null;
+      config = null;
       prepareDataset();
       configScore = getAIScorePlot() || null;
       config = getPriceForecastChart() || null;
@@ -589,12 +591,14 @@
                 <div class="grow">
                   <div class="relative">
                     <!-- Apply the blur class to the chart -->
-                    <div
-                      class="{!isPro
-                        ? 'blur-[3px]'
-                        : ''} mt-5 shadow-sm sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
-                      use:highcharts={configScore}
-                    ></div>
+                    {#if config}
+                      <div
+                        class="{!isPro
+                          ? 'blur-[3px]'
+                          : ''} mt-5 shadow-sm sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
+                        use:highcharts={configScore}
+                      ></div>
+                    {/if}
                     <!-- Overlay with "Upgrade to Pro" -->
                     {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
                       <div
@@ -776,12 +780,14 @@
                 <div class="grow pt-5">
                   <div class="relative">
                     <!-- Apply the blur class to the chart -->
-                    <div
-                      class="{!isPro
-                        ? 'blur-[3px]'
-                        : ''} mt-5 shadow-sm sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
-                      use:highcharts={config}
-                    ></div>
+                    {#if config}
+                      <div
+                        class="{!isPro
+                          ? 'blur-[3px]'
+                          : ''} mt-5 shadow-sm sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
+                        use:highcharts={config}
+                      ></div>
+                    {/if}
                     <!-- Overlay with "Upgrade to Pro" -->
                     {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
                       <div
