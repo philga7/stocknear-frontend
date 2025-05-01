@@ -82,7 +82,6 @@
     const segments = $page.url.pathname.split("/").filter(Boolean);
     const currentSymbol = segments[1]?.toUpperCase() || "";
     const suffix = segments.slice(2); // e.g. ['overview'] or ['chart', '1d']
-
     const firstSuffix = suffix[0]?.toLowerCase() || "";
 
     // Determine new root and suffix based on rules
@@ -102,6 +101,17 @@
       root !== "stocks" &&
       blockedSubstrings.some((blk) => firstSuffix.includes(blk))
     ) {
+      newSuffix = [];
+    }
+
+    // --- NEW: If switching *to* index *from* stocks/etf and suffix is "dividends", strip it ---
+    const prevRoot = segments[0]?.toLowerCase();
+    if (
+      type === "index" &&
+      (prevRoot === "stocks" || prevRoot === "etf") &&
+      firstSuffix.includes("dividends")
+    ) {
+      // force fallback to /index/{symbol}
       newSuffix = [];
     }
 
