@@ -80,7 +80,6 @@
 
     // Pull current path’s suffix beyond the first two segments
     const segments = $page.url.pathname.split("/").filter(Boolean);
-    const currentSymbol = segments[1]?.toUpperCase() || "";
     const suffix = segments.slice(2); // e.g. ['overview'] or ['chart', '1d']
     const firstSuffix = suffix[0]?.toLowerCase() || "";
 
@@ -109,7 +108,7 @@
     if (
       type === "index" &&
       (prevRoot === "stocks" || prevRoot === "etf") &&
-      firstSuffix.includes("dividends")
+      (firstSuffix?.includes("dividends") || firstSuffix?.includes("dark-pool"))
     ) {
       // force fallback to /index/{symbol}
       newSuffix = [];
@@ -133,39 +132,6 @@
 
     // Reset guard
     setTimeout(() => (isNavigating = false), 100);
-  }
-
-  async function popularTicker(state) {
-    if (isNavigating) return;
-    isNavigating = true;
-
-    searchOpen = false;
-    if (!state) {
-      isNavigating = false;
-      return;
-    }
-
-    const upperState = state?.toUpperCase();
-    const newSearchItem = searchBarData?.find(
-      ({ symbol }) => symbol === upperState,
-    );
-
-    if (newSearchItem) {
-      updatedSearchHistory = [
-        newSearchItem,
-        ...(searchHistory?.filter(
-          (item) => item?.symbol?.toUpperCase() !== upperState,
-        ) || []),
-      ].slice(0, 5);
-    }
-
-    const closePopup = document.getElementById("searchBarModal");
-    closePopup?.dispatchEvent(new MouseEvent("click"));
-
-    // Reset the flag after a short delay
-    setTimeout(() => {
-      isNavigating = false;
-    }, 100);
   }
 
   function searchBarTicker(state) {
@@ -573,99 +539,69 @@
       </div>
     </div>
 
-    <div class="py-4">
-      <!-- Popular searches -->
-      <div class="mb-3 last:mb-0 mt-3">
-        {#if !showSuggestions}
-          <div class="text-start text-sm font-semibold mb-2">
-            {searchHistory?.length > 0 ? "Recent" : "Popular"}
-          </div>
-        {/if}
-
-        <ul class="text-sm">
-          {#if !showSuggestions}
-            {#each searchHistory?.length > 0 ? searchHistory : popularList as item}
-              <li class="border-b border-gray-300 dark:border-gray-600">
-                <a
-                  href={`/${item?.type === "ETF" ? "etf" : item?.type === "Index" ? "index" : "stocks"}/${item?.symbol}`}
-                  on:click={() => popularTicker(item?.symbol)}
-                  class="mb-2 {item?.symbol === focusedSuggestion
-                    ? 'cursor-pointer flex justify-start items-center p-2 bg-white dark:bg-primary rounded group'
-                    : 'cursor-pointer bg-white dark:bg-secondary sm:hover:bg-gray-300 dark:sm:hover:bg-primary rounded-md flex justify-start items-center p-2   group'} w-full"
-                >
-                  <div class="flex flex-row items-center w-full">
-                    <div class="flex flex-col">
-                      <span
-                        class="font-semibold dark:font-normal text-muted dark:text-blue-400"
-                        >{item?.symbol}</span
-                      >
-                      <span class=""
-                        >{item?.name.length > 150
-                          ? item?.name?.slice(0, 150) + "..."
-                          : item?.name}</span
-                      >
-                    </div>
-
-                    <div class=" ml-auto">
-                      {item?.type}
-                    </div>
-                  </div>
-                </a>
-              </li>
-            {/each}
-          {:else if showSuggestions && searchBarData?.length > 0}
-            <div class="text-start text-sm font-semibold mb-2">Suggestions</div>
-            {#each searchBarData as item}
-              <li class="border-b border-gray-300 dark:border-gray-600">
-                <!-- svelte-ignore a11y-click-events-have-key-events -->
-                <!-- svelte-ignore a11y-label-has-associated-control -->
-                <a
-                  href={`/${item?.type === "ETF" ? "etf" : item?.type === "Index" ? "index" : "stocks"}/${item?.symbol}`}
-                  on:click={() => searchBarTicker(item?.symbol)}
-                  class="mb-2 {item?.symbol === focusedSuggestion
-                    ? 'shake-ticker cursor-pointer flex justify-start items-center p-2 bg-whitedark:bg-primary rounded group'
-                    : 'cursor-pointer mb-2 bg-white dark:bg-secondary sm:hover:bg-primary rounded-md flex justify-start items-center p-2  group'}"
-                >
-                  <div class="flex flex-row items-center w-full">
-                    <div class="flex flex-col">
-                      <span
-                        class="font-semibold dark:font-normal text-muted dark:text-blue-400"
-                        >{item?.symbol}</span
-                      >
-                      <span class=""
-                        >{item?.name?.length > 150
-                          ? item?.name?.slice(0, 150) + "..."
-                          : item?.name}</span
-                      >
-                    </div>
-
-                    <div class=" ml-auto">
-                      {item?.type}
-                    </div>
-                  </div>
-                </a>
-              </li>
-            {/each}
-          {:else if showSuggestions && searchBarData?.length === 0}
-            <li>
-              <label class="flex items-center p-2 rounded group">
-                <svg
-                  class="w-3 h-3 fill-slate-400 shrink-0 mr-3 dark:fill-slate-500"
-                  width="12"
-                  height="12"
-                  viewBox="0 0 12 12"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M11.953 4.29a.5.5 0 0 0-.454-.292H6.14L6.984.62A.5.5 0 0 0 6.12.173l-6 7a.5.5 0 0 0 .379.825h5.359l-.844 3.38a.5.5 0 0 0 .864.445l6-7a.5.5 0 0 0 .075-.534Z"
-                  />
-                </svg>
-                <span>No results found</span>
-              </label>
-            </li>
-          {/if}
-        </ul>
-      </div>
+    <div
+      class="w-auto z-40 mt-3 rounded-md border border-gray-300 dark:border-gray-700 bg-[#F9FAFB] dark:bg-secondary px-1 py-3 outline-hidden"
+    >
+      {#if inputValue?.length > 0 && searchBarData?.length > 0}
+        <div
+          class="pl-2 pb-2 border-b border-gray-300 dark:border-gray-600 text-muted dark:text-white text-sm font-semibold w-full"
+        >
+          Suggestions
+        </div>
+        {#each searchBarData as item}
+          <li
+            class="cursor-pointer text-muted dark:text-white border-b border-gray-300 dark:border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-2 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-200 dark:data-highlighted:bg-gray-200 dark:data-highlighted:bg-primary"
+            value={item?.symbol}
+            label={item?.name}
+            on:click={() => handleSearch(item?.symbol, item?.type)}
+          >
+            <div class="flex flex-row items-center justify-between w-full">
+              <span
+                class="text-sm text-muted font-semibold dark:font-normal dark:text-blue-400"
+                >{item?.symbol}</span
+              >
+              <span
+                class="whitespace-nowrap ml-3 mr-6 text-sm text-muted dark:text-white truncate"
+                >{item?.name}</span
+              >
+              <span class="ml-auto text-sm text-muted dark:text-white"
+                >{item?.type}</span
+              >
+            </div>
+          </li>
+        {/each}
+      {:else if inputValue?.length === 0 || !showSuggestions}
+        <div
+          class="pl-2 pb-2 border-b border-gray-300 dark:border-gray-600 text-muted dark:text-white text-sm font-semibold w-full"
+        >
+          {searchHistory?.length > 0 ? "Recent" : "Popular"}
+        </div>
+        {#each searchHistory?.length > 0 ? searchHistory : popularList as item}
+          <li
+            class="gap-y-1.5 cursor-pointer text-white border-b border-gray-300 dark:border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-2 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-200 dark:data-highlighted:bg-primary"
+            on:click={() => handleSearch(item?.symbol, item?.type)}
+          >
+            <div class="flex flex-row items-center justify-between w-full">
+              <span
+                class="text-sm text-muted font-semibold dark:font-normal dark:text-blue-400"
+                >{item?.symbol}</span
+              >
+              <span
+                c
+                class="whitespace-nowrap ml-3 mr-6 text-sm text-muted dark:text-white truncate"
+                >{item?.name}</span
+              >
+              <span class="ml-auto text-sm text-muted dark:text-white"
+                >{item?.type}</span
+              >
+            </div>
+          </li>
+        {/each}
+      {:else}
+        <span class="block px-5 py-2 text-sm text-muted dark:text-white">
+          No results found
+        </span>
+      {/if}
     </div>
   </div>
 </dialog>
