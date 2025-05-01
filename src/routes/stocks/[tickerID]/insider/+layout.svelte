@@ -125,8 +125,9 @@
               </a>
             </ul>
           </nav>
-
-          <slot />
+          {#key $stockTicker}
+            <slot />
+          {/key}
         </main>
 
         <aside class="inline-block relative w-full lg:w-1/4 mt-3">

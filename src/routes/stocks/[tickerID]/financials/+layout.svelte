@@ -210,7 +210,9 @@
               </ul>
             </nav>
           </div>
-          <slot />
+          {#key $stockTicker}
+            <slot />
+          {/key}
         </main>
       </div>
     </div>
