@@ -57,6 +57,8 @@
 
   let allRows = [
     { name: "Volume", rule: "volume", type: "int" },
+    { name: "Call Volume", rule: "callVolume", type: "int" },
+    { name: "Put Volume", rule: "putVolume", type: "int" },
     { name: "Avg. Volume", rule: "avgVolume", type: "int" },
     { name: "Market Cap", rule: "marketCap", type: "int" },
     { name: "Price", rule: "price", type: "float" },

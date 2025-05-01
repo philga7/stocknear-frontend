@@ -224,6 +224,14 @@
       link: "/list/highest-option-premium",
     },
     {
+      title: "Highest Call Volume",
+      link: "/list/highest-call-volume",
+    },
+    {
+      title: "Highest Put Volume",
+      link: "/list/highest-put-volume",
+    },
+    {
       title: "Biggest Artificial Intelligence Stocks",
       link: "/list/ai-stocks",
     },

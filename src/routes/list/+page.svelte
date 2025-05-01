@@ -208,6 +208,18 @@
         href="/list/highest-option-premium">Companies with Highest Premium</a
       >
     </li>
+    <li>
+      <a
+        class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
+        href="/list/highest-call-volume">Companies with Highest Call Volume</a
+      >
+    </li>
+    <li>
+      <a
+        class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
+        href="/list/highest-put-volume">Companies with Highest Put Volume</a
+      >
+    </li>
   </ul>
 </div>
 
