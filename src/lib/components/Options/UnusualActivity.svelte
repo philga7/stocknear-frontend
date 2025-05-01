@@ -747,7 +747,7 @@
         <h2
           class=" flex flex-row items-center text-xl sm:text-2xl font-bold w-fit mb-2 sm:mb-0"
         >
-          Unusual Activity
+          {ticker} Unusual Activity
         </h2>
         <Infobox
           text="Unusual options trades with premiums of $500,000 or more, made by hedge funds and major institutions."
