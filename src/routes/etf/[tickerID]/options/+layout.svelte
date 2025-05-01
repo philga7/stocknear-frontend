@@ -12,6 +12,7 @@
       overview: "/options",
       "hottest-contracts": "/options/hottest-contracts",
       "contract-lookup": "/options/contract-lookup",
+      "max-pain": "/options/max-pain",
       "unusual-activity": "/options/unusual-activity",
       volatility: "/options/volatility",
       gex: "/options/gex",
@@ -35,6 +36,7 @@
         overview: "overview",
         "hottest-contracts": "hottest-contracts",
         "contract-lookup": "contract-lookup",
+        "max-pain": "max-pain",
         "unusual-activity": "unusual-activity",
         volatility: "volatility",
         gex: "gex",
@@ -103,6 +105,15 @@
                   : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
               >
                 Hottest Contracts
+              </a>
+              <a
+                href={`/etf/${$etfTicker}/options/max-pain`}
+                on:click={() => changeSubSection("max-pain")}
+                class="p-2 px-5 cursor-pointer {displaySubSection === 'max-pain'
+                  ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                  : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+              >
+                Max Pain
               </a>
               <a
                 href={`/etf/${$etfTicker}/options/volatility`}
