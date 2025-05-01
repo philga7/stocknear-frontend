@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { etfTicker, displayCompanyName } from "$lib/store";
+  import { stockTicker, displayCompanyName } from "$lib/store";
 
   import Infobox from "$lib/components/Infobox.svelte";
   import SEO from "$lib/components/SEO.svelte";
@@ -10,8 +10,8 @@
 </script>
 
 <SEO
-  title={`${$displayCompanyName} (${$etfTicker?.toUpperCase()}) Options Max Pain Chart`}
-  description={`View the Max Pain chart for ${$displayCompanyName} (${$etfTicker?.toUpperCase()}) to analyze options strike price pressure and market sentiment.`}
+  title={`${$displayCompanyName} (${$stockTicker?.toUpperCase()}) Options Max Pain Chart`}
+  description={`View the Max Pain chart for ${$displayCompanyName} (${$stockTicker?.toUpperCase()}) to analyze options strike price pressure and market sentiment.`}
 />
 
 <section class="w-full overflow-hidden min-h-screen pb-40">
@@ -20,7 +20,7 @@
       class="w-full relative flex justify-center items-center overflow-hidden"
     >
       {#if data?.getData?.length > 0}
-        <MaxPain {data} ticker={$etfTicker?.toUpperCase()} />
+        <MaxPain {data} ticker={$stockTicker?.toUpperCase()} />
       {:else}
         <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
           <div class="mt-2">
