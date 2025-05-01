@@ -8,6 +8,7 @@
 
   export let data;
   export let title;
+  export let ticker;
 
   let rawData = data?.getData || [];
 
@@ -99,9 +100,6 @@
       timePeriod,
     );
 
-    const fillColorStart = "rgb(70, 129, 244,0.5)";
-    const fillColorEnd = "rgb(70, 129, 244,0.001)";
-
     const options = {
       credits: {
         enabled: false,
@@ -113,7 +111,7 @@
         animation: false,
       },
       title: {
-        text: `<h3 class="mt-3 -mb-2 ">${title === "Gamma" ? "GEX" : "DEX"} Chart</h3>`,
+        text: `<h3 class="mt-3 -mb-2 ">${ticker} ${title === "Gamma" ? "GEX" : "DEX"} Chart</h3>`,
         style: {
           color: $mode === "light" ? "black" : "white",
           // Using inline CSS for margin-top and margin-bottom
@@ -218,7 +216,7 @@
           type: "spline",
           data: priceList,
           yAxis: 1,
-          color: $mode === "light" ? "#000" : "#fff",
+          color: $mode === "light" ? "black" : "#fff",
           lineWidth: 1.3,
           zIndex: 10,
           marker: { enabled: false },
@@ -228,8 +226,8 @@
           name: title,
           type: "column",
           data: dataList,
-          color: "#9B5DC4",
-          borderColor: "#9B5DC4",
+          color: $mode === "light" ? "#2C6288" : "#9B5DC4",
+          borderColor: $mode === "light" ? "#2C6288" : "#9B5DC4",
           borderRadius: "1px",
           animation: false,
         },
@@ -391,7 +389,7 @@
 
 <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
   <h2 class=" flex flex-row items-center text-xl sm:text-2xl font-bold w-fit">
-    Daily {title} Exposure
+    {ticker} Daily {title} Exposure
   </h2>
 
   <div class="w-full overflow-hidden m-auto mt-5">

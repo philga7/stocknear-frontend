@@ -8,6 +8,7 @@
 
   export let data;
   export let title = "Gamma";
+  export let ticker;
 
   let rawData = data?.getData || [];
 
@@ -49,6 +50,7 @@
       month: "short",
       day: "numeric",
       year: "2-digit",
+      timeZone: "UTC",
     });
     return formatter.format(date);
   }
@@ -93,7 +95,7 @@
         animation: false,
       },
       title: {
-        text: `<h3 class="mt-3 mb-1 ">${title === "Gamma" ? "GEX" : "DEX"} Chart</h3>`,
+        text: `<h3 class="mt-3 mb-1 ">${ticker} ${title === "Gamma" ? "GEX" : "DEX"} Chart</h3>`,
         style: {
           color: $mode === "light" ? "black" : "white",
           // Using inline CSS for margin-top and margin-bottom
@@ -138,6 +140,7 @@
             year: "numeric",
             month: "short",
             day: "numeric",
+            timeZone: "UTC",
           })}</span><br>`;
 
           // Loop through each point in the shared tooltip
@@ -381,6 +384,7 @@
   </div>
 
   <h3 class="text-xl sm:text-2xl font-bold mt-5">
+    {ticker}
     {title === "Gamma" ? "GEX" : "DEX"} Table
   </h3>
 

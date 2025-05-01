@@ -8,6 +8,7 @@
 
   export let data;
   export let title = "Gamma";
+  export let ticker;
 
   $: isGamma = title === "Gamma";
 
@@ -73,7 +74,7 @@
         animation: false,
       },
       title: {
-        text: `<h3 class="mt-3 mb-1 ">${title === "Gamma" ? "GEX" : "DEX"} Chart</h3>`,
+        text: `<h3 class="mt-3 mb-1 ">${ticker} ${title === "Gamma" ? "GEX" : "DEX"} Chart</h3>`,
         style: {
           color: $mode === "light" ? "black" : "white",
           // Using inline CSS for margin-top and margin-bottom
@@ -306,6 +307,7 @@
 
 <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
   <h2 class=" flex flex-row items-center text-xl sm:text-2xl font-bold w-fit">
+    {ticker}
     {title} Exposure By Strike
   </h2>
 
