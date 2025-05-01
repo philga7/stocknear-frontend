@@ -6,7 +6,7 @@
 
   export let data;
 
-  const rawData = data?.getData;
+  let rawData = {};
 
   function getIndustryHref(industryName) {
     // Replace spaces with hyphens
@@ -36,9 +36,17 @@ ${paragraphs.join("\n")}
 </div>`;
   }
 
-  const formattedText = textToParagraphs(
-    rawData?.description || "No Company description available at the moment.",
-  );
+  let formattedText;
+
+  $: {
+    if ($stockTicker) {
+      rawData = data?.getData;
+      formattedText = textToParagraphs(
+        rawData?.description ||
+          "No Company description available at the moment.",
+      );
+    }
+  }
 </script>
 
 <SEO

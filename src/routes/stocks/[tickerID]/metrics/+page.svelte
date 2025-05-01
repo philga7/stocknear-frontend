@@ -7,13 +7,13 @@
 
   export let data;
 
-  const names = data?.getBusinessMetrics?.revenue?.names || [];
+  let names;
 
-  const subsectionTitles = ["Overview", ...names];
+  let subsectionTitles = [];
 
-  const sectionMap = Object.fromEntries(
+  let sectionMap = Object.fromEntries(
     subsectionTitles?.map((title) => {
-      const key = title
+      let key = title
         ?.toLowerCase()
         ?.replace(/&/g, "") // Remove & symbol
         ?.replace(/\s+/g, "-") // Replace spaces with dash
@@ -23,48 +23,86 @@
       return [key, key === "overview" ? "" : key];
     }),
   );
-  const dataset = data?.getBusinessMetrics?.revenue?.history || [];
-  const geographicDataset = data?.getBusinessMetrics?.geographic?.history || [];
-  const operatingExpensesDataset =
-    data?.getBusinessMetrics?.operatingExpenses?.history || [];
+  let dataset;
+  let geographicDataset;
+  let operatingExpensesDataset;
 
-  const revenueNames = data?.getBusinessMetrics?.revenue?.names || [];
-  const geographicNames = data?.getBusinessMetrics?.geographic?.names || [];
-  const operatingExpensesNames =
-    data?.getBusinessMetrics?.operatingExpenses?.names || [];
+  let revenueNames;
+  let geographicNames;
+  let operatingExpensesNames;
 
-  const xData = dataset?.map((item) => item?.date);
-  const geographicXData = geographicDataset?.map((item) => item?.date);
-  const operatingExpensesXData = operatingExpensesDataset?.map(
-    (item) => item?.date,
-  );
+  let xData;
+  let geographicXData;
+  let operatingExpensesXData;
 
-  const categoryValues = revenueNames?.map((_, index) =>
-    dataset?.map((item) => item.value[index]),
-  );
-  const geographiCategoryValues = geographicNames?.map((_, index) =>
-    geographicDataset?.map((item) => item.value[index]),
-  );
-  const operatingExpensesCategoryValues = operatingExpensesNames?.map(
-    (_, index) => operatingExpensesDataset?.map((item) => item.value[index]),
-  );
+  let categoryValues;
+  let geographiCategoryValues;
+  let operatingExpensesCategoryValues;
 
-  const growthValues = revenueNames?.map((_, index) =>
-    dataset?.map((item) => item.valueGrowth[index]),
-  );
-  const geographicGrowthValues = geographicNames?.map((_, index) =>
-    geographicDataset?.map((item) => item.valueGrowth[index]),
-  );
-  const operatingExpensesGrowthValues = operatingExpensesNames?.map(
-    (_, index) =>
-      operatingExpensesDataset?.map((item) => item.valueGrowth[index]),
-  );
+  let growthValues;
+  let geographicGrowthValues;
+  let operatingExpensesGrowthValues;
 
   function getHref(title) {
-    const key = title?.toLowerCase().replace(/ & /g, "-").replace(/ /g, "-");
-    const path =
-      key === "overview" ? "/metrics" : `/metrics/${sectionMap[key]}`;
+    let key = title?.toLowerCase().replace(/ & /g, "-").replace(/ /g, "-");
+    let path = key === "overview" ? "/metrics" : `/metrics/${sectionMap[key]}`;
     return `/stocks/${$stockTicker}${path}`;
+  }
+
+  $: {
+    if ($stockTicker) {
+      names = data?.getBusinessMetrics?.revenue?.names || [];
+      subsectionTitles = ["Overview", ...names];
+
+      let sectionMap = Object.fromEntries(
+        subsectionTitles?.map((title) => {
+          let key = title
+            ?.toLowerCase()
+            ?.replace(/&/g, "") // Remove & symbol
+            ?.replace(/\s+/g, "-") // Replace spaces with dash
+            ?.replace(/-{2,}/g, "-") // Replace multiple dashes with single dash
+            ?.replace(/^-|-$/g, "") // Remove leading/trailing dashes
+            ?.trim();
+          return [key, key === "overview" ? "" : key];
+        }),
+      );
+      dataset = data?.getBusinessMetrics?.revenue?.history || [];
+      geographicDataset = data?.getBusinessMetrics?.geographic?.history || [];
+      operatingExpensesDataset =
+        data?.getBusinessMetrics?.operatingExpenses?.history || [];
+
+      revenueNames = data?.getBusinessMetrics?.revenue?.names || [];
+      geographicNames = data?.getBusinessMetrics?.geographic?.names || [];
+      operatingExpensesNames =
+        data?.getBusinessMetrics?.operatingExpenses?.names || [];
+
+      xData = dataset?.map((item) => item?.date);
+      geographicXData = geographicDataset?.map((item) => item?.date);
+      operatingExpensesXData = operatingExpensesDataset?.map(
+        (item) => item?.date,
+      );
+
+      categoryValues = revenueNames?.map((_, index) =>
+        dataset?.map((item) => item.value[index]),
+      );
+      geographiCategoryValues = geographicNames?.map((_, index) =>
+        geographicDataset?.map((item) => item.value[index]),
+      );
+      operatingExpensesCategoryValues = operatingExpensesNames?.map(
+        (_, index) =>
+          operatingExpensesDataset?.map((item) => item.value[index]),
+      );
+
+      growthValues = revenueNames?.map((_, index) =>
+        dataset?.map((item) => item.valueGrowth[index]),
+      );
+      geographicGrowthValues = geographicNames?.map((_, index) =>
+        geographicDataset?.map((item) => item.valueGrowth[index]),
+      );
+      operatingExpensesGrowthValues = operatingExpensesNames?.map((_, index) =>
+        operatingExpensesDataset?.map((item) => item.valueGrowth[index]),
+      );
+    }
   }
 </script>
 
@@ -73,51 +111,53 @@
   description={`View unique business metrics for ${displayCompanyName} (${$stockTicker}) stock, including revenue breakdown, operating income, revenue by geography.`}
 />
 
-<section class=" overflow-hidden min-h-screen w-full">
-  <div class="flex justify-center m-auto h-full overflow-hidden w-full">
-    <div
-      class="relative flex justify-center items-center overflow-hidden w-full"
-    >
-      <div class="sm:pl-7 sm:pb-7 w-full m-auto mt-2 sm:mt-0">
-        {#if revenueNames?.length !== 0 || geographicNames?.length !== 0}
-          {#if revenueNames?.length}
-            <MetricTable
-              title="{removeCompanyStrings(
-                $displayCompanyName,
-              )} Revenue Breakdown"
-              dateData={xData}
-              names={revenueNames}
-              {categoryValues}
-              {growthValues}
-              {getHref}
-            />
-          {/if}
+{#key $stockTicker}
+  <section class=" overflow-hidden min-h-screen w-full">
+    <div class="flex justify-center m-auto h-full overflow-hidden w-full">
+      <div
+        class="relative flex justify-center items-center overflow-hidden w-full"
+      >
+        <div class="sm:pl-7 sm:pb-7 w-full m-auto mt-2 sm:mt-0">
+          {#if revenueNames?.length !== 0 || geographicNames?.length !== 0}
+            {#if revenueNames?.length}
+              <MetricTable
+                title="{removeCompanyStrings(
+                  $displayCompanyName,
+                )} Revenue Breakdown"
+                dateData={xData}
+                names={revenueNames}
+                {categoryValues}
+                {growthValues}
+                {getHref}
+              />
+            {/if}
 
-          {#if geographicNames?.length}
-            <MetricTable
-              title="Revenue by Geography"
-              dateData={geographicXData}
-              names={geographicNames}
-              categoryValues={geographiCategoryValues}
-              growthValues={geographicGrowthValues}
-            />
-          {/if}
+            {#if geographicNames?.length}
+              <MetricTable
+                title="Revenue by Geography"
+                dateData={geographicXData}
+                names={geographicNames}
+                categoryValues={geographiCategoryValues}
+                growthValues={geographicGrowthValues}
+              />
+            {/if}
 
-          {#if operatingExpensesNames?.length}
-            <MetricTable
-              title="Operating Expense Breakdown"
-              dateData={operatingExpensesXData}
-              names={operatingExpensesNames}
-              categoryValues={operatingExpensesCategoryValues}
-              growthValues={operatingExpensesGrowthValues}
+            {#if operatingExpensesNames?.length}
+              <MetricTable
+                title="Operating Expense Breakdown"
+                dateData={operatingExpensesXData}
+                names={operatingExpensesNames}
+                categoryValues={operatingExpensesCategoryValues}
+                growthValues={operatingExpensesGrowthValues}
+              />
+            {/if}
+          {:else}
+            <Infobox
+              text={`Currently, there are no business metrics available for ${removeCompanyStrings($displayCompanyName)}.`}
             />
           {/if}
-        {:else}
-          <Infobox
-            text={`Currently, there are no business metrics available for ${removeCompanyStrings($displayCompanyName)}.`}
-          />
-        {/if}
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+{/key}
