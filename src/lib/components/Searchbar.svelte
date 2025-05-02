@@ -54,44 +54,42 @@
     isNavigating = true;
 
     const upperSymbol = symbol.toUpperCase();
-    const type = (assetType || "").toLowerCase();
 
-    // Update history (unchanged)
-    const newSearchItem = searchBarData?.find(
-      (item) => item.symbol.toUpperCase() === upperSymbol,
-    );
-    if (newSearchItem) {
-      updatedSearchHistory = [
-        newSearchItem,
-        ...(searchHistory?.filter(
-          (item) => item.symbol.toUpperCase() !== upperSymbol,
-        ) || []),
-      ].slice(0, 5);
-    }
+    // normalize type to 'etf' | 'index' | 'stock'
+    let type = (assetType || "").toLowerCase();
+    if (type.endsWith("s")) type = type.slice(0, -1);
 
-    // Close modal on mobile (unchanged)
-    searchOpen = false;
-    if ($screenWidth < 640) {
-      document
-        .getElementById("searchBarModal")
-        ?.dispatchEvent(new MouseEvent("click"));
-    }
+    // … history & modal code unchanged …
 
-    // Pull current path’s suffix beyond the first two segments
+    // Pull current path’s segments
     const segments = $page.url.pathname.split("/").filter(Boolean);
-    const suffix = segments.slice(2); // e.g. ['overview'] or ['chart', '1d']
+    const prevRoot = segments[0]?.toLowerCase() || "";
+
+    // Only keep suffix if we began on a finance page
+    const suffix = ["stocks", "etfs", "etf", "indexes", "index"].includes(
+      prevRoot,
+    )
+      ? segments.slice(2)
+      : [];
+
     const firstSuffix = suffix[0]?.toLowerCase() || "";
 
-    // Determine new root and suffix based on rules
+    // Determine new root
     let root = type === "etf" ? "etf" : type === "index" ? "index" : "stocks";
     let newSuffix = suffix;
 
-    // --- NEW: Always route 'metrics' to stocks metrics ---
+    // metrics always goes to stocks
     if (firstSuffix === "metrics") {
-      root = "stocks";
-      newSuffix = ["metrics"];
+      if (type === "stock") {
+        root = "stocks";
+        newSuffix = ["metrics"];
+      } else {
+        // ETF or INDEX: strip the metrics suffix entirely
+        newSuffix = [];
+      }
     } else {
-      const blockedSubstrings = [
+      // block some sub-pages when leaving stocks
+      const blocked = [
         "metrics",
         "profile",
         "statistics",
@@ -99,16 +97,11 @@
         "insider",
         "financials",
       ];
-
-      if (
-        root !== "stocks" &&
-        blockedSubstrings.some((blk) => firstSuffix.includes(blk))
-      ) {
+      if (root !== "stocks" && blocked.some((b) => firstSuffix.includes(b))) {
         newSuffix = [];
       }
 
-      // --- NEW: If switching *to* index *from* stocks/etf and suffix is "dividends" or "dark-pool", strip it ---
-      const prevRoot = segments[0]?.toLowerCase();
+      // moving to index from stocks/etf: strip dividend/dark-pool
       if (
         type === "index" &&
         (prevRoot === "stocks" || prevRoot === "etf") &&
@@ -117,10 +110,10 @@
         newSuffix = [];
       }
 
-      // Only apply fallback to /stocks if switching from ETF/Index to STOCK and suffix has 'holdings'
+      // moving to stock from etf/index: strip holdings
       if (
         type === "stock" &&
-        ["etf", "index"].includes(segments[0]?.toLowerCase()) &&
+        (prevRoot === "etf" || prevRoot === "index") &&
         firstSuffix.includes("holdings")
       ) {
         root = "stocks";
@@ -128,13 +121,9 @@
       }
     }
 
-    // Build new path
     const newPath = `/${[root, upperSymbol, ...newSuffix].join("/")}`;
-
-    // Navigate without piling up history entries
     await goto(newPath, { replaceState: true });
 
-    // Reset guard
     setTimeout(() => (isNavigating = false), 100);
   }
 
