@@ -14,6 +14,7 @@
             href="https://www.reddit.com/r/stocknear/"
             rel="noopener noreferrer"
             target="_blank"
+            aria-label="Join us on Reddit"
             class="flex flex-row items-center"
           >
             <svg
@@ -31,6 +32,7 @@
             href={discordURL}
             rel="noopener noreferrer"
             target="_blank"
+            aria-label="Join us on Discord"
             class="flex flex-row items-center"
           >
             <svg
@@ -48,6 +50,7 @@
             href="https://twitter.com/intent/follow?screen_name=stocknear"
             rel="noopener noreferrer"
             target="_blank"
+            aria-label="Join us on Twitter"
             class="flex flex-row items-center"
           >
             <svg
@@ -65,6 +68,7 @@
             href="https://github.com/stocknear"
             rel="noopener noreferrer"
             target="_blank"
+            aria-label="Join us on Github"
             class="flex flex-row items-center ml-3"
           >
             <svg
