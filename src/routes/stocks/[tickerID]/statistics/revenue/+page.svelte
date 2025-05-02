@@ -300,7 +300,7 @@
   description={`Explore the historical revenue, sales performance, and growth trends of ${$displayCompanyName} (${$stockTicker}). Get in-depth financial insights.`}
 />
 
-<section class="w-full overflow-hidden h-full">
+<section class="w-full overflow-hidden min-h-screen">
   <div class="w-full flex justify-center w-full sm-auto h-full overflow-hidden">
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"
@@ -314,7 +314,7 @@
             <Tutorial {steps} />
           </div>
 
-          {#if rawData?.length !== 0}
+          {#if Object?.keys(data?.getHistoricalRevenue)?.length > 0}
             <div class="grid grid-cols-1 gap-2 mt-3 mb-3 sm:mt-0 sm:mb-0">
               <Infobox
                 text={`${removeCompanyStrings($displayCompanyName)} reported an annual revenue of ${abbreviateNumber(rawData?.annual?.at(0)?.revenue, true)}, reflecting a ${rawData?.growthRevenue}% growth. For the quarter ending ${formatDate(rawData?.quarter?.at(0)?.date)}, ${removeCompanyStrings($displayCompanyName)} generated ${abbreviateNumber(rawData?.quarter?.at(0)?.revenue, true)} in revenue.`}
