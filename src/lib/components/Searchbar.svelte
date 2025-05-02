@@ -124,37 +124,23 @@
     const newPath = `/${[root, upperSymbol, ...newSuffix].join("/")}`;
     await goto(newPath, { replaceState: true });
 
-    setTimeout(() => (isNavigating = false), 100);
-  }
-
-  function searchBarTicker(state) {
-    if (isNavigating) return;
-    showSuggestions = false;
-
-    if (
-      !state ||
-      !searchBarData?.find((item) => item?.symbol === state?.toUpperCase())
-    ) {
-      if ($screenWidth < 640) {
-        const closePopup = document.getElementById("searchBarModal");
-        closePopup?.dispatchEvent(new MouseEvent("click"));
-      }
-      return;
-    }
-
-    const upperState = state.toUpperCase();
     const newSearchItem = searchBarData?.find(
-      ({ symbol }) => symbol === upperState,
+      ({ symbol }) => symbol === upperSymbol,
     );
 
     if (newSearchItem) {
+      const upperSymbol = newSearchItem.symbol.toUpperCase();
       updatedSearchHistory = [
         newSearchItem,
         ...(searchHistory?.filter(
-          (item) => item?.symbol?.toUpperCase() !== upperState,
+          (item) => item?.symbol?.toUpperCase() !== upperSymbol,
         ) || []),
       ].slice(0, 5);
     }
+
+    console.log(updatedSearchHistory);
+
+    setTimeout(() => (isNavigating = false), 100);
 
     searchOpen = false;
     if ($screenWidth < 640) {
@@ -511,12 +497,7 @@
           autocomplete="off"
         />
 
-        <button
-          on:click={() => searchBarTicker(inputValue)}
-          class="absolute inset-0 right-auto group"
-          type="submit"
-          aria-label="Search"
-        >
+        <button class="absolute inset-0 right-auto group" aria-label="Search">
           <svg
             class="w-4 h-4 shrink-0 fill-current ml-4 mr-2 dark:text-slate-400"
             viewBox="0 0 16 16"
