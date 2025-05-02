@@ -9,7 +9,7 @@
   <div class="container mx-auto px-5 sm:px-3">
     <div class="w-full flex flex-col md:flex-row py-3">
       <div class="flex-1 mb-8">
-        <div class="flex flex-row items-center mt-4">
+        <div class="flex flex-row items-center mt-4 gap-x-1.5">
           <a
             href="https://www.reddit.com/r/stocknear/"
             rel="noopener noreferrer"

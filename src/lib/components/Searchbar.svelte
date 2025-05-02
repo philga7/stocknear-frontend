@@ -11,7 +11,6 @@
   let searchBarData = [];
   let isLoading = false;
   let timeoutId;
-  let focusedSuggestion = "";
   let showSuggestions = false;
   let touchedInput = false;
 
@@ -87,41 +86,46 @@
     let root = type === "etf" ? "etf" : type === "index" ? "index" : "stocks";
     let newSuffix = suffix;
 
-    const blockedSubstrings = [
-      "metrics",
-      "profile",
-      "statistics",
-      "forecast",
-      "insider",
-      "financials",
-    ];
-
-    if (
-      root !== "stocks" &&
-      blockedSubstrings.some((blk) => firstSuffix.includes(blk))
-    ) {
-      newSuffix = [];
-    }
-
-    // --- NEW: If switching *to* index *from* stocks/etf and suffix is "dividends", strip it ---
-    const prevRoot = segments[0]?.toLowerCase();
-    if (
-      type === "index" &&
-      (prevRoot === "stocks" || prevRoot === "etf") &&
-      (firstSuffix?.includes("dividends") || firstSuffix?.includes("dark-pool"))
-    ) {
-      // force fallback to /index/{symbol}
-      newSuffix = [];
-    }
-
-    // Only apply fallback to /stocks if switching from ETF/Index to STOCK and suffix has 'holdings'
-    if (
-      type === "stock" &&
-      ["etf", "index"].includes(segments[0]?.toLowerCase()) &&
-      firstSuffix.includes("holdings")
-    ) {
+    // --- NEW: Always route 'metrics' to stocks metrics ---
+    if (firstSuffix === "metrics") {
       root = "stocks";
-      newSuffix = [];
+      newSuffix = ["metrics"];
+    } else {
+      const blockedSubstrings = [
+        "metrics",
+        "profile",
+        "statistics",
+        "forecast",
+        "insider",
+        "financials",
+      ];
+
+      if (
+        root !== "stocks" &&
+        blockedSubstrings.some((blk) => firstSuffix.includes(blk))
+      ) {
+        newSuffix = [];
+      }
+
+      // --- NEW: If switching *to* index *from* stocks/etf and suffix is "dividends" or "dark-pool", strip it ---
+      const prevRoot = segments[0]?.toLowerCase();
+      if (
+        type === "index" &&
+        (prevRoot === "stocks" || prevRoot === "etf") &&
+        (firstSuffix.includes("dividends") || firstSuffix.includes("dark-pool"))
+      ) {
+        newSuffix = [];
+      }
+
+      // Only apply fallback to /stocks if switching from ETF/Index to STOCK and suffix has 'holdings'
+      if (
+        type === "stock" &&
+        ["etf", "index"].includes(segments[0]?.toLowerCase()) &&
+        firstSuffix.includes("holdings")
+      ) {
+        root = "stocks";
+        newSuffix = [];
+      }
     }
 
     // Build new path
@@ -461,11 +465,11 @@
   bind:checked={searchBarModalChecked}
 />
 
-<dialog id="searchBarModal" class="modal bg-[#000]/40 p-3">
+<dialog id="searchBarModal" class="modal bg-[#000]/40 p-3 min-h-96">
   <label for="searchBarModal" class="cursor-pointer modal-backdrop"></label>
 
   <div
-    class="z-999 modal-box overflow-hidden rounded-md shadow bg-white dark:bg-secondary border border-gray-300 dark:border-gray-600 sm:my-8 sm:m-auto sm:h-auto w-full sm:w-3/4 lg:w-1/2 2xl:w-1/3"
+    class="z-999 modal-box min-h-96 overflow-hidden rounded-md shadow bg-white dark:bg-secondary border border-gray-300 dark:border-gray-600 sm:my-8 sm:m-auto sm:h-auto w-full sm:w-3/4 lg:w-1/2 2xl:w-1/3"
   >
     <label
       for="searchBarModal"
@@ -551,8 +555,6 @@
         {#each searchBarData as item}
           <li
             class="cursor-pointer text-muted dark:text-white border-b border-gray-300 dark:border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-2 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-200 dark:data-highlighted:bg-gray-200 dark:data-highlighted:bg-primary"
-            value={item?.symbol}
-            label={item?.name}
             on:click={() => handleSearch(item?.symbol, item?.type)}
           >
             <div class="flex flex-row items-center justify-between w-full">
