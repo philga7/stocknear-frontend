@@ -696,64 +696,59 @@
     }
   }
 
-  $: {
-    if ($stockTicker) {
-      index = 0;
-      activeIdx = 0;
-      changeRevenue = 0;
-      changeRevenueNextYear = 0;
-      changeEPS = 0;
-      changeEPSNextYear = 0;
-      price = data?.getStockQuote?.price?.toFixed(2) || 0;
+  index = 0;
+  activeIdx = 0;
+  changeRevenue = 0;
+  changeRevenueNextYear = 0;
+  changeEPS = 0;
+  changeEPSNextYear = 0;
+  price = data?.getStockQuote?.price?.toFixed(2) || 0;
 
-      numOfAnalyst = data?.getAnalystSummary?.numOfAnalyst || 0;
-      avgPriceTarget = data?.getAnalystSummary?.avgPriceTarget || 0;
-      medianPriceTarget = data?.getAnalystSummary?.medianPriceTarget || 0;
-      lowPriceTarget = data?.getAnalystSummary?.lowPriceTarget || 0;
-      highPriceTarget = data?.getAnalystSummary?.highPriceTarget || 0;
-      consensusRating = data?.getAnalystSummary?.consensusRating;
+  numOfAnalyst = data?.getAnalystSummary?.numOfAnalyst || 0;
+  avgPriceTarget = data?.getAnalystSummary?.avgPriceTarget || 0;
+  medianPriceTarget = data?.getAnalystSummary?.medianPriceTarget || 0;
+  lowPriceTarget = data?.getAnalystSummary?.lowPriceTarget || 0;
+  highPriceTarget = data?.getAnalystSummary?.highPriceTarget || 0;
+  consensusRating = data?.getAnalystSummary?.consensusRating;
 
-      lowChange = calculatePriceChange(lowPriceTarget);
-      medianChange = calculatePriceChange(medianPriceTarget);
-      avgChange = calculatePriceChange(avgPriceTarget);
-      highChange = calculatePriceChange(highPriceTarget);
-      rawAnalystList = data?.getAnalystSummary?.recommendationList || [];
-      recommendationList =
-        rawAnalystList?.length > 5 ? rawAnalystList?.slice(-6) : rawAnalystList;
+  lowChange = calculatePriceChange(lowPriceTarget);
+  medianChange = calculatePriceChange(medianPriceTarget);
+  avgChange = calculatePriceChange(avgPriceTarget);
+  highChange = calculatePriceChange(highPriceTarget);
+  rawAnalystList = data?.getAnalystSummary?.recommendationList || [];
+  recommendationList =
+    rawAnalystList?.length > 5 ? rawAnalystList?.slice(-6) : rawAnalystList;
 
-      if (data?.getAnalystEstimate?.length !== 0) {
-        index = findIndex(data?.getAnalystEstimate);
+  if (data?.getAnalystEstimate?.length !== 0) {
+    index = findIndex(data?.getAnalystEstimate);
 
-        // Calculate changes using the helper function
-        const estimatedRevenueAvg =
-          data?.getAnalystEstimate[index]?.estimatedRevenueAvg;
-        const revenue = data?.getAnalystEstimate[index - 1]?.revenue;
-        const estimatedRevenueAvgNextYear =
-          data?.getAnalystEstimate[index + 1]?.estimatedRevenueAvg;
-        const estimatedEpsAvg =
-          data?.getAnalystEstimate[index]?.estimatedEpsAvg;
-        const eps = data?.getAnalystEstimate[index - 1]?.eps;
-        const estimatedEPSAvgNextYear =
-          data?.getAnalystEstimate[index + 1]?.estimatedEpsAvg;
+    // Calculate changes using the helper function
+    const estimatedRevenueAvg =
+      data?.getAnalystEstimate[index]?.estimatedRevenueAvg;
+    const revenue = data?.getAnalystEstimate[index - 1]?.revenue;
+    const estimatedRevenueAvgNextYear =
+      data?.getAnalystEstimate[index + 1]?.estimatedRevenueAvg;
+    const estimatedEpsAvg = data?.getAnalystEstimate[index]?.estimatedEpsAvg;
+    const eps = data?.getAnalystEstimate[index - 1]?.eps;
+    const estimatedEPSAvgNextYear =
+      data?.getAnalystEstimate[index + 1]?.estimatedEpsAvg;
 
-        // Calculate percentage changes for each metric
-        changeRevenue = calculateChange(estimatedRevenueAvg, revenue);
-        changeRevenueNextYear = calculateChange(
-          estimatedRevenueAvgNextYear,
-          estimatedRevenueAvg,
-        );
-        changeEPS = calculateChange(estimatedEpsAvg, eps);
-        changeEPSNextYear = calculateChange(
-          estimatedEPSAvgNextYear,
-          estimatedEpsAvg,
-        );
-      }
-
-      optionsBarChart = getBarChart() || null;
-      optionsPieChart = getPieChart() || null;
-      config = getPriceForecastChart() || null;
-    }
+    // Calculate percentage changes for each metric
+    changeRevenue = calculateChange(estimatedRevenueAvg, revenue);
+    changeRevenueNextYear = calculateChange(
+      estimatedRevenueAvgNextYear,
+      estimatedRevenueAvg,
+    );
+    changeEPS = calculateChange(estimatedEpsAvg, eps);
+    changeEPSNextYear = calculateChange(
+      estimatedEPSAvgNextYear,
+      estimatedEpsAvg,
+    );
   }
+
+  optionsBarChart = getBarChart() || null;
+  optionsPieChart = getPieChart() || null;
+  config = getPriceForecastChart() || null;
 </script>
 
 <SEO
