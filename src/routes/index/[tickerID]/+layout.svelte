@@ -780,8 +780,9 @@
                     </nav>
 
                     <!--Start-Main Content-->
-
-                    <slot />
+                    {#key $indexTicker}
+                      <slot />
+                    {/key}
                     <!--End Main Content-->
                   </div>
                 </div>

@@ -808,8 +808,9 @@
                     </nav>
 
                     <!--Start-Main Content-->
-
-                    <slot />
+                    {#key $etfTicker}
+                      <slot />
+                    {/key}
                     <!--End Main Content-->
                   </div>
                 </div>

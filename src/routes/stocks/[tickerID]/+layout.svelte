@@ -873,8 +873,9 @@
                     </nav>
 
                     <!--Start-Main Content-->
-
-                    <slot />
+                    {#key $stockTicker}
+                      <slot />
+                    {/key}
                     <!--End Main Content-->
                   </div>
                 </div>

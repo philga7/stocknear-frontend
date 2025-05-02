@@ -234,7 +234,7 @@
     return options;
   }
 
-  $: if ($stockTicker || $etfTicker || $mode) {
+  $: if ($mode) {
     config = null;
     config = getPlotChart() || null;
   }

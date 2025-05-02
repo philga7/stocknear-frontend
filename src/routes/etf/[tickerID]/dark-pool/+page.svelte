@@ -9,17 +9,9 @@
   import SEO from "$lib/components/SEO.svelte";
 
   export let data;
-  let historicalDarkPool = [];
-  let priceLevel = [];
-  let hottestTrades = [];
-
-  $: {
-    if ($etfTicker) {
-      historicalDarkPool = data?.getHistoricalDarkPool || [];
-      priceLevel = data?.getPriceLevel?.priceLevel || [];
-      hottestTrades = data?.getPriceLevel?.hottestTrades || [];
-    }
-  }
+  let historicalDarkPool = data?.getHistoricalDarkPool || [];
+  let priceLevel = data?.getPriceLevel?.priceLevel || [];
+  let hottestTrades = data?.getPriceLevel?.hottestTrades || [];
 </script>
 
 <SEO
@@ -58,28 +50,22 @@
           {/if}
         </div>
         {#if priceLevel?.length > 0}
-          {#key $etfTicker}
-            <PriceLevel
-              {data}
-              rawData={priceLevel}
-              metrics={data?.getPriceLevel?.metrics}
-            />
-          {/key}
+          <PriceLevel
+            {data}
+            rawData={priceLevel}
+            metrics={data?.getPriceLevel?.metrics}
+          />
         {/if}
         {#if hottestTrades?.length > 0}
-          {#key $etfTicker}
-            <HottestTrades
-              {data}
-              rawData={hottestTrades}
-              ticker={$etfTicker?.toUpperCase()}
-            />
-          {/key}
+          <HottestTrades
+            {data}
+            rawData={hottestTrades}
+            ticker={$etfTicker?.toUpperCase()}
+          />
         {/if}
 
         {#if historicalDarkPool?.length > 10}
-          {#key $etfTicker}
-            <HistoricalVolume {data} rawData={historicalDarkPool} />
-          {/key}
+          <HistoricalVolume {data} rawData={historicalDarkPool} />
         {/if}
         <UpgradeToPro {data} />
       </div>

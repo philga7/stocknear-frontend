@@ -65,45 +65,44 @@
 </script>
 
 <!-- Rest of the component remains the same -->
-{#key $stockTicker}
-  <section class="w-full overflow-hidden h-full">
-    <div class="m-auto h-full overflow-hidden">
-      <main class="w-full">
-        <div class="m-auto">
-          {#if names?.length > 0}
-            <nav
-              class="sm:ml-4 pt-1 text-sm sm:text-[1rem] whitespace-nowrap overflow-x-auto whitespace-nowrap"
-            >
-              <ul class="flex flex-row items-center w-full">
-                {#each subsectionTitles as title}
-                  {@const sectionKey = title
-                    ?.toLowerCase()
-                    ?.replace(/&/g, "") // Remove & symbol
-                    ?.replace(/\s+/g, "-") // Replace spaces with dash
-                    ?.replace(/-{2,}/g, "-") // Replace multiple dashes with single dash
-                    ?.replace(/^-|-$/g, "") // Remove leading/trailing dashes
-                    ?.trim()}
-                  <a
-                    href={getHref(sectionKey)}
-                    on:click={() => changeSubSection(sectionKey)}
-                    class="p-2 px-5 cursor-pointer {displaySubSection ===
-                    sectionKey
-                      ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
-                      : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
-                  >
-                    {title}
-                  </a>
-                {/each}
-              </ul>
-            </nav>
-          {/if}
-        </div>
-      </main>
 
-      <slot />
-    </div>
-  </section>
-{/key}
+<section class="w-full overflow-hidden h-full">
+  <div class="m-auto h-full overflow-hidden">
+    <main class="w-full">
+      <div class="m-auto">
+        {#if names?.length > 0}
+          <nav
+            class="sm:ml-4 pt-1 text-sm sm:text-[1rem] whitespace-nowrap overflow-x-auto whitespace-nowrap"
+          >
+            <ul class="flex flex-row items-center w-full">
+              {#each subsectionTitles as title}
+                {@const sectionKey = title
+                  ?.toLowerCase()
+                  ?.replace(/&/g, "") // Remove & symbol
+                  ?.replace(/\s+/g, "-") // Replace spaces with dash
+                  ?.replace(/-{2,}/g, "-") // Replace multiple dashes with single dash
+                  ?.replace(/^-|-$/g, "") // Remove leading/trailing dashes
+                  ?.trim()}
+                <a
+                  href={getHref(sectionKey)}
+                  on:click={() => changeSubSection(sectionKey)}
+                  class="p-2 px-5 cursor-pointer {displaySubSection ===
+                  sectionKey
+                    ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                    : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+                >
+                  {title}
+                </a>
+              {/each}
+            </ul>
+          </nav>
+        {/if}
+      </div>
+    </main>
+
+    <slot />
+  </div>
+</section>
 
 <style>
   .scrollbar {

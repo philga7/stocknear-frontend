@@ -160,21 +160,17 @@
     stockList = [...originalData].sort(compareValues)?.slice(0, 50);
   };
 
-  $: {
-    if (ticker) {
-      rawData = data?.getStockDividend;
-      stockList = rawData?.history?.slice(0, 50);
+  rawData = data?.getStockDividend;
+  stockList = rawData?.history?.slice(0, 50);
 
-      exDividendDate = rawData?.history?.at(0)?.date;
-      dividendYield = rawData?.dividendYield;
-      annualDividend = rawData?.annualDividend;
-      payoutFrequency = rawData?.payoutFrequency;
-      payoutRatio = rawData?.payoutRatio;
-      dividendGrowth = rawData?.dividendGrowth;
+  exDividendDate = rawData?.history?.at(0)?.date;
+  dividendYield = rawData?.dividendYield;
+  annualDividend = rawData?.annualDividend;
+  payoutFrequency = rawData?.payoutFrequency;
+  payoutRatio = rawData?.payoutRatio;
+  dividendGrowth = rawData?.dividendGrowth;
 
-      htmlOutput = generateDividendInfoHTML();
-    }
-  }
+  htmlOutput = generateDividendInfoHTML();
 </script>
 
 <section class="w-full overflow-hidden h-full">

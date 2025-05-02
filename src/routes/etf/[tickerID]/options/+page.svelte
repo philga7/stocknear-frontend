@@ -49,10 +49,6 @@
     return formatter.format(date);
   }
 
-  function changeVolumeOI(event) {
-    displayData = event.target.value;
-  }
-
   function plotData(callData, putData, priceList) {
     const options = {
       animation: false,

@@ -20,9 +20,7 @@
       class="w-full relative flex justify-center items-center overflow-hidden"
     >
       {#if data?.getData?.length > 0}
-        {#key $etfTicker}
-          <UnusualActivity {data} ticker={$etfTicker} />
-        {/key}
+        <UnusualActivity {data} ticker={$etfTicker} />
       {:else}
         <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
           <div class="mt-2">

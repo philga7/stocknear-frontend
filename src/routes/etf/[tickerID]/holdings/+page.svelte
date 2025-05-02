@@ -6,17 +6,16 @@
   import SEO from "$lib/components/SEO.svelte";
 
   export let data;
-  let rawData = [];
-
-  let lastUpdate;
+  let rawData = [...data.getETFHoldings.holdings];
   let options = {
     month: "short",
     day: "numeric",
     year: "numeric",
     timeZone: "UTC",
   };
-
-  let formattedDate;
+  let lastUpdate = new Date(data.getETFHoldings.lastUpdate);
+  let formattedDate = lastUpdate.toLocaleDateString("en-US", options);
+  let htmlOutput = generateStatementInfoHTML();
 
   const excludedRules = new Set([
     "price",
@@ -56,17 +55,6 @@
     `;
     }
   }
-
-  let htmlOutput;
-
-  $: if ($etfTicker && data?.getETFHoldings) {
-    // whenever _either_ the ticker _or_ the incoming data changes,
-    // this block will re–run
-    rawData = [...data.getETFHoldings.holdings];
-    lastUpdate = new Date(data.getETFHoldings.lastUpdate);
-    formattedDate = lastUpdate.toLocaleDateString("en-US", options);
-    htmlOutput = generateStatementInfoHTML();
-  }
 </script>
 
 <SEO
@@ -99,15 +87,13 @@
         </div>
 
         {#if rawData?.length > 0}
-          {#key $etfTicker}
-            <Table
-              {data}
-              {rawData}
-              {excludedRules}
-              {defaultList}
-              {specificRows}
-            />
-          {/key}
+          <Table
+            {data}
+            {rawData}
+            {excludedRules}
+            {defaultList}
+            {specificRows}
+          />
         {/if}
       </div>
     </div>

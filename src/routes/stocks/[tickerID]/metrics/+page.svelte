@@ -111,53 +111,51 @@
   description={`View unique business metrics for ${displayCompanyName} (${$stockTicker}) stock, including revenue breakdown, operating income, revenue by geography.`}
 />
 
-{#key $stockTicker}
-  <section class=" overflow-hidden min-h-screen w-full">
-    <div class="flex justify-center m-auto h-full overflow-hidden w-full">
-      <div
-        class="relative flex justify-center items-center overflow-hidden w-full"
-      >
-        <div class="sm:pl-7 sm:pb-7 w-full m-auto mt-2 sm:mt-0">
-          {#if revenueNames?.length !== 0 || geographicNames?.length !== 0}
-            {#if revenueNames?.length}
-              <MetricTable
-                title="{removeCompanyStrings(
-                  $displayCompanyName,
-                )} Revenue Breakdown"
-                dateData={xData}
-                names={revenueNames}
-                {categoryValues}
-                {growthValues}
-                {getHref}
-              />
-            {/if}
-
-            {#if geographicNames?.length}
-              <MetricTable
-                title="Revenue by Geography"
-                dateData={geographicXData}
-                names={geographicNames}
-                categoryValues={geographiCategoryValues}
-                growthValues={geographicGrowthValues}
-              />
-            {/if}
-
-            {#if operatingExpensesNames?.length}
-              <MetricTable
-                title="Operating Expense Breakdown"
-                dateData={operatingExpensesXData}
-                names={operatingExpensesNames}
-                categoryValues={operatingExpensesCategoryValues}
-                growthValues={operatingExpensesGrowthValues}
-              />
-            {/if}
-          {:else}
-            <Infobox
-              text={`Currently, there are no business metrics available for ${removeCompanyStrings($displayCompanyName)}.`}
+<section class=" overflow-hidden min-h-screen w-full">
+  <div class="flex justify-center m-auto h-full overflow-hidden w-full">
+    <div
+      class="relative flex justify-center items-center overflow-hidden w-full"
+    >
+      <div class="sm:pl-7 sm:pb-7 w-full m-auto mt-2 sm:mt-0">
+        {#if revenueNames?.length !== 0 || geographicNames?.length !== 0}
+          {#if revenueNames?.length}
+            <MetricTable
+              title="{removeCompanyStrings(
+                $displayCompanyName,
+              )} Revenue Breakdown"
+              dateData={xData}
+              names={revenueNames}
+              {categoryValues}
+              {growthValues}
+              {getHref}
             />
           {/if}
-        </div>
+
+          {#if geographicNames?.length}
+            <MetricTable
+              title="Revenue by Geography"
+              dateData={geographicXData}
+              names={geographicNames}
+              categoryValues={geographiCategoryValues}
+              growthValues={geographicGrowthValues}
+            />
+          {/if}
+
+          {#if operatingExpensesNames?.length}
+            <MetricTable
+              title="Operating Expense Breakdown"
+              dateData={operatingExpensesXData}
+              names={operatingExpensesNames}
+              categoryValues={operatingExpensesCategoryValues}
+              growthValues={operatingExpensesGrowthValues}
+            />
+          {/if}
+        {:else}
+          <Infobox
+            text={`Currently, there are no business metrics available for ${removeCompanyStrings($displayCompanyName)}.`}
+          />
+        {/if}
       </div>
     </div>
-  </section>
-{/key}
+  </div>
+</section>

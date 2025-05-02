@@ -194,123 +194,112 @@
   description={`View unique business metrics for ${$displayCompanyName} (${$stockTicker}) stock, including revenue by segment, gross margin by type, gross profit by type.`}
 />
 
-{#key $stockTicker}
-  <section class=" w-full overflow-hidden h-full">
+<section class=" w-full overflow-hidden h-full">
+  <div class="w-full flex justify-center w-full sm-auto h-full overflow-hidden">
     <div
-      class="w-full flex justify-center w-full sm-auto h-full overflow-hidden"
+      class="w-full relative flex justify-center items-center overflow-hidden"
     >
-      <div
-        class="w-full relative flex justify-center items-center overflow-hidden"
-      >
-        <main class="w-full">
-          <div class="sm:pl-7 sm:pb-7 sm:pt-7 pt-3 m-auto mt-2 sm:mt-0 w-full">
-            <div class="mb-3">
-              <h1 class="text-xl sm:text-2xl font-bold">
-                {convertToTitleCase(data?.getParams)} Revenue
-              </h1>
-            </div>
-
-            {#if rawData?.length !== 0}
-              <div
-                class="chart mt-5 sm:mt-0 border border-gray-300 dark:border-gray-800 rounded"
-                use:highcharts={config}
-              ></div>
-
-              <h2 class="mt-5 text-xl sm:text-2xl font-bold">History</h2>
-
-              <div class="w-full overflow-x-auto">
-                <table
-                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
-                >
-                  <thead class="text-muted dark:text-white dark:bg-default">
-                    <tr class="border-b border-gray-300 dark:border-gray-800">
-                      <th
-                        class=" font-semibold text-start text-sm sm:text-[1rem]"
-                        >Quarter</th
-                      >
-                      <th class=" font-semibold text-end text-sm sm:text-[1rem]"
-                        >Value</th
-                      >
-                      <th
-                        class=" font-semibold text-end text-sm sm:text-[1rem]"
-                      >
-                        Change
-                      </th>
-                      <th class=" font-semibold text-end text-sm sm:text-[1rem]"
-                        >Growth</th
-                      >
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {#each tableList as item, index}
-                      <!-- row -->
-                      <tr
-                        class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                      >
-                        <td class=" text-sm sm:text-[1rem] whitespace-nowrap">
-                          {new Date(item?.date ?? null)?.toLocaleString(
-                            "en-US",
-                            {
-                              month: "short",
-                              day: "numeric",
-                              year: "numeric",
-                            },
-                          )}
-                        </td>
-
-                        <td
-                          class=" text-sm sm:text-[1rem] text-right whitespace-nowrap"
-                        >
-                          {@html item?.value !== null &&
-                          item?.value !== undefined
-                            ? abbreviateNumber(item?.value, false, true)
-                            : "n/a"}
-                        </td>
-
-                        <td
-                          class=" text-sm sm:text-[1rem] text-right whitespace-nowrap"
-                        >
-                          {#if Number(item?.value - tableList[index + 1]?.value)}
-                            {@html abbreviateNumber(
-                              item?.value - tableList[index + 1]?.value,
-                              false,
-                              true,
-                            )}
-                          {:else}
-                            n/a
-                          {/if}
-                        </td>
-
-                        <td
-                          class=" text-sm sm:text-[1rem] whitespace-nowrap text-end"
-                        >
-                          {#if item?.valueGrowth > 0}
-                            <span class="text-green-800 dark:text-[#00FC50]">
-                              +{item?.valueGrowth?.toFixed(2)}%
-                            </span>
-                          {:else if item?.valueGrowth < 0}
-                            <span class="text-red-800 dark:text-[#FF2F1F]">
-                              {item?.valueGrowth?.toFixed(2)}%
-                            </span>
-                          {:else}
-                            n/a
-                          {/if}
-                        </td>
-                      </tr>
-                    {/each}
-                  </tbody>
-                </table>
-              </div>
-            {:else}
-              <h2
-                class="mt-16 flex justify-center items-center text-2xl mb-5 m-auto"
-              >
-                No data available
-              </h2>
-            {/if}
+      <main class="w-full">
+        <div class="sm:pl-7 sm:pb-7 sm:pt-7 pt-3 m-auto mt-2 sm:mt-0 w-full">
+          <div class="mb-3">
+            <h1 class="text-xl sm:text-2xl font-bold">
+              {convertToTitleCase(data?.getParams)} Revenue
+            </h1>
           </div>
-        </main>
-      </div>
+
+          {#if rawData?.length !== 0}
+            <div
+              class="chart mt-5 sm:mt-0 border border-gray-300 dark:border-gray-800 rounded"
+              use:highcharts={config}
+            ></div>
+
+            <h2 class="mt-5 text-xl sm:text-2xl font-bold">History</h2>
+
+            <div class="w-full overflow-x-auto">
+              <table
+                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
+              >
+                <thead class="text-muted dark:text-white dark:bg-default">
+                  <tr class="border-b border-gray-300 dark:border-gray-800">
+                    <th class=" font-semibold text-start text-sm sm:text-[1rem]"
+                      >Quarter</th
+                    >
+                    <th class=" font-semibold text-end text-sm sm:text-[1rem]"
+                      >Value</th
+                    >
+                    <th class=" font-semibold text-end text-sm sm:text-[1rem]">
+                      Change
+                    </th>
+                    <th class=" font-semibold text-end text-sm sm:text-[1rem]"
+                      >Growth</th
+                    >
+                  </tr>
+                </thead>
+                <tbody>
+                  {#each tableList as item, index}
+                    <!-- row -->
+                    <tr
+                      class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
+                    >
+                      <td class=" text-sm sm:text-[1rem] whitespace-nowrap">
+                        {new Date(item?.date ?? null)?.toLocaleString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })}
+                      </td>
+
+                      <td
+                        class=" text-sm sm:text-[1rem] text-right whitespace-nowrap"
+                      >
+                        {@html item?.value !== null && item?.value !== undefined
+                          ? abbreviateNumber(item?.value, false, true)
+                          : "n/a"}
+                      </td>
+
+                      <td
+                        class=" text-sm sm:text-[1rem] text-right whitespace-nowrap"
+                      >
+                        {#if Number(item?.value - tableList[index + 1]?.value)}
+                          {@html abbreviateNumber(
+                            item?.value - tableList[index + 1]?.value,
+                            false,
+                            true,
+                          )}
+                        {:else}
+                          n/a
+                        {/if}
+                      </td>
+
+                      <td
+                        class=" text-sm sm:text-[1rem] whitespace-nowrap text-end"
+                      >
+                        {#if item?.valueGrowth > 0}
+                          <span class="text-green-800 dark:text-[#00FC50]">
+                            +{item?.valueGrowth?.toFixed(2)}%
+                          </span>
+                        {:else if item?.valueGrowth < 0}
+                          <span class="text-red-800 dark:text-[#FF2F1F]">
+                            {item?.valueGrowth?.toFixed(2)}%
+                          </span>
+                        {:else}
+                          n/a
+                        {/if}
+                      </td>
+                    </tr>
+                  {/each}
+                </tbody>
+              </table>
+            </div>
+          {:else}
+            <h2
+              class="mt-16 flex justify-center items-center text-2xl mb-5 m-auto"
+            >
+              No data available
+            </h2>
+          {/if}
+        </div>
+      </main>
     </div>
-  </section>
-{/key}
+  </div>
+</section>

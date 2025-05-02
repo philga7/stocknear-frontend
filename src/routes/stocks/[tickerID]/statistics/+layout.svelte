@@ -116,9 +116,7 @@
           </ul>
         </nav>
       </div>
-      {#key $stockTicker}
-        <slot />
-      {/key}
+      <slot />
     </main>
   </div>
 </section>

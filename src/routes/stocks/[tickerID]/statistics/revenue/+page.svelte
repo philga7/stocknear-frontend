@@ -288,7 +288,7 @@
   ];
 
   $: {
-    if ($stockTicker || $mode) {
+    if ($mode) {
       changeTablePeriod(0);
       changeTimePeriod(0);
     }

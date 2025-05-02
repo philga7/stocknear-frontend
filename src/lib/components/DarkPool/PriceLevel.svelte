@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { displayCompanyName, stockTicker, etfTicker } from "$lib/store";
+  import { displayCompanyName } from "$lib/store";
   import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
   import highcharts from "$lib/highcharts.ts";
   import RealtimeTrade from "$lib/components/DarkPool/RealtimeTrade.svelte";
@@ -140,7 +140,7 @@
     return options;
   }
 
-  $: if ((($stockTicker || $etfTicker) && category) || $mode) {
+  $: if (category || $mode) {
     config = getBarChart() || null;
   }
 </script>

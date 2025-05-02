@@ -322,7 +322,7 @@
   let htmlOutput = generateEmployeeInfoHTML();
 
   $: {
-    if (sortBy || $mode || $stockTicker) {
+    if (sortBy || $mode) {
       config = plotData() || null;
     }
   }
@@ -333,301 +333,299 @@
   description={`Current and historical number of employees for ${$displayCompanyName} (${$stockTicker}) with related statistics, a chart and a data table.`}
 />
 
-{#key $stockTicker}
-  <section class="w-full overflow-hidden h-full">
-    <div class="w-full flex justify-center m-auto h-full overflow-hidden">
-      <div
-        class="w-full relative flex justify-center items-center overflow-hidden"
-      >
-        <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
-          <div class="mb-6">
-            <h2 class="text-xl sm:text-2xl font-bold mb-4">
-              {removeCompanyStrings($displayCompanyName)} Employees
-            </h2>
+<section class="w-full overflow-hidden h-full">
+  <div class="w-full flex justify-center m-auto h-full overflow-hidden">
+    <div
+      class="w-full relative flex justify-center items-center overflow-hidden"
+    >
+      <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
+        <div class="mb-6">
+          <h2 class="text-xl sm:text-2xl font-bold mb-4">
+            {removeCompanyStrings($displayCompanyName)} Employees
+          </h2>
 
-            <Infobox text={htmlOutput} />
-          </div>
+          <Infobox text={htmlOutput} />
+        </div>
 
-          <div
-            class="my-5 grid grid-cols-2 gap-3 xs:mt-6 bp:mt-7 sm:grid-cols-3 sm:gap-6"
-          >
-            <div>
-              Employees
-              <div
-                class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl font-semibold"
-              >
-                {#if Number(employees)}
-                  {new Intl.NumberFormat("en")?.format(employees)}
-                {:else}
-                  n/a
-                {/if}
-              </div>
-            </div>
-            <div>
-              Change (1Y) <div
-                class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl font-semibold"
-              >
-                {#if dateDistance}
-                  n/a
-                {:else}
-                  {changeRate !== null
-                    ? changeRate?.toLocaleString("en-US")
-                    : "n/a"}
-                {/if}
-              </div>
-            </div>
-            <div>
-              Growth (1Y) <div
-                class="mt-0.5 text-lg {growthRate > 0
-                  ? "before:content-['+'] "
-                  : ''} font-semibold bp:text-xl sm:mt-1.5 sm:text-2xl"
-              >
-                {growthRate !== null ? growthRate + "%" : "n/a"}
-              </div>
-            </div>
-            <div>
-              Revenue / Employee
-              <div
-                class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl font-semibold"
-              >
-                {#if Number(data?.getStockDeck?.revenuePerEmployee)}
-                  ${new Intl.NumberFormat("en")?.format(
-                    data?.getStockDeck?.revenuePerEmployee,
-                  )}
-                {:else}
-                  n/a
-                {/if}
-              </div>
-            </div>
-            <div>
-              Profits / Employee
-              <div
-                class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl font-semibold"
-              >
-                {#if Number(data?.getStockDeck?.profitPerEmployee)}
-                  {formatWithDollarSign(data?.getStockDeck?.profitPerEmployee)}
-                {:else}
-                  n/a
-                {/if}
-              </div>
-            </div>
-            <div>
-              Market Cap
-              <div
-                class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl font-semibold"
-              >
-                {@html abbreviateNumber(
-                  data?.getStockQuote?.marketCap,
-                  false,
-                  true,
-                )}
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="flex flex-col sm:flex-row items-start sm:items-center w-full mt-10 mb-4"
-          >
-            <h1
-              class="text-xl sm:text-2xl font-bold text-start mr-auto mb-4 sm:mb-0"
-            >
-              Employees Chart
-            </h1>
-            {#if historyList?.length > 0}
-              <div class="flex flex-row items-center w-fit sm:ml-auto">
-                <div class="relative inline-block text-left grow">
-                  <DropdownMenu.Root>
-                    <DropdownMenu.Trigger asChild let:builder>
-                      <Button
-                        builders={[builder]}
-                        class="w-full border-gray-300 shadow-sm dark:border-gray-600 border sm:hover:bg-gray-100 dark:bg-default dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
-                      >
-                        <span class="truncate">{sortBy}</span>
-                        <svg
-                          class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          style="max-width:40px"
-                          aria-hidden="true"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clip-rule="evenodd"
-                          ></path>
-                        </svg>
-                      </Button>
-                    </DropdownMenu.Trigger>
-                    <DropdownMenu.Content
-                      class="w-56 h-fit max-h-72 overflow-y-auto scroller"
-                    >
-                      <DropdownMenu.Label
-                        class="text-muted dark:text-gray-400 font-normal"
-                      >
-                        Select Type
-                      </DropdownMenu.Label>
-                      <DropdownMenu.Separator />
-                      <DropdownMenu.Group>
-                        <DropdownMenu.Item
-                          on:click={() => (sortBy = "Total")}
-                          class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
-                        >
-                          Total
-                        </DropdownMenu.Item>
-                        <DropdownMenu.Item
-                          on:click={() => (sortBy = "Change")}
-                          class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
-                        >
-                          Change
-                        </DropdownMenu.Item>
-                        <DropdownMenu.Item
-                          on:click={() => (sortBy = "Growth")}
-                          class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
-                        >
-                          Growth
-                        </DropdownMenu.Item>
-                      </DropdownMenu.Group>
-                    </DropdownMenu.Content>
-                  </DropdownMenu.Root>
-                </div>
-                <Button
-                  on:click={() => exportData("csv")}
-                  class="ml-2 w-fit border-gray-300 shadow-sm dark:border-gray-600 border sm:hover:bg-gray-100 dark:bg-default dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
-                >
-                  <span class="truncate">Download</span>
-                  <svg
-                    class="{['Pro', 'Plus']?.includes(data?.user?.tier)
-                      ? 'hidden'
-                      : ''} ml-1 -mt-0.5 w-3.5 h-3.5"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    ><path
-                      fill="#A3A3A3"
-                      d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                    /></svg
-                  >
-                </Button>
-              </div>
-            {/if}
-          </div>
-
-          {#if historyList?.length !== 0}
+        <div
+          class="my-5 grid grid-cols-2 gap-3 xs:mt-6 bp:mt-7 sm:grid-cols-3 sm:gap-6"
+        >
+          <div>
+            Employees
             <div
-              class="shadow-sm border border-gray-300 dark:border-gray-800 rounded"
-              use:highcharts={config}
-            ></div>
+              class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl font-semibold"
+            >
+              {#if Number(employees)}
+                {new Intl.NumberFormat("en")?.format(employees)}
+              {:else}
+                n/a
+              {/if}
+            </div>
+          </div>
+          <div>
+            Change (1Y) <div
+              class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl font-semibold"
+            >
+              {#if dateDistance}
+                n/a
+              {:else}
+                {changeRate !== null
+                  ? changeRate?.toLocaleString("en-US")
+                  : "n/a"}
+              {/if}
+            </div>
+          </div>
+          <div>
+            Growth (1Y) <div
+              class="mt-0.5 text-lg {growthRate > 0
+                ? "before:content-['+'] "
+                : ''} font-semibold bp:text-xl sm:mt-1.5 sm:text-2xl"
+            >
+              {growthRate !== null ? growthRate + "%" : "n/a"}
+            </div>
+          </div>
+          <div>
+            Revenue / Employee
+            <div
+              class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl font-semibold"
+            >
+              {#if Number(data?.getStockDeck?.revenuePerEmployee)}
+                ${new Intl.NumberFormat("en")?.format(
+                  data?.getStockDeck?.revenuePerEmployee,
+                )}
+              {:else}
+                n/a
+              {/if}
+            </div>
+          </div>
+          <div>
+            Profits / Employee
+            <div
+              class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl font-semibold"
+            >
+              {#if Number(data?.getStockDeck?.profitPerEmployee)}
+                {formatWithDollarSign(data?.getStockDeck?.profitPerEmployee)}
+              {:else}
+                n/a
+              {/if}
+            </div>
+          </div>
+          <div>
+            Market Cap
+            <div
+              class="mt-0.5 text-lg bp:text-xl sm:mt-1.5 sm:text-2xl font-semibold"
+            >
+              {@html abbreviateNumber(
+                data?.getStockQuote?.marketCap,
+                false,
+                true,
+              )}
+            </div>
+          </div>
+        </div>
 
-            <div class="mt-5">
-              <h3 class=" text-xl sm:text-2xl font-bold mb-2 sm:mb-0">
-                Employees History
-              </h3>
-
-              <div class=" w-full overflow-x-auto">
-                <table
-                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
-                >
-                  <thead class="text-muted dark:text-white dark:bg-default">
-                    <tr>
-                      <th
-                        class="text-start text-sm sm:text-[1rem] whitespace-nowrap font-semibold"
+        <div
+          class="flex flex-col sm:flex-row items-start sm:items-center w-full mt-10 mb-4"
+        >
+          <h1
+            class="text-xl sm:text-2xl font-bold text-start mr-auto mb-4 sm:mb-0"
+          >
+            Employees Chart
+          </h1>
+          {#if historyList?.length > 0}
+            <div class="flex flex-row items-center w-fit sm:ml-auto">
+              <div class="relative inline-block text-left grow">
+                <DropdownMenu.Root>
+                  <DropdownMenu.Trigger asChild let:builder>
+                    <Button
+                      builders={[builder]}
+                      class="w-full border-gray-300 shadow-sm dark:border-gray-600 border sm:hover:bg-gray-100 dark:bg-default dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                    >
+                      <span class="truncate">{sortBy}</span>
+                      <svg
+                        class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        style="max-width:40px"
+                        aria-hidden="true"
                       >
-                        Date
-                      </th>
-                      <th
-                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap font-semibold"
+                        <path
+                          fill-rule="evenodd"
+                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                          clip-rule="evenodd"
+                        ></path>
+                      </svg>
+                    </Button>
+                  </DropdownMenu.Trigger>
+                  <DropdownMenu.Content
+                    class="w-56 h-fit max-h-72 overflow-y-auto scroller"
+                  >
+                    <DropdownMenu.Label
+                      class="text-muted dark:text-gray-400 font-normal"
+                    >
+                      Select Type
+                    </DropdownMenu.Label>
+                    <DropdownMenu.Separator />
+                    <DropdownMenu.Group>
+                      <DropdownMenu.Item
+                        on:click={() => (sortBy = "Total")}
+                        class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                       >
-                        Employees
-                      </th>
-                      <th
-                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap font-semibold"
+                        Total
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Item
+                        on:click={() => (sortBy = "Change")}
+                        class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                       >
                         Change
-                      </th>
-                      <th
-                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap font-semibold"
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Item
+                        on:click={() => (sortBy = "Growth")}
+                        class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                       >
                         Growth
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody class="">
-                    {#each historyList as item, index}
-                      <tr
-                        class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                      >
-                        <td
-                          class="text-start text-sm sm:text-[1rem] whitespace-nowrap"
-                        >
-                          {new Date(item?.date)?.toLocaleString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric",
-                            daySuffix: "2-digit",
-                          })}
-                        </td>
-                        <td
-                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
-                        >
-                          {new Intl.NumberFormat("en").format(
-                            item?.employeeCount,
-                          )}
-                        </td>
-                        <td
-                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
-                        >
-                          {#if Number(item?.employeeCount - historyList[index + 1]?.employeeCount)}
-                            {new Intl.NumberFormat("en").format(
-                              item?.employeeCount -
-                                historyList[index + 1]?.employeeCount,
-                            )}
-                          {:else}
-                            n/a
-                          {/if}
-                        </td>
-                        <td
-                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-end"
-                        >
-                          {#if index === historyList?.length - 1}
-                            n/a
-                          {:else if item?.employeeCount > historyList[index + 1]?.employeeCount}
-                            <span class="text-green-800 dark:text-[#00FC50]">
-                              +{(
-                                ((item?.employeeCount -
-                                  historyList[index + 1]?.employeeCount) /
-                                  historyList[index + 1]?.employeeCount) *
-                                100
-                              ).toFixed(2)}%
-                            </span>
-                          {:else if item?.employeeCount < historyList[index + 1]?.employeeCount}
-                            <span class="text-red-800 dark:text-[#FF2F1F]">
-                              -{(
-                                (Math.abs(
-                                  item?.employeeCount -
-                                    historyList[index + 1]?.employeeCount,
-                                ) /
-                                  historyList[index + 1]?.employeeCount) *
-                                100
-                              ).toFixed(2)}%
-                            </span>
-                          {:else}
-                            n/a
-                          {/if}
-                        </td>
-                      </tr>
-                    {/each}
-                  </tbody>
-                </table>
+                      </DropdownMenu.Item>
+                    </DropdownMenu.Group>
+                  </DropdownMenu.Content>
+                </DropdownMenu.Root>
               </div>
+              <Button
+                on:click={() => exportData("csv")}
+                class="ml-2 w-fit border-gray-300 shadow-sm dark:border-gray-600 border sm:hover:bg-gray-100 dark:bg-default dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+              >
+                <span class="truncate">Download</span>
+                <svg
+                  class="{['Pro', 'Plus']?.includes(data?.user?.tier)
+                    ? 'hidden'
+                    : ''} ml-1 -mt-0.5 w-3.5 h-3.5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  ><path
+                    fill="#A3A3A3"
+                    d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                  /></svg
+                >
+              </Button>
             </div>
-          {:else}
-            <h1
-              class="text-xl m-auto flex justify-center font-semibold mb-4 mt-10"
-            >
-              No history found
-            </h1>
           {/if}
         </div>
+
+        {#if historyList?.length !== 0}
+          <div
+            class="shadow-sm border border-gray-300 dark:border-gray-800 rounded"
+            use:highcharts={config}
+          ></div>
+
+          <div class="mt-5">
+            <h3 class=" text-xl sm:text-2xl font-bold mb-2 sm:mb-0">
+              Employees History
+            </h3>
+
+            <div class=" w-full overflow-x-auto">
+              <table
+                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
+              >
+                <thead class="text-muted dark:text-white dark:bg-default">
+                  <tr>
+                    <th
+                      class="text-start text-sm sm:text-[1rem] whitespace-nowrap font-semibold"
+                    >
+                      Date
+                    </th>
+                    <th
+                      class="text-end text-sm sm:text-[1rem] whitespace-nowrap font-semibold"
+                    >
+                      Employees
+                    </th>
+                    <th
+                      class="text-end text-sm sm:text-[1rem] whitespace-nowrap font-semibold"
+                    >
+                      Change
+                    </th>
+                    <th
+                      class="text-end text-sm sm:text-[1rem] whitespace-nowrap font-semibold"
+                    >
+                      Growth
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="">
+                  {#each historyList as item, index}
+                    <tr
+                      class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
+                    >
+                      <td
+                        class="text-start text-sm sm:text-[1rem] whitespace-nowrap"
+                      >
+                        {new Date(item?.date)?.toLocaleString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                          daySuffix: "2-digit",
+                        })}
+                      </td>
+                      <td
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                      >
+                        {new Intl.NumberFormat("en").format(
+                          item?.employeeCount,
+                        )}
+                      </td>
+                      <td
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                      >
+                        {#if Number(item?.employeeCount - historyList[index + 1]?.employeeCount)}
+                          {new Intl.NumberFormat("en").format(
+                            item?.employeeCount -
+                              historyList[index + 1]?.employeeCount,
+                          )}
+                        {:else}
+                          n/a
+                        {/if}
+                      </td>
+                      <td
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap text-end"
+                      >
+                        {#if index === historyList?.length - 1}
+                          n/a
+                        {:else if item?.employeeCount > historyList[index + 1]?.employeeCount}
+                          <span class="text-green-800 dark:text-[#00FC50]">
+                            +{(
+                              ((item?.employeeCount -
+                                historyList[index + 1]?.employeeCount) /
+                                historyList[index + 1]?.employeeCount) *
+                              100
+                            ).toFixed(2)}%
+                          </span>
+                        {:else if item?.employeeCount < historyList[index + 1]?.employeeCount}
+                          <span class="text-red-800 dark:text-[#FF2F1F]">
+                            -{(
+                              (Math.abs(
+                                item?.employeeCount -
+                                  historyList[index + 1]?.employeeCount,
+                              ) /
+                                historyList[index + 1]?.employeeCount) *
+                              100
+                            ).toFixed(2)}%
+                          </span>
+                        {:else}
+                          n/a
+                        {/if}
+                      </td>
+                    </tr>
+                  {/each}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        {:else}
+          <h1
+            class="text-xl m-auto flex justify-center font-semibold mb-4 mt-10"
+          >
+            No history found
+          </h1>
+        {/if}
       </div>
     </div>
-  </section>
-{/key}
+  </div>
+</section>

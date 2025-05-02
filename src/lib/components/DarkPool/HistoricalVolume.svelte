@@ -408,7 +408,7 @@
     tableList = [...originalData].sort(compareValues);
   };
 
-  $: if ($stockTicker || $etfTicker || $mode) {
+  $: if ($mode) {
     config = getPlotOptions() || null;
   }
 </script>

@@ -291,7 +291,7 @@
   }
 
   $: {
-    if (ticker || timePeriod) {
+    if (timePeriod) {
       rawData = data?.getData || [];
 
       rawData = prepareDataset(data?.getData, timePeriod);

@@ -761,578 +761,566 @@
   description={`A list of analyst ratings for Advanced Micro Devices (AMD) stock. See upgrades, downgrades, price targets and more from top Wall Street stock analysts.`}
 />
 
-{#key $stockTicker}
-  <section class="w-full overflow-hidden h-full">
-    <div class="w-full flex h-full overflow-hidden">
-      <div
-        class="w-full relative flex justify-center items-center overflow-hidden"
-      >
-        <div class="sm:pl-4 w-full m-auto">
-          <div
-            class="flex flex-col sm:flex-row items-start sm:items-center sm:justify-between"
-          >
-            <h1 class="mb-px text-xl sm:text-2xl font-bold bp:text-3xl sm:pl-1">
-              {removeCompanyStrings($displayCompanyName)} Stock Forecast
-            </h1>
-            <div class="flex flex-col w-full sm:w-fit items-end justify-end">
-              <label
-                for="topAnalystModal"
-                class="ml-auto mb-1 hidden sm:inline-block"
-                ><svg
-                  class="size-[18px] text-gray-400 dark:text-dark-400 dark:hover:text-dark-300 sm:hover:text-gray-700 cursor-pointer"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  style="max-width:40px"
-                  ><path
-                    fill-rule="evenodd"
-                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
-                    clip-rule="evenodd"
-                  ></path></svg
-                ></label
-              >
+<section class="w-full overflow-hidden h-full">
+  <div class="w-full flex h-full overflow-hidden">
+    <div
+      class="w-full relative flex justify-center items-center overflow-hidden"
+    >
+      <div class="sm:pl-4 w-full m-auto">
+        <div
+          class="flex flex-col sm:flex-row items-start sm:items-center sm:justify-between"
+        >
+          <h1 class="mb-px text-xl sm:text-2xl font-bold bp:text-3xl sm:pl-1">
+            {removeCompanyStrings($displayCompanyName)} Stock Forecast
+          </h1>
+          <div class="flex flex-col w-full sm:w-fit items-end justify-end">
+            <label
+              for="topAnalystModal"
+              class="ml-auto mb-1 hidden sm:inline-block"
+              ><svg
+                class="size-[18px] text-gray-400 dark:text-dark-400 dark:hover:text-dark-300 sm:hover:text-gray-700 cursor-pointer"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                style="max-width:40px"
+                ><path
+                  fill-rule="evenodd"
+                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
+                  clip-rule="evenodd"
+                ></path></svg
+              ></label
+            >
+            <div class="inline-flex justify-center w-full rounded-md sm:w-auto">
               <div
-                class="inline-flex justify-center w-full rounded-md sm:w-auto"
+                class="bg-gray-300 dark:bg-secondary w-full sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1"
               >
-                <div
-                  class="bg-gray-300 dark:bg-secondary w-full sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1"
-                >
-                  {#each tabs as item, i}
-                    {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}
-                      <button
-                        on:click={() => goto("/pricing")}
-                        class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
+                {#each tabs as item, i}
+                  {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}
+                    <button
+                      on:click={() => goto("/pricing")}
+                      class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1"
+                    >
+                      <span class="relative text-sm block font-semibold">
+                        {item.title}
+                        <svg
+                          class="inline-block ml-0.5 -mt-1 w-3.5 h-3.5"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          ><path
+                            fill="currentColor"
+                            d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                          /></svg
+                        >
+                      </span>
+                    </button>
+                  {:else}
+                    <button
+                      on:click={() => changeTab(i)}
+                      class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
+                      i
+                        ? 'z-0'
+                        : ''} "
+                    >
+                      {#if activeIdx === i}
+                        <div
+                          class="absolute inset-0 rounded-md bg-[#fff]"
+                        ></div>
+                      {/if}
+                      <span
+                        class="relative text-sm block font-semibold whitespace-nowrap {activeIdx ===
+                        i
+                          ? 'text-black'
+                          : ''}"
                       >
-                        <span class="relative text-sm block font-semibold">
-                          {item.title}
-                          <svg
-                            class="inline-block ml-0.5 -mt-1 w-3.5 h-3.5"
+                        {item.title}
+                      </span>
+                    </button>
+                  {/if}
+                {/each}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full mb-6 mt-3">
+          <div
+            class="rounded shadow-sm border border-gray-300 dark:border-gray-600 p-0.5 xs:p-1 md:flex md:flex-col md:space-y-4 md:divide-y md:p-4 lg:flex-row lg:space-x-4 lg:space-y-0 lg:divide-x lg:divide-y-0 divide-gray-300 dark:divide-gray-600"
+          >
+            <div
+              class="p-3 md:flex md:space-x-4 md:p-0 lg:block lg:max-w-[32%] lg:space-x-0"
+            >
+              <div>
+                <div class="flex items-baseline justify-between">
+                  <h2 class="mb-1 text-xl font-bold">Stock Price Forecast</h2>
+
+                  <span></span>
+                </div>
+                <p>
+                  The {numOfAnalyst} analysts with 12-month price forecasts for
+                  {$stockTicker}
+                  stock have an median target of {medianPriceTarget}, with a low
+                  estimate of {lowPriceTarget}
+                  and a high estimate of {highPriceTarget}. The median target
+                  predicts {medianChange > 0 ? "an increase" : "a decrease"} of
+                  {medianChange}% from the current stock price of {price}.
+                </p>
+              </div>
+              <div class="max-h-[225px]" use:highcharts={optionsPieChart}></div>
+            </div>
+            <div class="grow md:pt-4 lg:pl-4 lg:pt-0">
+              <div
+                class="sm:shadow-sm sm:border border-gray-300 dark:border-gray-800 rounded"
+                use:highcharts={config}
+              ></div>
+              <div
+                class="hide-scroll mb-1 mt-2 overflow-x-auto px-1.5 text-center md:mb-0 md:px-0 lg:mt-2"
+              >
+                <table class="w-full text-right text-tiny xs:text-sm sm:">
+                  <thead
+                    ><tr
+                      class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
+                      ><th class="py-[3px] text-left font-semibold lg:py-0.5"
+                        >Target</th
+                      > <th class="font-semibold">Low</th>
+                      <th class="font-semibold">Average</th>
+                      <th class="font-semibold">Median</th>
+                      <th class="font-semibold">High</th></tr
+                    ></thead
+                  >
+                  <tbody
+                    ><tr
+                      class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
+                      ><td class="py-[3px] text-left lg:py-0.5">Price</td>
+                      <td>${lowPriceTarget}</td>
+                      <td>${avgPriceTarget}</td> <td>${medianPriceTarget}</td>
+                      <td>${highPriceTarget}</td></tr
+                    >
+                    <tr class="text-sm sm:text-[1rem]"
+                      ><td class="py-[3px] text-left lg:py-0.5">Change</td>
+                      <td
+                        class={lowChange > 0
+                          ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
+                          : "text-red-800 dark:text-[#FF2F1F]"}>{lowChange}%</td
+                      >
+                      <td
+                        class={avgChange > 0
+                          ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
+                          : "text-red-800 dark:text-[#FF2F1F]"}>{avgChange}%</td
+                      >
+                      <td
+                        class={medianChange > 0
+                          ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
+                          : "text-red-800 dark:text-[#FF2F1F]"}
+                        >{medianChange}%</td
+                      >
+                      <td
+                        class={highChange > 0
+                          ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
+                          : "text-red-800 dark:text-[#FF2F1F]"}
+                        >{highChange}%</td
+                      ></tr
+                    ></tbody
+                  >
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="w-full shadow-sm rounded-sm border border-gray-300 dark:border-gray-600 mt-8 p-3 divide-gray-300 dark:divide-gray-600 lg:flex lg:space-x-4 lg:divide-x"
+          >
+            <div class="flex flex-col justify-between p-1 lg:max-w-[32%]">
+              <div>
+                <div class="flex flex-row items-center">
+                  <h2 class="mb-1 text-xl font-bold">
+                    Latest Analyst Insight Report
+                  </h2>
+                  {#if latestInfoDate(data?.getAnalystInsight?.date)}
+                    <label
+                      class="bg-[#fff] rounded text-black font-semibold text-xs px-2 py-0.5 ml-3"
+                      >New</label
+                    >
+                  {/if}
+                </div>
+                {#if Object?.keys(data?.getAnalystInsight)?.length > 0}
+                  {#if ["Pro", "Plus"]?.includes(data?.user?.tier)}
+                    <p class="pr-2 sm:pr-4">
+                      {data?.getAnalystInsight?.insight}
+                    </p>
+                    <p class="mt-5 italic text-sm">
+                      Updated {data?.getAnalystInsight?.date}
+                    </p>
+                  {:else}
+                    <p>
+                      {data?.getAnalystInsight?.insight?.slice(0, 50) + "..."}
+                      <span class="mt-3">
+                        Unlock content with
+                        <a
+                          class="inline-block ml-0.5 text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
+                          href="/pricing"
+                          >Pro Subscription <svg
+                            class="w-4 h-4 mb-1 inline-block text[#A3A3A3] sm:hover:"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
                             ><path
                               fill="currentColor"
                               d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
                             /></svg
-                          >
-                        </span>
-                      </button>
-                    {:else}
-                      <button
-                        on:click={() => changeTab(i)}
-                        class="cursor-pointer group relative z-1 rounded-full w-1/2 min-w-24 md:w-auto px-5 py-1 {activeIdx ===
-                        i
-                          ? 'z-0'
-                          : ''} "
-                      >
-                        {#if activeIdx === i}
-                          <div
-                            class="absolute inset-0 rounded-md bg-[#fff]"
-                          ></div>
-                        {/if}
-                        <span
-                          class="relative text-sm block font-semibold whitespace-nowrap {activeIdx ===
-                          i
-                            ? 'text-black'
-                            : ''}"
+                          ></a
                         >
-                          {item.title}
-                        </span>
-                      </button>
-                    {/if}
-                  {/each}
-                </div>
+                      </span>
+                    </p>
+
+                    <p class="mt-5 italic text-sm">
+                      Updated {data?.getAnalystInsight?.date}
+                    </p>
+                  {/if}
+                {:else}
+                  <p>
+                    According to {numOfAnalyst} stock analyst, the rating for {$displayCompanyName}
+                    is "{consensusRating}". This means that the analyst believes
+                    this stock is likely to lead to {[
+                      "Strong Sell",
+                      "Sell",
+                    ]?.includes(consensusRating)
+                      ? "lower"
+                      : ["Strong Buy", "Buy"]?.includes(consensusRating)
+                        ? "higher"
+                        : "similar"} returns than market as a whole.
+                  </p>
+                {/if}
+              </div>
+            </div>
+            <div class="grow pt-2 md:pt-4 lg:pl-4 lg:pt-0">
+              {#if optionsBarChart !== null}
+                <div
+                  class="shadow-sm border border-gray-300 dark:border-gray-800 rounded"
+                  use:highcharts={optionsBarChart}
+                ></div>
+              {/if}
+              <div
+                class="hide-scroll mb-1 mt-2 overflow-x-auto px-1.5 text-center md:mb-0 md:px-0 lg:mt-2"
+              >
+                <table
+                  class="w-full text-right text-tiny xs:text-sm md:text-smaller"
+                >
+                  <thead
+                    ><tr
+                      class="border-b border-gray-300 dark:border-gray-600 font-normal"
+                      ><th
+                        class="whitespace-nowrap px-1 py-[3px] text-sm sm:text-[1rem] text-left font-semibold"
+                        >Rating</th
+                      >
+                      {#each recommendationList as item}
+                        <th
+                          class="px-1 py-[3px] text-sm sm:text-[1rem] text-right font-semibold"
+                          >{new Intl.DateTimeFormat("en", {
+                            month: "short",
+                            year: "2-digit",
+                          }).format(new Date(item?.date))}</th
+                        >
+                      {/each}
+                    </tr></thead
+                  >
+                  <tbody>
+                    {#each categories as category}
+                      <tr
+                        class="border-b border-gray-300 dark:border-gray-600 font-normal"
+                      >
+                        <td
+                          class="whitespace-nowrap px-1 py-[3px] text-sm sm:text-[1rem] text-left"
+                          >{category}</td
+                        >
+                        {#each recommendationList as entry}
+                          <td
+                            class="px-1 py-[3px] text-sm sm:text-[1rem] text-right"
+                            >{entry[category]}</td
+                          >
+                        {/each}
+                      </tr>
+                    {/each}
+                    <tr class="font-semibold"> </tr><tr class="font-semibold">
+                      <td
+                        class="whitespace-nowrap px-1 py-[3px] text-sm sm:text-[1rem] text-left"
+                        >Total</td
+                      >
+                      {#each recommendationList as _, i}
+                        <td
+                          class="px-1 py-[3px] text-sm sm:text-[1rem] text-right"
+                        >
+                          {getTotalForDate(i, recommendationList)}
+                        </td>
+                      {/each}
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
 
-          <div class="w-full mb-6 mt-3">
+          <h2 class="mt-8 text-xl sm:text-2xl font-bold mb-4">
+            Financial Forecast this Year
+          </h2>
+          {#if data?.getAnalystEstimate?.length !== 0}
             <div
-              class="rounded shadow-sm border border-gray-300 dark:border-gray-600 p-0.5 xs:p-1 md:flex md:flex-col md:space-y-4 md:divide-y md:p-4 lg:flex-row lg:space-x-4 lg:space-y-0 lg:divide-x lg:divide-y-0 divide-gray-300 dark:divide-gray-600"
+              class="mb-4 shadow-sm grid grid-cols-1 overflow-hidden rounded-md border divide-gray-300 dark:divide-gray-600 border-gray-300 dark:border-gray-600 md:grid-cols-2 lg:grid-cols-4"
             >
               <div
-                class="p-3 md:flex md:space-x-4 md:p-0 lg:block lg:max-w-[32%] lg:space-x-0"
+                class="border-b px-3 py-5 last:border-b-0 xs:px-4 sm:p-6 md:border-b lg:border-b-0 border-gray-300 dark:border-gray-600"
               >
-                <div>
-                  <div class="flex items-baseline justify-between">
-                    <h2 class="mb-1 text-xl font-bold">Stock Price Forecast</h2>
-
-                    <span></span>
-                  </div>
-                  <p>
-                    The {numOfAnalyst} analysts with 12-month price forecasts for
-                    {$stockTicker}
-                    stock have an median target of {medianPriceTarget}, with a
-                    low estimate of {lowPriceTarget}
-                    and a high estimate of {highPriceTarget}. The median target
-                    predicts {medianChange > 0 ? "an increase" : "a decrease"} of
-                    {medianChange}% from the current stock price of {price}.
-                  </p>
-                </div>
+                <div class=" font-normal">Revenue This Year</div>
                 <div
-                  class="max-h-[225px]"
-                  use:highcharts={optionsPieChart}
-                ></div>
-              </div>
-              <div class="grow md:pt-4 lg:pl-4 lg:pt-0">
-                <div
-                  class="sm:shadow-sm sm:border border-gray-300 dark:border-gray-800 rounded"
-                  use:highcharts={config}
-                ></div>
-                <div
-                  class="hide-scroll mb-1 mt-2 overflow-x-auto px-1.5 text-center md:mb-0 md:px-0 lg:mt-2"
+                  class="mt-1 flex flex-wrap items-baseline justify-between space-y-2 bp:space-y-0"
                 >
-                  <table class="w-full text-right text-tiny xs:text-sm sm:">
-                    <thead
-                      ><tr
-                        class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
-                        ><th class="py-[3px] text-left font-semibold lg:py-0.5"
-                          >Target</th
-                        > <th class="font-semibold">Low</th>
-                        <th class="font-semibold">Average</th>
-                        <th class="font-semibold">Median</th>
-                        <th class="font-semibold">High</th></tr
-                      ></thead
-                    >
-                    <tbody
-                      ><tr
-                        class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
-                        ><td class="py-[3px] text-left lg:py-0.5">Price</td>
-                        <td>${lowPriceTarget}</td>
-                        <td>${avgPriceTarget}</td> <td>${medianPriceTarget}</td>
-                        <td>${highPriceTarget}</td></tr
-                      >
-                      <tr class="text-sm sm:text-[1rem]"
-                        ><td class="py-[3px] text-left lg:py-0.5">Change</td>
-                        <td
-                          class={lowChange > 0
-                            ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
-                            : "text-red-800 dark:text-[#FF2F1F]"}
-                          >{lowChange}%</td
-                        >
-                        <td
-                          class={avgChange > 0
-                            ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
-                            : "text-red-800 dark:text-[#FF2F1F]"}
-                          >{avgChange}%</td
-                        >
-                        <td
-                          class={medianChange > 0
-                            ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
-                            : "text-red-800 dark:text-[#FF2F1F]"}
-                          >{medianChange}%</td
-                        >
-                        <td
-                          class={highChange > 0
-                            ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
-                            : "text-red-800 dark:text-[#FF2F1F]"}
-                          >{highChange}%</td
-                        ></tr
-                      ></tbody
-                    >
-                  </table>
-                </div>
-              </div>
-            </div>
-
-            <div
-              class="w-full shadow-sm rounded-sm border border-gray-300 dark:border-gray-600 mt-8 p-3 divide-gray-300 dark:divide-gray-600 lg:flex lg:space-x-4 lg:divide-x"
-            >
-              <div class="flex flex-col justify-between p-1 lg:max-w-[32%]">
-                <div>
-                  <div class="flex flex-row items-center">
-                    <h2 class="mb-1 text-xl font-bold">
-                      Latest Analyst Insight Report
-                    </h2>
-                    {#if latestInfoDate(data?.getAnalystInsight?.date)}
-                      <label
-                        class="bg-[#fff] rounded text-black font-semibold text-xs px-2 py-0.5 ml-3"
-                        >New</label
-                      >
-                    {/if}
-                  </div>
-                  {#if Object?.keys(data?.getAnalystInsight)?.length > 0}
-                    {#if ["Pro", "Plus"]?.includes(data?.user?.tier)}
-                      <p class="pr-2 sm:pr-4">
-                        {data?.getAnalystInsight?.insight}
-                      </p>
-                      <p class="mt-5 italic text-sm">
-                        Updated {data?.getAnalystInsight?.date}
-                      </p>
-                    {:else}
-                      <p>
-                        {data?.getAnalystInsight?.insight?.slice(0, 50) + "..."}
-                        <span class="mt-3">
-                          Unlock content with
-                          <a
-                            class="inline-block ml-0.5 text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
-                            href="/pricing"
-                            >Pro Subscription <svg
-                              class="w-4 h-4 mb-1 inline-block text[#A3A3A3] sm:hover:"
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 24 24"
-                              ><path
-                                fill="currentColor"
-                                d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                              /></svg
-                            ></a
-                          >
-                        </span>
-                      </p>
-
-                      <p class="mt-5 italic text-sm">
-                        Updated {data?.getAnalystInsight?.date}
-                      </p>
-                    {/if}
-                  {:else}
-                    <p>
-                      According to {numOfAnalyst} stock analyst, the rating for {$displayCompanyName}
-                      is "{consensusRating}". This means that the analyst
-                      believes this stock is likely to lead to {[
-                        "Strong Sell",
-                        "Sell",
-                      ]?.includes(consensusRating)
-                        ? "lower"
-                        : ["Strong Buy", "Buy"]?.includes(consensusRating)
-                          ? "higher"
-                          : "similar"} returns than market as a whole.
-                    </p>
-                  {/if}
-                </div>
-              </div>
-              <div class="grow pt-2 md:pt-4 lg:pl-4 lg:pt-0">
-                {#if optionsBarChart !== null}
-                  <div
-                    class="shadow-sm border border-gray-300 dark:border-gray-800 rounded"
-                    use:highcharts={optionsBarChart}
-                  ></div>
-                {/if}
-                <div
-                  class="hide-scroll mb-1 mt-2 overflow-x-auto px-1.5 text-center md:mb-0 md:px-0 lg:mt-2"
-                >
-                  <table
-                    class="w-full text-right text-tiny xs:text-sm md:text-smaller"
-                  >
-                    <thead
-                      ><tr
-                        class="border-b border-gray-300 dark:border-gray-600 font-normal"
-                        ><th
-                          class="whitespace-nowrap px-1 py-[3px] text-sm sm:text-[1rem] text-left font-semibold"
-                          >Rating</th
-                        >
-                        {#each recommendationList as item}
-                          <th
-                            class="px-1 py-[3px] text-sm sm:text-[1rem] text-right font-semibold"
-                            >{new Intl.DateTimeFormat("en", {
-                              month: "short",
-                              year: "2-digit",
-                            }).format(new Date(item?.date))}</th
-                          >
-                        {/each}
-                      </tr></thead
-                    >
-                    <tbody>
-                      {#each categories as category}
-                        <tr
-                          class="border-b border-gray-300 dark:border-gray-600 font-normal"
-                        >
-                          <td
-                            class="whitespace-nowrap px-1 py-[3px] text-sm sm:text-[1rem] text-left"
-                            >{category}</td
-                          >
-                          {#each recommendationList as entry}
-                            <td
-                              class="px-1 py-[3px] text-sm sm:text-[1rem] text-right"
-                              >{entry[category]}</td
-                            >
-                          {/each}
-                        </tr>
-                      {/each}
-                      <tr class="font-semibold"> </tr><tr class="font-semibold">
-                        <td
-                          class="whitespace-nowrap px-1 py-[3px] text-sm sm:text-[1rem] text-left"
-                          >Total</td
-                        >
-                        {#each recommendationList as _, i}
-                          <td
-                            class="px-1 py-[3px] text-sm sm:text-[1rem] text-right"
-                          >
-                            {getTotalForDate(i, recommendationList)}
-                          </td>
-                        {/each}
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-
-            <h2 class="mt-8 text-xl sm:text-2xl font-bold mb-4">
-              Financial Forecast this Year
-            </h2>
-            {#if data?.getAnalystEstimate?.length !== 0}
-              <div
-                class="mb-4 shadow-sm grid grid-cols-1 overflow-hidden rounded-md border divide-gray-300 dark:divide-gray-600 border-gray-300 dark:border-gray-600 md:grid-cols-2 lg:grid-cols-4"
-              >
-                <div
-                  class="border-b px-3 py-5 last:border-b-0 xs:px-4 sm:p-6 md:border-b lg:border-b-0 border-gray-300 dark:border-gray-600"
-                >
-                  <div class=" font-normal">Revenue This Year</div>
-                  <div
-                    class="mt-1 flex flex-wrap items-baseline justify-between space-y-2 bp:space-y-0"
-                  >
-                    <div class="flex items-baseline text-2xl font-semibold">
-                      {data?.getAnalystEstimate[index]?.estimatedRevenueAvg !==
-                        null &&
-                      data?.getAnalystEstimate[index]?.estimatedRevenueAvg !== 0
-                        ? abbreviateNumber(
-                            data?.getAnalystEstimate[index]
-                              ?.estimatedRevenueAvg,
-                          )
-                        : "n/a"}
-                      {#if data?.getAnalystEstimate[index]?.estimatedRevenueAvg !== null && data?.getAnalystEstimate[index]?.estimatedRevenueAvg !== 0}
-                        <div class="ml-2 block text-sm font-semibold lg:hidden">
-                          from {data?.getAnalystEstimate[index - 1]?.revenue !==
-                          undefined
-                            ? abbreviateNumber(
-                                data?.getAnalystEstimate[index - 1]?.revenue,
-                              )
-                            : "n/a"}
-                        </div>
-                      {/if}
-                    </div>
+                  <div class="flex items-baseline text-2xl font-semibold">
+                    {data?.getAnalystEstimate[index]?.estimatedRevenueAvg !==
+                      null &&
+                    data?.getAnalystEstimate[index]?.estimatedRevenueAvg !== 0
+                      ? abbreviateNumber(
+                          data?.getAnalystEstimate[index]?.estimatedRevenueAvg,
+                        )
+                      : "n/a"}
                     {#if data?.getAnalystEstimate[index]?.estimatedRevenueAvg !== null && data?.getAnalystEstimate[index]?.estimatedRevenueAvg !== 0}
-                      <div
-                        class="inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-semibold md:mt-2 lg:mt-0 {changeRevenue >
-                        0
-                          ? 'bg-[#00FC50]'
-                          : 'bg-[#FF2F1F]'} text-black"
-                      >
-                        <svg
-                          class="-ml-1 mr-0.5 h-5 w-5 shrink-0 self-center text-black {changeRevenue >
-                          0
-                            ? ''
-                            : 'rotate-180 '}"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          style="max-width:40px"
-                          aria-hidden="true"
-                          ><path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M7 11l5-5m0 0l5 5m-5-5v12"
-                          ></path></svg
-                        > <span class="sr-only">Increased by</span>
-                        {abbreviateNumber(changeRevenue?.toFixed(1))}%
+                      <div class="ml-2 block text-sm font-semibold lg:hidden">
+                        from {data?.getAnalystEstimate[index - 1]?.revenue !==
+                        undefined
+                          ? abbreviateNumber(
+                              data?.getAnalystEstimate[index - 1]?.revenue,
+                            )
+                          : "n/a"}
                       </div>
                     {/if}
                   </div>
                   {#if data?.getAnalystEstimate[index]?.estimatedRevenueAvg !== null && data?.getAnalystEstimate[index]?.estimatedRevenueAvg !== 0}
                     <div
-                      class="ml-0.5 mt-1.5 hidden text-sm font-semibold lg:block"
+                      class="inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-semibold md:mt-2 lg:mt-0 {changeRevenue >
+                      0
+                        ? 'bg-[#00FC50]'
+                        : 'bg-[#FF2F1F]'} text-black"
                     >
-                      from {data?.getAnalystEstimate[index - 1]?.revenue !==
-                      null
-                        ? abbreviateNumber(
-                            data?.getAnalystEstimate[index - 1]?.revenue,
-                          )
-                        : "n/a"}
+                      <svg
+                        class="-ml-1 mr-0.5 h-5 w-5 shrink-0 self-center text-black {changeRevenue >
+                        0
+                          ? ''
+                          : 'rotate-180 '}"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        style="max-width:40px"
+                        aria-hidden="true"
+                        ><path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M7 11l5-5m0 0l5 5m-5-5v12"
+                        ></path></svg
+                      > <span class="sr-only">Increased by</span>
+                      {abbreviateNumber(changeRevenue?.toFixed(1))}%
                     </div>
                   {/if}
                 </div>
-                <div
-                  class="border-b px-3 py-5 last:border-b-0 xs:px-4 sm:p-6 md:border-b md:border-l lg:border-b-0"
-                >
-                  <div class=" font-normal">Revenue Next Year</div>
-                  <div
-                    class="mt-1 flex flex-wrap items-baseline justify-between space-y-2 bp:space-y-0"
-                  >
-                    <div class="flex items-baseline text-2xl font-semibold">
-                      {data?.getAnalystEstimate[index + 1]
-                        ?.estimatedRevenueAvg !== undefined
-                        ? abbreviateNumber(
-                            data?.getAnalystEstimate[index + 1]
-                              ?.estimatedRevenueAvg,
-                          )
-                        : "n/a"}
-                      <div class="ml-2 block text-sm font-semibold lg:hidden">
-                        from {data?.getAnalystEstimate[index]
-                          ?.estimatedRevenueAvg !== undefined
-                          ? abbreviateNumber(
-                              data?.getAnalystEstimate[index]
-                                ?.estimatedRevenueAvg,
-                            )
-                          : "n/a"}
-                      </div>
-                    </div>
-                    <div
-                      class="inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-semibold md:mt-2 lg:mt-0 {changeRevenueNextYear >
-                      0
-                        ? 'bg-[#00FC50]'
-                        : 'bg-[#FF2F1F]'} text-black"
-                    >
-                      <svg
-                        class="-ml-1 mr-0.5 h-5 w-5 shrink-0 self-center text-black {changeRevenueNextYear >
-                        0
-                          ? ''
-                          : 'rotate-180 '}"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        style="max-width:40px"
-                        aria-hidden="true"
-                        ><path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M7 11l5-5m0 0l5 5m-5-5v12"
-                        ></path></svg
-                      > <span class="sr-only">Increased by</span>
-                      {abbreviateNumber(changeRevenueNextYear?.toFixed(1))}%
-                    </div>
-                  </div>
+                {#if data?.getAnalystEstimate[index]?.estimatedRevenueAvg !== null && data?.getAnalystEstimate[index]?.estimatedRevenueAvg !== 0}
                   <div
                     class="ml-0.5 mt-1.5 hidden text-sm font-semibold lg:block"
                   >
-                    from {data?.getAnalystEstimate[index]
-                      ?.estimatedRevenueAvg !== undefined
+                    from {data?.getAnalystEstimate[index - 1]?.revenue !== null
                       ? abbreviateNumber(
-                          data?.getAnalystEstimate[index]?.estimatedRevenueAvg,
+                          data?.getAnalystEstimate[index - 1]?.revenue,
                         )
                       : "n/a"}
                   </div>
+                {/if}
+              </div>
+              <div
+                class="border-b px-3 py-5 last:border-b-0 xs:px-4 sm:p-6 md:border-b md:border-l lg:border-b-0"
+              >
+                <div class=" font-normal">Revenue Next Year</div>
+                <div
+                  class="mt-1 flex flex-wrap items-baseline justify-between space-y-2 bp:space-y-0"
+                >
+                  <div class="flex items-baseline text-2xl font-semibold">
+                    {data?.getAnalystEstimate[index + 1]
+                      ?.estimatedRevenueAvg !== undefined
+                      ? abbreviateNumber(
+                          data?.getAnalystEstimate[index + 1]
+                            ?.estimatedRevenueAvg,
+                        )
+                      : "n/a"}
+                    <div class="ml-2 block text-sm font-semibold lg:hidden">
+                      from {data?.getAnalystEstimate[index]
+                        ?.estimatedRevenueAvg !== undefined
+                        ? abbreviateNumber(
+                            data?.getAnalystEstimate[index]
+                              ?.estimatedRevenueAvg,
+                          )
+                        : "n/a"}
+                    </div>
+                  </div>
+                  <div
+                    class="inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-semibold md:mt-2 lg:mt-0 {changeRevenueNextYear >
+                    0
+                      ? 'bg-[#00FC50]'
+                      : 'bg-[#FF2F1F]'} text-black"
+                  >
+                    <svg
+                      class="-ml-1 mr-0.5 h-5 w-5 shrink-0 self-center text-black {changeRevenueNextYear >
+                      0
+                        ? ''
+                        : 'rotate-180 '}"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      style="max-width:40px"
+                      aria-hidden="true"
+                      ><path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M7 11l5-5m0 0l5 5m-5-5v12"
+                      ></path></svg
+                    > <span class="sr-only">Increased by</span>
+                    {abbreviateNumber(changeRevenueNextYear?.toFixed(1))}%
+                  </div>
                 </div>
                 <div
-                  class="border-b px-3 py-5 last:border-b-0 xs:px-4 sm:p-6 md:border-b-0 lg:border-l"
+                  class="ml-0.5 mt-1.5 hidden text-sm font-semibold lg:block"
                 >
-                  <div class=" font-normal">EPS This Year</div>
-                  <div
-                    class="mt-1 flex flex-wrap items-baseline justify-between space-y-2 bp:space-y-0"
-                  >
-                    <div class="flex items-baseline text-2xl font-semibold">
-                      {abbreviateNumber(
-                        data?.getAnalystEstimate[index]?.estimatedEpsAvg,
-                      )}
-                      <div class="ml-2 block text-sm font-semibold lg:hidden">
-                        from {data?.getAnalystEstimate[index - 1]?.eps}
-                      </div>
-                    </div>
-                    <div
-                      class="inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-semibold md:mt-2 lg:mt-0 {changeEPS >
-                      0
-                        ? 'bg-[#00FC50]'
-                        : 'bg-[#FF2F1F]'} text-black"
-                    >
-                      <svg
-                        class="-ml-1 mr-0.5 h-5 w-5 shrink-0 self-center text-black {changeEPS >
-                        0
-                          ? ''
-                          : 'rotate-180 '}"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        style="max-width:40px"
-                        aria-hidden="true"
-                        ><path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M7 11l5-5m0 0l5 5m-5-5v12"
-                        ></path></svg
-                      > <span class="sr-only">Increased by</span>
-                      {abbreviateNumber(changeEPS?.toFixed(1))}%
-                    </div>
-                  </div>
-                  <div
-                    class="ml-0.5 mt-1.5 hidden text-sm font-semibold lg:block"
-                  >
-                    from {data?.getAnalystEstimate[index - 1]?.eps}
-                  </div>
+                  from {data?.getAnalystEstimate[index]?.estimatedRevenueAvg !==
+                  undefined
+                    ? abbreviateNumber(
+                        data?.getAnalystEstimate[index]?.estimatedRevenueAvg,
+                      )
+                    : "n/a"}
                 </div>
+              </div>
+              <div
+                class="border-b px-3 py-5 last:border-b-0 xs:px-4 sm:p-6 md:border-b-0 lg:border-l"
+              >
+                <div class=" font-normal">EPS This Year</div>
                 <div
-                  class="border-b px-3 py-5 last:border-b-0 xs:px-4 sm:p-6 md:border-l border-gray-300 dark:border-gray-600"
+                  class="mt-1 flex flex-wrap items-baseline justify-between space-y-2 bp:space-y-0"
                 >
-                  <div class=" font-normal">EPS Next Year</div>
-                  <div
-                    class="mt-1 flex flex-wrap items-baseline justify-between space-y-2 bp:space-y-0"
-                  >
-                    <div class="flex items-baseline text-2xl font-semibold">
-                      {abbreviateNumber(
-                        data?.getAnalystEstimate[index + 1]?.estimatedEpsAvg,
-                      )}
-                      <div class="ml-2 block text-sm font-semibold lg:hidden">
-                        from {abbreviateNumber(
-                          data?.getAnalystEstimate[index]?.estimatedEpsAvg,
-                        )}
-                      </div>
-                    </div>
-                    <div
-                      class="inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-semibold md:mt-2 lg:mt-0 {changeEPSNextYear >
-                      0
-                        ? 'bg-[#00FC50]'
-                        : 'bg-[#FF2F1F] '} text-black"
-                    >
-                      <svg
-                        class="-ml-1 mr-0.5 h-5 w-5 shrink-0 self-center text-black {changeEPSNextYear >
-                        0
-                          ? ''
-                          : 'rotate-180 '}"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        style="max-width:40px"
-                        aria-hidden="true"
-                        ><path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M7 11l5-5m0 0l5 5m-5-5v12"
-                        ></path></svg
-                      > <span class="sr-only">Increased by</span>
-                      {abbreviateNumber(changeEPSNextYear?.toFixed(1))}%
-                    </div>
-                  </div>
-                  <div
-                    class="ml-0.5 mt-1.5 hidden text-sm font-semibold lg:block"
-                  >
-                    from {abbreviateNumber(
+                  <div class="flex items-baseline text-2xl font-semibold">
+                    {abbreviateNumber(
                       data?.getAnalystEstimate[index]?.estimatedEpsAvg,
                     )}
+                    <div class="ml-2 block text-sm font-semibold lg:hidden">
+                      from {data?.getAnalystEstimate[index - 1]?.eps}
+                    </div>
+                  </div>
+                  <div
+                    class="inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-semibold md:mt-2 lg:mt-0 {changeEPS >
+                    0
+                      ? 'bg-[#00FC50]'
+                      : 'bg-[#FF2F1F]'} text-black"
+                  >
+                    <svg
+                      class="-ml-1 mr-0.5 h-5 w-5 shrink-0 self-center text-black {changeEPS >
+                      0
+                        ? ''
+                        : 'rotate-180 '}"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      style="max-width:40px"
+                      aria-hidden="true"
+                      ><path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M7 11l5-5m0 0l5 5m-5-5v12"
+                      ></path></svg
+                    > <span class="sr-only">Increased by</span>
+                    {abbreviateNumber(changeEPS?.toFixed(1))}%
                   </div>
                 </div>
-              </div>
-
-              <div
-                class="w-full m-auto {!$analystEstimateComponent
-                  ? 'hidden'
-                  : ''}"
-              >
-                {#await import("$lib/components/AnalystEstimate.svelte") then { default: Comp }}
-                  <svelte:component this={Comp} {data} />
-                {/await}
-              </div>
-            {:else}
-              <div
-                class=" p-3 sm:p-5 mb-10 rounded-md sm:flex sm:flex-row sm:items-center border border-gray-300 dark:border-gray-600 text-sm sm:text-[1rem]"
-              >
-                <svg
-                  class="w-6 h-6 shrink-0 inline-block sm:mr-2"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 256 256"
-                  ><path
-                    fill="#fff"
-                    d="M128 24a104 104 0 1 0 104 104A104.11 104.11 0 0 0 128 24m-4 48a12 12 0 1 1-12 12a12 12 0 0 1 12-12m12 112a16 16 0 0 1-16-16v-40a8 8 0 0 1 0-16a16 16 0 0 1 16 16v40a8 8 0 0 1 0 16"
-                  /></svg
+                <div
+                  class="ml-0.5 mt-1.5 hidden text-sm font-semibold lg:block"
                 >
-                No analyst forecast available for {$displayCompanyName}.
+                  from {data?.getAnalystEstimate[index - 1]?.eps}
+                </div>
               </div>
-            {/if}
-          </div>
+              <div
+                class="border-b px-3 py-5 last:border-b-0 xs:px-4 sm:p-6 md:border-l border-gray-300 dark:border-gray-600"
+              >
+                <div class=" font-normal">EPS Next Year</div>
+                <div
+                  class="mt-1 flex flex-wrap items-baseline justify-between space-y-2 bp:space-y-0"
+                >
+                  <div class="flex items-baseline text-2xl font-semibold">
+                    {abbreviateNumber(
+                      data?.getAnalystEstimate[index + 1]?.estimatedEpsAvg,
+                    )}
+                    <div class="ml-2 block text-sm font-semibold lg:hidden">
+                      from {abbreviateNumber(
+                        data?.getAnalystEstimate[index]?.estimatedEpsAvg,
+                      )}
+                    </div>
+                  </div>
+                  <div
+                    class="inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-semibold md:mt-2 lg:mt-0 {changeEPSNextYear >
+                    0
+                      ? 'bg-[#00FC50]'
+                      : 'bg-[#FF2F1F] '} text-black"
+                  >
+                    <svg
+                      class="-ml-1 mr-0.5 h-5 w-5 shrink-0 self-center text-black {changeEPSNextYear >
+                      0
+                        ? ''
+                        : 'rotate-180 '}"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      style="max-width:40px"
+                      aria-hidden="true"
+                      ><path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M7 11l5-5m0 0l5 5m-5-5v12"
+                      ></path></svg
+                    > <span class="sr-only">Increased by</span>
+                    {abbreviateNumber(changeEPSNextYear?.toFixed(1))}%
+                  </div>
+                </div>
+                <div
+                  class="ml-0.5 mt-1.5 hidden text-sm font-semibold lg:block"
+                >
+                  from {abbreviateNumber(
+                    data?.getAnalystEstimate[index]?.estimatedEpsAvg,
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="w-full m-auto {!$analystEstimateComponent ? 'hidden' : ''}"
+            >
+              {#await import("$lib/components/AnalystEstimate.svelte") then { default: Comp }}
+                <svelte:component this={Comp} {data} />
+              {/await}
+            </div>
+          {:else}
+            <div
+              class=" p-3 sm:p-5 mb-10 rounded-md sm:flex sm:flex-row sm:items-center border border-gray-300 dark:border-gray-600 text-sm sm:text-[1rem]"
+            >
+              <svg
+                class="w-6 h-6 shrink-0 inline-block sm:mr-2"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 256 256"
+                ><path
+                  fill="#fff"
+                  d="M128 24a104 104 0 1 0 104 104A104.11 104.11 0 0 0 128 24m-4 48a12 12 0 1 1-12 12a12 12 0 0 1 12-12m12 112a16 16 0 0 1-16-16v-40a8 8 0 0 1 0-16a16 16 0 0 1 16 16v40a8 8 0 0 1 0 16"
+                /></svg
+              >
+              No analyst forecast available for {$displayCompanyName}.
+            </div>
+          {/if}
         </div>
       </div>
     </div>
-  </section>
-{/key}
+  </div>
+</section>
+
 <!--Start Create Watchlist Modal-->
 <input type="checkbox" id="topAnalystModal" class="modal-toggle" />
 
