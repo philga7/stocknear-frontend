@@ -907,18 +907,25 @@
     class="cursor-pointer modal-backdrop"
   ></label>
 
-  <div class="modal-box rounded-md w-full bg-secondary border border-gray-600">
-    <label
-      for="addWatchListModal"
-      class="cursor-pointer bg-secondary absolute right-5 top-2 text-[1rem] sm:text-[1.5rem] text-white"
+  <div
+    class="modal-box max-h-96 rounded-md w-full bg-white dark:bg-secondary border border-gray-600"
+  >
+    <div
+      class="mb-5 flex flex-row justify-between items-center border-b pb-2 border-gray-300 dark:border-gray-600"
     >
-      ✕
-    </label>
+      <h3 class="font-semibold text-lg sm:text-xl text-black dark:text-white">
+        Add to Watchlist
+      </h3>
+      <label
+        for="addWatchListModal"
+        class="cursor-pointer absolute right-5 top-2 text-[1rem] sm:text-[1.5rem]"
+      >
+        ✕
+      </label>
+    </div>
 
-    <div class="text-white">
-      <h3 class="font-semibold text-lg sm:text-xl mb-10">Add to Watchlist</h3>
-
-      <div class="flex flex-col items-center w-full max-w-3xl bg-secondary">
+    <div class="">
+      <div class="flex flex-col items-center w-full max-w-3xl">
         {#each userWatchList as item}
           <label
             on:click|stopPropagation={() => toggleUserWatchlist(item?.id)}
@@ -928,14 +935,14 @@
               class="flex flex-row items-center w-full border p-3 rounded-md {item?.ticker?.includes(
                 $stockTicker,
               )
-                ? 'border border-gray-400'
-                : 'border-gray-600'}"
+                ? 'border border-gray-600 dark:border-gray-300'
+                : 'border-gray-400 dark:border-gray-600'}"
             >
               <div class="flex flex-col items-center w-full">
-                <span class="ml-1 text-white mr-auto">
+                <span class="ml-1 mr-auto">
                   {item?.title}
                 </span>
-                <span class="ml-1 text-white text-sm mr-auto">
+                <span class="ml-1 text-sm mr-auto">
                   {item?.ticker?.length}
                   {item?.ticker?.length !== 1 ? "Companies" : "Company"}
                 </span>
@@ -946,7 +953,7 @@
               >
                 {#if item?.ticker?.includes($stockTicker)}
                   <svg
-                    class="w-full h-full rounded-full"
+                    class="w-full h-full rounded-full text-blue-500 dark:text-white"
                     viewBox="0 0 48 48"
                     version="1.1"
                     xmlns="http://www.w3.org/2000/svg"
@@ -968,7 +975,7 @@
                       >
                         <g
                           id="ic_fluent_checkmark_circle_48_filled"
-                          fill="#fff"
+                          fill="currentColor"
                           fill-rule="nonzero"
                         >
                           <path
