@@ -849,23 +849,42 @@
 
                   <span></span>
                 </div>
-                <p>
-                  The {numOfAnalyst} analysts with 12-month price forecasts for
-                  {$stockTicker}
-                  stock have an median target of {medianPriceTarget}, with a low
-                  estimate of {lowPriceTarget}
-                  and a high estimate of {highPriceTarget}. The median target
-                  predicts {medianChange > 0 ? "an increase" : "a decrease"} of
-                  {medianChange}% from the current stock price of {price}.
-                </p>
+                {#if numOfAnalyst > 0}
+                  <p>
+                    The {numOfAnalyst} analysts with 12-month price forecasts for
+                    {$stockTicker}
+                    stock have an median target of {medianPriceTarget}, with a
+                    low estimate of {lowPriceTarget}
+                    and a high estimate of {highPriceTarget}. The median target
+                    predicts {medianChange > 0 ? "an increase" : "a decrease"} of
+                    {medianChange}% from the current stock price of {price}.
+                  </p>
+                {:else}
+                  No Analyst Data available yet.
+                {/if}
               </div>
-              <div class="max-h-[225px]" use:highcharts={optionsPieChart}></div>
+              {#if numOfAnalyst > 0}
+                <div
+                  class="max-h-[225px]"
+                  use:highcharts={optionsPieChart}
+                ></div>
+              {:else}
+                <div class="min-w-[500px]"></div>
+              {/if}
             </div>
             <div class="grow md:pt-4 lg:pl-4 lg:pt-0">
-              <div
-                class="sm:shadow-sm sm:border border-gray-300 dark:border-gray-800 rounded"
-                use:highcharts={config}
-              ></div>
+              {#if numOfAnalyst > 0}
+                <div
+                  class="sm:shadow-sm sm:border border-gray-300 dark:border-gray-800 rounded"
+                  use:highcharts={config}
+                ></div>
+              {:else}
+                <div
+                  class="min-h-[300px] text-lg sm:text-xl font-bold shadow-sm border border-gray-300 dark:border-gray-800 rounded flex justify-center items-center"
+                >
+                  No Chart available
+                </div>
+              {/if}
               <div
                 class="hide-scroll mb-1 mt-2 overflow-x-auto px-1.5 text-center md:mb-0 md:px-0 lg:mt-2"
               >
@@ -885,33 +904,47 @@
                     ><tr
                       class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
                       ><td class="py-[3px] text-left lg:py-0.5">Price</td>
-                      <td>${lowPriceTarget}</td>
-                      <td>${avgPriceTarget}</td> <td>${medianPriceTarget}</td>
-                      <td>${highPriceTarget}</td></tr
+                      <td>{lowPriceTarget > 0 ? lowPriceTarget : "n/a"}</td>
+                      <td>{avgPriceTarget > 0 ? avgPriceTarget : "n/a"}</td>
+                      <td
+                        >{medianPriceTarget > 0 ? medianPriceTarget : "n/a"}</td
+                      >
+                      <td>{highPriceTarget > 0 ? highPriceTarget : "n/a"}</td
+                      ></tr
                     >
                     <tr class="text-sm sm:text-[1rem]"
                       ><td class="py-[3px] text-left lg:py-0.5">Change</td>
                       <td
                         class={lowChange > 0
                           ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
-                          : "text-red-800 dark:text-[#FF2F1F]"}>{lowChange}%</td
+                          : lowChange < 0
+                            ? "text-red-800 dark:text-[#FF2F1F]"
+                            : ""}
+                        >{lowChange !== 0 ? lowChange + "%" : "n/a"}</td
                       >
                       <td
                         class={avgChange > 0
                           ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
-                          : "text-red-800 dark:text-[#FF2F1F]"}>{avgChange}%</td
+                          : avgChange < 0
+                            ? "text-red-800 dark:text-[#FF2F1F]"
+                            : ""}
+                        >{avgChange !== 0 ? avgChange + "%" : "n/a"}</td
                       >
                       <td
                         class={medianChange > 0
                           ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
-                          : "text-red-800 dark:text-[#FF2F1F]"}
-                        >{medianChange}%</td
+                          : medianChange < 0
+                            ? "text-red-800 dark:text-[#FF2F1F]"
+                            : ""}
+                        >{medianChange !== 0 ? medianChange + "%" : "n/a"}</td
                       >
                       <td
                         class={highChange > 0
                           ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
-                          : "text-red-800 dark:text-[#FF2F1F]"}
-                        >{highChange}%</td
+                          : highChange < 0
+                            ? "text-red-800 dark:text-[#FF2F1F]"
+                            : ""}
+                        >{highChange !== 0 ? highChange + "%" : "n/a"}</td
                       ></tr
                     ></tbody
                   >
@@ -969,7 +1002,7 @@
                       Updated {data?.getAnalystInsight?.date}
                     </p>
                   {/if}
-                {:else}
+                {:else if numOfAnalyst > 0}
                   <p>
                     According to {numOfAnalyst} stock analyst, the rating for {$displayCompanyName}
                     is "{consensusRating}". This means that the analyst believes
@@ -982,15 +1015,25 @@
                         ? "higher"
                         : "similar"} returns than market as a whole.
                   </p>
+                {:else}
+                  <div class="min-w-[500px]">
+                    No Analyst Data available yet.
+                  </div>
                 {/if}
               </div>
             </div>
             <div class="grow pt-2 md:pt-4 lg:pl-4 lg:pt-0">
-              {#if optionsBarChart !== null}
+              {#if optionsBarChart !== null && numOfAnalyst > 0}
                 <div
                   class="shadow-sm border border-gray-300 dark:border-gray-800 rounded"
                   use:highcharts={optionsBarChart}
                 ></div>
+              {:else}
+                <div
+                  class="min-h-[300px] text-lg sm:text-xl font-bold shadow-sm border border-gray-300 dark:border-gray-800 rounded flex justify-center items-center"
+                >
+                  No Chart available
+                </div>
               {/if}
               <div
                 class="hide-scroll mb-1 mt-2 overflow-x-auto px-1.5 text-center md:mb-0 md:px-0 lg:mt-2"
@@ -1008,11 +1051,13 @@
                       {#each recommendationList as item}
                         <th
                           class="px-1 py-[3px] text-sm sm:text-[1rem] text-right font-semibold"
-                          >{new Intl.DateTimeFormat("en", {
+                        >
+                          {new Intl.DateTimeFormat("en", {
                             month: "short",
                             year: "2-digit",
-                          }).format(new Date(item?.date))}</th
-                        >
+                            timeZone: "UTC",
+                          }).format(new Date(item?.date))}
+                        </th>
                       {/each}
                     </tr></thead
                   >

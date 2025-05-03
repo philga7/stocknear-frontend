@@ -167,6 +167,7 @@
           let formattedDate = date?.toLocaleTimeString("en-US", {
             hour: "2-digit",
             minute: "2-digit",
+            timeZone: "UTC",
           });
 
           let tooltipContent = `<span class="text-white m-auto text-black text-sm font-normal">${formattedDate}</span><br>`;
@@ -205,17 +206,9 @@
       series: [
         {
           name: "Price",
-          type: "area",
+          type: "spline",
           data: seriesData,
-          fillColor: {
-            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-            stops: [
-              [0, fillColorStart],
-              [1, fillColorEnd],
-            ],
-          },
-          color: "#4681f4",
-          borderColor: "4681f4",
+          color: $mode === "light" ? "#4681f4" : "#fff",
           lineWidth: 1.3,
           yAxis: 0, // Use primary yAxis
           animation: false,
@@ -225,6 +218,7 @@
           type: "column",
           data: darkPoolSeries,
           color: "#F21C64",
+          borderColor: "#F21C64",
           yAxis: 1, // Use secondary yAxis
           animation: false,
         },
