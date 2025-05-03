@@ -9,7 +9,7 @@
   export let isOpen;
 </script>
 
-<div class="flex items-center w-full mt-10">
+<div class="flex items-center w-full mt-5 sm:mt-10">
   <div class="flex flex-row justify-start w-full items-center">
     <div class="flex flex-col items-start w-full">
       <div

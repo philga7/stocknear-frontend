@@ -122,36 +122,36 @@
   ></label>
 
   <div
-    class="modal-box rounded-md w-full bg-secondary border border-gray-600 min-h-fit h-[600px] sm:h-[500px]"
+    class="modal-box rounded-md w-full bg-white dark:bg-secondary border border-gray-300 dark:border-gray-600 min-h-fit h-[600px] sm:h-[500px]"
   >
     <!--Start Trade Modal-->
     <label
       for="priceAlertModal"
-      class="cursor-pointer absolute right-5 top-5 text-[1.8rem] text-white"
+      class="cursor-pointer absolute right-5 top-5 text-[1.8rem]"
     >
       <svg
         class="w-8 h-8"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         ><path
-          fill="white"
+          fill="currentColor"
           d="m6.4 18.308l-.708-.708l5.6-5.6l-5.6-5.6l.708-.708l5.6 5.6l5.6-5.6l.708.708l-5.6 5.6l5.6 5.6l-.708.708l-5.6-5.6z"
         /></svg
       >
     </label>
 
     <div class="flex flex-col w-full">
-      <h2 class="text-white font-semibold text-lg text-start mb-5">
-        Create Price Alert on {ticker}
+      <h2 class=" font-semibold text-lg text-start mb-5">
+        Price Alert on {ticker}
       </h2>
 
       <div
-        class="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-5 font-semibold text-white"
+        class="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-5 font-semibold"
       >
         <label class="text-sm w-[20%] mb-1 sm:mb-0">Symbol</label>
 
         <label
-          class="rounded-md bg-[#2A2E39] w-full sm:w-[80%] py-2 px-2 text-sm border border-gray-600"
+          class="rounded-md bg-gray-100 dark:bg-[#2A2E39] w-full sm:w-[80%] py-2 px-2 text-sm border border-gray-300 dark:border-gray-600"
         >
           <!--
           <img
@@ -167,14 +167,14 @@
         </label>
       </div>
 
-      <div class="flex flex-col gap-4 mt-5 font-semibold text-white">
+      <div class="flex flex-col gap-4 mt-5 font-semibold">
         <!-- Condition Label -->
         <div class="flex flex-col sm:flex-row items-start sm:items-center">
           <label class="text-sm w-[20%] mb-1 sm:mb-0">Condition</label>
           <input
             type="text"
             value="Price"
-            class="w-full sm:w-[80%] bg-[#2A2E39] border border-gray-600 text-sm rounded-md py-2 px-3 text-white"
+            class="w-full sm:w-[80%] bg-gray-100 dark:bg-[#2A2E39] border border-gray-300 dark:border-gray-600 text-sm rounded-md py-2 px-3"
             readonly
           />
         </div>
@@ -184,7 +184,7 @@
           <label class="text-sm w-[20%] mb-1 sm:mb-0">Crossing</label>
           <select
             on:change={changeStatement}
-            class="cursor-pointer w-full sm:w-[80%] bg-[#2A2E39] border border-gray-600 text-sm rounded-md py-2 px-3 text-white"
+            class="cursor-pointer w-full sm:w-[80%] bg-gray-100 dark:bg-[#2A2E39] border border-gray-300 dark:border-gray-600 text-sm rounded-md py-2 px-3"
           >
             <option value="above" selected>Above</option>
             <option value="below">Below</option>
@@ -198,14 +198,14 @@
           <div class="relative w-full sm:w-[80%]">
             <input
               bind:value={targetPrice}
-              class="w-full bg-[#2A2E39] border border-gray-600 text-sm rounded-md py-2 px-3 pr-16 text-white"
+              class="w-full bg-gray-100 dark:bg-[#2A2E39] border border-gray-300 dark:border-gray-600 text-sm rounded-md py-2 px-3 pr-16"
             />
             <div
               class="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-x-1.5"
             >
               <button on:click={() => stepSizeValue("add")}>
                 <svg
-                  class="size-6 cursor-pointer text-white"
+                  class="size-6 cursor-pointer text-gray-500 dark:text-white"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -221,7 +221,7 @@
               </button>
               <button on:click={() => stepSizeValue("minus")}>
                 <svg
-                  class="size-6 cursor-pointer text-white"
+                  class="size-6 cursor-pointer text-gray-500 dark:text-white"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -240,11 +240,11 @@
         </div>
 
         {#if !isNaN(targetPrice) && targetPrice !== undefined && targetPrice !== null}
-          <div class="flex flex-col gap-2 mt-5 text-white">
+          <div class="flex flex-col gap-2 mt-5">
             <label class="text-sm sm:text-[1rem] font-semibold"
               >Quick Summary:</label
             >
-            <p class="text-sm sm:text-[1rem]">
+            <p class="text-sm">
               Your price alert will notify you when the stock price is {condition}
               {targetPrice}.
             </p>
@@ -255,13 +255,13 @@
         <div class="flex justify-end gap-4 mt-6 absolute bottom-5 right-5">
           <label
             for="priceAlertModal"
-            class="cursor-pointer border border-gray-600 text-white py-2 px-4 rounded-md text-sm"
+            class="cursor-pointer border border-gray-600 py-2 px-4 rounded-md text-sm"
           >
             Cancel
           </label>
           <button
             on:click={handleCreateAlert}
-            class="cursor-pointer bg-white text-black py-2 px-4 rounded-md text-sm"
+            class="cursor-pointer bg-blue-500 dark:bg-white text-white dark:text-black py-2 px-4 rounded-md text-sm"
           >
             Save
           </button>

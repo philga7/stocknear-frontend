@@ -58,28 +58,9 @@
 
   export let data;
 
-  let hideHeader = false;
   BProgress.configure({
     showSpinner: false,
   });
-
-  $: {
-    const currentPath = $page.url.pathname;
-
-    if (
-      currentPath.startsWith("/etf/etf-providers") ||
-      currentPath.startsWith("/etf/new-launches")
-    ) {
-      hideHeader = false; // Show the header for "/etf/etf-providers"
-    } else if (currentPath.startsWith("/etf/")) {
-      hideHeader = true; // Hide the header for other routes under "/etf/"
-    } else if (currentPath.startsWith("/index/")) {
-      hideHeader = true; // Hide the header for other routes under "/etf/"
-    } else {
-      // Specify conditions for other routes where you want to hide the header
-      hideHeader = currentPath.startsWith("/stocks/");
-    }
-  }
 
   let hasUnreadElement = false;
   let notificationList = [];
@@ -311,11 +292,7 @@
   <div class="flex min-h-screen w-full flex-col bg-white dark:bg-default">
     <div class="w-full">
       <div
-        class="w-full navbar sticky {$screenWidth &&
-        $screenWidth < 640 &&
-        hideHeader
-          ? 'invisible -mt-20'
-          : ''} top-0 z-40 bg-white dark:bg-default shadow shadow-b shadow-md dark:border-b dark:border-gray-800 flex h-14 items-center gap-4 px-4 sm:h-auto sm:px-6"
+        class="w-full navbar sticky top-0 z-40 bg-white dark:bg-default shadow shadow-b shadow-md dark:border-b dark:border-gray-800 flex h-14 items-center gap-4 px-4 sm:h-auto sm:px-6"
       >
         <Sheet.Root>
           <Sheet.Trigger asChild let:builder>
