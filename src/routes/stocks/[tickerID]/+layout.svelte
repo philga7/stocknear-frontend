@@ -16,9 +16,7 @@
     isOpen,
     shouldUpdatePriceChart,
     priceChartData,
-    previousPage,
   } from "$lib/store";
-  import HorizontalAd from "$lib/components/Ads/HorizontalAd.svelte";
 
   import { onMount, onDestroy, afterUpdate } from "svelte";
   import { page } from "$app/stores";
@@ -51,22 +49,6 @@
 
   let displaySection = "";
   let displayLegend = {};
-
-  function shareContent(url) {
-    if (navigator.share) {
-      navigator
-        ?.share({
-          title: document.title,
-          url,
-        })
-        ?.then(() => console.log("Content shared successfully."))
-        ?.catch((error) => console.log("Error sharing content:", error));
-    } else {
-      toast.error("Sharing is not supported by your device", {
-        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
-      });
-    }
-  }
 
   function changeSection(state) {
     const sectionMap = {
@@ -377,12 +359,6 @@
 <body
   class=" w-full max-w-screen sm:max-w-[1250px] min-h-screen overflow-hidden"
 >
-  {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
-    <div class="hidden sm:block">
-      <HorizontalAd />
-    </div>
-  {/if}
-
   <!-- Page wrapper -->
   <div class=" flex flex-col w-full relative w-full sm:max-w-[1250px]">
     <main class="sm:mt-2 grow w-full">

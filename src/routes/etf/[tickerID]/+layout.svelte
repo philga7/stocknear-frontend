@@ -37,36 +37,19 @@
   let socket;
 
   $etfTicker = data?.getParams;
-  $assetType = "stock";
+  $assetType = "etf";
   $displayCompanyName = data?.companyName;
 
   let isScrolled = false;
   let y;
 
   let userWatchList = data?.getUserWatchlist ?? [];
-  let isTickerIncluded = false;
   //let userPortfolio = data?.getUserPortfolio ?? [];
   //let holdingShares = 0;
   //let availableCash = 0;
 
   let displaySection = "";
   let displayLegend = {};
-
-  function shareContent(url) {
-    if (navigator.share) {
-      navigator
-        ?.share({
-          title: document.title,
-          url,
-        })
-        ?.then(() => console.log("Content shared successfully."))
-        ?.catch((error) => console.log("Error sharing content:", error));
-    } else {
-      toast.error("Sharing is not supported by your device", {
-        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
-      });
-    }
-  }
 
   function changeSection(state) {
     const sectionMap = {
@@ -265,7 +248,7 @@
     if ($etfTicker && $etfTicker?.length !== 0) {
       // add a check to see if running on client-side
       $etfTicker = data?.getParams;
-      $assetType = "stock";
+      $assetType = "etf";
       $displayCompanyName = data?.companyName;
       $currentPortfolioPrice = data?.getStockQuote?.price?.toFixed(2);
       prePostData = data?.getPrePostQuote || {};
@@ -336,14 +319,10 @@
     }
   }
 
-  $: isTickerIncluded = userWatchList?.some(
-    (item) => item.user === data?.user?.id && item.ticker?.includes($etfTicker),
-  );
-
   $: charNumber = $screenWidth < 640 ? 25 : 40;
 
   $: {
-    if ($etfTicker && $page.url.pathname === `/stocks/${$etfTicker}`) {
+    if ($etfTicker && $page.url.pathname === `/etf/${$etfTicker}`) {
       displaySection = "overview";
     }
   }
@@ -371,211 +350,15 @@
 <svelte:window bind:scrollY={y} />
 
 <body
-  class="text-muted dark:text-white w-full max-w-screen sm:max-w-[1250px] min-h-screen overflow-hidden"
+  class=" w-full max-w-screen sm:max-w-[1250px] min-h-screen overflow-hidden"
 >
   <!-- Page wrapper -->
-  <div class="flex flex-col w-full relative w-full sm:max-w-[1250px]">
-    <main class="grow w-full">
+  <div class=" flex flex-col w-full relative w-full sm:max-w-[1250px]">
+    <main class="sm:mt-2 grow w-full">
       <section class="">
         <div class="w-full">
           <div class="sm:flex sm:justify-start w-full">
-            <!--Start Mobile Navbar-->
-            <div
-              class="fixed top-0 left-0 right-0 z-20 sm:hidden {isScrolled
-                ? 'border-b border-gray-300 dark:border-gray-800 ease-in shadow'
-                : 'ease-out'} m-auto w-full"
-            >
-              <div class="navbar h-full w-full px-4 bg-white dark:bg-default">
-                <div
-                  class="flex-1 shrink-0 flex flex-row items-center justify-between"
-                >
-                  <a
-                    href={/^\/(stocks|etf|index)/.test($previousPage || "")
-                      ? "/"
-                      : $previousPage || "/"}
-                  >
-                    <svg
-                      class="w-5 h-5 inline-block"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 1024 1024"
-                      ><g transform="rotate(-90 512 512)"
-                        ><path
-                          fill={$mode === "light" ? "#2C6288" : "white"}
-                          d="M104.704 685.248a64 64 0 0 0 90.496 0l316.8-316.8l316.8 316.8a64 64 0 0 0 90.496-90.496L557.248 232.704a64 64 0 0 0-90.496 0L104.704 594.752a64 64 0 0 0 0 90.496z"
-                        /></g
-                      ></svg
-                    >
-                  </a>
-
-                  <div
-                    class={!isScrolled
-                      ? "hidden"
-                      : "flex flex-col items-center ml-6 transition-transform ease-in"}
-                  >
-                    <span class=" text-xs font-semibold">
-                      {$etfTicker}
-                    </span>
-                    <span class=" text-sm">
-                      {#if $currentPortfolioPrice !== null && $currentPortfolioPrice !== 0}
-                        {$currentPortfolioPrice}
-                      {:else}
-                        {data?.getStockQuote?.price}
-                      {/if}
-                    </span>
-                  </div>
-
-                  <!--Start Search Button-->
-                  <label class="ml-auto mr-4" for="searchBarModal">
-                    <svg
-                      class="w-6 h-6 inline-block"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      ><path
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="1.5"
-                        d="m21 21l-4.343-4.343m0 0A8 8 0 1 0 5.343 5.343a8 8 0 0 0 11.314 11.314"
-                      /></svg
-                    >
-                  </label>
-                  <!--End Search Button-->
-
-                  <!--Start Share Button-->
-                  <label
-                    class="mr-4"
-                    on:click={() =>
-                      shareContent(
-                        "https://stocknear.com/stocks/" + $etfTicker,
-                      )}
-                  >
-                    <svg
-                      class="w-6 h-6 inline-block"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      stroke="currentColor"
-                      ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
-                        id="SVGRepo_tracerCarrier"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></g><g id="SVGRepo_iconCarrier">
-                        <path
-                          d="M20.3359 3.22136L3.87333 8.70889C3.56801 8.81066 3.55033 9.23586 3.84614 9.36263L9.89655 11.9557C9.96078 11.9832 10.0347 11.9752 10.0916 11.9346L16.0235 7.69749C16.2073 7.56618 16.4338 7.79266 16.3025 7.97648L12.0654 13.9084C12.0248 13.9653 12.0168 14.0392 12.0443 14.1034L14.6374 20.1539C14.7641 20.4497 15.1893 20.432 15.2911 20.1267L20.7786 3.66408C20.8698 3.39046 20.6095 3.13015 20.3359 3.22136Z"
-                          fill={$mode === "light" ? "#2C6288" : "white"}
-                        ></path>
-                      </g></svg
-                    >
-                  </label>
-                  <!--End Share Button-->
-
-                  <!--Start Watchlist-->
-
-                  {#if data?.user}
-                    <div class="flex flex-col mr-4">
-                      {#if userWatchList?.length !== 0}
-                        <label
-                          for="addWatchListModal"
-                          class="cursor-pointer shrink-0"
-                        >
-                          {#if isTickerIncluded}
-                            <svg
-                              class="w-6 h-6 inline-block"
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 16 16"
-                              ><path
-                                fill={$mode === "light" ? "#2C6288" : "white"}
-                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327l4.898.696c.441.062.612.636.282.95l-3.522 3.356l.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                              /></svg
-                            >
-                          {:else}
-                            <svg
-                              class="w-6 h-6 inline-block"
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 16 16"
-                              ><path
-                                fill={$mode === "light" ? "black" : "white"}
-                                d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256l4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73l3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356l-.83 4.73zm4.905-2.767l-3.686 1.894l.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575l-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957l-3.686-1.894a.503.503 0 0 0-.461 0z"
-                              /></svg
-                            >
-                          {/if}
-                        </label>
-                      {:else if userWatchList?.length === 0}
-                        <label
-                          on:click={() => toggleUserWatchlist("firstList")}
-                          class="cursor-pointer shrink-0"
-                        >
-                          {#if isTickerIncluded}
-                            <svg
-                              class="w-6 h-6 inline-block"
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 16 16"
-                              ><path
-                                fill={$mode === "light" ? "#2C6288" : "white"}
-                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327l4.898.696c.441.062.612.636.282.95l-3.522 3.356l.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                              /></svg
-                            >
-                          {:else}
-                            <svg
-                              class="w-6 h-6 inline-block"
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 16 16"
-                              ><path
-                                fill={$mode === "light" ? "black" : "white"}
-                                d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256l4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73l3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356l-.83 4.73zm4.905-2.767l-3.686 1.894l.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575l-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957l-3.686-1.894a.503.503 0 0 0-.461 0z"
-                              /></svg
-                            >
-                          {/if}
-                        </label>
-                      {/if}
-                    </div>
-                  {:else}
-                    <label for="userLogin" class="cursor-pointer shrink-0 mr-4">
-                      <svg
-                        class="w-6 h-6 inline-block"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 16 16"
-                        ><path
-                          fill={$mode === "light" ? "black" : "white"}
-                          d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256l4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73l3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356l-.83 4.73zm4.905-2.767l-3.686 1.894l.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575l-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957l-3.686-1.894a.503.503 0 0 0-.461 0z"
-                        /></svg
-                      >
-                    </label>
-                  {/if}
-                  <!--End Watchlist-->
-
-                  <!--Start Price Alert-->
-                  <label
-                    on:click={() => ($openPriceAlert = true)}
-                    for={data?.user ? "priceAlertModal" : "userLogin"}
-                    class="mr-2"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="w-7 h-7 inline-block mt-1"
-                      viewBox="0 0 24 24"
-                      ><g
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="1.5"
-                        ><path d="M3 5.231L6.15 3M21 5.231L17.85 3" /><circle
-                          cx="12"
-                          cy="13"
-                          r="8"
-                        /><path d="M9.5 13h5M12 10.5v5" /></g
-                      ></svg
-                    >
-                  </label>
-                  <!--End Price Alert -->
-                </div>
-              </div>
-            </div>
-            <!--End Mobile Navbar-->
-
-            <div class="pt-14 sm:pt-0 w-full px-3 sm:px-0 lg:pr-3">
+            <div class=" w-full px-3 sm:px-0 lg:pr-3">
               <div
                 class="md:flex md:justify-between md:divide-x md:divide-slate-800"
               >
@@ -586,141 +369,70 @@
 
                     <div class="m-auto pl-0 sm:pl-4 overflow-hidden mb-3">
                       <div
-                        class="hidden sm:flex flex-row w-full justify-between items-center"
+                        class="flex flex-row w-full justify-between items-center"
                       >
                         <!--Start Watchlist-->
 
                         {#if data?.user}
-                          <div class="flex flex-col ml-auto mr-2">
-                            {#if userWatchList?.length !== 0}
-                              <div
-                                class="shrink-0 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative flex items-center justify-center"
-                              >
-                                <label
-                                  for="addWatchListModal"
-                                  class="cursor-pointer shrink-0"
-                                >
-                                  {#if isTickerIncluded}
-                                    <svg
-                                      class="w-7 h-7 inline-block"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 16 16"
-                                      ><path
-                                        fill={$mode === "light"
-                                          ? "#2C6288"
-                                          : "white"}
-                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327l4.898.696c.441.062.612.636.282.95l-3.522 3.356l.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                      /></svg
-                                    >
-                                  {:else}
-                                    <svg
-                                      class="w-7 h-7 inline-block"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 16 16"
-                                      ><path
-                                        fill={$mode === "light"
-                                          ? "black"
-                                          : "white"}
-                                        d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256l4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73l3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356l-.83 4.73zm4.905-2.767l-3.686 1.894l.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575l-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957l-3.686-1.894a.503.503 0 0 0-.461 0z"
-                                      /></svg
-                                    >
-                                  {/if}
-                                </label>
-                              </div>
-                            {:else if userWatchList?.length === 0}
-                              <div
-                                class="shrink-0 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative flex items-center justify-center"
-                              >
-                                <label
-                                  on:click={() =>
-                                    toggleUserWatchlist("firstList")}
-                                  class="cursor-pointer shrink-0"
-                                >
-                                  {#if isTickerIncluded}
-                                    <svg
-                                      class="w-7 h-7 inline-block"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 16 16"
-                                      ><path
-                                        fill={$mode === "light"
-                                          ? "#2C6288"
-                                          : "white"}
-                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327l4.898.696c.441.062.612.636.282.95l-3.522 3.356l.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                      /></svg
-                                    >
-                                  {:else}
-                                    <svg
-                                      class="w-7 h-7 inline-block"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 16 16"
-                                      ><path
-                                        fill={$mode === "light"
-                                          ? "black"
-                                          : "white"}
-                                        d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256l4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73l3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356l-.83 4.73zm4.905-2.767l-3.686 1.894l.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575l-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957l-3.686-1.894a.503.503 0 0 0-.461 0z"
-                                      /></svg
-                                    >
-                                  {/if}
-                                </label>
-                              </div>
-                            {/if}
-                          </div>
-                        {:else}
                           <div
-                            class="shrink-0 ml-auto mr-2 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative flex items-center justify-center"
+                            class="-mb-1 mt-6 flex sm:ml-auto w-full ml-auto gap-2 sm:right-5 sm:top-6 sm:mb-0 sm:mt-0 sm:w-auto lg:right-8"
                           >
                             <label
-                              for="userLogin"
-                              class="cursor-pointer shrink-0"
-                            >
-                              <svg
-                                class="w-7 h-7 inline-block"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 16 16"
+                              for={data?.user
+                                ? "addWatchListModal"
+                                : "userLogin"}
+                              class="inline-flex items-center justify-center gap-x-1.5 cursor-pointer transition-all whitespace-nowrap rounded-md bg-blue-500 dark:bg-default sm:hover:bg-blue-600 dark:sm:hover:bg-[#2A2E39] border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-base font-semibold text-white shadow-sm lg:px-2.5 flex-1 md:flex-initial"
+                              ><svg
+                                class="size-5 flex-shrink-0"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                style="max-width:40px"
+                                aria-hidden="true"
                                 ><path
-                                  fill={$mode === "light" ? "black" : "white"}
-                                  d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256l4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73l3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356l-.83 4.73zm4.905-2.767l-3.686 1.894l.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575l-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957l-3.686-1.894a.503.503 0 0 0-.461 0z"
-                                /></svg
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                                ></path></svg
                               >
-                            </label>
+                              <span class="text-sm md:text-[1rem]"
+                                >Watchlist</span
+                              ></label
+                            >
+                            <label
+                              on:click={() => ($openPriceAlert = true)}
+                              for={data?.user ? "priceAlertModal" : "userLogin"}
+                              class="inline-flex items-center justify-center gap-x-1.5 cursor-pointer transition-all whitespace-nowrap rounded-md bg-blue-500 dark:bg-default sm:hover:bg-blue-600 dark:sm:hover:bg-[#2A2E39] border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-base font-semibold text-white shadow-sm lg:px-2.5 flex-1 md:flex-initial"
+                              ><svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="size-5 flex-shrink-0"
+                                viewBox="0 0 24 24"
+                                ><g
+                                  fill="none"
+                                  stroke="currentColor"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="1.5"
+                                  ><path
+                                    d="M3 5.231L6.15 3M21 5.231L17.85 3"
+                                  /><circle cx="12" cy="13" r="8" /><path
+                                    d="M9.5 13h5M12 10.5v5"
+                                  /></g
+                                ></svg
+                              >
+                              <span class="text-sm md:text-[1rem]"
+                                >Price Alert</span
+                              ></label
+                            >
                           </div>
                         {/if}
                         <!--End Watchlist-->
-
-                        <!--Start Price Alert -->
-
-                        <div
-                          class="shrink-0 rounded-full sm:hover:bg-white/10 transition ease-out w-12 h-12 relative flex items-center justify-center"
-                        >
-                          <label
-                            on:click={() => ($openPriceAlert = true)}
-                            for={data?.user ? "priceAlertModal" : "userLogin"}
-                            class="cursor-pointer shrink-0"
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              class="w-8 h-8 inline-block"
-                              viewBox="0 0 24 24"
-                              ><g
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.5"
-                                ><path
-                                  d="M3 5.231L6.15 3M21 5.231L17.85 3"
-                                /><circle cx="12" cy="13" r="8" /><path
-                                  d="M9.5 13h5M12 10.5v5"
-                                /></g
-                              ></svg
-                            >
-                          </label>
-                        </div>
-                        <!--End Price Alert -->
                       </div>
 
                       <!-- svelte-ignore a11y-click-events-have-key-events -->
                       <!-- svelte-ignore a11y-label-has-associated-control -->
+
                       <TickerHeader
                         {data}
                         isOpen={$isOpen}
@@ -830,7 +542,7 @@
 <!--End Login Modal-->
 
 <!--Start SellTrade Modal-->
-<PriceAlert {data} ticker={$etfTicker} assetType="stock" />
+<PriceAlert {data} ticker={$etfTicker} assetType="etf" />
 
 <!--Start Add Watchlist Modal-->
 <input type="checkbox" id="addWatchListModal" class="modal-toggle" />
@@ -842,18 +554,25 @@
     class="cursor-pointer modal-backdrop"
   ></label>
 
-  <div class="modal-box rounded-md w-full bg-secondary border border-gray-600">
-    <label
-      for="addWatchListModal"
-      class="cursor-pointer bg-secondary absolute right-5 top-2 text-[1rem] sm:text-[1.5rem] text-white"
+  <div
+    class="modal-box max-h-96 rounded-md w-full bg-white dark:bg-secondary border border-gray-600"
+  >
+    <div
+      class="mb-5 flex flex-row justify-between items-center border-b pb-2 border-gray-300 dark:border-gray-600"
     >
-      ✕
-    </label>
+      <h3 class="font-semibold text-lg sm:text-xl text-black dark:text-white">
+        Add to Watchlist
+      </h3>
+      <label
+        for="addWatchListModal"
+        class="cursor-pointer absolute right-5 top-2 text-[1rem] sm:text-[1.5rem]"
+      >
+        ✕
+      </label>
+    </div>
 
-    <div class="text-white">
-      <h3 class="font-semibold text-lg sm:text-xl mb-10">Add to Watchlist</h3>
-
-      <div class="flex flex-col items-center w-full max-w-3xl bg-secondary">
+    <div class="">
+      <div class="flex flex-col items-center w-full max-w-3xl">
         {#each userWatchList as item}
           <label
             on:click|stopPropagation={() => toggleUserWatchlist(item?.id)}
@@ -863,14 +582,14 @@
               class="flex flex-row items-center w-full border p-3 rounded-md {item?.ticker?.includes(
                 $etfTicker,
               )
-                ? 'border border-gray-400'
-                : 'border-gray-600'}"
+                ? 'border border-gray-600 dark:border-gray-300'
+                : 'border-gray-400 dark:border-gray-600'}"
             >
               <div class="flex flex-col items-center w-full">
-                <span class="ml-1 text-white mr-auto">
+                <span class="ml-1 mr-auto">
                   {item?.title}
                 </span>
-                <span class="ml-1 text-white text-sm mr-auto">
+                <span class="ml-1 text-sm mr-auto">
                   {item?.ticker?.length}
                   {item?.ticker?.length !== 1 ? "Companies" : "Company"}
                 </span>
@@ -881,7 +600,7 @@
               >
                 {#if item?.ticker?.includes($etfTicker)}
                   <svg
-                    class="w-full h-full rounded-full"
+                    class="w-full h-full rounded-full text-blue-500 dark:text-white"
                     viewBox="0 0 48 48"
                     version="1.1"
                     xmlns="http://www.w3.org/2000/svg"
@@ -903,7 +622,7 @@
                       >
                         <g
                           id="ic_fluent_checkmark_circle_48_filled"
-                          fill="#fff"
+                          fill="currentColor"
                           fill-rule="nonzero"
                         >
                           <path

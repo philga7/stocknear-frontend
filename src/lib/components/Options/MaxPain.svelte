@@ -28,7 +28,7 @@
   let configExpiry = null;
 
   function initialize() {
-    currentPrice = data?.getStockQuote?.price;
+    currentPrice = Number(data?.getStockQuote?.price?.toFixed(2));
     rawData = data?.getData;
     dateList = rawData?.map((item) => item?.expiration);
     selectedDate = dateList?.at(0);
