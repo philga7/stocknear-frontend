@@ -872,7 +872,7 @@
                 <div class="min-w-[500px]"></div>
               {/if}
             </div>
-            <div class="grow md:pt-4 lg:pl-4 lg:pt-0">
+            <div class="grow p-3 md:pt-4 lg:pl-4 lg:pt-0">
               {#if numOfAnalyst > 0}
                 <div
                   class="sm:shadow-sm sm:border border-gray-300 dark:border-gray-800 rounded"
@@ -880,7 +880,7 @@
                 ></div>
               {:else}
                 <div
-                  class="min-h-[300px] text-lg sm:text-xl font-bold shadow-sm border border-gray-300 dark:border-gray-800 rounded flex justify-center items-center"
+                  class="mb-2 min-h-[200px] sm:min-h-[300px] text-lg sm:text-xl font-bold shadow-sm border border-gray-300 dark:border-gray-800 rounded flex justify-center items-center"
                 >
                   No Chart available
                 </div>
@@ -1030,7 +1030,7 @@
                 ></div>
               {:else}
                 <div
-                  class="min-h-[300px] text-lg sm:text-xl font-bold shadow-sm border border-gray-300 dark:border-gray-800 rounded flex justify-center items-center"
+                  class="min-h-[200px] sm:min-h-[300px] text-lg sm:text-xl font-bold shadow-sm border border-gray-300 dark:border-gray-800 rounded flex justify-center items-center"
                 >
                   No Chart available
                 </div>
