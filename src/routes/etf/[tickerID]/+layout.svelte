@@ -373,60 +373,56 @@
                       >
                         <!--Start Watchlist-->
 
-                        {#if data?.user}
-                          <div
-                            class="-mb-1 mt-6 flex sm:ml-auto w-full ml-auto gap-2 sm:right-5 sm:top-6 sm:mb-0 sm:mt-0 sm:w-auto lg:right-8"
+                        <div
+                          class="-mb-1 mt-6 flex sm:ml-auto w-full ml-auto gap-2 sm:right-5 sm:top-6 sm:mb-0 sm:mt-0 sm:w-auto lg:right-8"
+                        >
+                          <label
+                            for={data?.user ? "addWatchListModal" : "userLogin"}
+                            class="inline-flex items-center justify-center gap-x-1.5 cursor-pointer transition-all whitespace-nowrap rounded-md bg-blue-500 dark:bg-default sm:hover:bg-blue-600 dark:sm:hover:bg-[#2A2E39] border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-base font-semibold text-white shadow-sm lg:px-2.5 flex-1 md:flex-initial"
+                            ><svg
+                              class="size-5 flex-shrink-0"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              style="max-width:40px"
+                              aria-hidden="true"
+                              ><path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                              ></path></svg
+                            >
+                            <span class="text-sm md:text-[1rem]">Watchlist</span
+                            ></label
                           >
-                            <label
-                              for={data?.user
-                                ? "addWatchListModal"
-                                : "userLogin"}
-                              class="inline-flex items-center justify-center gap-x-1.5 cursor-pointer transition-all whitespace-nowrap rounded-md bg-blue-500 dark:bg-default sm:hover:bg-blue-600 dark:sm:hover:bg-[#2A2E39] border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-base font-semibold text-white shadow-sm lg:px-2.5 flex-1 md:flex-initial"
-                              ><svg
-                                class="size-5 flex-shrink-0"
+                          <label
+                            on:click={() => ($openPriceAlert = true)}
+                            for={data?.user ? "priceAlertModal" : "userLogin"}
+                            class="inline-flex items-center justify-center gap-x-1.5 cursor-pointer transition-all whitespace-nowrap rounded-md bg-blue-500 dark:bg-default sm:hover:bg-blue-600 dark:sm:hover:bg-[#2A2E39] border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-base font-semibold text-white shadow-sm lg:px-2.5 flex-1 md:flex-initial"
+                            ><svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              class="size-5 flex-shrink-0"
+                              viewBox="0 0 24 24"
+                              ><g
                                 fill="none"
-                                viewBox="0 0 24 24"
                                 stroke="currentColor"
-                                style="max-width:40px"
-                                aria-hidden="true"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.5"
                                 ><path
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                                ></path></svg
-                              >
-                              <span class="text-sm md:text-[1rem]"
-                                >Watchlist</span
-                              ></label
+                                  d="M3 5.231L6.15 3M21 5.231L17.85 3"
+                                /><circle cx="12" cy="13" r="8" /><path
+                                  d="M9.5 13h5M12 10.5v5"
+                                /></g
+                              ></svg
                             >
-                            <label
-                              on:click={() => ($openPriceAlert = true)}
-                              for={data?.user ? "priceAlertModal" : "userLogin"}
-                              class="inline-flex items-center justify-center gap-x-1.5 cursor-pointer transition-all whitespace-nowrap rounded-md bg-blue-500 dark:bg-default sm:hover:bg-blue-600 dark:sm:hover:bg-[#2A2E39] border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-base font-semibold text-white shadow-sm lg:px-2.5 flex-1 md:flex-initial"
-                              ><svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                class="size-5 flex-shrink-0"
-                                viewBox="0 0 24 24"
-                                ><g
-                                  fill="none"
-                                  stroke="currentColor"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="1.5"
-                                  ><path
-                                    d="M3 5.231L6.15 3M21 5.231L17.85 3"
-                                  /><circle cx="12" cy="13" r="8" /><path
-                                    d="M9.5 13h5M12 10.5v5"
-                                  /></g
-                                ></svg
-                              >
-                              <span class="text-sm md:text-[1rem]"
-                                >Price Alert</span
-                              ></label
-                            >
-                          </div>
-                        {/if}
+                            <span class="text-sm md:text-[1rem]"
+                              >Price Alert</span
+                            ></label
+                          >
+                        </div>
+
                         <!--End Watchlist-->
                       </div>
 
