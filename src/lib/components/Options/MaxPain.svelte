@@ -478,7 +478,7 @@
               <DropdownMenu.Trigger asChild let:builder>
                 <Button
                   builders={[builder]}
-                  class=" border-gray-300 dark:border-none shadow-sm bg-white dark:bg-[#2A2E39] h-[38px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
+                  class=" border-gray-300 dark:border-none shadow-sm bg-white dark:bg-[#2A2E39] h-[38px] shadow border border-gray-300 dark:border-gray-800 flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
                 >
                   <span class="truncate text-sm"
                     >Date Expiration | {formatDate(selectedDate)}</span
@@ -511,7 +511,7 @@
                           selectedDate = item;
                         }}
                         class="{selectedDate === item
-                          ? 'bg-gray-200 bg-primary'
+                          ? 'bg-gray-200 dark:bg-primary'
                           : ''} sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
                       >
                         {formatDate(item)}

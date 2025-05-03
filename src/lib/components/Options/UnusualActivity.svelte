@@ -33,7 +33,7 @@
     dte: daysLeft(item?.expiry),
   }));
 
-  let displayList = rawData?.slice(0, 150) || [];
+  let displayList = rawData?.slice(0, 20) || [];
 
   let configUnusual = null;
 

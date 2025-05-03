@@ -18,13 +18,12 @@
     priceChartData,
   } from "$lib/store";
 
-  import { onMount, onDestroy, afterUpdate } from "svelte";
+  import { onDestroy, afterUpdate } from "svelte";
   import { page } from "$app/stores";
   import { toast } from "svelte-sonner";
   import { mode } from "mode-watcher";
 
   import { convertTimestamp } from "$lib/utils";
-  import PriceAlert from "$lib/components/PriceAlert.svelte";
   import TickerHeader from "$lib/components/TickerHeader.svelte";
 
   export let data;
@@ -190,17 +189,9 @@
     }
   }
 
-  let LoginPopup;
-
   $: if ($isOpen) {
     websocketRealtimeData();
   }
-
-  onMount(async () => {
-    if (!data?.user) {
-      LoginPopup = (await import("$lib/components/LoginPopup.svelte")).default;
-    }
-  });
 
   afterUpdate(async () => {
     if (previousTicker !== $indexTicker && typeof socket !== "undefined") {
@@ -499,14 +490,22 @@
   </div>
 </body>
 
-<!--Start Login Modal-->
-{#if LoginPopup}
-  <LoginPopup form={$globalForm} />
+{#if !data?.user}
+  {#await import("$lib/components/LoginPopup.svelte") then { default: Comp }}
+    <svelte:component this={Comp} form={$globalForm} />
+  {/await}
 {/if}
 <!--End Login Modal-->
 
 <!--Start SellTrade Modal-->
-<PriceAlert {data} ticker={$indexTicker} assetType="etf" />
+{#await import("$lib/components/PriceAlert.svelte") then { default: Comp }}
+  <svelte:component
+    this={Comp}
+    {data}
+    ticker={$indexTicker}
+    assetType="index"
+  />
+{/await}
 
 <!--Start Add Watchlist Modal-->
 <input type="checkbox" id="addWatchListModal" class="modal-toggle" />
