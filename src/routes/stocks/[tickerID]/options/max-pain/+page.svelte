@@ -14,7 +14,7 @@
   description={`View the Max Pain chart for ${$displayCompanyName} (${$stockTicker?.toUpperCase()}) to analyze options strike price pressure and market sentiment.`}
 />
 
-<section class="w-full overflow-hidden min-h-screen pb-40">
+<section class="w-full overflow-hidden min-h-screen">
   <div class="w-full flex h-full overflow-hidden">
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"

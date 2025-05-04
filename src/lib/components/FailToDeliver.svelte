@@ -147,14 +147,15 @@
             year: "numeric",
             month: "short",
             day: "numeric",
+            timeZone: "UTC",
           })}</span><br>`;
 
           // Loop through each point in the shared tooltip
           this.points.forEach((point) => {
-            tooltipContent += `<span class=" font-semibold text-sm">${point.series.name}:</span> 
-          <span class=" font-normal text-sm">${abbreviateNumber(
-            point.y,
-          )}</span><br>`;
+            tooltipContent += `
+            <span style=\"display:inline-block; width:10px; height:10px; background-color:${point.color}; border-radius:50%; margin-right:5px; vertical-align:middle;\"></span>
+            <span class=\"font-semibold text-sm\">${point.series.name}:</span>
+            <span class=\"font-normal text-sm\">${abbreviateNumber(point.y)}${point.series.name.includes("%") ? "%" : ""}</span><br/>`;
           });
 
           return tooltipContent;
@@ -207,6 +208,22 @@
       ],
       series: [
         {
+          // Price line series drawn on top
+          name: "Stock Price",
+          type: "line",
+          data: priceList,
+          color: $mode === "light" ? "#2C6288" : "#fff",
+          marker: {
+            enabled: false,
+            states: {
+              hover: {
+                enabled: false,
+              },
+            },
+          },
+          lineWidth: 2,
+        },
+        {
           // FTD Shares area series drawn first (behind the line)
           name: "FTD Shares",
           type: "area",
@@ -222,22 +239,6 @@
               },
             },
           },
-        },
-        {
-          // Price line series drawn on top
-          name: "Price",
-          type: "line",
-          data: priceList,
-          color: $mode === "light" ? "#2C6288" : "#fff",
-          marker: {
-            enabled: false,
-            states: {
-              hover: {
-                enabled: false,
-              },
-            },
-          },
-          lineWidth: 2,
         },
       ],
     };
