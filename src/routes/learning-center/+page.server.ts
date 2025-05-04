@@ -1,20 +1,28 @@
 
-export const load = async ({locals}) => {
-    const { pb } = locals;
 
-    const getAllBlogPost = async () => {
+export const load = async ({ locals, url }) => {
+  const { pb } = locals;
 
+  // Get `page` from query parameters, default to 1
+  const page = parseInt(url.searchParams.get('page')) || 1;
 
-      // make the POST request to the endpoint
-      const output = await pb.collection("tutorials").getFullList({
-        sort: "-created",
-      });
+  const getAllBlogPost = async () => {
+    const output = await pb.collection("tutorials").getList(page, 6, {
+      sort: "-created",
+    });
 
-    return output;
+    return output?.items;
   };
 
-  // Make sure to return a promise
+  const getTotalLength = async () => {
+    const output = await pb.collection("tutorials").getFullList( );
+
+    return output?.length;
+  };
+
+
   return {
     getAllBlogPost: await getAllBlogPost(),
+    getTotalLength: await getTotalLength(),
   };
 };

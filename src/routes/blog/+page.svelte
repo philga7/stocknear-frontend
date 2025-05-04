@@ -1,10 +1,16 @@
 <script lang="ts">
   import { getImageURL, convertToSlug } from "$lib/utils";
   import SEO from "$lib/components/SEO.svelte";
+  import { page } from "$app/stores";
 
   export let data;
 
-  let allBlogPosts = data?.getAllBlogPost;
+  const PAGE_SIZE = 6;
+  const TOTAL_POSTS = data?.getTotalLength;
+
+  $: totalPages = Math.ceil(TOTAL_POSTS / PAGE_SIZE);
+  $: currentPage = parseInt($page.url.searchParams.get("page") ?? "1");
+  $: allBlogPosts = [...data?.getAllBlogPost];
 </script>
 
 <SEO
@@ -14,7 +20,7 @@
 />
 
 <section
-  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pb-20 pt-5 px-4 lg:px-3"
+  class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-[80vh] pb-20 pt-5 px-4 lg:px-3"
 >
   <div class="w-full overflow-hidden m-auto mt-5">
     <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
@@ -82,6 +88,49 @@
                   </div>
                 </div>
               {/each}
+            {/if}
+          </div>
+
+          <div class="my-4 flex w-full">
+            {#if currentPage > 1}
+              <a
+                href={`/blog/?page=${currentPage - 1}`}
+                class="mr-auto flex flex-row item-center text-blue-800 dark:text-white sm:hover:text-muted dark:sm:hover:text-blue-400"
+              >
+                <svg
+                  class="w-6 h-6 mr-2 rotate-180"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  style="max-width:40px"
+                  ><path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
+                  ></path></svg
+                ><span>Previous</span></a
+              >
+            {/if}
+            {#if currentPage < totalPages}
+              <a
+                href={`/blog/?page=${currentPage + 1}`}
+                class="ml-auto flex flex-row item-center text-blue-800 dark:text-white sm:hover:text-muted dark:sm:hover:text-blue-400"
+                ><span>Next</span>
+                <svg
+                  class="w-6 h-6 ml-2 inline-block"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  style="max-width:40px"
+                  ><path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
+                  ></path></svg
+                ></a
+              >
             {/if}
           </div>
         </main>
