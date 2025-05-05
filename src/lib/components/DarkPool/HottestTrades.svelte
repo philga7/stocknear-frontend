@@ -21,7 +21,7 @@
       hour: "numeric",
       minute: "numeric",
       second: "numeric",
-      timeZone: "UTC",
+      timeZone: "America/New_York", // Correct IANA time zone
       hour12: true, // Enable AM/PM format
     };
 
