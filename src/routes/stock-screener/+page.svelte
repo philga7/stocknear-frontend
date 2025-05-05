@@ -1423,39 +1423,45 @@
   }
 
   async function handleDeleteStrategy() {
-    const postData = { strategyId: selectedStrategy };
+    const deletePromise = (async () => {
+      const postData = { strategyId: selectedStrategy };
 
-    const response = await fetch("/api/delete-strategy", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(postData),
-    });
-
-    const output = await response.json();
-
-    if (output === "success") {
-      toast.success("Screener deleted successfully!", {
-        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
+      const response = await fetch("/api/delete-strategy", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(postData),
       });
 
+      if (!response.ok) {
+        throw new Error(`Network error: ${response.status}`);
+      }
+
+      const output = await response.json();
+      if (output !== "success") {
+        throw new Error("Server returned failure");
+      }
+
+      // ——— SUCCESS: run your state‐update logic ———
       strategyList =
-        strategyList?.filter((item) => item?.id !== selectedStrategy) ?? [];
+        strategyList?.filter((item) => item.id !== selectedStrategy) ?? [];
       selectedStrategy = strategyList?.at(0)?.id ?? "";
       ruleOfList =
         strategyList?.find((item) => item.id === selectedStrategy)?.rules ?? [];
+
       ruleOfList.forEach((rule) => {
         ruleCondition[rule.name] =
           rule.condition || allRules[rule.name].defaultCondition;
         valueMappings[rule.name] =
           rule.value || allRules[rule.name].defaultValue;
       });
-      if (ruleOfList?.length === 0) {
+
+      if (ruleOfList.length === 0) {
         filteredData = [];
         displayResults = [];
       }
+
       await updateStockScreenerData();
+
       checkedItems = new Map(
         ruleOfList
           ?.filter((rule) =>
@@ -1469,22 +1475,38 @@
               "score",
               "industry",
               "grahamNumber",
-            ]?.includes(rule.name),
-          ) // Only include specific rules
-          ?.map((rule) => [rule.name, new Set(rule.value)]), // Create Map from filtered rules
+            ].includes(rule.name),
+          )
+          ?.map((rule) => [rule.name, new Set(rule.value)]),
       );
-    } else if (output === "failure") {
-      toast.error("Something went wrong. Please try again", {
-        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
-      });
-    }
+
+      // return something if you need to chain further
+      return true;
+    })();
+
+    return toast?.promise(
+      deletePromise,
+      {
+        loading: "Deleting screener…",
+        success: "Screener deleted successfully!",
+        error: "Delete failed. Please try again.",
+      },
+      {
+        style: `
+        border-radius: 5px;
+        background: #fff;
+        color: #000;
+        border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"};
+        font-size: 15px;
+      `,
+      },
+    );
   }
 
   async function createStrategy(event) {
     event.preventDefault();
 
-    const formData = new FormData(event.target); // create a FormData object from the form
-
+    const formData = new FormData(event.target);
     formData.append("user", data?.user?.id);
     formData.append("rules", "[]");
     title = formData.get("title");
@@ -1493,53 +1515,90 @@
       title = "My Screener";
     }
 
-    if (title?.length > 100) {
+    if (title.length > 100) {
       toast.error("Title is too long. Please keep it under 100 characters.", {
-        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
+        style: `
+        border-radius: 5px;
+        background: #fff;
+        color: #000;
+        border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"};
+        font-size: 15px;
+      `,
       });
       return;
     }
 
+    // build postData object
     const postData = {};
-
-    // Iterate through the FormData entries and populate the object
     for (const [key, value] of formData.entries()) {
       postData[key] = value;
     }
 
-    const response = await fetch("/api/create-strategy", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(postData),
-    });
-
-    const output = await response?.json();
-    if (output?.id && output?.id?.length !== 0) {
-      toast.success("Screener created successfully!", {
-        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
+    // wrap the fetch + response check + state updates in a promise
+    const createPromise = (async () => {
+      const response = await fetch("/api/create-strategy", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(postData),
       });
 
+      if (!response.ok) {
+        throw new Error(`Network error: ${response.status}`);
+      }
+
+      const output = await response.json();
+      if (!output?.id) {
+        throw new Error("Server did not return a new strategy ID");
+      }
+
+      // ——— SUCCESS: run your existing post-create logic ———
+      toast.success("Screener created successfully!", {
+        style: `
+        border-radius: 5px;
+        background: #fff;
+        color: #000;
+        border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"};
+        font-size: 15px;
+      `,
+      });
+
+      // close modal
       const closePopup = document.getElementById("addStrategy");
       closePopup?.dispatchEvent(new MouseEvent("click"));
-      selectedStrategy = output?.id;
 
+      selectedStrategy = output.id;
       strategyList?.unshift(output);
       selectedPopularStrategy = "";
+
       if (removeList) {
         removeList = false;
         ruleOfList = [];
       }
 
-      handleSave(false);
-    } else {
-      toast.error("Something went wrong. Please try again later!", {
-        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
-      });
-    }
+      // trigger a save without toasting again
+      await handleSave(false);
 
-    return output;
+      return output;
+    })();
+
+    // show loading / success / error around the whole operation
+    return toast.promise(
+      createPromise,
+      {
+        loading: "Creating screener…",
+        success: () => "", // we already show success inside the promise
+        error: "Something went wrong. Please try again later!",
+      },
+      {
+        style: `
+        border-radius: 5px;
+        background: #fff;
+        color: #000;
+        border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"};
+        font-size: 15px;
+      `,
+      },
+    );
   }
 
   async function switchStrategy(item) {
@@ -1855,33 +1914,55 @@ const handleKeyDown = (event) => {
   });
 
   async function handleSave(showMessage) {
-    if (data?.user) {
-      if (strategyList?.length === 0) {
-        handleCreateStrategy();
-      }
+    if (!data?.user) return;
 
-      if (strategyList?.length > 0) {
-        strategyList.find((item) => item.id === selectedStrategy).rules =
-          ruleOfList;
+    if (strategyList?.length === 0) {
+      handleCreateStrategy();
+    }
 
-        const postData = {
-          strategyId: selectedStrategy,
-          rules: ruleOfList,
-        };
+    if (strategyList?.length > 0) {
+      // update local strategyList
+      strategyList.find((item) => item.id === selectedStrategy).rules =
+        ruleOfList;
 
+      const postData = {
+        strategyId: selectedStrategy,
+        rules: ruleOfList,
+      };
+
+      const savePromise = (async () => {
         const response = await fetch("/api/save-strategy", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(postData),
         });
-
-        if (showMessage) {
-          toast.success("Screener saved!", {
-            style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
-          });
+        if (!response.ok) {
+          throw new Error(`Server responded with ${response.status}`);
         }
+        return response;
+      })();
+
+      if (showMessage) {
+        return toast.promise(
+          savePromise,
+          {
+            loading: "Saving screener...",
+            success: "Screener saved!",
+            error: "Save failed. Please try again.",
+          },
+          {
+            style: `
+            border-radius: 5px;
+            background: #fff;
+            color: #000;
+            border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"};
+            font-size: 15px;
+          `,
+          },
+        );
+      } else {
+        // just await without toast
+        await savePromise;
       }
     }
   }
