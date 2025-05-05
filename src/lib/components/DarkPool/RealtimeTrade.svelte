@@ -68,9 +68,6 @@
     let yMin = minValue * (1 - padding) === 0 ? null : minValue * (1 - padding);
     let yMax = maxValue * (1 + padding) === 0 ? null : maxValue * (1 + padding);
 
-    const fillColorStart = "rgb(70, 129, 244,0.5)";
-    const fillColorEnd = "rgb(70, 129, 244,0.001)";
-
     const options = {
       chart: {
         backgroundColor: $mode === "light" ? "#fff" : "#09090B",
@@ -167,7 +164,6 @@
           let formattedDate = date?.toLocaleTimeString("en-US", {
             hour: "2-digit",
             minute: "2-digit",
-            timeZone: "UTC",
           });
 
           let tooltipContent = `<span class="text-white m-auto text-black text-sm font-normal">${formattedDate}</span><br>`;

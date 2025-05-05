@@ -140,7 +140,7 @@
     return options;
   }
 
-  $: if (category || $mode) {
+  $: if (category === "Price Level" || $mode) {
     config = getBarChart() || null;
   }
 </script>
