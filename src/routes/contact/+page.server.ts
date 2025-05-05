@@ -8,9 +8,8 @@ export const actions = {
 
     // Convert FormData to a plain object
     const data = Object.fromEntries(formData);
-    data.category = 'support';
+    data.category = 'contact';
 
-    console.log(data);
 
     try {
       await pb.collection("support").create(data);
@@ -20,6 +19,6 @@ export const actions = {
     }
 
     // Use `return` to complete the action
-    return redirect(303, "/support");
+    return redirect(303, "/contact");
   },
 };

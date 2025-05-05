@@ -49,7 +49,7 @@
               class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
             >
               <div class="w-full flex justify-between items-center p-3 mt-3">
-                <h2 class="text-start text-xl font-semibold ml-3">
+                <h2 class="text-start text-xl font-bold ml-3">
                   Stock Screener
                 </h2>
                 <ArrowLogo

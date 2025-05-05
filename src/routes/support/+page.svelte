@@ -50,7 +50,7 @@
 
 {#key messageSent}
   <section
-    class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-[80vh] pt-5 px-4 lg:px-3 text-muted dark:text-white"
+    class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pt-5 px-4 lg:px-3 text-muted dark:text-white"
   >
     <div class="text-sm sm:text-[1rem] breadcrumbs">
       <ul>
@@ -178,7 +178,7 @@
                 class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
               >
                 <div class="w-full flex justify-between items-center p-3 mt-3">
-                  <h2 class="text-start text-xl font-semibold ml-3">
+                  <h2 class="text-start text-xl font-bold ml-3">
                     Pro Subscription
                   </h2>
                   <ArrowLogo
@@ -200,7 +200,7 @@
                 class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
               >
                 <div class="w-full flex justify-between items-center p-3 mt-3">
-                  <h2 class="text-start text-xl font-semibold ml-3">
+                  <h2 class="text-start text-xl font-bold ml-3">
                     Stock Screener
                   </h2>
                   <ArrowLogo
@@ -222,9 +222,7 @@
                 class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
               >
                 <div class="w-full flex justify-between items-center p-3 mt-3">
-                  <h2 class="text-start text-xl font-semibold ml-3">
-                    Watchlists
-                  </h2>
+                  <h2 class="text-start text-xl font-bold ml-3">Watchlists</h2>
                   <ArrowLogo
                     class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
                   />

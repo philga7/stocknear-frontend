@@ -169,7 +169,7 @@
               class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
             >
               <div class="w-full flex justify-between items-center p-3 mt-3">
-                <h2 class="text-start text-xl font-semibold ml-3">
+                <h2 class="text-start text-xl font-bold ml-3">
                   Pro Subscription
                 </h2>
                 <ArrowLogo
@@ -190,7 +190,7 @@
               class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
             >
               <div class="w-full flex justify-between items-center p-3 mt-3">
-                <h2 class="text-start text-xl font-semibold ml-3">About Us</h2>
+                <h2 class="text-start text-xl font-bold ml-3">About Us</h2>
                 <ArrowLogo
                   class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
                 />
@@ -209,9 +209,7 @@
               class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
             >
               <div class="w-full flex justify-between items-center p-3 mt-3">
-                <h2 class="text-start text-xl font-semibold ml-3">
-                  Contact Us
-                </h2>
+                <h2 class="text-start text-xl font-bold ml-3">Contact Us</h2>
                 <ArrowLogo
                   class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
                 />
