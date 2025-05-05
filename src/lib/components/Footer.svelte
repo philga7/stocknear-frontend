@@ -99,6 +99,12 @@
                   href="/sitemap/">Sitemap</a
                 >
               </li>
+              <li>
+                <a
+                  class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
+                  href="/learning-center/">Learning Center</a
+                >
+              </li>
             </ul>
           </div>
           <div class="mt-12 md:mt-0">
