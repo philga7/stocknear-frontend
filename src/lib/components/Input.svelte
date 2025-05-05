@@ -47,7 +47,7 @@
   </label>
   <div class="relative">
     <input
-      class="input input-lg input-bordered border border-gray-600 focus:outline-none w-full bg-white dark:bg-secondary placeholder-gray-600 dark:placeholder-gray-300 whitespace-normal"
+      class="input input-lg input-bordered border border-gray-400 dark:border-gray-600 focus:outline-none w-full bg-white dark:bg-secondary placeholder-gray-600 dark:placeholder-gray-300 whitespace-normal"
       {type}
       {placeholder}
       {required}

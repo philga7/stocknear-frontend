@@ -8,7 +8,7 @@
   export let required = false;
   export let hidden = false;
 
-  export let maxLength = 512;
+  export let maxLength = 5000;
   export let showCounter = false;
 
   export let errors;
@@ -38,14 +38,14 @@
   />
 </svelte:head>
 
-<div class="form-control w-full h-auto max-w-2xl {hidden ? 'hidden' : ''}">
+<div class="form-control w-full h-auto {hidden ? 'hidden' : ''}">
   <label for={id} class="label pb-1">
-    <span class="label-text">{label}</span>
+    <span class="text-muted dark:text-white">{label}</span>
   </label>
 
   <textarea
     input="text"
-    class="min-h-[290px] placeholder:text-gray-300 h-auto text-sm bg-[#242527] w-full resize-none focus-none ring-none rounded-md text-white"
+    class="min-h-[290px] p-3 h-auto text-sm border border-gray-400 dark:border-gray-600 focus:outline-none w-full bg-white dark:bg-secondary placeholder-gray-600 dark:placeholder-gray-300 whitespace-normal w-full resize-none focus-none ring-none rounded-md"
     {type}
     {placeholder}
     {required}

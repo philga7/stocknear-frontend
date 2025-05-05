@@ -213,7 +213,7 @@
           class="relative flex justify-center items-start overflow-hidden w-full"
         >
           <article class="w-full lg:w-3/4 lg:pr-10">
-            <div class="mb-6 border-b-[2px]">
+            <div class="mb-6 border-[#2C6288] dark:border-white border-b-[2px]">
               <h1 class="mb-1 text-2xl sm:text-3xl font-bold">Sitemap</h1>
             </div>
 
@@ -336,19 +336,20 @@
               class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
             >
               <a
-                href="/donation"
+                href="/stock-screener"
                 class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
               >
                 <div class="w-full flex justify-between items-center p-3 mt-3">
                   <h2 class="text-start text-xl font-semibold ml-3">
-                    Sponsor Us
+                    Stock Screener
                   </h2>
                   <ArrowLogo
                     class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
                   />
                 </div>
                 <span class=" p-3 ml-3 mr-3">
-                  Learn more about why we're doing this here
+                  Filter, sort and analyze all stocks to find your next
+                  investment.
                 </span>
               </a>
             </div>
@@ -357,19 +358,19 @@
               class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
             >
               <a
-                href="/contact"
+                href="/watchlist/stocks"
                 class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
               >
                 <div class="w-full flex justify-between items-center p-3 mt-3">
                   <h2 class="text-start text-xl font-semibold ml-3">
-                    Contact Us
+                    Watchlists
                   </h2>
                   <ArrowLogo
                     class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
                   />
                 </div>
-                <span class=" p-3 ml-3 mr-3">
-                  Let me know if you need something
+                <span class=" p-3 ml-3 mr-3"
+                  >Keep track of your favorite stocks in real-time.
                 </span>
               </a>
             </div>

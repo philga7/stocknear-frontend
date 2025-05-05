@@ -332,7 +332,7 @@
         class="relative flex justify-center items-start overflow-hidden w-full"
       >
         <main class="w-full lg:pr-5">
-          <div class="mb-6 border-b-[2px]">
+          <div class="mb-6 border-[#2C6288] dark:border-white border-b-[2px]">
             <h1 class="mb-1 text-2xl sm:text-3xl font-bold">
               Earnings Calendar
             </h1>
