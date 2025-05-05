@@ -1,7 +1,7 @@
 <script>
   import { getImageURL } from "$lib/utils";
   import SEO from "$lib/components/SEO.svelte";
-  import ArticleBreadcrumbStructuredData from "$lib/components/ArticleBreadcrumbStructuredData.svelte";
+  // import ArticleBreadcrumbStructuredData from "$lib/components/ArticleBreadcrumbStructuredData.svelte";
 
   export let data;
 
@@ -26,6 +26,7 @@
     : ""}
 />
 
+<!--
 <ArticleBreadcrumbStructuredData
   title={article?.title}
   datePublished={article.created}
@@ -35,6 +36,8 @@
     ? getImageURL(article?.collectionId, article?.id, article?.cover)
     : ""}
 />
+
+-->
 
 <section
   class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pb-20 pt-5 px-4 lg:px-3"
