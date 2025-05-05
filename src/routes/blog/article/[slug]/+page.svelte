@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { getImageURL } from "$lib/utils";
   import SEO from "$lib/components/SEO.svelte";
   //import ArticleBreadcrumbStructuredData from "$lib/components/ArticleBreadcrumbStructuredData.svelte";

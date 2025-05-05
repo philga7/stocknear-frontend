@@ -78,14 +78,23 @@
 />
 
 <div
-  class="text-muted dark:text-white relative w-full max-w-3xl mx-auto min-h-screen pb-40 sm:mt-10 {oauthLoading
+  class="text-muted dark:text-white relative w-full max-w-3xl mx-auto min-h-screen pb-40 {oauthLoading
     ? 'opacity-[0.2]'
     : ''}"
 >
   <div class="grid grid-cols-1 gap-4">
     <div class="relative">
-      <h1 class="text-center text-2xl sm:text-3xl pt-10 sm:pt-0 font-bold">
-        Sign In
+      <a href="/">
+        <img
+          class="m-auto w-16 sm:w-20 rounded-full pt-4"
+          src="/pwa-192x192.png"
+          alt="Stocknear Logo"
+          loading="lazy"
+        />
+      </a>
+
+      <h1 class="text-center text-2xl sm:text-3xl pt-5 font-bold">
+        Log in to your account
       </h1>
     </div>
 
