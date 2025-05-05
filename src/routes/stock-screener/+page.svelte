@@ -1484,23 +1484,18 @@
       return true;
     })();
 
-    return toast?.promise(
-      deletePromise,
-      {
-        loading: "Deleting screener…",
-        success: "Screener deleted successfully!",
-        error: "Delete failed. Please try again.",
-      },
-      {
-        style: `
+    return toast?.promise(deletePromise, {
+      loading: "Deleting screener…",
+      success: "Screener deleted successfully!",
+      error: "Delete failed. Please try again.",
+      style: `
         border-radius: 5px;
         background: #fff;
         color: #000;
         border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"};
         font-size: 15px;
       `,
-      },
-    );
+    });
   }
 
   async function createStrategy(event) {
@@ -1582,23 +1577,18 @@
     })();
 
     // show loading / success / error around the whole operation
-    return toast.promise(
-      createPromise,
-      {
-        loading: "Creating screener…",
-        success: () => "", // we already show success inside the promise
-        error: "Something went wrong. Please try again later!",
-      },
-      {
-        style: `
+    return toast.promise(createPromise, {
+      loading: "Creating screener…",
+      success: () => "", // we already show success inside the promise
+      error: "Something went wrong. Please try again later!",
+      style: `
         border-radius: 5px;
         background: #fff;
         color: #000;
         border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"};
         font-size: 15px;
       `,
-      },
-    );
+    });
   }
 
   async function switchStrategy(item) {
@@ -1943,23 +1933,18 @@ const handleKeyDown = (event) => {
       })();
 
       if (showMessage) {
-        return toast.promise(
-          savePromise,
-          {
-            loading: "Saving screener...",
-            success: "Screener saved!",
-            error: "Save failed. Please try again.",
-          },
-          {
-            style: `
+        return toast.promise(savePromise, {
+          loading: "Saving screener...",
+          success: "Screener saved!",
+          error: "Save failed. Please try again.",
+          style: `
             border-radius: 5px;
             background: #fff;
             color: #000;
             border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"};
             font-size: 15px;
           `,
-          },
-        );
+        });
       } else {
         // just await without toast
         await savePromise;
@@ -2795,7 +2780,10 @@ const handleKeyDown = (event) => {
                 <DropdownMenu.Group>
                   {#each strategyList as item}
                     <DropdownMenu.Item
-                      on:click={() => switchStrategy(item)}
+                      on:click={(e) => {
+                        e.preventDefault();
+                        switchStrategy(item);
+                      }}
                       class=" {item?.id === selectedStrategy
                         ? 'bg-gray-300 dark:bg-primary'
                         : ''} cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
