@@ -524,7 +524,7 @@
                   >
                   <a
                     href="/earnings-calendar"
-                    class="ml-auto rounded-md text-xs sm:text-sm px-2 sm:px-3 py-2 font-semibold bg-blue-100 dark:bg-[#fff] text-black"
+                    class="ml-auto rounded text-xs sm:text-sm px-2 sm:px-3 py-2 font-semibold bg-blue-500 sm:hover:bg-blue-600 transition dark:bg-[#fff] text-white dark:text-black"
                   >
                     View All
                     <ArrowUpRight

@@ -3950,7 +3950,8 @@ const handleKeyDown = (event) => {
   ></label>
 
   <div
-    class="modal-box w-full shadow-sm bg-white dark:bg-secondary border border-gray-300 dark:border-gray-600"
+    class="modal-box w-full p-6 rounded shadow-sm border
+        bg-white dark:bg-secondary border border-gray-300 dark:border-gray-800"
   >
     <h1 class="text-2xl font-bold">New Screener</h1>
 
@@ -3982,13 +3983,13 @@ const handleKeyDown = (event) => {
 <!--Start Delete Strategy Modal-->
 <input type="checkbox" id="deleteStrategy" class="modal-toggle" />
 
-<dialog id="deleteStrategy" class="modal modal-middle p-3 sm:p-0">
+<dialog id="deleteStrategy" class="modal modal-bottom sm:modal-middle">
   <label for="deleteStrategy" class="cursor-pointer modal-backdrop bg-[#000]/40"
   ></label>
 
   <div
     class="modal-box w-full p-6 rounded shadow-sm border
-        bg-white dark:bg-[#17181C] border border-gray-300 dark:border-gray-800"
+        bg-white dark:bg-secondary border border-gray-300 dark:border-gray-800"
   >
     <h3 class="text-lg font-medium mb-2">Delete Screener</h3>
     <p class="text-sm mb-6">
@@ -3999,15 +4000,15 @@ const handleKeyDown = (event) => {
       <label
         for="deleteStrategy"
         class="cursor-pointer px-4 py-2 rounded text-sm font-medium
-            transition-colors duration-200
-            bg-zinc-800 text-zinc-300 hover:bg-zinc-700"
+            transition-colors duration-100
+            bg-gray-600 text-white dark:bg-white dark:text-black"
         tabindex="0">Cancel</label
       ><label
         for="deleteStrategy"
         on:click={handleDeleteStrategy}
         class="cursor-pointer px-4 py-2 rounded text-sm font-medium
             transition-colors duration-100 flex items-center
-            bg-red-600 text-white
+            bg-red-600 text-white sm:hover:bg-red-700
             "
         tabindex="0"
         ><svg
