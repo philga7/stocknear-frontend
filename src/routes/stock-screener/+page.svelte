@@ -1504,13 +1504,13 @@
     const formData = new FormData(event.target);
     formData.append("user", data?.user?.id);
     formData.append("rules", "[]");
-    title = formData.get("title");
+    let title = formData.get("title");
 
     if (!title || title.length === 0) {
       title = "My Screener";
     }
 
-    if (title.length > 100) {
+    if (title?.length > 100) {
       toast.error("Title is too long. Please keep it under 100 characters.", {
         style: `
         border-radius: 5px;
