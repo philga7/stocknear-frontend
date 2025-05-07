@@ -78,14 +78,10 @@
   }
 
   async function stepSizeValue(condition) {
-    let step = 0.01;
-    if (targetPrice <= 2) {
-      step = 0.01;
-    } else if (targetPrice <= 5) {
+    let step = 1;
+    if (targetPrice <= 1) {
       step = 0.1;
-    } else if (targetPrice <= 100) {
-      step = 0.5;
-    } else if (targetPrice <= 200) {
+    } else {
       step = 1;
     }
 
@@ -174,7 +170,7 @@
           <input
             type="text"
             value="Price"
-            class="w-full sm:w-[80%] bg-gray-100 dark:bg-[#2A2E39] border border-gray-300 dark:border-gray-600 text-sm rounded-md py-2 px-3"
+            class="select-none w-full sm:w-[80%] bg-gray-100 dark:bg-[#2A2E39] border border-gray-300 dark:border-gray-600 text-sm rounded-md py-2 px-3"
             readonly
           />
         </div>

@@ -379,11 +379,13 @@
     {title} Exposure By Strike
   </h2>
 
-  <Infobox
-    text={title === "Gamma"
-      ? `Gamma Exposure (GEX) for ${ticker} options, representing the estimated dollar value of shares that option sellers must buy or sell to maintain delta neutrality for each 1% move in ${ticker}’s stock price.`
-      : `Delta Exposure (DEX) for ${ticker} options, representing the estimated net number of ${ticker} shares that option sellers must hold or short to hedge their current options positions and maintain delta neutrality.`}
-  />
+  <div class="mt-6 sm:mt-0">
+    <Infobox
+      text={title === "Gamma"
+        ? `Gamma Exposure (GEX) for ${ticker} options, representing the estimated dollar value of shares that option sellers must buy or sell to maintain delta neutrality for each 1% move in ${ticker}’s stock price.`
+        : `Delta Exposure (DEX) for ${ticker} options, representing the estimated net number of ${ticker} shares that option sellers must hold or short to hedge their current options positions and maintain delta neutrality.`}
+    />
+  </div>
 
   <div class="mt-7">
     <DropdownMenu.Root>
@@ -461,7 +463,7 @@
     </DropdownMenu.Root>
   </div>
 
-  <div class="w-full overflow-hidden m-auto mt-3 shadow-sm">
+  <div class="w-full overflow-hidden m-auto sm:mt-3 shadow-sm">
     {#if config !== null}
       <div>
         <div class="grow">
