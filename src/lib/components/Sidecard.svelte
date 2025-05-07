@@ -1,9 +1,13 @@
 <script lang="ts">
-  import { stockTicker } from "$lib/store";
+  import { stockTicker, displayCompanyName } from "$lib/store";
   import { sectorNavigation } from "$lib/utils";
   import highcharts from "$lib/highcharts.ts";
   import { mode } from "mode-watcher";
-  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
+  import {
+    deferFunction,
+    abbreviateNumber,
+    removeCompanyStrings,
+  } from "$lib/utils";
 
   export let data;
 
@@ -29,6 +33,8 @@
   let ipoDate = "n/a";
 
   let configAnalyst = null;
+  let configFinancial = null;
+  let financialPerformance = {};
 
   function getIndustryHref(industryName) {
     // Replace spaces with hyphens
@@ -41,7 +47,7 @@
     return "/list/industry/" + formattedName?.toLowerCase();
   }
 
-  function plotData() {
+  function plotAnalyst() {
     // X-axis categories
     const categories = [
       "Strong<br>Sell",
@@ -59,7 +65,7 @@
       buyCount,
       strongBuyCount,
     ];
-    const colors = ["#FF4C4C", "#FF4C4C", "#F5B700", "#008A00", "#008A00"];
+    const colors = ["#FF4C4C", "#FF4C4C", "#3D3D3D", "#008A00", "#008A00"];
 
     const options = {
       chart: {
@@ -72,7 +78,7 @@
       title: {
         text: `<div class="text-muted dark:text-gray-200 mt-3  text-center font-normal text-2xl">Price Target: <span class="${changesPercentage >= 0 ? "text-green-800 dark:text-[#00FC50]" : "text-red-800 dark:text-[#FF2F1F]"}">$${priceTarget}</span></div>
         <div class="text-muted dark:text-gray-200  mb-2 text-center font-normal text-xl">(${changesPercentage}% ${changesPercentage >= 0 ? "upside" : "downside"})</div>
-        <div class="text-muted dark:text-gray-200 text-center font-normal text-xl flex justify-center items-center">Analyst Consensus: <span class="ml-1 ${consensusRating === "Buy" ? "text-green-800 dark:text-[#00FC50]" : consensusRating === "Sell" ? "text-red-800 dark:text-[#FF2F1F]" : consensusRating === "Hold" ? "text-orange-500 dark:text-[#D5AB31]" : "text-muted dark:text-white"}">${consensusRating ?? "n/a"}</span></div>`,
+        <div class="text-muted dark:text-gray-200 text-center font-normal text-xl flex justify-center items-center">Analyst Consensus: <span class="ml-1 ${consensusRating === "Buy" ? "text-green-800 dark:text-[#00FC50]" : consensusRating === "Sell" ? "text-red-800 dark:text-[#FF2F1F]" : consensusRating === "Hold" ? "text-muted dark:text-[#D5AB31]" : "text-muted dark:text-white"}">${consensusRating ?? "n/a"}</span></div>`,
         style: {
           color: "white",
           // Using inline CSS for margin-top and margin-bottom
@@ -152,9 +158,160 @@
     return options;
   }
 
+  function plotFinancial() {
+    const history = financialPerformance?.history ?? [];
+    // Build data arrays from the aggregated data
+    let dates = history?.map((item) => item?.date);
+    let revenue = history?.map((item) => item?.revenue);
+    let netIncome = history?.map((item) => item?.netIncome);
+
+    // Highcharts configuration options
+    const options = {
+      credits: {
+        enabled: false,
+      },
+      plotOptions: {
+        column: {
+          groupPadding: 0.1, // Increase to add more space between groups of columns
+          pointPadding: 0.1, // Adjust to fine-tune spacing within a group
+          borderWidth: 0, // Optional: Remove borders if not needed
+        },
+        series: {
+          color: $mode === "light" ? "black" : "white",
+          animation: false, // Disable series animation
+          states: {
+            hover: {
+              enabled: false, // Disable hover effect globally
+            },
+          },
+        },
+      },
+      chart: {
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        height: 360,
+        animation: false,
+      },
+      title: {
+        text: null,
+      },
+      xAxis: {
+        categories: dates,
+        gridLineWidth: 0,
+        labels: {
+          style: { color: $mode === "light" ? "#545454" : "white" },
+          formatter: function () {
+            return this?.value?.substring(0, 4);
+          },
+        },
+      },
+      yAxis: [
+        {
+          gridLineWidth: 1,
+          gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
+          labels: {
+            style: { color: $mode === "light" ? "#545454" : "white" },
+          },
+          title: { text: null },
+          opposite: true,
+        },
+        {
+          title: {
+            text: null,
+          },
+          gridLineWidth: 0,
+          labels: {
+            enabled: false,
+          },
+        },
+      ],
+      tooltip: {
+        shared: true,
+        useHTML: true,
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
+        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        borderWidth: 1,
+        style: {
+          color: "#fff",
+          fontSize: "16px",
+          padding: "10px",
+        },
+        borderRadius: 4,
+        formatter: function () {
+          // Format the x value to display time in a custom format
+          let tooltipContent = `<span class="m-auto text-[1rem] font-[501]">${new Date(
+            this?.x,
+          ).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            timeZone: "UTC",
+          })}</span><br>`;
+
+          // Loop through each point in the shared tooltip
+          this.points.forEach((point) => {
+            tooltipContent += `
+        <span style="display:inline-block; width:10px; height:10px; background-color:${point.color}; border-radius:50%; margin-right:5px;"></span>
+        <span class="font-semibold text-sm">${point.series.name}:</span> 
+        <span class="font-normal text-sm">${abbreviateNumber(point.y)}</span><br>`;
+          });
+
+          return tooltipContent;
+        },
+      },
+      series: [
+        {
+          name: "Revenue",
+          type: "column",
+          data: revenue,
+          color: "#457BA1",
+          borderColor: "#457BA1",
+          borderRadius: "2px",
+          animation: false,
+          states: { hover: { enabled: false } },
+          lineWidth: 1.5,
+          crisp: true,
+          marker: {
+            enabled: false,
+          },
+        },
+        {
+          name: "Earnings",
+          type: "column",
+          data: netIncome,
+          color: "#EE5365",
+          borderColor: "#EE5365",
+          borderRadius: "2px",
+          animation: false,
+          states: { hover: { enabled: false } },
+          lineWidth: 1.5,
+          crisp: true,
+          marker: {
+            enabled: false,
+          },
+        },
+      ],
+      legend: {
+        enabled: true,
+        align: "center", // Positions legend at the left edge
+        verticalAlign: "top", // Positions legend at the top
+        layout: "horizontal", // Align items horizontally (use 'vertical' if preferred)
+        itemStyle: {
+          color: $mode === "light" ? "black" : "white",
+        },
+        symbolWidth: 14, // Controls the width of the legend symbol
+        symbolRadius: 1, // Creates circular symbols (adjust radius as needed)
+        squareSymbol: true, // Ensures symbols are circular, not square
+      },
+    };
+
+    return options;
+  }
+
   $: {
-    if ($stockTicker || $mode) {
+    if ($mode) {
       info = data?.getStockDeck;
+      financialPerformance = info?.financialPerformance ?? {};
       ipoDate =
         info?.ipoDate !== null && info?.ipoDate?.length > 0
           ? new Date(info?.ipoDate)?.toLocaleString("en-US", {
@@ -198,7 +355,10 @@
         changesPercentage = 0;
       }
 
-      configAnalyst = plotData();
+      deferFunction(() => {
+        configAnalyst = plotAnalyst() || null;
+        configFinancial = plotFinancial() || null;
+      });
     }
   }
 </script>
@@ -273,7 +433,7 @@
       </div>
       <a
         href={`/stocks/${$stockTicker}/profile`}
-        class="rounded cursor-pointer w-full m-auto py-2 h-full mt-6 text-[1rem] text-center font-semibold text-white dark:text-black sm:hover:text-muted dark:sm:hover:bg-gray-300 bg-[#3C74D4] dark:bg-[#ffff] transition duration-100"
+        class="rounded-[2px] cursor-pointer w-full m-auto py-2 h-full mt-6 text-[1rem] sm:text-lg text-center font-semibold text-white dark:text-black sm:hover:text-muted dark:sm:hover:bg-gray-300 bg-[#3C74D4] dark:bg-[#ffff] transition duration-100"
       >
         Full Company Profile
       </a>
@@ -281,13 +441,58 @@
   </div>
 </div>
 
-{#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
-  <SquareAd />
+{#if Object?.keys(financialPerformance ?? {})?.length > 0}
+  <div
+    class="space-y-3 pt-6 sm:pt-0 {Object?.keys(financialPerformance ?? {})
+      ?.length > 0
+      ? ''
+      : 'hidden'}"
+  >
+    <div class="h-auto w-full">
+      <!--Start Content-->
+      <div class="w-auto lg:w-full flex flex-col m-auto">
+        <h2 class="mb-2 text-2xl font-bold">Financial Performance</h2>
+        <p class="dark:text-gray-200">
+          In {financialPerformance?.history?.at(-1)?.date?.slice(0, 4)}, {removeCompanyStrings(
+            $displayCompanyName,
+          )}'s revenue was ${abbreviateNumber(
+            financialPerformance?.history?.at(-1)?.revenue,
+          )}, {financialPerformance?.changePercentageRevenue >= 0
+            ? "an increase"
+            : "a decrease"} of {financialPerformance?.changePercentageRevenue?.toLocaleString(
+            "en-US",
+          )}% compared to the previous year's ${abbreviateNumber(
+            financialPerformance?.history?.at(-2)?.revenue,
+          )}. Earnings were ${abbreviateNumber(
+            financialPerformance?.history?.at(-1)?.netIncome,
+          )}, {financialPerformance?.changePercentageNetIncome >= 0
+            ? "an increase"
+            : "a decrease"} of {financialPerformance?.changePercentageNetIncome?.toLocaleString(
+            "en-US",
+          )}%.
+        </p>
+
+        {#if configFinancial}
+          <div
+            class="mt-3 border border-gray-300 dark:border-gray-800 rounded"
+            use:highcharts={configFinancial}
+          ></div>
+        {/if}
+
+        <a
+          href={`/stocks/${$stockTicker}/financials`}
+          class="rounded-[2px] cursor-pointer w-full m-auto py-2 h-full mt-6 text-[1rem] sm:text-lg text-center font-semibold text-white dark:text-black sm:hover:text-muted dark:sm:hover:bg-gray-300 bg-[#3C74D4] dark:bg-[#ffff] transition duration-100"
+        >
+          Financial Statements
+        </a>
+      </div>
+    </div>
+  </div>
 {/if}
 
 {#if Object?.keys(data?.getAnalystSummary ?? {})?.length !== 0}
   <div
-    class="space-y-3 pt-10 sm:pt-5 {Object?.keys(data?.getAnalystSummary ?? {})
+    class="space-y-3 pt-6 sm:pt-0 {Object?.keys(data?.getAnalystSummary ?? {})
       ?.length !== 0
       ? ''
       : 'hidden'}"
@@ -295,7 +500,7 @@
     <div class="h-auto w-full">
       <!--Start Content-->
       <div class="w-auto lg:w-full flex flex-col m-auto pb-10">
-        <h2 class="mb-2 text-2xl font-semibold">Analyst Forecast</h2>
+        <h2 class="mb-2 text-2xl font-bold">Analyst Forecast</h2>
         <p class="dark:text-gray-200">
           According to {numOfAnalyst} analyst ratings, the average rating for {$stockTicker}
           stock is "{consensusRating}." The 12-month stock price forecast is ${priceTarget},
@@ -303,14 +508,16 @@
           from the latest price.
         </p>
 
-        <div
-          class="mt-3 border border-gray-300 dark:border-gray-800 rounded"
-          use:highcharts={configAnalyst}
-        ></div>
+        {#if configAnalyst}
+          <div
+            class="mt-3 border border-gray-300 dark:border-gray-800 rounded"
+            use:highcharts={configAnalyst}
+          ></div>
+        {/if}
 
         <a
           href={`/stocks/${$stockTicker}/forecast/analyst`}
-          class="rounded cursor-pointer w-full m-auto py-2 h-full mt-6 text-[1rem] text-center font-semibold text-white dark:text-black sm:hover:text-muted dark:sm:hover:bg-gray-300 bg-[#3C74D4] dark:bg-[#ffff] transition duration-100"
+          class="rounded-[2px] cursor-pointer w-full m-auto py-2 h-full mt-6 text-[1rem] sm:text-lg text-center font-semibold text-white dark:text-black sm:hover:text-muted dark:sm:hover:bg-gray-300 bg-[#3C74D4] dark:bg-[#ffff] transition duration-100"
         >
           Stock Forecasts
         </a>
