@@ -19,7 +19,7 @@
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"
     >
-      {#if data?.getData?.length > 0}
+      {#if Object?.keys(data?.getData)?.length > 0}
         <GreekByStrike
           {data}
           title="Delta"

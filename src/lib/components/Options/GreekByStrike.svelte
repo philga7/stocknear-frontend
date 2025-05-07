@@ -3,8 +3,12 @@
   import { onMount } from "svelte";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
+  import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
+  import { Button } from "$lib/components/shadcn/button/index.js";
   import highcharts from "$lib/highcharts.ts";
   import { mode } from "mode-watcher";
+  import { goto } from "$app/navigation";
+  import Infobox from "$lib/components/Infobox.svelte";
 
   export let data;
   export let title = "Gamma";
@@ -12,31 +16,66 @@
 
   $: isGamma = title === "Gamma";
 
-  let rawData = data?.getData || [];
+  let dateList = ["All", ...Object.keys(data?.getData ?? {})];
 
-  rawData = rawData?.map((item) => {
-    if (title === "Gamma") {
-      return {
-        ...item,
-        net_gex: (item?.call_gex || 0) + (item?.put_gex || 0),
-        put_call_ratio:
-          item?.call_gex > 0
-            ? Math.abs((item?.put_gex || 0) / item?.call_gex)
-            : null,
-      };
-    } else {
-      return {
-        ...item,
-        net_dex: (item?.call_dex || 0) + (item?.put_dex || 0),
-        put_call_ratio:
-          item?.call_dex > 0
-            ? Math.abs((item?.put_dex || 0) / item?.call_dex)
-            : null,
-      };
+  let selectedDate = dateList[0];
+
+  let rawData = [];
+
+  let displayList = [];
+
+  function aggregateDict(data) {
+    const map = new Map();
+
+    // pick which keys to accumulate
+    const isGamma = title === "Gamma";
+    const callKey = isGamma ? "call_gex" : "call_dex";
+    const putKey = isGamma ? "put_gex" : "put_dex";
+
+    // flatten out all the points into one loop
+    for (const pts of Object?.values(data)) {
+      for (const pt of pts) {
+        const { strike } = pt;
+
+        // on first sight of this strike, seed all four fields at zero
+        if (!map?.has(strike)) {
+          map?.set(strike, {
+            strike,
+            call_gex: 0,
+            put_gex: 0,
+            call_dex: 0,
+            put_dex: 0,
+          });
+        }
+
+        // accumulate into the right buckets
+        const agg = map.get(strike);
+        agg[callKey] += pt[callKey] ?? 0;
+        agg[putKey] += pt[putKey] ?? 0;
+      }
     }
-  });
 
-  let displayList = rawData?.slice(0, 150);
+    // sort by strike ascending
+    return Array?.from(map?.values())?.sort((a, b) => a?.strike - b?.strike);
+  }
+
+  function formatDate(dateStr) {
+    try {
+      let date = new Date(dateStr + "T00:00:00Z");
+      let options = {
+        timeZone: "UTC",
+        month: "short", // Full month name
+        day: "numeric", // Day without leading zero
+        year: "numeric", // Full year
+      };
+
+      let formatter = new Intl.DateTimeFormat("en-US", options);
+
+      return formatter?.format(date);
+    } catch (e) {
+      return "n/a";
+    }
+  }
 
   function plotData() {
     const isGamma = title === "Gamma"; // Don't delete this; isGamma is used below.
@@ -299,17 +338,128 @@
 
   let config = null;
   $: {
-    if ($mode) {
+    if (selectedDate || $mode) {
+      if (selectedDate === "All") {
+        rawData = aggregateDict(data?.getData) || [];
+      } else {
+        rawData = data?.getData[selectedDate] || [];
+      }
+      rawData = rawData?.map((item) => {
+        if (title === "Gamma") {
+          return {
+            ...item,
+            net_gex: (item?.call_gex || 0) + (item?.put_gex || 0),
+            put_call_ratio:
+              item?.call_gex > 0
+                ? Math.abs((item?.put_gex || 0) / item?.call_gex)
+                : null,
+          };
+        } else {
+          return {
+            ...item,
+            net_dex: (item?.call_dex || 0) + (item?.put_dex || 0),
+            put_call_ratio:
+              item?.call_dex > 0
+                ? Math.abs((item?.put_dex || 0) / item?.call_dex)
+                : null,
+          };
+        }
+      });
+
+      displayList = rawData?.slice(0, 150);
+
       config = plotData() || null;
     }
   }
 </script>
 
-<div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
+<div class="sm:pl-7 sm:pb-7 sm:pt-5 w-full m-auto mt-2 sm:mt-0">
   <h2 class=" flex flex-row items-center text-xl sm:text-2xl font-bold w-fit">
     {ticker}
     {title} Exposure By Strike
   </h2>
+
+  <Infobox
+    text={title === "Gamma"
+      ? `Gamma Exposure (GEX) for ${ticker} options, representing the estimated dollar value of shares that option sellers must buy or sell to maintain delta neutrality for each 1% move in ${ticker}’s stock price.`
+      : `Delta Exposure (DEX) for ${ticker} options, representing the estimated net number of ${ticker} shares that option sellers must hold or short to hedge their current options positions and maintain delta neutrality.`}
+  />
+
+  <div class="mt-7">
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger asChild let:builder>
+        <Button
+          builders={[builder]}
+          class=" border border-gray-300 dark:border-gray-700  shadow-sm bg-white dark:default h-[38px] shadow   flex flex-row justify-between items-center min-w-[130px] max-w-[240px] sm:w-auto  px-3  rounded-md truncate"
+        >
+          <span class="truncate text-sm"
+            >Date Expiration | {selectedDate === "All"
+              ? "All Expiries"
+              : formatDate(selectedDate)}</span
+          >
+          <svg
+            class="-mr-1 ml-2 h-5 w-5 inline-block"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            style="max-width:40px"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </Button>
+      </DropdownMenu.Trigger>
+
+      <DropdownMenu.Content
+        class="min-w-56 w-auto max-w-60 max-h-[400px] overflow-y-auto scroller relative"
+      >
+        <!-- Dropdown items -->
+        <DropdownMenu.Group class="pb-2"
+          >{#each dateList as item, index}
+            {#if data?.user?.tier === "Pro" || index === 0}
+              <DropdownMenu.Item
+                on:click={() => {
+                  selectedDate = item;
+                }}
+                class="{selectedDate === item
+                  ? 'bg-gray-200 dark:bg-primary'
+                  : ''} sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
+              >
+                {#if item === "All"}
+                  All Expiries
+                {:else}
+                  {formatDate(item)}
+                {/if}
+              </DropdownMenu.Item>
+            {:else}
+              <DropdownMenu.Item
+                on:click={() => goto("/pricing")}
+                class="cursor-pointer sm:hover:bg-gray-200 dark:sm:hover:bg-primary"
+              >
+                {formatDate(item)}
+                <svg
+                  class="ml-1 size-4"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  style="max-width: 40px;"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                    clip-rule="evenodd"
+                  >
+                  </path>
+                </svg>
+              </DropdownMenu.Item>
+            {/if}
+          {/each}</DropdownMenu.Group
+        >
+      </DropdownMenu.Content>
+    </DropdownMenu.Root>
+  </div>
 
   <div class="w-full overflow-hidden m-auto mt-3 shadow-sm">
     {#if config !== null}
@@ -318,33 +468,9 @@
           <div class="relative">
             <!-- Apply the blur class to the chart -->
             <div
-              class="{!['Pro']?.includes(data?.user?.tier)
-                ? 'blur-[3px]'
-                : ''} mt-5 shadow-sm sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
+              class="mt-5 shadow-sm sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
               use:highcharts={config}
             ></div>
-            <!-- Overlay with "Upgrade to Pro" -->
-            {#if !["Pro"]?.includes(data?.user?.tier)}
-              <div
-                class="font-bold text-lg sm:text-xl absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center text-muted dark:text-white"
-              >
-                <a
-                  href="/pricing"
-                  class="sm:hover:text-blue-700 dark:sm:hover:text-white dark:text-white flex flex-row items-center"
-                >
-                  <span>Upgrade to Pro</span>
-                  <svg
-                    class="ml-1 w-5 h-5 sm:w-6 sm:h-6 inline-block"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    ><path
-                      fill="currentColor"
-                      d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                    /></svg
-                  >
-                </a>
-              </div>
-            {/if}
           </div>
         </div>
       </div>

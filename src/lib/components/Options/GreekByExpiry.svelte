@@ -140,7 +140,6 @@
             year: "numeric",
             month: "short",
             day: "numeric",
-            timeZone: "UTC",
           })}</span><br>`;
 
           // Loop through each point in the shared tooltip
