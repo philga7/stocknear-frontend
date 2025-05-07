@@ -16,7 +16,12 @@
 
   $: isGamma = title === "Gamma";
 
-  let dateList = ["All", ...Object.keys(data?.getData ?? {})];
+  let dateList = [
+    "All",
+    ...Object.keys(data?.getData ?? {}).sort(
+      (a, b) => new Date(a) - new Date(b),
+    ),
+  ];
 
   let selectedDate = dateList[0];
 

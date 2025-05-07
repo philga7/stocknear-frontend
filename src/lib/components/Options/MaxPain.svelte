@@ -1,6 +1,6 @@
 <script lang="ts">
   import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
-  import { displayCompanyName } from "$lib/store";
+  import { displayCompanyName, screenWidth } from "$lib/store";
 
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
@@ -124,7 +124,10 @@
         categories: allStrikes,
         plotLines: [
           {
-            value: allStrikes.findIndex((s) => s === currentPrice),
+            value:
+              $screenWidth < 640
+                ? null
+                : allStrikes.findIndex((s) => s === currentPrice),
             color: $mode === "light" ? "#000" : "#fff",
             dashStyle: "Dash",
             width: 1.5,
