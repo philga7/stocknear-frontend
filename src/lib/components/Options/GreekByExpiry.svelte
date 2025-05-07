@@ -5,6 +5,7 @@
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import highcharts from "$lib/highcharts.ts";
   import { mode } from "mode-watcher";
+  import Infobox from "$lib/components/Infobox.svelte";
 
   export let data;
   export let title = "Gamma";
@@ -41,7 +42,7 @@
     return result;
   }, []);
 
-  let displayList = rawData?.slice(0, 150);
+  let displayList = rawData?.slice(0, 20);
 
   function formatDate(dateString) {
     if (!dateString) return null; // Handle null or undefined input
@@ -337,10 +338,17 @@
   }
 </script>
 
-<div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
+<div class="sm:pl-7 sm:pb-7 sm:pt-5 w-full m-auto mt-2 sm:mt-0">
   <h2 class=" flex flex-row items-center text-xl sm:text-2xl font-bold w-fit">
+    {ticker}
     {title} Exposure By Expiry
   </h2>
+
+  <Infobox
+    text={title === "Gamma"
+      ? `Gamma Exposure (GEX) for ${ticker} options representing the estimated dollar value of shares that option sellers must buy or sell to maintain delta neutrality for each 1% move in ${ticker}’s stock price by expiration.`
+      : `Delta Exposure (DEX) for ${ticker} options representing the estimated net number of ${ticker} shares that option sellers must hold or short to hedge their current options positions and maintain delta neutrality at expiration.`}
+  />
 
   <div class="w-full overflow-hidden m-auto mt-3 shadow-sm">
     {#if config !== null}
@@ -410,23 +418,17 @@
             <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
               {abbreviateNumber(
                 (isGamma ? item?.call_gex : item?.call_dex)?.toFixed(2),
-                false,
-                true,
               )}
             </td>
             <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
               {abbreviateNumber(
                 (isGamma ? item?.put_gex : item?.put_dex)?.toFixed(2),
-                false,
-                true,
               )}
             </td>
 
             <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
               {abbreviateNumber(
                 (isGamma ? item?.net_gex : item?.net_dex)?.toFixed(2),
-                false,
-                true,
               )}
             </td>
 

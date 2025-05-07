@@ -366,7 +366,7 @@
         }
       });
 
-      displayList = rawData?.slice(0, 150);
+      displayList = rawData?.slice(0, 20);
 
       config = plotData() || null;
     }
