@@ -137,6 +137,7 @@
       plotOptions: {
         series: {
           animation: false,
+          borderRadius: "2px",
         },
       },
       legend: {

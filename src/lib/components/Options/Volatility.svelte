@@ -108,9 +108,9 @@
         itemStyle: {
           color: $mode === "light" ? "black" : "white",
         },
-        symbolWidth: 16, // Controls the width of the legend symbol
-        symbolRadius: 8, // Creates circular symbols (adjust radius as needed)
-        squareSymbol: false, // Ensures symbols are circular, not square
+        symbolWidth: 14, // Controls the width of the legend symbol
+        symbolRadius: 1, // Creates circular symbols (adjust radius as needed)
+        squareSymbol: true, // Ensures symbols are circular, not square
       },
       title: {
         text: `<h3 class="mt-3 -mb-2 text-[1rem] sm:text-lg">Volatiltiy Exposure</h3>`,
