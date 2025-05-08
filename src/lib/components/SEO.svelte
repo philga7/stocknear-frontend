@@ -1,7 +1,8 @@
 <script lang="ts">
   export let title = "Free Online Stock Analysis for Investors";
   export let description =
-    "Stocknear gives you AI-powered stock analysis with up-to-date financials, news, and interactive charts.";
+    "Stocknear gives you realtime market insights for your stock analysis with up-to-date financials, news, and interactive charts.";
+
   export let image: string | null = null;
 
   import { page } from "$app/stores";
@@ -37,7 +38,7 @@
 
   <!-- Schema.org JSON-LD -->
   <script type="application/ld+json">
-    {JSON.stringify({
+    {JSON?.stringify({
       "@context": "https://schema.org",
       "@type": "WebSite",
       "url": baseURL,
