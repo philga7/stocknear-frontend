@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { displayCompanyName } from "$lib/store";
+  import { displayCompanyName, screenWidth } from "$lib/store";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
@@ -8,13 +8,17 @@
   import { onMount } from "svelte";
   import { removeCompanyStrings } from "$lib/utils";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
+  import highcharts from "$lib/highcharts.ts";
+  import { mode } from "mode-watcher";
 
   export let data;
   export let ticker;
 
   let timePeriod = "Daily";
+  let plotPeriod = "Max";
   let rawData = [];
   let originalData = [];
+  let config = null;
 
   let stockList = [];
   function prepareDataset(data, timePeriod = "Daily") {
@@ -65,11 +69,8 @@
             periodStart,
             periodKey,
             open: entry.open,
-            adjOpen: entry.adjOpen,
             high: entry.high,
-            adjHigh: entry.adjHigh,
             low: entry.low,
-            adjLow: entry.adjLow,
             close: entry.close,
             adjClose: entry.adjClose,
             volume: entry.volume,
@@ -79,13 +80,9 @@
           // Update the current period's values
           // High values should be the maximum observed so far.
           currentPeriod.high = Math.max(currentPeriod.high, entry.high);
-          currentPeriod.adjHigh = Math.max(
-            currentPeriod.adjHigh,
-            entry.adjHigh,
-          );
+
           // Low values should be the minimum observed so far.
           currentPeriod.low = Math.min(currentPeriod.low, entry.low);
-          currentPeriod.adjLow = Math.min(currentPeriod.adjLow, entry.adjLow);
           // For close values, use the most recent (current) close.
           currentPeriod.close = entry.close;
           currentPeriod.adjClose = entry.adjClose;
@@ -98,11 +95,8 @@
       data = aggregatedData.map((period) => ({
         time: period.periodStart.toISOString().split("T")[0],
         open: period.open,
-        adjOpen: period.adjOpen,
         high: period.high,
-        adjHigh: period.adjHigh,
         low: period.low,
-        adjLow: period.adjLow,
         close: period.close,
         adjClose: period.adjClose,
         volume: period.volume,
@@ -146,14 +140,239 @@
     };
   });
 
+  function filterDataByTimePeriod() {
+    const rawData = data?.getData ?? []; // 1) grab the array (or empty)
+    const now = new Date();
+
+    // 2) compute the thresholdDate once
+    let thresholdDate;
+    switch (plotPeriod) {
+      case "1M":
+        thresholdDate = new Date(now);
+        thresholdDate.setMonth(now.getMonth() - 1);
+        break;
+      case "3M":
+        thresholdDate = new Date(now);
+        thresholdDate.setMonth(now.getMonth() - 3);
+        break;
+      case "YTD":
+        thresholdDate = new Date(now.getFullYear(), 0, 1);
+        break;
+      case "1Y":
+        thresholdDate = new Date(now);
+        thresholdDate.setFullYear(now.getFullYear() - 1);
+        break;
+      case "3Y":
+        thresholdDate = new Date(now);
+        thresholdDate.setFullYear(now.getFullYear() - 3);
+        break;
+      case "5Y":
+        thresholdDate = new Date(now);
+        thresholdDate.setFullYear(now.getFullYear() - 5);
+        break;
+      default: // "Max"
+        thresholdDate = new Date(0);
+    }
+
+    // 3) filter & sort
+    return rawData
+      ?.filter((item) => {
+        const d = new Date(item.time);
+        return d >= thresholdDate;
+      })
+      ?.sort((a, b) => new Date(a.time) - new Date(b.time));
+  }
+
+  function plotData() {
+    const filteredData = filterDataByTimePeriod();
+
+    const priceList = filteredData?.map((item) => item?.close);
+    const dateList = filteredData?.map((item) =>
+      Date.UTC(
+        new Date(item?.time).getUTCFullYear(),
+        new Date(item?.time).getUTCMonth(),
+        new Date(item?.time).getUTCDate(),
+        new Date(item?.time).getUTCHours(),
+        new Date(item?.time).getUTCMinutes(),
+      ),
+    );
+
+    // Find the lowest & highest close values
+    let minValue = Math?.min(...filteredData?.map((item) => item?.close));
+    let maxValue = Math?.max(...filteredData?.map((item) => item?.close));
+
+    let padding = 0.015;
+    let yMin = minValue * (1 - padding) === 0 ? null : minValue * (1 - padding);
+    let yMax = maxValue * (1 + padding) === 0 ? null : maxValue * (1 + padding);
+
+    const lineColor = "#4681f4";
+    const fillColorStart = "rgb(70, 129, 244,0.5)";
+    const fillColorEnd = "rgb(70, 129, 244,0.001)";
+    const options = {
+      chart: {
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        animation: false,
+        height: 360,
+        events: {
+          // Add touch event handling to hide tooltip on mobile
+          load: function () {
+            const chart = this;
+            let isTouching = false;
+
+            // Track touch start
+            chart.container.addEventListener("touchstart", () => {
+              isTouching = true;
+            });
+
+            // Track touch end
+            chart.container.addEventListener("touchend", () => {
+              isTouching = false;
+              chart.tooltip.hide();
+            });
+
+            // Track touch cancel
+            chart.container.addEventListener("touchcancel", () => {
+              isTouching = false;
+              chart.tooltip.hide();
+            });
+          },
+        },
+      },
+      credits: { enabled: false },
+      title: {
+        text: `<h3 class="mt-3 mb-1 "></h3>`,
+        style: {
+          color: $mode === "light" ? "black" : "white",
+          // Using inline CSS for margin-top and margin-bottom
+        },
+        useHTML: true, // Enable HTML to apply custom class styling
+      },
+      tooltip: {
+        shared: true,
+        useHTML: true,
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
+        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        borderWidth: 1,
+        style: {
+          color: $mode === "light" ? "black" : "white",
+          fontSize: "16px",
+          padding: "10px",
+        },
+        borderRadius: 4,
+        formatter: function () {
+          const date = new Date(this?.x);
+          let formattedDate = date?.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            timeZone: "UTC",
+          });
+
+          let tooltipContent = "";
+
+          // Loop through each point in the shared tooltip
+          this.points?.forEach((point) => {
+            tooltipContent += `<span class="text-white text-[1rem] font-[501]">${point.series.name}: ${point.y}</span><br>`;
+          });
+
+          // Append the formatted date at the end
+          tooltipContent += `<span class="text-white m-auto text-black text-sm font-normal">${formattedDate}</span><br>`;
+
+          return tooltipContent;
+        },
+      },
+
+      xAxis: {
+        type: "datetime",
+        min: null,
+        max: null,
+        tickLength: 0,
+        categories: dateList,
+        crosshair: {
+          color: $mode === "light" ? "black" : "white",
+          width: 1,
+          dashStyle: "Solid",
+        },
+        labels: {
+          style: { color: $mode === "light" ? "black" : "white" },
+          distance: 10,
+          formatter: function () {
+            const date = new Date(this?.value);
+
+            const timeString = date?.toLocaleDateString("en-US", {
+              year: "2-digit",
+              month: "short",
+              timeZone: "UTC",
+            });
+            return `<span class=" text-xs">${timeString}</span>`;
+          },
+        },
+        tickPositioner: function () {
+          // Create custom tick positions with wider spacing
+          const positions = [];
+          const info = this.getExtremes();
+          const tickCount = $screenWidth < 640 ? 2 : 5; // Reduce number of ticks displayed
+          const interval = Math.floor((info.max - info.min) / tickCount);
+
+          for (let i = 0; i <= tickCount; i++) {
+            positions.push(info.min + i * interval);
+          }
+          return positions;
+        },
+      },
+
+      yAxis: {
+        // Force y‑axis to stay near the actual data range
+        min: yMin ?? null,
+        max: yMax ?? null,
+        startOnTick: false,
+        endOnTick: false,
+        gridLineWidth: 1,
+        gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
+        title: { text: null },
+        labels: {
+          style: { color: $mode === "light" ? "black" : "white" },
+        },
+        opposite: true,
+      },
+      plotOptions: {
+        series: {
+          animation: false,
+          marker: { enabled: false },
+          states: { hover: { enabled: false } },
+        },
+      },
+      legend: { enabled: false },
+      series: [
+        {
+          name: "Price",
+          type: "area",
+          data: priceList,
+          animation: false,
+          color: lineColor,
+          lineWidth: 1.5,
+          marker: {
+            enabled: false,
+          },
+          fillColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+              [0, fillColorStart],
+              [1, fillColorEnd],
+            ],
+          },
+        },
+      ],
+    };
+
+    return options;
+  }
+
   $: columns = [
     { key: "time", label: "Date", align: "left" },
     { key: "open", label: "Open", align: "right" },
-    { key: "adjOpen", label: "Adj Open", align: "right" },
     { key: "high", label: "High", align: "right" },
-    { key: "adjHigh", label: "Adj High", align: "right" },
     { key: "low", label: "Low", align: "right" },
-    { key: "adjLow", label: "Adj Low", align: "right" },
     { key: "close", label: "Close", align: "right" },
     { key: "adjClose", label: "Adj Close", align: "right" },
     { key: "changesPercentage", label: "% Change", align: "right" },
@@ -163,11 +382,8 @@
   $: sortOrders = {
     time: { order: "none", type: "date" },
     open: { order: "none", type: "number" },
-    adjOpen: { order: "none", type: "number" },
     high: { order: "none", type: "number" },
-    adjHigh: { order: "none", type: "number" },
     low: { order: "none", type: "number" },
-    adjLow: { order: "none", type: "number" },
     close: { order: "none", type: "number" },
     adjClose: { order: "none", type: "number" },
     changesPercentage: { order: "none", type: "number" },
@@ -237,11 +453,8 @@
         ({
           time,
           open,
-          adjOpen,
           high,
-          adjHigh,
           low,
-          adjLow,
           close,
           adjClose,
           changesPercentage,
@@ -249,11 +462,8 @@
         }) => ({
           time,
           open,
-          adjOpen,
           high,
-          adjHigh,
           low,
-          adjLow,
           close,
           adjClose,
           changesPercentage,
@@ -265,12 +475,12 @@
 
       // Add headers row
       csvRows.push(
-        "time,open,adjOpen,high,adjHigh,low,adjLow,close,adjClose,changesPercentage,volume",
+        "time,open,high,low,close,adjClose,changesPercentage,volume",
       );
 
       // Add data rows
       for (const row of exportList) {
-        const csvRow = `${row.time},${row.open},${row.adjOpen},${row.high},${row.adjHigh},${row.low},${row.adjLow},${row.close},${row.adjClose},${row.changesPercentage},${row.volume}`;
+        const csvRow = `${row.time},${row.open},${row.high},${row.low},${row.close},${row.adjClose},${row.changesPercentage},${row.volume}`;
         csvRows.push(csvRow);
       }
 
@@ -291,19 +501,23 @@
   }
 
   $: {
-    if (timePeriod) {
+    if (timePeriod || $mode) {
       rawData = data?.getData || [];
-
+      config = plotData();
       rawData = prepareDataset(data?.getData, timePeriod);
       originalData = rawData;
-      stockList = rawData?.slice(0, 50);
+      stockList = rawData?.slice(0, 20);
+    }
+  }
+
+  $: {
+    if (plotPeriod) {
+      config = plotData();
     }
   }
 </script>
 
-<section
-  class=" overflow-hidden h-full min-h-screen mb-20 sm:mb-0 w-full mt-5 sm:mt-0"
->
+<section class=" overflow-hidden h-full w-full mt-5 sm:mt-0">
   <div class="w-full overflow-hidden m-auto">
     <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
       <div
@@ -311,123 +525,146 @@
       >
         <main class="w-full">
           <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto">
-            <div
-              class="flex flex-col sm:flex-row items-start w-full sm:justify-between md:space-x-4 md:border-0 w-full mb-3"
-            >
-              <h1 class="text-xl sm:text-2xl font-bold mb-3 sm:mb-0">
+            {#if config}
+              <h1 class="text-xl sm:text-2xl font-bold mb-3">
                 {removeCompanyStrings($displayCompanyName)} Stock Price History
               </h1>
-              <div
-                class="flex flex-row items-center ml-auto w-fit mt-2 sm:mt-0"
-              >
-                <div class="relative inline-block text-left ml-auto">
-                  <DropdownMenu.Root>
-                    <DropdownMenu.Trigger asChild let:builder>
-                      <Button
-                        builders={[builder]}
-                        class="shadow-sm w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
-                      >
-                        <span class="truncate px-1">{timePeriod}</span>
-                        <svg
-                          class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          style="max-width:40px"
-                          aria-hidden="true"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clip-rule="evenodd"
-                          ></path>
-                        </svg>
-                      </Button>
-                    </DropdownMenu.Trigger>
-                    <DropdownMenu.Content
-                      class="w-56 h-fit max-h-72 overflow-y-auto scroller"
+              <div class="relative">
+                <div
+                  class="hidden sm:flex justify-start space-x-2 w-full ml-2 absolute top-3.5 z-10"
+                >
+                  {#each ["1M", "3M", "YTD", "1Y", "3Y", "5Y", "Max"] as item}
+                    <label
+                      on:click={() => (plotPeriod = item)}
+                      class="px-3 py-1 {plotPeriod === item
+                        ? 'bg-gray-300 dark:bg-white text-muted'
+                        : 'text-muted dark:text-white bg-gray-100 dark:bg-table text-opacity-[0.6]'} text-xs border border-gray-200 dark:border-gray-700 transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-[2px] cursor-pointer"
                     >
-                      <DropdownMenu.Label
-                        class="text-muted dark:text-gray-400 font-normal"
+                      {item}
+                    </label>
+                  {/each}
+                </div>
+              </div>
+              <div
+                class="border border-gray-300 dark:border-gray-800 rounded w-full"
+                use:highcharts={config}
+              ></div>
+            {/if}
+
+            {#if rawData?.length > 0}
+              <div
+                class="mt-5 border-t border-b pt-2 pb-2 border-gray-300 dark:border-gray-800 flex flex-row items-center w-full sm:justify-between md:space-x-4 w-full mb-3"
+              >
+                <h2 class="text-xl sm:text-2xl font-bold">Historical Data</h2>
+                <div class="flex flex-row items-center ml-auto w-fit">
+                  <div class="relative inline-block text-left ml-auto">
+                    <DropdownMenu.Root>
+                      <DropdownMenu.Trigger asChild let:builder>
+                        <Button
+                          builders={[builder]}
+                          class="shadow-sm w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                        >
+                          <span class="truncate px-1">{timePeriod}</span>
+                          <svg
+                            class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                            style="max-width:40px"
+                            aria-hidden="true"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clip-rule="evenodd"
+                            ></path>
+                          </svg>
+                        </Button>
+                      </DropdownMenu.Trigger>
+                      <DropdownMenu.Content
+                        class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                       >
-                        Select time frame
-                      </DropdownMenu.Label>
-                      <DropdownMenu.Separator />
-                      <DropdownMenu.Group>
-                        <DropdownMenu.Item
-                          on:click={() => (timePeriod = "Daily")}
-                          class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                        <DropdownMenu.Label
+                          class="text-muted dark:text-gray-400 font-normal"
                         >
-                          Daily
-                        </DropdownMenu.Item>
-                        <DropdownMenu.Item
-                          on:click={() => (timePeriod = "Weekly")}
-                          class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
-                        >
-                          Weekly
-                        </DropdownMenu.Item>
-                        {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
-                          {#each ["Monthly", "Quarterly", "Annual"] as entry}
+                          Select time frame
+                        </DropdownMenu.Label>
+                        <DropdownMenu.Separator />
+                        <DropdownMenu.Group>
+                          <DropdownMenu.Item
+                            on:click={() => (timePeriod = "Daily")}
+                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                          >
+                            Daily
+                          </DropdownMenu.Item>
+                          <DropdownMenu.Item
+                            on:click={() => (timePeriod = "Weekly")}
+                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                          >
+                            Weekly
+                          </DropdownMenu.Item>
+                          {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
+                            {#each ["Monthly", "Quarterly", "Annual"] as entry}
+                              <DropdownMenu.Item
+                                on:click={() => goto("/pricing")}
+                                class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                              >
+                                {entry}
+                                <svg
+                                  class="ml-auto -mt-0.5 w-4 h-4 inline-block"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 24 24"
+                                  ><path
+                                    fill="currentColor"
+                                    d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                                  /></svg
+                                >
+                              </DropdownMenu.Item>
+                            {/each}
+                          {:else}
                             <DropdownMenu.Item
-                              on:click={() => goto("/pricing")}
+                              on:click={() => (timePeriod = "Monthly")}
                               class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                             >
-                              {entry}
-                              <svg
-                                class="ml-auto -mt-0.5 w-4 h-4 inline-block"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                ><path
-                                  fill="currentColor"
-                                  d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                                /></svg
-                              >
+                              Monthly
                             </DropdownMenu.Item>
-                          {/each}
-                        {:else}
-                          <DropdownMenu.Item
-                            on:click={() => (timePeriod = "Monthly")}
-                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
-                          >
-                            Monthly
-                          </DropdownMenu.Item>
-                          <DropdownMenu.Item
-                            on:click={() => (timePeriod = "Quarterly")}
-                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
-                          >
-                            Quarterly
-                          </DropdownMenu.Item>
-                          <DropdownMenu.Item
-                            on:click={() => (timePeriod = "Annual")}
-                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
-                          >
-                            Annual
-                          </DropdownMenu.Item>
-                        {/if}
-                      </DropdownMenu.Group>
-                    </DropdownMenu.Content>
-                  </DropdownMenu.Root>
-                </div>
+                            <DropdownMenu.Item
+                              on:click={() => (timePeriod = "Quarterly")}
+                              class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                            >
+                              Quarterly
+                            </DropdownMenu.Item>
+                            <DropdownMenu.Item
+                              on:click={() => (timePeriod = "Annual")}
+                              class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                            >
+                              Annual
+                            </DropdownMenu.Item>
+                          {/if}
+                        </DropdownMenu.Group>
+                      </DropdownMenu.Content>
+                    </DropdownMenu.Root>
+                  </div>
 
-                <Button
-                  on:click={() => exportData()}
-                  class="shadow-sm ml-2 border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
-                >
-                  <span class="truncate">Download</span>
-                  <svg
-                    class="{['Pro', 'Plus']?.includes(data?.user?.tier)
-                      ? 'hidden'
-                      : ''} ml-1 -mt-0.5 w-3.5 h-3.5"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    ><path
-                      fill="currentColor"
-                      d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                    /></svg
+                  <Button
+                    on:click={() => exportData()}
+                    class="shadow-sm ml-2 border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                   >
-                </Button>
+                    <span class="truncate">Download</span>
+                    <svg
+                      class="{['Pro', 'Plus']?.includes(data?.user?.tier)
+                        ? 'hidden'
+                        : ''} ml-1 -mt-0.5 w-3.5 h-3.5"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      ><path
+                        fill="currentColor"
+                        d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                      /></svg
+                    >
+                  </Button>
+                </div>
               </div>
-            </div>
-            {#if rawData?.length !== 0}
+
               <div class="w-full m-auto">
                 <div
                   class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
@@ -476,37 +713,19 @@
                           >
                             {item?.open?.toFixed(2)}
                           </td>
-                          <td
-                            class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
-                          >
-                            {item?.adjOpen !== undefined
-                              ? item?.adjOpen?.toFixed(2)
-                              : "n/a"}
-                          </td>
+
                           <td
                             class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                           >
                             {item?.high?.toFixed(2)}
                           </td>
-                          <td
-                            class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
-                          >
-                            {item?.adjHigh !== undefined && item?.adjHigh
-                              ? item?.adjHigh?.toFixed(2)
-                              : "n/a"}
-                          </td>
+
                           <td
                             class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                           >
                             {item?.low?.toFixed(2)}
                           </td>
-                          <td
-                            class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
-                          >
-                            {item?.adjLow !== undefined && item?.adjLow
-                              ? item?.adjLow?.toFixed(2)
-                              : "n/a"}
-                          </td>
+
                           <td
                             class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                           >
