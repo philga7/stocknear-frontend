@@ -12,7 +12,6 @@
     wsAskPrice,
     currentPortfolioPrice,
     stockTicker,
-    shouldUpdatePriceChart,
     screenWidth,
   } from "$lib/store";
   import { onDestroy } from "svelte";
@@ -664,7 +663,6 @@
   onDestroy(async () => {
     $priceIncrease = null;
     $globalForm = [];
-    shouldUpdatePriceChart.set(false);
   });
 
   $: dataMapping = {
@@ -686,7 +684,6 @@
   $: {
     if ($stockTicker || $mode) {
       // add a check to see if running on client-side
-      shouldUpdatePriceChart.set(false);
       oneDayPrice = [];
       oneWeekPrice = [];
       oneMonthPrice = [];

@@ -79,7 +79,7 @@
           document.body.appendChild(anchor);
           anchor.dispatchEvent(new MouseEvent("click"));
         }
-      }, 5000);
+      }, 2000);
     };
   };
 
@@ -127,7 +127,7 @@
           document.body.appendChild(anchor);
           anchor.dispatchEvent(new MouseEvent("click"));
         }
-      }, 5000);
+      }, 2000);
     };
   };
 
@@ -175,7 +175,7 @@
           document.body.appendChild(anchor);
           anchor.dispatchEvent(new MouseEvent("click"));
         }
-      }, 5000);
+      }, 2000);
     };
   };
 

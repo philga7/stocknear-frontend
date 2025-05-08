@@ -14,7 +14,6 @@
     assetType,
     displayCompanyName,
     isOpen,
-    shouldUpdatePriceChart,
     priceChartData,
   } from "$lib/store";
 
@@ -170,7 +169,6 @@
               time: typeof time !== "undefined" ? time : null,
               price: typeof lp !== "undefined" ? Number(lp) : null,
             };
-            shouldUpdatePriceChart.set(true);
           } else if (type === "Q") {
             $wsBidPrice = typeof bp !== "undefined" ? bp : null;
             $wsAskPrice = typeof ap !== "undefined" ? ap : null;
