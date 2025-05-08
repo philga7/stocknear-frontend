@@ -46,15 +46,6 @@
         subId = import.meta.env.VITE_LEMON_SQUEEZY_ANNUAL_ID_PRO;
         value = 180;
       }
-      try {
-        twq("event", "tw-onuuu-ospg6", {
-          value: value,
-          currency: "USD",
-          conversion_id: data?.user?.id,
-        });
-      } catch (e) {
-        console.log(e);
-      }
 
       const isDarkMode =
         window.matchMedia &&
@@ -85,24 +76,6 @@
     window.lemonSqueezyAffiliateConfig = { store: "stocknear" };
   </script>
   <script src="https://lmsqueezy.com/affiliate.js" defer></script>
-
-  <script>
-    !(function (e, t, n, s, u, a) {
-      e.twq ||
-        ((s = e.twq =
-          function () {
-            s.exe ? s.exe.apply(s, arguments) : s.queue.push(arguments);
-          }),
-        (s.version = "1.1"),
-        (s.queue = []),
-        (u = t.createElement(n)),
-        (u.async = !0),
-        (u.src = "https://static.ads-twitter.com/uwt.js"),
-        (a = t.getElementsByTagName(n)[0]),
-        a.parentNode.insertBefore(u, a));
-    })(window, document, "script");
-    twq("config", "onuuu");
-  </script>
 </svelte:head>
 
 <section
@@ -752,12 +725,13 @@
           Best for Intermediate Traders
         </p>
         <div class="mt-4">
-          <span class="text-4xl font-bold line-through"
-            >{mode ? "$7.50" : "$10"}</span
-          >
+          <span class="text-4xl font-bold">{mode ? "$7.50" : "$10"}</span>
+          <!--
           <span class="text-pink-700 dark:text-pink-500 text-4xl font-bold ml-1"
             >{mode ? "$3.75" : "$5"}</span
-          ><span class=" text-xl">/Month</span>
+          >--><span
+            class=" text-xl">/Month</span
+          >
         </div>
         <p
           class="text-muted dark:text-gray-400 text-sm mt-1 mx-4 {!mode
@@ -1072,12 +1046,13 @@
           Best for Professional Traders
         </p>
         <div class="mt-4">
-          <span class="text-4xl font-bold line-through"
-            >{mode ? "$15" : "$20"}</span
-          ><span
+          <span class="text-4xl font-bold">{mode ? "$15" : "$20"}</span
+          ><!--<span
             class="text-pink-700 dark:text-pink-500 text-4xl font-bold ml-1"
             >{mode ? "$7.5" : "$10"}</span
-          ><span class=" text-xl ml-1">/Month</span>
+          >--><span
+            class=" text-xl ml-1">/Month</span
+          >
         </div>
         <p
           class="text-muted dark:text-gray-400 text-sm mt-1 mx-4 {!mode
