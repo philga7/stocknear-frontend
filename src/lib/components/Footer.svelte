@@ -105,6 +105,12 @@
                   href="/learning-center/">Learning Center</a
                 >
               </li>
+              <li>
+                <a
+                  class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
+                  href="/affiliate-program/">Affiliate Program</a
+                >
+              </li>
             </ul>
           </div>
           <div class="mt-12 md:mt-0">
@@ -147,7 +153,7 @@
               <li>
                 <a
                   class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
-                  href="/affiliate-program/">Affiliate Program</a
+                  href="/imprint/">Imprint</a
                 >
               </li>
             </ul>
