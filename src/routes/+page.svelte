@@ -89,7 +89,7 @@
               clip-rule="evenodd"
             ></path>
           </svg>
-          <strong class="text-pink-500"> Offer Ends Tomorrow!</strong>
+          <strong class="text-pink-500"> Offer Ends Today!</strong>
         </div>
         <div>Get <strong> 50% OFF</strong> on your Subscription!</div>
       </a>
