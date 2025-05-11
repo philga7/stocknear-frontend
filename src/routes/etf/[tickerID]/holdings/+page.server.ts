@@ -15,7 +15,7 @@ export const load = async ({ locals, params }) => {
       body: JSON.stringify(postData),
     });
 
-    const output = await response.json();
+    const output = await response?.json();
 
     return output;
   };

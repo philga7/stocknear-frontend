@@ -6,14 +6,15 @@
   import SEO from "$lib/components/SEO.svelte";
 
   export let data;
-  let rawData = [...data.getETFHoldings.holdings];
+  let rawData = [...data?.getETFHoldings?.holdings] ?? [];
+
   let options = {
     month: "short",
     day: "numeric",
     year: "numeric",
     timeZone: "UTC",
   };
-  let lastUpdate = new Date(data.getETFHoldings.lastUpdate);
+  let lastUpdate = new Date(data?.getETFHoldings?.lastUpdate);
   let formattedDate = lastUpdate.toLocaleDateString("en-US", options);
   let htmlOutput = generateStatementInfoHTML();
 

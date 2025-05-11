@@ -4,15 +4,8 @@
 
   export let data;
 
-  let newsList = [];
-  let similarStocks = [];
-
-  $: {
-    if ($etfTicker) {
-      newsList = data?.getNews || [];
-      similarStocks = data?.getSimilarStocks;
-    }
-  }
+  let newsList = data?.getNews || [];
+  let similarStocks = data?.getSimilarStocks;
 </script>
 
 <section class="w-full overflow-hidden">
@@ -101,7 +94,7 @@
             </div>
           {/if}
 
-          {#if newsList?.length !== 0}
+          {#if newsList?.length > 0}
             <div
               class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit"
             >
@@ -123,6 +116,17 @@
                     </li>
                   {/each}
                 </ul>
+              </div>
+            </div>
+          {:else}
+            <div
+              class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 bg-inherit"
+            >
+              <div class="p-4 text-sm">
+                <h3 class="text-lg font-semibold mb-3">
+                  {$etfTicker} News
+                </h3>
+                <ul class="">No News article available right now.</ul>
               </div>
             </div>
           {/if}
