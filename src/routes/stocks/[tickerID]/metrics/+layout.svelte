@@ -10,6 +10,13 @@
   let sectionMap;
 
   let displaySubSection;
+  function convertToTitleCase(str) {
+    return str
+      ?.split("-") // Split the string by hyphen
+      ?.map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize the first letter of each word
+      ?.join(" ")
+      ?.replace("Oem", "OEM");
+  }
 
   function changeSubSection(state) {
     displaySubSection = state;
@@ -29,13 +36,13 @@
       const parts = $page.url.pathname.split("/");
 
       // Filter out empty strings from URL parts and look for the section
-      const foundSection = parts.find(
-        (part) => part && Object.values(sectionMap).includes(part),
+      const foundSection = parts?.find(
+        (part) => part && Object?.values(sectionMap)?.includes(part),
       );
 
       // If a valid section is found in the URL, update the displaySubSection
       displaySubSection =
-        Object.keys(sectionMap).find(
+        Object?.keys(sectionMap)?.find(
           (key) => sectionMap[key] === foundSection,
         ) || "overview";
     }
@@ -45,8 +52,9 @@
     if ($stockTicker) {
       names = data?.getBusinessMetrics?.revenue?.names || [];
       subsectionTitles = ["Overview", ...names];
+      console.log(subsectionTitles);
 
-      sectionMap = Object.fromEntries(
+      sectionMap = Object?.fromEntries(
         subsectionTitles?.map((title) => {
           const key = title
             ?.toLowerCase()
@@ -91,7 +99,7 @@
                     ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
                     : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
                 >
-                  {title}
+                  {convertToTitleCase(title)}
                 </a>
               {/each}
             </ul>
