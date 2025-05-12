@@ -71,7 +71,7 @@
 />
 
 <div
-  class="w-full sm:max-w-[1400px] overflow-hidden m-auto min-h-screen bg-white dark:bg-default text-muted dark:text-white mb-16"
+  class="w-full sm:max-w-[1600px] overflow-hidden m-auto min-h-screen bg-white dark:bg-default text-muted dark:text-white mb-16"
 >
   {#if AppInstalled && !$closedPWA}
     <svelte:component this={AppInstalled} />
@@ -143,7 +143,7 @@
       </h1>
 
       <main class="flex flex-1 flex-col gap-4 sm:p-4 md:gap-8 text-start">
-        <div class="columns-1 lg:columns-2 gap-4 md:gap-8">
+        <div class="columns-1 lg:columns-2 xl:columns-3 gap-4 md:gap-8">
           {#if customSettings?.length > 0}
             {#each customSettings as item}
               <div class="break-inside-avoid mb-4">

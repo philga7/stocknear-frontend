@@ -1,13 +1,10 @@
 import { error, fail, redirect } from "@sveltejs/kit";
-import { validateData } from "$lib/utils";
-import { loginUserSchema, registerUserSchema } from "$lib/schemas";
-
 
 // Constants
-const CACHE_DURATION = 60 * 1000; // 1 minute in milliseconds
+const CACHE_DURATION = 60 * 1000; // 1 minute
 const REQUEST_TIMEOUT = 5000;
 
-// LRU Cache implementation with automatic cleanup
+// LRU Cache implementation
 class LRUCache {
   constructor(maxSize = 100) {
     this.cache = new Map();
@@ -15,117 +12,97 @@ class LRUCache {
   }
 
   get(key) {
-    const item = this.cache.get(key);
-    if (!item) return null;
-    if (Date.now() - item.timestamp >= CACHE_DURATION) {
-      this.cache.delete(key);
+    const entry = this?.cache.get(key);
+    if (!entry) return null;
+    const { data, timestamp } = entry;
+    if (Date.now() - timestamp > CACHE_DURATION) {
+      this?.cache?.delete(key);
       return null;
     }
-    return item.data;
+    // Refresh order
+    this?.cache?.delete(key);
+    this?.cache?.set(key, entry);
+    return data;
   }
 
   set(key, data) {
-    if (this.cache.size >= this.maxSize) {
-      const oldestKey = this.cache.keys().next().value;
-      this.cache.delete(oldestKey);
+    if (this?.cache?.size >= this?.maxSize) {
+      // Remove oldest
+      const oldest = this.cache.keys().next().value;
+      this?.cache?.delete(oldest);
     }
-    this.cache.set(key, { data, timestamp: Date.now() });
+    this?.cache?.set(key, { data, timestamp: Date.now() });
   }
 }
 
 const dashboardCache = new LRUCache();
 
-// Optimized fetch function with AbortController and timeout
-const fetchWithTimeout = async (url, options, timeout) => {
+// Fetch with timeout
+async function fetchWithTimeout(url, options = {}, timeout = REQUEST_TIMEOUT) {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), timeout);
-  
+  const id = setTimeout(() => controller.abort(), timeout);
   try {
-    const response = await fetch(url, {
-      ...options,
-      signal: controller.signal
-    });
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    return await response.json();
+    const res = await fetch(url, { ...options, signal: controller.signal });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
   } finally {
-    clearTimeout(timeoutId);
+    clearTimeout(id);
   }
-};
+}
 
-// Dashboard data fetching function with caching
-const getDashboard = async (apiURL, apiKey) => {
-  const cacheKey = 'dashboard-info';
-  const cachedData = dashboardCache.get(cacheKey);
-  if (cachedData) return cachedData;
-
-  const options = {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "X-API-KEY": apiKey
-    }
-  };
-
-  try {
-    const data = await fetchWithTimeout(
-      `${apiURL}/dashboard-info`,
-      options,
-      REQUEST_TIMEOUT
-    );
-    dashboardCache.set(cacheKey, data);
-    return data;
-  } catch (error) {
-    if (error.name === 'AbortError') {
-      throw new Error('Dashboard request timeout');
-    }
-    console.error('Error fetching dashboard:', error);
-    return {};
-  }
-};
-
-
-
-// Main load function
-export const load = async ({ locals, cookies}) => {
+// Load function
+export async function load({ locals, cookies }) {
   const { apiKey, apiURL } = locals;
-  const defaultSettings =  [
-           'gainers',
-            'losers',
-            'wiim',
-            'analystReport',
-            'upcomingEarnings',
-            'recentEarnings'
-          ];
+  const defaultSettings = [
+    'gainers', 'losers', 'wiim', 'analystReport', 'upcomingEarnings', 'recentEarnings'
+  ];
 
-  const getCustomSettings = async () => {
-    let output = []
+  // Parse custom settings from cookie
+  function getCustomSettings() {
     try {
-        output = JSON?.parse(cookies?.get("custom-dashboard-widget")) ?? [];
-        output = output?.map(item => item?.id);
-    } catch(e) {
-      output = []
+      const raw = cookies.get('custom-dashboard-widget');
+      if (!raw) return defaultSettings;
+      const parsed = JSON.parse(raw);
+      const ids = Array.isArray(parsed)
+        ? parsed.map(item => item.id).filter(Boolean)
+        : [];
+      return ids.length ? ids : defaultSettings;
+    } catch {
+      return defaultSettings;
     }
-   
-     if(output?.length === 0) {
-        output = defaultSettings
-       }
-       return output;
-  };
-
-
-  try {
-    return {
-      getDashboard: await getDashboard(apiURL, apiKey),
-      getCustomSettings: await getCustomSettings(),
-    };
-  } catch (error) {
-    console.error('Error in dashboard load:', error);
-    return {
-      getDashboard: {},
-      getCustomSettings: defaultSettings,
-    };
   }
-};
+
+  const customSettings = getCustomSettings();
+  const cacheKey = `dashboard:${customSettings.join(',')}`;
+
+  // Attempt to load from cache or fetch
+  let dashboardData = dashboardCache.get(cacheKey);
+  if (!dashboardData) {
+    try {
+      const postBody = { customSettings };
+      dashboardData = await fetchWithTimeout(
+        `${apiURL}/dashboard-info`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-API-KEY': apiKey
+          },
+          body: JSON.stringify(postBody)
+        }
+      );
+      dashboardCache.set(cacheKey, dashboardData);
+    } catch (err) {
+      console.error('Dashboard fetch error', err);
+      dashboardData = {};
+    }
+  }
+
+  return {
+    getDashboard: dashboardData,
+    getCustomSettings: customSettings
+  };
+}
 
 
 async function checkDisposableEmail(email) {
