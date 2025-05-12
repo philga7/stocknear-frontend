@@ -37,6 +37,7 @@
     <img
       src="/img/astronaut.png"
       alt="astronaut"
+      loading="eager"
       class="absolute mask mask-circle -top-8 -right-5 h-full w-1/2 object-cover opacity-40"
     />
 
