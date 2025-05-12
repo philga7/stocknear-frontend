@@ -24,7 +24,7 @@
   let analystReport = data?.getDashboard?.analystReport || {};
   let wiim = data?.getDashboard?.wiim || [];
   let optionsFlowList = data?.getDashboard?.optionsFlow || [];
-  let darkPoolList = data?.getDashboard?.darkPool || [];
+  let darkPoolList = data?.getDashboard?.darkpool || [];
   let economicCalendarList = data?.getDashboard?.economicCalendar || [];
 
   let customSettings = data?.getCustomSettings;
