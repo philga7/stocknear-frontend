@@ -14,18 +14,25 @@
     <div class="flex flex-col items-start w-full">
       <div class="flex flex-row w-full items-center">
         <Card.Title
-          class="text-xl sm:text-2xl text-muted dark:text-white font-semibold"
-          >Upcoming Earnings</Card.Title
-        >
-        <a
-          href="/earnings-calendar"
-          class="ml-auto rounded text-xs sm:text-sm px-2 sm:px-3 py-2 font-semibold bg-blue-500 sm:hover:bg-blue-600 transition dark:bg-[#fff] text-white dark:text-black"
-        >
-          View All
-          <ArrowUpRight
-            class="hidden sm:inline-block h-4 w-4 shrink-0 -mt-1 ml-0.5"
-          />
-        </a>
+          ><a
+            href="/earnings-calendar"
+            class="text-xl sm:text-2xl text-muted dark:text-white font-semibold cursor-pointer sm:hover:underline sm:hover:underline-offset-4"
+          >
+            Upcoming Earnings
+            <svg
+              class="h-5 w-5 inline-block"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              style="max-width:40px"
+              aria-hidden="true"
+              ><path
+                fill-rule="evenodd"
+                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                clip-rule="evenodd"
+              ></path></svg
+            ></a
+          >
+        </Card.Title>
       </div>
     </div>
   </Card.Header>
