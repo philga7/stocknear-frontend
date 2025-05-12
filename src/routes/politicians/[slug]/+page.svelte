@@ -300,7 +300,7 @@
                   </tr>
                 </thead>
                 <tbody class="p-0">
-                  {#each tableData as item}
+                  {#each tableData as item, index}
                     <tr
                       class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                     >
