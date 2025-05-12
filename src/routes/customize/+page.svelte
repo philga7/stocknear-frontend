@@ -14,7 +14,7 @@
   import DarkPool from "lucide-svelte/icons/venetian-mask";
 
   export let data;
-  // Mock team member data with gradient avatar colors
+  // Mock team item data with gradient avatar colors
   const initialAvailableWidgets = [
     {
       id: "gainers",
@@ -74,27 +74,29 @@
     "recentEarnings",
   ];
 
-  let selectedWidgets = data?.getData ?? [];
+  // Fix applied here: If data?.getCustomSettings is null, undefined, or an empty array,
+  // selectedWidgets will be initialized with the widgets corresponding to the ids in defaultWidgets.
+  // Otherwise, it will use the value from data?.getCustomSettings.
+  let selectedWidgets =
+    data?.getCustomSettings && data.getCustomSettings.length > 0
+      ? data.getCustomSettings
+      : initialAvailableWidgets.filter((item) =>
+          defaultWidgets.includes(item.id),
+        );
 
   // Create a Set of widget names that are selected or default
-  const defaultWidgetNames =
-    data?.getData?.length === 0
-      ? defaultWidgets
-      : selectedWidgets?.map((w) => w?.id);
-  const defaultWidgetSet = new Set(defaultWidgetNames);
+  // This part of the logic is now simplified as selectedWidgets is correctly initialized
+  const selectedWidgetIds = new Set(selectedWidgets.map((w) => w?.id));
 
-  // Filter available widgets and populate selectedWidgets if empty
+  // Filter available widgets
+  // Available widgets are those from initialAvailableWidgets whose ids are NOT in selectedWidgetIds
   let availableWidgets = initialAvailableWidgets?.filter((item) => {
-    if (defaultWidgetSet.has(item?.id)) {
-      // Add to selectedWidgets only if we're initializing from defaults
-      if (data?.getData?.length === 0) {
-        selectedWidgets.push(item);
-      }
-      return false; // Always exclude from availableWidgets
-    }
-    return true;
+    return !selectedWidgetIds?.has(item?.id);
   });
 
+  // Note: The original code also attempted to push items into selectedWidgets within the filter loop.
+  // With the corrected initialization of selectedWidgets, this is no longer necessary
+  // and has been removed for clarity and correctness.
   async function handleSaveSettings() {
     if (selectedWidgets?.length < 1) {
       toast.error("At least one widget is required!");
@@ -166,7 +168,7 @@
   }
 
   const flipDurationMs = 300;
-  const groupType = "members";
+  const groupType = "items";
 
   function handleDndConsider(e, target) {
     const { items, info } = e.detail;
@@ -226,7 +228,7 @@
         <main class="w-full">
           <div class="mb-6 border-[#2C6288] dark:border-white border-b-[2px]">
             <h1 class="mb-1 text-2xl sm:text-3xl font-bold">
-              Customize Stocknear
+              Custom Dashboard
             </h1>
           </div>
           <div
@@ -295,7 +297,7 @@
                   on:finalize={(e) => handleDndFinalize(e, "available")}
                   class="space-y-4 border border-gray-300 dark:border-gray-800 max-h-[500px] sm:max-h-[700px] overflow-y-auto"
                 >
-                  {#each availableWidgets as member (member.id)}
+                  {#each availableWidgets as item (item.id)}
                     <div
                       animate:flip={{ duration: flipDurationMs }}
                       class="border border-gray-200 dark:border-gray-800 rounded p-4 shadow-sm"
@@ -304,31 +306,31 @@
                         <div
                           class="relative border border-gray-300 dark:border-gray-600 rounded-full h-8 w-8 flex items-center justify-center"
                         >
-                          {#if member?.id === "gainers"}
+                          {#if item?.id === "gainers"}
                             <ArrowUp class="w-5 h-5" />
-                          {:else if member?.id === "losers"}
+                          {:else if item?.id === "losers"}
                             <ArrowDown class="w-5 h-5" />
-                          {:else if member?.id === "wiim"}
+                          {:else if item?.id === "wiim"}
                             <News class="w-5 h-5" />
-                          {:else if member?.id === "analystReport"}
+                          {:else if item?.id === "analystReport"}
                             <AnalystReport class="w-5 h-5" />
-                          {:else if member?.id === "upcomingEarnings"}
+                          {:else if item?.id === "upcomingEarnings"}
                             <UpcomingEarnings class="w-5 h-5" />
-                          {:else if member?.id === "recentEarnings"}
+                          {:else if item?.id === "recentEarnings"}
                             <RecentEarnings class="w-5 h-5" />
-                          {:else if member?.id === "economicCalendar"}
+                          {:else if item?.id === "economicCalendar"}
                             <EconomicCalendar class="w-5 h-5" />
-                          {:else if member?.id === "optionsFlow"}
+                          {:else if item?.id === "optionsFlow"}
                             <OptionsFlow class="w-5 h-5" />
-                          {:else if member?.id === "darkpool"}
+                          {:else if item?.id === "darkpool"}
                             <DarkPool class="w-5 h-5" />
                           {/if}
                         </div>
 
                         <div>
-                          <h3 class="font-medium">{member.name}</h3>
+                          <h3 class="font-medium">{item.name}</h3>
                           <p class="text-gray-500 dark:text-gray-300 text-sm">
-                            {member.description}
+                            {item.description}
                           </p>
                         </div>
                       </div>
@@ -337,7 +339,7 @@
                 </div>
               </div>
 
-              <!-- Selected Members -->
+              <!-- Selected items -->
               <div class="flex-1 rounded shadow-sm">
                 <div class="flex justify-between items-center mb-4">
                   <h2 class="text-xl font-bold">Selected Widgets</h2>
@@ -363,7 +365,7 @@
                   {#if selectedWidgets.length === 0}
                     <p class="text-gray-400">Drop Dashboard Widgets here</p>
                   {:else}
-                    {#each selectedWidgets as member (member.id)}
+                    {#each selectedWidgets as item (item.id)}
                       <div
                         animate:flip={{ duration: flipDurationMs }}
                         class="border border-gray-200 dark:border-gray-800 rounded p-4 shadow-sm"
@@ -372,30 +374,30 @@
                           <div
                             class="relative border border-gray-300 dark:border-gray-600 rounded-full h-8 w-8 flex items-center justify-center"
                           >
-                            {#if member?.id === "gainers"}
+                            {#if item?.id === "gainers"}
                               <ArrowUp class="w-5 h-5" />
-                            {:else if member?.id === "losers"}
+                            {:else if item?.id === "losers"}
                               <ArrowDown class="w-5 h-5" />
-                            {:else if member?.id === "wiim"}
+                            {:else if item?.id === "wiim"}
                               <News class="w-5 h-5" />
-                            {:else if member?.id === "analystReport"}
+                            {:else if item?.id === "analystReport"}
                               <AnalystReport class="w-5 h-5" />
-                            {:else if member?.id === "upcomingEarnings"}
+                            {:else if item?.id === "upcomingEarnings"}
                               <UpcomingEarnings class="w-5 h-5" />
-                            {:else if member?.id === "recentEarnings"}
+                            {:else if item?.id === "recentEarnings"}
                               <RecentEarnings class="w-5 h-5" />
-                            {:else if member?.id === "economicCalendar"}
+                            {:else if item?.id === "economicCalendar"}
                               <EconomicCalendar class="w-5 h-5" />
-                            {:else if member?.id === "optionsFlow"}
+                            {:else if item?.id === "optionsFlow"}
                               <OptionsFlow class="w-5 h-5" />
-                            {:else if member?.id === "darkpool"}
+                            {:else if item?.id === "darkpool"}
                               <DarkPool class="w-5 h-5" />
                             {/if}
                           </div>
                           <div>
-                            <h3 class="font-medium">{member.name}</h3>
+                            <h3 class="font-medium">{item.name}</h3>
                             <p class="text-gray-500 dark:text-gray-300 text-sm">
-                              {member.description}
+                              {item.description}
                             </p>
                           </div>
                         </div>

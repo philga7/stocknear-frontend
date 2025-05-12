@@ -1,26 +1,27 @@
 import { redirect } from "@sveltejs/kit";
 
 
-export const load = async ({ locals, cookies }) => {
-
-  const { pb } = locals;
-  if (!pb.authStore.isValid) {
+export async function load({ locals,cookies }) {
+  const { pb} = locals;
+  
+   if (!pb.authStore.isValid) {
     redirect(303, "/login");
   }
 
-
-  const getData = async () => {
+  const getCustomSettings = async () => {
     try {
-       const output = JSON?.parse(cookies?.get("custom-dashboard-widget")) ?? [];
-          return output;
-    } catch(e) {
-      return []
+      const raw = cookies.get("custom-dashboard-widget");
+      if (!raw || raw === "undefined") return [];
+      return JSON.parse(raw);
+    } catch (e) {
+      console.error(e);
+      return [];
     }
-   
   };
 
-  
   return {
-    getData: await getData(),
+    getCustomSettings: await getCustomSettings()
   };
-};
+}
+
+
