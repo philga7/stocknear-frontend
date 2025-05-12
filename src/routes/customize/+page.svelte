@@ -1,54 +1,62 @@
 <script>
   import { dndzone } from "svelte-dnd-action";
   import { flip } from "svelte/animate";
+  import { toast } from "svelte-sonner";
+  import { mode } from "mode-watcher";
 
   export let data;
   // Mock team member data with gradient avatar colors
   const initialAvailableWidgets = [
     {
       id: "1",
-      name: "Market Movers",
-      role: "Top Gainers and Losers",
+      name: "Top Gainers",
+      role: "Stocks with the highest % Change for today",
       color: "bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500",
     },
     {
       id: "2",
+      name: "Top Losers",
+      role: "Stocks with the lowest % Change for today",
+      color: "bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500",
+    },
+    {
+      id: "3",
       name: "Stock & Market News",
       role: "Understand why priced moved in realtime",
       color: "bg-gradient-to-br from-yellow-500 via-green-500 to-green-400",
     },
     {
-      id: "3",
+      id: "4",
       name: "Analyst Insight Report",
       role: "Latest Analyst report summarized to get the most valueable insights.",
-      color: "bg-gradient-to-br from-red-500 via-yellow-500 to-green-500",
+      color: "bg-gradient-to-br from-yellow-500 via-green-500 to-green-400",
     },
     {
-      id: "4",
+      id: "5",
       name: "Upcoming Earnings",
       role: "The latest upcoming earnings for today.",
       color: "bg-gradient-to-br from-green-500 via-teal-500 to-blue-500",
     },
     {
-      id: "5",
+      id: "6",
       name: "Recent Earnings",
       role: "The latest recent earnings for today.",
-      color: "bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500",
+      color: "bg-gradient-to-br from-green-500 via-teal-500 to-blue-500",
     },
     {
-      id: "6",
+      id: "7",
       name: "Economic Calendar",
       role: "Latest Economic Events for the US.",
       color: "bg-gradient-to-br from-red-500 via-yellow-500 to-green-500",
     },
     {
-      id: "7",
+      id: "8",
       name: "Options Flow Order",
       role: "Realtime Unusual Options Flow Orders from big whales.",
       color: "bg-gradient-to-br from-red-500 via-yellow-500 to-green-500",
     },
     {
-      id: "8",
+      id: "9",
       name: "Dark Pool Order",
       role: "Realtime Unusual Dark Pool Orders from big whales.",
       color: "bg-gradient-to-br from-red-500 via-yellow-500 to-green-500",
@@ -56,23 +64,96 @@
   ];
 
   let defaultWidgets = [
-    "Market Movers",
+    "Top Gainers",
+    "Top Losers",
     "Stock & Market News",
     "Analyst Insight Report",
     "Upcoming Earnings",
     "Recent Earnings",
   ];
 
-  let selectedWidgets = [];
-  const defaultWidgetSet = new Set(defaultWidgets);
+  let selectedWidgets = data?.getData ?? [];
 
-  let availableWidgets = initialAvailableWidgets?.filter((item) => {
-    if (defaultWidgetSet?.has(item.name)) {
-      selectedWidgets?.push(item);
-      return false; // remove from availableWidgets
+  // Create a Set of widget names that are selected or default
+  const defaultWidgetNames =
+    data?.getData?.length === 0
+      ? defaultWidgets
+      : selectedWidgets.map((w) => w.name);
+  const defaultWidgetSet = new Set(defaultWidgetNames);
+
+  // Filter available widgets and populate selectedWidgets if empty
+  let availableWidgets = initialAvailableWidgets.filter((item) => {
+    if (defaultWidgetSet.has(item.name)) {
+      // Add to selectedWidgets only if we're initializing from defaults
+      if (data?.getData?.length === 0) {
+        selectedWidgets.push(item);
+      }
+      return false; // Always exclude from availableWidgets
     }
-    return true; // keep in availableWidgets
+    return true;
   });
+
+  async function handleSaveSettings() {
+    const postData = {
+      selectedWidgets,
+    };
+    // build the promise that does the work
+    const savePromise = fetch("/api/custom-dashboard-widget", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(postData),
+    }).then((res) => {
+      if (!res.ok) throw new Error(`Status ${res.status}`);
+      return res.json();
+    });
+
+    // show toast while promise is pending
+    toast.promise(
+      savePromise,
+      {
+        loading: "Saving Custom Settings...",
+        success: () => {
+          // you can trigger any additional UI feedback here,
+          // or just return an empty string if you don't want a second toast
+          return "Settings Saved!";
+        },
+        error: "Something went wrong. Please try again later!",
+      },
+      {
+        style: {
+          borderRadius: "5px",
+          background: "#fff",
+          color: "#000",
+          borderColor: $mode === "light" ? "#F9FAFB" : "#4B5563",
+          fontSize: "15px",
+        },
+      },
+    );
+  }
+
+  function handleDefaultSettings() {
+    defaultWidgets = [
+      "Top Gainers",
+      "Top Losers",
+      "Stock & Market News",
+      "Analyst Insight Report",
+      "Upcoming Earnings",
+      "Recent Earnings",
+    ];
+
+    selectedWidgets = [];
+    const defaultWidgetSet = new Set(defaultWidgets);
+
+    availableWidgets = initialAvailableWidgets?.filter((item) => {
+      if (defaultWidgetSet?.has(item.name)) {
+        selectedWidgets?.push(item);
+        return false; // remove from availableWidgets
+      }
+      return true; // keep in availableWidgets
+    });
+  }
 
   const flipDurationMs = 300;
   const groupType = "members";
@@ -132,8 +213,49 @@
               Customize Stocknear
             </h1>
           </div>
+          <div class="w-full flex justify-end">
+            <button
+              type="button"
+              on:click={handleSaveSettings}
+              class="cursor-pointer ml-auto align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm font-semibold shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
+            >
+              <svg
+                class="w-3.5 h-3.5 inline-block cursor-pointer shrink-0"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 16 16"
+                ><path
+                  fill="currentColor"
+                  d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327l4.898.696c.441.062.612.636.282.95l-3.522 3.356l.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
+                /></svg
+              >
+              Save Custom
+            </button>
 
-          <div class="">
+            <button
+              type="button"
+              on:click={handleDefaultSettings}
+              class="cursor-pointer ml-3 align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm font-semibold shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
+            >
+              <svg
+                class="h-4 w-4"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 21 21"
+                ><g
+                  fill="none"
+                  fill-rule="evenodd"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  ><path d="M3.578 6.487A8 8 0 1 1 2.5 10.5" /><path
+                    d="M7.5 6.5h-4v-4"
+                  /></g
+                ></svg
+              >
+              Default Settings
+            </button>
+          </div>
+
+          <div class="mt-5">
             <div class="flex flex-col sm:flex-row items-start gap-8">
               <!-- Available Members -->
               <div class="flex-1 rounded shadow-sm">
