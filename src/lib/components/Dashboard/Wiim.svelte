@@ -2,11 +2,11 @@
   import * as Card from "$lib/components/shadcn/card/index.ts";
   import Infobox from "$lib/components/Infobox.svelte";
 
-  export let wiim;
+  export let dataList = [];
 </script>
 
 <Card.Root
-  class=" overflow-x-auto overflow-hidden overflow-y-auto no-scrollbar sm:max-h-[470px]"
+  class=" overflow-x-auto overflow-hidden overflow-y-auto no-scrollbar h-fit"
 >
   <Card.Header class="flex flex-row items-center">
     <div class="flex flex-col items-start w-full">
@@ -18,9 +18,9 @@
     </div>
   </Card.Header>
   <Card.Content>
-    {#if wiim?.length !== 0}
+    {#if dataList?.length !== 0}
       <ul style="padding-left: 5px;">
-        {#each wiim as item}
+        {#each dataList as item}
           <li
             class="text-sm sm:text-[1rem]"
             style="margin-left: 8px; margin-bottom: 15px; list-style-type: disc;"

@@ -100,6 +100,10 @@
       toast.error("At least one widget is required!");
       return;
     }
+    if (selectedWidgets?.length > 6) {
+      toast.error("You can select up to 6 widgets only.");
+      return;
+    }
     const postData = {
       selectedWidgets,
     };

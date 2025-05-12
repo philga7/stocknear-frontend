@@ -4,21 +4,19 @@
   import Infobox from "$lib/components/Infobox.svelte";
   import { abbreviateNumber } from "$lib/utils";
 
-  export let optionsFlowList;
+  export let darkPoolList;
 </script>
 
-<Card.Root
-  class=" overflow-x-auto overflow-hidden overflow-y-auto no-scrollbar"
->
+<Card.Root class="overflow-x-auto overflow-hidden overflow-y-auto no-scrollbar">
   <Card.Header class="flex flex-row items-center">
     <div class="flex flex-col items-start w-full">
       <div class="flex flex-row w-full items-center">
         <Card.Title>
           <a
-            href="/options-flow/"
+            href="/dark-pool-flow/"
             class="text-xl sm:text-2xl text-muted dark:text-white font-semibold cursor-pointer sm:hover:underline sm:hover:underline-offset-4"
           >
-            Options Flow Order
+            Dark Pool Order
             <svg
               class="h-5 w-5 inline-block"
               viewBox="0 0 20 20"
@@ -37,7 +35,7 @@
     </div>
   </Card.Header>
   <Card.Content>
-    {#if optionsFlowList?.length > 0}
+    {#if darkPoolList?.length > 0}
       <Table.Root class="overflow-x-auto w-full">
         <Table.Header>
           <Table.Row>
@@ -51,24 +49,21 @@
             >
             <Table.Head
               class="text-right table-cell sm:text-[1rem] font-bold dark:font-semibold"
-              >Sentiment</Table.Head
+              >Size</Table.Head
             >
+
             <Table.Head
               class=" text-right sm:text-[1rem] font-bold dark:font-semibold"
-              >Strike Price</Table.Head
-            >
-            <Table.Head
-              class=" text-right sm:text-[1rem] font-bold dark:font-semibold"
-              >OI</Table.Head
+              >Size / Avg Vol</Table.Head
             >
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {#each optionsFlowList as item}
+          {#each darkPoolList as item}
             <Table.Row>
               <Table.Cell class="text-sm sm:text-[1rem]">
                 <a
-                  href={`/${item?.underlying_type === "stock" ? "stocks" : "etf"}/${item?.ticker}`}
+                  href={`/${item?.assetType === "Stock" ? "stocks" : "etf"}/${item?.ticker}`}
                   class="text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted cursor-pointer"
                   >{item?.ticker}</a
                 >
@@ -76,36 +71,25 @@
               <Table.Cell
                 class="table-cell xl:table.-column text-sm sm:text-[1rem] text-right"
               >
-                ${abbreviateNumber(item?.cost_basis)}
+                ${abbreviateNumber(item?.premium)}
               </Table.Cell>
               <Table.Cell
-                class="table-cell xl:table.-column text-sm sm:text-[1rem] text-right {item?.sentiment ===
-                'Bullish'
-                  ? 'text-green-800 dark:text-[#00FC50]'
-                  : item?.sentiment === 'Bearish'
-                    ? 'text-red-800 dark:text-[#FF2F1F]'
-                    : ''}"
+                class="table-cell xl:table.-column text-sm sm:text-[1rem] text-right"
               >
-                {item?.sentiment}
+                {item?.size?.toLocaleString("en-US")}
               </Table.Cell>
-              <Table.Cell
-                class="text-right xl:table.-column text-sm sm:text-[1rem]"
-              >
-                {item?.strike_price}
-              </Table.Cell>
+
               <Table.Cell
                 class="text-right md:table.-cell xl:table.-column text-sm sm:text-[1rem] text-white"
               >
-                {item?.open_interest
-                  ? Number(item?.open_interest)?.toLocaleString("en-US")
-                  : "n/a"}
+                {item?.sizeAvgVolRatio ? item?.sizeAvgVolRatio + "%" : "n/a"}
               </Table.Cell>
             </Table.Row>
           {/each}
         </Table.Body>
       </Table.Root>
     {:else}
-      <Infobox text="Currently, no unusual options flow data available." />
+      <Infobox text="Currently, no unusual dark pool flow data available." />
     {/if}
   </Card.Content>
 </Card.Root>

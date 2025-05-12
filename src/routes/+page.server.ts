@@ -109,7 +109,6 @@ export const load = async ({ locals, cookies}) => {
      if(output?.length === 0) {
         output = defaultSettings
        }
-
        return output;
   };
 

@@ -8,11 +8,13 @@
   import SEO from "$lib/components/SEO.svelte";
   import Gainers from "$lib/components/Dashboard/Gainers.svelte";
   import Losers from "$lib/components/Dashboard/Losers.svelte";
-  import WIIM from "$lib/components/Dashboard/WIIM.svelte";
+  import WIIM from "$lib/components/Dashboard/Wiim.svelte";
   import UpcomingEarnings from "$lib/components/Dashboard/UpcomingEarnings.svelte";
   import RecentEarnings from "$lib/components/Dashboard/RecentEarnings.svelte";
   import AnalystReport from "$lib/components/Dashboard/AnalystReport.svelte";
   import OptionsFlow from "$lib/components/Dashboard/OptionsFlow.svelte";
+  import DarkPool from "$lib/components/Dashboard/DarkPool.svelte";
+  import EconomicCalendar from "$lib/components/Dashboard/EconomicCalendar.svelte";
 
   export let data;
 
@@ -22,6 +24,8 @@
   let analystReport = data?.getDashboard?.analystReport || {};
   let wiim = data?.getDashboard?.wiim || [];
   let optionsFlowList = data?.getDashboard?.optionsFlow || [];
+  let darkPoolList = data?.getDashboard?.darkPool || [];
+  let economicCalendarList = data?.getDashboard?.economicCalendar || [];
 
   let customSettings = data?.getCustomSettings;
   let pwaInstalled = false;
@@ -111,16 +115,17 @@
         {/await}
       {/if}
 
-      <!--
       <div
         class="text-center mb-5 sm:mb-10 relative w-fit flex justify-center m-auto text-white"
       >
         <div class="mb-4 flex justify-center -mt-3 lg:mb-3">
-          <a href="/stocks/NVDA/options/max-pain"
+          <a href="/customize"
             ><div
               class="flex items-center justify-center sm:hover:text-muted dark:sm:hover:text-white text-blue-700 dark:text-blue-400"
             >
-              <div class="text-lg sm:text-xl font-semibold">Max Pain Chart</div>
+              <div class="text-lg sm:text-xl font-semibold">
+                Custom Dashboard
+              </div>
               <div
                 class="-mt-2 ml-1 -rotate-6 rounded-lg bg-red-500 px-1 py-0.5 text-xs font-semibold text-white"
               >
@@ -130,7 +135,6 @@
           >
         </div>
       </div>
-      -->
 
       <h1
         class="block text-2xl lg:text-4xl text-muted dark:text-white font-bold text-center mb-10 relative w-fit flex justify-center m-auto"
@@ -148,7 +152,7 @@
                 {:else if item === "losers"}
                   <Losers {losersList} {marketStatus} {charNumber} />
                 {:else if item === "wiim"}
-                  <WIIM {wiim} />
+                  <WIIM dataList={wiim} />
                 {:else if item === "analystReport"}
                   <AnalystReport {analystReport} />
                 {:else if item === "upcomingEarnings"}
@@ -161,6 +165,10 @@
                   />
                 {:else if item === "optionsFlow"}
                   <OptionsFlow {optionsFlowList} />
+                {:else if item === "darkpool"}
+                  <DarkPool {darkPoolList} />
+                {:else if item === "economicCalendar"}
+                  <EconomicCalendar dataList={economicCalendarList} />
                 {/if}
               </div>
             {/each}
