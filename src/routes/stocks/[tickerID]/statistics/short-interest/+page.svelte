@@ -485,7 +485,7 @@
           </div>
 
           {#if rawData?.length !== 0}
-            <div class="grid grid-cols-1 gap-2 mt-3 mb-3 sm:mt-0 sm:mb-0">
+            <div class="grid grid-cols-1 gap-2">
               <Infobox
                 text={`${removeCompanyStrings($displayCompanyName)} has a total short interest of ${abbreviateNumber(
                   data?.getData?.sharesShort,
@@ -562,7 +562,7 @@
               <div
                 class="flex flex-col sm:flex-row items-start sm:items-center w-full"
               >
-                <h2 class="mb-3 sm:mb-0 text-xl sm:text-2xl font-bold">
+                <h2 class="text-xl sm:text-2xl font-bold">
                   Short Interest Chart
                 </h2>
               </div>
@@ -574,7 +574,7 @@
                     <div
                       class="{!['Plus', 'Pro']?.includes(data?.user?.tier)
                         ? 'blur-[3px]'
-                        : ''} mt-5 shadow-sm sm:mt-0 border border-gray-300 dark:border-gray-800 rounded"
+                        : ''}  shadow-sm border border-gray-300 dark:border-gray-800 rounded"
                       use:highcharts={config}
                     ></div>
                     <!-- Overlay with "Upgrade to Pro" -->

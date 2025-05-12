@@ -118,7 +118,7 @@
                   href={sectorNavigation?.find(
                     (listItem) => listItem?.title === item?.sector,
                   )?.link}
-                  class="sm:hover:underline sm:hover:underline-offset-4"
+                  class="text-blue-800 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
                 >
                   {item?.sector?.length > charNumber
                     ? item?.sector?.slice(0, charNumber) + "..."

@@ -21,8 +21,8 @@
       {#if data?.getData?.volume?.length > 0}
         <HottestContracts {data} ticker={$stockTicker?.toUpperCase()} />
       {:else}
-        <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
-          <div class="mt-2">
+        <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto">
+          <div class="">
             <Infobox text="No data is available" />
           </div>
         </div>

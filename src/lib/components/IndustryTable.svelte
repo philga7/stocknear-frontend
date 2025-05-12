@@ -104,7 +104,7 @@
           <td class=" text-sm sm:text-[1rem] whitespace-nowrap">
             <a
               href={`/list/industry/${item?.industry?.replace(/ /g, "-")?.replace(/&/g, "and")?.replace(/-{2,}/g, "-")?.toLowerCase()}`}
-              class="sm:hover:underline sm:hover:underline-offset-4"
+              class="text-blue-800 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
             >
               {item?.industry?.length > charNumber
                 ? item?.industry?.slice(0, charNumber) + "..."

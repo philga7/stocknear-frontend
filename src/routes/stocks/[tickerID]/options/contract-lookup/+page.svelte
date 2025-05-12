@@ -21,10 +21,8 @@
       {#if Object?.keys(data?.getData)?.length > 0}
         <ContractLookup {data} ticker={$stockTicker} />
       {:else}
-        <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
-          <div class="mt-2">
-            <Infobox text="No data is available" />
-          </div>
+        <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto">
+          <Infobox text="No data is available" />
         </div>
       {/if}
     </div>

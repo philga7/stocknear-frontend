@@ -18,7 +18,7 @@
 
 <section class="w-full overflow-hidden m-auto">
   <Infobox
-    text={`We categorize stocks into ${sectorList?.length} sectors and ${industryList?.length}
+    text={`Stocknear categorize stocks into ${sectorList?.length} sectors and ${industryList?.length}
     industries, based on the company's primary business activity.`}
   />
 
