@@ -80,13 +80,13 @@
   let selectedWidgets =
     data?.getCustomSettings && data.getCustomSettings.length > 0
       ? data.getCustomSettings
-      : initialAvailableWidgets.filter((item) =>
+      : initialAvailableWidgets?.filter((item) =>
           defaultWidgets.includes(item.id),
         );
 
   // Create a Set of widget names that are selected or default
   // This part of the logic is now simplified as selectedWidgets is correctly initialized
-  const selectedWidgetIds = new Set(selectedWidgets.map((w) => w?.id));
+  const selectedWidgetIds = new Set(selectedWidgets?.map((w) => w?.id));
 
   // Filter available widgets
   // Available widgets are those from initialAvailableWidgets whose ids are NOT in selectedWidgetIds
@@ -98,12 +98,12 @@
   // With the corrected initialization of selectedWidgets, this is no longer necessary
   // and has been removed for clarity and correctness.
   async function handleSaveSettings() {
-    if (selectedWidgets?.length < 1) {
-      toast.error("At least one widget is required!");
+    if (selectedWidgets?.length < 2) {
+      toast.error("At least two widget is required!");
       return;
     }
-    if (selectedWidgets?.length > 6) {
-      toast.error("You can select up to 6 widgets only.");
+    if (selectedWidgets?.length > 8) {
+      toast.error("You can select up to 8 widgets only.");
       return;
     }
     const postData = {

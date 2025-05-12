@@ -15,6 +15,7 @@
   import OptionsFlow from "$lib/components/Dashboard/OptionsFlow.svelte";
   import DarkPool from "$lib/components/Dashboard/DarkPool.svelte";
   import EconomicCalendar from "$lib/components/Dashboard/EconomicCalendar.svelte";
+  import UpgradeToPro from "$lib/components/Dashboard/UpgradeToPro.svelte";
 
   export let data;
 
@@ -145,8 +146,11 @@
       <main class="flex flex-1 flex-col gap-4 sm:p-4 md:gap-8 text-start">
         <div class="columns-1 lg:columns-2 xl:columns-3 gap-4 md:gap-8">
           {#if customSettings?.length > 0}
-            {#each customSettings as item}
+            {#each customSettings as item, index}
               <div class="break-inside-avoid mb-4">
+                {#if index === 1 && !["Pro", "Plus"]?.includes(data?.user?.tier)}
+                  <UpgradeToPro />
+                {/if}
                 {#if item === "gainers"}
                   <Gainers {gainersList} {marketStatus} {charNumber} />
                 {:else if item === "losers"}
