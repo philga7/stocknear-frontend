@@ -942,6 +942,13 @@
                     </DropdownMenu.Item>
                   </a>
 
+                  <a href="/customize" class="cursor-pointer">
+                    <DropdownMenu.Item
+                      class="sm:hover:bg-gray-300 dark:sm:hover:bg-[#18181B] cursor-pointer"
+                    >
+                      Customize
+                    </DropdownMenu.Item>
+                  </a>
                   <button
                     on:click={handleModeChange}
                     class="cursor-pointer w-full sm:hover:bg-gray-300 dark:sm:hover:bg-[#18181B] relative flex cursor-default select-none items-center rounded px-2 py-1.5 text-sm outline-hidden data-disabled:pointer-events-none"

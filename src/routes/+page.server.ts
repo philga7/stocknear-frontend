@@ -86,19 +86,44 @@ const getDashboard = async (apiURL, apiKey) => {
 
 
 // Main load function
-export const load = async ({ locals}) => {
+export const load = async ({ locals, cookies}) => {
   const { apiKey, apiURL } = locals;
+  const defaultSettings =  [
+           'gainers',
+            'losers',
+            'wiim',
+            'analystReport',
+            'upcomingEarnings',
+            'recentEarnings'
+          ];
 
+  const getCustomSettings = async () => {
+    let output = []
+    try {
+        output = JSON?.parse(cookies?.get("custom-dashboard-widget")) ?? [];
+        output = output?.map(item => item?.id);
+    } catch(e) {
+      output = []
+    }
+   
+     if(output?.length === 0) {
+        output = defaultSettings
+       }
+
+       return output;
+  };
 
 
   try {
     return {
       getDashboard: await getDashboard(apiURL, apiKey),
+      getCustomSettings: await getCustomSettings(),
     };
   } catch (error) {
     console.error('Error in dashboard load:', error);
     return {
-      getDashboard: {}
+      getDashboard: {},
+      getCustomSettings: defaultSettings,
     };
   }
 };

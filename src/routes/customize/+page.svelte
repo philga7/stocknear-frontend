@@ -3,73 +3,75 @@
   import { flip } from "svelte/animate";
   import { toast } from "svelte-sonner";
   import { mode } from "mode-watcher";
+  import ArrowUp from "lucide-svelte/icons/trending-up";
+  import ArrowDown from "lucide-svelte/icons/trending-down";
+  import News from "lucide-svelte/icons/newspaper";
+  import AnalystReport from "lucide-svelte/icons/file-chart-column-increasing";
+  import UpcomingEarnings from "lucide-svelte/icons/send-horizontal";
+  import RecentEarnings from "lucide-svelte/icons/chart-no-axes-combined";
+  import EconomicCalendar from "lucide-svelte/icons/loader";
+  import OptionsFlow from "lucide-svelte/icons/waves";
+  import DarkPool from "lucide-svelte/icons/venetian-mask";
 
   export let data;
   // Mock team member data with gradient avatar colors
   const initialAvailableWidgets = [
     {
-      id: "1",
+      id: "gainers",
       name: "Top Gainers",
-      role: "Stocks with the highest % Change for today",
-      color: "bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500",
+      key: "gainers",
+      description: "Stocks with the highest % Change for today",
     },
     {
-      id: "2",
+      id: "losers",
       name: "Top Losers",
-      role: "Stocks with the lowest % Change for today",
-      color: "bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500",
+      description: "Stocks with the lowest % Change for today",
     },
     {
-      id: "3",
+      id: "wiim",
       name: "Stock & Market News",
-      role: "Understand why priced moved in realtime",
-      color: "bg-gradient-to-br from-yellow-500 via-green-500 to-green-400",
+      description: "Understand why priced moved in realtime",
     },
     {
-      id: "4",
+      id: "analystReport",
       name: "Analyst Insight Report",
-      role: "Latest Analyst report summarized to get the most valueable insights.",
-      color: "bg-gradient-to-br from-yellow-500 via-green-500 to-green-400",
+      description:
+        "Latest Analyst report summarized to get the most valueable insights.",
     },
     {
-      id: "5",
+      id: "upcomingEarnings",
       name: "Upcoming Earnings",
-      role: "The latest upcoming earnings for today.",
-      color: "bg-gradient-to-br from-green-500 via-teal-500 to-blue-500",
+      description: "The latest upcoming earnings for today.",
     },
     {
-      id: "6",
+      id: "recentEarnings",
       name: "Recent Earnings",
-      role: "The latest recent earnings for today.",
-      color: "bg-gradient-to-br from-green-500 via-teal-500 to-blue-500",
+      description: "The latest recent earnings for today.",
     },
     {
-      id: "7",
+      id: "economicCalendar",
       name: "Economic Calendar",
-      role: "Latest Economic Events for the US.",
-      color: "bg-gradient-to-br from-red-500 via-yellow-500 to-green-500",
+      description: "Latest Economic Events for the US.",
     },
     {
-      id: "8",
+      id: "optionsFlow",
       name: "Options Flow Order",
-      role: "Realtime Unusual Options Flow Orders from big whales.",
-      color: "bg-gradient-to-br from-red-500 via-yellow-500 to-green-500",
+      description: "Realtime Unusual Options Flow Orders from big whales.",
     },
     {
-      id: "9",
+      id: "darkpool",
       name: "Dark Pool Order",
-      role: "Realtime Unusual Dark Pool Orders from big whales.",
-      color: "bg-gradient-to-br from-red-500 via-yellow-500 to-green-500",
+      description: "Realtime Unusual Dark Pool Orders from big whales.",
     },
   ];
 
   let defaultWidgets = [
-    "Top Gainers",
-    "Top Losers",
-    "Stock & Market News",
-    "Analyst Insight Report",
-    "Upcoming Earnings",
-    "Recent Earnings",
+    "gainers",
+    "losers",
+    "wiim",
+    "analystReport",
+    "upcomingEarnings",
+    "recentEarnings",
   ];
 
   let selectedWidgets = data?.getData ?? [];
@@ -78,12 +80,12 @@
   const defaultWidgetNames =
     data?.getData?.length === 0
       ? defaultWidgets
-      : selectedWidgets.map((w) => w.name);
+      : selectedWidgets?.map((w) => w?.id);
   const defaultWidgetSet = new Set(defaultWidgetNames);
 
   // Filter available widgets and populate selectedWidgets if empty
-  let availableWidgets = initialAvailableWidgets.filter((item) => {
-    if (defaultWidgetSet.has(item.name)) {
+  let availableWidgets = initialAvailableWidgets?.filter((item) => {
+    if (defaultWidgetSet.has(item?.id)) {
       // Add to selectedWidgets only if we're initializing from defaults
       if (data?.getData?.length === 0) {
         selectedWidgets.push(item);
@@ -94,6 +96,10 @@
   });
 
   async function handleSaveSettings() {
+    if (selectedWidgets?.length < 1) {
+      toast.error("At least one widget is required!");
+      return;
+    }
     const postData = {
       selectedWidgets,
     };
@@ -135,19 +141,19 @@
 
   function handleDefaultSettings() {
     defaultWidgets = [
-      "Top Gainers",
-      "Top Losers",
-      "Stock & Market News",
-      "Analyst Insight Report",
-      "Upcoming Earnings",
-      "Recent Earnings",
+      "gainers",
+      "losers",
+      "wiim",
+      "analystReport",
+      "upcomingEarnings",
+      "recentEarnings",
     ];
 
     selectedWidgets = [];
     const defaultWidgetSet = new Set(defaultWidgets);
 
     availableWidgets = initialAvailableWidgets?.filter((item) => {
-      if (defaultWidgetSet?.has(item.name)) {
+      if (defaultWidgetSet?.has(item.id)) {
         selectedWidgets?.push(item);
         return false; // remove from availableWidgets
       }
@@ -171,6 +177,12 @@
       );
 
       if (moved) {
+        // **NEW GUARD**: don’t allow removing the last widget
+        if (target === "available" && selectedWidgets.length <= 1) {
+          toast.error("At least one widget is needed");
+          return; // abort the drop
+        }
+
         if (target === "selected") {
           availableWidgets = availableWidgets.filter((m) => m.id !== moved.id);
           selectedWidgets = [...selectedWidgets, moved];
@@ -213,11 +225,13 @@
               Customize Stocknear
             </h1>
           </div>
-          <div class="w-full flex justify-end">
+          <div
+            class="w-full flex flex-row items-center justify-center sm:justify-end"
+          >
             <button
               type="button"
               on:click={handleSaveSettings}
-              class="cursor-pointer ml-auto align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm font-semibold shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
+              class="w-full sm:w-fit cursor-pointer sm:ml-auto align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm font-semibold shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
             >
               <svg
                 class="w-3.5 h-3.5 inline-block cursor-pointer shrink-0"
@@ -234,7 +248,7 @@
             <button
               type="button"
               on:click={handleDefaultSettings}
-              class="cursor-pointer ml-3 align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm font-semibold shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
+              class="w-full sm:w-fit cursor-pointer ml-3 align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm font-semibold shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
             >
               <svg
                 class="h-4 w-4"
@@ -257,7 +271,7 @@
 
           <div class="mt-5">
             <div class="flex flex-col sm:flex-row items-start gap-8">
-              <!-- Available Members -->
+              <!-- Available Widgets -->
               <div class="flex-1 rounded shadow-sm">
                 <div class="flex justify-between items-center mb-4">
                   <h2 class="text-xl font-bold">Available Widgets</h2>
@@ -275,7 +289,7 @@
                   }}
                   on:consider={(e) => handleDndConsider(e, "available")}
                   on:finalize={(e) => handleDndFinalize(e, "available")}
-                  class="space-y-4"
+                  class="space-y-4 border border-gray-300 dark:border-gray-800 max-h-[500px] sm:max-h-[700px] overflow-y-auto"
                 >
                   {#each availableWidgets as member (member.id)}
                     <div
@@ -283,15 +297,34 @@
                       class="border border-gray-200 dark:border-gray-800 rounded p-4 shadow-sm"
                     >
                       <div class="flex items-center space-x-4">
-                        <div class="relative">
-                          <div
-                            class="{member.color} w-8 h-8 rounded-full flex items-center justify-center"
-                          ></div>
+                        <div
+                          class="relative border border-gray-300 dark:border-gray-600 rounded-full h-8 w-8 flex items-center justify-center"
+                        >
+                          {#if member?.id === "gainers"}
+                            <ArrowUp class="w-5 h-5" />
+                          {:else if member?.id === "losers"}
+                            <ArrowDown class="w-5 h-5" />
+                          {:else if member?.id === "wiim"}
+                            <News class="w-5 h-5" />
+                          {:else if member?.id === "analystReport"}
+                            <AnalystReport class="w-5 h-5" />
+                          {:else if member?.id === "upcomingEarnings"}
+                            <UpcomingEarnings class="w-5 h-5" />
+                          {:else if member?.id === "recentEarnings"}
+                            <RecentEarnings class="w-5 h-5" />
+                          {:else if member?.id === "economicCalendar"}
+                            <EconomicCalendar class="w-5 h-5" />
+                          {:else if member?.id === "optionsFlow"}
+                            <OptionsFlow class="w-5 h-5" />
+                          {:else if member?.id === "darkpool"}
+                            <DarkPool class="w-5 h-5" />
+                          {/if}
                         </div>
+
                         <div>
                           <h3 class="font-medium">{member.name}</h3>
                           <p class="text-gray-500 dark:text-gray-300 text-sm">
-                            {member.role}
+                            {member.description}
                           </p>
                         </div>
                       </div>
@@ -324,7 +357,7 @@
                   class:justify-center={selectedWidgets.length === 0}
                 >
                   {#if selectedWidgets.length === 0}
-                    <p class="text-gray-400">Drop team members here</p>
+                    <p class="text-gray-400">Drop Dashboard Widgets here</p>
                   {:else}
                     {#each selectedWidgets as member (member.id)}
                       <div
@@ -332,15 +365,33 @@
                         class="border border-gray-200 dark:border-gray-800 rounded p-4 shadow-sm"
                       >
                         <div class="flex items-center space-x-4">
-                          <div class="relative">
-                            <div
-                              class="{member.color} w-8 h-8 rounded-full flex items-center justify-center"
-                            ></div>
+                          <div
+                            class="relative border border-gray-300 dark:border-gray-600 rounded-full h-8 w-8 flex items-center justify-center"
+                          >
+                            {#if member?.id === "gainers"}
+                              <ArrowUp class="w-5 h-5" />
+                            {:else if member?.id === "losers"}
+                              <ArrowDown class="w-5 h-5" />
+                            {:else if member?.id === "wiim"}
+                              <News class="w-5 h-5" />
+                            {:else if member?.id === "analystReport"}
+                              <AnalystReport class="w-5 h-5" />
+                            {:else if member?.id === "upcomingEarnings"}
+                              <UpcomingEarnings class="w-5 h-5" />
+                            {:else if member?.id === "recentEarnings"}
+                              <RecentEarnings class="w-5 h-5" />
+                            {:else if member?.id === "economicCalendar"}
+                              <EconomicCalendar class="w-5 h-5" />
+                            {:else if member?.id === "optionsFlow"}
+                              <OptionsFlow class="w-5 h-5" />
+                            {:else if member?.id === "darkpool"}
+                              <DarkPool class="w-5 h-5" />
+                            {/if}
                           </div>
                           <div>
                             <h3 class="font-medium">{member.name}</h3>
                             <p class="text-gray-500 dark:text-gray-300 text-sm">
-                              {member.role}
+                              {member.description}
                             </p>
                           </div>
                         </div>
