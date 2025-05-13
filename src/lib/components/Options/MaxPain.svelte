@@ -110,7 +110,7 @@
       chart: {
         backgroundColor: $mode === "light" ? "#fff" : "#09090B",
         plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
-
+        height: 360,
         animation: false, // Disable initial animation
       },
 
@@ -258,6 +258,7 @@
         backgroundColor: $mode === "light" ? "#fff" : "#09090B",
         plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
         animation: false, // Disable initial animation
+        height: 360,
       },
 
       title: {

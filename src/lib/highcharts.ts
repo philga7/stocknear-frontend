@@ -68,7 +68,7 @@ export default (node, config) => {
     if (chart && browser) {
       const newWidth = node.clientWidth;
       // Set height based on viewport width: 300 for mobile, 360 for desktop
-      const newHeight = (node.clientWidth < 600) ? 300 : 330;
+      const newHeight = (node.clientWidth < 600) ? 300 : config?.chart?.height;
 
       chart?.setSize(newWidth, newHeight, false);
     }

@@ -16,6 +16,7 @@
   import SEO from "$lib/components/SEO.svelte";
 
   export let data;
+  let isLoaded = false;
   let configGraph = null;
   let downloadWorker: Worker | undefined;
 
@@ -56,10 +57,11 @@
   let rawData = [];
 
   const handleDownloadMessage = async (event) => {
+    isLoaded = false;
     rawData = event?.data?.output;
     handleSave();
-    console.log(rawData);
     configGraph = plotData() || null;
+    isLoaded = true;
   };
 
   async function changeCategory(category) {
@@ -236,7 +238,7 @@
       chart: {
         backgroundColor: mode === "light" ? "#fff" : "#09090B",
         animation: false,
-        height: 360,
+        height: 500,
         events: {
           load() {
             const chart = this;
@@ -364,6 +366,11 @@
       downloadWorker = new DownloadWorker.default();
       downloadWorker.onmessage = handleDownloadMessage;
     }
+
+    downloadWorker?.postMessage({
+      tickerList: tickerList,
+      category: selectedPlotCategory?.value,
+    });
   });
 </script>
 
@@ -575,8 +582,8 @@
           </div>
 
           {#if tickerList?.length > 0}
-            {#if configGraph}
-              <div class="relative">
+            {#if configGraph && isLoaded}
+              <div class="relative mt-2">
                 <div
                   class="hidden sm:flex justify-start space-x-2 w-full ml-2 absolute top-3.5 z-10"
                 >
@@ -596,6 +603,20 @@
                 class="border border-gray-300 dark:border-gray-800 rounded w-full"
                 use:highcharts={configGraph}
               ></div>
+            {:else}
+              <div
+                class="mt-2 flex justify-center items-center h-96 border border-gray-300 dark:border-gray-800 rounded"
+              >
+                <div class="relative">
+                  <label
+                    class="shadow-sm bg-gray-300 dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                  >
+                    <span
+                      class="loading loading-spinner loading-md text-muted dark:text-gray-400"
+                    ></span>
+                  </label>
+                </div>
+              </div>
             {/if}
           {:else}
             <div

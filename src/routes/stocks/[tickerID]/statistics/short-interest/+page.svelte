@@ -170,6 +170,7 @@
       chart: {
         backgroundColor: $mode === "light" ? "#fff" : "#09090B",
         plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        height: 360,
       },
       title: {
         text: `<h3 class=\"mt-3 mb-1\">${removeCompanyStrings($displayCompanyName)} Short Interest</h3>`,
