@@ -102,7 +102,7 @@
       toast.error("At least two widget is required!");
       return;
     }
-    if (selectedWidgets?.length > 8) {
+    if (selectedWidgets?.length > 10) {
       toast.error("You can select up to 8 widgets only.");
       return;
     }
@@ -298,8 +298,16 @@
                   }}
                   on:consider={(e) => handleDndConsider(e, "available")}
                   on:finalize={(e) => handleDndFinalize(e, "available")}
-                  class="space-y-4 border border-gray-300 dark:border-gray-800 max-h-[500px] sm:max-h-[700px] overflow-y-auto"
+                  class="space-y-4 min-h-[10rem] max-h-[500px] sm:max-h-[700px] overflow-y-auto border border-gray-300 dark:border-gray-800 rounded p-4"
+                  class:flex={availableWidgets?.length === 0}
+                  class:items-center={availableWidgets?.length === 0}
+                  class:justify-center={availableWidgets?.length === 0}
                 >
+                  {#if availableWidgets.length === 0}
+                    <p class="text-gray-700 dark:text-gray-400">
+                      Drop Dashboard Widgets here
+                    </p>
+                  {/if}
                   {#each availableWidgets as item (item.id)}
                     <div
                       animate:flip={{ duration: flipDurationMs }}
@@ -369,7 +377,9 @@
                   class:justify-center={selectedWidgets.length === 0}
                 >
                   {#if selectedWidgets.length === 0}
-                    <p class="text-gray-400">Drop Dashboard Widgets here</p>
+                    <p class="text-gray-700 dark:text-gray-400">
+                      Drop Dashboard Widgets here
+                    </p>
                   {:else}
                     {#each selectedWidgets as item (item.id)}
                       <div
