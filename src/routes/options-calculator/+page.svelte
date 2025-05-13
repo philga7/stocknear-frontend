@@ -1368,12 +1368,6 @@
               </div>
             </div>
           </div>
-
-          {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
-            <div class="mt-10">
-              <HorizontalAd />
-            </div>
-          {/if}
         </div>
       </div>
     </div>
