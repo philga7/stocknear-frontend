@@ -1,7 +1,8 @@
 <script lang="ts">
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
-  import { onMount, onDestroy } from "svelte";
+  import { onMount } from "svelte";
+  import { abbreviateNumber } from "$lib/utils";
   import { screenWidth } from "$lib/store";
   import { Combobox } from "bits-ui";
   import { toast } from "svelte-sonner";
@@ -28,7 +29,7 @@
   let configReturn = null;
   let downloadWorker: Worker | undefined;
 
-  let selectedPlotPeriod = "3Y";
+  let selectedPlotPeriod = "Max";
 
   let selectedPlotCategory = { name: "Stock Price", value: "price" };
 
@@ -36,12 +37,13 @@
     { name: "Stock Price", value: "price" },
     { name: "Market Cap", value: "marketCap" },
     { name: "Dividend Yield", value: "dividendYield" },
-    { name: "Dividend Growth", value: "divivdendGrowth" },
-    { name: "Payout Ratio", value: "payoutRatio" },
+    { name: "Dividends", value: "dividends" },
     { name: "Revenue", value: "revenue" },
     { name: "Revenue Growth", value: "revenueGrowth" },
-    { name: "Short % Float", value: "shortPercentFloat" },
+    { name: "Short % Float", value: "shortPercentOfFloat" },
+    { name: "Short Ratio", value: "daysToCover" },
     { name: "EPS (Diluted)", value: "epsDiluted" },
+    { name: "EV / Sales", value: "evToSales" },
   ];
   let tickerList = [];
 
@@ -213,20 +215,20 @@
         thresholdDate = new Date(0);
     }
 
-    return history?.filter((item) => new Date(item.time) >= thresholdDate);
+    return history?.filter((item) => new Date(item?.date) >= thresholdDate);
   }
 
   function plotData() {
-    // 1) filter & parse each symbol’s data into [timestamp, close] pairs
+    // 1) filter & parse each symbol’s data into [timestamp, value] pairs
     const parsedData = {};
 
     for (const [symbol, data] of Object?.entries(rawGraphData)) {
       // Ensure `history` exists and is an array
       const series = Array?.isArray(data?.history) ? data?.history : [];
 
-      // Filter by the desired time period and map to [timestamp, close] pairs
+      // Filter by the desired time period and map to [timestamp, value] pairs
       parsedData[symbol] = filterDataByTimePeriod(series)?.map((item) => {
-        const d = new Date(item?.time);
+        const d = new Date(item?.date);
         return [
           Date.UTC(
             d.getUTCFullYear(),
@@ -235,7 +237,7 @@
             d.getUTCHours(),
             d.getUTCMinutes(),
           ),
-          item.close,
+          item?.value,
         ];
       });
     }
@@ -243,9 +245,9 @@
     let globalMin = Infinity,
       globalMax = -Infinity;
     Object?.values(parsedData).forEach((arr) =>
-      arr?.forEach(([_, close]) => {
-        if (close < globalMin) globalMin = close;
-        if (close > globalMax) globalMax = close;
+      arr?.forEach(([_, value]) => {
+        if (value < globalMin) globalMin = value;
+        if (value > globalMax) globalMax = value;
       }),
     );
     const padding = 0.015;
@@ -299,10 +301,10 @@
         style: { color: $mode === "light" ? "black" : "white" },
       },
       tooltip: {
-        shared: true,
+        shared: ["price", "marketCap"]?.includes(selectedPlotCategory?.value),
         useHTML: true,
-        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
-        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        borderColor: "rgba(255, 255, 255, 0.2)",
         borderWidth: 1,
         style: {
           color: "#fff",
@@ -311,28 +313,35 @@
         },
         borderRadius: 4,
         formatter: function () {
-          // Format the x value to display time in a custom format
-          let tooltipContent = `<span class="m-auto text-[1rem] font-[501] ">${new Date(
-            this?.x,
-          )?.toLocaleDateString("en-US", {
+          // Format the x value
+          const dateStr = new Date(this?.x)?.toLocaleDateString("en-US", {
             year: "numeric",
             month: "short",
             day: "numeric",
             timeZone: "UTC",
-          })}</span><br>`;
-
-          // Loop through each point in the shared tooltip
-          this.points.forEach((point) => {
-            tooltipContent += `
-        <span style="display:inline-block; width:10px; height:10px; background-color:${point.color}; border-radius:5%; margin-right:3px;"></span>
-        <span class="font-semibold text-xs">${point.series.name}:</span> 
-        <span class="font-normal text-sm">${point.y}</span><br>`;
           });
+
+          let tooltipContent = `<span class="m-auto text-[1rem] font-[501] ">${dateStr}</span><br>`;
+
+          // If shared, this.points is an array
+          if (this.points) {
+            this.points.forEach((point) => {
+              tooltipContent += `
+          <span style="display:inline-block; width:10px; height:10px; background-color:${point.color}; border-radius:5%; margin-right:3px;"></span>
+          <span class="font-semibold text-xs">${point.series.name}:</span> 
+          <span class="font-normal text-sm">${abbreviateNumber(point.y)}</span><br>`;
+            });
+          } else {
+            // Non-shared, handle single point
+            tooltipContent += `
+        <span style="display:inline-block; width:10px; height:10px; background-color:${this.color}; border-radius:5%; margin-right:3px;"></span>
+        <span class="font-semibold text-xs">${this.series.name}:</span> 
+        <span class="font-normal text-sm">${abbreviateNumber(this.y)}</span><br>`;
+          }
 
           return tooltipContent;
         },
       },
-
       xAxis: {
         type: "datetime",
         tickLength: 0,
