@@ -16,9 +16,25 @@
   import SEO from "$lib/components/SEO.svelte";
 
   export let data;
+  let configGraph = null;
+  let downloadWorker: Worker | undefined;
 
-  let selectedPlotCategory = "Stock Price";
+  let selectedPlotPeriod = "3Y";
+
+  let selectedPlotCategory = { name: "Stock Price", value: "price" };
+  let categoryList = [
+    { name: "Stock Price", value: "price" },
+    { name: "Market Cap", value: "marketCap" },
+    { name: "Dividend Yield", value: "dividendYield" },
+    { name: "Dividend Growth", value: "divivdendGrowth" },
+    { name: "Payout Ratio", value: "payoutRatio" },
+    { name: "Revenue", value: "revenue" },
+    { name: "Revenue Growth", value: "revenueGrowth" },
+    { name: "Short % Float", value: "shortPercentFloat" },
+    { name: "EPS (Diluted)", value: "epsDiluted" },
+  ];
   let tickerList = [];
+
   const colorPairs = [
     { light: "#1E90FF", dark: "#60A5FA" }, // DodgerBlue → SkyBlue
     { light: "#9400D3", dark: "#7C3AED" }, // DarkViolet → Violet
@@ -37,14 +53,27 @@
   let timeoutId: ReturnType<typeof setTimeout>;
   let inputValue = "";
   let touchedInput = false;
+  let rawData = [];
 
+  const handleDownloadMessage = async (event) => {
+    rawData = event?.data?.output;
+    handleSave();
+    console.log(rawData);
+    configGraph = plotData() || null;
+  };
+
+  async function changeCategory(category) {
+    selectedPlotCategory = category;
+
+    downloadWorker?.postMessage({
+      tickerList: tickerList,
+      category: selectedPlotCategory?.value,
+    });
+  }
   function addTicker(data) {
     const ticker = data?.symbol?.trim()?.toUpperCase();
 
-    // 2) Guard clause: check for duplicates
     if (tickerList?.includes(ticker)) {
-      // You could also make this message more specific, e.g.:
-      // `Ticker "${ticker}" is already in your watchlist!`
       toast?.error("Ticker is already included");
       return;
     }
@@ -117,6 +146,206 @@
     }
   }
 
+  function filterDataByTimePeriod(history) {
+    const now = new Date();
+
+    let thresholdDate;
+
+    switch (selectedPlotPeriod) {
+      case "1M":
+        thresholdDate = new Date(now);
+        thresholdDate.setMonth(now.getMonth() - 1);
+        break;
+      case "3M":
+        thresholdDate = new Date(now);
+        thresholdDate.setMonth(now.getMonth() - 3);
+        break;
+      case "YTD":
+        thresholdDate = new Date(now.getFullYear(), 0, 1);
+        break;
+      case "1Y":
+        thresholdDate = new Date(now);
+        thresholdDate.setFullYear(now.getFullYear() - 1);
+        break;
+      case "3Y":
+        thresholdDate = new Date(now);
+        thresholdDate.setFullYear(now.getFullYear() - 3);
+        break;
+      case "5Y":
+        thresholdDate = new Date(now);
+        thresholdDate.setFullYear(now.getFullYear() - 5);
+        break;
+      default: // "Max"
+        thresholdDate = new Date(0);
+    }
+
+    return history?.filter((item) => new Date(item.time) >= thresholdDate);
+  }
+
+  function plotData() {
+    // 1) filter & parse each symbol’s data into [timestamp, close] pairs
+    const parsedData = {};
+    for (const [symbol, series] of Object.entries(rawData)) {
+      parsedData[symbol] = filterDataByTimePeriod(series).map((item) => {
+        const d = new Date(item.time);
+        return [
+          Date.UTC(
+            d.getUTCFullYear(),
+            d.getUTCMonth(),
+            d.getUTCDate(),
+            d.getUTCHours(),
+            d.getUTCMinutes(),
+          ),
+          item.close,
+        ];
+      });
+    }
+
+    // 2) compute global min/max for padding
+    let globalMin = Infinity,
+      globalMax = -Infinity;
+    Object.values(parsedData).forEach((arr) =>
+      arr.forEach(([_, close]) => {
+        if (close < globalMin) globalMin = close;
+        if (close > globalMax) globalMax = close;
+      }),
+    );
+    const padding = 0.015;
+    const yMin = globalMin * (1 - padding) || null;
+    const yMax = globalMax * (1 + padding) || null;
+
+    // 3) build series entries
+    const series = Object.entries(parsedData).map(([symbol, data]) => ({
+      name: symbol,
+      type: "area",
+      data,
+      color: symbol === "AMD" ? "#4681f4" : "#f44e12", // customize per-symbol
+      lineWidth: 1.5,
+      marker: { enabled: false },
+      fillColor: {
+        linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+        stops: [
+          [0, "rgba(70,129,244,0.5)"],
+          [1, "rgba(70,129,244,0.001)"],
+        ],
+      },
+    }));
+
+    // 4) return the full options object
+    return {
+      chart: {
+        backgroundColor: mode === "light" ? "#fff" : "#09090B",
+        animation: false,
+        height: 360,
+        events: {
+          load() {
+            const chart = this;
+            let touching = false;
+            chart.container.addEventListener(
+              "touchstart",
+              () => (touching = true),
+            );
+            chart.container.addEventListener("touchend", () => {
+              touching = false;
+              chart.tooltip.hide();
+            });
+            chart.container.addEventListener("touchcancel", () => {
+              touching = false;
+              chart.tooltip.hide();
+            });
+          },
+        },
+      },
+      credits: { enabled: false },
+      title: {
+        text: `<h3 class="mt-3 mb-1"></h3>`,
+        useHTML: true,
+        style: { color: mode === "light" ? "black" : "white" },
+      },
+      tooltip: {
+        shared: true,
+        useHTML: true,
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        borderColor: "rgba(255, 255, 255, 0.2)",
+        borderWidth: 1,
+        borderRadius: 4,
+        style: {
+          color: mode === "light" ? "black" : "white",
+          fontSize: "16px",
+          padding: "10px",
+        },
+        formatter() {
+          const date = new Date(this.x);
+          const dateStr = date.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            timeZone: "UTC",
+          });
+          let html = this.points
+            .map(
+              (p) =>
+                `<span class="text-white text-[1rem] font-[501]">${p.series.name}: ${p.y}</span><br>`,
+            )
+            .join("");
+          html += `<span class="text-white m-auto text-sm font-normal">${dateStr}</span><br>`;
+          return html;
+        },
+      },
+      xAxis: {
+        type: "datetime",
+        tickLength: 0,
+        crosshair: {
+          color: mode === "light" ? "black" : "white",
+          width: 1,
+          dashStyle: "Solid",
+        },
+        labels: {
+          style: { color: mode === "light" ? "black" : "white" },
+          distance: 10,
+          formatter() {
+            const d = new Date(this.value);
+            return `<span class="text-xs">${d.toLocaleDateString("en-US", {
+              year: "2-digit",
+              month: "short",
+              timeZone: "UTC",
+            })}</span>`;
+          },
+        },
+        tickPositioner() {
+          const { min, max } = this.getExtremes();
+          const ticks = [];
+          const count = screenWidth < 640 ? 2 : 5;
+          const interval = Math.floor((max - min) / count);
+          for (let i = 0; i <= count; i++) {
+            ticks.push(min + i * interval);
+          }
+          return ticks;
+        },
+      },
+      yAxis: {
+        min: yMin,
+        max: yMax,
+        startOnTick: false,
+        endOnTick: false,
+        gridLineWidth: 1,
+        gridLineColor: mode === "light" ? "#e5e7eb" : "#111827",
+        title: { text: null },
+        labels: { style: { color: mode === "light" ? "black" : "white" } },
+        opposite: true,
+      },
+      plotOptions: {
+        series: {
+          animation: false,
+          marker: { enabled: false },
+          states: { hover: { enabled: false } },
+        },
+      },
+      legend: { enabled: false },
+      series,
+    };
+  }
+
   onMount(async () => {
     try {
       const savedData = localStorage?.getItem("compare-stocks");
@@ -128,6 +357,12 @@
       }
     } catch (e) {
       console.log(e);
+    }
+
+    if (!downloadWorker) {
+      const DownloadWorker = await import("./workers/downloadWorker?worker");
+      downloadWorker = new DownloadWorker.default();
+      downloadWorker.onmessage = handleDownloadMessage;
     }
   });
 </script>
@@ -154,7 +389,18 @@
       >
         <main class="w-full">
           <div class="mb-6 border-[#2C6288] dark:border-white border-b-[2px]">
-            <h1 class="mb-1 text-2xl sm:text-3xl font-bold">Compare Stocks</h1>
+            <h1 class="mb-1 text-2xl sm:text-3xl font-bold">
+              {tickerList?.length === 0
+                ? "Compare Stocks"
+                : tickerList.length === 1
+                  ? `Compare Stocks: ${tickerList[0]}`
+                  : tickerList.length === 2
+                    ? `Compare Stocks: ${tickerList[0]} vs ${tickerList[1]}`
+                    : tickerList.length === 3
+                      ? `${tickerList[0]} vs ${tickerList[1]} vs ${tickerList[2]}`
+                      : // if 4 or more, compare the first four
+                        tickerList.slice(0, -1).join(" vs ")}
+            </h1>
           </div>
 
           <div class="mt-4">
@@ -194,7 +440,7 @@
                       disabled={tickerList?.length > 10 ? true : false}
                       class="{tickerList?.length > 10
                         ? 'cursor-not-allowed'
-                        : 'cursor-pointer'} text-sm controls-input shadow-sm focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-3 py-2 pl-8 xs:pl-10 grow w-full "
+                        : 'cursor-pointer'} text-sm sm:text-[1rem] controls-input shadow-sm focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-3 py-2 pl-8 xs:pl-10 grow w-full "
                       placeholder="Add new stock..."
                       aria-label="Add new stock..."
                     />
@@ -247,15 +493,17 @@
                 </Combobox.Root>
 
                 <div
-                  class="order-last relative inline-block text-left cursor-pointer mt-3 sm:mt-0 sm:ml-3 shadow-sm"
+                  class="order-last w-full sm:w-fit relative inline-block text-left cursor-pointer mt-3 sm:mt-0 sm:ml-3 shadow-sm"
                 >
                   <DropdownMenu.Root>
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
+                        class="w-full min-w-40 border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                       >
-                        <span class="truncate">{selectedPlotCategory}</span>
+                        <span class="truncate text-sm sm:text-[1rem]"
+                          >{selectedPlotCategory?.name}</span
+                        >
                         <svg
                           class="-mr-1 ml-3 h-5 w-5 xs:ml-2 inline-block"
                           viewBox="0 0 20 20"
@@ -272,21 +520,15 @@
                       </Button>
                     </DropdownMenu.Trigger>
                     <DropdownMenu.Content
-                      class="w-56 h-fit max-h-72 overflow-y-auto scroller"
+                      class="w-full max-w-80   sm:w-56 h-fit max-h-72 overflow-y-auto scroller"
                     >
-                      <DropdownMenu.Label
-                        class="text-muted dark:text-gray-400 font-normal"
-                      >
-                        Select Strategy
-                      </DropdownMenu.Label>
-                      <DropdownMenu.Separator />
                       <DropdownMenu.Group>
-                        {#each prebuiltStrategy as strategy}
+                        {#each categoryList as item}
                           <DropdownMenu.Item
-                            on:click={() => changeCategory(strategy)}
+                            on:click={() => changeCategory(item)}
                             class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                           >
-                            {strategy.name}
+                            {item?.name}
                           </DropdownMenu.Item>
                         {/each}
                       </DropdownMenu.Group>
@@ -297,7 +539,7 @@
               <div class="w-full">
                 {#each tickerList as t, i}
                   <span
-                    class="inline-flex items-center gap-x-2 mb-1.5 sm:mt-0 mr-1 px-1 py-1 text-xs font-semibold rounded border-1 border-l-4"
+                    class="shadow-sm inline-flex items-center gap-x-2 mb-1.5 sm:mt-0 mr-2 px-1 py-1 text-sm font-semibold rounded border-1 border-l-4 border-gray-300 dark:border-gray-600"
                     style="border-left-color: {colorPairs[
                       i % colorPairs?.length
                     ][$mode ? 'dark' : 'light']}"
@@ -331,6 +573,43 @@
               </div>
             </div>
           </div>
+
+          {#if tickerList?.length > 0}
+            {#if configGraph}
+              <div class="relative">
+                <div
+                  class="hidden sm:flex justify-start space-x-2 w-full ml-2 absolute top-3.5 z-10"
+                >
+                  {#each ["1M", "3M", "YTD", "1Y", "3Y", "5Y", "Max"] as item}
+                    <label
+                      on:click={() => (selectedPlotPeriod = item)}
+                      class="px-3 py-1 {selectedPlotPeriod === item
+                        ? 'bg-gray-300 dark:bg-white text-muted'
+                        : 'text-muted dark:text-white bg-gray-100 dark:bg-table text-opacity-[0.6]'} text-xs border border-gray-200 dark:border-gray-700 transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-[2px] cursor-pointer"
+                    >
+                      {item}
+                    </label>
+                  {/each}
+                </div>
+              </div>
+              <div
+                class="border border-gray-300 dark:border-gray-800 rounded w-full"
+                use:highcharts={configGraph}
+              ></div>
+            {/if}
+          {:else}
+            <div
+              class="mt-3 rounded border border-gray-200 dark:border-gray-600 bg-gray-100 dark:bg-[#2A2E39] xs:mt-4 md:mt-6"
+            >
+              <div
+                class="flex h-[300px] w-full items-center justify-center overflow-y-hidden rounded px-8 bp:h-[350px] md:h-[400px] lg:h-[500px]"
+              >
+                <div class="text-center text-xl font-semibold sm:text-2xl">
+                  Add a symbol to get started
+                </div>
+              </div>
+            </div>
+          {/if}
         </main>
       </div>
     </div>
