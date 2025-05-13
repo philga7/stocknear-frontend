@@ -29,7 +29,7 @@
   let configReturn = null;
   let downloadWorker: Worker | undefined;
 
-  let selectedPlotPeriod = "Max";
+  let selectedPlotPeriod = "3Y";
 
   let selectedPlotCategory = { name: "Stock Price", value: "price" };
 
