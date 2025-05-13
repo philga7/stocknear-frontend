@@ -5,7 +5,6 @@
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
   import { abbreviateNumber } from "$lib/utils";
   import { onMount } from "svelte";
-  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   export let data;
 
@@ -216,10 +215,6 @@
                 </span>
               </a>
             </div>
-          {/if}
-
-          {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
-            <SquareAd />
           {/if}
 
           <div

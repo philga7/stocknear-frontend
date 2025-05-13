@@ -3,7 +3,6 @@
   import Table from "$lib/components/Table/Table.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import SEO from "$lib/components/SEO.svelte";
-  import HorizontalAd from "$lib/components/Ads/HorizontalAd.svelte";
 
   import defaultAvatar from "$lib/images/hedge-fund-avatar.png";
 
@@ -53,9 +52,6 @@
 <section
   class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pt-5 px-4 lg:px-3 pb-40"
 >
-  {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
-    <HorizontalAd />
-  {/if}
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
       <li>
@@ -241,10 +237,6 @@
       </div>
     </div>
   </div>
-
-  {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
-    <HorizontalAd />
-  {/if}
 </section>
 
 <style>

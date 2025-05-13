@@ -2,8 +2,6 @@
   import ScrollToTop from "$lib/components/ScrollToTop.svelte";
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
   import { page } from "$app/stores";
-  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
-  import HorizontalAd from "$lib/components/Ads/HorizontalAd.svelte";
 
   export let data;
 
@@ -31,10 +29,6 @@
 <section
   class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pb-40 pt-5 px-4 lg:px-3 text-muted dark:text-white"
 >
-  {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
-    <HorizontalAd />
-  {/if}
-
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
       <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
@@ -93,10 +87,6 @@
                 </span>
               </a>
             </div>
-          {/if}
-
-          {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
-            <SquareAd />
           {/if}
 
           <div

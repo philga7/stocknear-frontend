@@ -10,7 +10,6 @@
   import { goto } from "$app/navigation";
   //import html2canvas from "html2canvas-pro";
   import Tutorial from "$lib/components/Tutorial.svelte";
-  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   export let data;
 

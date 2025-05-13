@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import SEO from "$lib/components/SEO.svelte";
-  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   export let data;
 

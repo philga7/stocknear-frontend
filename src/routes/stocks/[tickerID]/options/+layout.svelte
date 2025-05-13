@@ -2,7 +2,6 @@
   import { stockTicker } from "$lib/store";
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
   import { page } from "$app/stores";
-  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   export let data;
 
@@ -183,10 +182,6 @@
                 </span>
               </a>
             </div>
-          {/if}
-
-          {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
-            <SquareAd />
           {/if}
 
           <div

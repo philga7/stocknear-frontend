@@ -1,6 +1,5 @@
 <script lang="ts">
   import { stockTicker } from "$lib/store";
-  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
 
@@ -67,10 +66,6 @@
                 </span>
               </a>
             </div>
-          {/if}
-
-          {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
-            <SquareAd />
           {/if}
 
           <div

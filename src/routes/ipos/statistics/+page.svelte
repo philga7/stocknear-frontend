@@ -3,7 +3,7 @@
   import highcharts from "$lib/highcharts.ts";
   import { mode } from "mode-watcher";
   import IPOChart from "$lib/components/IPOChart.svelte";
-  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
+
   import { deferFunction } from "$lib/utils";
   import { browser } from "$app/environment";
   import { onMount } from "svelte";

@@ -8,8 +8,6 @@
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
   import SEO from "$lib/components/SEO.svelte";
-  import HorizontalAd from "$lib/components/Ads/HorizontalAd.svelte";
-  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   import { onMount } from "svelte";
   import { page } from "$app/stores";
@@ -309,10 +307,6 @@
 <section
   class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pt-5 px-4 lg:px-3 mb-20"
 >
-  {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
-    <HorizontalAd />
-  {/if}
-
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
       <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
@@ -816,9 +810,6 @@
         </main>
 
         <aside class="inline-block relative w-full lg:w-1/4 mt-3">
-          {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
-            <SquareAd />
-          {/if}
           <div
             class="w-full border border-gray-300 dark:border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >

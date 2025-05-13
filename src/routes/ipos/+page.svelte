@@ -1,7 +1,6 @@
 <script lang="ts">
   import SEO from "$lib/components/SEO.svelte";
   import Table from "$lib/components/Table/Table.svelte";
-  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   export let data;
 

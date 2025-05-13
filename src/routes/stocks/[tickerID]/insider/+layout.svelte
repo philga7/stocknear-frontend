@@ -1,6 +1,5 @@
 <script lang="ts">
   import { stockTicker } from "$lib/store";
-  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   import { page } from "$app/stores";
 
@@ -149,10 +148,6 @@
                 </span>
               </a>
             </div>
-          {/if}
-
-          {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
-            <SquareAd />
           {/if}
 
           {#if newsList?.length !== 0}

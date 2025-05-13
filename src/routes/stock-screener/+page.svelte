@@ -20,7 +20,6 @@
   import Infobox from "$lib/components/Infobox.svelte";
   import Input from "$lib/components/Input.svelte";
   import SEO from "$lib/components/SEO.svelte";
-  import HorizontalAd from "$lib/components/Ads/HorizontalAd.svelte";
 
   //const userConfirmation = confirm('Unsaved changes detected. Leaving now will discard your strategy. Continue?');
 
@@ -2630,10 +2629,6 @@ const handleKeyDown = (event) => {
 <section
   class="w-full max-w-3xl sm:max-w-(--breakpoint-xl) overflow-hidden min-h-screen pb-40 px-5"
 >
-  {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
-    <HorizontalAd />
-  {/if}
-
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
       <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>

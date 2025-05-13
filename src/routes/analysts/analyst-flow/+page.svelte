@@ -4,7 +4,6 @@
   import Infobox from "$lib/components/Infobox.svelte";
   import SEO from "$lib/components/SEO.svelte";
   import AnalystInfo from "$lib/components/AnalystInfo.svelte";
-  import HorizontalAd from "$lib/components/Ads/HorizontalAd.svelte";
 
   import { screenWidth } from "$lib/store";
   import { onMount } from "svelte";
@@ -126,10 +125,6 @@
 <section
   class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden min-h-screen pb-20 pt-5 px-4 lg:px-3"
 >
-  {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
-    <HorizontalAd />
-  {/if}
-
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
       <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>

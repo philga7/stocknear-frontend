@@ -1,7 +1,6 @@
 <script lang="ts">
   import { indexTicker } from "$lib/store";
   import { abbreviateNumber, sectorNavigation } from "$lib/utils";
-  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   export let data;
 

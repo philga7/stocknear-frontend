@@ -1,8 +1,6 @@
 <script lang="ts">
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
   import SEO from "$lib/components/SEO.svelte";
-  import HorizontalAd from "$lib/components/Ads/HorizontalAd.svelte";
-  import SquareAd from "$lib/components/Ads/SquareAd.svelte";
 
   export let data;
 </script>
@@ -16,10 +14,6 @@
 <section
   class="w-full max-w-3xl sm:max-w-[1400px] overflow-hidden px-4 lg:px-3 min-h-screen text-muted dark:text-white pb-20"
 >
-  {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
-    <HorizontalAd />
-  {/if}
-
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
       <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
@@ -132,9 +126,6 @@
               </span>
             </a>
           </div>
-          {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
-            <SquareAd />
-          {/if}
         </aside>
       </div>
     </div>

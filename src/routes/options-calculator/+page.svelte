@@ -10,7 +10,6 @@
   import Link from "lucide-svelte/icons/square-arrow-out-up-right";
   import Trash from "lucide-svelte/icons/trash";
   import { toast } from "svelte-sonner";
-  import HorizontalAd from "$lib/components/Ads/HorizontalAd.svelte";
 
   import { mode } from "mode-watcher";
   import highcharts from "$lib/highcharts.ts";
