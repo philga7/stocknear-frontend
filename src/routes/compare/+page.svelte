@@ -18,6 +18,7 @@
   export let data;
   let isLoaded = false;
   let configGraph = null;
+  let configReturn = null;
   let downloadWorker: Worker | undefined;
 
   let selectedPlotPeriod = "3Y";
@@ -61,6 +62,8 @@
     rawData = event?.data?.output;
     handleSave();
     configGraph = plotData() || null;
+    configReturn = plotReturn() || null;
+
     isLoaded = true;
   };
 
@@ -157,6 +160,14 @@
     }
   }
 
+  function changePlotPeriod(timePeriod) {
+    selectedPlotPeriod = timePeriod;
+    downloadWorker?.postMessage({
+      tickerList: tickerList,
+      category: selectedPlotCategory?.value,
+    });
+  }
+
   function filterDataByTimePeriod(history) {
     const now = new Date();
 
@@ -196,7 +207,12 @@
   function plotData() {
     // 1) filter & parse each symbol’s data into [timestamp, close] pairs
     const parsedData = {};
-    for (const [symbol, series] of Object.entries(rawData)) {
+
+    for (const [symbol, data] of Object.entries(rawData)) {
+      // Ensure `history` exists and is an array
+      const series = Array.isArray(data.history) ? data.history : [];
+
+      // Filter by the desired time period and map to [timestamp, close] pairs
       parsedData[symbol] = filterDataByTimePeriod(series).map((item) => {
         const d = new Date(item.time);
         return [
@@ -211,7 +227,6 @@
         ];
       });
     }
-
     // 2) compute global min/max for padding
     let globalMin = Infinity,
       globalMax = -Infinity;
@@ -279,7 +294,7 @@
         borderWidth: 1,
         borderRadius: 4,
         style: {
-          color: mode === "light" ? "black" : "white",
+          color: $mode === "light" ? "black" : "white",
           fontSize: "16px",
           padding: "10px",
         },
@@ -327,7 +342,7 @@
         tickPositioner() {
           const { min, max } = this.getExtremes();
           const ticks = [];
-          const count = screenWidth < 640 ? 2 : 5;
+          const count = $screenWidth < 640 ? 2 : 5;
           const interval = Math.floor((max - min) / count);
           for (let i = 0; i <= count; i++) {
             ticks.push(min + i * interval);
@@ -370,10 +385,129 @@
         symbolRadius: 0,
 
         itemStyle: {
-          color: mode === "light" ? "black" : "white",
+          color: $mode === "light" ? "black" : "white",
         },
       },
 
+      series,
+    };
+  }
+
+  function plotReturn() {
+    const parsedData = {};
+    for (const [symbol, series] of Object?.entries(rawData)) {
+      // Map each percentage to [index, value] (could be date-based if needed)
+      parsedData[symbol] = series?.changesPercentage;
+    }
+
+    // 2) build series entries
+    const series = Object.entries(parsedData)?.map(([symbol, data], index) => {
+      const pair = colorPairs[index % colorPairs?.length];
+
+      return {
+        name: symbol,
+        type: "column", // change to bar chart
+        data,
+        color: $mode === "light" ? pair?.light : pair?.dark,
+        borderRadius: 2,
+        pointPadding: 0.2,
+      };
+    });
+
+    // 3) return Highcharts options
+    return {
+      chart: {
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        animation: false,
+        height: 360,
+      },
+      credits: { enabled: false },
+      title: {
+        text: null,
+        useHTML: true,
+        style: { color: $mode === "light" ? "black" : "white" },
+      },
+      tooltip: {
+        useHTML: true,
+        shared: false,
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        borderColor: "rgba(255, 255, 255, 0.2)",
+        borderWidth: 1,
+        borderRadius: 4,
+        style: {
+          color: $mode === "light" ? "black" : "white",
+          fontSize: "16px",
+          padding: "10px",
+        },
+        formatter() {
+          return `
+          <span class="text-white text-[1rem] font-[501]">
+            ${this.series.name}: ${this.y}%
+          </span><br>
+          <span class="text-white text-sm font-normal">
+            Index: ${this.x}
+          </span>
+        `;
+        },
+      },
+      xAxis: {
+        categories: ["1 Month", "YTD", "1 Year", "5 Years", "Max"],
+        title: null,
+        labels: {
+          style: { color: $mode === "light" ? "black" : "white" },
+        },
+      },
+      yAxis: {
+        title: null,
+        opposite: true,
+        min: -100,
+        max: 100,
+        ttckPositions: [0, 50, 100],
+        labels: {
+          formatter() {
+            // only render labels for > 0
+            return this.value >= 0 ? this.value + "%" : null;
+          },
+          style: {
+            color: $mode === "light" ? "black" : "white",
+          },
+        },
+        gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
+        startOnTick: true,
+        endOnTick: true,
+      },
+
+      plotOptions: {
+        column: {
+          borderWidth: 0,
+          groupPadding: 0.1,
+        },
+        legendSymbol: "rectangle",
+        series: {
+          animation: false,
+          states: { hover: { enabled: false } },
+        },
+      },
+
+      legend: {
+        enabled: true,
+        align: "left", // left side
+        verticalAlign: "top", // top edge
+        layout: "horizontal",
+
+        // nudge in by 12px (≈ mt-3 / ml-3)
+        x: 0,
+        y: 12,
+
+        squareSymbol: false, // use our rectangle shape
+        symbolWidth: 20,
+        symbolHeight: 12,
+        symbolRadius: 0,
+
+        itemStyle: {
+          color: $mode === "light" ? "black" : "white",
+        },
+      },
       series,
     };
   }
@@ -581,7 +715,7 @@
                       i % colorPairs?.length
                     ][$mode ? 'dark' : 'light']}"
                   >
-                    {t}
+                    <span class="ml-1">{t}</span>
                     <button
                       type="button"
                       on:click={() => removeTicker(t)}
@@ -619,10 +753,10 @@
                 >
                   {#each ["1M", "3M", "YTD", "1Y", "3Y", "5Y", "Max"] as item}
                     <label
-                      on:click={() => (selectedPlotPeriod = item)}
+                      on:click={() => changePlotPeriod(item)}
                       class="px-2 sm:px-3 py-1 {selectedPlotPeriod === item
                         ? 'bg-gray-300 dark:bg-white text-muted'
-                        : 'text-muted dark:text-white bg-gray-100 dark:bg-table text-opacity-[0.6]'} text-xs border border-gray-200 dark:border-gray-700 transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-[2px] cursor-pointer"
+                        : 'text-muted dark:text-white bg-gray-100 dark:bg-table text-opacity-[0.6]'} text-xs border border-gray-200 dark:border-gray-700 font-semibold transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-[2px] cursor-pointer"
                     >
                       {item}
                     </label>
@@ -645,6 +779,55 @@
                       class="loading loading-spinner loading-md text-muted dark:text-gray-400"
                     ></span>
                   </label>
+                </div>
+              </div>
+            {/if}
+
+            {#if configReturn}
+              <h2 class="mt-8 mb-2 text-xl sm:text-2xl font-bold">
+                Average Return
+              </h2>
+              <div
+                class="border border-gray-300 dark:border-gray-800 rounded w-full"
+              >
+                <div class="" use:highcharts={configReturn}></div>
+
+                <div class="hidden px-4 pb-3 md:block">
+                  <table class="w-full">
+                    <thead
+                      ><tr
+                        class="border-b border-gray-300 dark:border-gray-800 text-left *:px-2 *:py-1 *:font-semibold"
+                        ><th class="text-left">Symbol</th> <th>1 Month</th>
+                        <th>Year-to-date</th>
+                        <th>1 Year</th> <th>5 Years</th>
+                        <th>Max</th></tr
+                      ></thead
+                    >
+                    <tbody>
+                      {#each tickerList as ticker, index}
+                        <tr
+                          class="border-b border-gray-300 dark:border-gray-800 text-left *:px-2 *:py-1 last:border-0 hover:bg-table-hover"
+                          ><td class="flex items-center gap-x-1"
+                            ><div
+                              style="background-color: {$mode === 'light'
+                                ? colorPairs[index % colorPairs?.length]?.light
+                                : colorPairs[index % colorPairs?.length]?.dark}"
+                              class="size-4 rounded-sm"
+                            ></div>
+                            <a href={`/stocks/${ticker}/`} class="font-semibold"
+                              >{ticker}</a
+                            ></td
+                          >
+
+                          <td>{rawData[ticker]?.changesPercentage[0]}%</td>
+                          <td>{rawData[ticker]?.changesPercentage[1]}%</td>
+                          <td>{rawData[ticker]?.changesPercentage[2]}%</td>
+                          <td>{rawData[ticker]?.changesPercentage[3]}%</td>
+                          <td>{rawData[ticker]?.changesPercentage[4]}%</td>
+                        </tr>
+                      {/each}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             {/if}
