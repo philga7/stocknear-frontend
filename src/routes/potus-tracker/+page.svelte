@@ -956,10 +956,6 @@
               </div>
             {/if}
 
-            {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
-              <SquareAd />
-            {/if}
-
             <div
               class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
             >

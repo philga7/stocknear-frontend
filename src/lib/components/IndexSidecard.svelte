@@ -29,9 +29,7 @@
   </p>
 </div>
 
-{#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
-  <SquareAd />
-{/if}
+
 
 {#if topSectorList?.length !== 0}
   <div

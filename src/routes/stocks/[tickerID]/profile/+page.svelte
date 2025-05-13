@@ -166,10 +166,6 @@ ${paragraphs.join("\n")}
               </table>
             </div>
 
-            {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
-              <SquareAd />
-            {/if}
-
             <h2 class="mt-6 xs:mt-8 font-bold text-2xl mb-2">
               Contact Details
             </h2>

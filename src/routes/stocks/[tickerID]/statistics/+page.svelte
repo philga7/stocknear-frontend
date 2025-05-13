@@ -1163,10 +1163,6 @@
                 >
               </table>
             </div>
-
-            {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
-              <SquareAd />
-            {/if}
           </div>
         </div>
       {:else}
