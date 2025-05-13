@@ -41,24 +41,21 @@
       <Table.Root class="overflow-x-auto w-full">
         <Table.Header>
           <Table.Row>
-            <Table.Head
-              class=" text-left sm:text-[1rem] font-bold dark:font-semibold"
+            <Table.Head class=" text-left text-sm font-bold dark:font-semibold"
               >Symbol</Table.Head
             >
             <Table.Head
-              class="text-right table-cell sm:text-[1rem] font-bold dark:font-semibold"
+              class="text-right table-cell text-sm font-bold dark:font-semibold"
               >Premium</Table.Head
             >
             <Table.Head
-              class="text-right table-cell sm:text-[1rem] font-bold dark:font-semibold"
+              class="text-right table-cell text-sm font-bold dark:font-semibold"
               >Sentiment</Table.Head
             >
-            <Table.Head
-              class=" text-right sm:text-[1rem] font-bold dark:font-semibold"
+            <Table.Head class=" text-right text-sm font-bold dark:font-semibold"
               >Strike Price</Table.Head
             >
-            <Table.Head
-              class=" text-right sm:text-[1rem] font-bold dark:font-semibold"
+            <Table.Head class=" text-right text-sm font-bold dark:font-semibold"
               >OI</Table.Head
             >
           </Table.Row>

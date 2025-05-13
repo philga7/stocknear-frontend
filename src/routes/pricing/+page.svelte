@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
 
   import SEO from "$lib/components/SEO.svelte";
-  import Discount from "$lib/components/Discount.svelte";
+  //import Discount from "$lib/components/Discount.svelte";
   export let data;
   export let form;
 
@@ -25,26 +25,19 @@
   async function purchasePlan(subscriptionType: string = "") {
     if (data?.user) {
       let subId = "";
-      let value = 0;
 
       if (subscriptionType === "lifeTime") {
         subId = import.meta.env.VITE_LEMON_SQUEEZY_LIFE_TIME_ACCESS_ID;
-        value = 999;
       } else if (mode && subscriptionType === "plus") {
         subId = import.meta.env.VITE_LEMON_SQUEEZY_ANNUAL_ID_PLUS;
-        value = 90;
       } else if (!mode && subscriptionType === "plus") {
         subId = import.meta.env.VITE_LEMON_SQUEEZY_MONTHLY_ID_PLUS;
-        value = 10;
       } else if (mode && subscriptionType === "pro") {
         subId = import.meta.env.VITE_LEMON_SQUEEZY_ANNUAL_ID_PRO;
-        value = 180;
       } else if (!mode && subscriptionType === "pro") {
         subId = import.meta.env.VITE_LEMON_SQUEEZY_MONTHLY_ID_PRO;
-        value = 20;
       } else {
         subId = import.meta.env.VITE_LEMON_SQUEEZY_ANNUAL_ID_PRO;
-        value = 180;
       }
 
       const isDarkMode =
@@ -137,7 +130,7 @@
       </h1>
     </div>
 
-    <Discount />
+    <!--<Discount />-->
 
     <div class="flex flex-row items-center justify-center mb-5 sm:mb-0">
       <div class="flex flex-row items-center ml-auto">
