@@ -756,6 +756,21 @@
                             class="w-full dark:bg-[#18181B]"
                           >
                             <a
+                              href="/compare"
+                              class="text-start w-full text-[1rem] text-muted dark:text-white ml-4 mt-4"
+                              >Compare Tool</a
+                            >
+                          </Button>
+                        </div>
+                      </Sheet.Close>
+                      <Sheet.Close asChild let:builder>
+                        <div class="flex flex-col items-start">
+                          <Button
+                            builders={[builder]}
+                            type="submit"
+                            class="w-full dark:bg-[#18181B]"
+                          >
+                            <a
                               href="/options-calculator"
                               class="text-start w-full text-[1rem] text-muted dark:text-white ml-4 mt-4"
                               >Options Calculator</a
@@ -1281,6 +1296,12 @@
                         class="border-l border-gray-500 ml-2 mt-5"
                       >
                         <div class="flex flex-col items-start">
+                          <a
+                            href="/compare"
+                            class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
+                            >Compare Tool</a
+                          >
+
                           <a
                             href="/options-calculator"
                             class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
