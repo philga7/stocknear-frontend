@@ -91,7 +91,7 @@
                 {item?.strike_price}
               </Table.Cell>
               <Table.Cell
-                class="text-right md:table.-cell xl:table.-column text-sm sm:text-[1rem] text-white"
+                class="text-right md:table.-cell xl:table.-column text-sm sm:text-[1rem] "
               >
                 {item?.open_interest
                   ? Number(item?.open_interest)?.toLocaleString("en-US")

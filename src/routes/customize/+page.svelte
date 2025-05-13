@@ -281,10 +281,13 @@
               <div class="flex-1 rounded shadow-sm">
                 <div class="flex justify-between items-center mb-4">
                   <h2 class="text-xl font-bold">Available Widgets</h2>
-                  <span
-                    class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm"
-                    >{availableWidgets?.length}</span
-                  >
+                  <div class="relative flex-shrink-0">
+                    <span
+                      class="bg-blue-100 dark:bg-[#2A2E39] dark:text-white text-blue-800 w-6 h-6 flex items-center justify-center rounded-full text-sm"
+                    >
+                      {availableWidgets?.length}
+                    </span>
+                  </div>
                 </div>
 
                 <div
@@ -329,7 +332,7 @@
 
                         <div>
                           <h3 class="font-medium">{item.name}</h3>
-                          <p class="text-gray-500 dark:text-gray-300 text-sm">
+                          <p class="text-gray-600 dark:text-gray-300 text-sm">
                             {item.description}
                           </p>
                         </div>
@@ -343,10 +346,13 @@
               <div class="flex-1 rounded shadow-sm">
                 <div class="flex justify-between items-center mb-4">
                   <h2 class="text-xl font-bold">Selected Widgets</h2>
-                  <span
-                    class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm"
-                    >{selectedWidgets.length}</span
-                  >
+                  <div class="relative flex-shrink-0">
+                    <span
+                      class="bg-blue-100 dark:bg-[#2A2E39] dark:text-white text-blue-800 w-6 h-6 flex items-center justify-center rounded-full text-sm"
+                    >
+                      {selectedWidgets?.length}
+                    </span>
+                  </div>
                 </div>
 
                 <div
@@ -357,7 +363,7 @@
                   }}
                   on:consider={(e) => handleDndConsider(e, "selected")}
                   on:finalize={(e) => handleDndFinalize(e, "selected")}
-                  class="space-y-4 min-h-[10rem] border-2 border-dashed border-gray-200 dark:border-gray-800 rounded p-4"
+                  class="space-y-4 min-h-[10rem] border-2 border-dashed border-gray-400 dark:border-gray-800 rounded p-4"
                   class:flex={selectedWidgets.length === 0}
                   class:items-center={selectedWidgets.length === 0}
                   class:justify-center={selectedWidgets.length === 0}
@@ -396,7 +402,7 @@
                           </div>
                           <div>
                             <h3 class="font-medium">{item.name}</h3>
-                            <p class="text-gray-500 dark:text-gray-300 text-sm">
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">
                               {item.description}
                             </p>
                           </div>

@@ -78,7 +78,7 @@
               </Table.Cell>
 
               <Table.Cell
-                class="text-right md:table.-cell xl:table.-column text-sm sm:text-[1rem] text-white"
+                class="text-right md:table.-cell xl:table.-column text-sm sm:text-[1rem]"
               >
                 {item?.sizeAvgVolRatio ? item?.sizeAvgVolRatio + "%" : "n/a"}
               </Table.Cell>
