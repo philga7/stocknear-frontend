@@ -17,6 +17,7 @@
 
   export let data;
   export let rawData;
+  export let title = null;
 
   export let excludedRules = new Set([
     "volume",
@@ -64,7 +65,7 @@
     { name: "Price", rule: "price", type: "float" },
     { name: "% Change", rule: "changesPercentage", type: "percentSign" },
     { name: "EPS", rule: "eps", type: "float" },
-    { name: "PE", rule: "pe", type: "float" },
+    { name: "PE Ratio", rule: "priceToEarningsRatio", type: "float" },
     { name: "PB Ratio", rule: "priceToBookRatio", type: "float" },
     { name: "PS Ratio", rule: "priceToSalesRatio", type: "float" },
     { name: "AI Score", rule: "score", type: "rating" },
@@ -697,10 +698,16 @@
 <!-- Content area -->
 
 <div
-  class="flex flex-row items-end justify-end w-fit ml-auto mt-5 text-muted dark:text-white"
+  class="flex flex-row items-center justify-between w-full mt-5 text-muted dark:text-white"
 >
-  <DownloadData {data} {rawData} title={data?.getParams ?? "data"} />
-
+  {#if title}
+    <h2 class="text-xl sm:text-2xl font-bold">
+      {title}
+    </h2>
+  {/if}
+  <div class="ml-auto">
+    <DownloadData {data} {rawData} title={data?.getParams ?? "data"} />
+  </div>
   <DropdownMenu.Root>
     <DropdownMenu.Trigger asChild let:builder>
       <Button

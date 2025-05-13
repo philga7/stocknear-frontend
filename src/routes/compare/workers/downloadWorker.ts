@@ -43,7 +43,6 @@ onmessage = async (event) => {
   const { tickerList, category } = event?.data || {};
   
   const output = await fetchData(tickerList, category);
-  
   postMessage({ message: "success", output });
 };
 

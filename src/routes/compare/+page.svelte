@@ -5,6 +5,7 @@
   import { screenWidth } from "$lib/store";
   import { Combobox } from "bits-ui";
   import { toast } from "svelte-sonner";
+  import Table from "$lib/components/Table/Table.svelte";
 
   import { mode } from "mode-watcher";
   import highcharts from "$lib/highcharts.ts";
@@ -12,6 +13,16 @@
   import SEO from "$lib/components/SEO.svelte";
 
   export let data;
+  const defaultList = [
+    { name: "Market Cap", rule: "marketCap" },
+    { name: "Price", rule: "price" },
+    { name: "% Change", rule: "changesPercentage" },
+    { name: "Volume", rule: "volume" },
+    { name: "PE Ratio", rule: "priceToEarningsRatio" },
+    { name: "Revenue", rule: "revenue" },
+    { name: "Gross Profit", rule: "grossProfit" },
+  ];
+
   let isLoaded = false;
   let configGraph = null;
   let configReturn = null;
@@ -52,11 +63,15 @@
   let timeoutId: ReturnType<typeof setTimeout>;
   let inputValue = "";
   let touchedInput = false;
-  let rawData = [];
+  let rawGraphData = [];
+  let rawTableData = [];
 
   const handleDownloadMessage = async (event) => {
     isLoaded = false;
-    rawData = event?.data?.output;
+    const output = event?.data?.output;
+    rawGraphData = output?.graph;
+    rawTableData = output?.table;
+
     handleSave();
     configGraph = plotData() || null;
     configReturn = plotReturn() || null;
@@ -205,7 +220,7 @@
     // 1) filter & parse each symbol’s data into [timestamp, close] pairs
     const parsedData = {};
 
-    for (const [symbol, data] of Object.entries(rawData)) {
+    for (const [symbol, data] of Object.entries(rawGraphData)) {
       // Ensure `history` exists and is an array
       const series = Array.isArray(data.history) ? data.history : [];
 
@@ -389,7 +404,7 @@
 
   function plotReturn() {
     const parsedData = {};
-    for (const [symbol, series] of Object?.entries(rawData)) {
+    for (const [symbol, series] of Object?.entries(rawGraphData)) {
       // Map each percentage to [index, value] (could be date-based if needed)
       parsedData[symbol] = series?.changesPercentage;
     }
@@ -777,6 +792,15 @@
               </div>
             {/if}
 
+            {#if rawTableData?.length > 0 && isLoaded}
+              <Table
+                title="Comparison"
+                {data}
+                rawData={rawTableData}
+                {defaultList}
+              />
+            {/if}
+
             {#if configReturn}
               <h2 class="mt-8 mb-2 text-xl sm:text-2xl font-bold">
                 Average Return
@@ -817,7 +841,7 @@
                             </a>
                           </td>
 
-                          {#each rawData[ticker]?.changesPercentage as pct}
+                          {#each rawGraphData[ticker]?.changesPercentage as pct}
                             <td>{pct ? pct + "%" : "-"}</td>
                           {/each}
                         </tr>
