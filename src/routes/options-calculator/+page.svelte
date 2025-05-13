@@ -805,7 +805,7 @@
             <div class="mt-4">
               <div
                 class="{$screenWidth < 640 && $screenWidth
-                  ? 'grid grid-cols-2'
+                  ? 'grid grid-cols-1'
                   : 'flex flex-row'} items-center w-full mt-3 mb-3"
               >
                 <Combobox.Root
@@ -832,32 +832,35 @@
                         ></path>
                       </svg>
                     </div>
+
                     <Combobox.Input
                       on:input={search}
-                      class="text-sm  controls-input shadow-sm focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-3 py-2 pl-8 xs:pl-10 grow w-full w-full sm:max-w-56"
+                      class="text-sm  controls-input shadow-sm focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-3 py-2 pl-8 xs:pl-10 grow w-full "
                       placeholder="Add new stock..."
                       aria-label="Add new stock..."
                     />
                   </div>
                   <Combobox.Content
-                    class=" z-10 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-default px-1 py-3 shadow-sm outline-hidden"
+                    class="z-10 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-default px-1 py-2 shadow-sm outline-hidden"
                     sideOffset={8}
                   >
                     {#if inputValue?.length !== 0 && inputValue !== selectedTicker}
                       {#each searchBarData as searchItem}
                         <Combobox.Item
-                          class="cursor-pointer border-b border-gray-300 dark:border-gray-500 last:border-none flex h-fit w-auto select-none items-center rounded-button py-1 px-2  text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-200 dark:data-highlighted:bg-primary"
+                          class="py-2.5 cursor-pointer border-b border-gray-300 dark:border-gray-500 last:border-none flex h-fit w-auto select-none items-center rounded-button  px-2  text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-200 dark:data-highlighted:bg-primary"
                           value={searchItem?.symbol}
                           label={searchItem?.symbol}
                           on:click={(e) => changeTicker(searchItem)}
                         >
-                          <div class="flex flex-col items-start">
+                          <div
+                            class="flex flex-col sm:flex-row items-start sm:items-center"
+                          >
                             <span
                               class="text-sm text-blue-700 dark:text-blue-400"
                               >{searchItem?.symbol}</span
                             >
                             <span
-                              class="text-xs sm:text-sm text-muted dark:text-white"
+                              class="ml-0 sm:ml-2 text-xs sm:text-sm text-muted dark:text-white"
                               >{searchItem?.name}</span
                             >
                           </div>
@@ -874,7 +877,9 @@
                         class="cursor-pointer border-b border-gray-300 dark:border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-1.5 pl-5 pr-1.5 text-sm capitalize outline-hidden"
                       >
                         <span class=" text-sm text-muted dark:text-white">
-                          No results found
+                          {inputValue?.length > 0
+                            ? "No results found"
+                            : "Start searching..."}
                         </span>
                       </Combobox.Item>
                     {/if}
@@ -884,7 +889,7 @@
                 <button
                   type="button"
                   on:click={() => handleAddOptionLeg()}
-                  class="cursor-pointer ml-3 align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm font-semibold shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
+                  class="cursor-pointer mt-3 sm:mt-0 sm:ml-3 align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
                 >
                   <svg
                     class="-ml-0.5 h-5 w-5 text-gray-600 dark:text-gray-300"
@@ -903,34 +908,29 @@
                 <button
                   type="button"
                   on:click={handleSaveStrategy}
-                  class="cursor-pointer mt-3 sm:mt-0 sm:ml-3 align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm font-semibold shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
+                  class="cursor-pointer mt-3 sm:mt-0 sm:ml-3 align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
                 >
                   <svg
+                    class="w-3.5 h-3.5 inline-block cursor-pointer shrink-0"
                     xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-4 h-4"
+                    viewBox="0 0 16 16"
+                    ><path
+                      fill="currentColor"
+                      d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327l4.898.696c.441.062.612.636.282.95l-3.522 3.356l.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
+                    /></svg
                   >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
-                    ></path>
-                  </svg>
                   Save Trade
                 </button>
                 <div
-                  class="order-last relative inline-block text-left ml-3 shadow-sm mt-3 sm:mt-0"
+                  class="order-last relative inline-block text-left cursor-pointer mt-3 sm:mt-0 sm:ml-3 shadow-sm"
                 >
                   <DropdownMenu.Root>
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                        class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                       >
-                        <span class="truncate">{selectedStrategy}</span>
+                        <span class="truncate">Custom Strategy</span>
                         <svg
                           class="-mr-1 ml-3 h-5 w-5 xs:ml-2 inline-block"
                           viewBox="0 0 20 20"
@@ -1050,7 +1050,7 @@
                         <td class="px-4 whitespace-nowrap py-2">
                           <label
                             on:click={() => handleAction(index)}
-                            class="badge px-2 select-none rounded-md {item?.action ===
+                            class="badge px-2 select-none rounded {item?.action ===
                             'Buy'
                               ? 'bg-green-100 text-green-800 dark:bg-green-300 dark:text-muted'
                               : 'bg-red-100 text-red-800 dark:bg-red-300 dark:text-muted'} font-semibold cursor-pointer"
@@ -1071,7 +1071,7 @@
                             <DropdownMenu.Trigger asChild let:builder>
                               <Button
                                 builders={[builder]}
-                                class="mb-1 border border-gray-300 dark:border-none  bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
+                                class="mb-1 border border-gray-300 dark:border-none  bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded truncate"
                               >
                                 <span class="truncate text-sm"
                                   >{formatDate(userStrategy[index]?.date)}</span
@@ -1116,7 +1116,7 @@
                             <DropdownMenu.Trigger asChild let:builder>
                               <Button
                                 builders={[builder]}
-                                class="mb-1 border border-gray-300 dark:border-none  bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
+                                class="mb-1 border border-gray-300 dark:border-none  bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded truncate"
                               >
                                 <span class="truncate text-sm"
                                   >{userStrategy[index]?.strike}</span
@@ -1160,7 +1160,7 @@
                         <td class="px-4 whitespace-nowrap py-2">
                           <label
                             on:click={() => handleOptionType(index)}
-                            class="select-none badge px-2 rounded-md bg-blue-100 text-blue-800 dark:bg-blue-300 dark:text-muted font-semibold cursor-pointer"
+                            class="select-none badge px-2 rounded bg-blue-100 text-blue-800 dark:bg-blue-300 dark:text-muted font-semibold cursor-pointer"
                             >{item?.optionType}</label
                           >
                         </td>
@@ -1203,8 +1203,14 @@
               </div>
 
               {#if isLoaded && config}
+                <h2
+                  class="mt-5 mb-1 text-lg sm:text-xl font-bold text-gray-800 dark:text-white"
+                >
+                  Profit/Loss Chart
+                </h2>
+
                 <div
-                  class="shadow-sm mt-5 border border-gray-300 dark:border-gray-800 rounded"
+                  class="shadow-sm border border-gray-300 dark:border-gray-800 rounded"
                   use:highcharts={config}
                 ></div>
               {:else}
@@ -1224,15 +1230,15 @@
               {/if}
 
               <div class="mt-10">
-                <h1
-                  class="text-2xl font-bold text-gray-800 dark:text-white mb-6"
+                <h2
+                  class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white mb-3"
                 >
                   Trade Information
-                </h1>
+                </h2>
 
                 <!-- Trade Information Card -->
                 <div
-                  class="border border-gray-300 dark:border-gray-800 rounded-lg p-4 mb-6 shadow-sm max-w-sm"
+                  class="border border-gray-300 dark:border-gray-800 rounded-lg p-3 sm:p-4 mb-6 shadow-sm max-w-sm"
                 >
                   {#each userStrategy as item, index}
                     <div>
@@ -1254,7 +1260,7 @@
 
                 <!-- Stock Section -->
                 <h2
-                  class="text-xl font-bold text-gray-800 dark:text-white mb-4"
+                  class="text-lg sm:text-xl font-bold text-gray-800 dark:text-white mb-4"
                 >
                   Stock
                 </h2>
@@ -1295,7 +1301,7 @@
 
                 <!-- Trade Details Section -->
                 <h2
-                  class="text-xl font-bold text-gray-800 dark:text-white mb-4"
+                  class="text-lg sm:text-xl font-bold text-gray-800 dark:text-white mb-4"
                 >
                   Trade Details
                 </h2>
