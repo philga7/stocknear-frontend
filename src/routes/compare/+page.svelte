@@ -63,14 +63,14 @@
   let timeoutId: ReturnType<typeof setTimeout>;
   let inputValue = "";
   let touchedInput = false;
-  let rawGraphData = [];
+  let rawGraphData = {};
   let rawTableData = [];
 
   const handleDownloadMessage = async (event) => {
     isLoaded = false;
     const output = event?.data?.output;
     rawGraphData = output?.graph;
-    rawTableData = output?.table;
+    rawTableData = [...output?.table];
 
     handleSave();
     configGraph = plotData() || null;
@@ -220,13 +220,13 @@
     // 1) filter & parse each symbol’s data into [timestamp, close] pairs
     const parsedData = {};
 
-    for (const [symbol, data] of Object.entries(rawGraphData)) {
+    for (const [symbol, data] of Object?.entries(rawGraphData)) {
       // Ensure `history` exists and is an array
-      const series = Array.isArray(data.history) ? data.history : [];
+      const series = Array?.isArray(data?.history) ? data?.history : [];
 
       // Filter by the desired time period and map to [timestamp, close] pairs
-      parsedData[symbol] = filterDataByTimePeriod(series).map((item) => {
-        const d = new Date(item.time);
+      parsedData[symbol] = filterDataByTimePeriod(series)?.map((item) => {
+        const d = new Date(item?.time);
         return [
           Date.UTC(
             d.getUTCFullYear(),
@@ -253,7 +253,7 @@
     const yMax = globalMax * (1 + padding) || null;
 
     // 3) build series entries
-    const series = Object.entries(parsedData)?.map(([symbol, data], index) => {
+    const series = Object?.entries(parsedData)?.map(([symbol, data], index) => {
       // wrap around if more symbols than colors
       const pair = colorPairs[index % colorPairs?.length];
 
@@ -572,14 +572,7 @@
             <h1 class="mb-1 text-2xl sm:text-3xl font-bold">
               {tickerList?.length === 0
                 ? "Compare Stocks"
-                : tickerList.length === 1
-                  ? `Compare Stocks: ${tickerList[0]}`
-                  : tickerList.length === 2
-                    ? `Compare Stocks: ${tickerList[0]} vs ${tickerList[1]}`
-                    : tickerList.length === 3
-                      ? `${tickerList[0]} vs ${tickerList[1]} vs ${tickerList[2]}`
-                      : // if 4 or more, compare the first four
-                        tickerList.slice(0, -1).join(" vs ")}
+                : `Compare Stocks: ${tickerList.join(" vs ")}`}
             </h1>
           </div>
 
@@ -679,9 +672,9 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="w-full min-w-40 border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
+                        class="w-full min-w-40 border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2 h-10  rounded truncate"
                       >
-                        <span class="truncate text-sm sm:text-[1rem]"
+                        <span class="truncate text-sm"
                           >{selectedPlotCategory?.name}</span
                         >
                         <svg
@@ -773,7 +766,7 @@
                 </div>
               </div>
               <div
-                class="border border-gray-300 dark:border-gray-800 rounded w-full"
+                class="shadow-sm border border-gray-300 dark:border-gray-800 rounded w-full"
                 use:highcharts={configGraph}
               ></div>
             {:else}
@@ -793,22 +786,24 @@
             {/if}
 
             {#if rawTableData?.length > 0 && isLoaded}
-              <Table
-                title="Comparison"
-                {data}
-                rawData={rawTableData}
-                {defaultList}
-              />
+              {#key rawTableData}
+                <Table
+                  title="Comparison"
+                  {data}
+                  rawData={rawTableData}
+                  {defaultList}
+                />
+              {/key}
             {/if}
 
-            {#if configReturn}
+            {#if configReturn && isLoaded && tickerList?.length > 0}
               <h2 class="mt-8 mb-2 text-xl sm:text-2xl font-bold">
                 Average Return
               </h2>
               <div
-                class="border border-gray-300 dark:border-gray-800 rounded w-full"
+                class=" border border-gray-300 dark:border-gray-800 rounded w-full"
               >
-                <div use:highcharts={configReturn}></div>
+                <div class="shadow-sm" use:highcharts={configReturn}></div>
 
                 <div class="hidden px-4 pb-3 md:block">
                   <table class="w-full">
@@ -830,8 +825,8 @@
                             <div
                               class="size-4 rounded-sm"
                               style="background-color: {$mode === 'light'
-                                ? colorPairs[idx % colorPairs.length].light
-                                : colorPairs[idx % colorPairs.length].dark}"
+                                ? colorPairs[idx % colorPairs?.length].light
+                                : colorPairs[idx % colorPairs?.length].dark}"
                             ></div>
                             <a
                               href={`/stocks/${ticker}/`}
@@ -841,9 +836,11 @@
                             </a>
                           </td>
 
-                          {#each rawGraphData[ticker]?.changesPercentage as pct}
-                            <td>{pct ? pct + "%" : "-"}</td>
-                          {/each}
+                          {#if Array.isArray(tickerList) && tickerList.length > 0 && tickerList.every((tkr) => Array.isArray(rawGraphData[tkr]?.changesPercentage) && rawGraphData[tkr].changesPercentage.length > 0)}
+                            {#each rawGraphData[ticker]?.changesPercentage as pct}
+                              <td>{pct != null ? `${pct}%` : "-"}</td>
+                            {/each}
+                          {/if}
                         </tr>
                       {/each}
                     </tbody>
