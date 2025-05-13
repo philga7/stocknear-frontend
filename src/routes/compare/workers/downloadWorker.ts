@@ -10,11 +10,11 @@ const fetchData = async (tickerList: string[], category: string) => {
   console.log("Checking cache and fetching new data if needed");
 
   // 1) Sort tickers alphabetically
-  const sortedTickers = [...tickerList]?.sort();
+  //const sortedTickers = [...tickerList]?.sort();
 
   // 2) Build the cacheKey from tickers + category
   const cacheKey = JSON.stringify({
-    tickers: sortedTickers,
+    tickers: tickerList,
     category,
   });
 

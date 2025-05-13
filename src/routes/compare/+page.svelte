@@ -2,12 +2,8 @@
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
   import { onMount, onDestroy } from "svelte";
-  import { abbreviateNumber, buildOptionSymbol } from "$lib/utils";
-  import { setCache, getCache, screenWidth } from "$lib/store";
+  import { screenWidth } from "$lib/store";
   import { Combobox } from "bits-ui";
-  import InfoModal from "$lib/components/InfoModal.svelte";
-  import Link from "lucide-svelte/icons/square-arrow-out-up-right";
-  import Trash from "lucide-svelte/icons/trash";
   import { toast } from "svelte-sonner";
 
   import { mode } from "mode-watcher";
@@ -24,6 +20,7 @@
   let selectedPlotPeriod = "3Y";
 
   let selectedPlotCategory = { name: "Stock Price", value: "price" };
+
   let categoryList = [
     { name: "Stock Price", value: "price" },
     { name: "Market Cap", value: "marketCap" },
@@ -287,35 +284,37 @@
         style: { color: $mode === "light" ? "black" : "white" },
       },
       tooltip: {
-        shared: false, // ← only show one series
+        shared: true,
         useHTML: true,
-        backgroundColor: "rgba(0, 0, 0, 0.8)",
-        borderColor: "rgba(255, 255, 255, 0.2)",
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
+        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
         borderWidth: 1,
-        borderRadius: 4,
         style: {
-          color: $mode === "light" ? "black" : "white",
+          color: "#fff",
           fontSize: "16px",
           padding: "10px",
         },
-        formatter() {
-          // `this` is the Point object when shared: false
-          const date = new Date(this.x);
-          const dateStr = date.toLocaleDateString("en-US", {
+        borderRadius: 4,
+        formatter: function () {
+          // Format the x value to display time in a custom format
+          let tooltipContent = `<span class="m-auto text-[1rem] font-[501] ">${new Date(
+            this?.x,
+          )?.toLocaleDateString("en-US", {
             year: "numeric",
             month: "short",
             day: "numeric",
             timeZone: "UTC",
+          })}</span><br>`;
+
+          // Loop through each point in the shared tooltip
+          this.points.forEach((point) => {
+            tooltipContent += `
+        <span style="display:inline-block; width:10px; height:10px; background-color:${point.color}; border-radius:5%; margin-right:3px;"></span>
+        <span class="font-semibold text-xs">${point.series.name}:</span> 
+        <span class="font-normal text-sm">${point.y}</span><br>`;
           });
 
-          return `
-      <span class="text-white text-[1rem] font-[501]">
-        ${this.series.name}: ${this.y}
-      </span><br>
-      <span class="text-white m-auto text-sm font-normal">
-        ${dateStr}
-      </span><br>
-    `;
+          return tooltipContent;
         },
       },
 
@@ -371,14 +370,9 @@
       },
       legend: {
         enabled: true,
-        align: "left", // left side
-        verticalAlign: "top", // top edge
+        align: "center", // left side
+        verticalAlign: "bottom", // top edge
         layout: "horizontal",
-
-        // nudge in by 12px (≈ mt-3 / ml-3)
-        x: 0,
-        y: 12,
-
         squareSymbol: false, // use our rectangle shape
         symbolWidth: 20,
         symbolHeight: 12,
@@ -549,7 +543,7 @@
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
       <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
-      <li class="text-muted dark:text-gray-300">Compare</li>
+      <li class="text-muted dark:text-gray-300">Compare Stocks</li>
     </ul>
   </div>
 
@@ -790,7 +784,7 @@
               <div
                 class="border border-gray-300 dark:border-gray-800 rounded w-full"
               >
-                <div class="" use:highcharts={configReturn}></div>
+                <div use:highcharts={configReturn}></div>
 
                 <div class="hidden px-4 pb-3 md:block">
                   <table class="w-full">
@@ -804,26 +798,28 @@
                       ></thead
                     >
                     <tbody>
-                      {#each tickerList as ticker, index}
+                      {#each tickerList as ticker, idx}
                         <tr
                           class="border-b border-gray-300 dark:border-gray-800 text-left *:px-2 *:py-1 last:border-0 hover:bg-table-hover"
-                          ><td class="flex items-center gap-x-1"
-                            ><div
-                              style="background-color: {$mode === 'light'
-                                ? colorPairs[index % colorPairs?.length]?.light
-                                : colorPairs[index % colorPairs?.length]?.dark}"
+                        >
+                          <td class="flex items-center gap-x-1">
+                            <div
                               class="size-4 rounded-sm"
+                              style="background-color: {$mode === 'light'
+                                ? colorPairs[idx % colorPairs.length].light
+                                : colorPairs[idx % colorPairs.length].dark}"
                             ></div>
-                            <a href={`/stocks/${ticker}/`} class="font-semibold"
-                              >{ticker}</a
-                            ></td
-                          >
+                            <a
+                              href={`/stocks/${ticker}/`}
+                              class="font-semibold"
+                            >
+                              {ticker}
+                            </a>
+                          </td>
 
-                          <td>{rawData[ticker]?.changesPercentage[0]}%</td>
-                          <td>{rawData[ticker]?.changesPercentage[1]}%</td>
-                          <td>{rawData[ticker]?.changesPercentage[2]}%</td>
-                          <td>{rawData[ticker]?.changesPercentage[3]}%</td>
-                          <td>{rawData[ticker]?.changesPercentage[4]}%</td>
+                          {#each rawData[ticker]?.changesPercentage as pct}
+                            <td>{pct ? pct + "%" : "-"}</td>
+                          {/each}
                         </tr>
                       {/each}
                     </tbody>
