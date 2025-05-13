@@ -87,6 +87,11 @@
     setTimeout(() => {
       inputValue = "";
     }, 0);
+
+    downloadWorker?.postMessage({
+      tickerList: tickerList,
+      category: selectedPlotCategory?.value,
+    });
   }
   function removeTicker(symbol) {
     const ticker = symbol?.trim()?.toUpperCase();
@@ -102,6 +107,10 @@
 
     // Persist the change
     handleSave();
+    downloadWorker?.postMessage({
+      tickerList: tickerList,
+      category: selectedPlotCategory?.value,
+    });
   }
 
   async function search() {
@@ -206,8 +215,8 @@
     // 2) compute global min/max for padding
     let globalMin = Infinity,
       globalMax = -Infinity;
-    Object.values(parsedData).forEach((arr) =>
-      arr.forEach(([_, close]) => {
+    Object?.values(parsedData).forEach((arr) =>
+      arr?.forEach(([_, close]) => {
         if (close < globalMin) globalMin = close;
         if (close > globalMax) globalMax = close;
       }),
@@ -217,26 +226,24 @@
     const yMax = globalMax * (1 + padding) || null;
 
     // 3) build series entries
-    const series = Object.entries(parsedData).map(([symbol, data]) => ({
-      name: symbol,
-      type: "area",
-      data,
-      color: symbol === "AMD" ? "#4681f4" : "#f44e12", // customize per-symbol
-      lineWidth: 1.5,
-      marker: { enabled: false },
-      fillColor: {
-        linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-        stops: [
-          [0, "rgba(70,129,244,0.5)"],
-          [1, "rgba(70,129,244,0.001)"],
-        ],
-      },
-    }));
+    const series = Object.entries(parsedData)?.map(([symbol, data], index) => {
+      // wrap around if more symbols than colors
+      const pair = colorPairs[index % colorPairs?.length];
+
+      return {
+        name: symbol,
+        type: "spline", // or "area" if you still want fill
+        data,
+        color: $mode === "light" ? pair?.light : pair?.dark,
+        lineWidth: 1.5,
+        marker: { enabled: false },
+      };
+    });
 
     // 4) return the full options object
     return {
       chart: {
-        backgroundColor: mode === "light" ? "#fff" : "#09090B",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
         animation: false,
         height: 500,
         events: {
@@ -262,10 +269,10 @@
       title: {
         text: `<h3 class="mt-3 mb-1"></h3>`,
         useHTML: true,
-        style: { color: mode === "light" ? "black" : "white" },
+        style: { color: $mode === "light" ? "black" : "white" },
       },
       tooltip: {
-        shared: true,
+        shared: false, // ← only show one series
         useHTML: true,
         backgroundColor: "rgba(0, 0, 0, 0.8)",
         borderColor: "rgba(255, 255, 255, 0.2)",
@@ -277,6 +284,7 @@
           padding: "10px",
         },
         formatter() {
+          // `this` is the Point object when shared: false
           const date = new Date(this.x);
           const dateStr = date.toLocaleDateString("en-US", {
             year: "numeric",
@@ -284,26 +292,28 @@
             day: "numeric",
             timeZone: "UTC",
           });
-          let html = this.points
-            .map(
-              (p) =>
-                `<span class="text-white text-[1rem] font-[501]">${p.series.name}: ${p.y}</span><br>`,
-            )
-            .join("");
-          html += `<span class="text-white m-auto text-sm font-normal">${dateStr}</span><br>`;
-          return html;
+
+          return `
+      <span class="text-white text-[1rem] font-[501]">
+        ${this.series.name}: ${this.y}
+      </span><br>
+      <span class="text-white m-auto text-sm font-normal">
+        ${dateStr}
+      </span><br>
+    `;
         },
       },
+
       xAxis: {
         type: "datetime",
         tickLength: 0,
         crosshair: {
-          color: mode === "light" ? "black" : "white",
+          color: $mode === "light" ? "black" : "white",
           width: 1,
           dashStyle: "Solid",
         },
         labels: {
-          style: { color: mode === "light" ? "black" : "white" },
+          style: { color: $mode === "light" ? "black" : "white" },
           distance: 10,
           formatter() {
             const d = new Date(this.value);
@@ -331,9 +341,9 @@
         startOnTick: false,
         endOnTick: false,
         gridLineWidth: 1,
-        gridLineColor: mode === "light" ? "#e5e7eb" : "#111827",
+        gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
         title: { text: null },
-        labels: { style: { color: mode === "light" ? "black" : "white" } },
+        labels: { style: { color: $mode === "light" ? "black" : "white" } },
         opposite: true,
       },
       plotOptions: {
@@ -341,9 +351,29 @@
           animation: false,
           marker: { enabled: false },
           states: { hover: { enabled: false } },
+          legendSymbol: "rectangle",
         },
       },
-      legend: { enabled: false },
+      legend: {
+        enabled: true,
+        align: "left", // left side
+        verticalAlign: "top", // top edge
+        layout: "horizontal",
+
+        // nudge in by 12px (≈ mt-3 / ml-3)
+        x: 0,
+        y: 12,
+
+        squareSymbol: false, // use our rectangle shape
+        symbolWidth: 20,
+        symbolHeight: 12,
+        symbolRadius: 0,
+
+        itemStyle: {
+          color: mode === "light" ? "black" : "white",
+        },
+      },
+
       series,
     };
   }
@@ -585,12 +615,12 @@
             {#if configGraph && isLoaded}
               <div class="relative mt-2">
                 <div
-                  class="hidden sm:flex justify-start space-x-2 w-full ml-2 absolute top-3.5 z-10"
+                  class="flex justify-start space-x-2 w-full left-4 absolute top-3.5 z-10"
                 >
                   {#each ["1M", "3M", "YTD", "1Y", "3Y", "5Y", "Max"] as item}
                     <label
                       on:click={() => (selectedPlotPeriod = item)}
-                      class="px-3 py-1 {selectedPlotPeriod === item
+                      class="px-2 sm:px-3 py-1 {selectedPlotPeriod === item
                         ? 'bg-gray-300 dark:bg-white text-muted'
                         : 'text-muted dark:text-white bg-gray-100 dark:bg-table text-opacity-[0.6]'} text-xs border border-gray-200 dark:border-gray-700 transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-[2px] cursor-pointer"
                     >
