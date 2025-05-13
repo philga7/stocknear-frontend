@@ -210,10 +210,6 @@
           </div>
         {/if}
 
-        {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
-          <SquareAd />
-        {/if}
-
         {#if marketNews?.length !== 0}
           <div
             class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit mt-4 cursor-pointer"

@@ -164,10 +164,6 @@
         </div>
       </main>
       <aside class="inline-block relative w-full lg:w-1/4 mt-3">
-        {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
-          <SquareAd />
-        {/if}
-
         {#if ipoNews?.length !== 0}
           <div
             class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit"
