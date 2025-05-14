@@ -189,6 +189,7 @@
   }
 
   function changePlotPeriod(timePeriod) {
+    isLoaded = false;
     selectedPlotPeriod = timePeriod;
     downloadWorker?.postMessage({
       tickerList: tickerList,
@@ -283,27 +284,56 @@
       };
     });
 
-    // 4) return the full options object
     return {
       chart: {
         backgroundColor: $mode === "light" ? "#fff" : "#09090B",
         animation: false,
         height: 500,
         events: {
-          load() {
+          render: function () {
             const chart = this;
-            let touching = false;
-            chart.container.addEventListener(
-              "touchstart",
-              () => (touching = true),
-            );
-            chart.container.addEventListener("touchend", () => {
-              touching = false;
-              chart.tooltip.hide();
-            });
-            chart.container.addEventListener("touchcancel", () => {
-              touching = false;
-              chart.tooltip.hide();
+
+            // 0) Destroy any stray labels when series count shrinks
+            if (chart?.customLabels) {
+              // if we have more labels than series, kill the extras
+              const extra = chart.customLabels.length - chart.series.length;
+              if (extra > 0) {
+                for (
+                  let j = chart.series.length;
+                  j < chart.customLabels.length;
+                  j++
+                ) {
+                  chart.customLabels[j].destroy();
+                }
+                // truncate the array
+                chart.customLabels.length = chart.series.length;
+              }
+            } else {
+              chart.customLabels = [];
+            }
+
+            // 1) Loop over current series and create/update their labels
+            chart.series.forEach((serie, i) => {
+              if (!serie.points?.length) return;
+
+              const lastPoint = serie.points[serie.points.length - 1];
+              const value = abbreviateNumber(lastPoint.y);
+              const xPos = chart.plotWidth + 10;
+              const yPos = lastPoint.plotY + chart.plotTop - 15;
+
+              if (!chart.customLabels[i]) {
+                // new series → draw a label
+                chart.customLabels[i] = chart.renderer
+                  .label(value, xPos, yPos, "bubble", 0, 0, true)
+                  .attr({ padding: 5, r: 4, fill: serie.color, zIndex: 10 })
+                  .css({ color: "#fff", fontSize: "11px" })
+                  .add();
+              } else {
+                // existing series → move & update text
+                chart.customLabels[i]
+                  .attr({ text: value, x: xPos, y: yPos })
+                  .toFront();
+              }
             });
           },
         },
@@ -636,14 +666,16 @@
                       disabled={tickerList?.length > 10 ? true : false}
                       class="{tickerList?.length > 10
                         ? 'cursor-not-allowed'
-                        : 'cursor-pointer'} text-sm sm:text-[1rem] controls-input shadow-sm focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-3 py-2 pl-8 xs:pl-10 grow w-full "
+                        : ''} text-sm sm:text-[1rem] controls-input shadow-sm focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-3 py-2 pl-8 xs:pl-10 grow w-full "
                       placeholder="Add new stock..."
                       aria-label="Add new stock..."
                     />
                   </div>
 
                   <Combobox.Content
-                    class="z-10 w-full rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-default px-1 py-2 shadow-sm outline-hidden"
+                    class="z-10 w-full {inputValue?.length > 0
+                      ? ''
+                      : 'hidden'} rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-default px-1 py-2 shadow-sm outline-hidden"
                     sideOffset={8}
                   >
                     {#if inputValue?.length !== 0}
