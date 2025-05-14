@@ -43,19 +43,120 @@
 
   let selectedPlotPeriod = "3Y";
 
-  let selectedPlotCategory = { name: "Stock Price", value: "price" };
+  let selectedPlotCategory = {
+    name: "Stock Price",
+    value: "close",
+    type: "price",
+  };
 
   let categoryList = [
-    { name: "Stock Price", value: "price" },
-    { name: "Market Cap", value: "marketCap" },
-    { name: "Dividend Yield", value: "dividendYield" },
-    { name: "Dividends", value: "dividends" },
-    { name: "Revenue", value: "revenue" },
-    { name: "Revenue Growth", value: "revenueGrowth" },
+    { name: "Stock Price", value: "close", type: "price" },
+    { name: "Market Cap", value: "marketCap", type: "marketCap" },
+    { name: "Dividend Yield", value: "yield", type: "dividend" },
+    { name: "Dividends", value: "adjDividend", type: "dividend" },
+    {
+      name: "Payout Ratio",
+      value: "dividendPayoutRatio",
+      type: "ratios-quarter",
+    },
+    { name: "Revenue", value: "revenue", type: "income" },
+    {
+      name: "Revenue Growth",
+      value: "growthRevenue",
+      type: "income-growth-ttm",
+    },
+    {
+      name: "Operating Income",
+      value: "operatingIncome",
+      type: "income",
+    },
+    {
+      name: "Operating Income Growth",
+      value: "growthOperatingIncome",
+      type: "income-growth-ttm",
+    },
+    { name: "Net Income", value: "netIncome", type: "income" },
+    {
+      name: "Net Income Growth",
+      value: "growthNetIncome",
+      type: "income-growth-ttm",
+    },
+    { name: "EBIT", value: "ebit", type: "income" },
+    { name: "EBITDA", value: "ebitda", type: "income" },
+    {
+      name: "Operating Cash Flow",
+      value: "operatingCashFlow",
+      type: "cash-flow",
+    },
+    {
+      name: "Operating Expenses",
+      value: "operatingExpenses",
+      type: "income",
+    },
+    { name: "Enterprise Value", value: "enterpriseValue", type: "key-metrics" },
     { name: "Short % Float", value: "shortPercentOfFloat" },
     { name: "Short Ratio", value: "daysToCover" },
-    { name: "EPS (Diluted)", value: "epsDiluted" },
-    { name: "EV / Sales", value: "evToSales" },
+    { name: "EPS (Diluted)", value: "epsDiluted", type: "income" },
+    {
+      name: "EPS Growth",
+      value: "growthEPSDiluted",
+      type: "income-growth-ttm",
+    },
+    {
+      name: "Gross Profit Margin",
+      value: "grossProfitMargin",
+      type: "ratios-quarter",
+    },
+    { name: "Profit Margin", value: "netProfitMargin", type: "ratios-quarter" },
+    {
+      name: "Operating Margin",
+      value: "operatingProfitMargin",
+      type: "ratios-quarter",
+    },
+    { name: "EBITDA Margin", value: "ebitdaMargin", type: "ratios-quarter" },
+    { name: "PE Ratio", value: "priceToEarningsRatio", type: "ratios-quarter" },
+    { name: "PS Ratio", value: "priceToSalesRatio", type: "ratios-quarter" },
+    { name: "PB Ratio", value: "priceToBookRatio", type: "ratios-quarter" },
+    { name: "EV / Sales Ratio", value: "evToSales", type: "ratios-quarter" },
+    { name: "EV / EBITDA Ratio", value: "evToEBITDA", type: "ratios-quarter" },
+    {
+      name: "EV / FCF Ratio",
+      value: "evToFreeCashFlow",
+      type: "ratios-quarter",
+    },
+    { name: "Income Tax", value: "incomeTaxExpense", type: "income" },
+    {
+      name: "Effective Tax Rate",
+      value: "effectiveTaxRate",
+      type: "ratios-quarter",
+    },
+    { name: "Free Cash Flow", value: "freeCashFlow", type: "cash-flow" },
+    { name: "Total Debt", value: "totalDebt", type: "balance-sheet" },
+    {
+      name: "Research & Development",
+      value: "researchAndDevelopmentExpenses",
+      type: "income",
+    },
+    {
+      name: "Shared-Based Compensation",
+      value: "stockBasedCompensation",
+      type: "cash-flow",
+    },
+    {
+      name: "Return on Assets (ROA)",
+      value: "returnOnAssets",
+      type: "ratios-ttm",
+    },
+    {
+      name: "Return on Equity (ROE)",
+      value: "returnOnEquity",
+      type: "ratios-ttm",
+    },
+    {
+      name: "Return on Invested Capital (ROIC)",
+      value: "returnOnInvestedCapital",
+      type: "ratios-ttm",
+    },
   ];
   let tickerList = [];
 
@@ -99,7 +200,7 @@
 
     downloadWorker?.postMessage({
       tickerList: tickerList,
-      category: selectedPlotCategory?.value,
+      category: selectedPlotCategory,
     });
   }
   function addTicker(data) {
@@ -121,7 +222,7 @@
 
     downloadWorker?.postMessage({
       tickerList: tickerList,
-      category: selectedPlotCategory?.value,
+      category: selectedPlotCategory,
     });
   }
   function removeTicker(symbol) {
@@ -140,7 +241,7 @@
     handleSave();
     downloadWorker?.postMessage({
       tickerList: tickerList,
-      category: selectedPlotCategory?.value,
+      category: selectedPlotCategory,
     });
   }
 
@@ -193,7 +294,7 @@
     selectedPlotPeriod = timePeriod;
     downloadWorker?.postMessage({
       tickerList: tickerList,
-      category: selectedPlotCategory?.value,
+      category: selectedPlotCategory,
     });
   }
 
@@ -234,7 +335,7 @@
   }
 
   function plotData() {
-    // 1) filter & parse each symbol’s data into [timestamp, value] pairs
+    // 1) filter & parse each symbol's data into [timestamp, value] pairs
     const parsedData = {};
 
     for (const [symbol, data] of Object?.entries(rawGraphData)) {
@@ -256,18 +357,6 @@
         ];
       });
     }
-    // 2) compute global min/max for padding
-    let globalMin = Infinity,
-      globalMax = -Infinity;
-    Object?.values(parsedData).forEach((arr) =>
-      arr?.forEach(([_, value]) => {
-        if (value < globalMin) globalMin = value;
-        if (value > globalMax) globalMax = value;
-      }),
-    );
-    const padding = 0.015;
-    const yMin = globalMin * (1 - padding) || null;
-    const yMax = globalMax * (1 + padding) || null;
 
     // 3) build series entries
     const series = Object?.entries(parsedData)?.map(([symbol, data], index) => {
@@ -283,6 +372,34 @@
         marker: { enabled: false },
       };
     });
+
+    // Check if the selected category is percentage-based
+    const isPercentageCategory = [
+      "dividendPayoutRatio",
+      "yield",
+      "netProfitMargin",
+      "ebitdaMargin",
+      "freeCashFlowMargin",
+      "operatingProfitMargin",
+      "growthRevenue",
+      "growthEPSDiluted",
+      "growthOperatingIncome",
+      "growthNetIncome",
+      "returnOnEquity",
+      "returnOnAssets",
+      "returnOnInvestedCapital",
+      "grossProfitMargin",
+      "effectiveTaxRate",
+    ].includes(selectedPlotCategory?.value);
+
+    // Create a formatter function for values based on category type
+    const formatValue = (value) => {
+      if (isPercentageCategory) {
+        return value.toFixed(2) + "%";
+      } else {
+        return abbreviateNumber(value);
+      }
+    };
 
     return {
       chart: {
@@ -317,7 +434,9 @@
               if (!serie.points?.length) return;
 
               const lastPoint = serie.points[serie.points.length - 1];
-              const value = abbreviateNumber(lastPoint.y);
+              const value = isPercentageCategory
+                ? lastPoint.y.toFixed(2) + "%"
+                : abbreviateNumber(lastPoint.y);
               const xPos = chart.plotWidth + 10;
               const yPos = lastPoint.plotY + chart.plotTop - 15;
 
@@ -370,17 +489,25 @@
           // If shared, this.points is an array
           if (this.points) {
             this.points.forEach((point) => {
+              const formattedValue = isPercentageCategory
+                ? point.y.toFixed(2) + "%"
+                : abbreviateNumber(point.y);
+
               tooltipContent += `
-          <span style="display:inline-block; width:10px; height:10px; background-color:${point.color}; border-radius:5%; margin-right:3px;"></span>
-          <span class="font-semibold text-xs">${point.series.name}:</span> 
-          <span class="font-normal text-sm">${abbreviateNumber(point.y)}</span><br>`;
+        <span style="display:inline-block; width:10px; height:10px; background-color:${point.color}; border-radius:5%; margin-right:3px;"></span>
+        <span class="font-semibold text-xs">${point.series.name}:</span> 
+        <span class="font-normal text-sm">${formattedValue}</span><br>`;
             });
           } else {
             // Non-shared, handle single point
+            const formattedValue = isPercentageCategory
+              ? this.y.toFixed(2) + "%"
+              : abbreviateNumber(this.y);
+
             tooltipContent += `
-        <span style="display:inline-block; width:10px; height:10px; background-color:${this.color}; border-radius:5%; margin-right:3px;"></span>
-        <span class="font-semibold text-xs">${this.series.name}:</span> 
-        <span class="font-normal text-sm">${abbreviateNumber(this.y)}</span><br>`;
+      <span style="display:inline-block; width:10px; height:10px; background-color:${this.color}; border-radius:5%; margin-right:3px;"></span>
+      <span class="font-semibold text-xs">${this.series.name}:</span> 
+      <span class="font-normal text-sm">${formattedValue}</span><br>`;
           }
 
           return tooltipContent;
@@ -418,14 +545,20 @@
         },
       },
       yAxis: {
-        min: yMin,
-        max: yMax,
-        startOnTick: false,
-        endOnTick: false,
+        startOnTick: true,
+        endOnTick: true,
         gridLineWidth: 1,
         gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
         title: { text: null },
-        labels: { style: { color: $mode === "light" ? "black" : "white" } },
+        labels: {
+          style: { color: $mode === "light" ? "black" : "white" },
+          formatter: function () {
+            if (isPercentageCategory) {
+              return this.value.toFixed(2) + "%";
+            }
+            return abbreviateNumber(this.value);
+          },
+        },
         opposite: true,
       },
       plotOptions: {
@@ -595,7 +728,7 @@
 
     downloadWorker?.postMessage({
       tickerList: tickerList,
-      category: selectedPlotCategory?.value,
+      category: selectedPlotCategory,
     });
   });
 </script>
@@ -748,7 +881,7 @@
                       </Button>
                     </DropdownMenu.Trigger>
                     <DropdownMenu.Content
-                      class="w-full max-w-80   sm:w-56 h-fit max-h-72 overflow-y-auto scroller"
+                      class="w-full max-w-80 sm:w-64 h-fit max-h-72 overflow-y-auto scroller"
                     >
                       <DropdownMenu.Group>
                         {#each categoryList as item}
