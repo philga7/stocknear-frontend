@@ -6,7 +6,7 @@
 </script>
 
 <Card.Root
-  class=" overflow-x-auto overflow-hidden overflow-y-auto no-scrollbar sm:max-h-[470px]"
+  class="bg-gray-50 dark:bg-default overflow-x-auto overflow-hidden overflow-y-auto no-scrollbar sm:max-h-[470px]"
 >
   <Card.Header class="flex flex-row items-center">
     <div class="flex flex-col items-start w-full">
