@@ -94,8 +94,12 @@
       type: "income",
     },
     { name: "Enterprise Value", value: "enterpriseValue", type: "key-metrics" },
-    { name: "Short % Float", value: "shortPercentOfFloat" },
-    { name: "Short Ratio", value: "daysToCover" },
+    {
+      name: "Short % Float",
+      value: "shortPercentOfFloat",
+      type: "share-statistics",
+    },
+    { name: "Short Ratio", value: "daysToCover", type: "share-statistics" },
     { name: "EPS (Diluted)", value: "epsDiluted", type: "income" },
     {
       name: "EPS Growth",
@@ -385,6 +389,7 @@
       "growthEPSDiluted",
       "growthOperatingIncome",
       "growthNetIncome",
+      "shortPercentOfFloat",
       "returnOnEquity",
       "returnOnAssets",
       "returnOnInvestedCapital",
@@ -887,7 +892,9 @@
                         {#each categoryList as item}
                           <DropdownMenu.Item
                             on:click={() => changeCategory(item)}
-                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                            class="{selectedPlotCategory?.name === item?.name
+                              ? 'dark:bg-gray-300 dark:bg-primary'
+                              : ''} cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                           >
                             {item?.name}
                           </DropdownMenu.Item>
