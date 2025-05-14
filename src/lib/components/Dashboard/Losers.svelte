@@ -47,20 +47,17 @@
       <Table.Root class="overflow-x-auto w-full">
         <Table.Header>
           <Table.Row>
-            <Table.Head
-              class=" text-left sm:text-[1rem] font-bold dark:font-semibold"
+            <Table.Head class=" text-left text-sm font-bold dark:font-semibold"
               >Symbol</Table.Head
             >
             <Table.Head
-              class="hidden sm:table-cell sm:text-[1rem] font-bold dark:font-semibold"
+              class="hidden sm:table-cell text-sm font-bold dark:font-semibold"
               >Name</Table.Head
             >
-            <Table.Head
-              class=" text-right sm:text-[1rem] font-bold dark:font-semibold"
+            <Table.Head class=" text-right text-sm font-bold dark:font-semibold"
               >Price</Table.Head
             >
-            <Table.Head
-              class=" text-right sm:text-[1rem] font-bold dark:font-semibold"
+            <Table.Head class=" text-right text-sm font-bold dark:font-semibold"
               >Change</Table.Head
             >
             <!--

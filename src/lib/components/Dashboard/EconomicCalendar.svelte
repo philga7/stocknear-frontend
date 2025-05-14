@@ -39,20 +39,18 @@
       <Table.Root class="overflow-x-auto w-full">
         <Table.Header>
           <Table.Row>
-            <Table.Head
-              class=" text-left sm:text-[1rem] font-bold dark:font-semibold"
+            <Table.Head class=" text-left text-sm font-bold dark:font-semibold"
               >Time</Table.Head
             >
-            <Table.Head
-              class=" text-left sm:text-[1rem] font-bold dark:font-semibold"
+            <Table.Head class=" text-left text-sm font-bold dark:font-semibold"
               >Event</Table.Head
             >
             <Table.Head
-              class="text-right table-cell sm:text-[1rem] font-bold dark:font-semibold"
+              class="text-right table-cell text-sm font-bold dark:font-semibold"
               >Prior</Table.Head
             >
             <Table.Head
-              class="text-right table-cell sm:text-[1rem] font-bold dark:font-semibold"
+              class="text-right table-cell text-sm font-bold dark:font-semibold"
               >Forecast</Table.Head
             >
           </Table.Row>

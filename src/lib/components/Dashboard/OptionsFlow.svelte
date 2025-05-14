@@ -46,14 +46,14 @@
             >
             <Table.Head
               class="text-right table-cell text-sm font-bold dark:font-semibold"
-              >Premium</Table.Head
+              >Prem</Table.Head
             >
             <Table.Head
               class="text-right table-cell text-sm font-bold dark:font-semibold"
-              >Sentiment</Table.Head
+              >Sent</Table.Head
             >
             <Table.Head class=" text-right text-sm font-bold dark:font-semibold"
-              >Strike Price</Table.Head
+              >Strike</Table.Head
             >
             <Table.Head class=" text-right text-sm font-bold dark:font-semibold"
               >OI</Table.Head
