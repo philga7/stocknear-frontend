@@ -56,7 +56,7 @@
           </h3>
           <label
             class="{latestInfoDate(rawData?.date)
-              ? 'border border-gray-300'
+              ? 'border border-gray-400'
               : 'hidden'} shadow bg-blue-100 dark:text-black dark:bg-[#fff] ml-2 font-semibold not-italic text-xs rounded px-2 py-0.5"
             >New</label
           >

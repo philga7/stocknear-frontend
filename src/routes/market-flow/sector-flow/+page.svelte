@@ -449,13 +449,13 @@
                   )}
                 </div>
                 <div
-                  class="relative inline-block text-left w-fit mb-3 sm:mb-0 shadow-sm"
+                  class="relative inline-block text-left w-fit mb-3 sm:mb-0 shadow-xs"
                 >
                   <DropdownMenu.Root>
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                        class="w-full border-gray-400 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                       >
                         <span class="truncate">{selectedSector}</span>
                         <svg
@@ -575,7 +575,7 @@
               </div>
 
               <div
-                class="chart border border-gray-300 dark:border-gray-800 rounded"
+                class="chart border border-gray-400 dark:border-gray-800 rounded"
                 use:highcharts={config}
               ></div>
             {/if}
@@ -602,7 +602,7 @@
                 class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
               >
                 <table
-                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
+                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto"
                 >
                   <thead>
                     <TableHeader

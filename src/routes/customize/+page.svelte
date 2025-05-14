@@ -237,7 +237,7 @@
             <button
               type="button"
               on:click={handleSaveSettings}
-              class="w-full sm:w-fit cursor-pointer sm:ml-auto align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm font-semibold shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
+              class="w-full sm:w-fit cursor-pointer sm:ml-auto align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm font-semibold shadow-xs border-gray-400 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
             >
               <svg
                 class="w-3.5 h-3.5 inline-block cursor-pointer shrink-0"
@@ -254,7 +254,7 @@
             <button
               type="button"
               on:click={handleDefaultSettings}
-              class="w-full sm:w-fit cursor-pointer ml-3 align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm font-semibold shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
+              class="w-full sm:w-fit cursor-pointer ml-3 align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm font-semibold shadow-xs border-gray-400 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
             >
               <svg
                 class="h-4 w-4"
@@ -278,7 +278,7 @@
           <div class="mt-5">
             <div class="flex flex-col sm:flex-row items-start gap-8">
               <!-- Available Widgets -->
-              <div class="flex-1 rounded shadow-sm">
+              <div class="flex-1 rounded shadow-xs">
                 <div class="flex justify-between items-center mb-4">
                   <h2 class="text-xl font-bold">Available Widgets</h2>
                   <div class="relative flex-shrink-0">
@@ -298,7 +298,7 @@
                   }}
                   on:consider={(e) => handleDndConsider(e, "available")}
                   on:finalize={(e) => handleDndFinalize(e, "available")}
-                  class="space-y-4 min-h-[10rem] max-h-[500px] sm:max-h-[700px] overflow-y-auto border border-gray-300 dark:border-gray-800 rounded p-4"
+                  class="space-y-4 min-h-[10rem] max-h-[500px] sm:max-h-[700px] overflow-y-auto border border-gray-400 dark:border-gray-800 rounded p-4"
                   class:flex={availableWidgets?.length === 0}
                   class:items-center={availableWidgets?.length === 0}
                   class:justify-center={availableWidgets?.length === 0}
@@ -311,11 +311,11 @@
                   {#each availableWidgets as item (item.id)}
                     <div
                       animate:flip={{ duration: flipDurationMs }}
-                      class="border border-gray-200 dark:border-gray-800 rounded p-4 shadow-sm"
+                      class="border border-gray-200 dark:border-gray-800 rounded p-4 shadow-xs"
                     >
                       <div class="flex items-center space-x-4">
                         <div
-                          class="relative border border-gray-300 dark:border-gray-600 rounded-full h-8 w-8 flex items-center justify-center"
+                          class="relative border border-gray-400 dark:border-gray-600 rounded-full h-8 w-8 flex items-center justify-center"
                         >
                           {#if item?.id === "gainers"}
                             <ArrowUp class="w-5 h-5" />
@@ -351,7 +351,7 @@
               </div>
 
               <!-- Selected items -->
-              <div class="flex-1 rounded shadow-sm">
+              <div class="flex-1 rounded shadow-xs">
                 <div class="flex justify-between items-center mb-4">
                   <h2 class="text-xl font-bold">Selected Widgets</h2>
                   <div class="relative flex-shrink-0">
@@ -384,11 +384,11 @@
                     {#each selectedWidgets as item (item.id)}
                       <div
                         animate:flip={{ duration: flipDurationMs }}
-                        class="border border-gray-200 dark:border-gray-800 rounded p-4 shadow-sm"
+                        class="border border-gray-200 dark:border-gray-800 rounded p-4 shadow-xs"
                       >
                         <div class="flex items-center space-x-4">
                           <div
-                            class="relative border border-gray-300 dark:border-gray-600 rounded-full h-8 w-8 flex items-center justify-center"
+                            class="relative border border-gray-400 dark:border-gray-600 rounded-full h-8 w-8 flex items-center justify-center"
                           >
                             {#if item?.id === "gainers"}
                               <ArrowUp class="w-5 h-5" />

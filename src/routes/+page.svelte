@@ -83,7 +83,7 @@
     <div class="flex justify-center mb-5 whitespace-nowrap mt-5 sm:mt-0">
       <a
         href="/pricing"
-        class="cursor-pointer whitespace-nowrap flex flex-col sm:flex-row items-center gap-2 px-3.5 py-2.5 text-sm sm:text-[1rem] font-medium border border-gray-300 dark:border-gray-800 shadow rounded-md"
+        class="cursor-pointer whitespace-nowrap flex flex-col sm:flex-row items-center gap-2 px-3.5 py-2.5 text-sm sm:text-[1rem] font-medium border border-gray-400 dark:border-gray-800 shadow rounded-md"
         tabindex="0"
       >
         <div>

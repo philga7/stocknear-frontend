@@ -21,7 +21,7 @@
 
 <section
   style="z-index: 9999"
-  class="shadow-xl fixed max-w-4xl md:max-w-2xl p-4 mx-auto md:gap-x-4 md:left-60 md:bottom-10 bg-gray-100 dark:bg-gray-900 md:flex md:items-center justify-center border-gray-300 dark:border-gray-700 rounded-t md:rounded-2xl inset-x-0 md:inset-auto bottom-0"
+  class="shadow-xl fixed max-w-4xl md:max-w-2xl p-4 mx-auto md:gap-x-4 md:left-60 md:bottom-10 bg-gray-100 dark:bg-gray-900 md:flex md:items-center justify-center border-gray-400 dark:border-gray-700 rounded-t md:rounded-2xl inset-x-0 md:inset-auto bottom-0"
 >
   <div class="flex items-center gap-x-4">
     <span class="inline-flex p-2 rounded shrink-0 bg-gray-300 dark:bg-gray-800">

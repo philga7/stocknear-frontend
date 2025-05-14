@@ -96,7 +96,7 @@
                 <DropdownMenu.Trigger asChild let:builder>
                   <Button
                     builders={[builder]}
-                    class="w-full shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                    class="w-full shadow-xs border-gray-400 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                   >
                     <span class="truncate">Year: {year}</span>
                     <svg
@@ -142,7 +142,7 @@
                 <DropdownMenu.Trigger asChild let:builder>
                   <Button
                     builders={[builder]}
-                    class="w-full shadow-sm border-gray-300 dark:border-gray-600 border  sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                    class="w-full shadow-xs border-gray-400 dark:border-gray-600 border  sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                   >
                     <span class="truncate">Quarter: Q{quarter}</span>
                     <svg
@@ -214,7 +214,7 @@
                       </span>
                     </div>
                     <div
-                      class="ml-2 avatar rounded-full w-8 h-8 sm:w-10 sm:h-10 relative border border-gray-300 dark:border-gray-600 bg-opacity-[0.6] flex items-center justify-center"
+                      class="ml-2 avatar rounded-full w-8 h-8 sm:w-10 sm:h-10 relative border border-gray-400 dark:border-gray-600 bg-opacity-[0.6] flex items-center justify-center"
                     >
                       <svg
                         class="w-6 h-6 sm:w-7 sm:h-7"
@@ -228,7 +228,7 @@
                     </div>
                   </div>
                   <div
-                    class="shadow-sm flex flex-col w-full leading-1.5 p-4 border border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-primary rounded-l-xl rounded-tr-xl"
+                    class="shadow-xs flex flex-col w-full leading-1.5 p-4 border border-gray-400 dark:border-gray-600 bg-gray-200 dark:bg-primary rounded-l-xl rounded-tr-xl"
                   >
                     <p class="text-sm font-normal py-2.5">
                       {@html item?.description}
@@ -256,7 +256,7 @@
                     </div>
                   </div>
                   <div
-                    class="flex flex-col w-full leading-1.5 p-4 border border-gray-300 dark:border-gray-600 shadow-sm bg-gray-200 dark:bg-secondary rounded-r-xl rounded-tl-xl"
+                    class="flex flex-col w-full leading-1.5 p-4 border border-gray-400 dark:border-gray-600 shadow-xs bg-gray-200 dark:bg-secondary rounded-r-xl rounded-tl-xl"
                   >
                     <p class="text-sm font-normal py-2.5">
                       {@html item?.description}
@@ -281,7 +281,7 @@
           <div class="flex justify-center items-center h-80">
             <div class="relative">
               <label
-                class="shadow-sm bg-gray-300 dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                class="shadow-xs bg-gray-300 dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
               >
                 <span
                   class="loading loading-spinner loading-md text-muted dark:text-gray-400"

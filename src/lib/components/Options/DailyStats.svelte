@@ -24,7 +24,7 @@
     <table class="w-[50%] text-sm sm:text-[1rem] xl:min-w-[300px]">
       <tbody
         ><tr
-          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-400 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >Call Volume</td
@@ -36,7 +36,7 @@
         >
 
         <tr
-          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-400 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >Call Premium</td
@@ -48,7 +48,7 @@
         >
 
         <tr
-          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-400 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >Premium</td
@@ -63,7 +63,7 @@
           ></tr
         >
         <tr
-          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-400 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >Call Open Interest</td
@@ -74,7 +74,7 @@
           ></tr
         >
         <tr
-          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-400 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >Implied Volatility (IV)
@@ -85,7 +85,7 @@
           ></tr
         >
         <tr
-          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-400 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >Total Open Interest</td
@@ -96,7 +96,7 @@
           ></tr
         >
         <tr
-          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-400 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >Net Premium
@@ -113,7 +113,7 @@
     <table class="w-[50%] text-sm xl:min-w-[300px]">
       <tbody
         ><tr
-          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-400 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >Put Volume</td
@@ -125,7 +125,7 @@
         >
 
         <tr
-          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-400 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >Put Premium</td
@@ -137,7 +137,7 @@
         >
 
         <tr
-          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-400 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >P/C Ratio</td
@@ -149,7 +149,7 @@
         >
 
         <tr
-          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-400 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >Put Open Interest</td
@@ -161,7 +161,7 @@
         >
 
         <tr
-          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-400 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >IV Rank</td
@@ -173,7 +173,7 @@
         >
 
         <tr
-          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-400 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >🐻/🐂 Prem
@@ -230,7 +230,7 @@
                   </div>
                 </HoverCard.Trigger>
                 <HoverCard.Content
-                  class="w-auto bg-secondary border border-gray-300 dark:border-gray-600"
+                  class="w-auto bg-secondary border border-gray-400 dark:border-gray-600"
                 >
                   <div class="flex justify-between space-x-4">
                     <div class="space-y-1 flex flex-col items-start">
@@ -266,7 +266,7 @@
         </tr>
 
         <tr
-          class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+          class="flex flex-col border-b border-gray-400 dark:border-gray-600 py-1 sm:table-row sm:py-0"
           ><td
             class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
             >(Net Call x Net Put) Prem</td

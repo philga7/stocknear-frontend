@@ -84,7 +84,7 @@
                 <br />
                 <br />
                 <iframe
-                  class="shadow-sm w-full border border-gray-300 dark:border-gray-800 rounded"
+                  class="shadow-xs w-full border border-gray-400 dark:border-gray-800 rounded"
                   src="https://github.com/sponsors/stocknear/card"
                   title="Sponsor Stocknear"
                   height={$screenWidth < 640 ? "300" : "auto"}
@@ -100,7 +100,7 @@
 
         <aside class="hidden lg:block relative fixed w-1/4 ml-4">
           <div
-            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-400 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href="/about"
@@ -119,7 +119,7 @@
           </div>
 
           <div
-            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-400 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href="/contact"

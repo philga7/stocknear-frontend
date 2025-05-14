@@ -118,7 +118,7 @@
   ></label>
 
   <div
-    class="modal-box rounded-md w-full bg-white dark:bg-secondary border border-gray-300 dark:border-gray-600 min-h-fit h-[600px] sm:h-[500px]"
+    class="modal-box rounded-md w-full bg-white dark:bg-secondary border border-gray-400 dark:border-gray-600 min-h-fit h-[600px] sm:h-[500px]"
   >
     <!--Start Trade Modal-->
     <label
@@ -147,7 +147,7 @@
         <label class="text-sm w-[20%] mb-1 sm:mb-0">Symbol</label>
 
         <label
-          class="rounded-md bg-gray-100 dark:bg-[#2A2E39] w-full sm:w-[80%] py-2 px-2 text-sm border border-gray-300 dark:border-gray-600"
+          class="rounded-md bg-gray-100 dark:bg-[#2A2E39] w-full sm:w-[80%] py-2 px-2 text-sm border border-gray-400 dark:border-gray-600"
         >
           <!--
           <img
@@ -170,7 +170,7 @@
           <input
             type="text"
             value="Price"
-            class="select-none w-full sm:w-[80%] bg-gray-100 dark:bg-[#2A2E39] border border-gray-300 dark:border-gray-600 text-sm rounded-md py-2 px-3"
+            class="select-none w-full sm:w-[80%] bg-gray-100 dark:bg-[#2A2E39] border border-gray-400 dark:border-gray-600 text-sm rounded-md py-2 px-3"
             readonly
           />
         </div>
@@ -180,7 +180,7 @@
           <label class="text-sm w-[20%] mb-1 sm:mb-0">Crossing</label>
           <select
             on:change={changeStatement}
-            class="cursor-pointer w-full sm:w-[80%] bg-gray-100 dark:bg-[#2A2E39] border border-gray-300 dark:border-gray-600 text-sm rounded-md py-2 px-3"
+            class="cursor-pointer w-full sm:w-[80%] bg-gray-100 dark:bg-[#2A2E39] border border-gray-400 dark:border-gray-600 text-sm rounded-md py-2 px-3"
           >
             <option value="above" selected>Above</option>
             <option value="below">Below</option>
@@ -194,7 +194,7 @@
           <div class="relative w-full sm:w-[80%]">
             <input
               bind:value={targetPrice}
-              class="w-full bg-gray-100 dark:bg-[#2A2E39] border border-gray-300 dark:border-gray-600 text-sm rounded-md py-2 px-3 pr-16"
+              class="w-full bg-gray-100 dark:bg-[#2A2E39] border border-gray-400 dark:border-gray-600 text-sm rounded-md py-2 px-3 pr-16"
             />
             <div
               class="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-x-1.5"

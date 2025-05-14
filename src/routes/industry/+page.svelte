@@ -48,10 +48,10 @@
           </a>
         </div>
 
-        <div class="border-t border-gray-300 dark:border-gray-600 mt-5" />
+        <div class="border-t border-gray-400 dark:border-gray-600 mt-5" />
 
         <IndustryTable {charNumber} industryList={rawData[sector]} />
-        <div class="border-t border-gray-300 dark:border-gray-600 mt-5" />
+        <div class="border-t border-gray-400 dark:border-gray-600 mt-5" />
       {/each}
     </div>
   </div>

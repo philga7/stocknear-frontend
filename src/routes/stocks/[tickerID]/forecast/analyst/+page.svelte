@@ -291,10 +291,10 @@
         </div>
 
         <div
-          class="shadow-sm mb-4 grid grid-cols-2 grid-rows-2 divide-contrast rounded-md border border-gray-300 dark:border-gray-600 md:grid-cols-4 md:grid-rows-1 md:divide-x"
+          class="shadow-xs mb-4 grid grid-cols-2 grid-rows-2 divide-contrast rounded-md border border-gray-400 dark:border-gray-600 md:grid-cols-4 md:grid-rows-1 md:divide-x"
         >
           <div
-            class="p-4 bp:p-5 sm:p-6 border-r border-gray-300 dark:border-gray-600"
+            class="p-4 bp:p-5 sm:p-6 border-r border-gray-400 dark:border-gray-600"
           >
             <div class="text-[1rem] font-normal">Total Analysts</div>
 
@@ -305,7 +305,7 @@
             </div>
           </div>
           <div
-            class="p-4 bp:p-5 sm:p-6 border-r-0 md:border-r border-gray-300 dark:border-gray-600"
+            class="p-4 bp:p-5 sm:p-6 border-r-0 md:border-r border-gray-400 dark:border-gray-600"
           >
             <div class="text-[1rem] font-normal">Consensus Rating</div>
             <div
@@ -315,7 +315,7 @@
             </div>
           </div>
           <div
-            class="p-4 bp:p-5 sm:p-6 border-r-0 md:border-r border-t md:border-t-0 border-gray-300 dark:border-gray-600"
+            class="p-4 bp:p-5 sm:p-6 border-r-0 md:border-r border-t md:border-t-0 border-gray-400 dark:border-gray-600"
           >
             <div class="text-[1rem] font-normal">Price Target</div>
             <div
@@ -327,7 +327,7 @@
             </div>
           </div>
           <div
-            class="p-4 bp:p-5 sm:p-6 border-t border-gray-300 dark:border-gray-600 md:border-0 border-l border-gray-300 dark:border-gray-600 md:border-0"
+            class="p-4 bp:p-5 sm:p-6 border-t border-gray-400 dark:border-gray-600 md:border-0 border-l border-gray-400 dark:border-gray-600 md:border-0"
           >
             <div class="text-[1rem] font-normal">Upside</div>
             <div
@@ -360,7 +360,7 @@
 
           <div class=" w-full m-auto mb-4 overflow-x-auto lg:overflow-hidden">
             <table
-              class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
+              class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto"
             >
               <thead class="text-muted dark:text-white dark:bg-default">
                 <tr>
@@ -559,7 +559,7 @@
                       <div class="flex flex-col items-end">
                         {#if latestInfoDate(item?.date)}
                           <label
-                            class="border-gray-300 shadow-md bg-[#fff] text-black font-semibold text-xs rounded px-2 py-0.5 ml-3 mb-1"
+                            class="border-gray-400 shadow-md bg-[#fff] text-black font-semibold text-xs rounded px-2 py-0.5 ml-3 mb-1"
                           >
                             New
                           </label>
@@ -723,7 +723,7 @@
 
   <!-- Desktop modal content -->
   <div
-    class="modal-box rounded-md border border-gray-300 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
+    class="modal-box rounded-md border border-gray-400 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
   >
     <div class=" mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">Top Analyst</h3>
@@ -734,7 +734,7 @@
       >
     </div>
 
-    <div class="border-t border-gray-300 dark:border-gray-600 mt-2 w-full">
+    <div class="border-t border-gray-400 dark:border-gray-600 mt-2 w-full">
       <label
         for="topAnalystModal"
         class="cursor-pointer mt-4 font-semibold text-xl m-auto flex justify-center"

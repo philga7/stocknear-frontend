@@ -719,7 +719,7 @@
             class="sm:pl-7 mt-4 mb-5 lg:flex lg:flex-row lg:gap-x-4 w-full min-h-[360px]"
           >
             <div
-              class="order-1 lg:order-5 grow overflow-hidden border-gray-300 dark:border-gray-800 py-0.5 xs:py-1 sm:px-0.5 sm:pb-3 sm:pt-2.5 lg:mb-0 lg:border-0 lg:border-l lg:border-sharp lg:px-0 lg:py-0 lg:pl-5 md:mb-4 md:border-b"
+              class="order-1 lg:order-5 grow overflow-hidden border-gray-400 dark:border-gray-800 py-0.5 xs:py-1 sm:px-0.5 sm:pb-3 sm:pt-2.5 lg:mb-0 lg:border-0 lg:border-l lg:border-sharp lg:px-0 lg:py-0 lg:pl-5 md:mb-4 md:border-b"
             >
               <div class="flex items-center justify-between py-1 sm:pt-0.5">
                 <div class="hide-scroll overflow-x-auto">
@@ -770,7 +770,7 @@
                 >
                   <div class="relative">
                     <label
-                      class="shadow-sm bg-gray-300 dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                      class="shadow-xs bg-gray-300 dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                     >
                       <span
                         class="loading loading-spinner loading-md text-muted dark:text-gray-400"
@@ -787,7 +787,7 @@
               <table class="w-[50%] text-sm sm:text-[1rem] lg:min-w-[250px]">
                 <tbody>
                   <tr
-                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-400 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Open</td
@@ -799,7 +799,7 @@
                   >
 
                   <tr
-                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-400 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Volume</td
@@ -813,7 +813,7 @@
                   >
 
                   <tr
-                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-400 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Market Cap</td
@@ -825,7 +825,7 @@
                   >
 
                   <tr
-                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-400 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Price Avg 50</td
@@ -837,7 +837,7 @@
                   >
 
                   <tr
-                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-400 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Day's Range</td
@@ -854,7 +854,7 @@
               <table class="w-[50%] text-sm lg:min-w-[250px]">
                 <tbody>
                   <tr
-                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-400 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Previous Close</td
@@ -866,7 +866,7 @@
                   >
 
                   <tr
-                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-400 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Avg. Volume</td
@@ -880,7 +880,7 @@
                   >
 
                   <tr
-                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-400 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Holdings
@@ -892,7 +892,7 @@
                   >
 
                   <tr
-                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-400 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >Price Avg 200</td
@@ -904,7 +904,7 @@
                   >
 
                   <tr
-                    class="flex flex-col border-b border-gray-300 dark:border-gray-800 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-400 dark:border-gray-800 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 text-sm sm:text-[1rem]"
                       >52-Week Range</td

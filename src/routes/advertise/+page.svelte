@@ -90,7 +90,7 @@
 
         <aside class="inline-block relative w-full lg:w-1/4 mt-6 lg:mt-0">
           <div
-            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-400 dark:border-gray-600 rounded-md h-fit pb-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href="/donation"
@@ -109,7 +109,7 @@
           </div>
 
           <div
-            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-400 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href="/contact"

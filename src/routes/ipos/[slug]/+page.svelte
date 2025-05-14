@@ -64,7 +64,7 @@
             </h2>
             <div class="w-full overflow-x-auto">
               <table
-                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
+                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto mt-4"
               >
                 <thead class="text-muted dark:text-white dark:bg-default">
                   <tr>
@@ -166,7 +166,7 @@
       <aside class="inline-block relative w-full lg:w-1/4 mt-3">
         {#if ipoNews?.length !== 0}
           <div
-            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit"
+            class="w-full border border-gray-400 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit"
           >
             <div class="p-4 text-sm">
               <h3 class="text-xl font-bold mb-3">IPO News</h3>

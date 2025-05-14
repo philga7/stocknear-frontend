@@ -546,14 +546,14 @@
                 </div>
               </div>
               <div
-                class="border border-gray-300 dark:border-gray-800 rounded w-full"
+                class="border border-gray-400 dark:border-gray-800 rounded w-full"
                 use:highcharts={config}
               ></div>
             {/if}
 
             {#if rawData?.length > 0}
               <div
-                class="mt-5 border-t border-b pt-2 pb-2 border-gray-300 dark:border-gray-800 flex flex-row items-center w-full sm:justify-between md:space-x-4 w-full mb-3"
+                class="mt-5 border-t border-b pt-2 pb-2 border-gray-400 dark:border-gray-800 flex flex-row items-center w-full sm:justify-between md:space-x-4 w-full mb-3"
               >
                 <h2 class="text-xl sm:text-2xl font-bold">Historical Data</h2>
                 <div class="flex flex-row items-center ml-auto w-fit">
@@ -562,7 +562,7 @@
                       <DropdownMenu.Trigger asChild let:builder>
                         <Button
                           builders={[builder]}
-                          class="shadow-sm w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                          class="shadow-xs w-fit border-gray-400 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                         >
                           <span class="truncate px-1">{timePeriod}</span>
                           <svg
@@ -647,7 +647,7 @@
 
                   <Button
                     on:click={() => exportData()}
-                    class="shadow-sm ml-2 border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                    class="shadow-xs ml-2 border-gray-400 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                   >
                     <span class="truncate">Download</span>
                     <svg
@@ -670,7 +670,7 @@
                   class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
                 >
                   <table
-                    class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
+                    class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto"
                   >
                     <thead>
                       <TableHeader {columns} {sortOrders} {sortData} />

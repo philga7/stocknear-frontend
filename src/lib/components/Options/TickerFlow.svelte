@@ -352,7 +352,7 @@
 
               <div class="mb-5">
                 <div
-                  class="shadow border border-gray-300 dark:border-gray-800 rounded"
+                  class="shadow border border-gray-400 dark:border-gray-800 rounded"
                   use:highcharts={config}
                 ></div>
               </div>

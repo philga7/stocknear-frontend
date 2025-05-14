@@ -129,7 +129,7 @@
   <div class="min-w-[1000px]">
     <!-- Header row using grid -->
     <div
-      class="table-driver grid grid-cols-10 sticky top-0 z-40 border border-gray-300 dark:border-gray-800 font-bold text-xs uppercase"
+      class="table-driver grid grid-cols-10 sticky top-0 z-40 border border-gray-400 dark:border-gray-800 font-bold text-xs uppercase"
     >
       <div
         on:click={() => sortData("date")}

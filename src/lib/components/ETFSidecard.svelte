@@ -79,7 +79,7 @@
   </p>
 
   <div
-    class="mt-3 grid grid-cols-2 gap-3 w-full border-b border-gray-300 dark:border-gray-600 lg:border-none pb-8 lg:pb-0"
+    class="mt-3 grid grid-cols-2 gap-3 w-full border-b border-gray-400 dark:border-gray-600 lg:border-none pb-8 lg:pb-0"
   >
     <div class="col-span-1 text-muted dark:text-gray-200">
       <span class="block font-semibold">Asset Class</span>
@@ -135,7 +135,7 @@
         <div class="mt-2 w-full overflow-hidden">
           <table class="w-full">
             <thead>
-              <tr class="border-y border-gray-300 dark:border-gray-800">
+              <tr class="border-y border-gray-400 dark:border-gray-800">
                 <th class="px-1 py-1.5 text-left xs:px-2">Sector</th>
 
                 <th class="px-1 py-1.5 text-right xs:px-2">Weight %</th>
@@ -144,7 +144,7 @@
             <tbody>
               {#each topSectorList as item}
                 {#if item?.weightPercentage > 0}
-                  <tr class=" border-b border-gray-300 dark:border-gray-800">
+                  <tr class=" border-b border-gray-400 dark:border-gray-800">
                     <td class="px-1 py-1.5 text-left xs:px-2">
                       <a
                         href={sectorNavigation?.find(
@@ -197,7 +197,7 @@
         <div class="mt-2 w-full">
           <table class="w-full">
             <thead
-              ><tr class="border-y border-gray-300 dark:border-gray-800"
+              ><tr class="border-y border-gray-400 dark:border-gray-800"
                 ><th class="px-1 py-1.5 text-left xs:px-2">Name</th>
                 <th class="px-1 py-1.5 text-left xs:px-2">Symbol</th>
                 <th class="px-1 py-1.5 text-right xs:px-2">Weight</th></tr
@@ -207,7 +207,7 @@
               {#each topHoldingList?.slice(0, 10) as item}
                 {#if item?.symbol !== null}
                   <tr
-                    class="border-b border-gray-300 dark:border-gray-300 dark:border-gray-800"
+                    class="border-b border-gray-400 dark:border-gray-400 dark:border-gray-800"
                   >
                     <td class="px-1 py-1.5 text-left xs:px-2">
                       {#if typeof item?.name !== "undefined"}
@@ -265,7 +265,7 @@
         <div class="mt-2 w-full">
           <table class="w-full">
             <thead
-              ><tr class="border-y border-gray-300 dark:border-gray-800"
+              ><tr class="border-y border-gray-400 dark:border-gray-800"
                 ><th class="px-1 py-1.5 text-left xs:px-2">Ex-Dividend</th>
                 <th class="px-1 py-1.5 text-left xs:px-2">Amount</th>
                 <th class="px-1 py-1.5 text-right xs:px-2">Payment Date</th></tr
@@ -274,7 +274,7 @@
 
             <tbody>
               {#each dividendHistoryList?.slice(0, 5) as item}
-                <tr class="border-b border-gray-300 dark:border-gray-800">
+                <tr class="border-b border-gray-400 dark:border-gray-800">
                   <td class="px-1 py-1.5 text-left xs:px-2">
                     {new Date(item?.date)?.toLocaleString("en-US", {
                       month: "short",

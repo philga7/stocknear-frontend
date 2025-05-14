@@ -94,7 +94,7 @@
             class="sr-only peer"
           />
           <div
-            class="w-14 h-7 bg-[#09090B] border border-gray-600 rounded-full peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[0.40rem] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-blue-600 {mode ===
+            class="w-14 h-7 bg-[#09090B] border border-gray-600 rounded-full peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[0.40rem] after:bg-white after:border-gray-400 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-blue-600 {mode ===
             false
               ? 'after:translate-x-[-0.2rem]'
               : ''} "

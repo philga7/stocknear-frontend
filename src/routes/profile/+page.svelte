@@ -261,7 +261,7 @@
           </div>
 
           <div
-            class="rounded shadow-sm border border-gray-300 dark:border-gray-600 p-4 xs:p-4 xs:text-lg"
+            class="rounded shadow-xs border border-gray-400 dark:border-gray-600 p-4 xs:p-4 xs:text-lg"
           >
             <h2 class=" text-2xl font-semibold mb-3">User Information</h2>
             <div class="mt-1">
@@ -284,7 +284,7 @@
           </div>
 
           <div
-            class="mt-6 rounded shadow-sm border border-gray-300 dark:border-gray-600 p-4 xs:text-lg pb-6"
+            class="mt-6 rounded shadow-xs border border-gray-400 dark:border-gray-600 p-4 xs:text-lg pb-6"
           >
             <h2 class=" text-2xl font-semibold mb-3">Notification</h2>
             Customize your notification alerts based on your preferences.
@@ -313,7 +313,7 @@
                     class="sr-only peer"
                   />
                   <div
-                    class="w-10 h-5 bg-gray-600 rounded-full peer-checked:after:translate-x-4 peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[0.25rem] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#1C64F2]"
+                    class="w-10 h-5 bg-gray-600 rounded-full peer-checked:after:translate-x-4 peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[0.25rem] after:bg-white after:border-gray-400 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#1C64F2]"
                   ></div>
                 </label>
               </div>
@@ -342,7 +342,7 @@
                     class="sr-only peer"
                   />
                   <div
-                    class="w-10 h-5 bg-gray-600 rounded-full peer-checked:after:translate-x-4 peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[0.25rem] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#1C64F2]"
+                    class="w-10 h-5 bg-gray-600 rounded-full peer-checked:after:translate-x-4 peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[0.25rem] after:bg-white after:border-gray-400 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#1C64F2]"
                   ></div>
                 </label>
               </div>
@@ -371,7 +371,7 @@
                     class="sr-only peer"
                   />
                   <div
-                    class="w-10 h-5 bg-gray-600 rounded-full peer-checked:after:translate-x-4 peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[0.25rem] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#1C64F2]"
+                    class="w-10 h-5 bg-gray-600 rounded-full peer-checked:after:translate-x-4 peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[0.25rem] after:bg-white after:border-gray-400 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#1C64F2]"
                   ></div>
                 </label>
               </div>
@@ -387,7 +387,7 @@
                     <p class="mb-3">Push notifications are currently active.</p>
                     <div class="mt-3">
                       <button
-                        class="shadow-sm border border-gray-300 dark:border-gray-600 w-fit px-5 py-1.5 bg-white text-black text-sm font-semibold rounded sm:hover:bg-white/80 transition ease-out duration-100"
+                        class="shadow-xs border border-gray-400 dark:border-gray-600 w-fit px-5 py-1.5 bg-white text-black text-sm font-semibold rounded sm:hover:bg-white/80 transition ease-out duration-100"
                         type="button"
                         on:click={handlePushUnsubscribe}
                         >Disable notifications</button
@@ -401,14 +401,14 @@
                     </p>
                     {#if !loading}
                       <button
-                        class="shadow-sm border border-gray-300 dark:border-gray-600 w-fit px-5 py-1.5 bg-white text-black text-sm font-semibold rounded sm:hover:bg-white/80 transition ease-out duration-100"
+                        class="shadow-xs border border-gray-400 dark:border-gray-600 w-fit px-5 py-1.5 bg-white text-black text-sm font-semibold rounded sm:hover:bg-white/80 transition ease-out duration-100"
                         type="button"
                         on:click={handlePushSubscribe}
                         >Enable notifications</button
                       >
                     {:else}
                       <button
-                        class="cursor-not-allowed shadow-sm border border-gray-300 dark:border-gray-600 w-fit px-5 py-1.5 bg-white/60 text-black text-sm font-semibold rounded sm:hover:bg-white/80 transition ease-out duration-100"
+                        class="cursor-not-allowed shadow-xs border border-gray-400 dark:border-gray-600 w-fit px-5 py-1.5 bg-white/60 text-black text-sm font-semibold rounded sm:hover:bg-white/80 transition ease-out duration-100"
                         ><div class="flex flex-row m-auto items-center">
                           <span class="loading loading-infinity"></span>
                           <span class=" ml-1.5">Activating...</span>
@@ -431,7 +431,7 @@
                 </p>
                 <label
                   for="installModal"
-                  class="cursor-pointer border border-gray-300 shadow-sshadow-sm m dark:border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
+                  class="cursor-pointer border border-gray-400 shadow-sshadow-xs m dark:border-gray-400 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
                 >
                   Install the App
                 </label>
@@ -440,7 +440,7 @@
           </div>
 
           <div
-            class="mt-6 rounded shadow-sm border border-gray-300 dark:border-gray-600 p-4 xs:p-4 xs:text-lg"
+            class="mt-6 rounded shadow-xs border border-gray-400 dark:border-gray-600 p-4 xs:p-4 xs:text-lg"
           >
             <h2 class=" text-2xl font-semibold mb-3">Manage Subscription</h2>
             <div class="flex flex-row items-center">
@@ -520,21 +520,21 @@
               >
                 <label
                   for="cancelSubscriptionModal"
-                  class="cursor-pointer border border-gray-300 shadow-sshadow-sm m dark:border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded"
+                  class="cursor-pointer border border-gray-400 shadow-sshadow-xs m dark:border-gray-400 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded"
                 >
                   Cancel Subscription
                 </label>
                 {#if subscriptionData?.product_name === "Plus Subscription (Monthly)"}
                   <label
                     for="changeSubscriptionPlusAnnualModal"
-                    class="mt-3 sm:mt-0 sm:ml-3 cursor-pointer border border-gray-300 shadow-sshadow-sm m dark:border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded"
+                    class="mt-3 sm:mt-0 sm:ml-3 cursor-pointer border border-gray-400 shadow-sshadow-xs m dark:border-gray-400 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded"
                   >
                     Upgrade to Plus (Annual Plan)
                   </label>
                 {:else if subscriptionData?.product_name === "Plus Subscription (Annually)" || subscriptionData?.product_name === "Pro Subscription (Monthly)"}
                   <label
                     for="changeSubscriptionProAnnualModal"
-                    class="mt-3 sm:mt-0 sm:ml-3 cursor-pointer border border-gray-300 shadow-sshadow-sm m dark:border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded"
+                    class="mt-3 sm:mt-0 sm:ml-3 cursor-pointer border border-gray-400 shadow-sshadow-xs m dark:border-gray-400 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded"
                   >
                     Upgrade to Pro (Annual Plan)
                   </label>
@@ -543,7 +543,7 @@
             {:else if subscriptionData?.status_formatted === "Cancelled"}
               <label
                 for="reactivateSubscriptionModal"
-                class="cursor-pointer border border-gray-300 shadow-sshadow-sm m dark:border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
+                class="cursor-pointer border border-gray-400 shadow-sshadow-xs m dark:border-gray-400 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
               >
                 Reactivate Subscription
               </label>
@@ -562,7 +562,7 @@
           </div>
 
           <div
-            class="mt-6 rounded shadow-sm border border-gray-300 dark:border-gray-600 p-4 xs:p-4 xs:text-lg"
+            class="mt-6 rounded shadow-xs border border-gray-400 dark:border-gray-600 p-4 xs:p-4 xs:text-lg"
           >
             <h2 class=" text-2xl font-semibold mb-3">Need help?</h2>
             <div class="mt-1">
@@ -625,7 +625,7 @@
     method="POST"
     action="?/cancelSubscription"
     use:enhance={submitCancellation}
-    class="modal-box w-full bg-white dark:bg-secondary shadow-sm border border-gray-300 dark:border-gray-600 flex flex-col items-center"
+    class="modal-box w-full bg-white dark:bg-secondary shadow-xs border border-gray-400 dark:border-gray-600 flex flex-col items-center"
   >
     <div class="mx-auto mb-8 h-1.5 w-20 shrink-0 rounded-full bg-gray-500" />
     <div class=" mb-5 text-center">
@@ -681,7 +681,7 @@
     method="POST"
     action="?/reactivateSubscription"
     use:enhance={submitReactivate}
-    class="modal-box w-full bg-white dark:bg-secondary shadow-sm border border-gray-300 dark:border-gray-600 flex flex-col items-center"
+    class="modal-box w-full bg-white dark:bg-secondary shadow-xs border border-gray-400 dark:border-gray-600 flex flex-col items-center"
   >
     <div class="mx-auto mb-8 h-1.5 w-20 shrink-0 rounded-full bg-gray-500" />
     <div class=" mb-5 text-center">
@@ -770,7 +770,7 @@
     method="POST"
     action="?/changeSubscription"
     use:enhance={submitChangePlan}
-    class="modal-box w-full bg-white dark:bg-secondary shadow-sm border border-gray-300 dark:border-gray-600 flex flex-col items-center"
+    class="modal-box w-full bg-white dark:bg-secondary shadow-xs border border-gray-400 dark:border-gray-600 flex flex-col items-center"
   >
     <div
       class="mx-auto mb-8 h-1.5 w-20 flex-shrink-0 rounded-full bg-[#404040]"
@@ -830,7 +830,7 @@
     method="POST"
     action="?/changeSubscription"
     use:enhance={submitChangePlan}
-    class="modal-box w-full bg-white dark:bg-secondary shadow-sm border border-gray-300 dark:border-gray-600 flex flex-col items-center"
+    class="modal-box w-full bg-white dark:bg-secondary shadow-xs border border-gray-400 dark:border-gray-600 flex flex-col items-center"
   >
     <div
       class="mx-auto mb-8 h-1.5 w-20 flex-shrink-0 rounded-full bg-[#404040]"
@@ -877,7 +877,7 @@
   <label for="installModal" class="cursor-pointer modal-backdrop"></label>
 
   <div
-    class="modal-box rounded w-full bg-white dark:bg-secondary shadow-sm border border-gray-300 dark:border-gray-600"
+    class="modal-box rounded w-full bg-white dark:bg-secondary shadow-xs border border-gray-400 dark:border-gray-600"
   >
     <div class="flex flex-row items-center pt-5">
       <h4 class=" text-2xl font-bold text-center m-auto">Steps to install</h4>
@@ -909,7 +909,7 @@
       </ul>
     </div>
 
-    <div class=" border-t border-gray-300 dark:border-gray-600 mt-2">
+    <div class=" border-t border-gray-400 dark:border-gray-600 mt-2">
       <label
         for="installModal"
         class="mt-4 font-semibold text-xl m-auto flex justify-center cursor-pointer"

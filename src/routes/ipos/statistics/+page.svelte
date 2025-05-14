@@ -206,14 +206,14 @@
 
             {#if isLoaded && config}
               <div
-                class="shadow-sm border border-gray-300 dark:border-gray-800 rounded"
+                class="shadow-xs border border-gray-400 dark:border-gray-800 rounded"
                 use:highcharts={config}
               ></div>
             {:else}
               <div class="flex justify-center items-center h-80">
                 <div class="relative">
                   <label
-                    class="shadow-sm bg-gray-300 dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                    class="shadow-xs bg-gray-300 dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                   >
                     <span
                       class="loading loading-spinner loading-md text-muted dark:text-gray-400"
@@ -232,7 +232,7 @@
       <aside class="inline-block relative w-full lg:w-1/4 mt-3">
         {#if ipoNews?.length !== 0}
           <div
-            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit"
+            class="w-full border border-gray-400 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit"
           >
             <div class="p-4 text-sm">
               <h3 class="text-xl font-bold mb-3">IPO News</h3>

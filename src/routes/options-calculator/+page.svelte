@@ -835,19 +835,19 @@
 
                     <Combobox.Input
                       on:input={search}
-                      class="text-sm  controls-input shadow-sm focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-3 py-2 pl-8 xs:pl-10 grow w-full "
+                      class="text-sm  controls-input shadow-xs focus:outline-hidden border border-gray-400 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-3 py-2 pl-8 xs:pl-10 grow w-full "
                       placeholder="Add new stock..."
                       aria-label="Add new stock..."
                     />
                   </div>
                   <Combobox.Content
-                    class="z-10 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-default px-1 py-2 shadow-sm outline-hidden"
+                    class="z-10 rounded border border-gray-400 dark:border-gray-700 bg-white dark:bg-default px-1 py-2 shadow-xs outline-hidden"
                     sideOffset={8}
                   >
                     {#if inputValue?.length !== 0 && inputValue !== selectedTicker}
                       {#each searchBarData as searchItem}
                         <Combobox.Item
-                          class="py-2.5 cursor-pointer border-b border-gray-300 dark:border-gray-500 last:border-none flex h-fit w-auto select-none items-center rounded-button  px-2  text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-200 dark:data-highlighted:bg-primary"
+                          class="py-2.5 cursor-pointer border-b border-gray-400 dark:border-gray-500 last:border-none flex h-fit w-auto select-none items-center rounded-button  px-2  text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-200 dark:data-highlighted:bg-primary"
                           value={searchItem?.symbol}
                           label={searchItem?.symbol}
                           on:click={(e) => changeTicker(searchItem)}
@@ -874,7 +874,7 @@
                       {/each}
                     {:else}
                       <Combobox.Item
-                        class="cursor-pointer border-b border-gray-300 dark:border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-1.5 pl-5 pr-1.5 text-sm capitalize outline-hidden"
+                        class="cursor-pointer border-b border-gray-400 dark:border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-1.5 pl-5 pr-1.5 text-sm capitalize outline-hidden"
                       >
                         <span class=" text-sm text-muted dark:text-white">
                           {inputValue?.length > 0
@@ -889,7 +889,7 @@
                 <button
                   type="button"
                   on:click={() => handleAddOptionLeg()}
-                  class="cursor-pointer mt-3 sm:mt-0 sm:ml-3 align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
+                  class="cursor-pointer mt-3 sm:mt-0 sm:ml-3 align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm shadow-xs border-gray-400 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
                 >
                   <svg
                     class="-ml-0.5 h-5 w-5 text-gray-600 dark:text-gray-300"
@@ -908,7 +908,7 @@
                 <button
                   type="button"
                   on:click={handleSaveStrategy}
-                  class="cursor-pointer mt-3 sm:mt-0 sm:ml-3 align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm shadow-sm border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
+                  class="cursor-pointer mt-3 sm:mt-0 sm:ml-3 align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm shadow-xs border-gray-400 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
                 >
                   <svg
                     class="w-3.5 h-3.5 inline-block cursor-pointer shrink-0"
@@ -922,13 +922,13 @@
                   Save Trade
                 </button>
                 <div
-                  class="order-last relative inline-block text-left cursor-pointer mt-3 sm:mt-0 sm:ml-3 shadow-sm"
+                  class="order-last relative inline-block text-left cursor-pointer mt-3 sm:mt-0 sm:ml-3 shadow-xs"
                 >
                   <DropdownMenu.Root>
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
+                        class="w-full border-gray-400 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                       >
                         <span class="truncate">Custom Strategy</span>
                         <svg
@@ -983,7 +983,7 @@
 
               <!-- Table container -->
               <div
-                class="overflow-x-auto border border-gray-300 dark:border-gray-600 rounded bg-[#F8F9FA] dark:bg-secondary"
+                class="overflow-x-auto border border-gray-400 dark:border-gray-600 rounded bg-[#F8F9FA] dark:bg-secondary"
               >
                 <table
                   class="min-w-full divide-y divide-gray-200 dark:divide-gray-600"
@@ -1063,7 +1063,7 @@
                             value={userStrategy[index]?.quantity}
                             min="0"
                             on:input={(e) => handleQuantityInput(e, index)}
-                            class="border border-gray-300 dark:border-gray-500 rounded px-2 py-1 w-20 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                            class="border border-gray-400 dark:border-gray-500 rounded px-2 py-1 w-20 focus:outline-none focus:ring-1 focus:ring-blue-500"
                           />
                         </td>
                         <td class="px-4 whitespace-nowrap py-2">
@@ -1071,7 +1071,7 @@
                             <DropdownMenu.Trigger asChild let:builder>
                               <Button
                                 builders={[builder]}
-                                class="mb-1 border border-gray-300 dark:border-none  bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded truncate"
+                                class="mb-1 border border-gray-400 dark:border-none  bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded truncate"
                               >
                                 <span class="truncate text-sm"
                                   >{formatDate(userStrategy[index]?.date)}</span
@@ -1116,7 +1116,7 @@
                             <DropdownMenu.Trigger asChild let:builder>
                               <Button
                                 builders={[builder]}
-                                class="mb-1 border border-gray-300 dark:border-none  bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded truncate"
+                                class="mb-1 border border-gray-400 dark:border-none  bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded truncate"
                               >
                                 <span class="truncate text-sm"
                                   >{userStrategy[index]?.strike}</span
@@ -1171,7 +1171,7 @@
                             min="0"
                             value={userStrategy[index]?.optionPrice}
                             on:input={(e) => handleOptionPriceInput(e, index)}
-                            class="border border-gray-300 dark:border-gray-500 rounded px-2 py-1 w-24 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                            class="border border-gray-400 dark:border-gray-500 rounded px-2 py-1 w-24 focus:outline-none focus:ring-1 focus:ring-blue-500"
                           />
                         </td>
                         <td class="px-4 whitespace-nowrap py-2 select-none">
@@ -1210,7 +1210,7 @@
                 </h2>
 
                 <div
-                  class="shadow-sm border border-gray-300 dark:border-gray-800 rounded"
+                  class="shadow-xs border border-gray-400 dark:border-gray-800 rounded"
                   use:highcharts={config}
                 ></div>
               {:else}
@@ -1219,7 +1219,7 @@
                 >
                   <div class="relative">
                     <label
-                      class="shadow-sm bg-gray-300 dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                      class="shadow-xs bg-gray-300 dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                     >
                       <span
                         class="loading loading-spinner loading-md text-muted dark:text-gray-400"
@@ -1238,7 +1238,7 @@
 
                 <!-- Trade Information Card -->
                 <div
-                  class="border border-gray-300 dark:border-gray-800 rounded-lg p-3 sm:p-4 mb-6 shadow-sm max-w-sm"
+                  class="border border-gray-400 dark:border-gray-800 rounded-lg p-3 sm:p-4 mb-6 shadow-xs max-w-sm"
                 >
                   {#each userStrategy as item, index}
                     <div>

@@ -3,7 +3,7 @@
 </script>
 
 <div
-  class="rounded mt-5 bg-white dark:bg-[#121217] border-gray-400 dark:border-gray-800 border p-0 sm:p-3 flex flex-row items-center"
+  class="rounded mt-5 bg-white dark:bg-[#121217] border-gray-300 dark:border-gray-800 border p-0 sm:p-3 flex flex-row items-center"
 >
   <svg
     class="h-[22px] w-[22px] shrink-0 hidden sm:inline-block"

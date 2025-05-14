@@ -34,18 +34,18 @@
     class="no-scrollbar flex justify-start items-center w-screen sm:w-full mt-6 m-auto overflow-x-auto pr-5 sm:pr-0"
   >
     <table
-      class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
+      class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto"
     >
       <thead class="text-muted dark:text-white dark:bg-default">
         <tr>
           <th
-            class="border-b border-r border-gray-300 dark:border-gray-800 font-semibold text-sm text-start"
+            class="border-b border-r border-gray-400 dark:border-gray-800 font-semibold text-sm text-start"
           >
             Period Ending
           </th>
           {#each dateData as item}
             <th
-              class="z-20 border-b border-r min-w-[120px] border-gray-300 dark:border-gray-800 font-semibold text-sm text-end"
+              class="z-20 border-b border-r min-w-[120px] border-gray-400 dark:border-gray-800 font-semibold text-sm text-end"
             >
               {formatDate(item)}
             </th>
@@ -56,7 +56,7 @@
         {#each names as name, index}
           <tr class="odd:bg-[#F6F7F8] dark:odd:bg-odd">
             <th
-              class="whitespace-nowrap text-sm sm:text-[1rem] font-normal text-start border-b border-r border-gray-300 dark:border-gray-800"
+              class="whitespace-nowrap text-sm sm:text-[1rem] font-normal text-start border-b border-r border-gray-400 dark:border-gray-800"
             >
               {#if title !== "Revenue by Geography" && getHref}
                 <a
@@ -71,7 +71,7 @@
             </th>
             {#each categoryValues[index] as value}
               <td
-                class="whitespace-nowrap text-sm sm:text-[1rem] text-end border-b border-r border-gray-300 dark:border-gray-800"
+                class="whitespace-nowrap text-sm sm:text-[1rem] text-end border-b border-r border-gray-400 dark:border-gray-800"
               >
                 {@html value !== null && value !== undefined && value !== 0
                   ? abbreviateNumber(value, false, true)
@@ -81,7 +81,7 @@
           </tr>
           <tr>
             <td
-              class="whitespace-nowrap text-sm sm:text-[1rem] font-normal text-start border-b border-r border-gray-300 dark:border-gray-800"
+              class="whitespace-nowrap text-sm sm:text-[1rem] font-normal text-start border-b border-r border-gray-400 dark:border-gray-800"
             >
               <span class="ml-2">{name} Revenue Growth</span>
             </td>
@@ -93,7 +93,7 @@
                   : growthValue < 0
                     ? 'text-red-800 dark:text-[#FF2F1F]'
                     : ''} 
-                border-b border-r border-gray-300 dark:border-gray-800"
+                border-b border-r border-gray-400 dark:border-gray-800"
               >
                 {formatGrowth(growthValue)}
               </td>

@@ -29,7 +29,7 @@
     </div>
   </section>
 
-  <section class="border-t border-gray-300 dark:border-gray-600">
+  <section class="border-t border-gray-400 dark:border-gray-600">
     <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
       <div class="lg:text-center">
         <h2 class="mt-2 text-3xl font-bold leading-8 sm:text-4xl">

@@ -638,7 +638,7 @@
               </h2>
               <a
                 href="/options-flow"
-                class="border shadow-sm text-sm border-gray-300 dark:border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 pl-3 pr-4 font-semibold sm:hover:bg-gray-100 dark:sm:hover:bg-default/60 ease-out dark:sm:hover:text-gray-300"
+                class="border shadow-xs text-sm border-gray-400 dark:border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 pl-3 pr-4 font-semibold sm:hover:bg-gray-100 dark:sm:hover:bg-default/60 ease-out dark:sm:hover:text-gray-300"
               >
                 <Star class="inline-block w-5 h-5" />
                 <span class="ml-1 text-sm"> Add Contracts </span>
@@ -646,7 +646,7 @@
               {#if editMode}
                 <label
                   on:click={handleDelete}
-                  class="border shadow-sm text-sm border-gray-300 dark:border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 pl-3 pr-4 font-semibold sm:hover:bg-gray-100 dark:sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
+                  class="border shadow-xs text-sm border-gray-400 dark:border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 pl-3 pr-4 font-semibold sm:hover:bg-gray-100 dark:sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
                 >
                   <svg
                     class="inline-block w-5 h-5"
@@ -665,7 +665,7 @@
 
               <label
                 on:click={() => (editMode = !editMode)}
-                class="border shadow-sm text-sm border-gray-300 dark:border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 pl-3 pr-4 font-semibold sm:hover:bg-gray-100 dark:sm:hover:bg-default/60 ease-out sm:hover:text-gray-800 dark:sm:hover:text-gray-200"
+                class="border shadow-xs text-sm border-gray-400 dark:border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 pl-3 pr-4 font-semibold sm:hover:bg-gray-100 dark:sm:hover:bg-default/60 ease-out sm:hover:text-gray-800 dark:sm:hover:text-gray-200"
               >
                 <svg
                   class="inline-block w-5 h-5"
@@ -692,7 +692,7 @@
               class="w-full rounded-md overflow-hidden overflow-x-auto no-scrollbar"
             >
               <table
-                class="table table-sm table-compact rounded-none sm:rounded-md w-full m-auto mt-2 overflow-x-auto border border-gray-300 dark:border-gray-800"
+                class="table table-sm table-compact rounded-none sm:rounded-md w-full m-auto mt-2 overflow-x-auto border border-gray-400 dark:border-gray-800"
               >
                 <thead>
                   <TableHeader {columns} {sortOrders} {sortData} />
@@ -877,7 +877,7 @@
               {:else}
                 <a
                   href="/options-flow"
-                  class="w-64 flex mt-5 justify-center items-center m-auto btn bg-blue-700 sm:hover:bg-blue-600 border border-gray-300 dark:border-gray-600 group"
+                  class="w-64 flex mt-5 justify-center items-center m-auto btn bg-blue-700 sm:hover:bg-blue-600 border border-gray-400 dark:border-gray-600 group"
                 >
                   <span class="font-semibold text-[1rem]"
                     >Follow the Whales
@@ -916,7 +916,7 @@
   <div
     class="modal-box bg-white dark:bg-default w-full {rawDataHistory?.length > 0
       ? 'max-w-7xl'
-      : 'w-full'} rounded-md border-t sm:border border-gray-300 dark:border-gray-800 min-h-48 h-auto"
+      : 'w-full'} rounded-md border-t sm:border border-gray-400 dark:border-gray-800 min-h-48 h-auto"
   >
     <form
       method="dialog"
@@ -949,7 +949,7 @@
     </form>
     {#if rawDataHistory?.length > 0}
       <div
-        class="border-b border-gray-300 dark:border-gray-800 w-full mt-2 mb-2 sm:mb-3 sm:mt-3"
+        class="border-b border-gray-400 dark:border-gray-800 w-full mt-2 mb-2 sm:mb-3 sm:mt-3"
       ></div>
 
       <div class="hidden sm:flex flex-wrap pb-2">
@@ -988,15 +988,15 @@
             <label
               on:click={() => (selectGraphType = item)}
               class="px-3 py-1.5 {selectGraphType === item
-                ? 'shadow-sm bg-gray-100 dark:bg-white text-black '
-                : 'shadow-sm text-opacity-[0.6] border border-gray-300 dark:border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+                ? 'shadow-xs bg-gray-100 dark:bg-white text-black '
+                : 'shadow-xs text-opacity-[0.6] border border-gray-400 dark:border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
             >
               {item}
             </label>
           {/each}
         </div>
         <div
-          class="mt-2 border border-gray-300 dark:border-gray-800 rounded"
+          class="mt-2 border border-gray-400 dark:border-gray-800 rounded"
           use:highcharts={config}
         ></div>
       </div>
@@ -1009,7 +1009,7 @@
         <div class="flex justify-start items-center m-auto cursor-normal">
           {#if isLoaded}
             <table
-              class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
+              class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto mt-4"
             >
               <thead class="text-muted dark:text-white dark:bg-default">
                 <tr class="">
@@ -1108,7 +1108,7 @@
             <div class="m-auto flex justify-center items-center h-80">
               <div class="relative">
                 <label
-                  class="shadow-sm bg-gray-300 dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                  class="shadow-xs bg-gray-300 dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                 >
                   <span
                     class="loading loading-spinner loading-md text-muted dark:text-gray-400"

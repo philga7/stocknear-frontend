@@ -439,7 +439,7 @@
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
                       builders={[builder]}
-                      class="w-full border-gray-300 shadow-sm dark:border-gray-600 border sm:hover:bg-gray-100 dark:bg-default dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                      class="w-full border-gray-400 shadow-xs dark:border-gray-600 border sm:hover:bg-gray-100 dark:bg-default dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                     >
                       <span class="truncate">{sortBy}</span>
                       <svg
@@ -491,7 +491,7 @@
               </div>
               <Button
                 on:click={() => exportData("csv")}
-                class="ml-2 w-fit border-gray-300 shadow-sm dark:border-gray-600 border sm:hover:bg-gray-100 dark:bg-default dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                class="ml-2 w-fit border-gray-400 shadow-xs dark:border-gray-600 border sm:hover:bg-gray-100 dark:bg-default dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
               >
                 <span class="truncate">Download</span>
                 <svg
@@ -512,7 +512,7 @@
 
         {#if historyList?.length !== 0}
           <div
-            class="shadow-sm border border-gray-300 dark:border-gray-800 rounded"
+            class="shadow-xs border border-gray-400 dark:border-gray-800 rounded"
             use:highcharts={config}
           ></div>
 
@@ -523,7 +523,7 @@
 
             <div class=" w-full overflow-x-auto">
               <table
-                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
+                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto mt-4"
               >
                 <thead class="text-muted dark:text-white dark:bg-default">
                   <tr>

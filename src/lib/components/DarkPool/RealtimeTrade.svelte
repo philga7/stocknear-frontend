@@ -237,7 +237,7 @@
       <div
         class="{!['Pro']?.includes(data?.user?.tier)
           ? 'blur-[3px]'
-          : ''}  border border-gray-300 dark:border-gray-800 rounded"
+          : ''}  border border-gray-400 dark:border-gray-800 rounded"
         use:highcharts={config}
       ></div>
       <!-- Overlay with "Upgrade to Pro" -->

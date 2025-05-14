@@ -112,7 +112,7 @@
     </div>
   </section>
 
-  <section class="border-t border-gray-300 dark:border-0 dark:border-gray-600">
+  <section class="border-t border-gray-400 dark:border-0 dark:border-gray-600">
     <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
       <dl
         class="space-y-10 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-12 md:space-y-0"

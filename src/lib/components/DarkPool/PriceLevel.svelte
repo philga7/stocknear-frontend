@@ -170,20 +170,20 @@
             {#if data?.user?.tier === "Pro" || index === 0}
               <label
                 on:click={() => (category = item)}
-                class="px-3 py-1 text-sm border border-gray-300 dark:border-gray-700 {category ===
+                class="px-3 py-1 text-sm border border-gray-400 dark:border-gray-700 {category ===
                 item
-                  ? 'bg-gray-300 shadow-sm dark:bg-white text-black '
-                  : ' shadow-sm bg-gray-100 dark:bg-table text-opacity-[0.6]'} transition ease-out duration-100 rounded cursor-pointer"
+                  ? 'bg-gray-300 shadow-xs dark:bg-white text-black '
+                  : ' shadow-xs bg-gray-100 dark:bg-table text-opacity-[0.6]'} transition ease-out duration-100 rounded cursor-pointer"
               >
                 {item}
               </label>
             {:else if data?.user?.tier !== "Pro"}
               <a
                 href="/pricing"
-                class="px-3 py-1 text-sm flex flex-row items-center border border-gray-300 dark:border-gray-700 {category ===
+                class="px-3 py-1 text-sm flex flex-row items-center border border-gray-400 dark:border-gray-700 {category ===
                 item
-                  ? 'bg-gray-300 shadow-sm dark:bg-white text-black '
-                  : ' shadow-sm bg-gray-100 dark:bg-table text-opacity-[0.6]'} transition ease-out duration-100 rounded cursor-pointer"
+                  ? 'bg-gray-300 shadow-xs dark:bg-white text-black '
+                  : ' shadow-xs bg-gray-100 dark:bg-table text-opacity-[0.6]'} transition ease-out duration-100 rounded cursor-pointer"
               >
                 {item}
                 <svg
@@ -202,7 +202,7 @@
 
         {#if category === "Price Level"}
           <div
-            class="border border-gray-300 dark:border-gray-800 rounded w-full"
+            class="border border-gray-400 dark:border-gray-800 rounded w-full"
             use:highcharts={config}
           ></div>
         {:else}

@@ -103,7 +103,7 @@
                 </div>
               </div>
               <div
-                class="mt-4 grid grid-cols-2 overflow-hidden rounded border border-gray-300 dark:border-gray-600 py-2 text-center md:grid-cols-5 md:p-0 lg:mt-0 lg:border-none"
+                class="mt-4 grid grid-cols-2 overflow-hidden rounded border border-gray-400 dark:border-gray-600 py-2 text-center md:grid-cols-5 md:p-0 lg:mt-0 lg:border-none"
               >
                 <div class="flex flex-col px-4 py-2 bp:px-6 md:py-6">
                   <div class="text-2xl font-bold tracking-tight">
@@ -117,7 +117,7 @@
                 </div>
 
                 <div
-                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-300 dark:sm:border-gray-600 md:py-6"
+                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-400 dark:sm:border-gray-600 md:py-6"
                 >
                   <div class="text-2xl font-semibold tracking-tight">
                     {data?.getHedgeFundsData?.holdings?.length?.toLocaleString(
@@ -131,7 +131,7 @@
                   </div>
                 </div>
                 <div
-                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-300 dark:sm:border-gray-600 md:py-6"
+                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-400 dark:sm:border-gray-600 md:py-6"
                 >
                   <div class="text-2xl font-bold tracking-tight">
                     {hedgeFundStats?.averageHoldingPeriod} months
@@ -144,7 +144,7 @@
                 </div>
 
                 <div
-                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-300 dark:sm:border-gray-600 md:py-6"
+                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-400 dark:sm:border-gray-600 md:py-6"
                 >
                   <div class="text-2xl font-bold tracking-tight">
                     <span
@@ -161,7 +161,7 @@
                   </div>
                 </div>
                 <div
-                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-300 dark:sm:border-gray-600 md:py-6"
+                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-400 dark:sm:border-gray-600 md:py-6"
                 >
                   <div class="text-2xl font-bold tracking-tight">
                     <span
@@ -184,7 +184,7 @@
 
             <div class="mb-10 mt-10">
               <div
-                class="relative my-3 space-y-2 rounded border border-gray-300 dark:border-gray-600 sm:my-6 p-4"
+                class="relative my-3 space-y-2 rounded border border-gray-400 dark:border-gray-600 sm:my-6 p-4"
               >
                 <div class="flex flex-col sm:flex-row">
                   <div class="mb-2 font-semibold sm:mb-0">Main Sectors:</div>

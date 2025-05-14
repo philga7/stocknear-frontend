@@ -166,7 +166,7 @@
                 </div>
               </div>
               <div
-                class="mt-4 grid grid-cols-2 overflow-hidden rounded border border-gray-300 dark:border-gray-800 py-2 text-center md:grid-cols-4 md:p-0 lg:mt-0 lg:border-none"
+                class="mt-4 grid grid-cols-2 overflow-hidden rounded border border-gray-400 dark:border-gray-800 py-2 text-center md:grid-cols-4 md:p-0 lg:mt-0 lg:border-none"
               >
                 <div class="flex flex-col px-4 py-2 bp:px-6 md:py-6">
                   <div class="text-xl sm:text-2xl font-bold tracking-tight">
@@ -183,7 +183,7 @@
                 </div>
 
                 <div
-                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l border-gray-300 dark:sm:border-gray-800 md:py-6"
+                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l border-gray-400 dark:sm:border-gray-800 md:py-6"
                 >
                   <div class="text-xl sm:text-2xl font-semibold tracking-tight">
                     {numOfTrades?.toLocaleString("en-US")}
@@ -196,7 +196,7 @@
                 </div>
 
                 <div
-                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l border-gray-300 dark:sm:border-gray-800 md:py-6"
+                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l border-gray-400 dark:sm:border-gray-800 md:py-6"
                 >
                   <div class="text-xl sm:text-2xl font-semibold tracking-tight">
                     {lastTradedDate?.length !== undefined
@@ -215,7 +215,7 @@
                   </div>
                 </div>
                 <div
-                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l border-gray-300 dark:sm:border-gray-800 md:py-6"
+                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l border-gray-400 dark:sm:border-gray-800 md:py-6"
                 >
                   <div class="text-xl sm:text-2xl font-bold tracking-tight">
                     {buySellRatio?.toFixed(2)}
@@ -232,7 +232,7 @@
             {#if mainSectors?.length !== 0}
               <div class="mb-10 mt-10">
                 <div
-                  class="relative my-3 space-y-2 rounded border border-gray-300 dark:border-gray-800 sm:my-6 p-4"
+                  class="relative my-3 space-y-2 rounded border border-gray-400 dark:border-gray-800 sm:my-6 p-4"
                 >
                   <div class="flex flex-col sm:flex-row">
                     <div class="mb-2 font-semibold sm:mb-0">Main Sectors:</div>
@@ -272,7 +272,7 @@
 
             <div class="w-full overflow-x-auto">
               <table
-                class="mt-5 table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
+                class="mt-5 table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto"
               >
                 <!-- head -->
                 <thead class="text-muted dark:text-white dark:bg-default">

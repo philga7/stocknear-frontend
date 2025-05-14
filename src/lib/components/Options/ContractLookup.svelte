@@ -532,7 +532,7 @@
         />
 
         <div
-          class="rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 shadow-sm dark:bg-primary p-2 mt-5"
+          class="rounded-md border border-gray-400 dark:border-gray-700 bg-gray-100 shadow-xs dark:bg-primary p-2 mt-5"
         >
           <div class="items-end">
             <div
@@ -540,7 +540,7 @@
             >
               <!--Start Added Rules-->
               <div
-                class="flex items-center justify-between space-x-2 px-1 py-1.5 leading-tight sm:py-0 border-b border-gray-300 dark:border-gray-600"
+                class="flex items-center justify-between space-x-2 px-1 py-1.5 leading-tight sm:py-0 border-b border-gray-400 dark:border-gray-600"
               >
                 <div class="hide-scroll mb-1">
                   Date Expiration
@@ -572,7 +572,7 @@
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
                       builders={[builder]}
-                      class="mb-1 border-gray-300 dark:border-none shadow-sm bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
+                      class="mb-1 border-gray-400 dark:border-none shadow-xs bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
                     >
                       <span class="truncate text-sm"
                         >{formatDate(selectedDate)}</span
@@ -638,7 +638,7 @@
                 </DropdownMenu.Root>
               </div>
               <div
-                class="flex items-center justify-between space-x-2 px-1 py-1.5 leading-tight sm:py-0 border-b border-gray-300 dark:border-gray-600"
+                class="flex items-center justify-between space-x-2 px-1 py-1.5 leading-tight sm:py-0 border-b border-gray-400 dark:border-gray-600"
               >
                 <div class="hide-scroll mb-1">
                   Strike Price
@@ -670,7 +670,7 @@
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
                       builders={[builder]}
-                      class="mb-1 border-gray-300 dark:border-none shadow-sm bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
+                      class="mb-1 border-gray-400 dark:border-none shadow-xs bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
                     >
                       <span class="truncate text-sm"
                         >{selectedStrike ?? "n/a"}</span
@@ -713,7 +713,7 @@
                 </DropdownMenu.Root>
               </div>
               <div
-                class="flex items-center justify-between space-x-2 px-1 py-1.5 leading-tight sm:py-0 border-b border-gray-300 dark:border-gray-600"
+                class="flex items-center justify-between space-x-2 px-1 py-1.5 leading-tight sm:py-0 border-b border-gray-400 dark:border-gray-600"
               >
                 <div class="hide-scroll mb-1">
                   Option Type
@@ -744,7 +744,7 @@
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
                       builders={[builder]}
-                      class="mb-1 border-gray-300 dark:border-none shadow-sm bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
+                      class="mb-1 border-gray-400 dark:border-none shadow-xs bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
                     >
                       <span class="truncate text-sm">{selectedOptionType}</span>
                       <svg
@@ -809,7 +809,7 @@
               <table class="w-[50%] text-sm sm:text-[1rem] xl:min-w-[300px]">
                 <tbody
                   ><tr
-                    class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-400 dark:border-gray-600 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
                       >Last</td
@@ -821,7 +821,7 @@
                   >
 
                   <tr
-                    class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-400 dark:border-gray-600 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
                       >High</td
@@ -833,7 +833,7 @@
                   >
 
                   <tr
-                    class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-400 dark:border-gray-600 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
                       >Low</td
@@ -845,7 +845,7 @@
                   >
 
                   <tr
-                    class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-400 dark:border-gray-600 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
                       >Open
@@ -856,7 +856,7 @@
                     ></tr
                   >
                   <tr
-                    class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-400 dark:border-gray-600 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
                       >Volume
@@ -869,7 +869,7 @@
                     ></tr
                   >
                   <tr
-                    class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-400 dark:border-gray-600 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
                       >Open Interest
@@ -886,7 +886,7 @@
               <table class="w-[50%] text-sm xl:min-w-[300px]">
                 <tbody
                   ><tr
-                    class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-400 dark:border-gray-600 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
                       >Implied Volatility (IV)</td
@@ -902,7 +902,7 @@
                   >
 
                   <tr
-                    class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-400 dark:border-gray-600 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
                       >Delta</td
@@ -914,7 +914,7 @@
                   >
 
                   <tr
-                    class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-400 dark:border-gray-600 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
                       >Gamma</td
@@ -926,7 +926,7 @@
                   >
 
                   <tr
-                    class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-400 dark:border-gray-600 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
                       >Theta</td
@@ -938,7 +938,7 @@
                     </td></tr
                   >
                   <tr
-                    class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+                    class="flex flex-col border-b border-gray-400 dark:border-gray-600 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
                       >Vega</td
@@ -980,8 +980,8 @@
                       class="px-3 py-1.5 text-sm {index === 0
                         ? 'mr-2'
                         : ''} {selectGraphType === item
-                        ? 'shadow-sm border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-white text-black '
-                        : 'shadow-sm text-opacity-[0.6] border border-gray-300 dark:border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+                        ? 'shadow-xs border border-gray-400 dark:border-gray-600 bg-gray-100 dark:bg-white text-black '
+                        : 'shadow-xs text-opacity-[0.6] border border-gray-400 dark:border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
                     >
                       {item}
                     </label>
@@ -994,7 +994,7 @@
                     <div class="relative">
                       <!-- Apply the blur class to the chart -->
                       <div
-                        class="mt-5 shadow-sm sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
+                        class="mt-5 shadow-xs sm:mt-0 sm:border sm:border-gray-400 dark:border-gray-800 rounded"
                         use:highcharts={config}
                       ></div>
                     </div>
@@ -1012,7 +1012,7 @@
                 class="flex justify-start items-center m-auto overflow-x-auto cursor-normal"
               >
                 <table
-                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
+                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto mt-4"
                 >
                   <thead class="text-muted dark:text-white dark:bg-default">
                     <tr class="">
@@ -1118,7 +1118,7 @@
             <div class="flex justify-center items-center h-80">
               <div class="relative">
                 <label
-                  class="shadow-sm bg-gray-300 dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                  class="shadow-xs bg-gray-300 dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                 >
                   <span
                     class="loading loading-spinner loading-md text-muted dark:text-gray-400"
@@ -1145,7 +1145,7 @@
 
     <!-- Desktop modal content -->
     <div
-      class="modal-box rounded-md border border-gray-300 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
+      class="modal-box rounded-md border border-gray-400 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
     >
       <div class=" mb-5 text-center">
         <h3 class="font-bold text-2xl mb-5">{tooltipTitle}</h3>
@@ -1158,7 +1158,7 @@
         {/if}
       </div>
 
-      <div class="border-t border-gray-300 dark:border-gray-600 mt-2 w-full">
+      <div class="border-t border-gray-400 dark:border-gray-600 mt-2 w-full">
         <label
           for="mobileTooltip"
           class="cursor-pointer mt-4 font-semibold text-xl m-auto flex justify-center"

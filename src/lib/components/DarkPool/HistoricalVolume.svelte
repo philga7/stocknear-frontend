@@ -451,7 +451,7 @@
             <div
               class="{!['Pro']?.includes(data?.user?.tier)
                 ? 'blur-[3px]'
-                : ''} mt-5 shadow-sm sm:mt-0 border border-gray-300 dark:border-gray-800 rounded"
+                : ''} mt-5 shadow-xs sm:mt-0 border border-gray-400 dark:border-gray-800 rounded"
               use:highcharts={config}
             ></div>
             <!-- Overlay with "Upgrade to Pro" -->
@@ -481,7 +481,7 @@
       </div>
 
       <div
-        class="mt-5 flex flex-col sm:flex-row items-start sm:items-center w-full justify-between sm:border-y border-gray-300 dark:border-gray-800 sm:pt-2 sm:pb-2"
+        class="mt-5 flex flex-col sm:flex-row items-start sm:items-center w-full justify-between sm:border-y border-gray-400 dark:border-gray-800 sm:pt-2 sm:pb-2"
       >
         <h3 class="text-xl sm:text-2xl font-bold mb-2 sm:mb-0">
           Dark Pool Table
@@ -540,7 +540,7 @@
 
       <div class="w-full overflow-x-auto mt-3">
         <table
-          class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
+          class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto"
         >
           <thead>
             <TableHeader {columns} {sortOrders} {sortData} />

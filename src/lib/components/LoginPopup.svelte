@@ -154,7 +154,7 @@ const output = await response.json();
   ></label>
 
   <div
-    class="modal-box w-full bg-white shadow-sm dark:bg-[#18181B] sm:border sm:border-gray-600 rounded-none sm:rounded-lg {$screenWidth <
+    class="modal-box w-full bg-white shadow-xs dark:bg-[#18181B] sm:border sm:border-gray-600 rounded-none sm:rounded-lg {$screenWidth <
     640
       ? 'min-h-screen'
       : ''}"
@@ -1573,7 +1573,7 @@ const output = await response.json();
       <div class="absolute right-1/2 left-1/2 top-1/2 bottom-1/2">
         <div class="relative">
           <label
-            class="shadow-sm bg-gray-300 dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+            class="shadow-xs bg-gray-300 dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
           >
             <span
               class="loading loading-spinner loading-md text-muted dark:text-gray-400"

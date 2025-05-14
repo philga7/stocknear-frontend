@@ -298,7 +298,7 @@
                   {#if editMode}
                     <label
                       on:click={handleDeleteTickers}
-                      class="shadow-sm border text-sm border-gray-300 dark:border-gray-600 mr-2 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2.5 pl-3 pr-4 font-semibold sm:hover:bg-gray-100 dark:sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
+                      class="shadow-xs border text-sm border-gray-400 dark:border-gray-600 mr-2 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2.5 pl-3 pr-4 font-semibold sm:hover:bg-gray-100 dark:sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
                     >
                       <svg
                         class="inline-block w-5 h-5"
@@ -316,7 +316,7 @@
                   {/if}
                   <label
                     on:click={handleEditMode}
-                    class="shadow-sm border text-sm border-gray-300 dark:border-gray-600 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2 px-3 sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out sm:hover:text-red-500"
+                    class="shadow-xs border text-sm border-gray-400 dark:border-gray-600 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2 px-3 sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out sm:hover:text-red-500"
                   >
                     <svg
                       class="inline-block w-5 h-5"
@@ -368,19 +368,19 @@
                     </div>
                     <Combobox.Input
                       on:input={search}
-                      class="shadow-sm text-sm sm:text-[1rem] controls-input focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded-md placeholder:text-muted/80 dark:placeholder:text-white/80 px-3 py-2 pl-8 xs:pl-10 grow w-full sm:min-w-56 max-w-xs"
+                      class="shadow-xs text-sm sm:text-[1rem] controls-input focus:outline-hidden border border-gray-400 dark:border-gray-600 rounded-md placeholder:text-muted/80 dark:placeholder:text-white/80 px-3 py-2 pl-8 xs:pl-10 grow w-full sm:min-w-56 max-w-xs"
                       placeholder="Add new stock"
                       aria-label="Add new stock"
                     />
                   </div>
                   <Combobox.Content
-                    class="w-auto z-10 rounded-md bg-white dark:bg-default border border-gray-300 dark:border-gray-700  px-1 py-3 shadow-sm outline-hidden"
+                    class="w-auto z-10 rounded-md bg-white dark:bg-default border border-gray-400 dark:border-gray-700  px-1 py-3 shadow-xs outline-hidden"
                     sideOffset={8}
                   >
                     {#if inputValue?.length > 0}
                       {#each searchBarData as item}
                         <Combobox.Item
-                          class="cursor-pointer border-b border-gray-300 dark:border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-5 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-100 dark:data-highlighted:bg-primary"
+                          class="cursor-pointer border-b border-gray-400 dark:border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-3 pl-5 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-100 dark:data-highlighted:bg-primary"
                           value={item.symbol}
                           label={item.name}
                           on:click={(e) =>
@@ -406,7 +406,7 @@
                       {/each}
                     {:else}
                       <Combobox.Item
-                        class="cursor-pointer border-b border-gray-300 dark:border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-1.5 pl-5 pr-1.5 text-sm capitalize outline-hidden"
+                        class="cursor-pointer border-b border-gray-400 dark:border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-1.5 pl-5 pr-1.5 text-sm capitalize outline-hidden"
                       >
                         <span class=" text-sm text-muted dark:text-white">
                           No results found
@@ -423,7 +423,7 @@
                 class="w-full rounded-md overflow-hidden overflow-x-auto no-scrollbar"
               >
                 <table
-                  class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
+                  class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-400 dark:border-gray-800 m-auto mt-4"
                 >
                   <!-- head -->
                   <thead class="text-muted dark:text-white dark:bg-default">
@@ -535,7 +535,7 @@
               </div>
 
               <div
-                class="w-full m-auto border-b border-gray-300 dark:border-gray-600 mt-10 mb-5"
+                class="w-full m-auto border-b border-gray-400 dark:border-gray-600 mt-10 mb-5"
               ></div>
 
               <div class=" ">
@@ -598,13 +598,13 @@
                       <h3 class="mb-1.5 mt-3 font-semibold">
                         {date}
                       </h3>
-                      <div class="border border-gray-300 dark:border-gray-700">
-                        {#each titleGroups as { title, items, symbols }}
+                      <div class="border border-gray-400 dark:border-gray-700">
+                        {#each titleGroups as { title, items, symbols }, index}
                           <div
-                            class="flex border-gray-300 dark:border-gray-600 text-small"
+                            class="flex border-gray-400 dark:border-gray-600 text-small"
                           >
                             <div
-                              class="hidden min-w-[100px] items-center justify-center bg-gray-100 dark:bg-primary p-1 lg:flex"
+                              class="hidden min-w-[100px] items-center justify-center bg-gray-200 dark:bg-primary p-1 lg:flex"
                             >
                               {new Date(
                                 items[0].publishedDate,
@@ -615,13 +615,15 @@
                               })}
                             </div>
                             <div
-                              class="grow px-3 py-2 lg:py-1 border-t border-gray-300 dark:border-gray-700"
+                              class="grow px-3 py-2 lg:py-1 {index > 0
+                                ? 'border-t'
+                                : ''} border-gray-400 dark:border-gray-700"
                             >
                               <a
                                 href={items[0].url}
                                 target="_blank"
                                 rel="nofollow noopener noreferrer"
-                                class=" sm:hover:text-blue-400"
+                                class="sm:hover:text-blue-800 dark:sm:hover:text-blue-400"
                               >
                                 <h4
                                   class="text-sm font-semibold lg:text-[1rem]"
@@ -649,7 +651,7 @@
                                   {#each symbols as symbol}
                                     <a
                                       href={`/${items[0].type}/${symbol}`}
-                                      class="sm:hover: text-blue-400"
+                                      class="text-blue-800 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
                                     >
                                       {symbol}
                                     </a>
@@ -672,10 +674,10 @@
                     <h3 class="mb-1.5 mt-3 font-semibold text-faded">
                       {date}
                     </h3>
-                    <div class="border border-gray-300 dark:border-gray-700">
-                      {#each titleGroups as item}
+                    <div class="border border-gray-400 dark:border-gray-700">
+                      {#each titleGroups as item, index}
                         <div
-                          class="flex border-gray-300 dark:border-gray-600 text-small"
+                          class="flex border-gray-400 dark:border-gray-600 text-small"
                         >
                           <div
                             class="hidden min-w-[100px] items-center justify-center bg-gray-100 dark:bg-primary p-1 lg:flex"
@@ -683,7 +685,9 @@
                             {formatTime(item?.time)}
                           </div>
                           <div
-                            class="grow px-3 py-2 lg:py-1 border-t border-gray-300 dark:border-gray-700"
+                            class="grow px-3 py-2 lg:py-1 {index > 0
+                              ? 'border-t'
+                              : ''} border-gray-400 dark:border-gray-700"
                           >
                             <div>
                               <strong>{item?.name}</strong>

@@ -204,7 +204,7 @@
                 >
                   <!--Start Buy/Sell-->
                   <div
-                    class="flex flex-row items-center flex-wrap w-full px-3 sm:px-4 border border-gray-300 shadow-sm dark:border-gray-600 bg-gray-200 dark:bg-primary rounded-md h-20"
+                    class="flex flex-row items-center flex-wrap w-full px-3 sm:px-4 border border-gray-400 shadow-xs dark:border-gray-600 bg-gray-200 dark:bg-primary rounded-md h-20"
                   >
                     <div class="flex flex-col items-start">
                       <span class="font-semibold text-sm sm:text-[1rem]"
@@ -262,7 +262,7 @@
                   <!--End Buy/Sell-->
                   <!--Start Dem/Rep-->
                   <div
-                    class="flex flex-row items-center flex-wrap w-full px-3 sm:px-4 border border-gray-300 shadow-sm dark:border-gray-600 bg-gray-200 dark:bg-primary rounded-md h-20"
+                    class="flex flex-row items-center flex-wrap w-full px-3 sm:px-4 border border-gray-400 shadow-xs dark:border-gray-600 bg-gray-200 dark:bg-primary rounded-md h-20"
                   >
                     <div class="flex flex-col items-start">
                       <span class="font-semibold text-sm sm:text-[1rem]"
@@ -324,7 +324,7 @@
                 class="mt-6 flex justify-start items-center w-full m-auto rounded-none sm:rounded mb-4 overflow-x-auto"
               >
                 <table
-                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
+                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto"
                 >
                   <thead>
                     <TableHeader {columns} {sortOrders} {sortData} />
@@ -427,7 +427,7 @@
             <div class="flex justify-center items-center h-80">
               <div class="relative">
                 <label
-                  class="shadow-sm bg-gray-300 dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                  class="shadow-xs bg-gray-300 dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                 >
                   <span
                     class="loading loading-spinner loading-md text-muted dark:text-gray-400"
