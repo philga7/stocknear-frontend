@@ -758,7 +758,7 @@
                             <a
                               href="/compare"
                               class="text-start w-full text-[1rem] text-muted dark:text-white ml-4 mt-4"
-                              >Compare Tool</a
+                              >Comparison Tool</a
                             >
                           </Button>
                         </div>
@@ -1299,7 +1299,7 @@
                           <a
                             href="/compare"
                             class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
-                            >Compare Tool</a
+                            >Comparison Tool</a
                           >
 
                           <a

@@ -7,6 +7,7 @@
   import { Combobox } from "bits-ui";
   import { toast } from "svelte-sonner";
   import Table from "$lib/components/Table/Table.svelte";
+  import Infobox from "$lib/components/Infobox.svelte";
 
   import { mode } from "mode-watcher";
   import highcharts from "$lib/highcharts.ts";
@@ -23,6 +24,17 @@
     { name: "Revenue", rule: "revenue" },
     { name: "Gross Profit", rule: "grossProfit" },
   ];
+  const excludedRules = new Set([
+    "volume",
+    "price",
+    "changesPercentage",
+    "revenue",
+    "eps",
+    "marketCap",
+    "grossProfit",
+    "priceToEarningsRatio",
+    "eps",
+  ]);
 
   let isLoaded = false;
   let configGraph = null;
@@ -82,6 +94,7 @@
   };
 
   async function changeCategory(category) {
+    isLoaded = false;
     selectedPlotCategory = category;
 
     downloadWorker?.postMessage({
@@ -90,6 +103,7 @@
     });
   }
   function addTicker(data) {
+    isLoaded = false;
     const ticker = data?.symbol?.trim()?.toUpperCase();
 
     if (tickerList?.includes(ticker)) {
@@ -509,8 +523,8 @@
 
       legend: {
         enabled: true,
-        align: "left", // left side
-        verticalAlign: "top", // top edge
+        align: "center", // left side
+        verticalAlign: "bottom", // top edge
         layout: "horizontal",
 
         // nudge in by 12px (≈ mt-3 / ml-3)
@@ -801,20 +815,25 @@
                   {data}
                   rawData={rawTableData}
                   {defaultList}
+                  {excludedRules}
                 />
               {/key}
             {/if}
 
             {#if configReturn && isLoaded && tickerList?.length > 0}
-              <h2 class="mt-8 mb-2 text-xl sm:text-2xl font-bold">
+              <h2 class="mt-8 text-xl -mb-2 sm:text-2xl font-bold">
                 Average Return
               </h2>
+              <Infobox
+                text="The average return is based on the stock’s total return, using the compounded annual growth rate (CAGR). It accounts for stock splits and includes dividends."
+              />
+
               <div
-                class=" border border-gray-300 dark:border-gray-800 rounded w-full"
+                class="mt-5 border border-gray-300 dark:border-gray-800 rounded w-full"
               >
                 <div class="shadow-sm" use:highcharts={configReturn}></div>
 
-                <div class="hidden px-4 pb-3 md:block">
+                <div class="mt-8 hidden px-4 pb-3 md:block">
                   <table class="w-full">
                     <thead
                       ><tr
