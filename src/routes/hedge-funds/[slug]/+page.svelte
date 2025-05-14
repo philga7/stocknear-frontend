@@ -87,7 +87,7 @@
                     style="clip-path: circle(50%);"
                     class="rounded-full w-10 sm:w-16"
                     src={defaultAvatar}
-                    loading="lazy"
+                    loading="eager"
                   />
                 </div>
 
@@ -149,8 +149,8 @@
                   <div class="text-2xl font-bold tracking-tight">
                     <span
                       class={hedgeFundStats?.winRate >= 0
-                        ? "before:content-['+'] text-[#36D984]"
-                        : "text-[#EF4444]"}
+                        ? "before:content-['+'] text-green-800 dark:text-[#36D984]"
+                        : "text-red-800 dark:text-[#EF4444]"}
                       >{hedgeFundStats?.winRate?.toFixed(2)}%</span
                     >
                   </div>
@@ -166,8 +166,8 @@
                   <div class="text-2xl font-bold tracking-tight">
                     <span
                       class={hedgeFundStats?.performancePercentage3Year >= 0
-                        ? "before:content-['+'] text-[#36D984]"
-                        : "text-[#EF4444]"}
+                        ? "before:content-['+'] text-green-800 dark:text-[#36D984]"
+                        : "text-red-800 dark:text-[#EF4444]"}
                       >{hedgeFundStats?.performancePercentage3Year?.toFixed(
                         2,
                       )}%</span
@@ -194,7 +194,7 @@
                         href={sectorNavigation?.find(
                           (listItem) => listItem?.title === item,
                         )?.link}
-                        class="inline-block badge bg-blue-50 dark:bg-primary duration-0 rounded-sm ml-1 px-3 m-auto text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted text-[1rem]"
+                        class="inline-block badge bg-blue-100 dark:bg-primary duration-0 rounded-sm ml-1 px-3 m-auto text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted text-[1rem]"
                       >
                         {item}
                       </a>
@@ -209,7 +209,7 @@
                     {#each data?.getHedgeFundsData?.mainIndustries as item}
                       <a
                         href={`/list/industry/${item?.replace(/ /g, "-")?.replace(/&/g, "and")?.replace(/-{2,}/g, "-")?.toLowerCase()}`}
-                        class="inline-block badge bg-blue-50 dark:bg-primary duration-0 rounded-sm ml-1 px-3 m-auto text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted text-[1rem]"
+                        class="inline-block badge bg-blue-100 dark:bg-primary duration-0 rounded-sm ml-1 px-3 m-auto text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted text-[1rem]"
                       >
                         {item}
                       </a>
