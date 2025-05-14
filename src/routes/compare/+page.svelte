@@ -948,7 +948,7 @@
                 <div
                   class="flex justify-start space-x-2 w-full left-4 absolute top-3.5 z-10"
                 >
-                  {#each ["1M", "3M", "YTD", "1Y", "3Y", "5Y", "Max"] as item}
+                  {#each ["1Y", "3Y", "5Y", "Max"] as item}
                     <label
                       on:click={() => changePlotPeriod(item)}
                       class="px-2 sm:px-3 py-1 {selectedPlotPeriod === item
