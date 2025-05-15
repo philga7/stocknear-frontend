@@ -139,7 +139,7 @@
       <h1
         class="block text-2xl lg:text-4xl text-muted dark:text-white font-bold text-center mb-10 relative w-fit flex justify-center m-auto"
       >
-        Real-Time Market Insights
+        Research your Trading Ideas
       </h1>
 
       <main class="flex flex-1 flex-col gap-4 sm:p-4 md:gap-8 text-start">

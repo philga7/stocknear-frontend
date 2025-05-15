@@ -126,7 +126,7 @@
   <div class="px-3">
     <div class="mx-auto text-center mb-8">
       <h1 class="text-4xl sm:text-5xl font-bold pb-4">
-        Big Insights for Pocket Change
+        Success is well-researched
       </h1>
     </div>
 
