@@ -645,7 +645,7 @@
             ${this.series.name}: ${this.y}%
           </span><br>
           <span class="text-white text-sm font-normal">
-            Index: ${this.x}
+           ${this.x}
           </span>
         `;
         },

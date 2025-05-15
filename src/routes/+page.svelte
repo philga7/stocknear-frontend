@@ -22,6 +22,7 @@
   let gainersList = data?.getDashboard?.gainers || [];
   let losersList = data?.getDashboard?.losers || [];
   let marketStatus = data?.getDashboard?.marketStatus ?? 0;
+
   let analystReport = data?.getDashboard?.analystReport || {};
   let wiim = data?.getDashboard?.wiim || [];
   let optionsFlowList = data?.getDashboard?.optionsFlow || [];
