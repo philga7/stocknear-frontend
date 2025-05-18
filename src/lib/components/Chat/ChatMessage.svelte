@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let message: { text: string; sender: "user" | "ai" };
+  export let message: { text: string; sender: "user" | "llm" };
   export let isLoading = false;
 </script>
 
@@ -15,7 +15,7 @@
       loading="lazy"
     />
     <div
-      class="rounded-lg p-3 min-w-14 w-full shadow border border-gray-300 dark:border-gray-600 {message?.sender ===
+      class="rounded-lg p-3 min-w-14 w-full shadow border border-gray-300 dark:border-gray-700 {message?.sender ===
       'user'
         ? 'ml-auto'
         : 'mr-auto'}"
@@ -25,7 +25,7 @@
           <span class="loading loading-dots loading-sm"></span>
         </div>
       {:else}
-        <p>{message?.text}</p>
+        <p>{@html message?.text}</p>
       {/if}
     </div>
   </div>

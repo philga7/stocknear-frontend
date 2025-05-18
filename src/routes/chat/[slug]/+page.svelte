@@ -6,8 +6,8 @@
 
   import { onMount } from "svelte";
 
-  let messages: { text: string; sender: "user" | "ai" }[] = [
-    { text: "Hello! How can I help you today?", sender: "ai" },
+  let messages: { text: string; sender: "user" | "llm" }[] = [
+    { text: "Hello! How can I help you today?", sender: "llm" },
   ];
 
   let inputText = "";
@@ -45,7 +45,7 @@
     messages = [
       ...messages,
       { text: userQuery, sender: "user" },
-      { text: "", sender: "ai" },
+      { text: "", sender: "llm" },
     ];
     inputText = "";
     resize();
@@ -101,24 +101,26 @@
   }
 </script>
 
-<section class="w-full max-w-8xl mx-auto min-h-[60vh] pt-5 px-4 lg:px-3">
+<section class="w-full max-w-7xl mx-auto h-full pt-5 px-4 lg:px-0">
   <div class="flex flex-col h-full">
     <main
-      class="flex-1 overflow-y-auto p-4 space-y-4"
+      class="w-full flex-1 overflow-y-auto p-4 space-y-4"
       bind:this={chatContainer}
     >
-      {#each messages as message, index}
-        {#if index === messages.length - 1 && message.sender === "ai" && isLoading}
-          <!-- only the very last AI message shows the spinner -->
-          <ChatMessage {message} isLoading={true} />
-        {:else}
-          <ChatMessage {message} isLoading={false} />
-        {/if}
-      {/each}
+      <div class="pb-60">
+        {#each messages as message, index}
+          {#if index === messages.length - 1 && message.sender === "llm" && isLoading}
+            <!-- only the very last AI message shows the spinner -->
+            <ChatMessage {message} isLoading={true} />
+          {:else}
+            <ChatMessage {message} isLoading={false} />
+          {/if}
+        {/each}
+      </div>
     </main>
 
     <div
-      class="absolute fixed bottom-10 left-1/2 transform -translate-x-1/2 block w-full max-w-5xl border border-gray-300 dark:border-gray-600 shadow-sm rounded-md overflow-hidden"
+      class="absolute fixed bottom-10 left-1/2 transform -translate-x-1/2 block w-11/12 sm:w-full max-w-5xl bg-default border border-gray-300 dark:border-gray-600 shadow-sm rounded-lg overflow-hidden"
     >
       <form
         on:submit|preventDefault={llmChat}
@@ -132,6 +134,12 @@
               bind:this={inputEl}
               bind:value={inputText}
               on:input={resize}
+              on:keydown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  llmChat();
+                }
+              }}
               placeholder="Ask anything"
               class="w-full flex-1 bg-transparent outline-none
           placeholder-gray-500 dark:placeholder-gray-200 text-gray-900
