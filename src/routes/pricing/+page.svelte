@@ -217,7 +217,7 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="">10 Bulk Download Credits</span>
+            ><span class="">10 Credits</span>
           </li>
           <li class="flex items-start">
             <svg
@@ -795,7 +795,7 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="">500 Bulk Download Credits</span>
+            ><span class="">500 Credits</span>
           </li>
           <li class="flex items-start">
             <svg
@@ -1101,7 +1101,7 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="">1,000 Bulk Download Credits</span>
+            ><span class="">1,000 Credits</span>
           </li>
 
           <li class="flex items-start">
@@ -1316,7 +1316,7 @@
                 <td class="py-2 md:py-3 text-center">Unlimited</td>
               </tr>
               <tr>
-                <td class="py-2 md:py-3">No. of Bulk Downloads</td><td
+                <td class="py-2 md:py-3">No. of Credits</td><td
                   class="py-2 md:py-3 text-center">10</td
                 >
                 <td class="py-2 md:py-3 text-center">500</td>

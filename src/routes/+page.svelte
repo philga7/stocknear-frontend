@@ -116,7 +116,7 @@
           <svelte:component this={Comp} {data} />
         {/await}
       {/if}
-
+      <!--
       <div
         class="text-center mb-5 sm:mb-10 relative w-fit flex justify-center m-auto text-white"
       >
@@ -135,6 +135,7 @@
           >
         </div>
       </div>
+-->
 
       <h1
         class="block text-2xl lg:text-4xl text-muted dark:text-white font-bold text-center mb-10 relative w-fit flex justify-center m-auto"

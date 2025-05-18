@@ -35,7 +35,7 @@
             {/each}
           </div>
 
-          <div class="p-4 border-t border-gray-200 dark:border-gray-600">
+          <div class="pt-4 border-t border-gray-200 dark:border-gray-600">
             <ChatInput />
           </div>
         </main>
