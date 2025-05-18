@@ -29,14 +29,6 @@
         class="relative flex justify-center items-start overflow-hidden w-full"
       >
         <main class="w-full">
-          <!--
-          <div class="mb-6 border-[#2C6288] dark:border-white border-b-[2px]">
-            <h1 class="mb-1 text-2xl sm:text-3xl font-bold">
-              Research with AI Agent
-            </h1>
-          </div>
-          -->
-
           <div class="flex-1 overflow-y-auto p-4 space-y-4">
             {#each messages as message}
               <ChatMessage {message} />

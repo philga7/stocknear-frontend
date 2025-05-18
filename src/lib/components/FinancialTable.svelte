@@ -275,7 +275,7 @@
       <div class="mt-2" use:highcharts={config}></div>
     {/if}
     <p class="text-sm mb-6">
-      Revenue peaked at {abbreviateNumber(highestValue?.toFixed(2))} in {highestValueDate}
+      {modalLabel} peaked at {abbreviateNumber(highestValue?.toFixed(2))} in {highestValueDate}
       and hit its lowest at {abbreviateNumber(lowestValue?.toFixed(2))} in {lowestValueDate}.
       Over the past five years, it has {fiveYearsGrowth >= 0
         ? "grown"
