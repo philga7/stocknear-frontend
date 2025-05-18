@@ -19,7 +19,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
         "Content-Type": "application/json",
         "X-API-KEY": apiKey
       },
-      body: JSON.stringify({ query })
+      body: JSON?.stringify({ query })
     });
 
     if (!upstream.ok || !upstream.body) {
@@ -28,8 +28,6 @@ export const POST: RequestHandler = async ({ request, locals }) => {
       return new Response(errText, { status: upstream.status });
     }
 
-    // Take the raw ReadableStream from upstream and decode it to text,
-    // passing it straight through to the client as SSE.
     const decoder = new TextDecoder();
     const upstreamReader = upstream.body.getReader();
 
