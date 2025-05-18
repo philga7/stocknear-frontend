@@ -98,14 +98,13 @@
                   >
                     <div class=" flex flex-row gap-x-2 justify-end w-full px-2">
                       <button
-                        class="cursor-pointer text-[1rem] rounded-md bg-gray-100 dark:bg-[#2A2E39] px-3 py-1 transition-colors duration-50"
+                        class="cursor-pointer text-sm rounded-md bg-gray-100 dark:bg-[#2A2E39] px-3 py-1 transition-colors duration-50"
                         type="button"
-                        on:click={handleAsk}
                       >
                         Ask
                       </button>
                       <button
-                        class="cursor-pointer text-[1rem] opacity-80 rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-default px-3 py-1 transition-colors duration-200"
+                        class="cursor-pointer text-sm opacity-80 rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-default px-3 py-1 transition-colors duration-50"
                         type="button"
                         on:click={() =>
                           toast?.info("Feature is coming soon 🔥", {
@@ -113,6 +112,15 @@
                           })}
                       >
                         Backtest
+                        <svg
+                          class="w-4 h-4 mb-1 inline-block"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          ><path
+                            fill="currentColor"
+                            d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                          /></svg
+                        >
                       </button>
                       <button
                         class="cursor-pointer text-black text-[1rem] rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-white px-3 py-1 transition-colors duration-200"
