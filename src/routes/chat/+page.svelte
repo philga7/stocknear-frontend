@@ -41,9 +41,9 @@
   <div class="flex flex-col m-auto justify-center items-center">
     <div class="text-center mb-10 w-full px-4 sm:px-3">
       <main class="flex flex-1 flex-col gap-4 sm:p-4 md:gap-8 text-start">
-        <div class=" h-full w-full flex">
+        <div class="h-full w-full flex">
           <div
-            class=" w-full flex flex-col justify-center items-center gap-6 pt-10 pb-4"
+            class="w-full flex flex-col justify-center items-center gap-6 pt-10 pb-4"
           >
             <img
               class="m-auto w-16 sm:w-20 rounded-full pt-4"
@@ -52,61 +52,64 @@
               loading="lazy"
             />
             <h1
-              class="block text-2xl lg:text-4xl font-bold text-center mb-10 relative w-fit flex justify-center m-auto"
+              class="block text-2xl lg:text-4xl font-bold text-center mb-10 relative w-fit flex justify-center m-auto break-words"
             >
               Research your Trading Ideas
             </h1>
 
             <div
-              class="block w-full border border-gray-300 dark:border-gray-600 shadow-sm rounded-md"
+              class="block w-full border border-gray-300 dark:border-gray-600 shadow-sm rounded-md min-h-32 h-auto max-h-64"
             >
               <form class="grow rounded-md relative flex items-center w-full">
-                <div class="overflow-y-auto w-full outline-none">
+                <div
+                  class="relative min-h-32 h-auto max-h-64 overflow-y-auto w-full outline-none"
+                >
                   <div class="w-full p-2 pt-4 h-auto">
-                    <input
-                      type="text"
-                      bind:this={inputEl}
+                    <textarea
                       bind:value={inputText}
-                      on:keydown={(e) => e.key === "Enter" && onSubmit()}
                       placeholder="Ask anything"
                       class="w-full flex-1 bg-transparent outline-none
                     placeholder-gray-500 dark:placeholder-gray-400 text-gray-900
-                    dark:text-white px-2"
+                    dark:text-white px-2 break-words"
                     />
+                  </div>
+
+                  <div
+                    class="absolute bottom-0 mb-2 flex flex-row gap-x-2 justify-end w-full px-2"
+                  >
+                    <button
+                      class="cursor-pointer text-[1rem] rounded-md bg-gray-100 dark:bg-[#2A2E39] px-3 py-1 transition-colors duration-50"
+                      type="button"
+                      on:click={handleAsk}
+                    >
+                      Ask
+                    </button>
+                    <button
+                      class="cursor-pointer text-[1rem] opacity-80 rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-default px-3 py-1 transition-colors duration-200"
+                      type="button"
+                      on:click={() =>
+                        toast?.info("Feature is coming soon 🔥", {
+                          style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
+                        })}
+                    >
+                      Backtest
+                    </button>
+                    <button
+                      class="cursor-pointer text-black text-[1rem] rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-white px-3 py-1 transition-colors duration-200"
+                      type="button"
+                    >
+                      <Arrow class="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
               </form>
-              <div class="mb-2 flex flex-row gap-x-2 justify-end w-full px-2">
-                <button
-                  class="cursor-pointer text-[1rem] rounded-md bg-gray-100 dark:bg-[#2A2E39] px-3 py-1 transition-colors duration-50"
-                  type="button"
-                  on:click={handleAsk}
-                >
-                  Ask
-                </button>
-                <button
-                  class="cursor-pointer text-[1rem] opacity-80 rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-default px-3 py-1 transition-colors duration-200"
-                  type="button"
-                  on:click={() =>
-                    toast?.info("Feature is coming soon 🔥", {
-                      style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
-                    })}
-                >
-                  Backtest
-                </button>
-                <button
-                  class="cursor-pointer text-black text-[1rem] rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-white px-3 py-1 transition-colors duration-200"
-                  type="button"
-                >
-                  <Arrow class="w-4 h-4" />
-                </button>
-              </div>
             </div>
+
             <div
               class="grid grid-cols-1 md:grid-cols-2 gap-2 shrink w-full overflow-y-auto sidenav-scrollbar"
             >
               {#each defaultChats as item}
-                <div class=" flex flex-col">
+                <div class="flex flex-col">
                   <div class="block flex-grow">
                     <button
                       type="button"
@@ -117,10 +120,12 @@
                         class="flex leading-none items-center h-full flex-grow"
                       >
                         <div
-                          class="ml-2 py-1 text-left font-medium flex flex-row items-center justify-center box-border relative"
+                          class="ml-2 py-1 text-left font-medium flex flex-row items-center justify-center box-border relative whitespace-normal break-words"
                         >
-                          <Chat class="w-4 h-4 inline-block mr-3 " />
-                          {item?.chat}
+                          <Chat
+                            class="w-4 h-4 inline-block mr-3 flex-shrink-0"
+                          />
+                          <span class="break-words">{item?.chat}</span>
                         </div>
                       </div>
                     </button>
