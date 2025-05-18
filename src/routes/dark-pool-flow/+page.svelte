@@ -767,8 +767,6 @@
                     style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
                   })}
                 type="checkbox"
-                checked={mode}
-                value={mode}
                 class="sr-only peer"
               />
 

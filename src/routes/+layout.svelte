@@ -334,6 +334,36 @@
               <Sheet.Close asChild let:builder>
                 <Button
                   builders={[builder]}
+                  class="rounded-full w-full border border-gray-600 bg-white dark:bg-[#2A2E39] "
+                >
+                  <a
+                    class="cursor-pointer w-full flex justify-start items-start"
+                    href="/chat"
+                  >
+                    <div
+                      class="flex flex-row items-center justify-between w-full"
+                    >
+                      <span class="font-semibold">New Chat</span><svg
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        stroke="currentColor"
+                        stroke-width="1"
+                        class="w-[1.2em] h-[1.2em] stroke-[.01rem] inline-block"
+                        ><path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M10 3a7 7 0 100 14 7 7 0 000-14zm-9 7a9 9 0 1118 0 9 9 0 01-18 0zm14 .069a1 1 0 01-1 1h-2.931V14a1 1 0 11-2 0v-2.931H6a1 1 0 110-2h3.069V6a1 1 0 112 0v3.069H14a1 1 0 011 1z"
+                        ></path>
+                      </svg>
+                    </div>
+                  </a>
+                </Button>
+              </Sheet.Close>
+
+              <Sheet.Close asChild let:builder>
+                <Button
+                  builders={[builder]}
                   type="submit"
                   class="w-full bg-gray-100 dark:bg-[#18181B] -ml-4 mr-auto"
                 >
@@ -1024,7 +1054,7 @@
               >
                 <a
                   href="/"
-                  class="ml-3 mb-5 flex justify-end items-center h-9 w-9 shrink-0 gap-2 rounded-full text-lg font-semibold text-primary-foreground md:h-10 md:w-10 md:"
+                  class="ml-3 mb-3 flex justify-end items-center h-9 w-9 shrink-0 gap-2 rounded-full text-lg font-semibold text-primary-foreground md:h-10 md:w-10 md:"
                 >
                   <img
                     class="avatar w-9 3xl:w-12 rounded-full"
@@ -1036,6 +1066,28 @@
                   >
                 </a>
 
+                <a
+                  href="/chat"
+                  class="mb-2 flex flex-row items-center ml-8 pr-7 w-full"
+                >
+                  <div
+                    class="px-4 py-1 rounded-full flex flex-row items-center justify-between w-full border border-gray-600 bg-white dark:bg-[#2A2E39]"
+                  >
+                    <span class="font-semibold">New Chat</span><svg
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      stroke="currentColor"
+                      stroke-width="1"
+                      class="w-[1.2em] h-[1.2em] stroke-[.01rem] inline-block"
+                      ><path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M10 3a7 7 0 100 14 7 7 0 000-14zm-9 7a9 9 0 1118 0 9 9 0 01-18 0zm14 .069a1 1 0 01-1 1h-2.931V14a1 1 0 11-2 0v-2.931H6a1 1 0 110-2h3.069V6a1 1 0 112 0v3.069H14a1 1 0 011 1z"
+                      ></path>
+                    </svg>
+                  </div>
+                </a>
                 <a href="/" class="flex flex-row items-center ml-9 w-full">
                   <div
                     class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white md:h-8 md:w-8"
