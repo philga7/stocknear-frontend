@@ -1434,7 +1434,9 @@
         </div>
       </div>
       <div>
-        <Footer />
+        {#if !$page?.url?.pathname?.startsWith("/chat")}
+          <Footer />
+        {/if}
       </div>
     </div>
   </div>

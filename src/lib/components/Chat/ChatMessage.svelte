@@ -1,5 +1,6 @@
 <script lang="ts">
   export let message: { text: string; sender: "user" | "ai" };
+  export let isLoading = false;
 </script>
 
 <div class="flex mb-6" class:justify-end={message.sender === "user"}>
@@ -14,12 +15,18 @@
       loading="lazy"
     />
     <div
-      class="rounded-lg p-3 w-full shadow border border-gray-300 dark:border-gray-600 {message?.sender ===
+      class="rounded-lg p-3 min-w-14 w-full shadow border border-gray-300 dark:border-gray-600 {message?.sender ===
       'user'
         ? 'ml-auto'
         : 'mr-auto'}"
     >
-      <p>{message?.text}</p>
+      {#if isLoading}
+        <div class=" text-center">
+          <span class="loading loading-dots loading-sm"></span>
+        </div>
+      {:else}
+        <p>{message?.text}</p>
+      {/if}
     </div>
   </div>
 </div>
