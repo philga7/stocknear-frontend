@@ -12,6 +12,23 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     );
   }
 
+  if (query?.length > 512) {
+    console.log("too long")
+    return new Response(
+      JSON.stringify({ error: "Input text is too length" }),
+      { status: 403, headers: { "Content-Type": "application/json" } }
+    );
+  }
+
+  if (query?.length < 1) {
+    console.log("too short")
+    return new Response(
+      JSON.stringify({ error: "Input text cannot be empty" }),
+      { status: 403, headers: { "Content-Type": "application/json" } }
+    );
+  }
+
+
   try {
     const upstream = await fetch(`${apiURL}/chat`, {
       method: "POST",

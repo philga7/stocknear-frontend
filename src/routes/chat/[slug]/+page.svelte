@@ -27,7 +27,7 @@
     const scrollH = inputEl.scrollHeight;
     const newH = Math.min(scrollH, MAX_HEIGHT);
     inputEl.style.height = `${newH}px`;
-    inputEl.style.overflowY = scrollH > MAX_HEIGHT ? "auto" : "hidden";
+    inputEl.style.overflowY = scrollH > MAX_HEIGHT ? "fit" : "hidden";
   }
 
   function scrollToBottom() {
@@ -40,7 +40,10 @@
   async function llmChat() {
     isLoading = true;
     const userQuery = inputText.trim();
-    if (!userQuery) return;
+    if (!userQuery || userQuery?.length < 1) {
+      isLoading = false;
+      return;
+    }
 
     messages = [
       ...messages,
@@ -58,10 +61,16 @@
     });
 
     if (!res.ok || !res.body) {
-      console.error("Chat stream failed:", await res.text());
+      messages = messages.slice(0, -1);
+
+      const errorMessage = (await res?.json())?.error;
+      console.error("Chat stream failed:", errorMessage);
+      messages = [...messages, { text: errorMessage, sender: "llm" }];
+      isLoading = false;
       return;
     }
 
+    console.log();
     const reader = res.body.getReader();
     const decoder = new TextDecoder();
     let buffer = "";
@@ -101,7 +110,7 @@
   }
 </script>
 
-<section class="w-full max-w-7xl mx-auto h-full pt-5 px-4 lg:px-0">
+<section class="w-full max-w-[1400px] mx-auto h-full pt-5 px-4 lg:px-0">
   <div class="flex flex-col h-full">
     <main
       class="w-full flex-1 overflow-y-auto p-4 space-y-4"
@@ -118,9 +127,9 @@
         {/each}
       </div>
     </main>
-
+    <!-- Centered textarea container with proper width constraints -->
     <div
-      class="absolute fixed bottom-10 left-1/2 transform -translate-x-1/2 block w-11/12 sm:w-full max-w-5xl bg-default border border-gray-300 dark:border-gray-600 shadow-sm rounded-lg overflow-hidden"
+      class="absolute fixed bottom-10 left-0 right-0 mx-auto w-11/12 sm:w-11/12 md:w-3/4 lg:w-2/3 max-w-4xl bg-default border border-gray-300 dark:border-gray-600 shadow-sm rounded-lg overflow-hidden"
     >
       <form
         on:submit|preventDefault={llmChat}
@@ -146,11 +155,10 @@
           dark:text-white px-2 break-words"
             />
           </div>
-
           <div
             class="absolute bottom-0 mb-2 flex flex-row gap-x-2 justify-end w-full px-2 bg-default z-20"
           >
-            <div class=" flex flex-row gap-x-2 justify-end w-full px-2">
+            <div class="flex flex-row gap-x-2 justify-end w-full px-2">
               <button
                 class="cursor-pointer text-sm rounded-md bg-gray-100 dark:bg-[#2A2E39] px-3 py-1 transition-colors duration-50"
                 type="button"
@@ -178,7 +186,9 @@
               </button>
               <button
                 type="submit"
-                class="cursor-pointer text-black text-[1rem] rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-white px-3 py-1 transition-colors duration-200"
+                class="{inputText?.trim()?.length > 0
+                  ? 'cursor-pointer'
+                  : 'cursor-not-allowed opacity-60'}  text-black text-[1rem] rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-white px-3 py-1 transition-colors duration-200"
               >
                 <Arrow class="w-4 h-4" />
               </button>
