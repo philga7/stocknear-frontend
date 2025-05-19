@@ -175,7 +175,7 @@
                           : 'cursor-not-allowed opacity-60'} text-white dark:text-black text-[1rem] rounded-md border border-gray-300 dark:border-gray-700 bg-blue-500 dark:bg-white px-3 py-1 transition-colors duration-200"
                         type="button"
                       >
-                        {#if !isLoading}
+                        {#if isLoading}
                           <span
                             class="loading loading-spinner loading-xs shrink-0 text-white dark:text-black"
                           ></span>
