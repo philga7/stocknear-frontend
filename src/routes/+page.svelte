@@ -73,7 +73,7 @@
 />
 
 <div
-  class="w-full sm:max-w-[1600px] overflow-hidden m-auto min-h-screen bg-white dark:bg-default text-muted dark:text-white mb-16"
+  class="w-full sm:max-w-[1800px] overflow-hidden m-auto min-h-screen bg-white dark:bg-default text-muted dark:text-white mb-16"
 >
   {#if AppInstalled && !$closedPWA}
     <svelte:component this={AppInstalled} />
@@ -118,9 +118,9 @@
       {/if}
 
       <div
-        class="text-center mb-5 sm:mb-10 relative w-fit flex justify-center m-auto text-white"
+        class="text-center mb-5 relative w-fit flex justify-center m-auto text-white"
       >
-        <div class="mb-4 flex justify-center -mt-3 lg:mb-3">
+        <div class="flex justify-center -mt-3 lg:mb-3">
           <a href="/chat"
             ><div
               class="flex items-center justify-center sm:hover:text-muted dark:sm:hover:text-white text-blue-700 dark:text-blue-400"
@@ -145,7 +145,7 @@
       </h1>
 
       <main class="flex flex-1 flex-col gap-4 sm:p-4 md:gap-8 text-start">
-        <div class="columns-1 lg:columns-2 xl:columns-3 gap-4 md:gap-8">
+        <div class="columns-1 lg:columns-2 2xl:columns-3 gap-4 md:gap-8">
           {#if customSettings?.length > 0}
             {#each customSettings as item, index}
               <div class="break-inside-avoid mb-4">

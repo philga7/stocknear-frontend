@@ -9,12 +9,17 @@
   export let data;
 
   let defaultChats = [
-    { chat: "Track Pelosi’s recent trades" },
-    { chat: "Which NVDA options are trending now?" },
+    {
+      chat: "What are key highlights of dark pool and options flow orders for Nvidia today.",
+    },
+    { chat: "Which SPY options are trending now?" },
     {
       chat: "List companies with >$10 B revenue and ≥10% growth, sorted by P/E",
     },
-    { chat: "Find undervalued tech stocks with strong earnings growth" },
+    {
+      chat: "Which stocks reporting earnings today are expected to see a positive price reaction based on their news and financial results, since the last earnings call?",
+    },
+    { chat: "How does Google make money?" },
   ];
 
   let inputText = ""; // To bind the textarea value
@@ -75,7 +80,7 @@
 </script>
 
 <div
-  class="w-full max-w-4xl overflow-hidden m-auto min-h-screen bg-white dark:bg-default mb-16"
+  class="w-full max-w-5xl overflow-hidden m-auto min-h-screen bg-white dark:bg-default mb-16"
 >
   <div class="flex flex-col m-auto justify-center items-center">
     <div class="text-center mb-10 w-full px-4 sm:px-3">
@@ -168,26 +173,26 @@
             </div>
 
             <div
-              class="grid grid-cols-1 md:grid-cols-2 gap-2 shrink w-full overflow-y-auto sidenav-scrollbar"
+              class="grid grid-cols-1 gap-2 shrink w-full overflow-y-auto sidenav-scrollbar"
             >
               {#each defaultChats as item}
                 <div class="flex flex-col">
                   <div class="block flex-grow">
                     <button
                       type="button"
-                      class="text-sm sm:text-[1rem] w-full h-full p-3 group font-sans focus:outline-none outline-none outline-transparent transition duration-300 ease-in-out items-center relative group cursor-pointer active:scale-95 origin-center border border-gray-300 dark:border-gray-800 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
+                      class="text-sm sm:text-[1rem] w-full h-full p-3 group font-sans focus:outline-none outline-none outline-transparent transition duration-50 ease-in-out items-center relative group cursor-pointer active:scale-95 origin-center border border-gray-300 dark:border-gray-700 rounded sm:hover:bg-gray-100 dark:sm:hover:bg-gray-800"
                       on:click={() => handleDefaultChatClick(item?.chat)}
                     >
                       <div
                         class="flex leading-none items-center h-full flex-grow"
                       >
                         <div
-                          class="ml-2 py-1 text-left font-medium flex flex-row items-center justify-center box-border relative whitespace-normal break-words"
+                          class="px-2 py-2 text-left font-medium flex flex-row items-center justify-center box-border relative whitespace-normal break-words"
                         >
                           <Chat
                             class="w-4 h-4 inline-block mr-3 flex-shrink-0"
                           />
-                          <span class="break-words">{item?.chat}</span>
+                          <span class="break-words p">{item?.chat}</span>
                         </div>
                       </div>
                     </button>

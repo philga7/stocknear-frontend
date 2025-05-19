@@ -2,7 +2,7 @@ import type { RequestHandler } from "./$types";
 
 export const POST: RequestHandler = async ({ request, locals }) => {
   const { apiURL, apiKey, user, pb } = locals;
-  const { query } = await request.json();
+  const { query, messages } = await request.json();
 
   // simple premium check
   if (!["Pro", "Plus"].includes(user?.tier)) {
@@ -20,7 +20,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
   }
   
 
-  if (query?.length > 512) {
+  if (query?.length > 4092) {
     console.log("too long")
     return new Response(
       JSON.stringify({ error: "Input text is too length" }),
@@ -44,7 +44,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
         "Content-Type": "application/json",
         "X-API-KEY": apiKey
       },
-      body: JSON?.stringify({ query })
+      body: JSON?.stringify({ query: query, history: messages})
     });
 
     if (!upstream.ok || !upstream.body) {

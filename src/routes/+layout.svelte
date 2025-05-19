@@ -343,7 +343,9 @@
                     <div
                       class="flex flex-row items-center justify-between w-full"
                     >
-                      <span class="font-semibold">New Chat</span><svg
+                      <span class="font-semibold text-sm sm:text-[1rem]"
+                        >New Chat</span
+                      ><svg
                         viewBox="0 0 20 20"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="currentColor"
