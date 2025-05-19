@@ -125,9 +125,7 @@
             ><div
               class="flex items-center justify-center sm:hover:text-muted dark:sm:hover:text-white text-blue-700 dark:text-blue-400"
             >
-              <div class="text-lg sm:text-xl font-semibold">
-                Stocknear x AI Agent
-              </div>
+              <div class="text-lg sm:text-xl font-semibold">Ask AI Agent</div>
               <div
                 class="-mt-2 ml-1 -rotate-6 rounded-lg bg-red-500 px-1 py-0.5 text-xs font-semibold text-white"
               >

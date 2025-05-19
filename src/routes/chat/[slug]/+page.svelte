@@ -212,7 +212,7 @@
     </main>
 
     <div
-      class="absolute fixed bottom-10 left-0 right-0 mx-auto w-11/12 sm:w-11/12 md:w-3/4 lg:w-2/3 max-w-4xl bg-default border border-gray-300 dark:border-gray-600 shadow-sm rounded-lg overflow-hidden"
+      class="absolute fixed bottom-5 sm:bottom-10 left-0 right-0 mx-auto w-11/12 sm:w-11/12 md:w-3/4 lg:w-2/3 max-w-4xl shadow-lg bg-gray-100 dark:bg-default border border-gray-300 dark:border-gray-600 shadow-sm rounded-lg overflow-hidden"
     >
       <form
         on:submit|preventDefault={() => llmChat()}
@@ -233,11 +233,11 @@
                 }
               }}
               placeholder="Ask anything"
-              class="w-full flex-1 bg-transparent outline-none placeholder-gray-500 dark:placeholder-gray-200 text-gray-900 dark:text-white px-2 break-words"
+              class="w-full flex-1 bg-transparent outline-none placeholder-gray-800 dark:placeholder-gray-200 dark:text-white px-2 break-words"
             />
           </div>
           <div
-            class="absolute bottom-0 mb-2 flex flex-row gap-x-2 justify-end w-full px-2 bg-default z-20"
+            class="absolute bottom-0 mb-2 flex flex-row gap-x-2 justify-end w-full px-2 bg-gray-100 dark:bg-default z-20"
           >
             <div class="flex flex-row gap-x-2 justify-end w-full px-2">
               <button
@@ -272,7 +272,7 @@
                 type="submit"
                 class="{inputText?.trim()?.length > 0
                   ? 'cursor-pointer'
-                  : 'cursor-not-allowed opacity-60'} text-black text-[1rem] rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-white px-3 py-1 transition-colors duration-200"
+                  : 'cursor-not-allowed opacity-60'} text-white dark:text-black text-[1rem] rounded-md border border-gray-300 dark:border-gray-700 bg-blue-500 dark:bg-white px-3 py-1 transition-colors duration-50"
               >
                 <Arrow class="w-4 h-4" />
               </button>

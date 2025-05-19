@@ -123,17 +123,16 @@
                       }}
                       placeholder="Ask anything"
                       class="w-full flex-1 bg-transparent outline-none
-                    placeholder-gray-500 dark:placeholder-gray-400 text-gray-900
-                    dark:text-white px-2 break-words"
+                    placeholder-gray-500 dark:placeholder-gray-400 px-2 break-words"
                     />
                   </div>
 
                   <div
-                    class="absolute bottom-0 mb-2 flex flex-row gap-x-2 justify-end w-full px-2 bg-default z-20"
+                    class="absolute bottom-0 mb-2 flex flex-row gap-x-2 justify-end w-full px-2 bg:inherit dark:bg-default z-20"
                   >
                     <div class=" flex flex-row gap-x-2 justify-end w-full px-2">
                       <button
-                        class="cursor-pointer text-sm rounded-md bg-gray-100 dark:bg-[#2A2E39] px-3 py-1 transition-colors duration-50"
+                        class="cursor-pointer text-sm rounded-md bg-gray-300 dark:bg-[#2A2E39] px-3 py-1 transition-colors duration-50"
                         type="button"
                       >
                         Ask
@@ -161,7 +160,7 @@
                         on:click={createChat}
                         class="{inputText?.trim()?.length > 0
                           ? 'cursor-pointer'
-                          : 'cursor-not-allowed opacity-60'} text-black text-[1rem] rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-white px-3 py-1 transition-colors duration-200"
+                          : 'cursor-not-allowed opacity-60'} text-white dark:text-black text-[1rem] rounded-md border border-gray-300 dark:border-gray-700 bg-blue-500 dark:bg-white px-3 py-1 transition-colors duration-200"
                         type="button"
                       >
                         <Arrow class="w-4 h-4" />
@@ -180,7 +179,7 @@
                   <div class="block flex-grow">
                     <button
                       type="button"
-                      class="text-sm sm:text-[1rem] w-full h-full p-3 group font-sans focus:outline-none outline-none outline-transparent transition duration-50 ease-in-out items-center relative group cursor-pointer active:scale-95 origin-center border border-gray-300 dark:border-gray-700 rounded sm:hover:bg-gray-100 dark:sm:hover:bg-gray-800"
+                      class="text-sm sm:text-[1rem] w-full h-full p-3 group font-sans focus:outline-none outline-none outline-transparent transition duration-50 ease-in-out items-center relative group cursor-pointer active:scale-95 origin-center shadow-sm border border-gray-300 dark:border-gray-700 rounded sm:hover:bg-gray-100 dark:sm:hover:bg-gray-800"
                       on:click={() => handleDefaultChatClick(item?.chat)}
                     >
                       <div
