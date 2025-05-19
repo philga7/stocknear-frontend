@@ -17,7 +17,7 @@
     },
     { chat: "Which SPY options are trending now?" },
     {
-      chat: "List companies with > $10B revenue and ≥10% growth, sorted by P/E",
+      chat: "Tell me everything about Tesla.",
     },
 
     {
