@@ -1,22 +1,30 @@
 import type { RequestHandler } from "./$types";
 
 export const POST: RequestHandler = async ({ request, locals }) => {
-  const { apiURL, apiKey, user } = locals;
+  const { apiURL, apiKey, user, pb } = locals;
   const { query } = await request.json();
 
   // simple premium check
   if (!["Pro", "Plus"].includes(user?.tier)) {
     return new Response(
-      JSON.stringify({ error: "Subscribe to unlock this feature" }),
-      { status: 403, headers: { "Content-Type": "application/json" } }
+      JSON.stringify({ error: "Upgrade your account to unlock this feature" }),
+      { status: 400 }
     );
   }
+
+  if (user?.credits < 20) {
+    return new Response(
+      JSON.stringify({ error: `Insufficient credits. Your current balance is ${user?.credits}.` }),
+      { status: 400 }
+    );
+  }
+  
 
   if (query?.length > 512) {
     console.log("too long")
     return new Response(
       JSON.stringify({ error: "Input text is too length" }),
-      { status: 403, headers: { "Content-Type": "application/json" } }
+      { status: 400 }
     );
   }
 
@@ -24,7 +32,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     console.log("too short")
     return new Response(
       JSON.stringify({ error: "Input text cannot be empty" }),
-      { status: 403, headers: { "Content-Type": "application/json" } }
+      { status: 400 }
     );
   }
 
@@ -44,6 +52,10 @@ export const POST: RequestHandler = async ({ request, locals }) => {
       console.error("Upstream error:", errText);
       return new Response(errText, { status: upstream.status });
     }
+
+    await pb?.collection("users")?.update(user?.id, {
+      credits: user?.credits -20,
+      });
 
     const decoder = new TextDecoder();
     const upstreamReader = upstream.body.getReader();

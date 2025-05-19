@@ -162,6 +162,8 @@
           }
         }
       }
+
+      await saveChat();
     } catch (error) {
       console.error("Chat request failed:", error);
       messages = messages.slice(0, -1);
@@ -174,7 +176,6 @@
       ];
     } finally {
       isLoading = false;
-      await saveChat();
     }
   }
 
@@ -192,7 +193,7 @@
 </script>
 
 <section class="w-full max-w-[1400px] mx-auto h-full pt-5 px-4 lg:px-0">
-  <div class="w-full xl:max-w-5xl flex flex-col h-full">
+  <div class="w-full 2xl:max-w-[1100px] flex flex-col h-full">
     <main
       class="w-full overflow-y-auto p-4 space-y-4"
       bind:this={chatContainer}

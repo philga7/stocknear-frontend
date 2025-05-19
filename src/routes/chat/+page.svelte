@@ -22,16 +22,24 @@
   const MAX_HEIGHT = 16 * 16; // 16rem * 16px = 256px
 
   async function createChat() {
+    if (!["Pro", "Plus"]?.includes(data?.user?.tier)) {
+      toast.error("Upgrade your account to unlock this feature", {
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
+      });
+      inputText = "";
+    }
     const userQuery = inputText?.trim();
-    const response = await fetch("/api/create-chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query: userQuery }),
-    });
+    if (userQuery?.length > 0) {
+      const response = await fetch("/api/create-chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: userQuery }),
+      });
 
-    const output = await response?.json();
+      const output = await response?.json();
 
-    goto(`/chat/${output?.id}`);
+      goto(`/chat/${output?.id}`);
+    }
   }
   onMount(() => {
     if (inputEl) {
@@ -92,6 +100,12 @@
                       bind:this={inputEl}
                       bind:value={inputText}
                       on:input={resize}
+                      on:keydown={(e) => {
+                        if (e.key === "Enter" && !e.shiftKey) {
+                          e.preventDefault();
+                          createChat();
+                        }
+                      }}
                       placeholder="Ask anything"
                       class="w-full flex-1 bg-transparent outline-none
                     placeholder-gray-500 dark:placeholder-gray-400 text-gray-900
@@ -130,7 +144,9 @@
                       </button>
                       <button
                         on:click={createChat}
-                        class="cursor-pointer text-black text-[1rem] rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-white px-3 py-1 transition-colors duration-200"
+                        class="{inputText?.trim()?.length > 0
+                          ? 'cursor-pointer'
+                          : 'cursor-not-allowed opacity-60'} text-black text-[1rem] rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-white px-3 py-1 transition-colors duration-200"
                         type="button"
                       >
                         <Arrow class="w-4 h-4" />

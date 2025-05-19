@@ -118,7 +118,8 @@ export const POST = async ({ request, locals }) => {
       await locals.pb.collection("users").update(userId, {
         tier,
         freeTrial: false,
-        credits: tier === 'Pro' ? 1000 : tier === 'Plus' ? 500 : 10,
+        //credits: tier === 'Pro' ? 1000 : tier === 'Plus' ? 500 : 10,
+        credits: tier === 'Free' ? 10 : userId?.credits,
         lifetime: productName?.includes("Life Time"),
       });
 
