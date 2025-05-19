@@ -4,7 +4,7 @@
 </script>
 
 <div class="flex mb-6" class:justify-end={message.sender === "user"}>
-  <div class="flex flex-col sm:flex-row items-center">
+  <div class="flex flex-col sm:flex-row items-start">
     <img
       class="mr-auto mb-2 sm:mb-0 sm:mr-3 w-10 h-10 rounded-full {message.sender ===
       'user'

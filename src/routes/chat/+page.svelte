@@ -17,7 +17,7 @@
     },
     { chat: "Which SPY options are trending now?" },
     {
-      chat: "List companies with >$10 B revenue and ≥10% growth, sorted by P/E",
+      chat: "List companies with > $10B revenue and ≥10% growth, sorted by P/E",
     },
 
     {
@@ -99,7 +99,7 @@
       <main class="flex flex-1 flex-col gap-4 sm:p-4 md:gap-8 text-start">
         <div class="h-full w-full flex">
           <div
-            class="w-full flex flex-col justify-center items-center gap-6 pt-10 pb-4"
+            class="w-full flex flex-col justify-center items-center gap-6 pb-4"
           >
             <img
               class="m-auto w-16 sm:w-20 rounded-full pt-4"
