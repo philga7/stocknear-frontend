@@ -3,8 +3,7 @@
   import Arrow from "lucide-svelte/icons/arrow-up";
   import { mode } from "mode-watcher";
   import { toast } from "svelte-sonner";
-
-  import { onMount } from "svelte";
+  import { onMount, afterUpdate, tick } from "svelte";
 
   let messages: { text: string; sender: "user" | "llm" }[] = [
     { text: "Hello! How can I help you today?", sender: "llm" },
@@ -14,12 +13,49 @@
   let isLoading = false;
   let inputEl: HTMLTextAreaElement;
   let chatContainer: HTMLDivElement;
+  let bottomEl: HTMLDivElement;
   const MAX_HEIGHT = 16 * 16;
+
+  // Auto-scrolling
+  let autoScroll = true;
+  let lastScrollTop = 0;
 
   onMount(() => {
     inputEl?.focus();
     resize();
+
+    if (chatContainer) {
+      chatContainer.addEventListener("scroll", handleScroll);
+    }
   });
+
+  afterUpdate(async () => {
+    if (autoScroll && bottomEl) {
+      // wait for new messages to render
+      await tick();
+      bottomEl.scrollIntoView({ behavior: isLoading ? "auto" : "smooth" });
+    }
+  });
+
+  function handleScroll() {
+    if (!chatContainer) return;
+
+    const distanceFromBottom =
+      chatContainer.scrollHeight -
+      chatContainer.scrollTop -
+      chatContainer.clientHeight;
+
+    // user scrolled up
+    if (chatContainer.scrollTop < lastScrollTop && distanceFromBottom > 100) {
+      autoScroll = false;
+    }
+    // user back near bottom
+    if (distanceFromBottom < 50) {
+      autoScroll = true;
+    }
+
+    lastScrollTop = chatContainer.scrollTop;
+  }
 
   function resize() {
     if (!inputEl) return;
@@ -31,7 +67,8 @@
   }
 
   function scrollToBottom() {
-    chatContainer?.scrollTo({
+    if (!chatContainer) return;
+    chatContainer.scrollTo({
       top: chatContainer.scrollHeight,
       behavior: "smooth",
     });
@@ -40,11 +77,12 @@
   async function llmChat() {
     isLoading = true;
     const userQuery = inputText.trim();
-    if (!userQuery || userQuery?.length < 1) {
+    if (!userQuery) {
       isLoading = false;
       return;
     }
 
+    // append user + placeholder for assistant
     messages = [
       ...messages,
       { text: userQuery, sender: "user" },
@@ -54,6 +92,9 @@
     resize();
     inputEl.focus();
 
+    // re-enable auto-scroll on new message
+    autoScroll = true;
+
     const res = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -62,31 +103,26 @@
 
     if (!res.ok || !res.body) {
       messages = messages.slice(0, -1);
-
-      const errorMessage = (await res?.json())?.error;
-      console.error("Chat stream failed:", errorMessage);
+      const errorMessage = (await res.json())?.error || "Unknown error";
       messages = [...messages, { text: errorMessage, sender: "llm" }];
       isLoading = false;
       return;
     }
 
-    console.log();
     const reader = res.body.getReader();
     const decoder = new TextDecoder();
     let buffer = "";
-
     const idx = messages.length - 1;
     let assistantText = "";
     isLoading = false;
+
     while (true) {
       const { value, done } = await reader.read();
       if (done) break;
 
       buffer += decoder.decode(value, { stream: true });
-
-      // Process lines
-      let lines = buffer.split("\n");
-      buffer = lines.pop() ?? ""; // keep the last line if incomplete
+      const lines = buffer.split("\n");
+      buffer = lines.pop() ?? "";
 
       for (const line of lines) {
         if (!line.trim()) continue;
@@ -99,8 +135,7 @@
           if (json.content) {
             assistantText = json.content;
             messages[idx].text = assistantText;
-            messages = [...messages]; // trigger reactivity
-            scrollToBottom();
+            messages = [...messages];
           }
         } catch (err) {
           console.error("Parse error:", err, "Line:", line);
@@ -111,23 +146,24 @@
 </script>
 
 <section class="w-full max-w-[1400px] mx-auto h-full pt-5 px-4 lg:px-0">
-  <div class="flex flex-col h-full">
+  <div class="w-full xl:max-w-5xl flex flex-col h-full">
     <main
-      class="w-full flex-1 overflow-y-auto p-4 space-y-4"
+      class="w-full overflow-y-auto p-4 space-y-4"
       bind:this={chatContainer}
     >
       <div class="pb-60">
         {#each messages as message, index}
           {#if index === messages.length - 1 && message.sender === "llm" && isLoading}
-            <!-- only the very last AI message shows the spinner -->
             <ChatMessage {message} isLoading={true} />
           {:else}
             <ChatMessage {message} isLoading={false} />
           {/if}
         {/each}
+        <!-- sentinel div always at the bottom -->
+        <div bind:this={bottomEl}></div>
       </div>
     </main>
-    <!-- Centered textarea container with proper width constraints -->
+
     <div
       class="absolute fixed bottom-10 left-0 right-0 mx-auto w-11/12 sm:w-11/12 md:w-3/4 lg:w-2/3 max-w-4xl bg-default border border-gray-300 dark:border-gray-600 shadow-sm rounded-lg overflow-hidden"
     >
@@ -150,9 +186,7 @@
                 }
               }}
               placeholder="Ask anything"
-              class="w-full flex-1 bg-transparent outline-none
-          placeholder-gray-500 dark:placeholder-gray-200 text-gray-900
-          dark:text-white px-2 break-words"
+              class="w-full flex-1 bg-transparent outline-none placeholder-gray-500 dark:placeholder-gray-200 text-gray-900 dark:text-white px-2 break-words"
             />
           </div>
           <div
@@ -170,7 +204,9 @@
                 type="button"
                 on:click={() =>
                   toast?.info("Feature is coming soon 🔥", {
-                    style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
+                    style: `border-radius: 5px; background: #fff; color: #000; border-color: ${
+                      $mode === "light" ? "#F9FAFB" : "#4B5563"
+                    }; font-size: 15px;`,
                   })}
               >
                 Backtest
@@ -178,17 +214,18 @@
                   class="w-4 h-4 mb-1 inline-block"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
-                  ><path
+                >
+                  <path
                     fill="currentColor"
                     d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                  /></svg
-                >
+                  />
+                </svg>
               </button>
               <button
                 type="submit"
                 class="{inputText?.trim()?.length > 0
                   ? 'cursor-pointer'
-                  : 'cursor-not-allowed opacity-60'}  text-black text-[1rem] rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-white px-3 py-1 transition-colors duration-200"
+                  : 'cursor-not-allowed opacity-60'} text-black text-[1rem] rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-white px-3 py-1 transition-colors duration-200"
               >
                 <Arrow class="w-4 h-4" />
               </button>
