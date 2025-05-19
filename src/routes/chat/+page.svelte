@@ -17,9 +17,11 @@
     {
       chat: "List companies with >$10 B revenue and ≥10% growth, sorted by P/E",
     },
+
     {
-      chat: "Which stocks reporting earnings today are expected to see a positive price reaction based on their news and financial results, since the last earnings call?",
+      chat: "Which stocks reporting earnings today?",
     },
+
     { chat: "How does Google make money?" },
   ];
 
