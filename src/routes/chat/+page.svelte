@@ -9,6 +9,8 @@
   import { onMount } from "svelte";
   export let data;
 
+  let isLoading = false;
+
   let defaultChats = [
     {
       chat: "What are key highlights of dark pool and options flow orders for Nvidia today.",
@@ -30,6 +32,7 @@
   const MAX_HEIGHT = 16 * 16; // 16rem * 16px = 256px
 
   async function createChat() {
+    isLoading = true;
     if (!["Pro", "Plus"]?.includes(data?.user?.tier)) {
       toast.error("Upgrade your account to unlock this feature", {
         style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
@@ -58,6 +61,7 @@
 
       goto(`/chat/${output?.id}`);
     }
+    isLoading = false;
   }
   onMount(() => {
     if (inputEl) {
@@ -171,7 +175,13 @@
                           : 'cursor-not-allowed opacity-60'} text-white dark:text-black text-[1rem] rounded-md border border-gray-300 dark:border-gray-700 bg-blue-500 dark:bg-white px-3 py-1 transition-colors duration-200"
                         type="button"
                       >
-                        <Arrow class="w-4 h-4" />
+                        {#if !isLoading}
+                          <span
+                            class="loading loading-spinner loading-xs shrink-0 text-white dark:text-black"
+                          ></span>
+                        {:else}
+                          <Arrow class="w-4 h-4" />
+                        {/if}
                       </button>
                     </div>
                   </div>
