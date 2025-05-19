@@ -4,6 +4,7 @@
   import { mode } from "mode-watcher";
   import { toast } from "svelte-sonner";
   import { goto } from "$app/navigation";
+  import SEO from "$lib/components/SEO.svelte";
 
   import { onMount } from "svelte";
   export let data;
@@ -78,6 +79,11 @@
     inputEl.style.overflowY = scrollH > MAX_HEIGHT ? "auto" : "hidden";
   }
 </script>
+
+<SEO
+  title="Stocknear AI Agent – Real-Time Market Insights, Options Flow, and News"
+  description="Get real-time stock market insights with Stocknear AI Agent. Analyze fundamentals, dark pool activity, options flow, and breaking market news – all in one place."
+/>
 
 <div
   class="w-full max-w-5xl overflow-hidden m-auto min-h-screen bg-white dark:bg-default mb-16"

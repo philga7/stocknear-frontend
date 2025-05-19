@@ -4,6 +4,7 @@
   import { mode } from "mode-watcher";
   import { toast } from "svelte-sonner";
   import { onMount, afterUpdate, tick } from "svelte";
+  import SEO from "$lib/components/SEO.svelte";
 
   export let data;
 
@@ -191,6 +192,11 @@
     const output = await response?.json();
   }
 </script>
+
+<SEO
+  title="Stocknear AI Agent – Real-Time Market Insights, Options Flow, and News"
+  description="Get real-time stock market insights with Stocknear AI Agent. Analyze fundamentals, dark pool activity, options flow, and breaking market news – all in one place."
+/>
 
 <section class="w-full max-w-[1400px] mx-auto h-full pt-5 px-4 lg:px-0">
   <div class="w-full 2xl:max-w-[1100px] flex flex-col h-full">
