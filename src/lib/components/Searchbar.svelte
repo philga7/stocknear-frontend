@@ -53,10 +53,10 @@
     if (isNavigating) return;
     isNavigating = true;
 
-    const upperSymbol = symbol.toUpperCase();
+    const upperSymbol = symbol?.toUpperCase();
 
     // normalize type to 'etf' | 'index' | 'stock'
-    let type = (assetType || "").toLowerCase();
+    let type = (assetType || "stocks")?.toLowerCase();
     if (type.endsWith("s")) type = type.slice(0, -1);
 
     // … history & modal code unchanged …
@@ -97,7 +97,7 @@
         "insider",
         "financials",
       ];
-      if (root !== "stocks" && blocked.some((b) => firstSuffix.includes(b))) {
+      if (root !== "stocks" && blocked?.some((b) => firstSuffix?.includes(b))) {
         newSuffix = [];
       }
 
@@ -105,7 +105,8 @@
       if (
         type === "index" &&
         (prevRoot === "stocks" || prevRoot === "etf") &&
-        (firstSuffix.includes("dividends") || firstSuffix.includes("dark-pool"))
+        (firstSuffix?.includes("dividends") ||
+          firstSuffix?.includes("dark-pool"))
       ) {
         newSuffix = [];
       }
@@ -114,7 +115,7 @@
       if (
         type === "stock" &&
         (prevRoot === "etf" || prevRoot === "index") &&
-        firstSuffix.includes("holdings")
+        firstSuffix?.includes("holdings")
       ) {
         root = "stocks";
         newSuffix = [];
@@ -123,6 +124,7 @@
 
     const newPath = `/${[root, upperSymbol, ...newSuffix].join("/")}`;
     await goto(newPath, { replaceState: true });
+    inputValue = "";
 
     const newSearchItem = searchBarData?.find(
       ({ symbol }) => symbol === upperSymbol,
@@ -135,10 +137,8 @@
         ...(searchHistory?.filter(
           (item) => item?.symbol?.toUpperCase() !== upperSymbol,
         ) || []),
-      ].slice(0, 5);
+      ]?.slice(0, 5);
     }
-
-    console.log(updatedSearchHistory);
 
     setTimeout(() => (isNavigating = false), 100);
 
@@ -153,7 +153,7 @@
     isLoading = true;
     clearTimeout(timeoutId); // Clear any existing timeout
 
-    if (!inputValue.trim()) {
+    if (!inputValue?.trim()) {
       // Skip if query is empty or just whitespace
       searchBarData = []; // Clear previous results
       isLoading = false;
@@ -162,7 +162,7 @@
 
     timeoutId = setTimeout(async () => {
       const response = await fetch(
-        `/api/searchbar?query=${encodeURIComponent(inputValue)}&limit=10`,
+        `/api/searchbar?query=${encodeURIComponent(inputValue)}&limit=5`,
       );
       searchBarData = await response?.json();
     }, 50); // delay
@@ -174,7 +174,7 @@
 
     const list = Array.from(
       new Map(
-        [...searchHistory, ...searchBarData, ...popularList].map((item) => [
+        [...searchHistory, ...searchBarData, ...popularList]?.map((item) => [
           item.symbol,
           item,
         ]),
@@ -183,7 +183,9 @@
 
     if (!list?.length) return;
 
-    const newData = list.find((item) => item?.symbol === symbol);
+    const newData = list?.find(
+      (item) => item?.symbol?.toLowerCase() === symbol?.toLowerCase(),
+    );
     if (newData) {
       handleSearch(newData?.symbol, newData?.type);
     }
@@ -193,7 +195,7 @@
     if (event.ctrlKey && event.key === "k") {
       const keyboardSearch = document.getElementById("combobox-input");
       keyboardSearch?.dispatchEvent(new MouseEvent("click"));
-      inputValue = "";
+      //inputValue = "";
       event.preventDefault();
     }
   };
@@ -224,6 +226,14 @@
     };
   });
 
+  function handleEnter() {
+    //user enters before searchbarData is completely loaded.
+    //wait until it is ready and then goto the place;
+    if (!isLoading && searchBarData?.length > 0) {
+      handleKeyDown(inputValue);
+    }
+  }
+
   $: {
     if (searchBarModalChecked === true && typeof window !== "undefined") {
       if ($screenWidth > 640) {
@@ -236,7 +246,8 @@
 
   $: {
     if (searchBarModalChecked === false && typeof window !== "undefined") {
-      showSuggestions = inputValue = "";
+      showSuggestions = "";
+      //inputValue = "";
       document.body.classList?.remove("overflow-hidden");
     }
   }
@@ -299,7 +310,14 @@
         bind:touchedInput
         onSelectedChange={(state) => handleKeyDown(state?.value)}
       >
-        <div class="relative w-full">
+        <div
+          on:keydown={(e) => {
+            if (e.key === "Enter") {
+              handleEnter();
+            }
+          }}
+          class="relative w-full"
+        >
           <div
             class="absolute inset-y-0 left-0 flex items-center pl-2.5 text-gray-400"
           >
