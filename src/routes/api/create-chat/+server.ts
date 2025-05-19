@@ -14,6 +14,15 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     );
   }
     */
+
+  if (user?.credits < 20) {
+    return new Response(
+      JSON.stringify({ error: `Insufficient credits. Your current balance is ${user?.credits}.` }),
+      { status: 400 }
+    );
+  }
+  
+
   
   // Early return if user doesn't have required tier
   const isPremiumUser = ["Pro", "Plus"].includes(user?.tier);

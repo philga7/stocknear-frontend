@@ -85,9 +85,9 @@
     isLoading = true;
 
     // Use provided message or input text
-    const userQuery = userMessage || inputText.trim();
-
-    if (!userQuery) {
+    const userQuery = userMessage || inputText?.trim();
+    console.log(userQuery);
+    if (!userQuery || userQuery?.length < 1) {
       isLoading = false;
       return;
     }
@@ -117,9 +117,9 @@
 
       if (!res.ok || !res.body) {
         // Remove empty LLM message
-        messages = messages.slice(0, -1);
+        messages = messages?.slice(0, -1);
 
-        const errorMessage = (await res.json())?.error || "Unknown error";
+        const errorMessage = (await res?.json())?.error || "Unknown error";
         messages = [...messages, { text: errorMessage, sender: "llm" }];
         isLoading = false;
         return;
@@ -215,7 +215,7 @@
       class="absolute fixed bottom-10 left-0 right-0 mx-auto w-11/12 sm:w-11/12 md:w-3/4 lg:w-2/3 max-w-4xl bg-default border border-gray-300 dark:border-gray-600 shadow-sm rounded-lg overflow-hidden"
     >
       <form
-        on:submit|preventDefault={llmChat}
+        on:submit|preventDefault={() => llmChat()}
         class="grow rounded-md relative flex items-center w-full overflow-hidden"
       >
         <div

@@ -14,7 +14,7 @@
     {
       chat: "List companies with >$10 B revenue and ≥10% growth, sorted by P/E",
     },
-    { chat: "Backtest: buy when RSI >30, sell when RSI >70" },
+    { chat: "Find undervalued tech stocks with strong earnings growth" },
   ];
 
   let inputText = ""; // To bind the textarea value
@@ -26,6 +26,16 @@
       toast.error("Upgrade your account to unlock this feature", {
         style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
+      inputText = "";
+    }
+
+    if (data?.user?.credits < 20) {
+      toast.error(
+        `Insufficient credits. Your current balance is ${data?.user?.credits}.`,
+        {
+          style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
+        },
+      );
       inputText = "";
     }
     const userQuery = inputText?.trim();
@@ -165,7 +175,7 @@
                   <div class="block flex-grow">
                     <button
                       type="button"
-                      class="text-sm w-full h-full p-3 group font-sans focus:outline-none outline-none outline-transparent transition duration-300 ease-in-out items-center relative group cursor-pointer active:scale-95 origin-center border border-gray-300 dark:border-gray-800 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
+                      class="text-sm sm:text-[1rem] w-full h-full p-3 group font-sans focus:outline-none outline-none outline-transparent transition duration-300 ease-in-out items-center relative group cursor-pointer active:scale-95 origin-center border border-gray-300 dark:border-gray-800 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
                       on:click={() => handleDefaultChatClick(item?.chat)}
                     >
                       <div
