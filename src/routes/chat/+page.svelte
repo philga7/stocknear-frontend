@@ -3,6 +3,7 @@
   import Arrow from "lucide-svelte/icons/arrow-up";
   import { mode } from "mode-watcher";
   import { toast } from "svelte-sonner";
+  import { goto } from "$app/navigation";
 
   import { onMount } from "svelte";
   export let data;
@@ -20,19 +21,24 @@
   let inputEl: HTMLTextAreaElement;
   const MAX_HEIGHT = 16 * 16; // 16rem * 16px = 256px
 
+  async function createChat() {
+    const userQuery = inputText?.trim();
+    const response = await fetch("/api/create-chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query: userQuery }),
+    });
+
+    const output = await response?.json();
+
+    goto(`/chat/${output?.id}`);
+  }
   onMount(() => {
     if (inputEl) {
       inputEl.focus();
       resize();
     }
   });
-
-  function handleAsk() {
-    if (inputEl) {
-      inputEl.focus();
-      resize();
-    }
-  }
 
   function handleDefaultChatClick(chatText: string) {
     inputText = chatText;
@@ -123,6 +129,7 @@
                         >
                       </button>
                       <button
+                        on:click={createChat}
                         class="cursor-pointer text-black text-[1rem] rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-white px-3 py-1 transition-colors duration-200"
                         type="button"
                       >

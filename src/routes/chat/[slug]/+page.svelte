@@ -5,10 +5,12 @@
   import { toast } from "svelte-sonner";
   import { onMount, afterUpdate, tick } from "svelte";
 
-  let messages: { text: string; sender: "user" | "llm" }[] = [
+  export let data;
+
+  // Initialize messages with default or data
+  let messages = data?.getChat?.messages || [
     { text: "Hello! How can I help you today?", sender: "llm" },
   ];
-
   let inputText = "";
   let isLoading = false;
   let inputEl: HTMLTextAreaElement;
@@ -20,7 +22,18 @@
   let autoScroll = true;
   let lastScrollTop = 0;
 
-  onMount(() => {
+  // Check for first message and process it immediately
+  onMount(async () => {
+    // Check if the first message is from user and needs a response
+    if (messages.length === 1 && messages[0].sender === "user") {
+      const userQuery = messages[0].text;
+      if (userQuery.trim()) {
+        // Clear messages and set user message
+        messages = [{ text: userQuery, sender: "user" }];
+        await llmChat(userQuery);
+      }
+    }
+
     inputEl?.focus();
     resize();
 
@@ -31,7 +44,7 @@
 
   afterUpdate(async () => {
     if (autoScroll && bottomEl) {
-      // wait for new messages to render
+      // Wait for new messages to render
       await tick();
       bottomEl.scrollIntoView({ behavior: isLoading ? "auto" : "smooth" });
     }
@@ -45,11 +58,12 @@
       chatContainer.scrollTop -
       chatContainer.clientHeight;
 
-    // user scrolled up
+    // User scrolled up
     if (chatContainer.scrollTop < lastScrollTop && distanceFromBottom > 100) {
       autoScroll = false;
     }
-    // user back near bottom
+
+    // User back near bottom
     if (distanceFromBottom < 50) {
       autoScroll = true;
     }
@@ -59,6 +73,7 @@
 
   function resize() {
     if (!inputEl) return;
+
     inputEl.style.height = "auto";
     const scrollH = inputEl.scrollHeight;
     const newH = Math.min(scrollH, MAX_HEIGHT);
@@ -66,82 +81,113 @@
     inputEl.style.overflowY = scrollH > MAX_HEIGHT ? "fit" : "hidden";
   }
 
-  function scrollToBottom() {
-    if (!chatContainer) return;
-    chatContainer.scrollTo({
-      top: chatContainer.scrollHeight,
-      behavior: "smooth",
-    });
-  }
-
-  async function llmChat() {
+  async function llmChat(userMessage?: string) {
     isLoading = true;
-    const userQuery = inputText.trim();
+
+    // Use provided message or input text
+    const userQuery = userMessage || inputText.trim();
+
     if (!userQuery) {
       isLoading = false;
       return;
     }
 
-    // append user + placeholder for assistant
-    messages = [
-      ...messages,
-      { text: userQuery, sender: "user" },
-      { text: "", sender: "llm" },
-    ];
+    // Only append user message if not already in messages
+    if (!userMessage) {
+      messages = [...messages, { text: userQuery, sender: "user" }];
+    }
+
+    // Add placeholder for assistant response
+    messages = [...messages, { text: "", sender: "llm" }];
+
+    // Clear input and adjust UI
     inputText = "";
     resize();
-    inputEl.focus();
+    inputEl?.focus();
 
-    // re-enable auto-scroll on new message
+    // Re-enable auto-scroll on new message
     autoScroll = true;
 
-    const res = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query: userQuery }),
-    });
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: userQuery }),
+      });
 
-    if (!res.ok || !res.body) {
-      messages = messages.slice(0, -1);
-      const errorMessage = (await res.json())?.error || "Unknown error";
-      messages = [...messages, { text: errorMessage, sender: "llm" }];
+      if (!res.ok || !res.body) {
+        // Remove empty LLM message
+        messages = messages.slice(0, -1);
+
+        const errorMessage = (await res.json())?.error || "Unknown error";
+        messages = [...messages, { text: errorMessage, sender: "llm" }];
+        isLoading = false;
+        return;
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      const idx = messages.length - 1;
+      let assistantText = "";
+
       isLoading = false;
-      return;
-    }
 
-    const reader = res.body.getReader();
-    const decoder = new TextDecoder();
-    let buffer = "";
-    const idx = messages.length - 1;
-    let assistantText = "";
-    isLoading = false;
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
 
-    while (true) {
-      const { value, done } = await reader.read();
-      if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n");
+        buffer = lines.pop() ?? "";
 
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split("\n");
-      buffer = lines.pop() ?? "";
+        for (const line of lines) {
+          if (!line.trim()) continue;
 
-      for (const line of lines) {
-        if (!line.trim()) continue;
-        try {
-          const json = JSON.parse(line);
-          if (json.error) {
-            console.error("Stream error:", json.error);
-            break;
+          try {
+            const json = JSON.parse(line);
+
+            if (json.error) {
+              console.error("Stream error:", json.error);
+              break;
+            }
+
+            if (json.content) {
+              assistantText = json.content;
+              messages[idx].text = assistantText;
+              messages = [...messages]; // Trigger reactivity
+            }
+          } catch (err) {
+            console.error("Parse error:", err, "Line:", line);
           }
-          if (json.content) {
-            assistantText = json.content;
-            messages[idx].text = assistantText;
-            messages = [...messages];
-          }
-        } catch (err) {
-          console.error("Parse error:", err, "Line:", line);
         }
       }
+    } catch (error) {
+      console.error("Chat request failed:", error);
+      messages = messages.slice(0, -1);
+      messages = [
+        ...messages,
+        {
+          text: "Failed to connect to the chat service. Please try again later.",
+          sender: "llm",
+        },
+      ];
+    } finally {
+      isLoading = false;
+      await saveChat();
     }
+  }
+
+  async function saveChat() {
+    const postData = { messages: messages, chatId: data?.getChat?.id };
+
+    const response = await fetch("/api/update-chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(postData),
+    });
+
+    const output = await response?.json();
   }
 </script>
 
