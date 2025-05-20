@@ -37,7 +37,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
   try {
     const newChat = await pb.collection("chat").create({
       user: user.id,
-      messages: JSON?.stringify([{ text: data?.query, sender: "user" }])
+      messages: JSON?.stringify([{ content: data?.query, role: "user" }])
     });
 
     

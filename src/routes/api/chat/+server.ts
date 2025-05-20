@@ -2,7 +2,7 @@ import type { RequestHandler } from "./$types";
 
 export const POST: RequestHandler = async ({ request, locals }) => {
   const { apiURL, apiKey, user, pb } = locals;
-  const { query, messages } = await request.json();
+  const { query, chatId } = await request.json();
 
   // simple premium check
   if (!["Pro", "Plus"].includes(user?.tier)) {
@@ -37,6 +37,9 @@ export const POST: RequestHandler = async ({ request, locals }) => {
   }
 
 
+  //get history based on pb:
+  const messages = (await pb.collection("chat").getOne(chatId))?.messages?.slice(-20) || [];
+
   try {
     const upstream = await fetch(`${apiURL}/chat`, {
       method: "POST",
@@ -44,7 +47,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
         "Content-Type": "application/json",
         "X-API-KEY": apiKey
       },
-      body: JSON?.stringify({ query: query, history: messages})
+      body: JSON?.stringify({ query: query, messages: messages})
     });
 
     if (!upstream.ok || !upstream.body) {

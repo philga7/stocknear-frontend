@@ -10,8 +10,11 @@
 
   // Initialize messages with default or data
   let messages = data?.getChat?.messages || [
-    { text: "Hello! How can I help you today?", sender: "llm" },
+    { content: "Hello! How can I help you today?", role: "system" },
   ];
+
+  let chatId = data?.getChat?.id;
+
   let inputText = "";
   let isLoading = false;
   let inputEl: HTMLTextAreaElement;
@@ -26,11 +29,11 @@
   // Check for first message and process it immediately
   onMount(async () => {
     // Check if the first message is from user and needs a response
-    if (messages.length === 1 && messages[0].sender === "user") {
-      const userQuery = messages[0].text;
-      if (userQuery.trim()) {
+    if (messages.length === 1 && messages[0].role === "user") {
+      const userQuery = messages[0]?.content;
+      if (userQuery?.trim()) {
         // Clear messages and set user message
-        messages = [{ text: userQuery, sender: "user" }];
+        messages = [{ content: userQuery, role: "user" }];
         await llmChat(userQuery);
       }
     }
@@ -87,7 +90,7 @@
 
     // Use provided message or input text
     const userQuery = userMessage || inputText?.trim();
-    console.log(userQuery);
+
     if (!userQuery || userQuery?.length < 1) {
       isLoading = false;
       return;
@@ -95,11 +98,11 @@
 
     // Only append user message if not already in messages
     if (!userMessage) {
-      messages = [...messages, { text: userQuery, sender: "user" }];
+      messages = [...messages, { content: userQuery, role: "user" }];
     }
 
     // Add placeholder for assistant response
-    messages = [...messages, { text: "", sender: "llm" }];
+    messages = [...messages, { content: "", role: "system" }];
 
     // Clear input and adjust UI
     inputText = "";
@@ -113,7 +116,7 @@
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: userQuery }),
+        body: JSON.stringify({ query: userQuery, chatId: chatId }),
       });
 
       if (!res.ok || !res.body) {
@@ -121,7 +124,7 @@
         messages = messages?.slice(0, -1);
 
         const errorMessage = (await res?.json())?.error || "Unknown error";
-        messages = [...messages, { text: errorMessage, sender: "llm" }];
+        messages = [...messages, { content: errorMessage, role: "system" }];
         isLoading = false;
         return;
       }
@@ -129,18 +132,18 @@
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let buffer = "";
-      const idx = messages.length - 1;
+      const idx = messages?.length - 1;
       let assistantText = "";
 
       isLoading = false;
 
       while (true) {
-        const { value, done } = await reader.read();
+        const { value, done } = await reader?.read();
         if (done) break;
 
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split("\n");
-        buffer = lines.pop() ?? "";
+        buffer += decoder?.decode(value, { stream: true });
+        const lines = buffer?.split("\n");
+        buffer = lines?.pop() ?? "";
 
         for (const line of lines) {
           if (!line.trim()) continue;
@@ -153,9 +156,9 @@
               break;
             }
 
-            if (json.content) {
-              assistantText = json.content;
-              messages[idx].text = assistantText;
+            if (json?.content) {
+              assistantText = json?.content;
+              messages[idx].content = assistantText;
               messages = [...messages]; // Trigger reactivity
             }
           } catch (err) {
@@ -171,8 +174,9 @@
       messages = [
         ...messages,
         {
-          text: "Failed to connect to the chat service. Please try again later.",
-          sender: "llm",
+          content:
+            "Failed to connect to the chat service. Please try again later.",
+          role: "system",
         },
       ];
     } finally {
@@ -181,7 +185,7 @@
   }
 
   async function saveChat() {
-    const postData = { messages: messages, chatId: data?.getChat?.id };
+    const postData = { messages: messages, chatId: chatId };
 
     const response = await fetch("/api/update-chat", {
       method: "POST",
@@ -206,7 +210,7 @@
     >
       <div class="pb-60">
         {#each messages as message, index}
-          {#if index === messages.length - 1 && message.sender === "llm" && isLoading}
+          {#if index === messages.length - 1 && message.role === "system" && isLoading}
             <ChatMessage {message} isLoading={true} />
           {:else}
             <ChatMessage {message} isLoading={false} />
