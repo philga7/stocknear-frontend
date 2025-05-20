@@ -2,6 +2,7 @@ import { convertToSlug } from "$lib/utils";
 
 const pages = [
   { title: "/" },
+  { title: "/chat"},
   { title: "/compare" },
   { title: "/reddit-tracker" },
   { title: "/list/most-shorted-stocks" },

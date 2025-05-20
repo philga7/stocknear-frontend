@@ -6,6 +6,10 @@
   export let data;
   const tabs = [
     {
+      title: "AI Agent",
+      link: "/chat",
+    },
+    {
       title: "Stocks",
       link: "/stocks",
     },

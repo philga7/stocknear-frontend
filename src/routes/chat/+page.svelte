@@ -4,12 +4,15 @@
   import { mode } from "mode-watcher";
   import { toast } from "svelte-sonner";
   import { goto } from "$app/navigation";
+  import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
+  import { Button } from "$lib/components/shadcn/button/index.js";
   import SEO from "$lib/components/SEO.svelte";
 
   import { onMount } from "svelte";
   export let data;
 
   let isLoading = false;
+  const agentOptions = ["Stock Screener", "Options Flow"];
 
   let defaultChats = [
     {
@@ -38,6 +41,8 @@
         style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
       inputText = "";
+      isLoading = false; // Ensure isLoading is reset on error
+      return; // Stop execution if tier is not Pro or Plus
     }
 
     if (data?.user?.credits < 20) {
@@ -48,6 +53,8 @@
         },
       );
       inputText = "";
+      isLoading = false; // Ensure isLoading is reset on error
+      return; // Stop execution if credits are insufficient
     }
     const userQuery = inputText?.trim();
     if (userQuery?.length > 0) {
@@ -83,6 +90,59 @@
     const newHeight = Math.min(scrollH, MAX_HEIGHT);
     inputEl.style.height = newHeight + "px";
     inputEl.style.overflowY = scrollH > MAX_HEIGHT ? "auto" : "hidden";
+  }
+
+  // Reactive declaration to check for "@Options Flow"
+  $: isOptionsFlow = inputText.includes("@Options Flow");
+
+  function handleKeyDown(e: KeyboardEvent) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      createChat();
+    }
+
+    const agentString = "@Options Flow";
+    const startIndex = inputText.indexOf(agentString);
+
+    if (startIndex !== -1) {
+      const selectionStart = inputEl.selectionStart;
+      const selectionEnd = inputEl.selectionEnd;
+
+      // Check if backspace or delete is pressed
+      if (e.key === "Backspace" || e.key === "Delete") {
+        // If the entire agent string is selected, allow normal deletion
+        if (
+          selectionStart === startIndex &&
+          selectionEnd === startIndex + agentString.length
+        ) {
+          // Allow default behavior as the whole string is selected
+          return;
+        }
+
+        // If cursor is within or immediately after the agent string and not a full selection
+        if (
+          (selectionStart > startIndex &&
+            selectionStart <= startIndex + agentString.length) ||
+          (selectionEnd > startIndex &&
+            selectionEnd <= startIndex + agentString.length)
+        ) {
+          e.preventDefault(); // Prevent default deletion of a single character
+
+          // Remove the entire "@Options Flow" string
+          inputText =
+            inputText.substring(0, startIndex) +
+            inputText.substring(startIndex + agentString.length);
+
+          // After deletion, set cursor position to just before where the string was
+          // Use a small timeout to ensure DOM update for inputText has occurred
+          setTimeout(() => {
+            inputEl.selectionStart = startIndex;
+            inputEl.selectionEnd = startIndex;
+            resize(); // Adjust textarea height after content change
+          }, 0);
+        }
+      }
+    }
   }
 </script>
 
@@ -127,47 +187,66 @@
                       bind:this={inputEl}
                       bind:value={inputText}
                       on:input={resize}
-                      on:keydown={(e) => {
-                        if (e.key === "Enter" && !e.shiftKey) {
-                          e.preventDefault();
-                          createChat();
-                        }
-                      }}
+                      on:keydown={handleKeyDown}
                       placeholder="Ask anything"
                       class="w-full flex-1 bg-transparent outline-none
-                    placeholder-gray-500 dark:placeholder-gray-400 px-2 break-words"
+                      placeholder-gray-500 dark:placeholder-gray-400 px-2 break-words
+                      {isOptionsFlow ? 'text-blue-500' : ''}"
                     />
                   </div>
 
                   <div
                     class="absolute bottom-0 mb-2 flex flex-row gap-x-2 justify-end w-full px-2 bg:inherit dark:bg-default z-20"
                   >
-                    <div class=" flex flex-row gap-x-2 justify-end w-full px-2">
-                      <button
-                        class="cursor-pointer text-sm rounded-md bg-gray-300 dark:bg-[#2A2E39] px-3 py-1 transition-colors duration-50"
-                        type="button"
+                    <div class=" flex flex-row justify-between w-full">
+                      <div
+                        class="order-first relative inline-block text-left cursor-pointer ml-1 shadow-xs"
                       >
-                        Ask
-                      </button>
-                      <button
-                        class="cursor-pointer text-sm opacity-80 rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-default px-3 py-1 transition-colors duration-50"
-                        type="button"
-                        on:click={() =>
-                          toast?.info("Feature is coming soon 🔥", {
-                            style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
-                          })}
-                      >
-                        Backtest
-                        <svg
-                          class="w-4 h-4 mb-1 inline-block"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          ><path
-                            fill="currentColor"
-                            d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                          /></svg
-                        >
-                      </button>
+                        <DropdownMenu.Root>
+                          <DropdownMenu.Trigger asChild let:builder>
+                            <Button
+                              builders={[builder]}
+                              class="w-full border-gray-400 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
+                            >
+                              <span class="truncate">@Agents</span>
+                              <svg
+                                class="-mr-1 ml-3 h-5 w-5 xs:ml-2 inline-block"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                                style="max-width:40px"
+                                aria-hidden="true"
+                              >
+                                <path
+                                  fill-rule="evenodd"
+                                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                  clip-rule="evenodd"
+                                ></path>
+                              </svg>
+                            </Button>
+                          </DropdownMenu.Trigger>
+                          <DropdownMenu.Content
+                            class="w-56 h-fit max-h-72 overflow-y-auto scroller"
+                          >
+                            <DropdownMenu.Label
+                              class="text-muted dark:text-gray-400 font-normal"
+                            >
+                              Select AI Agent
+                            </DropdownMenu.Label>
+                            <DropdownMenu.Separator />
+                            <DropdownMenu.Group>
+                              {#each agentOptions as item}
+                                <DropdownMenu.Item
+                                  on:click={() => (inputText += "@" + item)}
+                                  class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                                >
+                                  {item}
+                                </DropdownMenu.Item>
+                              {/each}
+                            </DropdownMenu.Group>
+                          </DropdownMenu.Content>
+                        </DropdownMenu.Root>
+                      </div>
+
                       <button
                         on:click={createChat}
                         class="{inputText?.trim()?.length > 0
