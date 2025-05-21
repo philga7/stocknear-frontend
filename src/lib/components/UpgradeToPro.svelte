@@ -26,7 +26,7 @@
           <div class="relative pl-14">
             <dt class="text-lg font-semibold leading-6">
               <div
-                class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-white"
+                class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded bg-[#3B82F6] dark:bg-white"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -54,7 +54,7 @@
           <div class="relative pl-14">
             <dt class="text-lg font-semibold leading-6">
               <div
-                class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-white"
+                class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded bg-[#3B82F6] dark:bg-white"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -82,7 +82,7 @@
           <div class="relative pl-14">
             <dt class="text-lg font-semibold leading-6">
               <div
-                class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-white"
+                class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded bg-[#3B82F6] dark:bg-white"
               >
                 <svg
                   class="w-6 h-6"
@@ -116,7 +116,7 @@
           <div class="relative pl-14">
             <dt class="text-lg font-semibold leading-6">
               <div
-                class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-white"
+                class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded bg-[#3B82F6] dark:bg-white"
               >
                 <svg
                   class="w-6 h-6 text-black"
@@ -146,7 +146,7 @@
       <div class="mt-10 text-center">
         <a
           href="/pricing"
-          class="mt-10 flex justify-center text-[1rem] items-center px-5 w-fit m-auto border-none rounded-md btn btn-lg font-semibold text-white dark:text-black bg-[#3B82F6] dark:bg-[#fff] dark:sm:hover:bg-gray-300 transition duration-150 ease-in-out group"
+          class="mt-10 flex justify-center text-[1rem] items-center px-5 w-fit m-auto border-none rounded btn btn-lg font-semibold text-white dark:text-black bg-[#3B82F6] dark:bg-[#fff] dark:sm:hover:bg-gray-300 transition duration-150 ease-in-out group"
         >
           Get Pro Membership
           <span

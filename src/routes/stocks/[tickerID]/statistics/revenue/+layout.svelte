@@ -49,7 +49,7 @@
         <aside class="inline-block relative w-full lg:w-1/4 mt-3">
           {#if !["Pro", "Plus"]?.includes(data?.user?.tier) || data?.user?.freeTrial}
             <div
-              class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
+              class="w-full border border-gray-300 dark:border-gray-600 rounded h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
             >
               <a
                 href="/pricing"
@@ -69,7 +69,7 @@
           {/if}
 
           <div
-            class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4"
+            class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded h-fit pb-4 mt-4"
           >
             <h3 class="p-2 pt-4 text-xl font-semibold">Revenue Definition</h3>
             <div class=" p-2">
@@ -90,7 +90,7 @@
 
           {#if similarStocks?.length > 0}
             <div
-              class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4"
+              class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded h-fit pb-4 mt-4"
             >
               <h3 class="p-2 pt-4 text-xl font-semibold">Related Stocks</h3>
               <table class="table table-sm table-compact w-full">
@@ -142,7 +142,7 @@
 
           {#if newsList?.length !== 0}
             <div
-              class="w-full sm:hover: border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer"
+              class="w-full sm:hover: border border-gray-300 dark:border-gray-600 rounded h-fit pb-4 mt-4 cursor-pointer"
             >
               <div class="p-4 text-sm">
                 <h3 class="text-xl font-semibold mb-3">

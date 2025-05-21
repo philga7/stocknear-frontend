@@ -323,7 +323,7 @@
                 on:click={() => (timePeriod = item)}
                 class="px-3 py-1 {timePeriod === item
                   ? 'bg-gray-300 dark:bg-white text-muted'
-                  : 'text-muted dark:text-white bg-gray-100 dark:bg-table text-opacity-[0.6]'} border border-gray-200 dark:border-gray-700 transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+                  : 'text-muted dark:text-white bg-gray-100 dark:bg-table text-opacity-[0.6]'} border border-gray-200 dark:border-gray-700 transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded cursor-pointer"
               >
                 {item}
               </label>
@@ -332,7 +332,7 @@
                 href="/pricing"
                 class="px-3 py-1 flex flex-row items-center {timePeriod === item
                   ? 'bg-white text-muted'
-                  : 'text-muted dark:text-white bg-gray-100 dark:bg-table text-opacity-[0.6]'} border border-gray-200 dark:border-gray-700 transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+                  : 'text-muted dark:text-white bg-gray-100 dark:bg-table text-opacity-[0.6]'} border border-gray-200 dark:border-gray-700 transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded cursor-pointer"
               >
                 {item}
                 <svg

@@ -127,7 +127,7 @@
         <label
           for="topHoldingModal"
           on:click={() => goto(`/etf/${$etfTicker}/holdings`)}
-          class="rounded-md cursor-pointer w-11/12 md:w-3/4 lg:w-11/12 py-2 h-full mt-8 lg:mt-6 text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100 ease-in"
+          class="rounded cursor-pointer w-11/12 md:w-3/4 lg:w-11/12 py-2 h-full mt-8 lg:mt-6 text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100 ease-in"
         >
           All Holdings
         </label>

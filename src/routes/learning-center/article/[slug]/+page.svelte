@@ -52,7 +52,7 @@
               article?.id,
               article?.cover,
             )}
-            class="h-[200px] w-full object-cover lg:h-[350px] rounded-lg border border-gray-300 dark:border-gray-800"
+            class="h-[200px] w-full object-cover lg:h-[350px] rounded border border-gray-300 dark:border-gray-800"
             loading="lazy"
             alt="Wallpaper"
           />

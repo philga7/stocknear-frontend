@@ -64,7 +64,7 @@
               {#each showFullStats ? sectorList : sectorList?.slice(0, 3) as item, index}
                 <div
                   on:click={() => sectorSelector(item?.industry)}
-                  class="shadow-lg bg-primary w-full rounded-md p-4 mb-5 flex flex-row items-center {index ===
+                  class="shadow-lg bg-primary w-full rounded p-4 mb-5 flex flex-row items-center {index ===
                   0
                     ? 'mt-4'
                     : ''} {index === 2 &&

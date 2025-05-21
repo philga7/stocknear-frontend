@@ -455,7 +455,7 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                        class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                       >
                         <span class="truncate">{selectedSector}</span>
                         <svg
@@ -523,7 +523,7 @@
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6"
               >
                 <div
-                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded p-4"
                 >
                   <div class=" text-sm mb-2 flex items-center">
                     <span>Volume</span>
@@ -540,7 +540,7 @@
                 </div>
 
                 <div
-                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded p-4"
                 >
                   <div class=" text-sm mb-2 flex items-center">
                     <span>Net Call Prem</span>
@@ -557,7 +557,7 @@
                 </div>
 
                 <div
-                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="shadow-md bg-gray-100 dark:bg-gray-800/30 rounded p-4"
                 >
                   <div class=" text-sm mb-2 flex items-center">
                     <span>Net Put Prem</span>
@@ -599,10 +599,10 @@
               </div>
 
               <div
-                class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
+                class="w-full m-auto rounded-none sm:rounded mb-4 overflow-x-auto"
               >
                 <table
-                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
+                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
                 >
                   <thead>
                     <TableHeader

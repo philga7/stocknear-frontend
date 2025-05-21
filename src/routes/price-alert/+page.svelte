@@ -298,7 +298,7 @@
                   {#if editMode}
                     <label
                       on:click={handleDeleteTickers}
-                      class="shadow-xs border text-sm border-gray-300 dark:border-gray-600 mr-2 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2.5 pl-3 pr-4 font-semibold sm:hover:bg-gray-100 dark:sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
+                      class="shadow-xs border text-sm border-gray-300 dark:border-gray-600 mr-2 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2.5 pl-3 pr-4 font-semibold sm:hover:bg-gray-100 dark:sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
                     >
                       <svg
                         class="inline-block w-5 h-5"
@@ -316,7 +316,7 @@
                   {/if}
                   <label
                     on:click={handleEditMode}
-                    class="shadow-xs border text-sm border-gray-300 dark:border-gray-600 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md py-2 px-3 sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out sm:hover:text-red-500"
+                    class="shadow-xs border text-sm border-gray-300 dark:border-gray-600 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 px-3 sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out sm:hover:text-red-500"
                   >
                     <svg
                       class="inline-block w-5 h-5"
@@ -368,13 +368,13 @@
                     </div>
                     <Combobox.Input
                       on:input={search}
-                      class="shadow-xs text-sm sm:text-[1rem] controls-input focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded-md placeholder:text-muted/80 dark:placeholder:text-white/80 px-3 py-2 pl-8 xs:pl-10 grow w-full sm:min-w-56 max-w-xs"
+                      class="shadow-xs text-sm sm:text-[1rem] controls-input focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-muted/80 dark:placeholder:text-white/80 px-3 py-2 pl-8 xs:pl-10 grow w-full sm:min-w-56 max-w-xs"
                       placeholder="Add new stock"
                       aria-label="Add new stock"
                     />
                   </div>
                   <Combobox.Content
-                    class="w-auto z-10 rounded-md bg-white dark:bg-default border border-gray-300 dark:border-gray-700  px-1 py-3 shadow-xs outline-hidden"
+                    class="w-auto z-10 rounded bg-white dark:bg-default border border-gray-300 dark:border-gray-700  px-1 py-3 shadow-xs outline-hidden"
                     sideOffset={8}
                   >
                     {#if inputValue?.length > 0}
@@ -420,10 +420,10 @@
             <!--Start Table-->
             {#if priceAlertList?.length > 0}
               <div
-                class="w-full rounded-md overflow-hidden overflow-x-auto no-scrollbar"
+                class="w-full rounded overflow-hidden overflow-x-auto no-scrollbar"
               >
                 <table
-                  class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
+                  class="table table-sm table-compact rounded-none sm:rounded w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
                 >
                   <!-- head -->
                   <thead class="text-muted dark:text-white dark:bg-default">
@@ -540,10 +540,10 @@
 
               <div class=" ">
                 <div
-                  class="inline-flex justify-center w-full rounded-md sm:w-auto mb-3"
+                  class="inline-flex justify-center w-full rounded sm:w-auto mb-3"
                 >
                   <div
-                    class="bg-gray-200 dark:bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1 mt-4"
+                    class="bg-gray-200 dark:bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded p-1 mt-4"
                   >
                     {#each tabs as item, i}
                       {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}
@@ -576,7 +576,7 @@
                         >
                           {#if activeIdx === i}
                             <div
-                              class="absolute inset-0 rounded-md bg-[#fff]"
+                              class="absolute inset-0 rounded bg-[#fff]"
                             ></div>
                           {/if}
                           <span

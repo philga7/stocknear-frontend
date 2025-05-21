@@ -49,7 +49,7 @@
       </p>
       <a
         href="/pricing"
-        class="inline-flex items-center px-4 py-2 text-[1rem] border-none rounded-md btn btn-lg font-semibold text-white bg-blue-600 hover:bg-blue-700 transition duration-150 ease-in-out"
+        class="inline-flex items-center px-4 py-2 text-[1rem] border-none rounded btn btn-lg font-semibold text-white bg-blue-600 hover:bg-blue-700 transition duration-150 ease-in-out"
       >
         Unlock All Features
         <span

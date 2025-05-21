@@ -984,7 +984,7 @@
       </div>
 
       <div
-        class="rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-100 dark:bg-primary p-2"
+        class="rounded border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-100 dark:bg-primary p-2"
       >
         <div
           class="flex flex-col sm:flex-row items-center pt-3 sm:pt-1 pb-3 sm:border-b sm:border-gray-300 dark:border-gray-600"
@@ -1078,7 +1078,7 @@
           <div class="sm:ml-auto w-full sm:w-fit pt-5">
             <div class="relative flex flex-col sm:flex-row items-center">
               <div
-                class="relative w-full sm:w-fit pl-3 sm:mr-5 mb-4 sm:mb-0 flex-auto text-center shadow-xs bg-white dark:bg-secondary rounded-md border border-gray-300 dark:border-gray-600"
+                class="relative w-full sm:w-fit pl-3 sm:mr-5 mb-4 sm:mb-0 flex-auto text-center shadow-xs bg-white dark:bg-secondary rounded border border-gray-300 dark:border-gray-600"
               >
                 <label class="search-driver flex flex-row items-center">
                   <input
@@ -1131,7 +1131,7 @@
               <Popover.Root>
                 <Popover.Trigger asChild let:builder>
                   <Button
-                    class="date-picker-driver  w-full sm:w-[160px] truncate sm:mr-3 py-3 shadow-xs dark:bg-[#000] border-gray-300 justify-center sm:justify-start text-center sm:text-left  border-none rounded-md"
+                    class="date-picker-driver  w-full sm:w-[160px] truncate sm:mr-3 py-3 shadow-xs dark:bg-[#000] border-gray-300 justify-center sm:justify-start text-center sm:text-left  border-none rounded"
                     builders={[builder]}
                   >
                     <CalendarIcon class="mr-2 h-4 w-4" />
@@ -1185,7 +1185,7 @@
           <div class="mt-3 flex flex-col gap-y-2.5 sm:flex-row lg:gap-y-2 pb-1">
             <label
               for="ruleModal"
-              class="filter-driver inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none py-2 pl-3 pr-4 font-semibold shadow-xs bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+              class="filter-driver inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded border border-gray-300 dark:border-none py-2 pl-3 pr-4 font-semibold shadow-xs bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
             >
               <svg
                 class="h-5 w-5"
@@ -1206,7 +1206,7 @@
             {#if ruleOfList?.length !== 0}
               <label
                 on:click={handleResetAll}
-                class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none py-2 pl-3 pr-4 font-semibold shadow-xs bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded border border-gray-300 dark:border-none py-2 pl-3 pr-4 font-semibold shadow-xs bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
               >
                 <svg
                   class="h-4 w-4"
@@ -1292,7 +1292,7 @@
                         <DropdownMenu.Trigger asChild let:builder>
                           <Button
                             builders={[builder]}
-                            class="shadow-xs h-[40px] flex flex-row justify-between items-center w-[150px] xs:w-[140px] sm:w-[150px] px-3 rounded-md truncate"
+                            class="shadow-xs h-[40px] flex flex-row justify-between items-center w-[150px] xs:w-[140px] sm:w-[150px] px-3 rounded truncate"
                           >
                             <span class="truncate ml-2 text-sm">
                               {#if valueMappings[row?.rule] === "any"}
@@ -1578,7 +1578,7 @@
             <div class="w-full grid grid-cols-1 lg:grid-cols-4 gap-y-3 gap-x-3">
               <!--Start Flow Sentiment-->
               <div
-                class="sentiment-driver shadow-xs flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded-md h-20"
+                class="sentiment-driver shadow-xs flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded h-20"
               >
                 <div class="flex flex-col items-start">
                   <span
@@ -1618,7 +1618,7 @@
               <!--End Flow Sentiment-->
               <!--Start Put/Call-->
               <div
-                class="put-call-driver shadow-xs flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded-md h-20"
+                class="put-call-driver shadow-xs flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded h-20"
               >
                 <div class="flex flex-col items-start">
                   <span
@@ -1713,7 +1713,7 @@
               <!--End Put/Call-->
               <!--Start Call Flow-->
               <div
-                class="call-flow-driver shadow-xs flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded-md h-20"
+                class="call-flow-driver shadow-xs flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded h-20"
               >
                 <div class="flex flex-col items-start">
                   <span
@@ -1807,7 +1807,7 @@
               <!--End Call Flow-->
               <!--Start Put Flow-->
               <div
-                class="put-flow-driver shadow-xs flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded-md h-20"
+                class="put-flow-driver shadow-xs flex flex-row items-center flex-wrap w-full px-5 bg-gray-100 dark:bg-primary border border-gray-300 dark:border-gray-600 rounded h-20"
               >
                 <div class="flex flex-col items-start">
                   <span
@@ -1923,7 +1923,7 @@
         <div class="flex justify-center items-center h-80">
           <div class="relative">
             <label
-              class="bg-gray-100 dark:bg-primary rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+              class="bg-gray-100 dark:bg-primary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
             >
               <span
                 class="loading loading-spinner loading-md text-muted dark:text-gray-400"
@@ -2032,7 +2032,7 @@
             <input
               autocomplete="off"
               id="search"
-              class="focus:outline-none placeholder-gray-500 dark:placeholder-gray-300 block w-full p-2 ps-10 text-sm text-muted dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-100 dark:bg-primary border border-blue-500"
+              class="focus:outline-none placeholder-gray-500 dark:placeholder-gray-300 block w-full p-2 ps-10 text-sm text-muted dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded bg-gray-100 dark:bg-primary border border-blue-500"
               placeholder="Search"
               bind:value={searchTerm}
             />
@@ -2098,7 +2098,7 @@
 
   <!-- Desktop modal content -->
   <div
-    class="modal-box border-gray-300 dark:border-none text-muted dark:text-white rounded-md border border-gray-300 dark:border-gray-600 w-full bg-gray-100 dark:bg-primary flex flex-col items-center"
+    class="modal-box border-gray-300 dark:border-none text-muted dark:text-white rounded border border-gray-300 dark:border-gray-600 w-full bg-gray-100 dark:bg-primary flex flex-col items-center"
   >
     <div class=" mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">{tooltipTitle}</h3>

@@ -74,7 +74,7 @@
 
 <main class="text-muted dark:text-white w-full">
   <section
-    class="border-b border-gray-200 dark:border-none shadow dark:border-gray-800 sm:rounded-md w-full bg-gray-100 dark:bg-gray-500/20"
+    class="border-b border-gray-200 dark:border-none shadow dark:border-gray-800 sm:rounded w-full bg-gray-100 dark:bg-gray-500/20"
   >
     <div class="mx-auto max-w-7xl px-6 py-16 sm:py-2 md:px-8">
       <div class="text-center">
@@ -103,7 +103,7 @@
             href="https://affiliates.lemonsqueezy.com/programs/stocknear"
             rel="noopener noreferrer"
             target="_blank"
-            class="text-white bg-blue-600 sm:hover:bg-blue-700 ease-out duration-50 px-5 py-3 text-lg font-semibold rounded-md"
+            class="text-white bg-blue-600 sm:hover:bg-blue-700 ease-out duration-50 px-5 py-3 text-lg font-semibold rounded"
           >
             Become an affiliate
           </a>
@@ -120,7 +120,7 @@
         <div class="relative">
           <dt>
             <div
-              class="absolute flex h-12 w-12 items-center justify-center rounded-md bg-[#3B82F6] text-white dark:bg-white dark:text-black"
+              class="absolute flex h-12 w-12 items-center justify-center rounded bg-[#3B82F6] text-white dark:bg-white dark:text-black"
             >
               <svg
                 class="w-6 h-6"
@@ -155,7 +155,7 @@
         <div class="relative">
           <dt>
             <div
-              class="absolute flex h-12 w-12 items-center justify-center rounded-md bg-[#3B82F6] text-white dark:bg-white dark:text-black"
+              class="absolute flex h-12 w-12 items-center justify-center rounded bg-[#3B82F6] text-white dark:bg-white dark:text-black"
             >
               <svg
                 class="w-6 h-6"
@@ -192,7 +192,7 @@
         <div class="relative">
           <dt>
             <div
-              class="absolute flex h-12 w-12 items-center justify-center rounded-md bg-[#3B82F6] text-white dark:bg-white dark:text-black"
+              class="absolute flex h-12 w-12 items-center justify-center rounded bg-[#3B82F6] text-white dark:bg-white dark:text-black"
             >
               <svg
                 class="w-6 h-6"
@@ -229,7 +229,7 @@
         <div class="relative">
           <dt>
             <div
-              class="absolute flex h-12 w-12 items-center justify-center rounded-md bg-[#3B82F6] text-white dark:bg-white dark:text-black"
+              class="absolute flex h-12 w-12 items-center justify-center rounded bg-[#3B82F6] text-white dark:bg-white dark:text-black"
             >
               <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24">
                 <path
@@ -275,7 +275,7 @@
         <div class="relative">
           <dt>
             <div
-              class="absolute flex h-12 w-12 items-center justify-center rounded-md bg-[#3B82F6] text-white dark:bg-white dark:text-black"
+              class="absolute flex h-12 w-12 items-center justify-center rounded bg-[#3B82F6] text-white dark:bg-white dark:text-black"
             >
               <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24">
                 <path
@@ -314,7 +314,7 @@
         <div class="relative">
           <dt>
             <div
-              class="absolute flex h-12 w-12 items-center justify-center rounded-md bg-[#3B82F6] text-white dark:bg-white dark:text-black"
+              class="absolute flex h-12 w-12 items-center justify-center rounded bg-[#3B82F6] text-white dark:bg-white dark:text-black"
             >
               <svg
                 class="w-6 h-6"
@@ -344,7 +344,7 @@
         <div class="relative">
           <dt>
             <div
-              class="absolute flex h-12 w-12 items-center justify-center rounded-md bg-[#3B82F6] text-white dark:bg-white dark:text-black"
+              class="absolute flex h-12 w-12 items-center justify-center rounded bg-[#3B82F6] text-white dark:bg-white dark:text-black"
             >
               <svg
                 class="w-6 h-6"
@@ -411,7 +411,7 @@
   </section>
 
   <section
-    class="border-t border-gray-200 shadow dark:border-gray-800 bg-gray-100 sm:rounded-md dark:bg-gray-500/20"
+    class="border-t border-gray-200 shadow dark:border-gray-800 bg-gray-100 sm:rounded dark:bg-gray-500/20"
   >
     <div
       class="mx-auto max-w-7xl px-6 py-12 lg:px-8 lg:py-28 rounded mt-10 mb-10"
@@ -423,7 +423,7 @@
             href="https://affiliates.lemonsqueezy.com/programs/stocknear"
             rel="noopener noreferrer"
             target="_blank"
-            class="text-white bg-blue-600 sm:hover:bg-blue-700 ease-out duration-50 px-5 py-3 text-lg font-semibold rounded-md"
+            class="text-white bg-blue-600 sm:hover:bg-blue-700 ease-out duration-50 px-5 py-3 text-lg font-semibold rounded"
           >
             Become an affiliate
           </a>

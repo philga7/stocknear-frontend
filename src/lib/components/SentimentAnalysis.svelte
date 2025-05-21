@@ -49,7 +49,7 @@
     {#if sentimentList?.length !== 0}
       <div class="pb-4 w-full mt-5">
         <div
-          class="w-auto p-4 sm:p-6 bg-default sm:bg-default rounded-md relative"
+          class="w-auto p-4 sm:p-6 bg-default sm:bg-default rounded relative"
         >
           <h3 class="text-gray-300 text-sm uppercase mb-3">Average Score</h3>
           <div class="flex flex-row items-center justify-between">
@@ -176,7 +176,7 @@
 
       <div class="w-full">
         <div
-          class="w-auto p-4 sm:p-6 bg-default sm:bg-default rounded-md relative"
+          class="w-auto p-4 sm:p-6 bg-default sm:bg-default rounded relative"
         >
           <h3 class="text-gray-300 text-sm uppercase mb-3">
             Average Score Trend

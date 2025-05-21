@@ -161,12 +161,12 @@
   on:click={handleClick}
   use:clickOutside
   on:click_outside={handleClickOutside}
-  class="text-gray-100 w-full sm:w-3/4 max-w-2xl mt-3 rounded-md"
+  class="text-gray-100 w-full sm:w-3/4 max-w-2xl mt-3 rounded"
 >
   <div
     class="{$markdownClicked[id] === false
       ? 'hidden'
-      : ''} text-gray-100 w-full sm:w-3/4 max-w-2xl mb-4 rounded-md"
+      : ''} text-gray-100 w-full sm:w-3/4 max-w-2xl mb-4 rounded"
   >
     <textarea bind:value {id} class="bg-[#1A1A27] min-h-12 w-full" />
   </div>
@@ -180,7 +180,7 @@
       {#if mk?.id === id}
         <div class="flex flex-col">
           <span class="text-gray-400 mb-4">[{outputCounter}] : </span>
-          <div class="border-b border-gray-600 rounded-md">
+          <div class="border-b border-gray-600 rounded">
             {#if hasContent(value)}
               {@html value}
             {:else}

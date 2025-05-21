@@ -72,7 +72,7 @@
               <!--Start Item-->
               <div class="flex flex-row items-center w-full mb-6">
                 <div
-                  class="w-full rounded-md {latestInfoDate(
+                  class="w-full rounded {latestInfoDate(
                     data?.getAnalystInsight?.date,
                   )
                     ? 'bg-[#F9AB00]/10'
@@ -85,7 +85,7 @@
                       >
                       {#if latestInfoDate(data?.getAnalystInsight?.date)}
                         <label
-                          class="bg-[#2D4F8A] text-white text-xs rounded-md px-2 py-0.5 ml-3"
+                          class="bg-[#2D4F8A] text-white text-xs rounded px-2 py-0.5 ml-3"
                           >New</label
                         >
                       {/if}
@@ -106,7 +106,7 @@
       </div>
     {:else}
       <div
-        class="shadow-lg shadow-bg-[#000] bg-[#111112] sm:bg-opacity-[0.5] text-sm sm:text-[1rem] rounded-md w-full p-4 min-h-24 mt-4 text-white m-auto flex justify-center items-center text-center font-semibold"
+        class="shadow-lg shadow-bg-[#000] bg-[#111112] sm:bg-opacity-[0.5] text-sm sm:text-[1rem] rounded w-full p-4 min-h-24 mt-4 text-white m-auto flex justify-center items-center text-center font-semibold"
       >
         <svg
           class="mr-1.5 w-5 h-5 inline-block"

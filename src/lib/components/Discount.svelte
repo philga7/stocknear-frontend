@@ -38,7 +38,7 @@
   });
 </script>
 
-<div class="lg:max-w-xl w-full rounded-none sm:rounded-md m-auto mb-10">
+<div class="lg:max-w-xl w-full rounded-none sm:rounded m-auto mb-10">
   <div class="container">
     <h2 class="text-2xl font-bold text-center text-pink-700 dark:text-pink-500">
       40% OFF Your Subscription!

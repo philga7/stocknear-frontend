@@ -40,7 +40,7 @@
             <option value="252dclshv"> 1 Year historical volatility </option>
           </select>
 
-          <div class="pb-2 rounded-md bg-default">
+          <div class="pb-2 rounded bg-default">
             <div class="app w-full h-[300px] mt-5">
               <Chart {init} options={optionsData} class="chart" />
             </div>
@@ -161,7 +161,7 @@
       {/if}
     {:else}
       <div
-        class="shadow-lg shadow-bg-[#000] bg-[#111112] sm:bg-opacity-[0.5] text-sm sm:text-[1rem] rounded-md w-full p-4 min-h-24 mt-4 text-white m-auto flex justify-center items-center text-center font-semibold"
+        class="shadow-lg shadow-bg-[#000] bg-[#111112] sm:bg-opacity-[0.5] text-sm sm:text-[1rem] rounded w-full p-4 min-h-24 mt-4 text-white m-auto flex justify-center items-center text-center font-semibold"
       >
         <svg
           class="mr-1.5 w-5 h-5 inline-block"

@@ -439,7 +439,7 @@
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
                       builders={[builder]}
-                      class="w-full border-gray-300 shadow-xs dark:border-gray-600 border sm:hover:bg-gray-100 dark:bg-default dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                      class="w-full border-gray-300 shadow-xs dark:border-gray-600 border sm:hover:bg-gray-100 dark:bg-default dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                     >
                       <span class="truncate">{sortBy}</span>
                       <svg
@@ -491,7 +491,7 @@
               </div>
               <Button
                 on:click={() => exportData("csv")}
-                class="ml-2 w-fit border-gray-300 shadow-xs dark:border-gray-600 border sm:hover:bg-gray-100 dark:bg-default dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                class="ml-2 w-fit border-gray-300 shadow-xs dark:border-gray-600 border sm:hover:bg-gray-100 dark:bg-default dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded truncate"
               >
                 <span class="truncate">Download</span>
                 <svg
@@ -523,7 +523,7 @@
 
             <div class=" w-full overflow-x-auto">
               <table
-                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
+                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
               >
                 <thead class="text-muted dark:text-white dark:bg-default">
                   <tr>

@@ -164,7 +164,7 @@
         </div>
       </div>
 
-      <div class=" rounded-md mt-5 sm:mt-0">
+      <div class=" rounded mt-5 sm:mt-0">
         <div class="flex justify-end mb-2 space-x-2 z-10 text-sm">
           {#each ["Today's Trend", "Price Level"] as item, index}
             {#if data?.user?.tier === "Pro" || index === 0}

@@ -362,7 +362,7 @@
                     class="w-full flex flex-row items-center mr-auto mt-5"
                   >
                     <div
-                      class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white md:h-8 md:w-8"
+                      class="flex h-9 w-9 items-center justify-center rounded text-muted dark:text-white md:h-8 md:w-8"
                     >
                       <Home class="h-5.5 w-5.5" />
                     </div>
@@ -847,7 +847,7 @@
                   >
                     <div class="flex flex-row items-center mr-auto">
                       <div
-                        class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white sm:hover:text-muted dark:text-white md:h-8 md:w-8"
+                        class="flex h-9 w-9 items-center justify-center rounded text-muted dark:text-white sm:hover:text-muted dark:text-white md:h-8 md:w-8"
                       >
                         <Boxes class="h-5.5 w-5.5" />
                       </div>
@@ -871,7 +871,7 @@
                   >
                     <div class="flex flex-row items-center mr-auto">
                       <div
-                        class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white hover:text-muted dark:text-white md:h-8 md:w-8"
+                        class="flex h-9 w-9 items-center justify-center rounded text-muted dark:text-white hover:text-muted dark:text-white md:h-8 md:w-8"
                       >
                         <Newspaper class="h-5.5 w-5.5" />
                       </div>
@@ -895,7 +895,7 @@
                     >
                       <div class="flex flex-row items-center mr-auto">
                         <div
-                          class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white hover:text-muted dark:text-white md:h-8 md:w-8"
+                          class="flex h-9 w-9 items-center justify-center rounded text-muted dark:text-white hover:text-muted dark:text-white md:h-8 md:w-8"
                         >
                           <Gem class="h-5.5 w-5.5" />
                         </div>
@@ -938,7 +938,7 @@
                   <Button
                     size="icon"
                     aria-label="Settings"
-                    class="overflow-hidden rounded-md bg-gray-100 shadow sm:hover:bg-gray-200 dark:bg-default dark:sm:hover:bg-[#18181B] border border-gray-300 dark:border-gray-600 w-10 h-10"
+                    class="overflow-hidden rounded bg-gray-100 shadow sm:hover:bg-gray-200 dark:bg-default dark:sm:hover:bg-[#18181B] border border-gray-300 dark:border-gray-600 w-10 h-10"
                     builders={[builder]}
                   >
                     <svg
@@ -1069,7 +1069,7 @@
                 </a>
                 <a href="/" class="flex flex-row items-center ml-9 w-full">
                   <div
-                    class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white md:h-8 md:w-8"
+                    class="flex h-9 w-9 items-center justify-center rounded text-muted dark:text-white md:h-8 md:w-8"
                   >
                     <Home class="h-5.5 w-5.5" />
                   </div>
@@ -1360,7 +1360,7 @@
                   class="flex flex-row items-center ml-9 w-full mt-3"
                 >
                   <div
-                    class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white md:h-8 md:w-8"
+                    class="flex h-9 w-9 items-center justify-center rounded text-muted dark:text-white md:h-8 md:w-8"
                   >
                     <Boxes class="h-5.5 w-5.5" />
                   </div>
@@ -1374,7 +1374,7 @@
                   class="flex flex-row items-center ml-9 w-full mt-3"
                 >
                   <div
-                    class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white md:h-8 md:w-8"
+                    class="flex h-9 w-9 items-center justify-center rounded text-muted dark:text-white md:h-8 md:w-8"
                   >
                     <Newspaper class="h-5.5 w-5.5" />
                   </div>
@@ -1386,7 +1386,7 @@
                     class="flex flex-row items-center ml-9 w-full mt-3"
                   >
                     <div
-                      class="flex h-9 w-9 items-center justify-center rounded-md text-muted dark:text-white md:h-8 md:w-8"
+                      class="flex h-9 w-9 items-center justify-center rounded text-muted dark:text-white md:h-8 md:w-8"
                     >
                       <Gem class="h-5.5 w-5.5" />
                     </div>
@@ -1422,6 +1422,7 @@
 </div>
 
 <style lang="scss">
+  
   :root {
     --bprogress-color: #00a6f4;
     --bprogress-height: 1px;

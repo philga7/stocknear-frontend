@@ -3,7 +3,7 @@
   <!-- List container -->
   <div class="flex flex-col">
     <!-- Item -->
-    <div class="border border-gray-600 rounded-md bg-default">
+    <div class="border border-gray-600 rounded bg-default">
       <div class="flex h-auto justify-between items-center">
         <div
           role="status"

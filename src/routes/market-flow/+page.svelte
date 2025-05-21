@@ -492,7 +492,7 @@
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6"
               >
                 <div
-                  class="net-volume-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="net-volume-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded p-4"
                 >
                   <div
                     class="dark:text-[#c3c6d0] text-sm mb-2 flex items-center"
@@ -527,7 +527,7 @@
                 </div>
 
                 <div
-                  class="net-call-premium-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="net-call-premium-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded p-4"
                 >
                   <div
                     class="dark:text-[#c3c6d0] text-sm mb-2 flex items-center"
@@ -562,7 +562,7 @@
                 </div>
 
                 <div
-                  class="net-put-premium-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="net-put-premium-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded p-4"
                 >
                   <div
                     class="dark:text-[#c3c6d0] text-sm mb-2 flex items-center"
@@ -651,10 +651,10 @@
               </div>
 
               <div
-                class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
+                class="w-full m-auto rounded-none sm:rounded mb-4 overflow-x-auto"
               >
                 <table
-                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
+                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
                 >
                   <thead>
                     <TableHeader

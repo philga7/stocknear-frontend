@@ -562,7 +562,7 @@
                       <DropdownMenu.Trigger asChild let:builder>
                         <Button
                           builders={[builder]}
-                          class="shadow-xs w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                          class="shadow-xs w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                         >
                           <span class="truncate px-1">{timePeriod}</span>
                           <svg
@@ -647,7 +647,7 @@
 
                   <Button
                     on:click={() => exportData()}
-                    class="shadow-xs ml-2 border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                    class="shadow-xs ml-2 border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                   >
                     <span class="truncate">Download</span>
                     <svg
@@ -667,10 +667,10 @@
 
               <div class="w-full m-auto">
                 <div
-                  class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
+                  class="w-full m-auto rounded-none sm:rounded mb-4 overflow-x-auto"
                 >
                   <table
-                    class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
+                    class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
                   >
                     <thead>
                       <TableHeader {columns} {sortOrders} {sortData} />

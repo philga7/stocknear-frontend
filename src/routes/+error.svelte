@@ -40,7 +40,7 @@
 
         <a
           href="/home"
-          class="flex justify-center items-center w-1/2 m-auto py-2.5 mt-10 rounded-md duration-100 bg-[#3B82F6] text-white sm:hover:bg-blue-600 dark:bg-[#fff] dark:sm:hover:hover:bg-gray-300 dark:text-black font-semibold"
+          class="flex justify-center items-center w-1/2 m-auto py-2.5 mt-10 rounded duration-100 bg-[#3B82F6] text-white sm:hover:bg-blue-600 dark:bg-[#fff] dark:sm:hover:hover:bg-gray-300 dark:text-black font-semibold"
         >
           Back to Home Page
         </a>

@@ -362,7 +362,7 @@
                       class="m-auto w-full cursor-pointer h-16 {index ===
                       selectedWeekday
                         ? 'bg-gray-200 dark:bg-white text-black font-semibold'
-                        : ''} rounded-md sm:rounded-none flex dark:bg-default border border-gray-300 dark:border-gray-600 mb-3"
+                        : ''} rounded sm:rounded-none flex dark:bg-default border border-gray-300 dark:border-gray-600 mb-3"
                     >
                       <div
                         class="flex flex-row justify-center items-center w-full"
@@ -439,7 +439,7 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="border-gray-300 dark:border-gray-600 border border-gray-300 shadow-xs sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                        class="border-gray-300 dark:border-gray-600 border border-gray-300 shadow-xs sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                       >
                         <span class="truncate">Filter Country</span>
                         <svg
@@ -523,7 +523,7 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="border-gray-300 dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-300 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                        class="border-gray-300 dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-300 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                       >
                         <span class="truncate">Filter Importance</span>
                         <svg
@@ -592,7 +592,7 @@
                   {#if filterList.length !== 0}
                     <Button
                       on:click={handleReset}
-                      class="w-fit border-gray-300 dark:border-gray-600 border shadow-xs bg-white dark:bg-default sm:hover:bg-gray-300 dark:sm:hover:bg-primary ease-out flex flex-row justify-start items-center px-3 py-2  rounded-md truncate"
+                      class="w-fit border-gray-300 dark:border-gray-600 border shadow-xs bg-white dark:bg-default sm:hover:bg-gray-300 dark:sm:hover:bg-primary ease-out flex flex-row justify-start items-center px-3 py-2  rounded truncate"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -627,7 +627,7 @@
                         </h2>
                         {#if filterList.length !== 0}
                           <div
-                            class="ml-auto text-[1rem] sm:text-lg flex flex-row items-center relative block rounded-md px-2 py-1 focus:outline-hidden"
+                            class="ml-auto text-[1rem] sm:text-lg flex flex-row items-center relative block rounded px-2 py-1 focus:outline-hidden"
                           >
                             <span class="">Filters</span>
                             <span
@@ -641,7 +641,7 @@
 
                       <div class="w-full overflow-x-auto no-scrollbar">
                         <table
-                          class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
+                          class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
                         >
                           <thead>
                             <TableHeader {columns} {sortOrders} {sortData} />
@@ -811,7 +811,7 @@
 
         <aside class="inline-block relative w-full lg:w-1/4 mt-3">
           <div
-            class="w-full border border-gray-300 dark:border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-300 dark:border-gray-300 dark:border-gray-600 rounded h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href="/earnings-calendar"
@@ -830,7 +830,7 @@
           </div>
 
           <div
-            class="w-full border border-gray-300 dark:border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-300 dark:border-gray-300 dark:border-gray-600 rounded h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href="/dividends-calendar"

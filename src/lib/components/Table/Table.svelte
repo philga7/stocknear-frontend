@@ -712,7 +712,7 @@
     <DropdownMenu.Trigger asChild let:builder>
       <Button
         builders={[builder]}
-        class="shadow-xs min-w-[110px] w-fit ml-3 border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5  rounded-md"
+        class="shadow-xs min-w-[110px] w-fit ml-3 border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5  rounded"
       >
         <span class="w-fit text-sm sm:text-[1rem]">Indicators</span>
         <svg
@@ -864,7 +864,7 @@
 
 <div class="w-full overflow-x-auto text-muted dark:text-white">
   <table
-    class="table table-sm table-compact rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-2"
+    class="table table-sm table-compact rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto mt-2"
   >
     <thead>
       <TableHeader {columns} {sortOrders} {sortData} />
@@ -977,7 +977,7 @@
                             : "Bearish"}
                     </div>
                     <div
-                      class="ml-2 px-1.5 py-1.5 border text-center rounded-md text-xs font-semibold"
+                      class="ml-2 px-1.5 py-1.5 border text-center rounded text-xs font-semibold"
                     >
                       {item[column.key]}
                     </div>

@@ -147,7 +147,7 @@
                 <div class="">
                   {#each data?.getRedditTracker?.posts as item}
                     <div
-                      class="flex flex-col items-start mb-3 p-3 border border-gray-300 dark:border-gray-800 rounded-md shadow-xs border-gray-200 dark:bg-[#141417]"
+                      class="flex flex-col items-start mb-3 p-3 border border-gray-300 dark:border-gray-800 rounded shadow-xs border-gray-200 dark:bg-[#141417]"
                     >
                       <a
                         href={"https://www.reddit.com" + item?.permalink}
@@ -194,7 +194,7 @@
                       </div>
 
                       <label
-                        class="mt-2 mb-2 text-sm bg-white rounded-md px-3 py-1 text-black"
+                        class="mt-2 mb-2 text-sm bg-white rounded px-3 py-1 text-black"
                       >
                         {item?.link_flair_text}
                       </label>
@@ -395,7 +395,7 @@
 
         <aside class="hidden lg:block relative fixed w-1/4 ml-4">
           <div
-            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href="/potus-tracker"
@@ -414,7 +414,7 @@
           </div>
 
           <div
-            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href="/insider-tracker"

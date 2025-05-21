@@ -1238,7 +1238,7 @@
 
                 <!-- Trade Information Card -->
                 <div
-                  class="border border-gray-300 dark:border-gray-800 rounded-lg p-3 sm:p-4 mb-6 shadow-xs max-w-sm"
+                  class="border border-gray-300 dark:border-gray-800 rounded p-3 sm:p-4 mb-6 shadow-xs max-w-sm"
                 >
                   {#each userStrategy as item, index}
                     <div>

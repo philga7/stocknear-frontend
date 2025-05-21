@@ -322,7 +322,7 @@
                 class="text-xl  m-auto flex justify-center items-center h-full"
               >
                 <div
-                  class=" text-sm sm:text-[1rem] sm:rounded-md h-auto border border-gray-600 p-4"
+                  class=" text-sm sm:text-[1rem] sm:rounded h-auto border border-gray-600 p-4"
                 >
                   <svg
                     class="w-5 h-5 inline-block sm:mr-2 shrink-0"
@@ -347,7 +347,7 @@
 
             <div class="flex justify-start items-center m-auto overflow-x-auto">
               <table
-                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-3"
+                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto mt-3"
               >
                 <thead class="text-muted dark:text-white dark:bg-default">
                   <tr class="">
@@ -446,7 +446,7 @@
                           >
                             <div class="flex items-center justify-end">
                               <div
-                                class="flex w-full max-w-28 h-5 bg-gray-200 rounded-md overflow-hidden"
+                                class="flex w-full max-w-28 h-5 bg-gray-200 rounded overflow-hidden"
                               >
                                 <div
                                   class="bg-red-500 h-full"

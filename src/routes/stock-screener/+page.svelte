@@ -2637,7 +2637,7 @@ const handleKeyDown = (event) => {
   </div>
 
   <!--Start Build Strategy-->
-  <div class="sm:rounded-md">
+  <div class="sm:rounded">
     <div class="flex flex-col md:flex-row items-start md:items-center mb-5">
       <div class="w-full flex flex-row items-center sm:mt-4">
         <h1 class=" text-3xl font-semibold">Stock Screener</h1>
@@ -2658,7 +2658,7 @@ const handleKeyDown = (event) => {
               <DropdownMenu.Trigger asChild let:builder>
                 <Button
                   builders={[builder]}
-                  class="w-full shadow-xs border-gray-300 dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                  class="w-full shadow-xs border-gray-300 dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                 >
                   <span class="truncate"
                     >{selectedPopularStrategy?.length !== 0
@@ -2715,7 +2715,7 @@ const handleKeyDown = (event) => {
               <DropdownMenu.Trigger asChild let:builder>
                 <Button
                   builders={[builder]}
-                  class="min-w-[110px] shadow-xs w-full border-gray-300 dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                  class="min-w-[110px] shadow-xs w-full border-gray-300 dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                 >
                   <span class="truncate max-w-48"
                     >{selectedStrategy?.length !== 0
@@ -2816,7 +2816,7 @@ const handleKeyDown = (event) => {
     </div>
 
     <div
-      class="rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 shadow-xs dark:bg-primary p-2"
+      class="rounded border border-gray-300 dark:border-gray-700 bg-gray-100 shadow-xs dark:bg-primary p-2"
     >
       <div class="items-end border-b border-gray-300 dark:border-gray-600">
         <div
@@ -2847,7 +2847,7 @@ const handleKeyDown = (event) => {
         <div class="mt-3 flex flex-col gap-y-2.5 sm:flex-row lg:gap-y-2">
           <label
             for="ruleModal"
-            class="text-[0.95rem] text-white inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-blue-500 sm:hover:bg-blue-600 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+            class="text-[0.95rem] text-white inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-blue-500 sm:hover:bg-blue-600 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
           >
             <svg
               class="h-5 w-5"
@@ -2869,7 +2869,7 @@ const handleKeyDown = (event) => {
             <label
               for={!data?.user ? "userLogin" : ""}
               on:click={() => handleSave(true)}
-              class="text-[0.95rem] sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+              class="text-[0.95rem] sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
             >
               <svg
                 class="h-5 w-5"
@@ -2889,7 +2889,7 @@ const handleKeyDown = (event) => {
                 on:click={() => {
                   handleCreateStrategy();
                 }}
-                class="text-[0.95rem] sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                class="text-[0.95rem] sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
               >
                 <Copy class="w-4 h-4 inline-block mr-2" />
                 <div>Save as New</div>
@@ -2900,7 +2900,7 @@ const handleKeyDown = (event) => {
           {#if ruleOfList?.length !== 0}
             <label
               on:click={handleResetAll}
-              class="text-[0.95rem] sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:text-red-500 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+              class="text-[0.95rem] sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:text-red-500 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
             >
               <svg
                 class="h-4 w-4"
@@ -3000,7 +3000,7 @@ const handleKeyDown = (event) => {
                       <DropdownMenu.Trigger asChild let:builder>
                         <Button
                           builders={[builder]}
-                          class="border-gray-300 dark:border-none shadow-xs bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center w-[140px] xs:w-[130px] sm:w-[140px] px-3  rounded-md truncate"
+                          class="border-gray-300 dark:border-none shadow-xs bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center w-[140px] xs:w-[130px] sm:w-[140px] px-3  rounded truncate"
                         >
                           <span class="truncate ml-2 text-sm">
                             {#if valueMappings[row?.rule] === "any"}
@@ -3344,7 +3344,7 @@ const handleKeyDown = (event) => {
           <li>
             <button
               on:click={() => (displayTableTab = "general")}
-              class="cursor-pointer text-[1rem] block rounded-md px-2 py-1 focus:outline-hidden sm:hover:bg-gray-100 dark:sm:hover:bg-primary {displayTableTab ===
+              class="cursor-pointer text-[1rem] block rounded px-2 py-1 focus:outline-hidden sm:hover:bg-gray-100 dark:sm:hover:bg-primary {displayTableTab ===
               'general'
                 ? 'font-semibold bg-gray-100 dark:bg-primary'
                 : ''}"
@@ -3355,7 +3355,7 @@ const handleKeyDown = (event) => {
           <li>
             <button
               on:click={() => (displayTableTab = "filters")}
-              class="cursor-pointer text-[1rem] flex flex-row items-center relative block rounded-md px-2 py-1 sm:hover:bg-gray-100 dark:sm:hover:bg-primary {displayTableTab ===
+              class="cursor-pointer text-[1rem] flex flex-row items-center relative block rounded px-2 py-1 sm:hover:bg-gray-100 dark:sm:hover:bg-primary {displayTableTab ===
               'filters'
                 ? 'font-semibold bg-gray-100 dark:bg-primary'
                 : ''} focus:outline-hidden"
@@ -3374,7 +3374,7 @@ const handleKeyDown = (event) => {
           <li>
             <button
               on:click={() => changeTab("performance")}
-              class="cursor-pointer text-[1rem] block rounded-md px-2 py-1 focus:outline-hidden sm:hover:bg-gray-100 dark:sm:hover:bg-primary {displayTableTab ===
+              class="cursor-pointer text-[1rem] block rounded px-2 py-1 focus:outline-hidden sm:hover:bg-gray-100 dark:sm:hover:bg-primary {displayTableTab ===
               'performance'
                 ? 'font-semibold bg-gray-100 dark:bg-primary'
                 : ''}"
@@ -3385,7 +3385,7 @@ const handleKeyDown = (event) => {
           <li>
             <button
               on:click={() => changeTab("analysts")}
-              class="cursor-pointer text-[1rem] block rounded-md px-2 py-1 focus:outline-hidden sm:hover:bg-gray-100 dark:sm:hover:bg-primary {displayTableTab ===
+              class="cursor-pointer text-[1rem] block rounded px-2 py-1 focus:outline-hidden sm:hover:bg-gray-100 dark:sm:hover:bg-primary {displayTableTab ===
               'analysts'
                 ? 'font-semibold bg-gray-100 dark:bg-primary'
                 : ''}"
@@ -3396,7 +3396,7 @@ const handleKeyDown = (event) => {
           <li>
             <button
               on:click={() => changeTab("dividends")}
-              class="cursor-pointer text-[1rem] block rounded-md px-2 py-1 focus:outline-hidden sm:hover:bg-gray-100 dark:sm:hover:bg-primary {displayTableTab ===
+              class="cursor-pointer text-[1rem] block rounded px-2 py-1 focus:outline-hidden sm:hover:bg-gray-100 dark:sm:hover:bg-primary {displayTableTab ===
               'dividends'
                 ? 'font-semibold bg-gray-100 dark:bg-primary'
                 : ''}"
@@ -3407,7 +3407,7 @@ const handleKeyDown = (event) => {
           <li>
             <button
               on:click={() => changeTab("financials")}
-              class="cursor-pointer text-[1rem] block rounded-md px-2 py-1 focus:outline-hidden sm:hover:bg-gray-100 dark:sm:hover:bg-primary {displayTableTab ===
+              class="cursor-pointer text-[1rem] block rounded px-2 py-1 focus:outline-hidden sm:hover:bg-gray-100 dark:sm:hover:bg-primary {displayTableTab ===
               'financials'
                 ? 'font-semibold bg-gray-100 dark:bg-primary'
                 : ''}"
@@ -3431,9 +3431,9 @@ const handleKeyDown = (event) => {
   {#if isLoaded}
     {#if filteredData?.length !== 0}
       {#if displayTableTab === "general"}
-        <div class="w-full rounded-md overflow-x-auto">
+        <div class="w-full rounded overflow-x-auto">
           <table
-            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
+            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
           >
             <thead>
               <TableHeader {columns} {sortOrders} {sortData} />
@@ -3496,9 +3496,9 @@ const handleKeyDown = (event) => {
           </table>
         </div>
       {:else if displayTableTab === "filters"}
-        <div class="w-full rounded-md overflow-x-auto">
+        <div class="w-full rounded overflow-x-auto">
           <table
-            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
+            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
           >
             <thead>
               <TableHeader {columns} {sortOrders} {sortData} />
@@ -3568,9 +3568,9 @@ const handleKeyDown = (event) => {
           </table>
         </div>
       {:else if displayTableTab === "performance"}
-        <div class="w-full rounded-md overflow-x-auto">
+        <div class="w-full rounded overflow-x-auto">
           <table
-            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
+            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
           >
             <thead>
               <TableHeader {columns} {sortOrders} {sortData} />
@@ -3622,9 +3622,9 @@ const handleKeyDown = (event) => {
           </table>
         </div>
       {:else if displayTableTab === "analysts"}
-        <div class="w-full rounded-md overflow-x-auto">
+        <div class="w-full rounded overflow-x-auto">
           <table
-            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
+            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
           >
             <thead>
               <TableHeader {columns} {sortOrders} {sortData} />
@@ -3696,9 +3696,9 @@ const handleKeyDown = (event) => {
           </table>
         </div>
       {:else if ["dividends", "financials"]?.includes(displayTableTab)}
-        <div class="w-full rounded-md overflow-x-auto">
+        <div class="w-full rounded overflow-x-auto">
           <table
-            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
+            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
           >
             <thead>
               <TableHeader {columns} {sortOrders} {sortData} />
@@ -3768,13 +3768,13 @@ const handleKeyDown = (event) => {
 
 <!--
   <div class="tabs w-screen mb-5 ">
-    <label on:click={() => handleRuleTab('all')} class="tab mr-2   transition duration-150 ease-out hover:ease-out rounded-md hover:bg-[#333333] {displayTab === 'all' ? 'bg-[#333333]' : ''}">
+    <label on:click={() => handleRuleTab('all')} class="tab mr-2   transition duration-150 ease-out hover:ease-out rounded hover:bg-[#333333] {displayTab === 'all' ? 'bg-[#333333]' : ''}">
       All
     </label> 
-    <label on:click={() => handleRuleTab('ta')} class="tab mr-2   transition duration-150 ease-out hover:ease-out rounded-md hover:bg-[#333333] {displayTab === 'ta' ? 'bg-[#333333]' : ''}">
+    <label on:click={() => handleRuleTab('ta')} class="tab mr-2   transition duration-150 ease-out hover:ease-out rounded hover:bg-[#333333] {displayTab === 'ta' ? 'bg-[#333333]' : ''}">
       Technical Indicators
     </label> 
-    <label on:click={() => handleRuleTab('fund')} class="tab mr-2   transition duration-150 ease-out hover:ease-out rounded-md hover:bg-[#333333] {displayTab === 'fund' ? 'bg-[#333333]' : ''}">
+    <label on:click={() => handleRuleTab('fund')} class="tab mr-2   transition duration-150 ease-out hover:ease-out rounded hover:bg-[#333333] {displayTab === 'fund' ? 'bg-[#333333]' : ''}">
       Fundamental Data
     </label> 
   </div>
@@ -3875,7 +3875,7 @@ const handleKeyDown = (event) => {
             <input
               autocomplete="off"
               id="search"
-              class="focus:outline-none placeholder-gray-800 dark:placeholder-gray-300 block w-full p-2 ps-10 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-100 dark:bg-secondary border border-blue-500"
+              class="focus:outline-none placeholder-gray-800 dark:placeholder-gray-300 block w-full p-2 ps-10 text-sm border border-gray-300 dark:border-gray-600 rounded bg-gray-100 dark:bg-secondary border border-blue-500"
               placeholder="Search..."
               bind:value={searchTerm}
             />
@@ -3965,7 +3965,7 @@ const handleKeyDown = (event) => {
 
       <button
         type="submit"
-        class="cursor-pointer mt-2 py-2.5 bg-blue-500 sm:hover:bg-blue-600 dark:bg-[#fff] dark:sm:hover:bg-gray-300 duration-100 w-full rounded-md m-auto text-white dark:text-black font-semibold text-md"
+        class="cursor-pointer mt-2 py-2.5 bg-blue-500 sm:hover:bg-blue-600 dark:bg-[#fff] dark:sm:hover:bg-gray-300 duration-100 w-full rounded m-auto text-white dark:text-black font-semibold text-md"
       >
         Create Screener
       </button>
@@ -4040,7 +4040,7 @@ const handleKeyDown = (event) => {
 
   <!-- Desktop modal content -->
   <div
-    class="modal-box rounded-md border border-gray-300 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
+    class="modal-box rounded border border-gray-300 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
   >
     <div class=" mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">{tooltipTitle}</h3>

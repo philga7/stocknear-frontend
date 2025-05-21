@@ -11,7 +11,7 @@
 
 <body class="text-muted dark:text-white w-full">
   <section
-    class="border-b border-gray-200 shadow dark:border-gray-600 sm:rounded-md w-full bg-gray-100 dark:bg-default"
+    class="border-b border-gray-200 shadow dark:border-gray-600 sm:rounded w-full bg-gray-100 dark:bg-default"
   >
     <div class="mx-auto max-w-7xl px-6 py-16 sm:py-28 md:px-8">
       <div class="text-center">
@@ -47,7 +47,7 @@
           <div class="relative">
             <dt>
               <div
-                class="absolute flex h-12 w-12 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-white text-white dark:text-black"
+                class="absolute flex h-12 w-12 items-center justify-center rounded bg-[#3B82F6] dark:bg-white text-white dark:text-black"
               >
                 <svg
                   class="w-6 h-6"
@@ -74,7 +74,7 @@
           <div class="relative">
             <dt>
               <div
-                class="absolute flex h-12 w-12 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-white text-white dark:text-black"
+                class="absolute flex h-12 w-12 items-center justify-center rounded bg-[#3B82F6] dark:bg-white text-white dark:text-black"
               >
                 <svg
                   class="w-5 h-5"
@@ -101,7 +101,7 @@
           <div class="relative">
             <dt>
               <div
-                class="absolute flex h-12 w-12 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-white text-white dark:text-black"
+                class="absolute flex h-12 w-12 items-center justify-center rounded bg-[#3B82F6] dark:bg-white text-white dark:text-black"
               >
                 <svg
                   class="w-6 h-6"
@@ -128,7 +128,7 @@
           <div class="relative">
             <dt>
               <div
-                class="absolute flex h-12 w-12 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-white text-white dark:text-black"
+                class="absolute flex h-12 w-12 items-center justify-center rounded bg-[#3B82F6] dark:bg-white text-white dark:text-black"
               >
                 <svg
                   class="h-6 w-6"

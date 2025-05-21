@@ -73,7 +73,7 @@
                   <div class="flex flex-row items-center w-full mb-8">
                     <!-- Vertical Line -->
                     <div
-                      class="w-1 h-full mr-4 rounded-lg {item?.changesPercentage ===
+                      class="w-1 h-full mr-4 rounded {item?.changesPercentage ===
                       '-'
                         ? 'bg-blue-500 dark:bg-white'
                         : item?.changesPercentage >= 0

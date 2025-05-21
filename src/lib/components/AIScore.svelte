@@ -19,7 +19,7 @@
   <main class="overflow-hidden">
     <div class="w-full">
       <div
-        class="flex flex-col items-center w-auto p-4 sm:p-4 rounded-md relative"
+        class="flex flex-col items-center w-auto p-4 sm:p-4 rounded relative"
       >
         <div class="relative">
           <h3

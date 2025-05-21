@@ -59,7 +59,7 @@
                   <!--Start Item-->
                   <div class="flex flex-row items-center ml-5 w-full mb-6">
                     <div
-                      class="w-full rounded-md bg-primary shadow-lg h-16 pl-3 ml-6 sm:ml-3 pt-2"
+                      class="w-full rounded bg-primary shadow-lg h-16 pl-3 ml-6 sm:ml-3 pt-2"
                     >
                       <div class="flex flex-row items-center">
                         <div class="flex flex-col">

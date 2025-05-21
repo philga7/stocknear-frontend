@@ -324,7 +324,7 @@
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 mt-3"
               >
                 <div
-                  class="revenue-ttm-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="revenue-ttm-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded p-4"
                 >
                   <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
                     <span>Revenue (ttm)</span>
@@ -337,7 +337,7 @@
                 </div>
 
                 <div
-                  class="revenue-growth-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="revenue-growth-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded p-4"
                 >
                   <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
                     <span>Revenue Growth</span>
@@ -350,7 +350,7 @@
                 </div>
 
                 <div
-                  class="ps-ratio-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="ps-ratio-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded p-4"
                 >
                   <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
                     <span>Price / Sales Ratio</span>
@@ -363,7 +363,7 @@
                 </div>
 
                 <div
-                  class="rev-per-emp-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="rev-per-emp-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded p-4"
                 >
                   <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
                     <span>Revenue / Employee </span>
@@ -379,7 +379,7 @@
                 </div>
 
                 <div
-                  class="employees-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="employees-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded p-4"
                 >
                   <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
                     <span>Employees </span>
@@ -391,7 +391,7 @@
                   </div>
                 </div>
                 <div
-                  class="marketCap-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="marketCap-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded p-4"
                 >
                   <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
                     <span>Market Cap </span>
@@ -410,10 +410,10 @@
                 <h2 class="text-xl sm:text-2xl font-bold">Revenue Chart</h2>
 
                 <div
-                  class="inline-flex justify-center w-full rounded-md sm:w-auto sm:ml-auto"
+                  class="inline-flex justify-center w-full rounded sm:w-auto sm:ml-auto"
                 >
                   <div
-                    class="bg-gray-300 dark:bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1 mt-4"
+                    class="bg-gray-300 dark:bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded p-1 mt-4"
                   >
                     {#each plotTabs as item, i}
                       <button
@@ -425,7 +425,7 @@
                       >
                         {#if timeIdx === i}
                           <div
-                            class="absolute inset-0 rounded-md bg-[#fff]"
+                            class="absolute inset-0 rounded bg-[#fff]"
                           ></div>
                         {/if}
                         <span
@@ -455,10 +455,10 @@
                 </h3>
 
                 <div
-                  class="inline-flex justify-center w-full rounded-md sm:w-auto sm:ml-auto"
+                  class="inline-flex justify-center w-full rounded sm:w-auto sm:ml-auto"
                 >
                   <div
-                    class="bg-gray-300 dark:bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1"
+                    class="bg-gray-300 dark:bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded p-1"
                   >
                     {#each tabs as item, i}
                       {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}
@@ -489,7 +489,7 @@
                         >
                           {#if activeIdx === i}
                             <div
-                              class="absolute inset-0 rounded-md bg-[#fff]"
+                              class="absolute inset-0 rounded bg-[#fff]"
                             ></div>
                           {/if}
                           <span
@@ -509,7 +509,7 @@
 
               <div class="w-full overflow-x-auto">
                 <table
-                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
+                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
                 >
                   <thead class="text-muted dark:text-white dark:bg-default">
                     <tr>

@@ -66,7 +66,7 @@
 
     <div
       class="text-[1rem] {latestInfoDate(rawData?.date)
-        ? 'bg-blue-100 dark:bg-[#F9AB00]/10 p-3 rounded-md shadow'
+        ? 'bg-blue-100 dark:bg-[#F9AB00]/10 p-3 rounded shadow'
         : ' pl-1'} "
     >
       <div class="mt-1">

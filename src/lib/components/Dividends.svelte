@@ -187,7 +187,7 @@
 
         {#if rawData?.history?.length > 0}
           <div
-            class="shadow-xs mb-4 grid grid-cols-2 grid-rows-1 divide-gray-300 dark:divide-gray-600 rounded-md border border-gray-300 dark:border-gray-600 md:grid-cols-3 md:grid-rows-1 divide-x"
+            class="shadow-xs mb-4 grid grid-cols-2 grid-rows-1 divide-gray-300 dark:divide-gray-600 rounded border border-gray-300 dark:border-gray-600 md:grid-cols-3 md:grid-rows-1 divide-x"
           >
             <div class="p-4 bp:p-5 sm:p-6">
               <label
@@ -276,10 +276,10 @@
 
           {#if stockList?.length > 0}
             <div
-              class="overflow-x-auto no-scrollbar flex justify-start items-center w-full m-auto rounded-none sm:rounded-md mb-4"
+              class="overflow-x-auto no-scrollbar flex justify-start items-center w-full m-auto rounded-none sm:rounded mb-4"
             >
               <table
-                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
+                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
               >
                 <thead>
                   <TableHeader {columns} {sortOrders} {sortData} />

@@ -43,7 +43,7 @@
 
 <main class="text-muted dark:text-white w-full min-h-screen pb-20">
   <section
-    class="border-b border-gray-200 dark:border-none shadow dark:border-gray-800 sm:rounded-md w-full bg-gray-100 dark:bg-gray-500/20"
+    class="border-b border-gray-200 dark:border-none shadow dark:border-gray-800 sm:rounded w-full bg-gray-100 dark:bg-gray-500/20"
   >
     <div class="mx-auto max-w-7xl px-6 py-16 sm:py-2 md:px-8">
       <div class="text-center">
@@ -106,7 +106,7 @@
 
     <a
       href="/"
-      class="flex justify-center items-center w-fit px-10 m-auto py-2.5 mt-10 rounded-md duration-100 bg-[#3B82F6] text-white sm:hover:bg-blue-600 dark:bg-[#fff] dark:sm:hover:hover:bg-gray-300 dark:text-black font-semibold"
+      class="flex justify-center items-center w-fit px-10 m-auto py-2.5 mt-10 rounded duration-100 bg-[#3B82F6] text-white sm:hover:bg-blue-600 dark:bg-[#fff] dark:sm:hover:hover:bg-gray-300 dark:text-black font-semibold"
     >
       Start Researching Now!
     </a>

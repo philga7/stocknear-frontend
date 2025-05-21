@@ -236,7 +236,7 @@
                 <div class="flex flex-row items-center justify-end w-full">
                   <Button
                     on:click={toggleMode}
-                    class=" shadow-xs w-full max-w-36 sm:w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-4 py-1.5  rounded-md truncate"
+                    class=" shadow-xs w-full max-w-36 sm:w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-4 py-1.5  rounded truncate"
                   >
                     {#if $coolMode}
                       <TableMode class="w-4.5 h-4.5" />
@@ -249,7 +249,7 @@
 
                   <Button
                     on:click={() => (switchDate = !switchDate)}
-                    class="ml-2 shadow-xs w-48 sm:w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-4 py-1.5  rounded-md truncate"
+                    class="ml-2 shadow-xs w-48 sm:w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-4 py-1.5  rounded truncate"
                   >
                     <svg
                       class="shrink-0 w-5 h-5 pointer-events-none m-auto"
@@ -270,7 +270,7 @@
                       <DropdownMenu.Trigger asChild let:builder>
                         <Button
                           builders={[builder]}
-                          class="flex-shrink-0 shadow-xs w-full sm:w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-1.5  rounded-md truncate"
+                          class="flex-shrink-0 shadow-xs w-full sm:w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-1.5  rounded truncate"
                         >
                           <span class="truncate">{$timeFrame}</span>
                           <svg
@@ -323,7 +323,7 @@
 
                   <Button
                     on:click={() => exportFundamentalData("csv")}
-                    class="shadow-xs ml-2 w-20 sm:w-fit border-gray-300 dark:border-gray-600 border  sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-1.5  rounded-md truncate"
+                    class="shadow-xs ml-2 w-20 sm:w-fit border-gray-300 dark:border-gray-600 border  sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-1.5  rounded truncate"
                   >
                     {#if $screenWidth < 640}
                       <Download class="w-4.5 h-4.5 flex-shrink-0 m-auto" />
@@ -361,10 +361,10 @@
                 </div>
               {:else}
                 <div
-                  class="w-full rounded-none sm:rounded-md m-auto overflow-x-auto no-scrollbar"
+                  class="w-full rounded-none sm:rounded m-auto overflow-x-auto no-scrollbar"
                 >
                   <table
-                    class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
+                    class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
                   >
                     <thead class="text-muted dark:text-white dark:bg-default">
                       <tr class="border min-w-[250px]">

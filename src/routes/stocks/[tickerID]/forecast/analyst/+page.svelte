@@ -235,10 +235,10 @@
                   ></label
                 >
                 <div
-                  class="inline-flex justify-center w-full rounded-md sm:w-auto"
+                  class="inline-flex justify-center w-full rounded sm:w-auto"
                 >
                   <div
-                    class="bg-gray-300 dark:bg-secondary w-full sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1"
+                    class="bg-gray-300 dark:bg-secondary w-full sm:w-fit relative flex flex-wrap items-center justify-center rounded p-1"
                   >
                     {#each tabs as item, i}
                       {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}
@@ -269,7 +269,7 @@
                         >
                           {#if activeIdx === i}
                             <div
-                              class="absolute inset-0 rounded-md bg-[#fff]"
+                              class="absolute inset-0 rounded bg-[#fff]"
                             ></div>
                           {/if}
                           <span
@@ -291,7 +291,7 @@
         </div>
 
         <div
-          class="shadow-xs mb-4 grid grid-cols-2 grid-rows-2 divide-contrast rounded-md border border-gray-300 dark:border-gray-600 md:grid-cols-4 md:grid-rows-1 md:divide-x"
+          class="shadow-xs mb-4 grid grid-cols-2 grid-rows-2 divide-contrast rounded border border-gray-300 dark:border-gray-600 md:grid-cols-4 md:grid-rows-1 md:divide-x"
         >
           <div
             class="p-4 bp:p-5 sm:p-6 border-r border-gray-300 dark:border-gray-600"
@@ -360,7 +360,7 @@
 
           <div class=" w-full m-auto mb-4 overflow-x-auto lg:overflow-hidden">
             <table
-              class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
+              class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
             >
               <thead class="text-muted dark:text-white dark:bg-default">
                 <tr>
@@ -605,7 +605,7 @@
                   <div class="relative pl-14">
                     <dt class=" font-semibold leading-4 md:leading-7">
                       <div
-                        class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-[#fff]"
+                        class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded bg-[#3B82F6] dark:bg-[#fff]"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -630,7 +630,7 @@
                   <div class="relative pl-14">
                     <dt class=" font-semibold leading-4 md:leading-7">
                       <div
-                        class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-[#fff]"
+                        class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded bg-[#3B82F6] dark:bg-[#fff]"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -656,7 +656,7 @@
                   <div class="relative pl-14">
                     <dt class=" font-semibold leading-4 md:leading-7">
                       <div
-                        class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-[#fff]"
+                        class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded bg-[#3B82F6] dark:bg-[#fff]"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -682,7 +682,7 @@
                   <div class="relative pl-14">
                     <dt class=" font-semibold leading-4 md:leading-7">
                       <div
-                        class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-md bg-[#3B82F6] dark:bg-[#fff]"
+                        class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded bg-[#3B82F6] dark:bg-[#fff]"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -723,7 +723,7 @@
 
   <!-- Desktop modal content -->
   <div
-    class="modal-box rounded-md border border-gray-300 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
+    class="modal-box rounded border border-gray-300 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
   >
     <div class=" mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">Top Analyst</h3>

@@ -203,10 +203,10 @@
             </h1>
 
             <div
-              class="block w-full border border-gray-300 dark:border-gray-600 shadow-sm rounded-md overflow-hidden"
+              class="block w-full border border-gray-300 dark:border-gray-600 shadow-sm rounded overflow-hidden"
             >
               <form
-                class="grow rounded-md relative flex items-center w-full overflow-hidden"
+                class="grow rounded relative flex items-center w-full overflow-hidden"
               >
                 <div
                   class="relative min-h-32 h-auto max-h-64 overflow-y-hidden w-full outline-none"
@@ -279,7 +279,7 @@
                         on:click={createChat}
                         class="{inputText?.trim()?.length > 0
                           ? 'cursor-pointer'
-                          : 'cursor-not-allowed opacity-60'} py-1.5 text-white dark:text-black text-[1rem] rounded-md border border-gray-300 dark:border-gray-700 bg-blue-500 dark:bg-white px-3 py-1 transition-colors duration-200"
+                          : 'cursor-not-allowed opacity-60'} py-1.5 text-white dark:text-black text-[1rem] rounded border border-gray-300 dark:border-gray-700 bg-blue-500 dark:bg-white px-3 py-1 transition-colors duration-200"
                         type="button"
                       >
                         {#if isLoading}

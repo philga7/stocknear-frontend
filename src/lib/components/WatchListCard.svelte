@@ -55,7 +55,7 @@
       <div class="w-screen sm:w-full">
         <div class="w-full overflow-x-auto">
           <table
-            class="table table-sm table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800 m-auto mt-4"
+            class="table table-sm table-compact rounded-none sm:rounded w-full bg-table border border-gray-800 m-auto mt-4"
           >
             <!-- head -->
             <thead>
@@ -220,7 +220,7 @@
     <div class="flex justify-center items-center h-80">
       <div class="relative">
         <label
-          class="bg-secondary rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+          class="bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
         >
           <span class="loading loading-spinner loading-md"></span>
         </label>

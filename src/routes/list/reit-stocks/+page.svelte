@@ -28,7 +28,7 @@
 
 <section class="w-full overflow-hidden m-auto">
   <div
-    class="border border-gray-800 w-full sm:flex sm:flex-row sm:items-center m-auto text-gray-100 bg-default sm:rounded-md h-auto p-5 mb-4"
+    class="border border-gray-800 w-full sm:flex sm:flex-row sm:items-center m-auto text-gray-100 bg-default sm:rounded h-auto p-5 mb-4"
   >
     <svg
       class="w-5 h-5 inline-block sm:mr-2 shrink-0"

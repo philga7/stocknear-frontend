@@ -402,7 +402,7 @@
               class="px-3 py-1 text-sm shadow-xs border border-gray-300 dark:border-gray-600 {timePeriod ===
               item
                 ? 'bg-gray-300 dark:bg-white text-black '
-                : ' bg-gray-100 dark:bg-table text-opacity-[0.6]'} transition ease-out duration-100 rounded-md cursor-pointer"
+                : ' bg-gray-100 dark:bg-table text-opacity-[0.6]'} transition ease-out duration-100 rounded cursor-pointer"
             >
               {item}
             </label>
@@ -412,7 +412,7 @@
               class="px-3 py-1 text-sm flex flex-row items-center border border-gray-300 dark:border-gray-600 {timePeriod ===
               item
                 ? 'bg-gray-300 dark:bg-white text-black '
-                : ' bg-gray-100 dark:bg-table text-opacity-[0.6]'} transition ease-out duration-100 rounded-md cursor-pointer"
+                : ' bg-gray-100 dark:bg-table text-opacity-[0.6]'} transition ease-out duration-100 rounded cursor-pointer"
             >
               {item}
               <svg
@@ -442,7 +442,7 @@
 
   <div class="mt-3 w-full overflow-x-auto">
     <table
-      class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
+      class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
     >
       <thead>
         <TableHeader {columns} {sortOrders} {sortData} />

@@ -1,5 +1,24 @@
 import { goto } from '$app/navigation';
 
+
+function urlBase64ToUint8Array(base64String) {
+	// Add padding if necessary
+	const padding = '='.repeat((4 - base64String.length % 4) % 4);
+	const base64 = (base64String + padding)
+	  // Convert URL-safe chars to standard Base64
+	  .replace(/-/g, '+')
+	  .replace(/_/g, '/');
+  
+	const rawData = atob(base64);
+	const outputArray = new Uint8Array(rawData.length);
+  
+	for (let i = 0; i < rawData.length; ++i) {
+	  outputArray[i] = rawData.charCodeAt(i);
+	}
+	return outputArray;
+  }
+
+  
 export async function requestNotificationPermission() {
   // Check if the browser supports notifications
   if (!('Notification' in window)) {
@@ -81,22 +100,27 @@ async function sendSubscriptionToServer(subscription) {
 		}
 	}
 
-export async function subscribeUser() {
+	export async function subscribeUser() {
 		if ('serviceWorker' in navigator) {
-			try {
-				const registration = await navigator.serviceWorker.ready;
-				const subscription = await registration.pushManager.subscribe({
-					userVisibleOnly: true,
-					applicationServerKey: import.meta.env.VITE_VAPID_PUBLIC_KEY
-				});
-				const output = sendSubscriptionToServer(subscription);
-				return output;
-			} catch (err) {
-				console.error('Error subscribing:', err);
-				return {'success': false}
-			}
+		  try {
+			const registration = await navigator?.serviceWorker?.ready;
+			// Convert the VAPID key string to Uint8Array:
+			const vapidKey = urlBase64ToUint8Array(import.meta.env.VITE_VAPID_PUBLIC_KEY);
+	  
+			const subscription = await registration?.pushManager?.subscribe({
+			  userVisibleOnly: true,
+			  applicationServerKey: vapidKey
+			});
+	  
+			const output = await sendSubscriptionToServer(subscription);
+			return output;
+		  } catch (err) {
+			console.error('Error subscribing:', err);
+			return { success: false };
+		  }
 		}
-	}
+	  }
+	  
 
 export async function checkSubscriptionStatus() {
 		if ('serviceWorker' in navigator) {

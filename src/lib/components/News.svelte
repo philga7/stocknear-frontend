@@ -145,7 +145,7 @@
           <li>
             <button
               on:click={() => (displaySection = "all")}
-              class="cursor-pointer rounded-md px-3 py-0.5 sm:hover:bg-blue-50 dark:sm:hover:bg-secondary {displaySection ===
+              class="cursor-pointer rounded px-3 py-0.5 sm:hover:bg-blue-50 dark:sm:hover:bg-secondary {displaySection ===
               'all'
                 ? 'bg-blue-50 dark:bg-secondary'
                 : ''}">All</button
@@ -155,7 +155,7 @@
             <li>
               <button
                 on:click={() => getNewsVideos()}
-                class="ml-1 cursor-pointer rounded-md px-3 py-0.5 sm:hover:bg-blue-50 dark:sm:hover:bg-secondary {displaySection ===
+                class="ml-1 cursor-pointer rounded px-3 py-0.5 sm:hover:bg-blue-50 dark:sm:hover:bg-secondary {displaySection ===
                 'videos'
                   ? 'bg-blue-50 dark:bg-secondary'
                   : ''}">Videos</button
@@ -166,7 +166,7 @@
             <li>
               <button
                 on:click={() => getPressRelease()}
-                class="ml-1 cursor-pointer rounded-md px-3 py-0.5 sm:hover:bg-blue-50 dark:sm:hover:bg-secondary {displaySection ===
+                class="ml-1 cursor-pointer rounded px-3 py-0.5 sm:hover:bg-blue-50 dark:sm:hover:bg-secondary {displaySection ===
                 'press-releases'
                   ? 'bg-blue-50 dark:bg-secondary'
                   : ''}"
@@ -184,13 +184,13 @@
       {#if filteredNewsList?.length > 0}
         <div class="grid grid-cols-1 gap-2 pb-5 pt-5">
           {#each filteredNewsList as item, index (item.url)}
-            <div class="w-full flex flex-col rounded-md m-auto">
+            <div class="w-full flex flex-col rounded m-auto">
               {#if checkIfYoutubeVideo(item.url)}
                 {#if showVideo[index]}
                   <!-- Show the YouTube iframe when the user clicks play -->
                   <div class="w-full aspect-video mb-4">
                     <iframe
-                      class="w-full h-full rounded-md border border-gray-800"
+                      class="w-full h-full rounded border border-gray-800"
                       src={`https://www.youtube.com/embed/${checkIfYoutubeVideo(item.url)}`}
                       frameborder="0"
                       allow="clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -208,7 +208,7 @@
                         on:click={() => handlePlayClick(index)}
                       >
                         <div
-                          class="absolute left-[50%] top-[50%] z-10 h-[46px] w-[70px] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-[#212121] opacity-80 transition-all before:absolute before:left-[50%] before:top-[50%] before:-translate-x-1/2 before:-translate-y-1/2 before:border-y-[11px] before:border-l-[19px] before:border-r-0 before:border-transparent before:border-l-white before:content-[''] group-hover:bg-[#ff0000] group-hover:opacity-100"
+                          class="absolute left-[50%] top-[50%] z-10 h-[46px] w-[70px] -translate-x-1/2 -translate-y-1/2 rounded bg-[#212121] opacity-80 transition-all before:absolute before:left-[50%] before:top-[50%] before:-translate-x-1/2 before:-translate-y-1/2 before:border-y-[11px] before:border-l-[19px] before:border-r-0 before:border-transparent before:border-l-white before:content-[''] group-hover:bg-[#ff0000] group-hover:opacity-100"
                         ></div>
                       </div>
                     </div>
@@ -239,12 +239,12 @@
                     href={item?.url}
                     rel="noopener noreferrer"
                     target="_blank"
-                    class="w-full sm:max-w-56 h-fit max-h-96 sm:mr-3 border border-gray-800 rounded-md"
+                    class="w-full sm:max-w-56 h-fit max-h-96 sm:mr-3 border border-gray-800 rounded"
                   >
                     <div class="shrink-0 m-auto">
                       <img
                         src={item?.image}
-                        class="h-auto w-full rounded-md"
+                        class="h-auto w-full rounded"
                         alt="news image"
                         loading="lazy"
                       />
@@ -307,7 +307,7 @@
       {#if newsList?.length !== rawData?.length && filteredNewsList?.length > 0 && displaySection === "all"}
         <label
           on:click={loadMoreData}
-          class="shadow-lg rounded-md cursor-pointer w-5/6 sm:w-full flex justify-center items-center py-3 h-full text-sm sm:text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff]"
+          class="shadow-lg rounded cursor-pointer w-5/6 sm:w-full flex justify-center items-center py-3 h-full text-sm sm:text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff]"
         >
           Load More News
         </label>

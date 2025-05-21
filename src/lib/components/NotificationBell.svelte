@@ -15,7 +15,7 @@
   <a
     href="/notifications"
     on:click={toggle}
-    class="bg-gray-100 shadow dark:bg-default text-gray-500 dark:text-gray-300 dark:sm:hover:text-white cursor-pointer sm:hover:bg-gray-200 dark:sm:hover:bg-[#18181B] relative border p-2 rounded-md border-gray-300 dark:border-gray-600 ml-3 -mr-1"
+    class="bg-gray-100 shadow dark:bg-default text-gray-500 dark:text-gray-300 dark:sm:hover:text-white cursor-pointer sm:hover:bg-gray-200 dark:sm:hover:bg-[#18181B] relative border p-2 rounded border-gray-300 dark:border-gray-600 ml-3 -mr-1"
   >
     <Bell class="h-[20px] w-[20px] " />
 

@@ -661,7 +661,7 @@
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 mt-3"
               >
                 <div
-                  class="marketCap-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="marketCap-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded p-4"
                 >
                   <div class=" text-sm mb-2 flex items-center">
                     <span>Market Cap</span>
@@ -674,7 +674,7 @@
                 </div>
 
                 <div
-                  class="category-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="category-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded p-4"
                 >
                   <div class=" text-sm mb-2 flex items-center">
                     <span>Category</span>
@@ -696,7 +696,7 @@
                 </div>
 
                 <div
-                  class="oneYearChange-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4"
+                  class="oneYearChange-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded p-4"
                 >
                   <div class=" text-sm mb-2 flex items-center">
                     <span>1-Year Change</span>
@@ -742,7 +742,7 @@
                       <DropdownMenu.Trigger asChild let:builder>
                         <Button
                           builders={[builder]}
-                          class="w-full shadow-xs border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                          class="w-full shadow-xs border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                         >
                           <span class="truncate text-xs sm:text-sm"
                             >{timePeriod}</span
@@ -820,7 +820,7 @@
                   </div>
                   <Button
                     on:click={() => exportData("csv")}
-                    class="ml-2 w-full shadow-xs border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                    class="ml-2 w-full shadow-xs border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                   >
                     <span class="truncate text-xs sm:text-sm">Download</span>
                     <svg
@@ -851,10 +851,10 @@
                 </h3>
 
                 <div
-                  class="inline-flex justify-center w-full rounded-md sm:w-auto sm:ml-auto"
+                  class="inline-flex justify-center w-full rounded sm:w-auto sm:ml-auto"
                 >
                   <div
-                    class="bg-gray-300 dark:bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1 mt-4"
+                    class="bg-gray-300 dark:bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded p-1 mt-4"
                   >
                     {#each tabs as item, i}
                       {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}
@@ -885,7 +885,7 @@
                         >
                           {#if activeIdx === i}
                             <div
-                              class="absolute inset-0 rounded-md bg-[#fff]"
+                              class="absolute inset-0 rounded bg-[#fff]"
                             ></div>
                           {/if}
                           <span
@@ -905,7 +905,7 @@
 
               <div class="w-full overflow-x-auto">
                 <table
-                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-2"
+                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto mt-2"
                 >
                   <thead>
                     <TableHeader {columns} {sortOrders} {sortData} />

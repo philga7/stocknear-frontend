@@ -784,9 +784,9 @@
                 ></path></svg
               ></label
             >
-            <div class="inline-flex justify-center w-full rounded-md sm:w-auto">
+            <div class="inline-flex justify-center w-full rounded sm:w-auto">
               <div
-                class="bg-gray-300 dark:bg-secondary w-full sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1"
+                class="bg-gray-300 dark:bg-secondary w-full sm:w-fit relative flex flex-wrap items-center justify-center rounded p-1"
               >
                 {#each tabs as item, i}
                   {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}
@@ -817,7 +817,7 @@
                     >
                       {#if activeIdx === i}
                         <div
-                          class="absolute inset-0 rounded-md bg-[#fff]"
+                          class="absolute inset-0 rounded bg-[#fff]"
                         ></div>
                       {/if}
                       <span
@@ -1102,7 +1102,7 @@
           </h2>
           {#if data?.getAnalystEstimate?.length !== 0}
             <div
-              class="mb-4 shadow-xs grid grid-cols-1 overflow-hidden rounded-md border divide-gray-300 dark:divide-gray-600 border-gray-300 dark:border-gray-600 md:grid-cols-2 lg:grid-cols-4"
+              class="mb-4 shadow-xs grid grid-cols-1 overflow-hidden rounded border divide-gray-300 dark:divide-gray-600 border-gray-300 dark:border-gray-600 md:grid-cols-2 lg:grid-cols-4"
             >
               <div
                 class="border-b px-3 py-5 last:border-b-0 xs:px-4 sm:p-6 md:border-b lg:border-b-0 border-gray-300 dark:border-gray-600"
@@ -1341,7 +1341,7 @@
             </div>
           {:else}
             <div
-              class=" p-3 sm:p-5 mb-10 rounded-md sm:flex sm:flex-row sm:items-center border border-gray-300 dark:border-gray-600 text-sm sm:text-[1rem]"
+              class=" p-3 sm:p-5 mb-10 rounded sm:flex sm:flex-row sm:items-center border border-gray-300 dark:border-gray-600 text-sm sm:text-[1rem]"
             >
               <svg
                 class="w-6 h-6 shrink-0 inline-block sm:mr-2"
@@ -1369,7 +1369,7 @@
 
   <!-- Desktop modal content -->
   <div
-    class="modal-box rounded-md border border-gray-300 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
+    class="modal-box rounded border border-gray-300 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
   >
     <div class=" mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">Top Analyst</h3>

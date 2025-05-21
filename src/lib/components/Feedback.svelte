@@ -146,7 +146,7 @@
 
     <div class="p-2">
       <div
-        class="bg-secondary w-full min-w-20 sm:w-full relative flex flex-wrap items-center justify-center rounded-md p-1 mt-4"
+        class="bg-secondary w-full min-w-20 sm:w-full relative flex flex-wrap items-center justify-center rounded p-1 mt-4"
       >
         {#each tabs as item, i}
           <button
@@ -157,7 +157,7 @@
               : ''} "
           >
             {#if activeIdx === i}
-              <div class="absolute inset-0 rounded-md bg-[#fff]"></div>
+              <div class="absolute inset-0 rounded bg-[#fff]"></div>
             {/if}
             <span
               class="relative text-sm block font-semibold whitespace-nowrap {activeIdx ===
@@ -246,7 +246,7 @@
         inputValue?.length !== 0) ||
       (category !== 'general' && inputValue?.length !== 0)
         ? 'opacity-100 cursor-pointer'
-        : 'opacity-60 cursor-not-allowed'} w-11/12 rounded-md m-auto text-black font-semibold text-md"
+        : 'opacity-60 cursor-not-allowed'} w-11/12 rounded m-auto text-black font-semibold text-md"
     >
       Send Feedback
     </button>

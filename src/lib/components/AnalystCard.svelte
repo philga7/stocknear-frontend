@@ -49,7 +49,7 @@
     : 'hidden'}"
 >
   <div
-    class="sm:rounded-md shadow-lg bg-[#000] sm:bg-default sm:border sm:border-gray-600 h-auto {$screenWidth <
+    class="sm:rounded shadow-lg bg-[#000] sm:bg-default sm:border sm:border-gray-600 h-auto {$screenWidth <
     640
       ? 'w-screen pt-16'
       : ''} md:w-[420px] xl:w-[450px] -mx-1 sm:mx-0"
@@ -166,7 +166,7 @@
 
       <a
         href={`/stocks/${$stockTicker}/forecast/analyst`}
-        class="rounded-md cursor-pointer w-11/12 py-2 h-full mt-6 text-lg text-center font-bold text-white m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
+        class="rounded cursor-pointer w-11/12 py-2 h-full mt-6 text-lg text-center font-bold text-white m-auto sm:hover:bg-gray-300 bg-[#fff] transition duration-100"
       >
         Analyst Ratings
       </a>

@@ -277,7 +277,7 @@
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
                       builders={[builder]}
-                      class="ml-3 border-gray-300 dark:border-gray-600 border border-gray-300 shadow-xs sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  px-3 py-2  rounded-md "
+                      class="ml-3 border-gray-300 dark:border-gray-600 border border-gray-300 shadow-xs sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  px-3 py-2  rounded "
                     >
                       <span class="truncate">Filter by Party</span>
                       <svg
@@ -336,12 +336,12 @@
                   {#each displayList as item}
                     <a
                       href={`/politicians/${item?.id}`}
-                      class="w-full cursor-pointer bg-gray-100 dark:bg-[#141417] sm:hover:bg-gray-400 dark:sm:hover:bg-[#000] ease-in-out border dark:sm:hover:border-[#000] sm:hover:shadow-[#8C5F1B] border-gray-300 dark:border-gray-800 shadow-md rounded-md h-auto pb-4 pt-4 mb-7 {item?.party ===
+                      class="w-full cursor-pointer bg-gray-100 dark:bg-[#141417] sm:hover:bg-gray-400 dark:sm:hover:bg-[#000] ease-in-out border dark:sm:hover:border-[#000] sm:hover:shadow-[#8C5F1B] border-gray-300 dark:border-gray-800 shadow-md rounded h-auto pb-4 pt-4 mb-7 {item?.party ===
                       'Republican'
                         ? 'sm:hover:shadow-[#80000D]'
                         : item?.party === 'Democratic'
                           ? 'sm:hover:shadow-[#1358C3]'
-                          : 'sm:hover:shadow-[#636465]'}  shadow-md rounded-md h-auto pb-4 pt-4 mb-7"
+                          : 'sm:hover:shadow-[#636465]'}  shadow-md rounded h-auto pb-4 pt-4 mb-7"
                     >
                       <div class="flex flex-col relative">
                         <div
@@ -366,17 +366,17 @@
                         </div>
                         {#if item?.party === "Republican"}
                           <img
-                            class="absolute -mt-4 w-full m-auto rounded-md"
+                            class="absolute -mt-4 w-full m-auto rounded"
                             src={republicanBackground}
                           />
                         {:else if item?.party === "Democratic"}
                           <img
-                            class="absolute -mt-4 w-[500px] m-auto rounded-md"
+                            class="absolute -mt-4 w-[500px] m-auto rounded"
                             src={democraticBackground}
                           />
                         {:else}
                           <img
-                            class="absolute -mt-4 w-[500px] m-auto rounded-md"
+                            class="absolute -mt-4 w-[500px] m-auto rounded"
                             src={otherBackground}
                           />
                         {/if}

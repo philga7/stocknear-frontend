@@ -15,7 +15,7 @@
       loading="lazy"
     />
     <div
-      class="rounded-lg p-3 min-w-14 w-full shadow border border-gray-300 dark:border-gray-700 {message?.role ===
+      class="rounded p-3 min-w-14 w-full shadow border border-gray-300 dark:border-gray-700 {message?.role ===
       'user'
         ? 'ml-auto'
         : 'mr-auto'}"

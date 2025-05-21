@@ -689,10 +689,10 @@
 
             <!--Start Table-->
             <div
-              class="w-full rounded-md overflow-hidden overflow-x-auto no-scrollbar"
+              class="w-full rounded overflow-hidden overflow-x-auto no-scrollbar"
             >
               <table
-                class="table table-sm table-compact rounded-none sm:rounded-md w-full m-auto mt-2 overflow-x-auto border border-gray-300 dark:border-gray-800"
+                class="table table-sm table-compact rounded-none sm:rounded w-full m-auto mt-2 overflow-x-auto border border-gray-300 dark:border-gray-800"
               >
                 <thead>
                   <TableHeader {columns} {sortOrders} {sortData} />
@@ -916,7 +916,7 @@
   <div
     class="modal-box bg-white dark:bg-default w-full {rawDataHistory?.length > 0
       ? 'max-w-7xl'
-      : 'w-full'} rounded-md border-t sm:border border-gray-300 dark:border-gray-800 min-h-48 h-auto"
+      : 'w-full'} rounded border-t sm:border border-gray-300 dark:border-gray-800 min-h-48 h-auto"
   >
     <form
       method="dialog"
@@ -980,7 +980,7 @@
         </div>
       </div>
 
-      <div class="pb-8 sm:pb-2 rounded-md overflow-hidden">
+      <div class="pb-8 sm:pb-2 rounded overflow-hidden">
         <div
           class="flex flex-row items-center justify-between gap-x-2 ml-auto w-fit mt-2"
         >
@@ -989,7 +989,7 @@
               on:click={() => (selectGraphType = item)}
               class="px-3 py-1.5 {selectGraphType === item
                 ? 'shadow-xs bg-gray-100 dark:bg-white text-black '
-                : 'shadow-xs text-opacity-[0.6] border border-gray-300 dark:border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+                : 'shadow-xs text-opacity-[0.6] border border-gray-300 dark:border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded cursor-pointer"
             >
               {item}
             </label>
@@ -1009,7 +1009,7 @@
         <div class="flex justify-start items-center m-auto cursor-normal">
           {#if isLoaded}
             <table
-              class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
+              class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
             >
               <thead class="text-muted dark:text-white dark:bg-default">
                 <tr class="">

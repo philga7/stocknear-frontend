@@ -397,7 +397,7 @@
       <DropdownMenu.Trigger asChild let:builder>
         <Button
           builders={[builder]}
-          class=" border border-gray-300 dark:border-gray-700  shadow-xs bg-white dark:default h-[38px] shadow   flex flex-row justify-between items-center min-w-[130px] max-w-[240px] sm:w-auto  px-3  rounded-md truncate"
+          class=" border border-gray-300 dark:border-gray-700  shadow-xs bg-white dark:default h-[38px] shadow   flex flex-row justify-between items-center min-w-[130px] max-w-[240px] sm:w-auto  px-3  rounded truncate"
         >
           <span class="truncate text-sm"
             >Date Expiration | {selectedDate === "All"
@@ -489,7 +489,7 @@
   </h3>
   <div class="w-full overflow-x-auto mt-3">
     <table
-      class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
+      class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
     >
       <thead>
         <TableHeader {columns} {sortOrders} {sortData} />

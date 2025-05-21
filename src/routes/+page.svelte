@@ -85,7 +85,7 @@
     <div class="flex justify-center mb-5 whitespace-nowrap mt-5 sm:mt-0">
       <a
         href="/pricing"
-        class="cursor-pointer whitespace-nowrap flex flex-col sm:flex-row items-center gap-2 px-3.5 py-2.5 text-sm sm:text-[1rem] font-medium border border-gray-300 dark:border-gray-800 shadow rounded-md"
+        class="cursor-pointer whitespace-nowrap flex flex-col sm:flex-row items-center gap-2 px-3.5 py-2.5 text-sm sm:text-[1rem] font-medium border border-gray-300 dark:border-gray-800 shadow rounded"
         tabindex="0"
       >
         <div>
@@ -129,7 +129,7 @@
             >
               <div class="text-lg sm:text-xl font-semibold">Ask AI Agent</div>
               <div
-                class="-mt-2 ml-1 -rotate-6 rounded-lg bg-red-500 px-1 py-0.5 text-xs font-semibold text-white"
+                class="-mt-2 ml-1 -rotate-6 rounded bg-red-500 px-1 py-0.5 text-xs font-semibold text-white"
               >
                 New
               </div>

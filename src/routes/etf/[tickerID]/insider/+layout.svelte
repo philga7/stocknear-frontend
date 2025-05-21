@@ -84,7 +84,7 @@
         <aside class="hidden lg:block relative fixed w-1/4">
           {#if newsList?.length !== 0}
             <div
-              class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer"
+              class="w-full border border-gray-300 dark:border-gray-600 rounded h-fit pb-4 mt-4 cursor-pointer"
             >
               <div class="p-4 text-sm">
                 <h3 class="text-xl font-bold mb-3">{$etfTicker} News</h3>

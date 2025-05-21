@@ -431,7 +431,7 @@
                 </p>
                 <label
                   for="installModal"
-                  class="cursor-pointer border border-gray-300 shadow-sshadow-xs m dark:border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
+                  class="cursor-pointer border border-gray-300 shadow-sshadow-xs m dark:border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-default sm:hover:bg-gray-300 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
                 >
                   Install the App
                 </label>

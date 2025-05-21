@@ -438,7 +438,7 @@
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
                       builders={[builder]}
-                      class="shadow-xs w-full border-gray-300 dark:border-gray-600 border bg-white sm:hover:bg-gray-100 dark:bg-default dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                      class="shadow-xs w-full border-gray-300 dark:border-gray-600 border bg-white sm:hover:bg-gray-100 dark:bg-default dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                     >
                       <span class="truncate">{selectedSector}</span>
                       <svg
@@ -531,7 +531,7 @@
                 Official Presidential Schedule
               </h3>
               <div
-                class="border border-gray-300 dark:border-gray-800 rounded-md p-4"
+                class="border border-gray-300 dark:border-gray-800 rounded p-4"
               >
                 <div class="space-y-4">
                   {#each Object?.entries(groupedByDate) as [date, items], indexA}
@@ -626,7 +626,7 @@
                 Executive Actions
               </h3>
               <div
-                class=" border border-gray-300 dark:border-gray-800 rounded-md p-4"
+                class=" border border-gray-300 dark:border-gray-800 rounded p-4"
               >
                 <div class="space-y-4">
                   {#each Object.entries(groupedOrders) as [date, items], indexA}
@@ -649,7 +649,7 @@
                         <div
                           class="{indexB > 0
                             ? 'my-4'
-                            : 'my-1'} p-4 rounded-lg border border-gray-300 dark:border-gray-700 shadow-xs bg-white dark:bg-[#111315]"
+                            : 'my-1'} p-4 rounded border border-gray-300 dark:border-gray-700 shadow-xs bg-white dark:bg-[#111315]"
                         >
                           <!-- Top row: avatar + user info -->
                           <div class="flex items-start space-x-3">
@@ -780,7 +780,7 @@
               </div>
 
               <div
-                class="border border-gray-300 dark:border-gray-800 rounded-md p-4"
+                class="border border-gray-300 dark:border-gray-800 rounded p-4"
               >
                 <div class="">
                   {#each posts as item, index}
@@ -788,7 +788,7 @@
                       id="post-{index}"
                       class="{index >= 1
                         ? 'my-4'
-                        : 'my-1'} p-4 rounded-lg border border-gray-100 dark:border-gray-700 shadow-xs bg-gray-100 dark:bg-[#111315]"
+                        : 'my-1'} p-4 rounded border border-gray-100 dark:border-gray-700 shadow-xs bg-gray-100 dark:bg-[#111315]"
                     >
                       <div class="flex items-start space-x-3">
                         <a
@@ -935,7 +935,7 @@
           <div class="order-4 shrink-0 lg:float-right lg:w-[336px]">
             {#if !["Pro", "Plus"]?.includes(data?.user?.tier) || data?.user?.freeTrial}
               <div
-                class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
+                class="w-full border border-gray-300 dark:border-gray-600 rounded h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
               >
                 <a
                   href="/pricing"
@@ -957,7 +957,7 @@
             {/if}
 
             <div
-              class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
+              class="w-full border border-gray-300 dark:border-gray-600 rounded h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
             >
               <a
                 href={"/stock-screener"}
@@ -974,7 +974,7 @@
               </a>
             </div>
             <div
-              class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
+              class="w-full border border-gray-300 dark:border-gray-600 rounded h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
             >
               <a
                 href={"/watchlist/stocks"}

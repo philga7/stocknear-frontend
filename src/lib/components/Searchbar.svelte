@@ -376,7 +376,7 @@
           </div>
         </div>
         <Combobox.Content
-          class="w-auto z-40 -mt-0.5  rounded-md border border-gray-300 dark:border-gray-700 bg-[#F9FAFB] dark:bg-secondary px-1 py-3 shadow-xl outline-hidden"
+          class="w-auto z-40 -mt-0.5  rounded border border-gray-300 dark:border-gray-700 bg-[#F9FAFB] dark:bg-secondary px-1 py-3 shadow-xl outline-hidden"
           sideOffset={8}
         >
           {#if inputValue?.length > 0 && searchBarData?.length > 0}
@@ -446,7 +446,7 @@
 
 <label
   for="searchBarModal"
-  class="sm:hidden bg-gray-100 shadow dark:bg-default text-gray-500 dark:text-gray-300 dark:sm:hover:text-white cursor-pointer p-2 shrink-0 flex items-center justify-center border border-gray-300 dark:border-gray-600 rounded-md"
+  class="sm:hidden bg-gray-100 shadow dark:bg-default text-gray-500 dark:text-gray-300 dark:sm:hover:text-white cursor-pointer p-2 shrink-0 flex items-center justify-center border border-gray-300 dark:border-gray-600 rounded"
 >
   <Search class="h-[20px] w-[20px]" />
 </label>
@@ -462,7 +462,7 @@
   <label for="searchBarModal" class="cursor-pointer modal-backdrop"></label>
 
   <div
-    class="z-999 modal-box min-h-96 overflow-hidden rounded-md shadow bg-white dark:bg-secondary border border-gray-300 dark:border-gray-600 sm:my-8 sm:m-auto sm:h-auto w-full sm:w-3/4 lg:w-1/2 2xl:w-1/3"
+    class="z-999 modal-box min-h-96 overflow-hidden rounded shadow bg-white dark:bg-secondary border border-gray-300 dark:border-gray-600 sm:my-8 sm:m-auto sm:h-auto w-full sm:w-3/4 lg:w-1/2 2xl:w-1/3"
   >
     <label
       for="searchBarModal"
@@ -508,7 +508,7 @@
 
         <input
           id="modal-search"
-          class="focus:outline-none rounded-md w-full bg-gray-300 dark:bg-secondary border border-gray-300 dark:border-gray-600 focus:ring-transparent placeholder-gray-600 dark:placeholder-gray-200 py-3 pl-10 pr-4"
+          class="focus:outline-none rounded w-full bg-gray-300 dark:bg-secondary border border-gray-300 dark:border-gray-600 focus:ring-transparent placeholder-gray-600 dark:placeholder-gray-200 py-3 pl-10 pr-4"
           placeholder="Company or stock symbol..."
           bind:value={inputValue}
           bind:this={inputElement}
@@ -532,7 +532,7 @@
     </div>
 
     <div
-      class="w-auto z-40 mt-3 rounded-md border border-gray-300 dark:border-gray-700 bg-[#F9FAFB] dark:bg-secondary px-1 py-3 outline-hidden"
+      class="w-auto z-40 mt-3 rounded border border-gray-300 dark:border-gray-700 bg-[#F9FAFB] dark:bg-secondary px-1 py-3 outline-hidden"
     >
       {#if inputValue?.length > 0 && searchBarData?.length > 0}
         <div

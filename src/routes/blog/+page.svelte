@@ -73,7 +73,7 @@
                     </div>
                     <div class="mt-6 flex items-center">
                       <div
-                        class="flex text-xs badge px-3 bg-gray-100 dark:bg-secondary rounded-md text-black dark:text-gray-300"
+                        class="flex text-xs badge px-3 bg-gray-100 dark:bg-secondary rounded text-black dark:text-gray-300"
                       >
                         Published: <time datetime={item?.created} class="">
                           {new Date(item?.created)?.toLocaleString("en-US", {

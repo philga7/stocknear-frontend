@@ -221,11 +221,11 @@
     </main>
 
     <div
-      class="absolute fixed bottom-5 sm:bottom-10 left-0 right-0 mx-auto w-11/12 sm:w-11/12 md:w-3/4 lg:w-2/3 max-w-4xl shadow-lg bg-gray-100 dark:bg-default border border-gray-300 dark:border-gray-600 shadow-sm rounded-lg overflow-hidden"
+      class="absolute fixed bottom-5 sm:bottom-10 left-0 right-0 mx-auto w-11/12 sm:w-11/12 md:w-3/4 lg:w-2/3 max-w-4xl shadow-lg bg-gray-100 dark:bg-default border border-gray-300 dark:border-gray-600 shadow-sm rounded overflow-hidden"
     >
       <form
         on:submit|preventDefault={() => llmChat()}
-        class="grow rounded-md relative flex items-center w-full overflow-hidden"
+        class="grow rounded relative flex items-center w-full overflow-hidden"
       >
         <div
           class="relative min-h-32 h-auto max-h-64 overflow-y-hidden w-full outline-none"
@@ -253,7 +253,7 @@
                 type="submit"
                 class="{inputText?.trim()?.length > 0 && !isLoading
                   ? 'cursor-pointer'
-                  : 'cursor-not-allowed opacity-60'} py-1.5 text-white dark:text-black text-[1rem] rounded-md border border-gray-300 dark:border-gray-700 bg-blue-500 dark:bg-white px-3 py-1 transition-colors duration-50"
+                  : 'cursor-not-allowed opacity-60'} py-1.5 text-white dark:text-black text-[1rem] rounded border border-gray-300 dark:border-gray-700 bg-blue-500 dark:bg-white px-3 py-1 transition-colors duration-50"
               >
                 <Arrow class="w-4 h-4" />
               </button>

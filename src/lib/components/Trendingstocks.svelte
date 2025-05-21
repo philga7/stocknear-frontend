@@ -31,7 +31,7 @@
 </script>
 
 <section
-  class="relative flex justify-between items-center bg-[{color}] rounded-md"
+  class="relative flex justify-between items-center bg-[{color}] rounded"
 >
   <div class="max-w-3xl m-auto">
     <div
@@ -91,19 +91,19 @@
             <div class="w-full flex flex-row items-center">
               <div class="flex flex-col items-center mr-10 sm:mr-14">
                 <div class="bg-slate-400 rounded-full w-12 h-12"></div>
-                <div class="bg-slate-400 rounded-md w-12 h-4 mt-3"></div>
+                <div class="bg-slate-400 rounded w-12 h-4 mt-3"></div>
               </div>
               <div class="flex flex-col items-center mr-10 sm:mr-14">
                 <div class="bg-slate-400 rounded-full w-12 h-12"></div>
-                <div class="bg-slate-400 rounded-md w-12 h-4 mt-3"></div>
+                <div class="bg-slate-400 rounded w-12 h-4 mt-3"></div>
               </div>
               <div class="flex flex-col items-center mr-10 sm:mr-14">
                 <div class="bg-slate-400 rounded-full w-12 h-12"></div>
-                <div class="bg-slate-400 rounded-md w-12 h-4 mt-3"></div>
+                <div class="bg-slate-400 rounded w-12 h-4 mt-3"></div>
               </div>
               <div class="flex flex-col items-center">
                 <div class="bg-slate-400 rounded-full w-12 h-12"></div>
-                <div class="bg-slate-400 rounded-md w-12 h-4 mt-3"></div>
+                <div class="bg-slate-400 rounded w-12 h-4 mt-3"></div>
               </div>
             </div>
           </div>

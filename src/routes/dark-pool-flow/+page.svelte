@@ -710,7 +710,7 @@
         <Tutorial {steps} />
       </div>
       <div
-        class="rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-100 dark:bg-primary p-2"
+        class="rounded border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-100 dark:bg-primary p-2"
       >
         <div
           class="flex flex-col sm:flex-row items-center pt-3 sm:pt-1 pb-3 sm:border-b sm:border-gray-300 dark:border-gray-600"
@@ -789,7 +789,7 @@
           <div class="sm:ml-auto w-full sm:w-fit pt-5">
             <div class="relative flex flex-col sm:flex-row items-center">
               <div
-                class="search-driver relative w-full sm:w-fit pl-3 sm:mr-5 mb-4 sm:mb-0 flex-auto text-center shadow-xs bg-white dark:bg-secondary rounded-md border border-gray-300 dark:border-gray-600"
+                class="search-driver relative w-full sm:w-fit pl-3 sm:mr-5 mb-4 sm:mb-0 flex-auto text-center shadow-xs bg-white dark:bg-secondary rounded border border-gray-300 dark:border-gray-600"
               >
                 <label class=" flex flex-row items-center">
                   <input
@@ -839,7 +839,7 @@
                       toast?.info("Feature is coming soon 🔥", {
                         style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
                       })}
-                    class="date-picker-driver font-semibold w-full sm:w-[160px] truncate sm:mr-3 py-3 shadow-xs bg-blue-600 text-white  justify-center sm:justify-start text-center sm:text-left  border-none rounded-md"
+                    class="date-picker-driver font-semibold w-full sm:w-[160px] truncate sm:mr-3 py-3 shadow-xs bg-blue-600 text-white  justify-center sm:justify-start text-center sm:text-left  border-none rounded"
                     builders={[builder]}
                   >
                     <CalendarIcon class="mr-2 h-4 w-4 text-white" />
@@ -881,7 +881,7 @@
           >
             <label
               for="ruleModal"
-              class="filter-driver inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none py-2 pl-3 pr-4 font-semibold shadow-xs bg-blue-600 sm:hover:blue-700 dark:bg-[#000] text-white dark:sm:hover:bg-default/60 transition duration-50 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+              class="filter-driver inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded border border-gray-300 dark:border-none py-2 pl-3 pr-4 font-semibold shadow-xs bg-blue-600 sm:hover:blue-700 dark:bg-[#000] text-white dark:sm:hover:bg-default/60 transition duration-50 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
             >
               <svg
                 class="h-5 w-5"
@@ -902,7 +902,7 @@
             {#if ruleOfList?.length !== 0}
               <label
                 on:click={handleResetAll}
-                class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-blue-600 sm:hover:blue-700 dark:bg-[#000] text-white dark:sm:hover:bg-default/60 transition duration-50 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                class="sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded border border-transparent bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-blue-600 sm:hover:blue-700 dark:bg-[#000] text-white dark:sm:hover:bg-default/60 transition duration-50 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
               >
                 <svg
                   class="h-4 w-4 text-white"
@@ -988,7 +988,7 @@
                         <DropdownMenu.Trigger asChild let:builder>
                           <Button
                             builders={[builder]}
-                            class="bg-gray-300 dark:bg-[#000] shadow-xs h-[40px] flex flex-row justify-between items-center w-[150px] xs:w-[140px] sm:w-[150px] px-3  rounded-md truncate"
+                            class="bg-gray-300 dark:bg-[#000] shadow-xs h-[40px] flex flex-row justify-between items-center w-[150px] xs:w-[140px] sm:w-[150px] px-3  rounded truncate"
                           >
                             <span
                               class="truncate ml-2 text-sm font-semibold dark:font-normal"
@@ -1288,7 +1288,7 @@
         <div class="flex justify-center items-center h-80">
           <div class="relative">
             <label
-              class="bg-secondary rounded-md h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+              class="bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
             >
               <span
                 class="loading loading-spinner loading-md text-muted dark:text-gray-400"
@@ -1399,7 +1399,7 @@
             <input
               autocomplete="off"
               id="search"
-              class="focus:outline-none placeholder-gray-500 dark:placeholder-gray-300 block w-full p-2 ps-10 text-sm text-muted dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-100 dark:bg-primary border border-blue-500"
+              class="focus:outline-none placeholder-gray-500 dark:placeholder-gray-300 block w-full p-2 ps-10 text-sm text-muted dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded bg-gray-100 dark:bg-primary border border-blue-500"
               placeholder="Search"
               bind:value={searchTerm}
             />
@@ -1465,7 +1465,7 @@
 
   <!-- Desktop modal content -->
   <div
-    class="modal-box rounded-md border border-gray-600 w-full bg-gray-100 dark:bg-secondary flex flex-col items-center"
+    class="modal-box rounded border border-gray-600 w-full bg-gray-100 dark:bg-secondary flex flex-col items-center"
   >
     <div class=" mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">{tooltipTitle}</h3>

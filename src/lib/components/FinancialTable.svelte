@@ -299,7 +299,7 @@
 
   <!-- Desktop modal content -->
   <div
-    class="modal-box w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-secondary flex flex-col items-center"
+    class="modal-box w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-secondary flex flex-col items-center"
   >
     <div class=" mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">{modalLabel}</h3>

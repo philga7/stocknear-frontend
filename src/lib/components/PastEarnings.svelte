@@ -103,7 +103,7 @@
           class="no-scrollbar flex justify-start items-center w-screen sm:w-full mt-3 m-auto overflow-x-auto pr-5 sm:pr-0"
         >
           <table
-            class="table table-sm table-pin-cols table-compact rounded-none sm:rounded-md w-full bg-table border border-gray-800"
+            class="table table-sm table-pin-cols table-compact rounded-none sm:rounded w-full bg-table border border-gray-800"
           >
             <thead class="">
               <tr class="">

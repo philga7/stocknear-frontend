@@ -488,10 +488,10 @@
         </h3>
 
         <div
-          class="inline-flex justify-center w-full rounded-md sm:w-auto sm:ml-auto"
+          class="inline-flex justify-center w-full rounded sm:w-auto sm:ml-auto"
         >
           <div
-            class="bg-gray-300 dark:bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded-md p-1"
+            class="bg-gray-300 dark:bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded p-1"
           >
             {#each tabs as item, i}
               {#if data?.user?.tier !== "Pro" && i > 0}
@@ -521,7 +521,7 @@
                     : ''} "
                 >
                   {#if activeIdx === i}
-                    <div class="absolute inset-0 rounded-md bg-[#fff]"></div>
+                    <div class="absolute inset-0 rounded bg-[#fff]"></div>
                   {/if}
                   <span
                     class="relative text-sm block font-semibold whitespace-nowrap {activeIdx ===
@@ -540,7 +540,7 @@
 
       <div class="w-full overflow-x-auto mt-3">
         <table
-          class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
+          class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
         >
           <thead>
             <TableHeader {columns} {sortOrders} {sortData} />

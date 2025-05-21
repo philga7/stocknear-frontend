@@ -532,7 +532,7 @@
         />
 
         <div
-          class="rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 shadow-xs dark:bg-primary p-2 mt-5"
+          class="rounded border border-gray-300 dark:border-gray-700 bg-gray-100 shadow-xs dark:bg-primary p-2 mt-5"
         >
           <div class="items-end">
             <div
@@ -572,7 +572,7 @@
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
                       builders={[builder]}
-                      class="mb-1 border-gray-300 dark:border-none shadow-xs bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
+                      class="mb-1 border-gray-300 dark:border-none shadow-xs bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded truncate"
                     >
                       <span class="truncate text-sm"
                         >{formatDate(selectedDate)}</span
@@ -670,7 +670,7 @@
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
                       builders={[builder]}
-                      class="mb-1 border-gray-300 dark:border-none shadow-xs bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
+                      class="mb-1 border-gray-300 dark:border-none shadow-xs bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded truncate"
                     >
                       <span class="truncate text-sm"
                         >{selectedStrike ?? "n/a"}</span
@@ -744,7 +744,7 @@
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
                       builders={[builder]}
-                      class="mb-1 border-gray-300 dark:border-none shadow-xs bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded-md truncate"
+                      class="mb-1 border-gray-300 dark:border-none shadow-xs bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded truncate"
                     >
                       <span class="truncate text-sm">{selectedOptionType}</span>
                       <svg
@@ -964,7 +964,7 @@
               </table>
             </div>
 
-            <div class="mt-5 pb-2 rounded-md overflow-hidden">
+            <div class="mt-5 pb-2 rounded overflow-hidden">
               <div
                 class="flex flex-row items-center justify-between w-full mt-2"
               >
@@ -981,7 +981,7 @@
                         ? 'mr-2'
                         : ''} {selectGraphType === item
                         ? 'shadow-xs border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-white text-black '
-                        : 'shadow-xs text-opacity-[0.6] border border-gray-300 dark:border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+                        : 'shadow-xs text-opacity-[0.6] border border-gray-300 dark:border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded cursor-pointer"
                     >
                       {item}
                     </label>
@@ -1012,7 +1012,7 @@
                 class="flex justify-start items-center m-auto overflow-x-auto cursor-normal"
               >
                 <table
-                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
+                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
                 >
                   <thead class="text-muted dark:text-white dark:bg-default">
                     <tr class="">
@@ -1145,7 +1145,7 @@
 
     <!-- Desktop modal content -->
     <div
-      class="modal-box rounded-md border border-gray-300 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
+      class="modal-box rounded border border-gray-300 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
     >
       <div class=" mb-5 text-center">
         <h3 class="font-bold text-2xl mb-5">{tooltipTitle}</h3>

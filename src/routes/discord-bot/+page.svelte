@@ -107,7 +107,7 @@
 
     <div class="">
       <section
-        class="relative overflow-hidden card card-side mt-5 bg-[#18181B] to-black rounded-lg p-2 sm:p-5 flex flex-col lg:flex-row items-center justify-between"
+        class="relative overflow-hidden card card-side mt-5 bg-[#18181B] to-black rounded p-2 sm:p-5 flex flex-col lg:flex-row items-center justify-between"
       >
         <div class="card-body relative z-10 min-h-[300px] sm:min-h-0">
           <h2
@@ -307,7 +307,7 @@
       </section>
 
       <section
-        class="relative overflow-hidden mt-4 card card-side mt-10 mb-10 bg-[#18181B] to-black rounded-lg p-5 flex flex-col lg:flex-row items-center justify-between"
+        class="relative overflow-hidden mt-4 card card-side mt-10 mb-10 bg-[#18181B] to-black rounded p-5 flex flex-col lg:flex-row items-center justify-between"
       >
         <div class="card-body relative z-10 min-h-96 sm:min-h-0">
           <h2

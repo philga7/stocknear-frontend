@@ -30,7 +30,7 @@
   <UpgradeToPro {data} />
 {:else}
   <div
-    class="w-full text-white text-start p-3 sm:p-5 mb-10 mt-3 rounded-md sm:flex sm:flex-row sm:items-center border border-gray-600 text-sm sm:text-[1rem]"
+    class="w-full text-white text-start p-3 sm:p-5 mb-10 mt-3 rounded sm:flex sm:flex-row sm:items-center border border-gray-600 text-sm sm:text-[1rem]"
   >
     <svg
       class="w-6 h-6 shrink-0 inline-block sm:mr-2"

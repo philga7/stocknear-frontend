@@ -701,7 +701,7 @@
         class="transform transition-all duration-300 sm:hover:-translate-y-1 relative flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
       >
         <div
-          class="w-fit absolute -top-[20px] left-1/2 transform -translate-x-1/2 whitespace-nowrap m-auto px-4 py-1.5 rounded-md text-sm font-medium backdrop-blur-xl
+          class="w-fit absolute -top-[20px] left-1/2 transform -translate-x-1/2 whitespace-nowrap m-auto px-4 py-1.5 rounded text-sm font-medium backdrop-blur-xl
                   bg-blue-600 text-white shadow-xs"
         >
           <span class="flex items-center gap-1.5"

@@ -189,7 +189,7 @@
                   <div class="flex items-center sm:justify-end">
                     <!-- Bar Container -->
                     <div
-                      class="flex w-full max-w-28 h-5 bg-gray-200 rounded-md overflow-hidden"
+                      class="flex w-full max-w-28 h-5 bg-gray-200 rounded overflow-hidden"
                     >
                       <!-- Bearish -->
                       <div
