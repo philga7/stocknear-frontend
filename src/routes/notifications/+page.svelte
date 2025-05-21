@@ -94,7 +94,7 @@
                 {#if item?.notifyType === "priceAlert"}
                   <!-- svelte-ignore a11y-click-events-have-key-events -->
                   <div
-                    class="border-b border-gray-400 dark:border-gray-800 pb-3 sm:p-3 mb-6 sm:mb-3 w-full {!item?.readed
+                    class="border-b border-gray-300 dark:border-gray-800 pb-3 sm:p-3 mb-6 sm:mb-3 w-full {!item?.readed
                       ? 'bg-blue-100 dark:bg-[#F9AB00]/10'
                       : ''} "
                   >
@@ -144,7 +144,7 @@
                 {:else if item?.notifyType === "wiim"}
                   <!-- svelte-ignore a11y-click-events-have-key-events -->
                   <div
-                    class="border-b border-gray-400 dark:border-gray-800 pb-3 sm:p-3 mb-6 sm:mb-3 w-full {!item?.readed
+                    class="border-b border-gray-300 dark:border-gray-800 pb-3 sm:p-3 mb-6 sm:mb-3 w-full {!item?.readed
                       ? 'bg-blue-100 dark:bg-[#F9AB00]/10'
                       : ''} "
                   >
@@ -190,7 +190,7 @@
                   </div>
                 {:else if item?.notifyType === "topAnalyst"}
                   <div
-                    class="border-b border-gray-400 dark:border-gray-800 pb-3 sm:p-3 mb-6 sm:mb-3 w-full {!item?.readed
+                    class="border-b border-gray-300 dark:border-gray-800 pb-3 sm:p-3 mb-6 sm:mb-3 w-full {!item?.readed
                       ? 'bg-blue-100 dark:bg-[#F9AB00]/10'
                       : ''} "
                   >
@@ -241,7 +241,7 @@
                   </div>
                 {:else if item?.notifyType === "earningsSurprise"}
                   <div
-                    class="border-b border-gray-400 dark:border-gray-800 pb-3 sm:p-3 mb-6 sm:mb-3 w-full {!item?.readed
+                    class="border-b border-gray-300 dark:border-gray-800 pb-3 sm:p-3 mb-6 sm:mb-3 w-full {!item?.readed
                       ? 'bg-blue-100 dark:bg-[#F9AB00]/10'
                       : ''} "
                   >
@@ -293,7 +293,7 @@
 
         <aside class="hidden lg:block relative fixed w-1/4 ml-4">
           <div
-            class="w-full border border-gray-400 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href="/watchlist/stocks"
@@ -309,7 +309,7 @@
           </div>
 
           <div
-            class="w-full border border-gray-400 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
             <a
               href="/market-mover/gainers"

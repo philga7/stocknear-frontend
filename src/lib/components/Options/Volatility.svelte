@@ -426,7 +426,7 @@
           {#if data?.user?.tier === "Pro" || index === 0}
             <label
               on:click={() => (timePeriod = item)}
-              class="px-3 py-1 text-sm shadow-xs border-gray-400 dark:border-gray-600 {timePeriod ===
+              class="px-3 py-1 text-sm shadow-xs border-gray-300 dark:border-gray-600 {timePeriod ===
               item
                 ? 'bg-gray-300 dark:bg-white text-black '
                 : ' bg-gray-100 dark:bg-table text-opacity-[0.6]'} transition ease-out duration-100 rounded-md cursor-pointer"
@@ -436,7 +436,7 @@
           {:else if data?.user?.tier !== "Pro"}
             <a
               href="/pricing"
-              class="px-3 py-1 text-sm flex flex-row items-center border border-gray-400 dark:border-gray-600 {timePeriod ===
+              class="px-3 py-1 text-sm flex flex-row items-center border border-gray-300 dark:border-gray-600 {timePeriod ===
               item
                 ? 'bg-gray-300 dark:bg-white text-black '
                 : ' bg-gray-100 dark:bg-table text-opacity-[0.6]'} transition ease-out duration-100 rounded-md cursor-pointer"
@@ -456,7 +456,7 @@
         {/each}
       </div>
       <div
-        class="border border-gray-400 dark:border-gray-800 rounded w-full"
+        class="border border-gray-300 dark:border-gray-800 rounded w-full"
         use:highcharts={config}
       ></div>
     {/if}
@@ -467,7 +467,7 @@
   </h3>
   <div class="w-full overflow-x-auto mt-5">
     <table
-      class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto mt-4"
+      class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
     >
       <thead>
         <TableHeader {columns} {sortOrders} {sortData} />

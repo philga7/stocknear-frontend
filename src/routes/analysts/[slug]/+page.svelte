@@ -259,7 +259,7 @@
                 </div>
               </div>
               <div
-                class="mt-4 grid grid-cols-2 overflow-hidden rounded border border-gray-400 dark:border-gray-600 py-2 text-center md:grid-cols-4 md:p-0 lg:mt-0 lg:border-none"
+                class="mt-4 grid grid-cols-2 overflow-hidden rounded border border-gray-300 dark:border-gray-600 py-2 text-center md:grid-cols-4 md:p-0 lg:mt-0 lg:border-none"
               >
                 <div class="flex flex-col px-4 py-2 bp:px-6 md:py-6">
                   <div class="text-2xl font-semibold tracking-tight">
@@ -272,7 +272,7 @@
                   </div>
                 </div>
                 <div
-                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-400 dark:sm:border-gray-600 md:py-6"
+                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-300 dark:sm:border-gray-600 md:py-6"
                 >
                   <div class="text-2xl font-bold tracking-tight">
                     {totalRatings ?? "n/a"}
@@ -284,7 +284,7 @@
                   </div>
                 </div>
                 <div
-                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-400 dark:sm:border-gray-600 md:py-6"
+                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-300 dark:sm:border-gray-600 md:py-6"
                 >
                   <div class="text-2xl font-bold tracking-tight">
                     <span
@@ -305,7 +305,7 @@
                   </div>
                 </div>
                 <div
-                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-400 dark:sm:border-gray-600 md:py-6"
+                  class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-300 dark:sm:border-gray-600 md:py-6"
                 >
                   <div class="text-2xl font-bold tracking-tight">
                     <span
@@ -331,7 +331,7 @@
             {#if data?.getAnalystStats?.mainSectors?.length > 0}
               <div class="mb-10 mt-10">
                 <div
-                  class="relative my-3 space-y-2 rounded border border-gray-400 dark:border-gray-600 sm:my-6 p-4"
+                  class="relative my-3 space-y-2 rounded border border-gray-300 dark:border-gray-600 sm:my-6 p-4"
                 >
                   <div class="flex flex-col sm:flex-row">
                     <div class="mb-2 font-semibold sm:mb-0">Main Sectors:</div>
@@ -377,7 +377,7 @@
                   class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
                 >
                   <table
-                    class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto"
+                    class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
                   >
                     <thead>
                       <TableHeader {columns} {sortOrders} {sortData} />

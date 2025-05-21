@@ -54,7 +54,7 @@
                 shares outstanding. The number of shares has increased by {rawData?.sharesYoY}%
                 in one year.
               </p>
-              <table class="w-full border border-gray-400 dark:border-gray-800">
+              <table class="w-full border border-gray-300 dark:border-gray-800">
                 <tbody
                   ><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -146,7 +146,7 @@
                   shares have been sold short.
                 </p>
               {/if}
-              <table class="w-full border border-gray-400 dark:border-gray-800">
+              <table class="w-full border border-gray-300 dark:border-gray-800">
                 <tbody
                   ><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -203,7 +203,7 @@
                 </p>
               {/if}
 
-              <table class="w-full border border-gray-400 dark:border-gray-800">
+              <table class="w-full border border-gray-300 dark:border-gray-800">
                 <tbody
                   ><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -287,7 +287,7 @@
                   Currently the Enterprise Value (EV) is not available for {companyName}.
                 {/if}
               </p>
-              <table class="w-full border border-gray-400 dark:border-gray-800">
+              <table class="w-full border border-gray-300 dark:border-gray-800">
                 <tbody
                   ><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -333,7 +333,7 @@
                   with a Debt / Equity ratio of {rawData?.debtToEquityRatio}.
                 </p>
               {/if}
-              <table class="w-full border border-gray-400 dark:border-gray-800">
+              <table class="w-full border border-gray-300 dark:border-gray-800">
                 <tbody
                   ><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -405,7 +405,7 @@
                   "percent",
                 )}.
               </p>
-              <table class="w-full border border-gray-400 dark:border-gray-800">
+              <table class="w-full border border-gray-300 dark:border-gray-800">
                 <tbody
                   ><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -488,7 +488,7 @@
             </div>
             <div>
               <h2 class="mb-2 px-0.5 text-xl font-bold">Taxes</h2>
-              <table class="w-full border border-gray-400 dark:border-gray-800">
+              <table class="w-full border border-gray-300 dark:border-gray-800">
                 <tbody
                   ><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -525,7 +525,7 @@
                   ? "higher"
                   : "lower"} than the market average.
               </p>
-              <table class="w-full border border-gray-400 dark:border-gray-800">
+              <table class="w-full border border-gray-300 dark:border-gray-800">
                 <tbody
                   ><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -594,7 +594,7 @@
                   in profits. Earnings per share was {rawData?.eps}.
                 {/if}
               </p>
-              <table class="w-full border border-gray-400 dark:border-gray-800">
+              <table class="w-full border border-gray-300 dark:border-gray-800">
                 <tbody
                   ><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -688,7 +688,7 @@
                   )}.
                 </p>
               {/if}
-              <table class="w-full border border-gray-400 dark:border-gray-800">
+              <table class="w-full border border-gray-300 dark:border-gray-800">
                 <tbody
                   ><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -780,7 +780,7 @@
                   )}.
                 </p>
               {/if}
-              <table class="w-full border border-gray-400 dark:border-gray-800">
+              <table class="w-full border border-gray-300 dark:border-gray-800">
                 <tbody
                   ><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -843,7 +843,7 @@
                   )} and {checkValue(rawData?.netProfitMargin, "percent")}.
                 {/if}
               </p>
-              <table class="w-full border border-gray-400 dark:border-gray-800">
+              <table class="w-full border border-gray-300 dark:border-gray-800">
                 <tbody
                   ><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -945,7 +945,7 @@
                   {$stockTicker} does not appear to pay any dividends at this time.
                 {/if}
               </p>
-              <table class="w-full border border-gray-400 dark:border-gray-800">
+              <table class="w-full border border-gray-300 dark:border-gray-800">
                 <tbody
                   ><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -1032,7 +1032,7 @@
                   Currently there are no analyst rating for {$stockTicker}.
                 {/if}
               </p>
-              <table class="w-full border border-gray-400 dark:border-gray-800">
+              <table class="w-full border border-gray-300 dark:border-gray-800">
                 <tbody
                   ><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
@@ -1099,7 +1099,7 @@
                   split with a ratio of {rawData?.splitRatio}.
                 </p>
                 <table
-                  class="w-full border border-gray-400 dark:border-gray-800"
+                  class="w-full border border-gray-300 dark:border-gray-800"
                 >
                   <tbody
                     ><tr
@@ -1141,7 +1141,7 @@
             {/if}
             <div>
               <h2 class="mb-2 px-0.5 text-xl font-bold">Scores</h2>
-              <table class="w-full border border-gray-400 dark:border-gray-800">
+              <table class="w-full border border-gray-300 dark:border-gray-800">
                 <tbody
                   ><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"

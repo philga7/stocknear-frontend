@@ -804,7 +804,7 @@
                       disabled={tickerList?.length > 10 ? true : false}
                       class="{tickerList?.length > 10
                         ? 'cursor-not-allowed'
-                        : ''} text-sm sm:text-[1rem] controls-input shadow-xs focus:bg-gray-50 dark:focus:bg-[#121217] focus:outline-hidden border border-gray-400 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-3 py-2 pl-8 xs:pl-10 grow w-full "
+                        : ''} text-sm sm:text-[1rem] controls-input shadow-xs focus:bg-gray-50 dark:focus:bg-[#121217] focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-3 py-2 pl-8 xs:pl-10 grow w-full "
                       placeholder="Add new stock..."
                       aria-label="Add new stock..."
                     />
@@ -813,13 +813,13 @@
                   <Combobox.Content
                     class="z-10 w-full {inputValue?.length > 0
                       ? ''
-                      : 'hidden'} rounded border border-gray-400 dark:border-gray-700 bg-white dark:bg-default px-1 py-2 shadow-xs outline-hidden"
+                      : 'hidden'} rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-default px-1 py-2 shadow-xs outline-hidden"
                     sideOffset={8}
                   >
                     {#if inputValue?.length !== 0}
                       {#each searchBarData as searchItem}
                         <Combobox.Item
-                          class="py-2.5 cursor-pointer border-b border-gray-400 dark:border-gray-500 last:border-none flex h-fit w-auto select-none items-center rounded-button  px-2  text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-200 dark:data-highlighted:bg-primary"
+                          class="py-2.5 cursor-pointer border-b border-gray-300 dark:border-gray-500 last:border-none flex h-fit w-auto select-none items-center rounded-button  px-2  text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-200 dark:data-highlighted:bg-primary"
                           value={searchItem?.symbol}
                           label={searchItem?.symbol}
                           on:click={(e) => addTicker(searchItem)}
@@ -846,7 +846,7 @@
                       {/each}
                     {:else}
                       <Combobox.Item
-                        class="cursor-pointer border-b border-gray-400 dark:border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-1.5 pl-5 pr-1.5 text-sm capitalize outline-hidden"
+                        class="cursor-pointer border-b border-gray-300 dark:border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-1.5 pl-5 pr-1.5 text-sm capitalize outline-hidden"
                       >
                         <span class=" text-sm text-muted dark:text-white">
                           {inputValue?.length > 0
@@ -865,7 +865,7 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="w-full min-w-40 border-gray-400 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2 h-10  rounded truncate"
+                        class="w-full min-w-40 border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2 h-10  rounded truncate"
                       >
                         <span class="truncate text-sm"
                           >{selectedPlotCategory?.name}</span
@@ -907,7 +907,7 @@
               <div class="w-full">
                 {#each tickerList as t, i}
                   <span
-                    class="shadow-xs inline-flex items-center gap-x-2 mb-1.5 sm:mt-0 mr-2 px-1 py-1 text-sm font-semibold rounded border-1 border-l-4 border-gray-400 dark:border-gray-600"
+                    class="shadow-xs inline-flex items-center gap-x-2 mb-1.5 sm:mt-0 mr-2 px-1 py-1 text-sm font-semibold rounded border-1 border-l-4 border-gray-300 dark:border-gray-600"
                     style="border-left-color: {colorPairs[
                       i % colorPairs?.length
                     ][$mode ? 'dark' : 'light']}"
@@ -961,12 +961,12 @@
                 </div>
               </div>
               <div
-                class="shadow-xs border border-gray-400 dark:border-gray-800 rounded w-full"
+                class="shadow-xs border border-gray-300 dark:border-gray-800 rounded w-full"
                 use:highcharts={configGraph}
               ></div>
             {:else}
               <div
-                class="mt-2 flex justify-center items-center h-96 border border-gray-400 dark:border-gray-800 rounded"
+                class="mt-2 flex justify-center items-center h-96 border border-gray-300 dark:border-gray-800 rounded"
               >
                 <div class="relative">
                   <label
@@ -1001,7 +1001,7 @@
               />
 
               <div
-                class="mt-5 border border-gray-400 dark:border-gray-800 rounded w-full"
+                class="mt-5 border border-gray-300 dark:border-gray-800 rounded w-full"
               >
                 <div class="shadow-xs" use:highcharts={configReturn}></div>
 
@@ -1009,7 +1009,7 @@
                   <table class="w-full">
                     <thead
                       ><tr
-                        class="border-b border-gray-400 dark:border-gray-800 text-left *:px-2 *:py-1 *:font-semibold"
+                        class="border-b border-gray-300 dark:border-gray-800 text-left *:px-2 *:py-1 *:font-semibold"
                         ><th class="text-left">Symbol</th> <th>1 Month</th>
                         <th>Year-to-date</th>
                         <th>1 Year</th> <th>5 Years</th>
@@ -1019,7 +1019,7 @@
                     <tbody>
                       {#each tickerList as ticker, idx}
                         <tr
-                          class="border-b border-gray-400 dark:border-gray-800 text-left *:px-2 *:py-1 last:border-0 hover:bg-table-hover"
+                          class="border-b border-gray-300 dark:border-gray-800 text-left *:px-2 *:py-1 last:border-0 hover:bg-table-hover"
                         >
                           <td class="flex items-center gap-x-1">
                             <div

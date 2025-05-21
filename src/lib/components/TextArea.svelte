@@ -45,7 +45,7 @@
 
   <textarea
     input="text"
-    class="min-h-[290px] p-3 h-auto text-sm border border-gray-400 dark:border-gray-600 focus:outline-none w-full bg-white dark:bg-secondary placeholder-gray-600 dark:placeholder-gray-300 whitespace-normal w-full resize-none focus-none ring-none rounded-md"
+    class="min-h-[290px] p-3 h-auto text-sm border border-gray-300 dark:border-gray-600 focus:outline-none w-full bg-white dark:bg-secondary placeholder-gray-600 dark:placeholder-gray-300 whitespace-normal w-full resize-none focus-none ring-none rounded-md"
     {type}
     {placeholder}
     {required}

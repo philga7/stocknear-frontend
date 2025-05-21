@@ -96,7 +96,7 @@
 <div class="fixed z-100 bottom-8 sm:bottom-10 right-8 sm:right-16">
   <label
     for="feedbackInfo"
-    class="border border-gray-400 inline-flex items-center justify-center w-12 h-12 sm:w-full sm:h-10 font-semibold bg-gray-400 dark:border-gray-700 shadow-xl ml-1 mr-0 sm:mr-2 rounded-full cursor-pointer"
+    class="border border-gray-300 inline-flex items-center justify-center w-12 h-12 sm:w-full sm:h-10 font-semibold bg-gray-400 dark:border-gray-700 shadow-xl ml-1 mr-0 sm:mr-2 rounded-full cursor-pointer"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"

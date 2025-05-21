@@ -1186,7 +1186,7 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="shadow-xs min-w-[110px] w-full sm:w-fit border-gray-400 bg-white dark:bg-default dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-1.5  rounded truncate"
+                        class="shadow-xs min-w-[110px] w-full sm:w-fit border-gray-300 bg-white dark:bg-default dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-1.5  rounded truncate"
                       >
                         <span
                           class="truncate font-medium text-sm sm:text-[1rem]"
@@ -1289,7 +1289,7 @@
                     {#if editMode}
                       <label
                         on:click={handleDeleteTickers}
-                        class="border shadow-xs text-sm border-gray-400 dark:border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 pl-3 pr-4 font-semibold sm:hover:bg-gray-200 dark:sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
+                        class="border shadow-xs text-sm border-gray-300 dark:border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 pl-3 pr-4 font-semibold sm:hover:bg-gray-200 dark:sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
                       >
                         <svg
                           class="inline-block w-5 h-5"
@@ -1307,7 +1307,7 @@
                     {/if}
                     <label
                       on:click={handleEditMode}
-                      class="shadow-xs border text-sm border-gray-400 dark:border-gray-600 sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-1.5 px-3 sm:hover:bg-gray-200 dark:sm:hover:bg-primary ease-out"
+                      class="shadow-xs border text-sm border-gray-300 dark:border-gray-600 sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-1.5 px-3 sm:hover:bg-gray-200 dark:sm:hover:bg-primary ease-out"
                     >
                       <svg
                         class="inline-block w-5 h-5"
@@ -1366,20 +1366,20 @@
                       </div>
                       <Combobox.Input
                         on:input={search}
-                        class="text-sm sm:text-[1rem] controls-input shadow-xs focus:outline-hidden border border-gray-400 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-3 py-2 pl-8 xs:pl-10 grow w-full sm:min-w-56 max-w-xs"
+                        class="text-sm sm:text-[1rem] controls-input shadow-xs focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-3 py-2 pl-8 xs:pl-10 grow w-full sm:min-w-56 max-w-xs"
                         placeholder="Add new stock"
                         aria-label="Add new stock"
                       />
                     </div>
 
                     <Combobox.Content
-                      class="w-auto z-10 rounded border border-gray-400 dark:border-gray-700 bg-white dark:bg-default px-1 py-1.5 shadow-xs outline-hidden"
+                      class="w-auto z-10 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-default px-1 py-1.5 shadow-xs outline-hidden"
                       sideOffset={8}
                     >
                       {#if inputValue?.length > 0}
                         {#each searchBarData as item}
                           <Combobox.Item
-                            class="cursor-pointer border-b border-gray-400 dark:border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-1.5 pl-5 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-200 dark:data-highlighted:bg-primary"
+                            class="cursor-pointer border-b border-gray-300 dark:border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-1.5 pl-5 pr-1.5 text-sm capitalize outline-hidden transition-all duration-75 data-highlighted:bg-gray-200 dark:data-highlighted:bg-primary"
                             value={item?.symbol}
                             label={item?.name}
                             on:click={(e) => handleAddTicker(e, item?.symbol)}
@@ -1405,7 +1405,7 @@
                         {/each}
                       {:else}
                         <Combobox.Item
-                          class="cursor-pointer border-b border-gray-400 dark:border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-1.5 pl-5 pr-1.5 text-sm capitalize outline-hidden"
+                          class="cursor-pointer border-b border-gray-300 dark:border-gray-600 last:border-none flex h-fit w-auto select-none items-center rounded-button py-1.5 pl-5 pr-1.5 text-sm capitalize outline-hidden"
                         >
                           <span class=" text-sm text-muted dark:text-white">
                             No results found
@@ -1426,7 +1426,7 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="shadow-xs sm:ml-auto min-w-[110px] w-full sm:w-fit border-gray-400 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5  rounded truncate"
+                        class="shadow-xs sm:ml-auto min-w-[110px] w-full sm:w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5  rounded truncate"
                       >
                         <span class="truncate text-sm sm:text-[1rem]"
                           >Indicators</span
@@ -1452,7 +1452,7 @@
                     >
                       <!-- Search Input -->
                       <div
-                        class="sticky fixed -top-1 z-40 bg-white dark:bg-default p-2 border-b border-gray-400 dark:border-gray-600"
+                        class="sticky fixed -top-1 z-40 bg-white dark:bg-default p-2 border-b border-gray-300 dark:border-gray-600"
                       >
                         <div class="relative w-full">
                           <!-- Input Field -->
@@ -1567,7 +1567,7 @@
                       </DropdownMenu.Group>
                       <!-- Reset Selection button -->
                       <div
-                        class="sticky -bottom-1 bg-white dark:bg-default z-50 p-2 border-t border-gray-400 dark:border-gray-600 w-full flex justify-between items-center"
+                        class="sticky -bottom-1 bg-white dark:bg-default z-50 p-2 border-t border-gray-300 dark:border-gray-600 w-full flex justify-between items-center"
                       >
                         <label
                           on:click={handleResetAll}
@@ -1596,7 +1596,7 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="shadow-xs min-w-[110px] w-full sm:w-fit border-gray-400 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5  rounded truncate"
+                        class="shadow-xs min-w-[110px] w-full sm:w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5  rounded truncate"
                       >
                         <span class="truncate text-sm sm:text-[1rem]"
                           >Bulk Download</span
@@ -1651,7 +1651,7 @@
                                 <div
                                   class="w-9 h-5 bg-gray-400 rounded-full peer peer-checked:bg-blue-600
       after:content-[''] after:absolute after:top-0.5 after:left-[2px]
-      after:bg-white after:border-gray-400 after:border
+      after:bg-white after:border-gray-300 after:border
       after:rounded-full after:h-4 after:w-4 after:transition-all
       peer-checked:after:translate-x-full"
                                 ></div>
@@ -1661,7 +1661,7 @@
                         {/each}
                       </DropdownMenu.Group>
                       <div
-                        class="sticky -bottom-1 bg-white dark:bg-default z-50 p-2 border-t border-gray-400 dark:border-gray-600 w-full flex justify-between items-center"
+                        class="sticky -bottom-1 bg-white dark:bg-default z-50 p-2 border-t border-gray-300 dark:border-gray-600 w-full flex justify-between items-center"
                       >
                         <span
                           class="w-full text-muted dark:text-gray-300 bg-white dark:bg-default font-semibold dark:font-normal text-start text-xs select-none"
@@ -1729,7 +1729,7 @@
 
                   <div class="w-full overflow-x-auto">
                     <table
-                      class="table table-sm table-compact rounded-none sm:rounded w-full border border-gray-400 dark:border-gray-800 m-auto mt-4"
+                      class="table table-sm table-compact rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
                     >
                       <!-- head -->
                       <thead>
@@ -1865,7 +1865,7 @@
                   </div>
 
                   <div
-                    class="w-full m-auto border-b border-gray-400 dark:border-gray-600 mt-10 mb-5"
+                    class="w-full m-auto border-b border-gray-300 dark:border-gray-600 mt-10 mb-5"
                   ></div>
 
                   <div class=" ">
@@ -1929,11 +1929,11 @@
                             {date}
                           </h3>
                           <div
-                            class="border border-gray-400 dark:border-gray-700"
+                            class="border border-gray-300 dark:border-gray-700"
                           >
                             {#each titleGroups as { title, items, symbols }, index}
                               <div
-                                class="flex border-gray-400 {index > 0
+                                class="flex border-gray-300 {index > 0
                                   ? 'border-t'
                                   : ''} dark:border-gray-600 text-small"
                               >
@@ -2005,11 +2005,11 @@
                           {date}
                         </h3>
                         <div
-                          class="border border-gray-400 dark:border-gray-700"
+                          class="border border-gray-300 dark:border-gray-700"
                         >
                           {#each titleGroups as item, index}
                             <div
-                              class="flex border-gray-400 dark:border-gray-600 text-small"
+                              class="flex border-gray-300 dark:border-gray-600 text-small"
                             >
                               <div
                                 class="hidden min-w-[100px] items-center justify-center bg-gray-200 dark:bg-primary p-1 lg:flex"
@@ -2019,7 +2019,7 @@
                               <div
                                 class="grow px-3 py-2 lg:py-1 {index > 0
                                   ? 'border-t'
-                                  : ''} border-gray-400 dark:border-gray-700"
+                                  : ''} border-gray-300 dark:border-gray-700"
                               >
                                 <div>
                                   {removeCompanyStrings(item?.name)}
@@ -2120,7 +2120,7 @@
 
   <!-- Desktop modal content -->
   <div
-    class="modal-box w-full bg-white dark:bg-secondary rounded border-gray-400 shadow"
+    class="modal-box w-full bg-white dark:bg-secondary rounded border-gray-300 shadow"
   >
     <div class="mb-5">
       <h3 class="font-bold text-2xl mb-5">New Watchlist</h3>
@@ -2162,7 +2162,7 @@
 
   <div
     class="modal-box w-full p-6 rounded shadow-xs border
-        bg-white dark:bg-secondary border border-gray-400 dark:border-gray-600"
+        bg-white dark:bg-secondary border border-gray-300 dark:border-gray-600"
   >
     <h3 class="text-lg font-medium mb-2">Delete Watchlist</h3>
     <p class="text-sm mb-6">

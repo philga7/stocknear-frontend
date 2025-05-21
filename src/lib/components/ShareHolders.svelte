@@ -291,7 +291,7 @@
         </p>
 
         <div
-          class="border border-gray-400 dark:border-gray-800 rounded w-full mt-3 shadow-xs"
+          class="border border-gray-300 dark:border-gray-800 rounded w-full mt-3 shadow-xs"
           use:highcharts={config}
         ></div>
       </div>
@@ -315,7 +315,7 @@
           >
             <!--Start Put/Call-->
             <div
-              class="flex flex-row items-center flex-wrap w-full px-3 sm:px-5 shadow-xs border border-gray-400 dark:border-gray-600 bg-gray-200 dark:bg-primary rounded-md h-20"
+              class="flex flex-row items-center flex-wrap w-full px-3 sm:px-5 shadow-xs border border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-primary rounded-md h-20"
             >
               <div class="flex flex-col items-start">
                 <span class="  text-sm sm:text-[1rem]">Put/Call</span>
@@ -369,7 +369,7 @@
             <!--End Put/Call-->
             <!--Start Call Flow-->
             <div
-              class="flex flex-row items-center flex-wrap w-full px-3 sm:px-5 shadow-xs border border-gray-400 dark:border-gray-600 bg-gray-200 dark:bg-primary rounded-md h-20"
+              class="flex flex-row items-center flex-wrap w-full px-3 sm:px-5 shadow-xs border border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-primary rounded-md h-20"
             >
               <div class="flex flex-col items-start">
                 <span class="  text-sm sm:text-[1rem]">Call Flow</span>
@@ -425,7 +425,7 @@
 
             <!--Start Put Flow-->
             <div
-              class="flex flex-row items-center flex-wrap w-full px-3 sm:px-5 shadow-xs border border-gray-400 dark:border-gray-600 bg-gray-200 dark:bg-primary rounded-md h-20"
+              class="flex flex-row items-center flex-wrap w-full px-3 sm:px-5 shadow-xs border border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-primary rounded-md h-20"
             >
               <div class="flex flex-col items-start">
                 <span class="  text-sm sm:text-[1rem]">Put Flow</span>
@@ -509,7 +509,7 @@
         class="flex justify-start items-center w-full m-auto mt-3 overflow-x-auto"
       >
         <table
-          class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto"
+          class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
         >
           <thead>
             <TableHeader {columns} {sortOrders} {sortData} />

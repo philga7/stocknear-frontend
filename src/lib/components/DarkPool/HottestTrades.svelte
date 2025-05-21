@@ -137,7 +137,7 @@
       />
       <a
         href={`/dark-pool-flow?query=${ticker}`}
-        class="sm:hidden ml-auto px-3 py-1 text-sm border border-gray-400 dark:border-gray-700 bg-gray-100 shadow-xs dark:bg-white text-black '
+        class="sm:hidden ml-auto px-3 py-1 text-sm border border-gray-300 dark:border-gray-700 bg-gray-100 shadow-xs dark:bg-white text-black '
                    transition ease-out duration-100 rounded cursor-pointer"
       >
         View All
@@ -154,7 +154,7 @@
           </div>
           <a
             href={`/dark-pool-flow?query=${ticker}`}
-            class="hidden sm:inline-block ml-auto px-3 py-1 text-sm border border-gray-400 dark:border-gray-700 bg-gray-100 shadow-xs dark:bg-white text-black '
+            class="hidden sm:inline-block ml-auto px-3 py-1 text-sm border border-gray-300 dark:border-gray-700 bg-gray-100 shadow-xs dark:bg-white text-black '
                    transition ease-out duration-100 rounded cursor-pointer"
           >
             View All
@@ -166,7 +166,7 @@
         class="w-full m-auto rounded-none sm:rounded-md mb-4 overflow-x-auto"
       >
         <table
-          class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto"
+          class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
         >
           <thead>
             <TableHeader {columns} {sortOrders} {sortData} />

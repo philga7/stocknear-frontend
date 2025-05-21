@@ -438,7 +438,7 @@
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
                       builders={[builder]}
-                      class="shadow-xs w-full border-gray-400 dark:border-gray-600 border bg-white sm:hover:bg-gray-100 dark:bg-default dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                      class="shadow-xs w-full border-gray-300 dark:border-gray-600 border bg-white sm:hover:bg-gray-100 dark:bg-default dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                     >
                       <span class="truncate">{selectedSector}</span>
                       <svg
@@ -503,7 +503,7 @@
             </div>
 
             <div
-              class="chart-driver shadow-xs mt-5 border border-gray-400 dark:border-gray-800 rounded"
+              class="chart-driver shadow-xs mt-5 border border-gray-300 dark:border-gray-800 rounded"
               use:highcharts={config}
             ></div>
 
@@ -526,18 +526,18 @@
 
             {#if activeIdx === 0}
               <h3
-                class=" text-lg sm:text-xl font-semibold mb-2 mt-6 border-y border-gray-400 dark:border-gray-800 pt-2 pb-2"
+                class=" text-lg sm:text-xl font-semibold mb-2 mt-6 border-y border-gray-300 dark:border-gray-800 pt-2 pb-2"
               >
                 Official Presidential Schedule
               </h3>
               <div
-                class="border border-gray-400 dark:border-gray-800 rounded-md p-4"
+                class="border border-gray-300 dark:border-gray-800 rounded-md p-4"
               >
                 <div class="space-y-4">
                   {#each Object?.entries(groupedByDate) as [date, items], indexA}
                     <div class="my-4">
                       <div
-                        class="border-b border-gray-400 dark:border-gray-600 pb-2 w-full flex flex-row items-center justify-between"
+                        class="border-b border-gray-300 dark:border-gray-600 pb-2 w-full flex flex-row items-center justify-between"
                       >
                         <span class="text-[1rem] sm:text-lg font-semibold">
                           {date}</span
@@ -621,18 +621,18 @@
               </div>
             {:else if activeIdx === 1}
               <h3
-                class=" text-lg sm:text-xl font-semibold mb-2 mt-6 border-y border-gray-400 dark:border-gray-800 pt-2 pb-2"
+                class=" text-lg sm:text-xl font-semibold mb-2 mt-6 border-y border-gray-300 dark:border-gray-800 pt-2 pb-2"
               >
                 Executive Actions
               </h3>
               <div
-                class=" border border-gray-400 dark:border-gray-800 rounded-md p-4"
+                class=" border border-gray-300 dark:border-gray-800 rounded-md p-4"
               >
                 <div class="space-y-4">
                   {#each Object.entries(groupedOrders) as [date, items], indexA}
                     <div class="my-4">
                       <div
-                        class="border-b border-gray-400 dark:border-gray-600 pb-2 flex flex-row items-center"
+                        class="border-b border-gray-300 dark:border-gray-600 pb-2 flex flex-row items-center"
                       >
                         <span class="text-[1rem] font-semibold">{date}</span>
                         {#if latestInfoDate(date)}
@@ -649,7 +649,7 @@
                         <div
                           class="{indexB > 0
                             ? 'my-4'
-                            : 'my-1'} p-4 rounded-lg border border-gray-400 dark:border-gray-700 shadow-xs bg-white dark:bg-[#111315]"
+                            : 'my-1'} p-4 rounded-lg border border-gray-300 dark:border-gray-700 shadow-xs bg-white dark:bg-[#111315]"
                         >
                           <!-- Top row: avatar + user info -->
                           <div class="flex items-start space-x-3">
@@ -708,7 +708,7 @@
                           </div>
 
                           <div
-                            class="border-b border-gray-400 dark:border-gray-800 mt-4 mb-4"
+                            class="border-b border-gray-300 dark:border-gray-800 mt-4 mb-4"
                           ></div>
 
                           <!-- Source link -->
@@ -760,7 +760,7 @@
               </div>
             {:else if activeIdx === 2}
               <div
-                class=" flex flex-row items-center mb-2 mt-6 border-y border-gray-400 dark:border-gray-800 pt-2 pb-2"
+                class=" flex flex-row items-center mb-2 mt-6 border-y border-gray-300 dark:border-gray-800 pt-2 pb-2"
               >
                 <svg
                   class="w-7 h-7 rounded-full inline-block"
@@ -780,7 +780,7 @@
               </div>
 
               <div
-                class="border border-gray-400 dark:border-gray-800 rounded-md p-4"
+                class="border border-gray-300 dark:border-gray-800 rounded-md p-4"
               >
                 <div class="">
                   {#each posts as item, index}
@@ -838,7 +838,7 @@
                       </p>
 
                       <div
-                        class="border-b border-gray-400 dark:border-gray-800 mt-4"
+                        class="border-b border-gray-300 dark:border-gray-800 mt-4"
                       >
                         <span
                           class="text-gray-600 dark:text-gray-300 mb-4 text-sm"
@@ -935,7 +935,7 @@
           <div class="order-4 shrink-0 lg:float-right lg:w-[336px]">
             {#if !["Pro", "Plus"]?.includes(data?.user?.tier) || data?.user?.freeTrial}
               <div
-                class="w-full border border-gray-400 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
+                class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
               >
                 <a
                   href="/pricing"
@@ -957,7 +957,7 @@
             {/if}
 
             <div
-              class="w-full border border-gray-400 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
+              class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
             >
               <a
                 href={"/stock-screener"}
@@ -974,7 +974,7 @@
               </a>
             </div>
             <div
-              class="w-full border border-gray-400 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
+              class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
             >
               <a
                 href={"/watchlist/stocks"}
@@ -1041,7 +1041,7 @@
       {postContent}
     </p>
 
-    <div class="border-b border-gray-400 dark:border-gray-600">
+    <div class="border-b border-gray-300 dark:border-gray-600">
       <span class="text-gray-600 dark:text-gray-300 mb-4 text-sm"
         >{new Date(postDate ?? null)?.toLocaleString("en-US", {
           month: "long",
@@ -1126,7 +1126,7 @@
       {postContent}
     </p>
 
-    <div class="border-b border-gray-400 dark:border-gray-600">
+    <div class="border-b border-gray-300 dark:border-gray-600">
       <span class="text-gray-600 dark:text-gray-300 mb-4 text-sm"
         >{postDate}</span
       >

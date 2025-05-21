@@ -165,13 +165,13 @@
 
 {#if !isLoaded}
   <div
-    class="w-full h-[360px] flex justify-center items-center m-auto shadow-xs border border-gray-400 dark:border-gray-800 rounded"
+    class="w-full h-[360px] flex justify-center items-center m-auto shadow-xs border border-gray-300 dark:border-gray-800 rounded"
   >
     <span class="loading loading-bars loading-sm"></span>
   </div>
 {:else}
   <div
-    class="shadow-xs border border-gray-400 dark:border-gray-800 rounded w-full"
+    class="shadow-xs border border-gray-300 dark:border-gray-800 rounded w-full"
     use:highcharts={config}
     bind:this={chartElement}
   ></div>

@@ -281,12 +281,12 @@
       </div>
 
       <div
-        class="chart-driver shadow-xs mt-5 sm:mt-0 border border-gray-400 dark:border-gray-800 rounded"
+        class="chart-driver shadow-xs mt-5 sm:mt-0 border border-gray-300 dark:border-gray-800 rounded"
         use:highcharts={config}
       ></div>
 
       <div
-        class="mt-5 flex flex-col sm:flex-row items-start sm:items-center w-full justify-between sm:border-y border-gray-400 dark:border-gray-800 sm:pt-2 sm:pb-2"
+        class="mt-5 flex flex-col sm:flex-row items-start sm:items-center w-full justify-between sm:border-y border-gray-300 dark:border-gray-800 sm:pt-2 sm:pb-2"
       >
         <h3 class="history-driver text-xl sm:text-2xl font-bold mb-2 sm:mb-0">
           FTD History
@@ -345,7 +345,7 @@
 
       <div class="w-full overflow-x-auto">
         <table
-          class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto mt-4"
+          class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
         >
           <thead class="text-muted dark:text-white dark:bg-default">
             <tr>

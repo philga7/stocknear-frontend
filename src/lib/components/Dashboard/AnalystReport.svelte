@@ -50,7 +50,7 @@
       <table class="w-full text-right xs:text-sm sm: mt-5">
         <thead
           ><tr
-            class="border-b border-gray-400 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
+            class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
             ><th class="py-[3px] text-left font-semibold lg:py-0.5">Target</th>
             <th class="font-semibold">Low</th>
             <th class="font-semibold">Average</th>
@@ -60,7 +60,7 @@
         >
         <tbody
           ><tr
-            class="border-b border-gray-400 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
+            class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
             ><td class="py-[3px] text-left lg:py-0.5">Price</td>
             <td>${analystReport?.lowPriceTarget}</td>
             <td>${analystReport?.avgPriceTarget}</td>

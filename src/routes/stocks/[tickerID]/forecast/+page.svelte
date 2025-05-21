@@ -838,7 +838,7 @@
 
         <div class="w-full mb-6 mt-3">
           <div
-            class="rounded shadow-xs border border-gray-400 dark:border-gray-600 p-0.5 xs:p-1 md:flex md:flex-col md:space-y-4 md:divide-y md:p-4 lg:flex-row lg:space-x-4 lg:space-y-0 lg:divide-x lg:divide-y-0 divide-gray-300 dark:divide-gray-600"
+            class="rounded shadow-xs border border-gray-300 dark:border-gray-600 p-0.5 xs:p-1 md:flex md:flex-col md:space-y-4 md:divide-y md:p-4 lg:flex-row lg:space-x-4 lg:space-y-0 lg:divide-x lg:divide-y-0 divide-gray-300 dark:divide-gray-600"
           >
             <div
               class="p-3 md:flex md:space-x-4 md:p-0 lg:block lg:max-w-[32%] lg:space-x-0"
@@ -875,12 +875,12 @@
             <div class="grow p-3 md:pt-4 lg:pl-4 lg:pt-0">
               {#if numOfAnalyst > 0}
                 <div
-                  class="sm:shadow-xs sm:border border-gray-400 dark:border-gray-800 rounded"
+                  class="sm:shadow-xs sm:border border-gray-300 dark:border-gray-800 rounded"
                   use:highcharts={config}
                 ></div>
               {:else}
                 <div
-                  class="mb-2 min-h-[200px] sm:min-h-[300px] text-lg sm:text-xl font-bold shadow-xs border border-gray-400 dark:border-gray-800 rounded flex justify-center items-center"
+                  class="mb-2 min-h-[200px] sm:min-h-[300px] text-lg sm:text-xl font-bold shadow-xs border border-gray-300 dark:border-gray-800 rounded flex justify-center items-center"
                 >
                   No Chart available
                 </div>
@@ -891,7 +891,7 @@
                 <table class="w-full text-right text-tiny xs:text-sm sm:">
                   <thead
                     ><tr
-                      class="border-b border-gray-400 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
+                      class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
                       ><th class="py-[3px] text-left font-semibold lg:py-0.5"
                         >Target</th
                       > <th class="font-semibold">Low</th>
@@ -902,7 +902,7 @@
                   >
                   <tbody
                     ><tr
-                      class="border-b border-gray-400 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
+                      class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
                       ><td class="py-[3px] text-left lg:py-0.5">Price</td>
                       <td>{lowPriceTarget > 0 ? lowPriceTarget : "n/a"}</td>
                       <td>{avgPriceTarget > 0 ? avgPriceTarget : "n/a"}</td>
@@ -954,7 +954,7 @@
           </div>
 
           <div
-            class="w-full shadow-xs rounded-sm border border-gray-400 dark:border-gray-600 mt-8 p-3 divide-gray-300 dark:divide-gray-600 lg:flex lg:space-x-4 lg:divide-x"
+            class="w-full shadow-xs rounded-sm border border-gray-300 dark:border-gray-600 mt-8 p-3 divide-gray-300 dark:divide-gray-600 lg:flex lg:space-x-4 lg:divide-x"
           >
             <div class="flex flex-col justify-between p-1 lg:max-w-[32%]">
               <div>
@@ -1025,12 +1025,12 @@
             <div class="grow pt-2 md:pt-4 lg:pl-4 lg:pt-0">
               {#if optionsBarChart !== null && numOfAnalyst > 0}
                 <div
-                  class="shadow-xs border border-gray-400 dark:border-gray-800 rounded"
+                  class="shadow-xs border border-gray-300 dark:border-gray-800 rounded"
                   use:highcharts={optionsBarChart}
                 ></div>
               {:else}
                 <div
-                  class="min-h-[200px] sm:min-h-[300px] text-lg sm:text-xl font-bold shadow-xs border border-gray-400 dark:border-gray-800 rounded flex justify-center items-center"
+                  class="min-h-[200px] sm:min-h-[300px] text-lg sm:text-xl font-bold shadow-xs border border-gray-300 dark:border-gray-800 rounded flex justify-center items-center"
                 >
                   No Chart available
                 </div>
@@ -1043,7 +1043,7 @@
                 >
                   <thead
                     ><tr
-                      class="border-b border-gray-400 dark:border-gray-600 font-normal"
+                      class="border-b border-gray-300 dark:border-gray-600 font-normal"
                       ><th
                         class="whitespace-nowrap px-1 py-[3px] text-sm sm:text-[1rem] text-left font-semibold"
                         >Rating</th
@@ -1064,7 +1064,7 @@
                   <tbody>
                     {#each categories as category}
                       <tr
-                        class="border-b border-gray-400 dark:border-gray-600 font-normal"
+                        class="border-b border-gray-300 dark:border-gray-600 font-normal"
                       >
                         <td
                           class="whitespace-nowrap px-1 py-[3px] text-sm sm:text-[1rem] text-left"
@@ -1102,10 +1102,10 @@
           </h2>
           {#if data?.getAnalystEstimate?.length !== 0}
             <div
-              class="mb-4 shadow-xs grid grid-cols-1 overflow-hidden rounded-md border divide-gray-300 dark:divide-gray-600 border-gray-400 dark:border-gray-600 md:grid-cols-2 lg:grid-cols-4"
+              class="mb-4 shadow-xs grid grid-cols-1 overflow-hidden rounded-md border divide-gray-300 dark:divide-gray-600 border-gray-300 dark:border-gray-600 md:grid-cols-2 lg:grid-cols-4"
             >
               <div
-                class="border-b px-3 py-5 last:border-b-0 xs:px-4 sm:p-6 md:border-b lg:border-b-0 border-gray-400 dark:border-gray-600"
+                class="border-b px-3 py-5 last:border-b-0 xs:px-4 sm:p-6 md:border-b lg:border-b-0 border-gray-300 dark:border-gray-600"
               >
                 <div class=" font-normal">Revenue This Year</div>
                 <div
@@ -1280,7 +1280,7 @@
                 </div>
               </div>
               <div
-                class="border-b px-3 py-5 last:border-b-0 xs:px-4 sm:p-6 md:border-l border-gray-400 dark:border-gray-600"
+                class="border-b px-3 py-5 last:border-b-0 xs:px-4 sm:p-6 md:border-l border-gray-300 dark:border-gray-600"
               >
                 <div class=" font-normal">EPS Next Year</div>
                 <div
@@ -1341,7 +1341,7 @@
             </div>
           {:else}
             <div
-              class=" p-3 sm:p-5 mb-10 rounded-md sm:flex sm:flex-row sm:items-center border border-gray-400 dark:border-gray-600 text-sm sm:text-[1rem]"
+              class=" p-3 sm:p-5 mb-10 rounded-md sm:flex sm:flex-row sm:items-center border border-gray-300 dark:border-gray-600 text-sm sm:text-[1rem]"
             >
               <svg
                 class="w-6 h-6 shrink-0 inline-block sm:mr-2"
@@ -1369,7 +1369,7 @@
 
   <!-- Desktop modal content -->
   <div
-    class="modal-box rounded-md border border-gray-400 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
+    class="modal-box rounded-md border border-gray-300 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
   >
     <div class=" mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">Top Analyst</h3>
@@ -1380,7 +1380,7 @@
       >
     </div>
 
-    <div class="border-t border-gray-400 dark:border-gray-600 mt-2 w-full">
+    <div class="border-t border-gray-300 dark:border-gray-600 mt-2 w-full">
       <label
         for="topAnalystModal"
         class="cursor-pointer mt-4 font-semibold text-xl m-auto flex justify-center"

@@ -209,7 +209,7 @@
 
           {#if rawData?.length !== 0}
             <div
-              class="chart mt-5 sm:mt-0 border border-gray-400 dark:border-gray-800 rounded"
+              class="chart mt-5 sm:mt-0 border border-gray-300 dark:border-gray-800 rounded"
               use:highcharts={config}
             ></div>
 
@@ -217,10 +217,10 @@
 
             <div class="w-full overflow-x-auto">
               <table
-                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto mt-4"
+                class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
               >
                 <thead class="text-muted dark:text-white dark:bg-default">
-                  <tr class="border-b border-gray-400 dark:border-gray-800">
+                  <tr class="border-b border-gray-300 dark:border-gray-800">
                     <th class=" font-semibold text-start text-sm sm:text-[1rem]"
                       >Quarter</th
                     >

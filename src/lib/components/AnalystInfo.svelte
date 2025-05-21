@@ -1,4 +1,4 @@
-<div class="mt-4 py-6 xl:mt-10 border-t border-gray-400 dark:border-gray-200">
+<div class="mt-4 py-6 xl:mt-10 border-t border-gray-300 dark:border-gray-200">
   <div class="mx-auto max-w-7xl px-3 xs:px-6 lg:px-8">
     <div class="mx-auto max-w-2xl text-center">
       <h3 class="mt-2 text-2xl font-bold tracking-tight bp:text-3xl">

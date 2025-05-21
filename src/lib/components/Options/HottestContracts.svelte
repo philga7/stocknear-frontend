@@ -616,7 +616,7 @@
         </h2>
         <div class="w-full overflow-x-auto">
           <table
-            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto mt-4"
+            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
           >
             <thead>
               <TableHeader {columns} {sortOrders} {sortData} />
@@ -732,7 +732,7 @@
         </h2>
         <div class="w-full overflow-x-auto">
           <table
-            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto mt-4"
+            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
           >
             <thead>
               <TableHeader {columns} {sortOrders} sortData={sortDataOI} />
@@ -854,7 +854,7 @@
   <div
     class="modal-box bg-white dark:bg-default w-full {rawDataHistory?.length > 0
       ? 'max-w-7xl'
-      : 'w-full'} rounded-md border-t sm:border border-gray-400 dark:border-gray-800 min-h-48 h-auto"
+      : 'w-full'} rounded-md border-t sm:border border-gray-300 dark:border-gray-800 min-h-48 h-auto"
   >
     <form
       method="dialog"
@@ -887,7 +887,7 @@
     </form>
     {#if rawDataHistory?.length > 0}
       <div
-        class="border-b border-gray-400 dark:border-gray-800 w-full mt-2 mb-2 sm:mb-3 sm:mt-3"
+        class="border-b border-gray-300 dark:border-gray-800 w-full mt-2 mb-2 sm:mb-3 sm:mt-3"
       ></div>
 
       <div class="hidden sm:flex flex-wrap pb-2">
@@ -927,14 +927,14 @@
               on:click={() => (selectGraphType = item)}
               class="px-3 py-1.5 {selectGraphType === item
                 ? 'shadow-xs bg-gray-100 dark:bg-white text-black '
-                : 'shadow-xs text-opacity-[0.6] border border-gray-400 dark:border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
+                : 'shadow-xs text-opacity-[0.6] border border-gray-300 dark:border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-md cursor-pointer"
             >
               {item}
             </label>
           {/each}
         </div>
         <div
-          class="mt-2 border border-gray-400 dark:border-gray-800 rounded"
+          class="mt-2 border border-gray-300 dark:border-gray-800 rounded"
           use:highcharts={config}
         ></div>
       </div>
@@ -949,7 +949,7 @@
         <div class="flex justify-start items-center m-auto cursor-normal">
           {#if isLoaded}
             <table
-              class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto mt-4"
+              class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
             >
               <thead class="text-muted dark:text-white dark:bg-default">
                 <tr class="">

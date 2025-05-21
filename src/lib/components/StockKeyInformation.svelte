@@ -31,7 +31,7 @@
   <div class="grid grid-cols-3 gap-x-4 gap-y-2 overflow-hidden">
     <label
       for="tickerModal"
-      class="w-auto border border-gray-400 flex px-4 py-2 mb-2 justify-center items-center text-xs rounded-xl text-gray-200"
+      class="w-auto border border-gray-300 flex px-4 py-2 mb-2 justify-center items-center text-xs rounded-xl text-gray-200"
     >
       Details
     </label>
@@ -39,7 +39,7 @@
     <label
       on:click={() => ($executiveClicked = true)}
       for="executiveModal"
-      class="w-auto border border-gray-400 flex px-4 py-2 mb-2 justify-center items-center text-xs rounded-xl text-gray-200"
+      class="w-auto border border-gray-300 flex px-4 py-2 mb-2 justify-center items-center text-xs rounded-xl text-gray-200"
     >
       Executives
     </label>
@@ -47,24 +47,24 @@
     <label
       on:click={() => ($secFilingsClicked = true)}
       for="secFilingModal"
-      class="w-auto border border-gray-400 flex px-4 py-2 mb-2 justify-center items-center text-xs rounded-xl text-gray-200"
+      class="w-auto border border-gray-300 flex px-4 py-2 mb-2 justify-center items-center text-xs rounded-xl text-gray-200"
     >
       SEC Filings
     </label>
     <!--
-    <label for="esgModal" class="w-auto border border-gray-400 flex px-4 py-2 mb-2 justify-center items-center text-xs  rounded-xl text-gray-200">
+    <label for="esgModal" class="w-auto border border-gray-300 flex px-4 py-2 mb-2 justify-center items-center text-xs  rounded-xl text-gray-200">
       ESG Score
     </label>
     -->
     <label
       for="similarTickerModal"
-      class="w-auto border border-gray-400 flex px-4 py-2 mb-2 justify-center items-center text-xs rounded-xl text-gray-200"
+      class="w-auto border border-gray-300 flex px-4 py-2 mb-2 justify-center items-center text-xs rounded-xl text-gray-200"
     >
       Similar
     </label>
     <label
       for="topETFTickerHolderModal"
-      class="w-auto border border-gray-400 flex px-4 py-2 mb-2 justify-center items-center text-xs rounded-xl text-gray-200"
+      class="w-auto border border-gray-300 flex px-4 py-2 mb-2 justify-center items-center text-xs rounded-xl text-gray-200"
     >
       ETFs Holder
     </label>

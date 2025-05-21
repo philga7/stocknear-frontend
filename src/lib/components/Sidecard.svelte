@@ -475,7 +475,7 @@
 
         {#if configFinancial}
           <div
-            class="mt-3 border border-gray-400 dark:border-gray-800 rounded"
+            class="mt-3 border border-gray-300 dark:border-gray-800 rounded"
             use:highcharts={configFinancial}
           ></div>
         {/if}
@@ -511,7 +511,7 @@
 
         {#if configAnalyst}
           <div
-            class="mt-3 border border-gray-400 dark:border-gray-800 rounded"
+            class="mt-3 border border-gray-300 dark:border-gray-800 rounded"
             use:highcharts={configAnalyst}
           ></div>
         {/if}

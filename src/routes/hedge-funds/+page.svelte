@@ -128,7 +128,7 @@
                     on:input={search}
                     type="text"
                     placeholder="Search Hedge Fund"
-                    class="w-fit py-[5.5px] pl-10 border bg-inherit shadow-xs focus:outline-hidden border border-gray-400 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-300 px-3 focus:outline-none focus:ring-0 focus:border-gray-600 grow w-full sm:min-w-56 sm:max-w-xs"
+                    class="w-fit py-[5.5px] pl-10 border bg-inherit shadow-xs focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-300 px-3 focus:outline-none focus:ring-0 focus:border-gray-600 grow w-full sm:min-w-56 sm:max-w-xs"
                   />
                 </div>
               </div>
@@ -141,7 +141,7 @@
                 {#each displayList as item}
                   <a
                     href={`/hedge-funds/${item?.cik}`}
-                    class="w-full cursor-pointer bg-gray-300 dark:bg-[#141417] sm:hover:bg-gray-400 dark:sm:hover:bg-[#000] ease-in-out border dark:sm:hover:border-[#000] sm:hover:shadow-[#8C5F1B] border-gray-400 dark:border-gray-800 shadow-md rounded-md h-auto pb-4 pt-4 mb-7"
+                    class="w-full cursor-pointer bg-gray-300 dark:bg-[#141417] sm:hover:bg-gray-400 dark:sm:hover:bg-[#000] ease-in-out border dark:sm:hover:border-[#000] sm:hover:shadow-[#8C5F1B] border-gray-300 dark:border-gray-800 shadow-md rounded-md h-auto pb-4 pt-4 mb-7"
                   >
                     <div class="flex flex-col relative">
                       <img

@@ -234,7 +234,7 @@
           </div>
           <!-- Adjusted line -->
           <div
-            class="sm:-ml-5 border-b absolute border-dashed border-gray-400 w-11/12 sm:w-5/6 left-1/2 transform -translate-x-1/2 {dashedLinePosition[
+            class="sm:-ml-5 border-b absolute border-dashed border-gray-300 w-11/12 sm:w-5/6 left-1/2 transform -translate-x-1/2 {dashedLinePosition[
               oneMonthResult
             ]}"
           >

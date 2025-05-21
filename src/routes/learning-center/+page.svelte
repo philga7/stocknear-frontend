@@ -35,7 +35,7 @@
             {#if allBlogPosts?.length !== 0}
               {#each allBlogPosts as item}
                 <div
-                  class="shadow-xs sm:hover:shadow-lg flex flex-col overflow-hidden rounded border border-gray-400 dark:border-gray-700"
+                  class="shadow-xs sm:hover:shadow-lg flex flex-col overflow-hidden rounded border border-gray-300 dark:border-gray-700"
                 >
                   <div class="shrink-0">
                     <a

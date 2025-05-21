@@ -46,14 +46,14 @@
             >
             <Table.Head
               class="text-right table-cell text-sm font-bold dark:font-semibold"
-              >Premium</Table.Head
+              >Prem</Table.Head
             >
             <Table.Head
               class="text-right table-cell text-sm font-bold dark:font-semibold"
               >Size</Table.Head
             >
 
-            <Table.Head class=" text-right text-sm font-bold dark:font-semibold"
+            <Table.Head class=" text-right text-sm font-bold dark:font-semibold whitespace-nowrap"
               >Size / Avg Vol</Table.Head
             >
           </Table.Row>

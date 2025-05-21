@@ -137,7 +137,7 @@
 
     <div class=" mt-1 sm:mt-0">
       <div
-        class="hflex flex-row items-center justify-between overflow-x-auto border-b border-gray-400 dark:border-gray-600 py-1.5"
+        class="hflex flex-row items-center justify-between overflow-x-auto border-b border-gray-300 dark:border-gray-600 py-1.5"
       >
         <ul
           class="hide-scroll mb-0.5 flex flex-row overflow-x-auto whitespace-nowrap text-lg"
@@ -272,7 +272,7 @@
               {/if}
             </div>
             <hr
-              class="border-gray-400 dark:border-gray-600 w-full m-auto mt-5 mb-5"
+              class="border-gray-300 dark:border-gray-600 w-full m-auto mt-5 mb-5"
             />
           {/each}
         </div>

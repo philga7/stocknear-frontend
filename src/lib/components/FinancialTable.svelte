@@ -208,7 +208,7 @@
     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd whitespace-nowrap border"
   >
     <td
-      class="text-start min-w-[220px] sm:min-w-[320px] text-sm sm:text-[1rem] border-r border-gray-400 dark:border-gray-800 w-full flex flex-row items-center justify-between"
+      class="text-start min-w-[220px] sm:min-w-[320px] text-sm sm:text-[1rem] border-r border-gray-300 dark:border-gray-800 w-full flex flex-row items-center justify-between"
     >
       <label
         for="tooltipModal"
@@ -255,7 +255,7 @@
     </td>
     {#each data as item}
       <td
-        class="text-sm sm:text-[1rem] text-end border-r border-gray-400 dark:border-gray-800"
+        class="text-sm sm:text-[1rem] text-end border-r border-gray-300 dark:border-gray-800"
       >
         {formatValue(item[key], isMargin)}
       </td>
@@ -282,7 +282,7 @@
         : "declined"} by {fiveYearsGrowth?.toFixed(2)}%.
     </p>
 
-    <div class="border-t border-gray-400 dark:border-gray-600 mt-2 w-full">
+    <div class="border-t border-gray-300 dark:border-gray-600 mt-2 w-full">
       <label
         for="financialPlotModal"
         class="mt-4 font-semibold text-xl m-auto flex justify-center cursor-pointer"
@@ -299,7 +299,7 @@
 
   <!-- Desktop modal content -->
   <div
-    class="modal-box w-full rounded-md border border-gray-400 dark:border-gray-600 bg-white dark:bg-secondary flex flex-col items-center"
+    class="modal-box w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-secondary flex flex-col items-center"
   >
     <div class=" mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">{modalLabel}</h3>
@@ -312,7 +312,7 @@
       {/if}
     </div>
 
-    <div class="border-t border-gray-400 dark:border-gray-600 mt-2 w-full">
+    <div class="border-t border-gray-300 dark:border-gray-600 mt-2 w-full">
       <label
         for="tooltipModal"
         class="cursor-pointer mt-4 font-semibold text-xl m-auto flex justify-center"

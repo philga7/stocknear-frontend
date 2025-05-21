@@ -742,7 +742,7 @@
                       <DropdownMenu.Trigger asChild let:builder>
                         <Button
                           builders={[builder]}
-                          class="w-full shadow-xs border-gray-400 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                          class="w-full shadow-xs border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                         >
                           <span class="truncate text-xs sm:text-sm"
                             >{timePeriod}</span
@@ -820,7 +820,7 @@
                   </div>
                   <Button
                     on:click={() => exportData("csv")}
-                    class="ml-2 w-full shadow-xs border-gray-400 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                    class="ml-2 w-full shadow-xs border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                   >
                     <span class="truncate text-xs sm:text-sm">Download</span>
                     <svg
@@ -839,7 +839,7 @@
               </div>
 
               <div
-                class="chart-driver border border-gray-400 shadow-xs dark:border-gray-800 rounded"
+                class="chart-driver border border-gray-300 shadow-xs dark:border-gray-800 rounded"
                 use:highcharts={config}
               ></div>
 
@@ -905,7 +905,7 @@
 
               <div class="w-full overflow-x-auto">
                 <table
-                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto mt-2"
+                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-2"
                 >
                   <thead>
                     <TableHeader {columns} {sortOrders} {sortData} />

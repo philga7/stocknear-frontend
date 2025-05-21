@@ -2658,7 +2658,7 @@ const handleKeyDown = (event) => {
               <DropdownMenu.Trigger asChild let:builder>
                 <Button
                   builders={[builder]}
-                  class="w-full shadow-xs border-gray-400 dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                  class="w-full shadow-xs border-gray-300 dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                 >
                   <span class="truncate"
                     >{selectedPopularStrategy?.length !== 0
@@ -2715,7 +2715,7 @@ const handleKeyDown = (event) => {
               <DropdownMenu.Trigger asChild let:builder>
                 <Button
                   builders={[builder]}
-                  class="min-w-[110px] shadow-xs w-full border-gray-400 dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
+                  class="min-w-[110px] shadow-xs w-full border-gray-300 dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded-md truncate"
                 >
                   <span class="truncate max-w-48"
                     >{selectedStrategy?.length !== 0
@@ -2816,11 +2816,11 @@ const handleKeyDown = (event) => {
     </div>
 
     <div
-      class="rounded-md border border-gray-400 dark:border-gray-700 bg-gray-100 shadow-xs dark:bg-primary p-2"
+      class="rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 shadow-xs dark:bg-primary p-2"
     >
-      <div class="items-end border-b border-gray-400 dark:border-gray-600">
+      <div class="items-end border-b border-gray-300 dark:border-gray-600">
         <div
-          class="mr-1 flex items-center justify-between lg:mr-2 pb-1.5 border-b border-gray-400 dark:border-gray-600 mt-1.5"
+          class="mr-1 flex items-center justify-between lg:mr-2 pb-1.5 border-b border-gray-300 dark:border-gray-600 mt-1.5"
         >
           <button
             on:click={() => (showFilters = !showFilters)}
@@ -2847,7 +2847,7 @@ const handleKeyDown = (event) => {
         <div class="mt-3 flex flex-col gap-y-2.5 sm:flex-row lg:gap-y-2">
           <label
             for="ruleModal"
-            class="text-[0.95rem] text-white inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-400 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-blue-500 sm:hover:bg-blue-600 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+            class="text-[0.95rem] text-white inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-blue-500 sm:hover:bg-blue-600 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
           >
             <svg
               class="h-5 w-5"
@@ -2869,7 +2869,7 @@ const handleKeyDown = (event) => {
             <label
               for={!data?.user ? "userLogin" : ""}
               on:click={() => handleSave(true)}
-              class="text-[0.95rem] sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-400 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+              class="text-[0.95rem] sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
             >
               <svg
                 class="h-5 w-5"
@@ -2889,7 +2889,7 @@ const handleKeyDown = (event) => {
                 on:click={() => {
                   handleCreateStrategy();
                 }}
-                class="text-[0.95rem] sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-400 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                class="text-[0.95rem] sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
               >
                 <Copy class="w-4 h-4 inline-block mr-2" />
                 <div>Save as New</div>
@@ -2900,7 +2900,7 @@ const handleKeyDown = (event) => {
           {#if ruleOfList?.length !== 0}
             <label
               on:click={handleResetAll}
-              class="text-[0.95rem] sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-400 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:text-red-500 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+              class="text-[0.95rem] sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:text-red-500 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
             >
               <svg
                 class="h-4 w-4"
@@ -2923,7 +2923,7 @@ const handleKeyDown = (event) => {
         </div>
 
         <div
-          class="sm:grid sm:gap-x-2.5 md:grid-cols-2 lg:grid-cols-3 w-full mt-3 border-t border-b border-gray-400 dark:border-gray-600"
+          class="sm:grid sm:gap-x-2.5 md:grid-cols-2 lg:grid-cols-3 w-full mt-3 border-t border-b border-gray-300 dark:border-gray-600"
         >
           {#each displayRules as row (row?.rule)}
             <!--Start Added Rules-->
@@ -3000,7 +3000,7 @@ const handleKeyDown = (event) => {
                       <DropdownMenu.Trigger asChild let:builder>
                         <Button
                           builders={[builder]}
-                          class="border-gray-400 dark:border-none shadow-xs bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center w-[140px] xs:w-[130px] sm:w-[140px] px-3  rounded-md truncate"
+                          class="border-gray-300 dark:border-none shadow-xs bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center w-[140px] xs:w-[130px] sm:w-[140px] px-3  rounded-md truncate"
                         >
                           <span class="truncate ml-2 text-sm">
                             {#if valueMappings[row?.rule] === "any"}
@@ -3037,7 +3037,7 @@ const handleKeyDown = (event) => {
                       >
                         {#if !["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber", "analystRating", "payoutFrequency", "topAnalystRating", "halalStocks", "score", "sector", "industry", "country"]?.includes(row?.rule)}
                           <DropdownMenu.Label
-                            class="absolute mt-2 h-11 border-gray-400 dark:border-gray-800 border-b -top-1 z-20 fixed sticky bg-white dark:bg-default"
+                            class="absolute mt-2 h-11 border-gray-300 dark:border-gray-800 border-b -top-1 z-20 fixed sticky bg-white dark:bg-default"
                           >
                             <div
                               class="flex items-center justify-start gap-x-1"
@@ -3103,7 +3103,7 @@ const handleKeyDown = (event) => {
                                       : ""}
                                     on:input={(e) =>
                                       handleValueInput(e, row?.rule, 0)}
-                                    class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder-gray-500 dark:placeholder:text-gray-200 font-normal p-1 text-sm shadow-xs bg-white dark:bg-secondary border border-gray-400 dark:border-gray-800"
+                                    class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder-gray-500 dark:placeholder:text-gray-200 font-normal p-1 text-sm shadow-xs bg-white dark:bg-secondary border border-gray-300 dark:border-gray-800"
                                   />
                                   <span class=" text-[1rem] font-normal mt-1">
                                     &
@@ -3118,7 +3118,7 @@ const handleKeyDown = (event) => {
                                       : ""}
                                     on:input={(e) =>
                                       handleValueInput(e, row?.rule, 1)}
-                                    class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder-gray-500 dark:placeholder:text-gray-200 font-normal p-1 text-sm shadow-xs bg-white dark:bg-secondary border border-gray-400 dark:border-gray-800"
+                                    class="ios-zoom-fix block max-w-[3.5rem] rounded-sm placeholder-gray-500 dark:placeholder:text-gray-200 font-normal p-1 text-sm shadow-xs bg-white dark:bg-secondary border border-gray-300 dark:border-gray-800"
                                   />
                                 </div>
                               {:else}
@@ -3130,7 +3130,7 @@ const handleKeyDown = (event) => {
                                     : ""}
                                   on:input={(e) =>
                                     handleValueInput(e, row?.rule)}
-                                  class="ios-zoom-fix block max-w-[4.8rem] rounded-sm placeholder-gray-500 dark:placeholder:text-gray-200 font-normal p-1 text-sm shadow-xs bg-white dark:bg-secondary border border-gray-400 dark:border-gray-800"
+                                  class="ios-zoom-fix block max-w-[4.8rem] rounded-sm placeholder-gray-500 dark:placeholder:text-gray-200 font-normal p-1 text-sm shadow-xs bg-white dark:bg-secondary border border-gray-300 dark:border-gray-800"
                                 />
                               {/if}
 
@@ -3225,7 +3225,7 @@ const handleKeyDown = (event) => {
                                           row?.step[index + 1],
                                         ]);
                                       }}
-                                      class="cursor-pointer block w-full border-b border-gray-400 dark:border-gray-600 px-4 py-1.5 text-left text-sm rounded last:border-0 dark:sm:hover:bg-primary"
+                                      class="cursor-pointer block w-full border-b border-gray-300 dark:border-gray-600 px-4 py-1.5 text-left text-sm rounded last:border-0 dark:sm:hover:bg-primary"
                                     >
                                       {ruleCondition[row?.rule]?.replace(
                                         "between",
@@ -3245,7 +3245,7 @@ const handleKeyDown = (event) => {
                                     on:click={() => {
                                       handleChangeValue(newValue);
                                     }}
-                                    class="cursor-pointer block w-full border-b border-gray-400 dark:border-gray-600 px-4 py-1.5 text-left text-sm rounded last:border-0"
+                                    class="cursor-pointer block w-full border-b border-gray-300 dark:border-gray-600 px-4 py-1.5 text-left text-sm rounded last:border-0"
                                   >
                                     {ruleCondition[row?.rule]
                                       ?.replace("under", "Under")
@@ -3329,7 +3329,7 @@ const handleKeyDown = (event) => {
   <!--End Build Strategy-->
 
   <div
-    class="mt-6 grid-cols-2 items-center sm:grid lg:flex lg:space-x-1 lg:overflow-visible lg:px-1 py-1.5 border-t border-b border-gray-400 dark:border-gray-800 mb-2"
+    class="mt-6 grid-cols-2 items-center sm:grid lg:flex lg:space-x-1 lg:overflow-visible lg:px-1 py-1.5 border-t border-b border-gray-300 dark:border-gray-800 mb-2"
   >
     <h2 class=" whitespace-nowrap text-xl font-semibold bp:text-[1.3rem]">
       {filteredData?.length} Stocks
@@ -3433,7 +3433,7 @@ const handleKeyDown = (event) => {
       {#if displayTableTab === "general"}
         <div class="w-full rounded-md overflow-x-auto">
           <table
-            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto"
+            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
           >
             <thead>
               <TableHeader {columns} {sortOrders} {sortData} />
@@ -3498,7 +3498,7 @@ const handleKeyDown = (event) => {
       {:else if displayTableTab === "filters"}
         <div class="w-full rounded-md overflow-x-auto">
           <table
-            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto"
+            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
           >
             <thead>
               <TableHeader {columns} {sortOrders} {sortData} />
@@ -3570,7 +3570,7 @@ const handleKeyDown = (event) => {
       {:else if displayTableTab === "performance"}
         <div class="w-full rounded-md overflow-x-auto">
           <table
-            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto"
+            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
           >
             <thead>
               <TableHeader {columns} {sortOrders} {sortData} />
@@ -3624,7 +3624,7 @@ const handleKeyDown = (event) => {
       {:else if displayTableTab === "analysts"}
         <div class="w-full rounded-md overflow-x-auto">
           <table
-            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto"
+            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
           >
             <thead>
               <TableHeader {columns} {sortOrders} {sortData} />
@@ -3698,7 +3698,7 @@ const handleKeyDown = (event) => {
       {:else if ["dividends", "financials"]?.includes(displayTableTab)}
         <div class="w-full rounded-md overflow-x-auto">
           <table
-            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto"
+            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
           >
             <thead>
               <TableHeader {columns} {sortOrders} {sortData} />
@@ -3791,13 +3791,13 @@ const handleKeyDown = (event) => {
   ></label>
 
   <div
-    class="modal-box relative bg-white dark:bg-primary z-20 mx-2 min-h-[30vh] h-[800px] rounded bg-default opacity-100 border border-gray-400 dark:border-gray-600 bp:mx-3 sm:mx-4 w-full max-w-6xl overflow-y-auto"
+    class="modal-box relative bg-white dark:bg-primary z-20 mx-2 min-h-[30vh] h-[800px] rounded bg-default opacity-100 border border-gray-300 dark:border-gray-600 bp:mx-3 sm:mx-4 w-full max-w-6xl overflow-y-auto"
   >
     <div class="relative flex flex-col w-full">
       <!-- Sticky Header -->
 
       <div
-        class="fixed w-full h-fit sticky -top-6 z-40 bg-white dark:bg-primary shadow-xs opacity-100 pb-6 pt-5 border-gray-400 dark:border-gray-600 border-b"
+        class="fixed w-full h-fit sticky -top-6 z-40 bg-white dark:bg-primary shadow-xs opacity-100 pb-6 pt-5 border-gray-300 dark:border-gray-600 border-b"
       >
         <div class="flex flex-row items-center justify-between mb-2">
           <h2 class=" text-[1rem] sm:text-xl font-semibold">
@@ -3875,7 +3875,7 @@ const handleKeyDown = (event) => {
             <input
               autocomplete="off"
               id="search"
-              class="focus:outline-none placeholder-gray-800 dark:placeholder-gray-300 block w-full p-2 ps-10 text-sm border border-gray-400 dark:border-gray-600 rounded-md bg-gray-100 dark:bg-secondary border border-blue-500"
+              class="focus:outline-none placeholder-gray-800 dark:placeholder-gray-300 block w-full p-2 ps-10 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-100 dark:bg-secondary border border-blue-500"
               placeholder="Search..."
               bind:value={searchTerm}
             />
@@ -3946,7 +3946,7 @@ const handleKeyDown = (event) => {
 
   <div
     class="modal-box w-full p-6 rounded shadow-xs border
-        bg-white dark:bg-secondary border border-gray-400 dark:border-gray-800"
+        bg-white dark:bg-secondary border border-gray-300 dark:border-gray-800"
   >
     <h1 class="text-2xl font-bold">New Screener</h1>
 
@@ -3984,7 +3984,7 @@ const handleKeyDown = (event) => {
 
   <div
     class="modal-box w-full p-6 rounded shadow-xs border
-        bg-white dark:bg-secondary border border-gray-400 dark:border-gray-800"
+        bg-white dark:bg-secondary border border-gray-300 dark:border-gray-800"
   >
     <h3 class="text-lg font-medium mb-2">Delete Screener</h3>
     <p class="text-sm mb-6">
@@ -4040,7 +4040,7 @@ const handleKeyDown = (event) => {
 
   <!-- Desktop modal content -->
   <div
-    class="modal-box rounded-md border border-gray-400 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
+    class="modal-box rounded-md border border-gray-300 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
   >
     <div class=" mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">{tooltipTitle}</h3>
@@ -4053,7 +4053,7 @@ const handleKeyDown = (event) => {
       {/if}
     </div>
 
-    <div class="border-t border-gray-400 dark:border-gray-600 mt-2 w-full">
+    <div class="border-t border-gray-300 dark:border-gray-600 mt-2 w-full">
       <label
         for="mobileTooltip"
         class="cursor-pointer mt-4 font-semibold text-xl m-auto flex justify-center"

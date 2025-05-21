@@ -95,7 +95,7 @@
                       <!-- Show the YouTube iframe when the user clicks play -->
                       <div class="w-full aspect-video mb-4">
                         <iframe
-                          class="w-full h-full rounded-md border border-gray-400 dark:border-gray-800"
+                          class="w-full h-full rounded-md border border-gray-300 dark:border-gray-800"
                           src={`https://www.youtube.com/embed/${checkIfYoutubeVideo(item?.link)}`}
                           frameborder="0"
                           allow="clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -146,7 +146,7 @@
                         href={item?.link}
                         rel="noopener noreferrer"
                         target="_blank"
-                        class="w-full sm:max-w-56 h-fit max-h-96 sm:mr-3 border border-gray-400 dark:border-gray-800 rounded-md"
+                        class="w-full sm:max-w-56 h-fit max-h-96 sm:mr-3 border border-gray-300 dark:border-gray-800 rounded-md"
                       >
                         <div class="shrink-0 m-auto">
                           <img
@@ -181,7 +181,7 @@
                   {/if}
                 </div>
                 <hr
-                  class="border-gray-400 dark:border-gray-600 w-full m-auto mt-5 mb-5"
+                  class="border-gray-300 dark:border-gray-600 w-full m-auto mt-5 mb-5"
                 />
               {/each}
             {/if}
@@ -191,7 +191,7 @@
       <aside class="inline-block relative w-full lg:w-1/4 mt-3">
         {#if marketNews?.length !== 0}
           <div
-            class="w-full border border-gray-400 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit"
           >
             <div class="p-4 text-sm">
               <h3 class="text-xl font-bold mb-3">Stock News</h3>

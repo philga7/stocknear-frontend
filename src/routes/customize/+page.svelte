@@ -237,7 +237,7 @@
             <button
               type="button"
               on:click={handleSaveSettings}
-              class="w-full sm:w-fit cursor-pointer sm:ml-auto align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm font-semibold shadow-xs border-gray-400 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
+              class="w-full sm:w-fit cursor-pointer sm:ml-auto align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm font-semibold shadow-xs border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
             >
               <svg
                 class="w-3.5 h-3.5 inline-block cursor-pointer shrink-0"
@@ -254,7 +254,7 @@
             <button
               type="button"
               on:click={handleDefaultSettings}
-              class="w-full sm:w-fit cursor-pointer ml-3 align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm font-semibold shadow-xs border-gray-400 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
+              class="w-full sm:w-fit cursor-pointer ml-3 align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm font-semibold shadow-xs border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
             >
               <svg
                 class="h-4 w-4"
@@ -298,7 +298,7 @@
                   }}
                   on:consider={(e) => handleDndConsider(e, "available")}
                   on:finalize={(e) => handleDndFinalize(e, "available")}
-                  class="space-y-4 min-h-[10rem] max-h-[500px] sm:max-h-[700px] overflow-y-auto border border-gray-400 dark:border-gray-800 rounded p-4"
+                  class="space-y-4 min-h-[10rem] max-h-[500px] sm:max-h-[700px] overflow-y-auto border border-gray-300 dark:border-gray-800 rounded p-4"
                   class:flex={availableWidgets?.length === 0}
                   class:items-center={availableWidgets?.length === 0}
                   class:justify-center={availableWidgets?.length === 0}
@@ -315,7 +315,7 @@
                     >
                       <div class="flex items-center space-x-4">
                         <div
-                          class="relative border border-gray-400 dark:border-gray-600 rounded-full h-8 w-8 flex items-center justify-center"
+                          class="relative border border-gray-300 dark:border-gray-600 rounded-full h-8 w-8 flex items-center justify-center"
                         >
                           {#if item?.id === "gainers"}
                             <ArrowUp class="w-5 h-5" />
@@ -371,7 +371,7 @@
                   }}
                   on:consider={(e) => handleDndConsider(e, "selected")}
                   on:finalize={(e) => handleDndFinalize(e, "selected")}
-                  class="space-y-4 min-h-[10rem] border-2 border-dashed border-gray-400 dark:border-gray-800 rounded p-4"
+                  class="space-y-4 min-h-[10rem] border-2 border-dashed border-gray-300 dark:border-gray-800 rounded p-4"
                   class:flex={selectedWidgets.length === 0}
                   class:items-center={selectedWidgets.length === 0}
                   class:justify-center={selectedWidgets.length === 0}
@@ -388,7 +388,7 @@
                       >
                         <div class="flex items-center space-x-4">
                           <div
-                            class="relative border border-gray-400 dark:border-gray-600 rounded-full h-8 w-8 flex items-center justify-center"
+                            class="relative border border-gray-300 dark:border-gray-600 rounded-full h-8 w-8 flex items-center justify-center"
                           >
                             {#if item?.id === "gainers"}
                               <ArrowUp class="w-5 h-5" />

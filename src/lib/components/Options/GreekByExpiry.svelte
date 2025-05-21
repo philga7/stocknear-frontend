@@ -361,7 +361,7 @@
             <div
               class="{!['Pro']?.includes(data?.user?.tier)
                 ? 'blur-[3px]'
-                : ''} mt-5 shadow-xs sm:mt-0 sm:border sm:border-gray-400 dark:border-gray-800 rounded"
+                : ''} mt-5 shadow-xs sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
               use:highcharts={config}
             ></div>
             <!-- Overlay with "Upgrade to Pro" -->
@@ -399,7 +399,7 @@
 
   <div class="mt-3 w-full overflow-x-auto">
     <table
-      class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto"
+      class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto"
     >
       <thead>
         <TableHeader {columns} {sortOrders} {sortData} />

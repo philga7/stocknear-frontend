@@ -712,7 +712,7 @@
     <DropdownMenu.Trigger asChild let:builder>
       <Button
         builders={[builder]}
-        class="shadow-xs min-w-[110px] w-fit ml-3 border-gray-400 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5  rounded-md"
+        class="shadow-xs min-w-[110px] w-fit ml-3 border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5  rounded-md"
       >
         <span class="w-fit text-sm sm:text-[1rem]">Indicators</span>
         <svg
@@ -736,7 +736,7 @@
     >
       <!-- Search Input -->
       <div
-        class="sticky fixed -top-1 z-40 bg-white dark:bg-default p-2 border-b border-gray-400 dark:border-gray-600"
+        class="sticky fixed -top-1 z-40 bg-white dark:bg-default p-2 border-b border-gray-300 dark:border-gray-600"
       >
         <div class="relative w-full">
           <!-- Input Field -->
@@ -843,7 +843,7 @@
       </DropdownMenu.Group>
       <!-- Reset Selection button -->
       <div
-        class="sticky -bottom-1 bg-white dark:bg-default z-50 p-2 border-t border-gray-400 dark:border-gray-600 w-full flex justify-between items-center"
+        class="sticky -bottom-1 bg-white dark:bg-default z-50 p-2 border-t border-gray-300 dark:border-gray-600 w-full flex justify-between items-center"
       >
         <label
           on:click={handleResetAll}
@@ -864,7 +864,7 @@
 
 <div class="w-full overflow-x-auto text-muted dark:text-white">
   <table
-    class="table table-sm table-compact rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto mt-2"
+    class="table table-sm table-compact rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-2"
   >
     <thead>
       <TableHeader {columns} {sortOrders} {sortData} />

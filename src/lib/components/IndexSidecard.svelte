@@ -46,7 +46,7 @@
         <div class="mt-2 w-full overflow-hidden">
           <table class="w-full">
             <thead>
-              <tr class="border-y border-gray-400 dark:border-gray-800">
+              <tr class="border-y border-gray-300 dark:border-gray-800">
                 <th class="px-1 py-1.5 text-left xs:px-2">Sector</th>
 
                 <th class="px-1 py-1.5 text-right xs:px-2">Weight %</th>
@@ -55,7 +55,7 @@
             <tbody>
               {#each topSectorList as item}
                 {#if item?.weightPercentage > 0}
-                  <tr class=" border-b border-gray-400 dark:border-gray-800">
+                  <tr class=" border-b border-gray-300 dark:border-gray-800">
                     <td class="px-1 py-1.5 text-left xs:px-2">
                       <a
                         href={sectorNavigation?.find(

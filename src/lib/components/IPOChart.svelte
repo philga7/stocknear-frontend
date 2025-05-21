@@ -214,7 +214,7 @@
 
 {#if isLoaded && config}
   <div
-    class="shadow-xs border border-gray-400 dark:border-gray-800 rounded"
+    class="shadow-xs border border-gray-300 dark:border-gray-800 rounded"
     use:highcharts={config}
   ></div>
 {:else}

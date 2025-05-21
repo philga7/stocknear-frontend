@@ -343,7 +343,7 @@
                   on:click={() => changeWeek("previous")}
                   class="{previousMax
                     ? 'opacity-80'
-                    : ''} hidden sm:flex h-16 w-48 cursor-pointer border m-auto flex bg-gray-200 dark:bg-primary border border-gray-400 dark:border-gray-600 mb-3"
+                    : ''} hidden sm:flex h-16 w-48 cursor-pointer border m-auto flex bg-gray-200 dark:bg-primary border border-gray-300 dark:border-gray-600 mb-3"
                 >
                   <svg
                     class="w-6 h-6 m-auto rotate-180"
@@ -366,7 +366,7 @@
                       class=" m-auto w-full cursor-pointer h-16 {index ===
                       selectedWeekday
                         ? 'bg-gray-200 dark:bg-white text-black font-semibold'
-                        : ''} rounded-md sm:rounded-none flex dark:bg-default border border-gray-400 dark:border-gray-600 mb-3"
+                        : ''} rounded-md sm:rounded-none flex dark:bg-default border border-gray-300 dark:border-gray-600 mb-3"
                     >
                       <div
                         class=" flex flex-row justify-center items-center w-full"
@@ -421,7 +421,7 @@
                   on:click={() => changeWeek("next")}
                   class="{nextMax
                     ? 'opacity-80'
-                    : ''} hidden sm:flex h-16 w-48 cursor-pointer border m-auto flex bg-gray-200 dark:bg-primary border border-gray-400 dark:border-gray-600 mb-3"
+                    : ''} hidden sm:flex h-16 w-48 cursor-pointer border m-auto flex bg-gray-200 dark:bg-primary border border-gray-300 dark:border-gray-600 mb-3"
                 >
                   <svg
                     class="w-6 h-6 m-auto"
@@ -444,7 +444,7 @@
 
                     <div class="w-full overflow-x-auto no-scrollbar">
                       <table
-                        class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-400 dark:border-gray-800 m-auto mt-4"
+                        class="table table-sm table-compact no-scrollbar rounded-none sm:rounded-md w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
                       >
                         <thead>
                           <TableHeader {columns} {sortOrders} {sortData} />

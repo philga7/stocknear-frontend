@@ -55,7 +55,7 @@
         <aside class="hidden lg:block relative fixed w-1/4 mt-3">
           {#if !["Pro", "Plus"]?.includes(data?.user?.tier) || data?.user?.freeTrial}
             <div
-              class="w-full border border-gray-400 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
+              class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
             >
               <a
                 href="/pricing"
@@ -76,18 +76,18 @@
 
           {#if similarStocks?.length > 0}
             <div
-              class="w-full p-2 border border-gray-400 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer"
+              class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer"
             >
               <h3 class="p-2 pt-4 text-2xl font-semibold">Related Stocks</h3>
               <table class="table table-sm table-compact w-full">
                 <thead class="text-muted dark:text-white"
                   ><tr
                     ><th
-                      class="whitespace-nowrap border-b border-gray-400 dark:border-gray-600 font-semibold text-[1rem] text-left px-2"
+                      class="whitespace-nowrap border-b border-gray-300 dark:border-gray-600 font-semibold text-[1rem] text-left px-2"
                       >Company</th
                     >
                     <th
-                      class="whitespace-nowrap border-b border-gray-400 dark:border-gray-600 font-semibold text-[1rem] text-right px-2"
+                      class="whitespace-nowrap border-b border-gray-300 dark:border-gray-600 font-semibold text-[1rem] text-right px-2"
                       >Employees</th
                     ></tr
                   ></thead
@@ -96,7 +96,7 @@
                   {#each similarStocks?.slice(0, 8) as item, index}
                     {#if item?.name}
                       <tr
-                        class="border-gray-400 dark:border-gray-800 {index !==
+                        class="border-gray-300 dark:border-gray-800 {index !==
                         similarStocks?.slice(0, 8).length - 1
                           ? 'border-b'
                           : ''}"
@@ -139,7 +139,7 @@
 
           {#if newsList?.length !== 0}
             <div
-              class="w-full border border-gray-400 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit"
+              class="w-full border border-gray-300 dark:border-gray-600 rounded-md h-fit pb-4 mt-4 cursor-pointer bg-inherit"
             >
               <div class="p-4 text-sm">
                 <h3 class="text-lg font-semibold mb-3">

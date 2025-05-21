@@ -360,7 +360,7 @@
                         >
                           <label
                             for={data?.user ? "addWatchListModal" : "userLogin"}
-                            class="inline-flex items-center justify-center gap-x-1.5 cursor-pointer transition-all whitespace-nowrap rounded-md bg-blue-500 dark:bg-default sm:hover:bg-blue-600 dark:sm:hover:bg-[#2A2E39] border border-gray-400 dark:border-gray-600 px-3 py-1.5 text-base font-semibold text-white shadow-xs lg:px-2.5 flex-1 md:flex-initial"
+                            class="inline-flex items-center justify-center gap-x-1.5 cursor-pointer transition-all whitespace-nowrap rounded-md bg-blue-500 dark:bg-default sm:hover:bg-blue-600 dark:sm:hover:bg-[#2A2E39] border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-base font-semibold text-white shadow-xs lg:px-2.5 flex-1 md:flex-initial"
                             ><svg
                               class="size-5 flex-shrink-0"
                               fill="none"
@@ -381,7 +381,7 @@
                           <label
                             on:click={() => ($openPriceAlert = true)}
                             for={data?.user ? "priceAlertModal" : "userLogin"}
-                            class="inline-flex items-center justify-center gap-x-1.5 cursor-pointer transition-all whitespace-nowrap rounded-md bg-blue-500 dark:bg-default sm:hover:bg-blue-600 dark:sm:hover:bg-[#2A2E39] border border-gray-400 dark:border-gray-600 px-3 py-1.5 text-base font-semibold text-white shadow-xs lg:px-2.5 flex-1 md:flex-initial"
+                            class="inline-flex items-center justify-center gap-x-1.5 cursor-pointer transition-all whitespace-nowrap rounded-md bg-blue-500 dark:bg-default sm:hover:bg-blue-600 dark:sm:hover:bg-[#2A2E39] border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-base font-semibold text-white shadow-xs lg:px-2.5 flex-1 md:flex-initial"
                             ><svg
                               xmlns="http://www.w3.org/2000/svg"
                               class="size-5 flex-shrink-0"
@@ -521,7 +521,7 @@
     class="modal-box max-h-96 rounded-md w-full bg-white dark:bg-secondary border border-gray-600"
   >
     <div
-      class="mb-5 flex flex-row justify-between items-center border-b pb-2 border-gray-400 dark:border-gray-600"
+      class="mb-5 flex flex-row justify-between items-center border-b pb-2 border-gray-300 dark:border-gray-600"
     >
       <h3 class="font-semibold text-lg sm:text-xl text-black dark:text-white">
         Add to Watchlist
@@ -545,8 +545,8 @@
               class="flex flex-row items-center w-full border p-3 rounded-md {item?.ticker?.includes(
                 $indexTicker,
               )
-                ? 'border border-gray-600 dark:border-gray-400'
-                : 'border-gray-400 dark:border-gray-600'}"
+                ? 'border border-gray-600 dark:border-gray-300'
+                : 'border-gray-300 dark:border-gray-600'}"
             >
               <div class="flex flex-col items-center w-full">
                 <span class="ml-1 mr-auto">
