@@ -137,13 +137,17 @@
   onMount(async () => {
     if (!browser) return;
 
-    if ("serviceWorker" in navigator) {
-      // Gets all registrations for this origin (including outdated SWs)
-      const registrations = await navigator.serviceWorker.getRegistrations();
-      for (const reg of registrations) {
-        await reg?.unregister(); // unregister them
-      }
-    }
+    if ('serviceWorker' in navigator) {
+  try {
+    const registrations = await navigator.serviceWorker.getRegistrations();
+    
+    // Unregister all in parallel (not sequentially)
+    await Promise?.all(registrations?.map(reg => reg?.unregister()));
+  } catch (err) {
+    console.error('Error unregistering service workers:', err);
+  }
+}
+
 
     if ("caches" in window) {
       // Extra safeguard: clear any leftover Cache Storage
@@ -165,7 +169,7 @@
         if (data?.user?.id) {
           await loadWorker();
         }
-      }, 2000);
+      }, 500);
     });
 
     // Cache clearing interval (independent of the deferred tasks)
