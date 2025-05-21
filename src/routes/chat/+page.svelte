@@ -12,37 +12,39 @@
   export let data;
 
   let isLoading = false;
-  const agentOptions = ["Stock Screener", "Options Flow"];
+  const agentOptions = [
+    "Analyst Rating",
+    "Analyst Estimate",
+    "Stock Screener",
+    "Options Flow",
+  ];
+  // Prepend '@' to each option to create trigger strings
+  const agentTriggers = agentOptions.map((opt) => `@${opt}`);
 
   let defaultChats = [
     {
       chat: "What are key highlights of dark pool and options flow orders for Nvidia today.",
     },
     { chat: "Which SPY options are trending now?" },
-    {
-      chat: "Tell me everything about Tesla.",
-    },
-
-    {
-      chat: "Which stocks reporting earnings today?",
-    },
-
+    { chat: "Tell me everything about Tesla." },
+    { chat: "Which stocks reporting earnings today?" },
     { chat: "How does Google make money?" },
   ];
 
-  let inputText = ""; // To bind the textarea value
+  let inputText = "";
   let inputEl: HTMLTextAreaElement;
-  const MAX_HEIGHT = 16 * 16; // 16rem * 16px = 256px
+  let highlightOverlay: HTMLDivElement;
+  const MAX_HEIGHT = 16 * 16;
 
   async function createChat() {
     isLoading = true;
-    if (!["Pro", "Plus"]?.includes(data?.user?.tier)) {
+    if (!["Pro", "Plus"].includes(data?.user?.tier)) {
       toast.error("Upgrade your account to unlock this feature", {
         style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
       inputText = "";
-      isLoading = false; // Ensure isLoading is reset on error
-      return; // Stop execution if tier is not Pro or Plus
+      isLoading = false;
+      return;
     }
 
     if (data?.user?.credits < 20) {
@@ -53,9 +55,10 @@
         },
       );
       inputText = "";
-      isLoading = false; // Ensure isLoading is reset on error
-      return; // Stop execution if credits are insufficient
+      isLoading = false;
+      return;
     }
+
     const userQuery = inputText?.trim();
     if (userQuery?.length > 0) {
       const response = await fetch("/api/create-chat", {
@@ -64,12 +67,38 @@
         body: JSON.stringify({ query: userQuery }),
       });
 
-      const output = await response?.json();
-
-      goto(`/chat/${output?.id}`);
+      const output = await response.json();
+      goto(`/chat/${output.id}`);
     }
     isLoading = false;
   }
+
+  function updateHighlightedText() {
+    if (!highlightOverlay || !inputEl) return;
+    let text = inputText;
+    // Escape HTML
+    text = text
+      ?.replace(/&/g, "&amp;")
+      ?.replace(/</g, "&lt;")
+      ?.replace(/>/g, "&gt;");
+
+    // Iterate through triggers and wrap occurrences
+    let highlighted = text;
+    for (const trigger of agentTriggers) {
+      const escaped = trigger?.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
+      const regex = new RegExp(escaped, "g");
+      highlighted = highlighted.replace(
+        regex,
+        `<span class=\"text-blue-800 dark:text-blue-500\">${trigger}</span>`,
+      );
+    }
+
+    // Preserve new lines
+    highlighted = highlighted.replace(/\n/g, "<br>");
+    if (!highlighted) highlighted = "&nbsp;";
+    highlightOverlay.innerHTML = highlighted;
+  }
+
   onMount(() => {
     if (inputEl) {
       inputEl.focus();
@@ -79,69 +108,69 @@
 
   function handleDefaultChatClick(chatText: string) {
     inputText = chatText;
+    resize();
+    updateHighlightedText();
     inputEl?.focus();
   }
 
   function resize() {
     if (!inputEl) return;
-    // Reset height
     inputEl.style.height = "auto";
     const scrollH = inputEl.scrollHeight;
-    const newHeight = Math.min(scrollH, MAX_HEIGHT);
-    inputEl.style.height = newHeight + "px";
+    const newH = Math.min(scrollH, MAX_HEIGHT);
+    inputEl.style.height = newH + "px";
     inputEl.style.overflowY = scrollH > MAX_HEIGHT ? "auto" : "hidden";
+    if (highlightOverlay) {
+      highlightOverlay.style.height = newH + "px";
+      highlightOverlay.style.overflowY =
+        scrollH > MAX_HEIGHT ? "auto" : "hidden";
+    }
   }
 
-  // Reactive declaration to check for "@Options Flow"
-  $: isOptionsFlow = inputText.includes("@Options Flow");
+  function handleInput(event) {
+    console.log(event.target.value);
+    updateHighlightedText();
+    resize();
+  }
 
   function handleKeyDown(e: KeyboardEvent) {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       createChat();
+      return;
     }
 
-    const agentString = "@Options Flow";
-    const startIndex = inputText.indexOf(agentString);
-
-    if (startIndex !== -1) {
-      const selectionStart = inputEl.selectionStart;
-      const selectionEnd = inputEl.selectionEnd;
-
-      // Check if backspace or delete is pressed
-      if (e.key === "Backspace" || e.key === "Delete") {
-        // If the entire agent string is selected, allow normal deletion
-        if (
-          selectionStart === startIndex &&
-          selectionEnd === startIndex + agentString.length
-        ) {
-          // Allow default behavior as the whole string is selected
-          return;
-        }
-
-        // If cursor is within or immediately after the agent string and not a full selection
-        if (
-          (selectionStart > startIndex &&
-            selectionStart <= startIndex + agentString.length) ||
-          (selectionEnd > startIndex &&
-            selectionEnd <= startIndex + agentString.length)
-        ) {
-          e.preventDefault(); // Prevent default deletion of a single character
-
-          // Remove the entire "@Options Flow" string
-          inputText =
-            inputText.substring(0, startIndex) +
-            inputText.substring(startIndex + agentString.length);
-
-          // After deletion, set cursor position to just before where the string was
-          // Use a small timeout to ensure DOM update for inputText has occurred
-          setTimeout(() => {
-            inputEl.selectionStart = startIndex;
-            inputEl.selectionEnd = startIndex;
-            resize(); // Adjust textarea height after content change
-          }, 0);
-        }
+    const cursorPos = inputEl.selectionStart;
+    for (const trigger of agentTriggers) {
+      const idx = inputText.indexOf(trigger);
+      if (idx === -1) continue;
+      const end = idx + trigger.length;
+      if (
+        (e.key === "Backspace" || e.key === "Delete") &&
+        cursorPos > idx &&
+        cursorPos <= end
+      ) {
+        e.preventDefault();
+        inputText = inputText.slice(0, idx) + inputText.slice(end);
+        setTimeout(() => {
+          inputEl.selectionStart = idx;
+          inputEl.selectionEnd = idx;
+          updateHighlightedText();
+          resize();
+        }, 0);
+        break;
       }
+    }
+  }
+
+  $: if (inputText !== undefined) {
+    updateHighlightedText();
+  }
+
+  function syncScroll() {
+    if (highlightOverlay && inputEl) {
+      highlightOverlay.scrollTop = inputEl.scrollTop;
+      highlightOverlay.scrollLeft = inputEl.scrollLeft;
     }
   }
 </script>
@@ -182,23 +211,25 @@
                 <div
                   class="relative min-h-32 h-auto max-h-64 overflow-y-hidden w-full outline-none"
                 >
-                  <div class="w-full p-2 pt-4 h-auto">
+                  <div class="w-full p-2 pt-4 h-auto relative">
+                    <!-- Actual textarea for input -->
                     <textarea
                       bind:this={inputEl}
                       bind:value={inputText}
-                      on:input={resize}
+                      on:input={handleInput}
                       on:keydown={handleKeyDown}
+                      on:scroll={syncScroll}
                       placeholder="Ask anything"
                       class="w-full flex-1 bg-transparent outline-none
-                      placeholder-gray-500 dark:placeholder-gray-400 px-2 break-words
-                      {isOptionsFlow ? 'text-blue-500' : ''}"
+                      placeholder-gray-500 dark:placeholder-gray-400 px-2 break-words textarea-base"
                     />
                   </div>
 
                   <div
                     class="absolute bottom-0 mb-2 flex flex-row gap-x-2 justify-end w-full px-2 bg:inherit dark:bg-default z-20"
                   >
-                    <div class=" flex flex-row justify-between w-full">
+                    <div class=" flex flex-row justify-end w-full">
+                      <!--
                       <div
                         class="order-first relative inline-block text-left cursor-pointer ml-1 shadow-xs"
                       >
@@ -206,7 +237,7 @@
                           <DropdownMenu.Trigger asChild let:builder>
                             <Button
                               builders={[builder]}
-                              class="w-full border-gray-400 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
+                              class="w-full border-gray-400 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                             >
                               <span class="truncate">@Agents</span>
                               <svg
@@ -227,16 +258,13 @@
                           <DropdownMenu.Content
                             class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                           >
-                            <DropdownMenu.Label
-                              class="text-muted dark:text-gray-400 font-normal"
-                            >
-                              Select AI Agent
-                            </DropdownMenu.Label>
-                            <DropdownMenu.Separator />
                             <DropdownMenu.Group>
                               {#each agentOptions as item}
                                 <DropdownMenu.Item
-                                  on:click={() => (inputText += "@" + item)}
+                                  on:click={() => {
+                                    inputText += "@" + item + " ";
+                                    inputEl?.focus();
+                                  }}
                                   class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                                 >
                                   {item}
@@ -246,12 +274,12 @@
                           </DropdownMenu.Content>
                         </DropdownMenu.Root>
                       </div>
-
+                      -->
                       <button
                         on:click={createChat}
                         class="{inputText?.trim()?.length > 0
                           ? 'cursor-pointer'
-                          : 'cursor-not-allowed opacity-60'} text-white dark:text-black text-[1rem] rounded-md border border-gray-300 dark:border-gray-700 bg-blue-500 dark:bg-white px-3 py-1 transition-colors duration-200"
+                          : 'cursor-not-allowed opacity-60'} py-1.5 text-white dark:text-black text-[1rem] rounded-md border border-gray-300 dark:border-gray-700 bg-blue-500 dark:bg-white px-3 py-1 transition-colors duration-200"
                         type="button"
                       >
                         {#if isLoading}
@@ -302,3 +330,15 @@
     </div>
   </div>
 </div>
+
+<style>
+  /* Base textarea styling */
+  .textarea-base {
+    background: transparent;
+    position: relative;
+    z-index: 1;
+    color: currentColor;
+    resize: none;
+    white-space: pre-wrap;
+  }
+</style>
