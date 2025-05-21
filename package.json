@@ -86,7 +86,6 @@
   "dependencies": {
     "@highcharts/svelte": "^1.0.0",
     "highcharts": "^11.4.3",
-    "https": "^1.0.0",
     "jsconfig.json": "^2.3.3",
     "plotly.js": "^2.35.3",
     "svelte-plotly.js": "^1.2.0",

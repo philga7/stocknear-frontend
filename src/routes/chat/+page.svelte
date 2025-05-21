@@ -4,8 +4,8 @@
   import { mode } from "mode-watcher";
   import { toast } from "svelte-sonner";
   import { goto } from "$app/navigation";
-  import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
-  import { Button } from "$lib/components/shadcn/button/index.js";
+ // import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
+ // import { Button } from "$lib/components/shadcn/button/index.js";
   import SEO from "$lib/components/SEO.svelte";
 
   import { onMount } from "svelte";

@@ -1,8 +1,7 @@
 <script lang="ts">
   import ChatMessage from "$lib/components/Chat/ChatMessage.svelte";
   import Arrow from "lucide-svelte/icons/arrow-up";
-  import { mode } from "mode-watcher";
-  import { toast } from "svelte-sonner";
+  
   import { onMount, afterUpdate, tick } from "svelte";
   import SEO from "$lib/components/SEO.svelte";
 

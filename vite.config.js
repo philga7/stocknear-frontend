@@ -9,7 +9,7 @@ const config = {
     sveltekit(),
     //partytownVite(),
   ],
-
+  
   server: {
     cors: true,
      watch: {
