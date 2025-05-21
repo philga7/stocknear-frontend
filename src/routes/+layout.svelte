@@ -1,6 +1,5 @@
 <script lang="ts">
   import "../app.css";
-  import "../app.pcss";
   //import { partytownSnippet } from "@builder.io/partytown/integration";
   import { Toaster } from "svelte-sonner";
   import "@bprogress/core/css";

@@ -65,6 +65,7 @@
   });
 
   $: charNumber = $screenWidth < 640 ? 20 : 30;
+
 </script>
 
 <SEO

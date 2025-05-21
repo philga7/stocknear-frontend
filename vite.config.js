@@ -1,3 +1,4 @@
+import tailwindcss from "@tailwindcss/vite";
 import { sveltekit } from "@sveltejs/kit/vite";
 //import { partytownVite } from '@builder.io/partytown/utils';
 //import { visualizer } from "rollup-plugin-visualizer";
@@ -6,6 +7,7 @@ import { sveltekit } from "@sveltejs/kit/vite";
 const config = {
   plugins: [
     //visualizer({ open: true }) // Plugin to visualize the bundle
+    tailwindcss(),
     sveltekit(),
     //partytownVite(),
   ],
