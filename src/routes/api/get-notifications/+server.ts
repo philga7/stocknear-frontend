@@ -9,13 +9,13 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 
     if (data?.readed === false) {
         output = await pb?.collection("notifications")?.getFullList({
-      filter: `opUser="${user?.id}" && readed=False`,
+      filter: `user="${user?.id}" && readed=False`,
       expand: "user",
       sort: "-created",
     });
     } else {
         output = await pb?.collection("notifications")?.getFullList({
-      filter: `opUser="${user?.id}"`,
+      filter: `user="${user?.id}"`,
       expand: "user",
       sort: "-created",
     });
