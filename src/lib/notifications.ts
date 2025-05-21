@@ -101,25 +101,23 @@ async function sendSubscriptionToServer(subscription) {
 	}
 
 	export async function subscribeUser() {
-		if (!('serviceWorker' in navigator)) return { success: false };
+		if ('serviceWorker' in navigator) {
+		  try {
+			const registration = await navigator?.serviceWorker?.ready;
+			// Convert the VAPID key string to Uint8Array:
+			const vapidKey = urlBase64ToUint8Array(import.meta.env.VITE_VAPID_PUBLIC_KEY);
 	  
-		try {
-		  // Immediately register and use the returned registration instead of waiting for `.ready`
-		  const registration = await navigator.serviceWorker.register('/service-worker.js');
+			const subscription = await registration?.pushManager?.subscribe({
+			  userVisibleOnly: true,
+			  applicationServerKey: vapidKey
+			});
 	  
-		  // Convert the VAPID key string to Uint8Array:
-		  const vapidKey = urlBase64ToUint8Array(import.meta.env.VITE_VAPID_PUBLIC_KEY);
-	  
-		  const subscription = await registration.pushManager.subscribe({
-			userVisibleOnly: true,
-			applicationServerKey: vapidKey
-		  });
-	  
-		  const output = await sendSubscriptionToServer(subscription);
-		  return output;
-		} catch (err) {
-		  console.error('Error subscribing:', err);
-		  return { success: false };
+			const output = await sendSubscriptionToServer(subscription);
+			return output;
+		  } catch (err) {
+			console.error('Error subscribing:', err);
+			return { success: false };
+		  }
 		}
 	  }
 	  

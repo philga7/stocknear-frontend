@@ -279,15 +279,15 @@
                         on:click={createChat}
                         class="{inputText?.trim()?.length > 0
                           ? 'cursor-pointer'
-                          : 'cursor-not-allowed opacity-60'} py-1.5 text-white dark:text-black text-[1rem] rounded border border-gray-300 dark:border-gray-700 bg-blue-500 dark:bg-white px-3 py-1 transition-colors duration-200"
+                          : 'cursor-not-allowed opacity-60'} py-2 text-white dark:text-black text-[1rem] rounded border border-gray-300 dark:border-gray-700 bg-blue-500 dark:bg-white px-3   transition-colors duration-200"
                         type="button"
                       >
                         {#if isLoading}
                           <span
-                            class="loading loading-spinner loading-xs shrink-0 text-white dark:text-black"
+                            class="loading loading-spinner loading-xs text-center m-auto flex justify-center items-center text-white dark:text-black"
                           ></span>
                         {:else}
-                          <Arrow class="w-4 h-4" />
+                          <Arrow class="w-4 h-4 text-center m-auto flex justify-center items-center text-white dark:text-black" />
                         {/if}
                       </button>
                     </div>
