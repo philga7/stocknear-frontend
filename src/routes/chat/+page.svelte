@@ -237,6 +237,20 @@
     }
     isLoading = false;
   }
+
+  function insertAgentOption(option) {
+    const { from, to } = editorView.state.selection;
+    const text = `@${option} `;
+
+    const tr = editorView.state.tr.insertText(text, from, to);
+    const resolvedPos = tr.doc.resolve(from + text.length);
+    const newSelection =
+      editorView.state.selection.constructor.near(resolvedPos);
+    tr.setSelection(newSelection);
+
+    editorView?.dispatch(tr);
+    editorView?.focus();
+  }
 </script>
 
 <SEO
@@ -278,12 +292,12 @@
               <!-- Suggestions Dropdown -->
               {#if showSuggestions}
                 <ul
-                  class="absolute bg-default rounded shadow-md border mt-1 z-60 w-40"
+                  class="absolute bg-default rounded shadow-md border border-gray-300 dark:border-gray-600 mt-1 z-60 w-56 h-fit max-h-72 overflow-y-auto scroller"
                   style="top: {suggestionPos.top}px; left: {suggestionPos.left}px;"
                 >
                   {#each suggestions as suggestion, i}
                     <li
-                      class="px-2 py-1 cursor-pointer sm:hover:bg-[#1E222D] {i ===
+                      class="px-2 py-1 cursor-pointer sm:hover:bg-[#1E222D] text-sm {i ===
                       selectedSuggestion
                         ? 'bg-[#1E222D]'
                         : ''}"
@@ -333,15 +347,12 @@
                             class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                           >
                             <DropdownMenu.Group>
-                              {#each agentOptions as item}
+                              {#each agentOptions as option}
                                 <DropdownMenu.Item
-                                  on:click={() => {
-                                    inputText += "@" + item + " ";
-                                    inputEl?.focus();
-                                  }}
+                                  on:click={() => insertAgentOption(option)}
                                   class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                                 >
-                                  {item}
+                                  {option}
                                 </DropdownMenu.Item>
                               {/each}
                             </DropdownMenu.Group>
