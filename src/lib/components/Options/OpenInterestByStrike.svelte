@@ -10,6 +10,7 @@
   export let ticker;
 
   let rawData = data?.getData || [];
+  let currentPrice = null;
 
   rawData = rawData?.map((item) => {
     return {
@@ -21,10 +22,10 @@
     };
   });
 
-  let displayList = rawData?.slice(0, 150);
+  let displayList = rawData?.slice(0, 50);
 
   function plotData() {
-    // Process the raw data, sorting by strike value
+    currentPrice = Number(data?.getStockQuote?.price?.toFixed(2));
     const processedData = rawData
       ?.map((d) => ({
         strike: d?.strike,
@@ -35,6 +36,11 @@
 
     // Extract arrays for categories and series data
     const strikes = processedData?.map((d) => d.strike);
+
+    const allStrikes = Array.from(
+      new Set([...strikes, ...[currentPrice]]),
+    )?.sort((a, b) => a - b);
+
     const callValues = processedData?.map((d) =>
       parseFloat(d.callValue.toFixed(2)),
     );
@@ -67,13 +73,26 @@
         style: { color: $mode === "light" ? "black" : "white" },
       },
       xAxis: {
-        categories: strikes,
+        categories: allStrikes,
         gridLineWidth: 0,
         crosshair: {
           color: $mode === "light" ? "black" : "white", // Set the color of the crosshair line
           width: 1, // Adjust the line width as needed
           dashStyle: "Solid",
         },
+        plotLines: [
+          {
+            value: allStrikes?.findIndex((s) => s === currentPrice),
+            color: $mode === "light" ? "#000" : "#fff",
+            dashStyle: "Dash",
+            width: 1.5,
+            label: {
+              text: `Current Price ${currentPrice}`,
+              style: { color: $mode === "light" ? "#000" : "#fff" },
+            },
+            zIndex: 5,
+          },
+        ],
         labels: {
           style: {
             color: $mode === "light" ? "#545454" : "white",
