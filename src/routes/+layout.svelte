@@ -137,17 +137,16 @@
   onMount(async () => {
     if (!browser) return;
 
-    if ('serviceWorker' in navigator) {
-  try {
-    const registrations = await navigator.serviceWorker.getRegistrations();
-    
-    // Unregister all in parallel (not sequentially)
-    await Promise?.all(registrations?.map(reg => reg?.unregister()));
-  } catch (err) {
-    console.error('Error unregistering service workers:', err);
-  }
-}
+    if ("serviceWorker" in navigator) {
+      try {
+        const registrations = await navigator.serviceWorker.getRegistrations();
 
+        // Unregister all in parallel (not sequentially)
+        await Promise?.all(registrations?.map((reg) => reg?.unregister()));
+      } catch (err) {
+        console.error("Error unregistering service workers:", err);
+      }
+    }
 
     if ("caches" in window) {
       // Extra safeguard: clear any leftover Cache Storage
@@ -334,7 +333,7 @@
                   </a>
                 </Button>
               </Sheet.Close>
-
+              <!--
               <Sheet.Close asChild let:builder>
                 <Button
                   builders={[builder]}
@@ -354,6 +353,7 @@
                   </a>
                 </Button>
               </Sheet.Close>
+              -->
 
               <Sheet.Close asChild let:builder>
                 <Button
@@ -1060,6 +1060,7 @@
                   >
                 </a>
 
+                <!--
                 <a
                   href="/chat"
                   class="mb-2 flex flex-row items-center ml-8 pr-7 w-full"
@@ -1079,6 +1080,7 @@
                   </div>
                   <span class="ml-3 text-muted dark:text-white">Home</span>
                 </a>
+                -->
 
                 <div class="flex flex-row items-center ml-9 w-full mt-3">
                   <Accordion.Root class="w-full">
@@ -1426,7 +1428,6 @@
 </div>
 
 <style lang="scss">
-  
   :root {
     --bprogress-color: #00a6f4;
     --bprogress-height: 1px;
