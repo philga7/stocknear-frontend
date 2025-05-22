@@ -1926,3 +1926,6 @@ export const sectorNavigation = [
     link: "/list/sector/consumer-defensive",
   },
 ];
+
+
+export const agentOptions = ["Analyst", "StockScreener","DarkPoolFlow", "OptionsFlow", "News"];

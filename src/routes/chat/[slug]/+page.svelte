@@ -1,7 +1,7 @@
 <script lang="ts">
   import ChatMessage from "$lib/components/Chat/ChatMessage.svelte";
   import Arrow from "lucide-svelte/icons/arrow-up";
-
+  import { agentOptions } from "$lib/utils";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
   import { EditorState, Plugin } from "prosemirror-state";
@@ -21,8 +21,6 @@
 
   let chatId = data?.getChat?.id;
 
-  let inputText = "";
-  let inputEl: HTMLTextAreaElement;
   let chatContainer: HTMLDivElement;
   let bottomEl: HTMLDivElement;
 
@@ -39,8 +37,6 @@
   let selectedSuggestion = 0;
   let currentQuery = "";
   let isLoading = false;
-
-  const agentOptions = ["Analyst", "DarkPoolFlow", "OptionsFlow", "News"];
 
   const editorHighlighter = new Plugin({
     props: {

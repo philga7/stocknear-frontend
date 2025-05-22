@@ -10,6 +10,7 @@
   import { EditorState, Plugin } from "prosemirror-state";
   import { EditorView, Decoration, DecorationSet } from "prosemirror-view";
   import { keymap } from "prosemirror-keymap";
+  import { agentOptions } from "$lib/utils";
 
   import { schema } from "prosemirror-schema-basic";
 
@@ -28,7 +29,6 @@
   let currentQuery = "";
   let isLoading = false;
 
-  const agentOptions = ["Analyst", "DarkPoolFlow", "OptionsFlow", "News"];
   let defaultChats = [
     {
       chat: "What are key highlights of dark pool and options flow orders for Nvidia today.",
