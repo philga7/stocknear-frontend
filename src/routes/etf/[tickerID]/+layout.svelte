@@ -370,7 +370,7 @@
                         >
                           <label
                             for={data?.user ? "addWatchListModal" : "userLogin"}
-                            class="inline-flex items-center justify-center gap-x-1.5 cursor-pointer transition-all whitespace-nowrap rounded bg-blue-500 dark:bg-default sm:hover:bg-blue-600 dark:sm:hover:bg-[#2A2E39] border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-base font-semibold text-white shadow-xs lg:px-2.5 flex-1 md:flex-initial"
+                            class="inline-flex items-center justify-center gap-x-1.5 cursor-pointer transition-all whitespace-nowrap rounded bg-[#2C6288] dark:bg-default sm:hover:bg-blue-500 dark:sm:hover:bg-[#2A2E39] border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-base font-semibold text-white shadow-xs lg:px-2.5 flex-1 md:flex-initial"
                             ><svg
                               class="size-5 flex-shrink-0"
                               fill="none"
@@ -391,7 +391,7 @@
                           <label
                             on:click={() => ($openPriceAlert = true)}
                             for={data?.user ? "priceAlertModal" : "userLogin"}
-                            class="inline-flex items-center justify-center gap-x-1.5 cursor-pointer transition-all whitespace-nowrap rounded bg-blue-500 dark:bg-default sm:hover:bg-blue-600 dark:sm:hover:bg-[#2A2E39] border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-base font-semibold text-white shadow-xs lg:px-2.5 flex-1 md:flex-initial"
+                            class="inline-flex items-center justify-center gap-x-1.5 cursor-pointer transition-all whitespace-nowrap rounded bg-[#2C6288] dark:bg-default sm:hover:bg-blue-500 dark:sm:hover:bg-[#2A2E39] border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-base font-semibold text-white shadow-xs lg:px-2.5 flex-1 md:flex-initial"
                             ><svg
                               xmlns="http://www.w3.org/2000/svg"
                               class="size-5 flex-shrink-0"

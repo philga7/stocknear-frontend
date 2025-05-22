@@ -258,6 +258,7 @@
       plotOptions: {
         series: {
           animation: false,
+          legendSymbol: "rectangle",
           states: { hover: { enabled: false } },
         },
       },

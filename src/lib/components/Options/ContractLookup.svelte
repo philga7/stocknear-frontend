@@ -157,7 +157,7 @@
         },
         */
         {
-          name: "Opiton Price",
+          name: "Option Price",
           type: "spline", // smooth line
           data: filteredData.map((item) => [
             new Date(item.date).getTime(),
@@ -263,15 +263,26 @@
         style: { color: $mode === "light" ? "black" : "white" },
       },
       // Disable markers globally on hover for all series
+      legend: {
+        enabled: true,
+        align: "center", // left side
+        verticalAlign: "top", // top edge
+        layout: "horizontal",
+        squareSymbol: false, // use our rectangle shape
+        symbolWidth: 20,
+        symbolHeight: 12,
+        symbolRadius: 0,
+
+        itemStyle: {
+          color: $mode === "light" ? "black" : "white",
+        },
+      },
       plotOptions: {
         series: {
-          color: $mode === "light" ? "black" : "white",
-          animation: false, // Disable series animation
-          states: {
-            hover: {
-              enabled: false, // Disable hover effect globally
-            },
-          },
+          animation: false,
+          marker: { enabled: false },
+          states: { hover: { enabled: false } },
+          legendSymbol: "rectangle",
         },
       },
       xAxis: {
@@ -367,18 +378,6 @@
         },
       },
 
-      legend: {
-        enabled: true,
-        align: "center", // Positions legend at the left edge
-        verticalAlign: "top", // Positions legend at the top
-        layout: "horizontal", // Align items horizontally (use 'vertical' if preferred)
-        itemStyle: {
-          color: $mode === "light" ? "black" : "white",
-        },
-        symbolWidth: 14, // Controls the width of the legend symbol
-        symbolRadius: 1, // Creates circular symbols (adjust radius as needed)
-        squareSymbol: true, // Ensures symbols are circular, not square
-      },
       series: series,
     };
 
@@ -978,10 +977,10 @@
                         selectGraphType = item;
                       }}
                       class="px-3 py-1.5 text-sm {index === 0
-                        ? 'mr-2'
+                        ? 'mr-1'
                         : ''} {selectGraphType === item
-                        ? 'shadow-xs border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-white text-black '
-                        : 'shadow-xs text-opacity-[0.6] border border-gray-300 dark:border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded cursor-pointer"
+                        ? 'shadow border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-white text-black '
+                        : 'shadow text-opacity-[0.6] border border-gray-300 dark:border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded cursor-pointer"
                     >
                       {item}
                     </label>

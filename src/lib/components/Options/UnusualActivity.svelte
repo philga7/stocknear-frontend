@@ -805,7 +805,7 @@
                       on:click={() => handleViewData(item)}
                       on:mouseover={() =>
                         getContractHistory(item?.option_symbol)}
-                      class="cursor-pointer text-[#3B82F6] dark:text-[#04D9FF] dark:sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
+                      class="cursor-pointer text-blue-800 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
                     >
                       {item?.strike}
 
@@ -815,7 +815,7 @@
                         xmlns="http://www.w3.org/2000/svg"
                         class="inline-block w-4 h-4 -mt-1"
                         viewBox="0 0 512 512"
-                        fill={$mode === "light" ? "#3B82F6" : "#04D9FF"}
+                        fill="currentColor"
                         ><path
                           d="M104 496H72a24 24 0 01-24-24V328a24 24 0 0124-24h32a24 24 0 0124 24v144a24 24 0 01-24 24zM328 496h-32a24 24 0 01-24-24V232a24 24 0 0124-24h32a24 24 0 0124 24v240a24 24 0 01-24 24zM440 496h-32a24 24 0 01-24-24V120a24 24 0 0124-24h32a24 24 0 0124 24v352a24 24 0 01-24 24zM216 496h-32a24 24 0 01-24-24V40a24 24 0 0124-24h32a24 24 0 0124 24v432a24 24 0 01-24 24z"
                         ></path></svg

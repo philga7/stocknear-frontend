@@ -234,19 +234,24 @@
       ],
       legend: {
         enabled: true,
-        align: "center", // Positions legend at the left edge
-        verticalAlign: "top", // Positions legend at the top
-        layout: "horizontal", // Align items horizontally (use 'vertical' if preferred)
+        align: "center", // left side
+        verticalAlign: "top", // top edge
+        layout: "horizontal",
+        squareSymbol: false, // use our rectangle shape
+        symbolWidth: 20,
+        symbolHeight: 12,
+        symbolRadius: 0,
+
         itemStyle: {
           color: $mode === "light" ? "black" : "white",
         },
-        symbolWidth: 14, // Controls the width of the legend symbol
-        symbolRadius: 1, // Creates circular symbols (adjust radius as needed)
-        squareSymbol: true, // Ensures symbols are circular, not square
       },
       plotOptions: {
         series: {
           animation: false,
+          marker: { enabled: false },
+          states: { hover: { enabled: false } },
+          legendSymbol: "rectangle",
         },
       },
     };

@@ -243,6 +243,7 @@
       plotOptions: {
         series: {
           color: "white",
+          legendSymbol: "rectangle",
           animation: false, // Disable series animation
           states: {
             hover: {
