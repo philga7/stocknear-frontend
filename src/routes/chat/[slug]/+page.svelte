@@ -6,6 +6,7 @@
   import { Button } from "$lib/components/shadcn/button/index.js";
   import { EditorState, Plugin } from "prosemirror-state";
   import { EditorView, Decoration, DecorationSet } from "prosemirror-view";
+  import { keymap } from "prosemirror-keymap";
   import { schema } from "prosemirror-schema-basic";
 
   import { onMount, afterUpdate, tick } from "svelte";
@@ -128,7 +129,11 @@
     editorView = new EditorView(editorDiv, {
       state: EditorState.create({
         schema,
-        plugins: [editorHighlighter, placeholderPlugin],
+        plugins: [
+          editorHighlighter,
+          placeholderPlugin,
+          agentMentionDeletePlugin(agentOptions),
+        ],
       }),
       attributes: {
         style: "outline: none !important; border: none !important;",
@@ -354,6 +359,66 @@
 
     editorView?.dispatch(tr);
     editorView?.focus();
+  }
+
+  function agentMentionDeletePlugin(agentOptions: string[]) {
+    return keymap({
+      Backspace: (state, dispatch, view) => {
+        const { $cursor } = state.selection as any;
+
+        if (!$cursor) return false;
+
+        const { pos } = $cursor;
+        const textBefore = state.doc.textBetween(
+          Math.max(0, pos - 30),
+          pos,
+          "\n",
+          "\n",
+        );
+
+        const regex = /\@([a-zA-Z0-9_]+)$/;
+        const match = regex.exec(textBefore);
+
+        if (match && agentOptions.includes(match[1])) {
+          const start = pos - match[0].length;
+
+          if (dispatch) {
+            dispatch(state.tr.delete(start, pos));
+          }
+          return true;
+        }
+
+        return false;
+      },
+
+      // Optional: support Delete key too
+      Delete: (state, dispatch, view) => {
+        const { $cursor } = state.selection as any;
+        if (!$cursor) return false;
+
+        const { pos } = $cursor;
+        const textAfter = state.doc.textBetween(
+          pos,
+          Math.min(pos + 30, state.doc.content.size),
+          "\n",
+          "\n",
+        );
+
+        const regex = /^\@([a-zA-Z0-9_]+)/;
+        const match = regex.exec(textAfter);
+
+        if (match && agentOptions.includes(match[1])) {
+          const end = pos + match[0].length;
+
+          if (dispatch) {
+            dispatch(state.tr.delete(pos, end));
+          }
+          return true;
+        }
+
+        return false;
+      },
+    });
   }
 </script>
 
