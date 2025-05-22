@@ -7,16 +7,24 @@ export const POST: RequestHandler = async ({ request, locals }) => {
   // simple premium check
   if (!["Pro", "Plus"].includes(user?.tier)) {
     return new Response(
-      JSON.stringify({ error: "Upgrade your account to unlock this feature" }),
+      JSON.stringify({
+        error: "This feature is available exclusively for Plus and Pro members. Please upgrade your account <a href='/pricing' class='text-blue-800 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-500'>here</a> to gain access."
+      }),
       { status: 400 }
     );
+    
   }
 
   if (user?.credits < 20) {
     return new Response(
-      JSON.stringify({ error: `Insufficient credits. Your current balance is ${user?.credits}.` }),
+      JSON.stringify({
+        error: `Insufficient credits. Your current balance is ${user?.credits}. Each prompt costs 20 credits. Credits are reset at the start of each month.`
+      }),
       { status: 400 }
     );
+    
+    
+    
   }
   
 

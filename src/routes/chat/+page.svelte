@@ -27,7 +27,7 @@
   let currentQuery = "";
   let isLoading = false;
 
-  const agentOptions = ["Analyst", "StockScreener", "OptionsFlow", "DarkPool"];
+  const agentOptions = ["Analyst", "DarkPoolFlow", "OptionsFlow", "News"];
   let defaultChats = [
     {
       chat: "What are key highlights of dark pool and options flow orders for Nvidia today.",
@@ -110,7 +110,8 @@
 
         const widget = Decoration.widget(1, () => {
           const span = document.createElement("span");
-          span.className = " text-gray-400 pointer-events-none";
+          span.className =
+            "text-gray-800 dark:text-gray-400 pointer-events-none";
           span.textContent = "Ask anything";
           return span;
         });
@@ -251,6 +252,20 @@
     editorView?.dispatch(tr);
     editorView?.focus();
   }
+
+  function insertDefaultChat(option) {
+    const { from, to } = editorView.state.selection;
+    const text = `${option} `;
+
+    const tr = editorView.state.tr.insertText(text, from, to);
+    const resolvedPos = tr.doc.resolve(from + text.length);
+    const newSelection =
+      editorView.state.selection.constructor.near(resolvedPos);
+    tr.setSelection(newSelection);
+
+    editorView?.dispatch(tr);
+    editorView?.focus();
+  }
 </script>
 
 <SEO
@@ -285,21 +300,21 @@
             >
               <div
                 bind:this={editorDiv}
-                class="ml-2 bg-default text-white w-full min-h-[50px]"
+                class="ml-2 bg-white dark:bg-default w-full min-h-[50px]"
                 on:keydown={handleKeyDown}
               />
 
               <!-- Suggestions Dropdown -->
               {#if showSuggestions}
                 <ul
-                  class="absolute bg-default rounded shadow-md border border-gray-300 dark:border-gray-600 mt-1 z-60 w-56 h-fit max-h-72 overflow-y-auto scroller"
+                  class="absolute bg-white dark:bg-default rounded shadow-md border border-gray-300 dark:border-gray-600 mt-1 z-60 w-56 h-fit max-h-72 overflow-y-auto scroller"
                   style="top: {suggestionPos?.top}px; left: {suggestionPos?.left}px;"
                 >
                   {#each suggestions as suggestion, i}
                     <li
-                      class="px-2 py-1 cursor-pointer sm:hover:bg-[#1E222D] text-sm {i ===
+                      class="px-2 py-1 cursor-pointer sm:hover:bg-gray-100 dark:sm:hover:bg-[#1E222D] text-sm {i ===
                       selectedSuggestion
-                        ? 'bg-[#1E222D]'
+                        ? ' bg-gray-100 dark:bg-[#1E222D]'
                         : ''}"
                       on:click={() => insertSuggestion(suggestion)}
                     >
@@ -364,7 +379,7 @@
                         on:click={createChat}
                         class="{editorText?.trim()?.length > 0
                           ? 'cursor-pointer'
-                          : 'cursor-not-allowed opacity-60'} py-2 text-white dark:text-black text-[1rem] rounded border border-gray-300 dark:border-gray-700 bg-blue-500 dark:bg-white px-3 transition-colors duration-200"
+                          : 'cursor-not-allowed opacity-60'} py-2 text-white dark:text-black text-[1rem] rounded border border-gray-300 dark:border-gray-700 bg-black dark:bg-white px-3 transition-colors duration-200"
                         type="button"
                       >
                         {#if isLoading}
@@ -392,7 +407,7 @@
                     <button
                       type="button"
                       class="text-sm sm:text-[1rem] w-full h-full p-3 group font-sans focus:outline-none outline-none outline-transparent transition duration-50 ease-in-out items-center relative group cursor-pointer active:scale-95 origin-center shadow-sm border border-gray-300 dark:border-gray-700 rounded sm:hover:bg-gray-100 dark:sm:hover:bg-gray-800"
-                      on:click={() => handleDefaultChatClick(item?.chat)}
+                      on:click={() => insertDefaultChat(item?.chat)}
                     >
                       <div
                         class="flex leading-none items-center h-full flex-grow"
@@ -403,7 +418,7 @@
                           <Chat
                             class="w-4 h-4 inline-block mr-3 flex-shrink-0"
                           />
-                          <span class="break-words p">{item?.chat}</span>
+                          <span class="break-words">{item?.chat}</span>
                         </div>
                       </div>
                     </button>

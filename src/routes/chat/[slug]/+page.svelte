@@ -1,7 +1,13 @@
 <script lang="ts">
   import ChatMessage from "$lib/components/Chat/ChatMessage.svelte";
   import Arrow from "lucide-svelte/icons/arrow-up";
-  
+
+  import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
+  import { Button } from "$lib/components/shadcn/button/index.js";
+  import { EditorState, Plugin } from "prosemirror-state";
+  import { EditorView, Decoration, DecorationSet } from "prosemirror-view";
+  import { schema } from "prosemirror-schema-basic";
+
   import { onMount, afterUpdate, tick } from "svelte";
   import SEO from "$lib/components/SEO.svelte";
 
@@ -15,7 +21,6 @@
   let chatId = data?.getChat?.id;
 
   let inputText = "";
-  let isLoading = false;
   let inputEl: HTMLTextAreaElement;
   let chatContainer: HTMLDivElement;
   let bottomEl: HTMLDivElement;
@@ -25,23 +30,143 @@
   let autoScroll = true;
   let lastScrollTop = 0;
 
-  // Check for first message and process it immediately
+  let editorDiv;
+  let editorView;
+  let editorText = "";
+
+  let suggestions = [];
+  let showSuggestions = false;
+  let suggestionPos = { top: 0, left: 0 };
+  let selectedSuggestion = 0;
+  let currentQuery = "";
+  let isLoading = false;
+
+  const agentOptions = ["Analyst", "DarkPoolFlow", "OptionsFlow", "News"];
+
+  const editorHighlighter = new Plugin({
+    props: {
+      decorations(state) {
+        const decorations = [];
+        const regex = /\@([a-zA-Z0-9_]+)/g;
+
+        state.doc.descendants((node, pos) => {
+          if (!node.isText) return;
+
+          const text = node.text;
+          if (!text) return;
+
+          let match;
+          while ((match = regex.exec(text)) !== null) {
+            const mention = match[1];
+            if (agentOptions?.includes(mention)) {
+              decorations?.push(
+                Decoration?.inline(
+                  pos + match.index,
+                  pos + match.index + match[0]?.length,
+                  {
+                    class: "text-blue-800 dark:text-blue-400",
+                  },
+                ),
+              );
+            }
+          }
+        });
+
+        return DecorationSet.create(state.doc, decorations);
+      },
+    },
+  });
+
+  function getCaretCoordinates(view) {
+    const { from } = view.state.selection;
+    const start = view.coordsAtPos(from);
+    return start;
+  }
+
+  function checkAutocomplete(view) {
+    const { from } = view.state.selection;
+    const before = view.state.doc.textBetween(
+      Math.max(0, from - 20),
+      from,
+      "\n",
+      "\n",
+    );
+    const match = /\@([a-zA-Z0-9_]*)$/.exec(before);
+
+    if (match) {
+      currentQuery = match[1];
+      suggestions = agentOptions?.filter((s) =>
+        s.toLowerCase().startsWith(currentQuery.toLowerCase()),
+      );
+
+      const coords = getCaretCoordinates(view);
+      suggestionPos = { top: coords.bottom + 4, left: coords.left };
+      showSuggestions = suggestions.length > 0;
+    } else {
+      showSuggestions = false;
+    }
+  }
+
+  const placeholderPlugin = new Plugin({
+    props: {
+      decorations(state) {
+        // only show if empty
+        if (state.doc.textContent.length > 0) return null;
+
+        const widget = Decoration.widget(1, () => {
+          const span = document.createElement("span");
+          span.className =
+            " text-gray-800 dark:text-gray-400 pointer-events-none";
+          span.textContent = "Ask anything";
+          return span;
+        });
+
+        return DecorationSet.create(state.doc, [widget]);
+      },
+    },
+  });
+
   onMount(async () => {
-    // Check if the first message is from user and needs a response
-    if (messages.length === 1 && messages[0].role === "user") {
-      const userQuery = messages[0]?.content;
-      if (userQuery?.trim()) {
-        // Clear messages and set user message
-        messages = [{ content: userQuery, role: "user" }];
-        await llmChat(userQuery);
-      }
+    editorView = new EditorView(editorDiv, {
+      state: EditorState.create({
+        schema,
+        plugins: [editorHighlighter, placeholderPlugin],
+      }),
+      attributes: {
+        style: "outline: none !important; border: none !important;",
+      },
+      dispatchTransaction(transaction) {
+        const newState = editorView.state.apply(transaction);
+        editorView.updateState(newState);
+        editorText = editorView?.state.doc?.textContent;
+        checkAutocomplete(editorView);
+      },
+    });
+
+    // Force remove outline after creation
+    const proseMirrorEl = editorDiv.querySelector(".ProseMirror");
+    if (proseMirrorEl) {
+      proseMirrorEl.style.outline = "none";
+      proseMirrorEl.style.border = "none";
+      proseMirrorEl.style.boxShadow = "none";
     }
 
-    inputEl?.focus();
-    resize();
+    // Autofocus the editor
+    // Autofocus the editor with a small delay
+    setTimeout(() => {
+      editorView.focus();
+    }, 100);
+    editorText = editorView.state.doc.textContent;
 
-    if (chatContainer) {
-      chatContainer.addEventListener("scroll", handleScroll);
+    if (messages.length === 1 && messages[0].role === "user") {
+      const userQuery = messages[0]?.content;
+      editorText = "";
+      console.log(userQuery);
+      if (userQuery?.trim()) {
+        // Clear messages and set user message
+        messages = [{ content: userQuery, Text, role: "user" }];
+        await llmChat(userQuery);
+      }
     }
   });
 
@@ -53,42 +178,21 @@
     }
   });
 
-  function handleScroll() {
-    if (!chatContainer) return;
-
-    const distanceFromBottom =
-      chatContainer.scrollHeight -
-      chatContainer.scrollTop -
-      chatContainer.clientHeight;
-
-    // User scrolled up
-    if (chatContainer.scrollTop < lastScrollTop && distanceFromBottom > 100) {
-      autoScroll = false;
-    }
-
-    // User back near bottom
-    if (distanceFromBottom < 50) {
-      autoScroll = true;
-    }
-
-    lastScrollTop = chatContainer.scrollTop;
-  }
-
-  function resize() {
-    if (!inputEl) return;
-
-    inputEl.style.height = "auto";
-    const scrollH = inputEl.scrollHeight;
-    const newH = Math.min(scrollH, MAX_HEIGHT);
-    inputEl.style.height = `${newH}px`;
-    inputEl.style.overflowY = scrollH > MAX_HEIGHT ? "fit" : "hidden";
-  }
-
   async function llmChat(userMessage?: string) {
     isLoading = true;
 
     // Use provided message or input text
-    const userQuery = userMessage || inputText?.trim();
+    const userQuery = userMessage || editorText?.trim();
+
+    // Clear the editor content
+    const emptyDoc = schema?.topNodeType?.createAndFill();
+    const tr = editorView?.state?.tr?.replaceWith(
+      0,
+      editorView?.state?.doc?.content?.size,
+      emptyDoc?.content,
+    );
+    editorView?.dispatch(tr);
+    editorText = "";
 
     if (!userQuery || userQuery?.length < 1) {
       isLoading = false;
@@ -103,14 +207,8 @@
     // Add placeholder for assistant response
     messages = [...messages, { content: "", role: "system" }];
 
-    // Clear input and adjust UI
-    inputText = "";
-    resize();
-    inputEl?.focus();
-
     // Re-enable auto-scroll on new message
     autoScroll = true;
-
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
@@ -194,6 +292,70 @@
 
     const output = await response?.json();
   }
+
+  async function handleKeyDown(event) {
+    if (showSuggestions) {
+      if (event.key === "ArrowDown") {
+        selectedSuggestion = (selectedSuggestion + 1) % suggestions.length;
+        event.preventDefault();
+      } else if (event.key === "ArrowUp") {
+        selectedSuggestion =
+          (selectedSuggestion - 1 + suggestions.length) % suggestions.length;
+        event.preventDefault();
+      } else if (event.key === "Enter") {
+        insertSuggestion(suggestions[selectedSuggestion]);
+        event.preventDefault();
+      } else if (event.key === "Escape") {
+        showSuggestions = false;
+      }
+    } else {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        await llmChat();
+      }
+    }
+  }
+
+  function insertSuggestion(suggestion) {
+    const { from } = editorView.state.selection;
+    const before = editorView.state.doc.textBetween(
+      Math.max(0, from - 20),
+      from,
+      "\n",
+      "\n",
+    );
+    const match = /\@([a-zA-Z0-9_]*)$/.exec(before);
+
+    if (match) {
+      const start = from - match[0].length;
+
+      // First, create transaction
+      const tr = editorView.state.tr.insertText(`@${suggestion} `, start, from);
+
+      // Then set selection on the new transaction
+      const resolvedPos = tr.doc.resolve(start + suggestion.length + 2);
+      const newSelection =
+        editorView.state.selection.constructor.near(resolvedPos);
+      tr.setSelection(newSelection);
+
+      editorView.dispatch(tr);
+      showSuggestions = false;
+    }
+  }
+
+  function insertAgentOption(option) {
+    const { from, to } = editorView.state.selection;
+    const text = `@${option} `;
+
+    const tr = editorView.state.tr.insertText(text, from, to);
+    const resolvedPos = tr.doc.resolve(from + text.length);
+    const newSelection =
+      editorView.state.selection.constructor.near(resolvedPos);
+    tr.setSelection(newSelection);
+
+    editorView?.dispatch(tr);
+    editorView?.focus();
+  }
 </script>
 
 <SEO
@@ -201,8 +363,8 @@
   description="Get real-time stock market insights with Stocknear AI Agent. Analyze fundamentals, dark pool activity, options flow, and breaking market news – all in one place."
 />
 
-<section class="w-full max-w-[1400px] mx-auto h-full pt-5 px-4 lg:px-0">
-  <div class="w-full 2xl:max-w-[1100px] flex flex-col h-full">
+<section class="w-full max-w-[1400px] mx-auto min-h-[80vh] pt-5 px-4 lg:px-0">
+  <div class="relative w-full 2xl:max-w-[1100px] flex flex-col min-h-[80vh]">
     <main
       class="w-full overflow-y-auto p-4 space-y-4"
       bind:this={chatContainer}
@@ -216,51 +378,166 @@
           {/if}
         {/each}
         <!-- sentinel div always at the bottom -->
+
         <div bind:this={bottomEl}></div>
       </div>
-    </main>
 
-    <div
-      class="absolute fixed bottom-5 sm:bottom-10 left-0 right-0 mx-auto w-11/12 sm:w-11/12 md:w-3/4 lg:w-2/3 max-w-4xl shadow-lg bg-gray-100 dark:bg-default border border-gray-300 dark:border-gray-600 shadow-sm rounded overflow-hidden"
-    >
-      <form
-        on:submit|preventDefault={() => llmChat()}
-        class="grow rounded relative flex items-center w-full overflow-hidden"
+      <div
+        class="bg-white dark:bg-default fixed absolute bottom-10 left-1/2 transform -translate-x-1/2 block p-3 w-full max-w-3xl border border-gray-300 dark:border-gray-600 shadow rounded overflow-hidden"
       >
         <div
-          class="relative min-h-32 h-auto max-h-64 overflow-y-hidden w-full outline-none"
+          bind:this={editorDiv}
+          class="ml-2 bg-white dark:bg-default w-full min-h-[60px]"
+          on:keydown={handleKeyDown}
+        />
+
+        <form
+          class="grow rounded relative flex items-center w-full overflow-hidden"
         >
-          <div class="w-full p-2 pt-4 h-auto">
-            <textarea
-              bind:this={inputEl}
-              bind:value={inputText}
-              on:input={resize}
-              on:keydown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  llmChat();
-                }
-              }}
-              placeholder="Ask anything"
-              class="w-full flex-1 bg-transparent outline-none placeholder-gray-800 dark:placeholder-gray-200 dark:text-white px-2 break-words"
-            />
-          </div>
           <div
-            class="absolute bottom-0 mb-2 flex flex-row gap-x-2 justify-end w-full px-2 bg-gray-100 dark:bg-default z-20"
+            class="relative min-h-12 h-auto overflow-y-hidden w-full outline-none"
           >
-            <div class="flex flex-row justify-end w-full px-2">
-              <button
-                type="submit"
-                class="{inputText?.trim()?.length > 0 && !isLoading
-                  ? 'cursor-pointer'
-                  : 'cursor-not-allowed opacity-60'} py-1.5 text-white dark:text-black text-[1rem] rounded border border-gray-300 dark:border-gray-700 bg-blue-500 dark:bg-white px-3 py-1 transition-colors duration-50"
-              >
-                <Arrow class="w-4 h-4" />
-              </button>
+            <div
+              class="absolute bottom-0 flex flex-row justify-end w-full bg:inherit dark:bg-default"
+            >
+              <div class="flex flex-row justify-between w-full">
+                <div
+                  class="order-first relative inline-block text-left cursor-pointer shadow-xs"
+                >
+                  <DropdownMenu.Root>
+                    <DropdownMenu.Trigger asChild let:builder>
+                      <Button
+                        builders={[builder]}
+                        class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 rounded truncate"
+                      >
+                        <span class="truncate">@Agents</span>
+                        <svg
+                          class="-mr-1 ml-3 h-5 w-5 xs:ml-2 inline-block"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          style="max-width:40px"
+                          aria-hidden="true"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clip-rule="evenodd"
+                          ></path>
+                        </svg>
+                      </Button>
+                    </DropdownMenu.Trigger>
+                    <DropdownMenu.Content
+                      class="w-56 h-fit max-h-72 overflow-y-auto scroller"
+                    >
+                      <DropdownMenu.Group>
+                        {#each agentOptions as option}
+                          <DropdownMenu.Item
+                            on:click={() => insertAgentOption(option)}
+                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                          >
+                            {option}
+                          </DropdownMenu.Item>
+                        {/each}
+                      </DropdownMenu.Group>
+                    </DropdownMenu.Content>
+                  </DropdownMenu.Root>
+                </div>
+
+                <button
+                  on:click={() =>
+                    editorText?.trim()?.length > 0 ? llmChat() : ""}
+                  class="{editorText?.trim()?.length > 0
+                    ? 'cursor-pointer'
+                    : 'cursor-not-allowed opacity-60'} py-2 text-white dark:text-black text-[1rem] rounded border border-gray-300 dark:border-gray-700 bg-black dark:bg-white px-3 transition-colors duration-200"
+                  type="button"
+                >
+                  {#if isLoading}
+                    <span
+                      class="loading loading-spinner loading-xs text-center m-auto flex justify-center items-center text-white dark:text-black"
+                    ></span>
+                  {:else}
+                    <Arrow
+                      class="w-4 h-4 text-center m-auto flex justify-center items-center text-white dark:text-black"
+                    />
+                  {/if}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </form>
-    </div>
+        </form>
+      </div>
+
+      <!-- Suggestions Dropdown - Positioned relative to document body -->
+      {#if showSuggestions}
+        <ul
+          class="fixed bg-default rounded shadow-md border border-gray-300 dark:border-gray-600 z-[9999] w-56 h-fit max-h-72 overflow-y-auto scroller"
+          style="top: {suggestionPos?.top}px; left: {suggestionPos?.left}px;"
+        >
+          {#each suggestions as suggestion, i}
+            <li
+              class="px-2 py-1 cursor-pointer sm:hover:bg-[#1E222D] text-sm {i ===
+              selectedSuggestion
+                ? 'bg-[#1E222D]'
+                : ''}"
+              on:click={() => insertSuggestion(suggestion)}
+            >
+              {suggestion}
+            </li>
+          {/each}
+        </ul>
+      {/if}
+    </main>
   </div>
 </section>
+
+<style>
+  /* Base textarea styling */
+  .textarea-base {
+    background: transparent;
+    position: relative;
+    z-index: 1;
+    color: currentColor;
+    resize: none;
+    white-space: pre-wrap;
+  }
+
+  :global(.ProseMirror) {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  :global(.ProseMirror:focus) {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  :global(.ProseMirror:focus-visible) {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Target the editor container div */
+  .editor-container {
+    outline: none !important;
+  }
+
+  .editor-container:focus {
+    outline: none !important;
+  }
+
+  .editor-container:focus-within {
+    outline: none !important;
+  }
+
+  /* Remove focus from any child elements */
+  .editor-container * {
+    outline: none !important;
+  }
+
+  .editor-container *:focus {
+    outline: none !important;
+  }
+</style>
