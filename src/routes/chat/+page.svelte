@@ -1,26 +1,33 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import Chat from "lucide-svelte/icons/message-circle";
   import Arrow from "lucide-svelte/icons/arrow-up";
   import { mode } from "mode-watcher";
   import { toast } from "svelte-sonner";
   import { goto } from "$app/navigation";
- // import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
- // import { Button } from "$lib/components/shadcn/button/index.js";
+  import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
+  import { Button } from "$lib/components/shadcn/button/index.js";
+  import { EditorState, Plugin } from "prosemirror-state";
+  import { EditorView, Decoration, DecorationSet } from "prosemirror-view";
+
+  import { schema } from "prosemirror-schema-basic";
+
   import SEO from "$lib/components/SEO.svelte";
 
-  import { onMount } from "svelte";
   export let data;
 
-  let isLoading = false;
-  const agentOptions = [
-    "Analyst Rating",
-    "Analyst Estimate",
-    "Stock Screener",
-    "Options Flow",
-  ];
-  // Prepend '@' to each option to create trigger strings
-  const agentTriggers = agentOptions.map((opt) => `@${opt}`);
+  let editorDiv;
+  let editorView;
 
+  let suggestions = [];
+  let showSuggestions = false;
+  let suggestionPos = { top: 0, left: 0 };
+  let selectedSuggestion = 0;
+  let currentQuery = "";
+  let inputText = "";
+  let isLoading = false;
+
+  const agentOptions = ["Analyst", "StockScreener", "OptionsFlow", "DarkPool"];
   let defaultChats = [
     {
       chat: "What are key highlights of dark pool and options flow orders for Nvidia today.",
@@ -31,10 +38,168 @@
     { chat: "How does Google make money?" },
   ];
 
-  let inputText = "";
-  let inputEl: HTMLTextAreaElement;
-  let highlightOverlay: HTMLDivElement;
-  const MAX_HEIGHT = 16 * 16;
+  const dollarHighlighter = new Plugin({
+    props: {
+      decorations(state) {
+        const decorations = [];
+        const regex = /\@[a-zA-Z0-9_]+/g;
+
+        state.doc.descendants((node, pos) => {
+          if (!node.isText) return;
+
+          const text = node.text;
+          if (!text) return;
+
+          let match;
+          while ((match = regex.exec(text)) !== null) {
+            decorations.push(
+              Decoration.inline(
+                pos + match.index,
+                pos + match.index + match[0]?.length,
+                {
+                  class: "text-blue-500",
+                },
+              ),
+            );
+          }
+        });
+
+        return DecorationSet.create(state.doc, decorations);
+      },
+    },
+  });
+
+  function getCaretCoordinates(view) {
+    const { from } = view.state.selection;
+    const start = view.coordsAtPos(from);
+    return start;
+  }
+
+  function checkAutocomplete(view) {
+    const { from } = view.state.selection;
+    const before = view.state.doc.textBetween(
+      Math.max(0, from - 20),
+      from,
+      "\n",
+      "\n",
+    );
+    const match = /\@([a-zA-Z0-9_]*)$/.exec(before);
+
+    if (match) {
+      currentQuery = match[1].toUpperCase();
+      suggestions = agentOptions.filter((s) => s.startsWith(currentQuery));
+      const coords = getCaretCoordinates(view);
+      suggestionPos = { top: coords.bottom + 4, left: coords.left };
+      showSuggestions = suggestions.length > 0;
+    } else {
+      showSuggestions = false;
+    }
+  }
+
+  const placeholderPlugin = new Plugin({
+    props: {
+      decorations(state) {
+        // only show if empty
+        if (state.doc.textContent.length > 0) return null;
+
+        const widget = Decoration.widget(1, () => {
+          const span = document.createElement("span");
+          span.className = " text-gray-400 pointer-events-none";
+          span.textContent = "Ask anything";
+          return span;
+        });
+
+        return DecorationSet.create(state.doc, [widget]);
+      },
+    },
+  });
+
+  onMount(() => {
+    editorView = new EditorView(editorDiv, {
+      state: EditorState.create({
+        schema,
+        plugins: [dollarHighlighter, placeholderPlugin],
+      }),
+      attributes: {
+        style: "outline: none !important; border: none !important;",
+      },
+      dispatchTransaction(transaction) {
+        const newState = editorView.state.apply(transaction);
+        editorView.updateState(newState);
+        checkAutocomplete(editorView);
+      },
+    });
+
+    // Force remove outline after creation
+    const proseMirrorEl = editorDiv.querySelector(".ProseMirror");
+    if (proseMirrorEl) {
+      proseMirrorEl.style.outline = "none";
+      proseMirrorEl.style.border = "none";
+      proseMirrorEl.style.boxShadow = "none";
+    }
+
+    // Autofocus the editor
+    // Autofocus the editor with a small delay
+    setTimeout(() => {
+      editorView.focus();
+    }, 100);
+  });
+
+  function insertSuggestion(suggestion) {
+    const { from } = editorView.state.selection;
+    const before = editorView.state.doc.textBetween(
+      Math.max(0, from - 20),
+      from,
+      "\n",
+      "\n",
+    );
+    const match = /\@([a-zA-Z0-9_]*)$/.exec(before);
+
+    if (match) {
+      const start = from - match[0].length;
+
+      // First, create transaction
+      const tr = editorView.state.tr.insertText(`@${suggestion} `, start, from);
+
+      // Then set selection on the new transaction
+      const resolvedPos = tr.doc.resolve(start + suggestion.length + 2);
+      const newSelection =
+        editorView.state.selection.constructor.near(resolvedPos);
+      tr.setSelection(newSelection);
+
+      editorView.dispatch(tr);
+      showSuggestions = false;
+    }
+  }
+
+  function handleKeyDown(event) {
+    if (showSuggestions) {
+      if (event.key === "ArrowDown") {
+        selectedSuggestion = (selectedSuggestion + 1) % suggestions.length;
+        event.preventDefault();
+      } else if (event.key === "ArrowUp") {
+        selectedSuggestion =
+          (selectedSuggestion - 1 + suggestions.length) % suggestions.length;
+        event.preventDefault();
+      } else if (event.key === "Enter") {
+        insertSuggestion(suggestions[selectedSuggestion]);
+        event.preventDefault();
+      } else if (event.key === "Escape") {
+        showSuggestions = false;
+      }
+    } else {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        const content = editorView.state.doc.textContent.trim();
+        if (content) {
+          console.log("Sending:", content);
+          editorView.dispatch(
+            editorView.state.tr.delete(0, editorView.state.doc.content.size),
+          );
+        }
+      }
+    }
+  }
 
   async function createChat() {
     isLoading = true;
@@ -72,107 +237,6 @@
     }
     isLoading = false;
   }
-
-  function updateHighlightedText() {
-    if (!highlightOverlay || !inputEl) return;
-    let text = inputText;
-    // Escape HTML
-    text = text
-      ?.replace(/&/g, "&amp;")
-      ?.replace(/</g, "&lt;")
-      ?.replace(/>/g, "&gt;");
-
-    // Iterate through triggers and wrap occurrences
-    let highlighted = text;
-    for (const trigger of agentTriggers) {
-      const escaped = trigger?.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
-      const regex = new RegExp(escaped, "g");
-      highlighted = highlighted.replace(
-        regex,
-        `<span class=\"text-blue-800 dark:text-blue-500\">${trigger}</span>`,
-      );
-    }
-
-    // Preserve new lines
-    highlighted = highlighted.replace(/\n/g, "<br>");
-    if (!highlighted) highlighted = "&nbsp;";
-    highlightOverlay.innerHTML = highlighted;
-  }
-
-  onMount(() => {
-    if (inputEl) {
-      inputEl.focus();
-      resize();
-    }
-  });
-
-  function handleDefaultChatClick(chatText: string) {
-    inputText = chatText;
-    resize();
-    updateHighlightedText();
-    inputEl?.focus();
-  }
-
-  function resize() {
-    if (!inputEl) return;
-    inputEl.style.height = "auto";
-    const scrollH = inputEl.scrollHeight;
-    const newH = Math.min(scrollH, MAX_HEIGHT);
-    inputEl.style.height = newH + "px";
-    inputEl.style.overflowY = scrollH > MAX_HEIGHT ? "auto" : "hidden";
-    if (highlightOverlay) {
-      highlightOverlay.style.height = newH + "px";
-      highlightOverlay.style.overflowY =
-        scrollH > MAX_HEIGHT ? "auto" : "hidden";
-    }
-  }
-
-  function handleInput(event) {
-    console.log(event.target.value);
-    updateHighlightedText();
-    resize();
-  }
-
-  function handleKeyDown(e: KeyboardEvent) {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      createChat();
-      return;
-    }
-
-    const cursorPos = inputEl.selectionStart;
-    for (const trigger of agentTriggers) {
-      const idx = inputText.indexOf(trigger);
-      if (idx === -1) continue;
-      const end = idx + trigger.length;
-      if (
-        (e.key === "Backspace" || e.key === "Delete") &&
-        cursorPos > idx &&
-        cursorPos <= end
-      ) {
-        e.preventDefault();
-        inputText = inputText.slice(0, idx) + inputText.slice(end);
-        setTimeout(() => {
-          inputEl.selectionStart = idx;
-          inputEl.selectionEnd = idx;
-          updateHighlightedText();
-          resize();
-        }, 0);
-        break;
-      }
-    }
-  }
-
-  $: if (inputText !== undefined) {
-    updateHighlightedText();
-  }
-
-  function syncScroll() {
-    if (highlightOverlay && inputEl) {
-      highlightOverlay.scrollTop = inputEl.scrollTop;
-      highlightOverlay.scrollLeft = inputEl.scrollLeft;
-    }
-  }
 </script>
 
 <SEO
@@ -203,35 +267,45 @@
             </h1>
 
             <div
-              class="block w-full border border-gray-300 dark:border-gray-600 shadow-sm rounded overflow-hidden"
+              class="block p-3 w-full border border-gray-300 dark:border-gray-600 shadow-sm rounded overflow-hidden"
             >
+              <div
+                bind:this={editorDiv}
+                class="ml-2 bg-default text-white w-full min-h-[50px]"
+                on:keydown={handleKeyDown}
+              />
+
+              <!-- Suggestions Dropdown -->
+              {#if showSuggestions}
+                <ul
+                  class="absolute bg-default rounded shadow-md border mt-1 z-60 w-40"
+                  style="top: {suggestionPos.top}px; left: {suggestionPos.left}px;"
+                >
+                  {#each suggestions as suggestion, i}
+                    <li
+                      class="px-2 py-1 cursor-pointer sm:hover:bg-[#1E222D] {i ===
+                      selectedSuggestion
+                        ? 'bg-[#1E222D]'
+                        : ''}"
+                      on:click={() => insertSuggestion(suggestion)}
+                    >
+                      {suggestion}
+                    </li>
+                  {/each}
+                </ul>
+              {/if}
               <form
                 class="grow rounded relative flex items-center w-full overflow-hidden"
               >
                 <div
-                  class="relative min-h-32 h-auto max-h-64 overflow-y-hidden w-full outline-none"
+                  class="relative min-h-12 h-auto overflow-y-hidden w-full outline-none"
                 >
-                  <div class="w-full p-2 pt-4 h-auto relative">
-                    <!-- Actual textarea for input -->
-                    <textarea
-                      bind:this={inputEl}
-                      bind:value={inputText}
-                      on:input={handleInput}
-                      on:keydown={handleKeyDown}
-                      on:scroll={syncScroll}
-                      placeholder="Ask anything"
-                      class="w-full flex-1 bg-transparent outline-none
-                      placeholder-gray-500 dark:placeholder-gray-400 px-2 break-words textarea-base"
-                    />
-                  </div>
-
                   <div
-                    class="absolute bottom-0 mb-2 flex flex-row gap-x-2 justify-end w-full px-2 bg:inherit dark:bg-default z-20"
+                    class="absolute bottom-0 flex flex-row justify-end w-full bg:inherit dark:bg-default"
                   >
-                    <div class=" flex flex-row justify-end w-full">
-                      <!--
+                    <div class="flex flex-row justify-between w-full">
                       <div
-                        class="order-first relative inline-block text-left cursor-pointer ml-1 shadow-xs"
+                        class="order-first relative inline-block text-left cursor-pointer shadow-xs"
                       >
                         <DropdownMenu.Root>
                           <DropdownMenu.Trigger asChild let:builder>
@@ -274,12 +348,12 @@
                           </DropdownMenu.Content>
                         </DropdownMenu.Root>
                       </div>
-                      -->
+
                       <button
                         on:click={createChat}
                         class="{inputText?.trim()?.length > 0
                           ? 'cursor-pointer'
-                          : 'cursor-not-allowed opacity-60'} py-2 text-white dark:text-black text-[1rem] rounded border border-gray-300 dark:border-gray-700 bg-blue-500 dark:bg-white px-3   transition-colors duration-200"
+                          : 'cursor-not-allowed opacity-60'} py-2 text-white dark:text-black text-[1rem] rounded border border-gray-300 dark:border-gray-700 bg-blue-500 dark:bg-white px-3 transition-colors duration-200"
                         type="button"
                       >
                         {#if isLoading}
@@ -287,7 +361,9 @@
                             class="loading loading-spinner loading-xs text-center m-auto flex justify-center items-center text-white dark:text-black"
                           ></span>
                         {:else}
-                          <Arrow class="w-4 h-4 text-center m-auto flex justify-center items-center text-white dark:text-black" />
+                          <Arrow
+                            class="w-4 h-4 text-center m-auto flex justify-center items-center text-white dark:text-black"
+                          />
                         {/if}
                       </button>
                     </div>
@@ -340,5 +416,45 @@
     color: currentColor;
     resize: none;
     white-space: pre-wrap;
+  }
+
+  :global(.ProseMirror) {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  :global(.ProseMirror:focus) {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  :global(.ProseMirror:focus-visible) {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Target the editor container div */
+  .editor-container {
+    outline: none !important;
+  }
+
+  .editor-container:focus {
+    outline: none !important;
+  }
+
+  .editor-container:focus-within {
+    outline: none !important;
+  }
+
+  /* Remove focus from any child elements */
+  .editor-container * {
+    outline: none !important;
+  }
+
+  .editor-container *:focus {
+    outline: none !important;
   }
 </style>

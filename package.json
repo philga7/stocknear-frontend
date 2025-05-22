@@ -88,6 +88,10 @@
     "highcharts": "^11.4.3",
     "jsconfig.json": "^2.3.3",
     "plotly.js": "^2.35.3",
+    "prosemirror-model": "^1.25.1",
+    "prosemirror-schema-basic": "^1.2.4",
+    "prosemirror-state": "^1.4.3",
+    "prosemirror-view": "^1.39.3",
     "svelte-plotly.js": "^1.2.0",
     "ua-parser-js": "^1.0.37"
   },
