@@ -18,13 +18,13 @@
 
   let editorDiv;
   let editorView;
+  let editorText = "";
 
   let suggestions = [];
   let showSuggestions = false;
   let suggestionPos = { top: 0, left: 0 };
   let selectedSuggestion = 0;
   let currentQuery = "";
-  let inputText = "";
   let isLoading = false;
 
   const agentOptions = ["Analyst", "StockScreener", "OptionsFlow", "DarkPool"];
@@ -38,11 +38,11 @@
     { chat: "How does Google make money?" },
   ];
 
-  const dollarHighlighter = new Plugin({
+  const editorHighlighter = new Plugin({
     props: {
       decorations(state) {
         const decorations = [];
-        const regex = /\@[a-zA-Z0-9_]+/g;
+        const regex = /\@([a-zA-Z0-9_]+)/g;
 
         state.doc.descendants((node, pos) => {
           if (!node.isText) return;
@@ -52,15 +52,18 @@
 
           let match;
           while ((match = regex.exec(text)) !== null) {
-            decorations.push(
-              Decoration.inline(
-                pos + match.index,
-                pos + match.index + match[0]?.length,
-                {
-                  class: "text-blue-500",
-                },
-              ),
-            );
+            const mention = match[1];
+            if (agentOptions?.includes(mention)) {
+              decorations?.push(
+                Decoration?.inline(
+                  pos + match.index,
+                  pos + match.index + match[0]?.length,
+                  {
+                    class: "text-blue-800 dark:text-blue-400",
+                  },
+                ),
+              );
+            }
           }
         });
 
@@ -86,8 +89,11 @@
     const match = /\@([a-zA-Z0-9_]*)$/.exec(before);
 
     if (match) {
-      currentQuery = match[1].toUpperCase();
-      suggestions = agentOptions.filter((s) => s.startsWith(currentQuery));
+      currentQuery = match[1];
+      suggestions = agentOptions?.filter((s) =>
+        s.toLowerCase().startsWith(currentQuery.toLowerCase()),
+      );
+
       const coords = getCaretCoordinates(view);
       suggestionPos = { top: coords.bottom + 4, left: coords.left };
       showSuggestions = suggestions.length > 0;
@@ -118,7 +124,7 @@
     editorView = new EditorView(editorDiv, {
       state: EditorState.create({
         schema,
-        plugins: [dollarHighlighter, placeholderPlugin],
+        plugins: [editorHighlighter, placeholderPlugin],
       }),
       attributes: {
         style: "outline: none !important; border: none !important;",
@@ -126,6 +132,7 @@
       dispatchTransaction(transaction) {
         const newState = editorView.state.apply(transaction);
         editorView.updateState(newState);
+        editorText = editorView?.state.doc?.textContent;
         checkAutocomplete(editorView);
       },
     });
@@ -143,6 +150,8 @@
     setTimeout(() => {
       editorView.focus();
     }, 100);
+
+    editorText = editorView.state.doc.textContent;
   });
 
   function insertSuggestion(suggestion) {
@@ -190,13 +199,7 @@
     } else {
       if (event.key === "Enter" && !event.shiftKey) {
         event.preventDefault();
-        const content = editorView.state.doc.textContent.trim();
-        if (content) {
-          console.log("Sending:", content);
-          editorView.dispatch(
-            editorView.state.tr.delete(0, editorView.state.doc.content.size),
-          );
-        }
+        createChat();
       }
     }
   }
@@ -207,7 +210,6 @@
       toast.error("Upgrade your account to unlock this feature", {
         style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
-      inputText = "";
       isLoading = false;
       return;
     }
@@ -219,17 +221,15 @@
           style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
         },
       );
-      inputText = "";
       isLoading = false;
       return;
     }
 
-    const userQuery = inputText?.trim();
-    if (userQuery?.length > 0) {
+    if (editorText?.trim()?.length > 0) {
       const response = await fetch("/api/create-chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: userQuery }),
+        body: JSON.stringify({ query: editorText }),
       });
 
       const output = await response.json();
@@ -293,7 +293,7 @@
               {#if showSuggestions}
                 <ul
                   class="absolute bg-default rounded shadow-md border border-gray-300 dark:border-gray-600 mt-1 z-60 w-56 h-fit max-h-72 overflow-y-auto scroller"
-                  style="top: {suggestionPos.top}px; left: {suggestionPos.left}px;"
+                  style="top: {suggestionPos?.top}px; left: {suggestionPos?.left}px;"
                 >
                   {#each suggestions as suggestion, i}
                     <li
@@ -362,7 +362,7 @@
 
                       <button
                         on:click={createChat}
-                        class="{inputText?.trim()?.length > 0
+                        class="{editorText?.trim()?.length > 0
                           ? 'cursor-pointer'
                           : 'cursor-not-allowed opacity-60'} py-2 text-white dark:text-black text-[1rem] rounded border border-gray-300 dark:border-gray-700 bg-blue-500 dark:bg-white px-3 transition-colors duration-200"
                         type="button"
