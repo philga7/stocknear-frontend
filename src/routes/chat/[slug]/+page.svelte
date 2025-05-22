@@ -24,11 +24,9 @@
   let inputEl: HTMLTextAreaElement;
   let chatContainer: HTMLDivElement;
   let bottomEl: HTMLDivElement;
-  const MAX_HEIGHT = 16 * 16;
 
-  // Auto-scrolling
-  let autoScroll = true;
-  let lastScrollTop = 0;
+  // Auto-scrolling - Modified to track streaming state
+  let isStreaming = false; // New variable to track streaming state
 
   let editorDiv;
   let editorView;
@@ -100,7 +98,7 @@
       );
 
       const coords = getCaretCoordinates(view);
-      suggestionPos = { top: coords.bottom + 4, left: coords.left };
+      suggestionPos = { top: coords.bottom, left: coords.left };
       showSuggestions = suggestions.length > 0;
     } else {
       showSuggestions = false;
@@ -170,17 +168,18 @@
     }
   });
 
+  // Modified afterUpdate to only autoscroll during streaming
   afterUpdate(async () => {
-    if (autoScroll && bottomEl) {
+    if (isStreaming && bottomEl) {
       // Wait for new messages to render
       await tick();
-      bottomEl.scrollIntoView({ behavior: isLoading ? "auto" : "smooth" });
+      bottomEl.scrollIntoView({ behavior: "smooth" });
     }
   });
 
   async function llmChat(userMessage?: string) {
     isLoading = true;
-
+    isStreaming = true;
     // Use provided message or input text
     const userQuery = userMessage || editorText?.trim();
 
@@ -207,8 +206,6 @@
     // Add placeholder for assistant response
     messages = [...messages, { content: "", role: "system" }];
 
-    // Re-enable auto-scroll on new message
-    autoScroll = true;
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
@@ -264,6 +261,7 @@
         }
       }
 
+      isStreaming = false; // End streaming - disable autoscroll
       await saveChat();
     } catch (error) {
       console.error("Chat request failed:", error);
@@ -278,6 +276,7 @@
       ];
     } finally {
       isLoading = false;
+      isStreaming = false; // Ensure streaming is disabled
     }
   }
 
@@ -383,11 +382,11 @@
       </div>
 
       <div
-        class="bg-white dark:bg-default fixed absolute bottom-10 left-1/2 transform -translate-x-1/2 block p-3 w-full max-w-3xl border border-gray-300 dark:border-gray-600 shadow rounded overflow-hidden"
+        class="bg-gray-50 dark:bg-default fixed absolute bottom-10 sm:bottom-20 left-1/2 transform -translate-x-1/2 block p-3 min-w-[90vw] sm:min-w-0 sm:w-full sm:max-w-3xl border border-gray-300 dark:border-gray-600 shadow rounded overflow-hidden"
       >
         <div
           bind:this={editorDiv}
-          class="ml-2 bg-white dark:bg-default w-full min-h-[60px]"
+          class="ml-2 bg-gray-50 dark:bg-default w-full min-h-[5vh] sm:min-h-[60px]"
           on:keydown={handleKeyDown}
         />
 
@@ -408,7 +407,7 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 rounded truncate"
+                        class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-gray-50 dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 rounded truncate"
                       >
                         <span class="truncate">@Agents</span>
                         <svg
@@ -448,7 +447,7 @@
                     editorText?.trim()?.length > 0 ? llmChat() : ""}
                   class="{editorText?.trim()?.length > 0
                     ? 'cursor-pointer'
-                    : 'cursor-not-allowed opacity-60'} py-2 text-white dark:text-black text-[1rem] rounded border border-gray-300 dark:border-gray-700 bg-black dark:bg-white px-3 transition-colors duration-200"
+                    : 'cursor-not-allowed opacity-60'} py-2 text-white dark:text-black text-[1rem] rounded border border-gray-300 dark:border-gray-700 bg-black dark:bg-gray-50 px-3 transition-colors duration-200"
                   type="button"
                 >
                   {#if isLoading}
@@ -468,25 +467,25 @@
       </div>
 
       <!-- Suggestions Dropdown - Positioned relative to document body -->
-      {#if showSuggestions}
-        <ul
-          class="fixed bg-default rounded shadow-md border border-gray-300 dark:border-gray-600 z-[9999] w-56 h-fit max-h-72 overflow-y-auto scroller"
-          style="top: {suggestionPos?.top}px; left: {suggestionPos?.left}px;"
-        >
-          {#each suggestions as suggestion, i}
-            <li
-              class="px-2 py-1 cursor-pointer sm:hover:bg-[#1E222D] text-sm {i ===
-              selectedSuggestion
-                ? 'bg-[#1E222D]'
-                : ''}"
-              on:click={() => insertSuggestion(suggestion)}
-            >
-              {suggestion}
-            </li>
-          {/each}
-        </ul>
-      {/if}
     </main>
+    {#if showSuggestions}
+      <ul
+        class=" fixed bg-gray-50 dark:bg-default rounded shadow-md border border-gray-300 dark:border-gray-600 z-[9999] w-56 h-fit max-h-72 overflow-y-auto scroller"
+        style="top: {suggestionPos?.top}px; left: {suggestionPos?.left}px;"
+      >
+        {#each suggestions as suggestion, i}
+          <li
+            class="px-2 py-1 cursor-pointer sm:hover:bg-gray-100 dark:sm:hover:bg-[#1E222D] text-sm {i ===
+            selectedSuggestion
+              ? 'bg-gray-100 dark:bg-[#1E222D]'
+              : ''}"
+            on:click={() => insertSuggestion(suggestion)}
+          >
+            {suggestion}
+          </li>
+        {/each}
+      </ul>
+    {/if}
   </div>
 </section>
 
