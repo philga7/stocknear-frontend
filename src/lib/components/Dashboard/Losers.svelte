@@ -50,9 +50,8 @@
             <Table.Head class=" text-left text-sm font-bold dark:font-semibold"
               >Symbol</Table.Head
             >
-            <Table.Head
-              class="hidden sm:table-cell text-sm font-bold dark:font-semibold"
-              >Name</Table.Head
+            <Table.Head class="text-right text-sm font-bold dark:font-semibold"
+              >Market Cap</Table.Head
             >
             <Table.Head class=" text-right text-sm font-bold dark:font-semibold"
               >Price</Table.Head
@@ -79,11 +78,9 @@
                 >
               </Table.Cell>
               <Table.Cell
-                class="hidden sm:table-cell xl:table.-column text-sm sm:text-[1rem]"
+                class="text-right xl:table.-column text-sm sm:text-[1rem]"
               >
-                {item?.name?.length > charNumber
-                  ? item?.name?.slice(0, charNumber) + "..."
-                  : item?.name}
+                {abbreviateNumber(item?.marketCap)}
               </Table.Cell>
               <Table.Cell
                 class="text-right xl:table.-column text-sm sm:text-[1rem]"
@@ -91,7 +88,7 @@
                 ${item?.price?.toFixed(2)}
               </Table.Cell>
               <Table.Cell
-                class="text-right md:table.-cell xl:table.-column text-sm sm:text-[1rem] text-white"
+                class="text-right md:table.-cell xl:table.-column text-sm sm:text-[1rem]"
               >
                 {#if item?.changesPercentage >= 0}
                   <span class="text-green-800 dark:text-[#00FC50]"
