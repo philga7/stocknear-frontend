@@ -9,7 +9,7 @@
 
 <!--Start Market Cap Group-->
 
-<div>
+<div class="mt-5">
   <h2 class="mb-2 text-xl font-bold">Popular Lists</h2>
   <ul
     class="list-outside list-disc space-y-1 p-1 pl-6 md:columns-2 md:gap-x-8 md:text-lg"
