@@ -18,7 +18,7 @@
       loading="lazy"
     />
     <div
-      class="rounded p-3 min-w-14 w-full shadow border border-gray-300 dark:border-gray-700 {message?.role ===
+      class="rounded p-3 min-w-14 w-full max-w-[80vw] shadow border border-gray-300 dark:border-gray-700 {message?.role ===
       'user'
         ? 'ml-auto'
         : 'mr-auto'}"
@@ -28,7 +28,9 @@
           <span class="loading loading-dots loading-sm"></span>
         </div>
       {:else}
-        <p>{@html message?.content}</p>
+        <div class="overflow-x-auto">
+          <p>{@html message?.content}</p>
+        </div>
       {/if}
     </div>
   </div>

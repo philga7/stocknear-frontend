@@ -1,9 +1,12 @@
 <script lang="ts">
   import ChatMessage from "$lib/components/Chat/ChatMessage.svelte";
   import Arrow from "lucide-svelte/icons/arrow-up";
+  import Plus from "lucide-svelte/icons/plus";
   import { agentOptions } from "$lib/utils";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
+  import { goto } from "$app/navigation";
+
   import { EditorState, Plugin } from "prosemirror-state";
   import { EditorView, Decoration, DecorationSet } from "prosemirror-view";
   import { keymap } from "prosemirror-keymap";
@@ -502,6 +505,14 @@
                     </DropdownMenu.Content>
                   </DropdownMenu.Root>
                 </div>
+
+                <Button
+                  on:click={() => goto("/chat")}
+                  class="mr-auto ml-2 w-fit border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-gray-50 dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 rounded truncate"
+                >
+                  <span class="truncate"> New chat</span>
+                  <Plus class="-mr-1 ml-3 h-5 w-5 xs:ml-2 inline-block" />
+                </Button>
 
                 <button
                   on:click={() =>
