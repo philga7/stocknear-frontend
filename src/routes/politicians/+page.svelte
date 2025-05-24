@@ -336,7 +336,7 @@
                   {#each displayList as item}
                     <a
                       href={`/politicians/${item?.id}`}
-                      class="w-full cursor-pointer bg-gray-100 dark:bg-[#141417] sm:hover:bg-gray-400 dark:sm:hover:bg-[#000] ease-in-out border dark:sm:hover:border-[#000] sm:hover:shadow-[#8C5F1B] border-gray-300 dark:border-gray-800 shadow-md rounded h-auto pb-4 pt-4 mb-7 {item?.party ===
+                      class="w-full cursor-pointer bg-gray-300 dark:bg-[#141417] sm:hover:bg-gray-200 dark:sm:hover:bg-[#000] ease-in-out border dark:sm:hover:border-[#000] sm:hover:shadow-[#8C5F1B] border-gray-300 dark:border-gray-800 shadow-md rounded h-auto pb-4 pt-4 mb-7 {item?.party ===
                       'Republican'
                         ? 'sm:hover:shadow-[#80000D]'
                         : item?.party === 'Democratic'
