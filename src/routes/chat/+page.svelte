@@ -32,10 +32,13 @@
 
   let defaultChats = [
     {
-      chat: "Recent congressional trading of Nancy Pelosi.",
+      chat: "@OptionsFlow summary of nvda options activity for today",
     },
-    { chat: "Which SPY options are trending now?" },
-    { chat: "Tell me everything about Tesla." },
+    {
+      chat: "@DarkPoolFlow summary of nvda dark pool activity for today",
+    },
+    { chat: "@RealtimeData Tell me everything about Tesla." },
+    { chat: "@News What happened today for AMD?" },
     { chat: "How's the market flowing today?" },
     { chat: "How does Google make money?" },
   ];
