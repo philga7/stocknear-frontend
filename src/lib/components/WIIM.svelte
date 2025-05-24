@@ -75,10 +75,10 @@
                     <div
                       class="w-1 h-full mr-4 rounded {item?.changesPercentage ===
                       '-'
-                        ? 'bg-blue-500 dark:bg-white'
+                        ? 'bg-black dark:bg-white'
                         : item?.changesPercentage >= 0
-                          ? 'bg-green-600 dark:bg-[#00FC50]'
-                          : 'bg-red-600 dark:bg-[#FF2F1F]'}"
+                          ? 'bg-black dark:bg-[#00FC50]'
+                          : 'bg-black dark:bg-[#FF2F1F]'}"
                     ></div>
                     <!-- Item Content -->
 
@@ -160,7 +160,7 @@
           class="cursor-pointer flex justify-center items-center mt-5"
         >
           <svg
-            class="w-10 h-10 transform text-gray-400 dark:text-[#2A323C] {showFullHistory
+            class="w-10 h-10 transform text-black dark:text-[#2A323C] {showFullHistory
               ? 'rotate-180'
               : ''} "
             xmlns="http://www.w3.org/2000/svg"

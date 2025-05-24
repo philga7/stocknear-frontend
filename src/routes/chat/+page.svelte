@@ -487,7 +487,7 @@
                   <div class="block flex-grow">
                     <button
                       type="button"
-                      class="text-sm sm:text-[1rem] w-full h-full p-3 group font-sans focus:outline-none outline-none outline-transparent transition duration-50 ease-in-out items-center relative group cursor-pointer active:scale-95 origin-center shadow-sm border border-gray-300 dark:border-gray-700 rounded-[8px] sm:hover:bg-gray-100 dark:sm:hover:bg-gray-800"
+                      class="text-sm sm:text-[1rem] w-full h-full p-3 group font-sans focus:outline-none outline-none outline-transparent transition duration-50 ease-in-out items-center relative group cursor-pointer shadow border border-gray-300 dark:border-gray-700 rounded-[3px] sm:hover:bg-gray-100 dark:sm:hover:bg-gray-800"
                       on:click={() => insertDefaultChat(item?.chat)}
                     >
                       <div

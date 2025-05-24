@@ -434,7 +434,7 @@
       </div>
       <a
         href={`/stocks/${$stockTicker}/profile`}
-        class="rounded-[2px] cursor-pointer w-full m-auto py-2 h-full mt-6 text-[1rem] sm:text-lg text-center font-semibold text-white dark:text-black sm:hover:text-muted dark:sm:hover:bg-gray-300 bg-[#3C74D4] dark:bg-[#ffff] transition duration-100"
+        class="rounded-[2px] cursor-pointer w-full m-auto py-2 h-full mt-6 text-[1rem] sm:text-lg text-center font-semibold text-white dark:text-black sm:hover:bg-muted sm:hover:text-white dark:sm:hover:text-muted dark:sm:hover:bg-gray-300 bg-black dark:bg-[#ffff] transition duration-50"
       >
         Full Company Profile
       </a>
@@ -482,7 +482,7 @@
 
         <a
           href={`/stocks/${$stockTicker}/financials`}
-          class="rounded-[2px] cursor-pointer w-full m-auto py-2 h-full mt-6 text-[1rem] sm:text-lg text-center font-semibold text-white dark:text-black sm:hover:text-muted dark:sm:hover:bg-gray-300 bg-[#3C74D4] dark:bg-[#ffff] transition duration-100"
+          class="rounded-[2px] cursor-pointer w-full m-auto py-2 h-full mt-6 text-[1rem] sm:text-lg text-center font-semibold text-white dark:text-black sm:hover:bg-muted sm:hover:text-white dark:sm:hover:text-muted dark:sm:hover:bg-gray-300 bg-black dark:bg-[#ffff] transition duration-50"
         >
           Financial Statements
         </a>
@@ -518,7 +518,7 @@
 
         <a
           href={`/stocks/${$stockTicker}/forecast/analyst`}
-          class="rounded-[2px] cursor-pointer w-full m-auto py-2 h-full mt-6 text-[1rem] sm:text-lg text-center font-semibold text-white dark:text-black sm:hover:text-muted dark:sm:hover:bg-gray-300 bg-[#3C74D4] dark:bg-[#ffff] transition duration-100"
+          class="rounded-[2px] cursor-pointer w-full m-auto py-2 h-full mt-6 text-[1rem] sm:text-lg text-center font-semibold text-white dark:text-black sm:hover:bg-muted sm:hover:text-white dark:sm:hover:text-muted dark:sm:hover:bg-gray-300 bg-black dark:bg-[#ffff] transition duration-50"
         >
           Stock Forecasts
         </a>

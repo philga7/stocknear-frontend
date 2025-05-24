@@ -268,7 +268,7 @@
               </table>
               <a
                 href={`/stocks/${$stockTicker}/financials/ratios`}
-                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-white dark:text-black m-auto dark:sm:hover:bg-gray-300 bg-[#3B82F6] sm:hover:bg-blue-600 dark:bg-[#fff] transition duration-100"
+                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-white dark:text-black m-auto dark:sm:hover:bg-gray-300 bg-black sm:hover:bg-muted dark:bg-[#fff] transition duration-100"
               >
                 Financial Ratio History
               </a>
@@ -669,7 +669,7 @@
               </table>
               <a
                 href={`/stocks/${$stockTicker}/financials`}
-                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-white dark:text-black m-auto dark:sm:hover:bg-gray-300 bg-[#3B82F6] sm:hover:bg-blue-600 dark:bg-[#fff] transition duration-100"
+                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-white dark:text-black m-auto dark:sm:hover:bg-gray-300 bg-black sm:hover:bg-muted dark:bg-[#fff] transition duration-100"
               >
                 Full Income Statement
               </a>
@@ -758,7 +758,7 @@
               </table>
               <a
                 href={`/stocks/${$stockTicker}/financials/balance-sheet`}
-                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-white dark:text-black m-auto dark:sm:hover:bg-gray-300 bg-[#3B82F6] sm:hover:bg-blue-600 dark:bg-[#fff] transition duration-100"
+                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-white dark:text-black m-auto dark:sm:hover:bg-gray-300 bg-black sm:hover:bg-muted dark:bg-[#fff] transition duration-100"
               >
                 Full Balance Sheet
               </a>
@@ -825,7 +825,7 @@
               </table>
               <a
                 href={`/stocks/${$stockTicker}/financials/cash-flow`}
-                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-white dark:text-black m-auto dark:sm:hover:bg-gray-300 bg-[#3B82F6] sm:hover:bg-blue-600 dark:bg-[#fff] transition duration-100"
+                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-white dark:text-black m-auto dark:sm:hover:bg-gray-300 bg-black sm:hover:bg-muted dark:bg-[#fff] transition duration-100"
               >
                 Full Cash Flow Statement
               </a>
@@ -1012,7 +1012,7 @@
               </table>
               <a
                 href={`/stocks/${$stockTicker}/dividends`}
-                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-white dark:text-black m-auto dark:sm:hover:bg-gray-300 bg-[#3B82F6] sm:hover:bg-blue-600 dark:bg-[#fff] transition duration-100"
+                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-white dark:text-black m-auto dark:sm:hover:bg-gray-300 bg-black sm:hover:bg-muted dark:bg-[#fff] transition duration-100"
               >
                 Dividend Details
               </a>
@@ -1075,7 +1075,7 @@
               </table>
               <a
                 href={`/stocks/${$stockTicker}/forecast/analyst`}
-                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-white dark:text-black m-auto dark:sm:hover:bg-gray-300 bg-[#3B82F6] sm:hover:bg-blue-600 dark:bg-[#fff] transition duration-100"
+                class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-white dark:text-black m-auto dark:sm:hover:bg-gray-300 bg-black sm:hover:bg-muted dark:bg-[#fff] transition duration-100"
               >
                 Stock Forecasts
               </a>

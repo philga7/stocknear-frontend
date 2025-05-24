@@ -8,7 +8,7 @@
   <svg
     class="h-[22px] w-[22px] shrink-0 hidden sm:inline-block"
     viewBox="0 0 20 20"
-    fill="#60A5FA"
+    fill="currentColor"
     style="max-width:40px"
     aria-hidden="true"
     ><path
@@ -23,7 +23,7 @@
         <svg
           class="h-5 w-5 sm:hidden inline-block -mt-1.5"
           viewBox="0 0 20 20"
-          fill="#60A5FA"
+          fill="currentColor"
           style="max-width:40px"
           aria-hidden="true"
           ><path
