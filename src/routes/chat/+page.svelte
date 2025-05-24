@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import Chat from "lucide-svelte/icons/message-circle";
   import Arrow from "lucide-svelte/icons/arrow-up";
+  import Coin from "lucide-svelte/icons/coins";
   import { mode } from "mode-watcher";
   import { toast } from "svelte-sonner";
   import { goto } from "$app/navigation";
@@ -31,7 +32,7 @@
 
   let defaultChats = [
     {
-      chat: "Latest trades of Nancy Pelosi.",
+      chat: "Recent congressional trading of Nancy Pelosi.",
     },
     { chat: "Which SPY options are trending now?" },
     { chat: "Tell me everything about Tesla." },
@@ -438,6 +439,19 @@
                           </DropdownMenu.Content>
                         </DropdownMenu.Root>
                       </div>
+                      {#if ["Pro", "Plus"]?.includes(data?.user?.tier)}
+                        <label
+                          class="ml-auto mr-2 whitespace-nowrap w-auto text-xs border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default flex flex-row justify-between items-center px-3 rounded"
+                        >
+                          <div>
+                            {data?.user?.credits?.toLocaleString("en-US")}
+                            <span class="hidden sm:inline-block">Credits</span>
+                          </div>
+                          <Coin
+                            class="ml-1 w-3 h-3 text-center m-auto flex justify-center items-center"
+                          />
+                        </label>
+                      {/if}
 
                       <button
                         on:click={createChat}

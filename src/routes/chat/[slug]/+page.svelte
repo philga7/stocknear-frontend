@@ -2,6 +2,8 @@
   import ChatMessage from "$lib/components/Chat/ChatMessage.svelte";
   import Arrow from "lucide-svelte/icons/arrow-up";
   import Plus from "lucide-svelte/icons/plus";
+  import Coin from "lucide-svelte/icons/coins";
+
   import { agentOptions } from "$lib/utils";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
@@ -163,7 +165,6 @@
     if (messages.length === 1 && messages[0].role === "user") {
       const userQuery = messages[0]?.content;
       editorText = "";
-      console.log(userQuery);
       if (userQuery?.trim()) {
         // Clear messages and set user message
         messages = [{ content: userQuery, Text, role: "user" }];
@@ -265,7 +266,10 @@
         }
       }
 
-      isStreaming = false; // End streaming - disable autoscroll
+      isStreaming = false; // End streaming - disable
+      if (data?.user) {
+        data.user.credits -= 20;
+      }
       await saveChat();
     } catch (error) {
       console.error("Chat request failed:", error);
@@ -510,9 +514,23 @@
                   on:click={() => goto("/chat")}
                   class="mr-auto ml-2 w-fit border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-gray-50 dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 rounded truncate"
                 >
-                  <span class="truncate"> New chat</span>
-                  <Plus class="-mr-1 ml-3 h-5 w-5 xs:ml-2 inline-block" />
+                  <span class="hidden sm:block"> New chat</span>
+                  <Plus class="sm:-mr-1 sm:ml-1 h-5 w-5 inline-block" />
                 </Button>
+
+                {#if ["Pro", "Plus"]?.includes(data?.user?.tier)}
+                  <label
+                    class="ml-auto mr-2 whitespace-nowrap w-auto text-xs border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default flex flex-row justify-between items-center px-3 rounded"
+                  >
+                    <div>
+                      {data?.user?.credits?.toLocaleString("en-US")}
+                      <span class="hidden sm:inline-block">Credits</span>
+                    </div>
+                    <Coin
+                      class="ml-1 w-3 h-3 text-center m-auto flex justify-center items-center"
+                    />
+                  </label>
+                {/if}
 
                 <button
                   on:click={() =>
