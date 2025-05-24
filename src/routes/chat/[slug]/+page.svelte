@@ -446,7 +446,7 @@
       </div>
 
       <div
-        class="bg-gray-50 dark:bg-default fixed absolute bottom-10 sm:bottom-20 left-1/2 transform -translate-x-1/2 block p-3 min-w-[90vw] sm:min-w-0 sm:w-full sm:max-w-3xl border border-gray-300 dark:border-gray-600 shadow rounded overflow-hidden"
+        class="bg-gray-50 dark:bg-default fixed absolute bottom-10 sm:bottom-20 left-1/2 transform -translate-x-1/2 block p-3 min-w-[90vw] sm:min-w-0 sm:w-full sm:max-w-3xl border border-gray-300 dark:border-gray-600 shadow rounded-[8px] overflow-hidden"
       >
         <div
           bind:this={editorDiv}

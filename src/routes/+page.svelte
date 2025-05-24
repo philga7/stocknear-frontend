@@ -117,7 +117,6 @@
         {/await}
       {/if}
 
-      <!--
       <div
         class="text-center mb-5 relative w-fit flex justify-center m-auto text-white"
       >
@@ -126,7 +125,7 @@
             ><div
               class="flex items-center justify-center sm:hover:text-muted dark:sm:hover:text-white text-blue-700 dark:text-blue-400"
             >
-              <div class="text-lg sm:text-xl font-semibold">Ask AI Agent</div>
+              <div class="text-lg sm:text-xl font-semibold">AI Agents</div>
               <div
                 class="-mt-2 ml-1 -rotate-6 rounded bg-red-500 px-1 py-0.5 text-xs font-semibold text-white"
               >
@@ -136,7 +135,6 @@
           >
         </div>
       </div>
-      -->
 
       <h1
         class="block text-2xl lg:text-4xl text-muted dark:text-white font-bold text-center mb-10 relative w-fit flex justify-center m-auto"

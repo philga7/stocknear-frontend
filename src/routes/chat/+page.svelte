@@ -31,11 +31,11 @@
 
   let defaultChats = [
     {
-      chat: "What are key highlights of dark pool and options flow orders for Nvidia today.",
+      chat: "Latest trades of Nancy Pelosi.",
     },
     { chat: "Which SPY options are trending now?" },
     { chat: "Tell me everything about Tesla." },
-    { chat: "Which stocks reporting earnings today?" },
+    { chat: "How's the market flowing today?" },
     { chat: "How does Google make money?" },
   ];
 
@@ -360,7 +360,7 @@
             </h1>
 
             <div
-              class="block p-3 w-full border border-gray-300 dark:border-gray-600 shadow-sm rounded overflow-hidden"
+              class="block p-3 w-full border border-gray-300 dark:border-gray-600 shadow-sm rounded-[8px] overflow-hidden"
             >
               <div
                 bind:this={editorDiv}
@@ -470,7 +470,7 @@
                   <div class="block flex-grow">
                     <button
                       type="button"
-                      class="text-sm sm:text-[1rem] w-full h-full p-3 group font-sans focus:outline-none outline-none outline-transparent transition duration-50 ease-in-out items-center relative group cursor-pointer active:scale-95 origin-center shadow-sm border border-gray-300 dark:border-gray-700 rounded sm:hover:bg-gray-100 dark:sm:hover:bg-gray-800"
+                      class="text-sm sm:text-[1rem] w-full h-full p-3 group font-sans focus:outline-none outline-none outline-transparent transition duration-50 ease-in-out items-center relative group cursor-pointer active:scale-95 origin-center shadow-sm border border-gray-300 dark:border-gray-700 rounded-[8px] sm:hover:bg-gray-100 dark:sm:hover:bg-gray-800"
                       on:click={() => insertDefaultChat(item?.chat)}
                     >
                       <div

@@ -333,7 +333,7 @@
                   </a>
                 </Button>
               </Sheet.Close>
-              <!--
+
               <Sheet.Close asChild let:builder>
                 <Button
                   builders={[builder]}
@@ -347,13 +347,11 @@
                       class="flex flex-row items-center justify-start w-full"
                     >
                       <Plus class="w-4 h-4 inline-block mr-2" />
-                      <span class=" text-sm sm:text-[1rem]">Start new chat</span
-                      >
+                      <span class="text-[1rem]">Start new chat</span>
                     </div>
                   </a>
                 </Button>
               </Sheet.Close>
-              -->
 
               <Sheet.Close asChild let:builder>
                 <Button
@@ -1060,7 +1058,6 @@
                   >
                 </a>
 
-                <!--
                 <a
                   href="/chat"
                   class="mb-2 flex flex-row items-center ml-8 pr-7 w-full"
@@ -1080,7 +1077,6 @@
                   </div>
                   <span class="ml-3 text-muted dark:text-white">Home</span>
                 </a>
-                -->
 
                 <div class="flex flex-row items-center ml-9 w-full mt-3">
                   <Accordion.Root class="w-full">
