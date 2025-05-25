@@ -270,6 +270,15 @@
   }
 
   function insertDefaultChat(option) {
+    const emptyDoc = schema?.topNodeType?.createAndFill();
+    const trBefore = editorView?.state?.tr?.replaceWith(
+      0,
+      editorView?.state?.doc?.content?.size,
+      emptyDoc?.content,
+    );
+    editorView?.dispatch(trBefore);
+    editorText = "";
+
     const { from, to } = editorView.state.selection;
     const text = `${option} `;
 
