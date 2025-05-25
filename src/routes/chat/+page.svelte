@@ -17,6 +17,7 @@
   import SEO from "$lib/components/SEO.svelte";
 
   export let data;
+  export let form;
 
   let editorDiv;
   let editorView;
@@ -208,7 +209,12 @@
     } else {
       if (event.key === "Enter" && !event.shiftKey) {
         event.preventDefault();
-        createChat();
+        if (data?.user) {
+          createChat();
+        } else {
+          const closePopup = document.getElementById("userLogin");
+          closePopup?.dispatchEvent(new MouseEvent("click"));
+        }
       }
     }
   }
@@ -456,12 +462,12 @@
                         </label>
                       {/if}
 
-                      <button
-                        on:click={createChat}
+                      <label
+                        for={!data?.user ? "userLogin" : ""}
+                        on:click={() => (data?.user ? createChat() : "")}
                         class="{editorText?.trim()?.length > 0
                           ? 'cursor-pointer'
                           : 'cursor-not-allowed opacity-60'} py-2 text-white dark:text-black text-[1rem] rounded border border-gray-300 dark:border-gray-700 bg-black dark:bg-white px-3 transition-colors duration-200"
-                        type="button"
                       >
                         {#if isLoading}
                           <span
@@ -472,7 +478,7 @@
                             class="w-4 h-4 text-center m-auto flex justify-center items-center text-white dark:text-black"
                           />
                         {/if}
-                      </button>
+                      </label>
                     </div>
                   </div>
                 </div>
@@ -513,6 +519,10 @@
     </div>
   </div>
 </div>
+
+{#await import("$lib/components/LoginPopup.svelte") then { default: Comp }}
+  <svelte:component this={Comp} {data} />
+{/await}
 
 <style>
   /* Base textarea styling */
