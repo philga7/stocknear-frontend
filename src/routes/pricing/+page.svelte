@@ -163,22 +163,9 @@
         style="opacity: 1; transform: translateY(20px);"
         class="transform transition-all duration-300 sm:hover:-translate-y-1 relative flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
       >
-        <div
-          class="w-fit absolute -top-[20px] left-1/2 transform -translate-x-1/2 whitespace-nowrap m-auto px-4 py-1.5 rounded text-sm font-medium backdrop-blur-xl
-                  bg-blue-600 text-white shadow-xs"
-        >
-          <span class="flex items-center gap-1.5"
-            ><svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"
-              ><path
-                d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"
-              ></path></svg
-            >Most Popular</span
-          >
-        </div>
-
         <h3 class="text-3xl font-bold">Plus</h3>
         <p class="text-muted dark:text-zinc-300 text-sm mt-1">
-          Best for Intermediate Traders
+          Best for Intermediate Investors
         </p>
         <div class="mt-4">
           <span class="text-4xl font-bold">{mode ? "$7.50" : "$10"}</span>
@@ -497,9 +484,21 @@
         style="opacity: 1; transform: translateY(20px);"
         class="transform transition-all duration-300 sm:hover:-translate-y-1 flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
       >
+        <div
+          class="w-fit absolute -top-[20px] left-1/2 transform -translate-x-1/2 whitespace-nowrap m-auto px-4 py-1.5 rounded text-sm font-medium backdrop-blur-xl
+              bg-blue-600 text-white shadow-xs"
+        >
+          <span class="flex items-center gap-1.5"
+            ><svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"
+              ><path
+                d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"
+              ></path></svg
+            >Most Popular</span
+          >
+        </div>
         <h3 class="text-3xl font-bold">Pro</h3>
         <p class="text-muted dark:text-zinc-300 text-sm mt-1">
-          Best for Professional Traders
+          Best for Professional Investors
         </p>
         <div class="mt-4">
           <span class="text-4xl font-bold">{mode ? "$15" : "$20"}</span
@@ -676,6 +675,21 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
+            ><span class="">Unlimited Credits</span>
+          </li>
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path></svg
             ><span class="">Unlimited queries (for AI Agent)</span>
           </li>
 
@@ -751,139 +765,9 @@
     -->
     </div>
 
-    <!--Feature Table-->
-    <section class="py-8 md:py-12 mt-8 md:mt-10">
-      <div class="max-w-6xl mx-auto">
-        <h2 class="text-3xl md:text-4xl font-bold mb-6 md:mb-10 text-center">
-          Compare plans &amp; features
-        </h2>
-        <!-- Make sure the table can scroll horizontally on small screens -->
-        <div class="overflow-x-auto">
-          <table class="min-w-full border-collapse text-left">
-            <colgroup>
-              <col class="w-1/3" />
-              <col class="w-1/6" />
-              <col class="w-1/6" />
-              <col class="w-1/6" />
-            </colgroup>
-            <thead>
-              <tr>
-                <th class="py-2 md:py-3 pt-8 font-semibold text-sm sm:text-lg">
-                  Research company stocks
-                </th>
-                <th
-                  class="py-2 md:py-3 font-semibold text-center text-sm sm:text-lg"
-                >
-                  Free
-                </th>
-                <th
-                  class="py-2 md:py-3 font-semibold text-center text-sm sm:text-lg"
-                >
-                  Plus
-                </th>
-                <th
-                  class="py-2 md:py-3 font-semibold text-center text-sm sm:text-lg"
-                >
-                  Pro
-                </th>
-              </tr>
-            </thead>
-            <tbody class="text-sm md:text-[1rem]">
-              <tr>
-                <td class="py-2 md:py-3">Full Market Access</td>
-                <td class="py-2 md:py-3 text-center">❌</td>
-                <td class="py-2 md:py-3 text-center">✅</td>
-                <td class="py-2 md:py-3 text-center">✅</td>
-              </tr>
-              <tr>
-                <td class="py-2 md:py-3">Hedge Fund Portfolio</td>
-                <td class="py-2 md:py-3 text-center">❌</td>
-                <td class="py-2 md:py-3 text-center">✅</td>
-                <td class="py-2 md:py-3 text-center">✅</td>
-              </tr>
-              <tr>
-                <td class="py-2 md:py-3">US Congress Portfolio</td>
-                <td class="py-2 md:py-3 text-center">❌</td>
-                <td class="py-2 md:py-3 text-center">✅</td>
-                <td class="py-2 md:py-3 text-center">✅</td>
-              </tr>
-              <tr>
-                <td class="py-2 md:py-3">Stock Screener</td>
-                <td class="py-2 md:py-3 text-center">❌</td>
-                <td class="py-2 md:py-3 text-center">Unlimited</td>
-                <td class="py-2 md:py-3 text-center">Unlimited</td>
-              </tr>
-              <tr>
-                <td
-                  colspan="4"
-                  class="py-2 md:py-3 pt-8 font-semibold text-sm sm:text-lg"
-                >
-                  Unusual Activity
-                </td>
-              </tr>
-              <tr>
-                <td class="py-2 md:py-3">Realtime Options Data from OPRA</td>
-                <td class="py-2 md:py-3 text-center">❌</td>
-                <td class="py-2 md:py-3 text-center">❌</td>
-                <td class="py-2 md:py-3 text-center">✅</td>
-              </tr>
-              <tr>
-                <td class="py-2 md:py-3">Realtime Dark Pool Data</td>
-                <td class="py-2 md:py-3 text-center">❌</td>
-                <td class="py-2 md:py-3 text-center">❌</td>
-                <td class="py-2 md:py-3 text-center">✅</td>
-              </tr>
-
-              <tr>
-                <td
-                  colspan="4"
-                  class="py-2 md:py-3 pt-8 font-semibold text-sm sm:text-lg"
-                >
-                  Trade Ideas
-                </td>
-              </tr>
-              <tr>
-                <td class="py-2 md:py-3">No. of Watchlists</td>
-                <td class="py-2 md:py-3 text-center">1</td>
-                <td class="py-2 md:py-3 text-center">Unlimited</td>
-                <td class="py-2 md:py-3 text-center">Unlimited</td>
-              </tr>
-              <tr>
-                <td class="py-2 md:py-3">No. of Credits</td><td
-                  class="py-2 md:py-3 text-center">10</td
-                >
-                <td class="py-2 md:py-3 text-center">500</td>
-                <td class="py-2 md:py-3 text-center">1,000</td>
-              </tr>
-              <tr>
-                <td class="py-2 md:py-3">No. of Price Alerts</td>
-                <td class="py-2 md:py-3 text-center">3</td>
-                <td class="py-2 md:py-3 text-center">Unlimited</td>
-                <td class="py-2 md:py-3 text-center">Unlimited</td>
-              </tr>
-              <tr>
-                <td class="py-2 md:py-3">Wallstreet Analyst Rating</td>
-                <td class="py-2 md:py-3 text-center">❌</td>
-                <td class="py-2 md:py-3 text-center">✅</td>
-                <td class="py-2 md:py-3 text-center">✅</td>
-              </tr>
-              <tr>
-                <td class="py-2 md:py-3">AI Model Forecasts</td>
-                <td class="py-2 md:py-3 text-center">❌</td>
-                <td class="py-2 md:py-3 text-center">✅</td>
-                <td class="py-2 md:py-3 text-center">✅</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!--Feature Table -->
-
     <!--Start FAQ-->
 
-    <section class="">
+    <section class="mt-10">
       <div class="mx-auto">
         <div class="py-12 md:py-10">
           <!-- Section header -->
@@ -904,10 +788,10 @@
                     class="text-sm sm:text-[1rem] pb-5 dark:text-gray-200 overflow-hidden transition-all duration-300 ease-in-out"
                   >
                     Stocknear Service provides simplified, actionable trading
-                    data and an extensive tool suite for every trader, featuring
-                    exclusive, high-quality Wall Street data at an unmatched
-                    price. We also offer proprietary AI models for accurate
-                    forecasting and timely alerts, all within a single, unified
+                    data and an extensive tool suite for every investor,
+                    featuring exclusive, high-quality Wall Street data at an
+                    unmatched price. We also offer proprietary AI Agents and
+                    models for accurate analyzes, all within a single unified
                     platform.
                   </p>
                 </div>
