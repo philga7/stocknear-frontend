@@ -39,7 +39,7 @@
         <div class=" w-full">
           <p class="w-full">{@html message?.content}</p>
           {#if message?.callComponent?.plot && message?.callComponent?.tickerList?.length > 0}
-            <div class="mb-10">
+            <div class="">
               <CompareGraph tickerList={message?.callComponent?.tickerList} />
             </div>
           {/if}

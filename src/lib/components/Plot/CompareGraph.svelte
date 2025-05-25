@@ -539,7 +539,7 @@
         </div>
       </div>
       <div
-        class="shadow-xs border border-gray-300 dark:border-gray-800 rounded w-full h-[400px]"
+        class="shadow-xs border border-gray-300 dark:border-gray-800 rounded w-full h-[300px] sm:h-[400px]"
         use:highcharts={config}
       ></div>
     {:else}

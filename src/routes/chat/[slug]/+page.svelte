@@ -1,6 +1,5 @@
 <script lang="ts">
   import ChatMessage from "$lib/components/Chat/ChatMessage.svelte";
-  import CompareGraph from "$lib/components/Plot/CompareGraph.svelte";
 
   import Arrow from "lucide-svelte/icons/arrow-up";
   import Plus from "lucide-svelte/icons/plus";
@@ -102,7 +101,7 @@
       );
 
       const coords = getCaretCoordinates(view);
-      suggestionPos = { top: coords.bottom, left: coords.left };
+      suggestionPos = { top: coords.bottom + 4, left: coords.left };
       showSuggestions = suggestions.length > 0;
     } else {
       showSuggestions = false;
@@ -118,7 +117,7 @@
         const widget = Decoration.widget(1, () => {
           const span = document.createElement("span");
           span.className =
-            " text-gray-800 dark:text-gray-400 pointer-events-none";
+            "text-gray-800 dark:text-gray-400 pointer-events-none";
           span.textContent = "Ask anything";
           return span;
         });
