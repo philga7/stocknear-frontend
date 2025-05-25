@@ -1,13 +1,19 @@
 <script lang="ts">
-  export let message: { text: string; role: "user" | "system" };
+  import CompareGraph from "$lib/components/Plot/CompareGraph.svelte";
+
+  export let message: {
+    text: string;
+    role: "user" | "system";
+    callComponent: {};
+  };
   export let isLoading = false;
 </script>
 
 <div
-  class="flex m-auto mb-6 max-w-[1000px]"
+  class="flex m-auto mb-6 w-full max-w-[1000px]"
   class:justify-end={message.role === "user"}
 >
-  <div class="flex flex-col sm:flex-row items-start">
+  <div class="flex flex-col sm:flex-row items-start w-full">
     <img
       class="mr-auto mb-2 sm:mb-0 sm:mr-3 w-10 h-10 rounded-full {message.role ===
       'user'
@@ -18,18 +24,25 @@
       loading="lazy"
     />
     <div
-      class="rounded p-3 min-w-14 w-full max-w-[80vw] shadow border border-gray-300 dark:border-gray-700 {message?.role ===
+      class="rounded p-3 min-w-14 max-w-[80vw] shadow border border-gray-300 dark:border-gray-700 {message?.role ===
       'user'
-        ? 'ml-auto'
-        : 'mr-auto'}"
+        ? 'ml-auto '
+        : message?.role === 'system' && message?.callComponent?.tickerList
+          ? 'mr-auto w-full'
+          : 'mr-auto w-fit'}"
     >
       {#if isLoading}
         <div class=" text-center">
           <span class="loading loading-dots loading-sm"></span>
         </div>
       {:else}
-        <div class="overflow-x-auto">
-          <p>{@html message?.content}</p>
+        <div class=" w-full">
+          <p class="w-full">{@html message?.content}</p>
+          {#if message?.callComponent?.plot && message?.callComponent?.tickerList?.length > 0}
+            <div class="mb-10">
+              <CompareGraph tickerList={message?.callComponent?.tickerList} />
+            </div>
+          {/if}
         </div>
       {/if}
     </div>

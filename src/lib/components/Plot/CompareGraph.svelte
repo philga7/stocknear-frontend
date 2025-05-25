@@ -1,12 +1,15 @@
 <script lang="ts">
   import { abbreviateNumber } from "$lib/utils";
   import { mode } from "mode-watcher";
+  import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
+  import { Button } from "$lib/components/shadcn/button/index.js";
   import { screenWidth } from "$lib/store";
   import highcharts from "$lib/highcharts.ts";
   import { onMount } from "svelte";
 
   export let tickerList = [];
   export let selectedPlotCategory = {
+    name: "Stock Price",
     value: "close",
     type: "price",
   };
@@ -17,6 +20,120 @@
   let config = null;
   let isLoaded = false;
   let rawGraphData = {};
+
+  let categoryList = [
+    { name: "Stock Price", value: "close", type: "price" },
+    { name: "Market Cap", value: "marketCap", type: "marketCap" },
+    { name: "Dividend Yield", value: "yield", type: "dividend" },
+    { name: "Dividends", value: "adjDividend", type: "dividend" },
+    {
+      name: "Payout Ratio",
+      value: "dividendPayoutRatio",
+      type: "ratios-quarter",
+    },
+    { name: "Revenue", value: "revenue", type: "income" },
+    {
+      name: "Revenue Growth",
+      value: "growthRevenue",
+      type: "income-growth-ttm",
+    },
+    {
+      name: "Operating Income",
+      value: "operatingIncome",
+      type: "income",
+    },
+    {
+      name: "Operating Income Growth",
+      value: "growthOperatingIncome",
+      type: "income-growth-ttm",
+    },
+    { name: "Net Income", value: "netIncome", type: "income" },
+    {
+      name: "Net Income Growth",
+      value: "growthNetIncome",
+      type: "income-growth-ttm",
+    },
+    { name: "EBIT", value: "ebit", type: "income" },
+    { name: "EBITDA", value: "ebitda", type: "income" },
+    {
+      name: "Operating Cash Flow",
+      value: "operatingCashFlow",
+      type: "cash-flow",
+    },
+    {
+      name: "Operating Expenses",
+      value: "operatingExpenses",
+      type: "income",
+    },
+    { name: "Enterprise Value", value: "enterpriseValue", type: "key-metrics" },
+    {
+      name: "Short % Float",
+      value: "shortPercentOfFloat",
+      type: "share-statistics",
+    },
+    { name: "Short Ratio", value: "daysToCover", type: "share-statistics" },
+    { name: "EPS (Diluted)", value: "epsDiluted", type: "income" },
+    {
+      name: "EPS Growth",
+      value: "growthEPSDiluted",
+      type: "income-growth-ttm",
+    },
+    {
+      name: "Gross Profit Margin",
+      value: "grossProfitMargin",
+      type: "ratios-quarter",
+    },
+    { name: "Profit Margin", value: "netProfitMargin", type: "ratios-quarter" },
+    {
+      name: "Operating Margin",
+      value: "operatingProfitMargin",
+      type: "ratios-quarter",
+    },
+    { name: "EBITDA Margin", value: "ebitdaMargin", type: "ratios-quarter" },
+    { name: "PE Ratio", value: "priceToEarningsRatio", type: "ratios-quarter" },
+    { name: "PS Ratio", value: "priceToSalesRatio", type: "ratios-quarter" },
+    { name: "PB Ratio", value: "priceToBookRatio", type: "ratios-quarter" },
+    { name: "EV / Sales Ratio", value: "evToSales", type: "ratios-quarter" },
+    { name: "EV / EBITDA Ratio", value: "evToEBITDA", type: "ratios-quarter" },
+    {
+      name: "EV / FCF Ratio",
+      value: "evToFreeCashFlow",
+      type: "ratios-quarter",
+    },
+    { name: "Income Tax", value: "incomeTaxExpense", type: "income" },
+    {
+      name: "Effective Tax Rate",
+      value: "effectiveTaxRate",
+      type: "ratios-quarter",
+    },
+    { name: "Free Cash Flow", value: "freeCashFlow", type: "cash-flow" },
+    { name: "Total Debt", value: "totalDebt", type: "balance-sheet" },
+    {
+      name: "Research & Development",
+      value: "researchAndDevelopmentExpenses",
+      type: "income",
+    },
+    {
+      name: "Shared-Based Compensation",
+      value: "stockBasedCompensation",
+      type: "cash-flow",
+    },
+    {
+      name: "Return on Assets (ROA)",
+      value: "returnOnAssets",
+      type: "ratios-ttm",
+    },
+    {
+      name: "Return on Equity (ROE)",
+      value: "returnOnEquity",
+      type: "ratios-ttm",
+    },
+    {
+      name: "Return on Invested Capital (ROIC)",
+      value: "returnOnInvestedCapital",
+      type: "ratios-ttm",
+    },
+  ];
 
   const handleDownloadMessage = async (event) => {
     isLoaded = false;
@@ -44,6 +161,15 @@
   function changePlotPeriod(timePeriod) {
     isLoaded = false;
     selectedPlotPeriod = timePeriod;
+    downloadWorker?.postMessage({
+      tickerList: tickerList,
+      category: selectedPlotCategory,
+    });
+  }
+  async function changeCategory(category) {
+    isLoaded = false;
+    selectedPlotCategory = category;
+
     downloadWorker?.postMessage({
       tickerList: tickerList,
       category: selectedPlotCategory,
@@ -349,40 +475,87 @@
 </script>
 
 {#if tickerList?.length > 0}
-  {#if config && isLoaded}
-    <div class="relative mt-2">
+  <div class="w-full">
+    {#if config && isLoaded}
       <div
-        class="flex justify-start space-x-2 w-full left-4 absolute top-3.5 z-10"
+        class="w-full relative mt-2 mb-2 flex flex-row items-center justify-between z-10"
       >
-        {#each ["1Y", "3Y", "5Y", "Max"] as item}
-          <label
-            on:click={() => changePlotPeriod(item)}
-            class="px-2 sm:px-3 py-1 {selectedPlotPeriod === item
-              ? 'bg-gray-300 dark:bg-white text-muted'
-              : 'text-muted dark:text-white bg-gray-100 dark:bg-table text-opacity-[0.6]'} text-xs border border-gray-200 dark:border-gray-700 font-semibold transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-[2px] cursor-pointer"
-          >
-            {item}
-          </label>
-        {/each}
-      </div>
-    </div>
-    <div
-      class="shadow-xs border border-gray-300 dark:border-gray-800 rounded w-full"
-      use:highcharts={config}
-    ></div>
-  {:else}
-    <div
-      class="mt-2 flex justify-center items-center h-96 border border-gray-300 dark:border-gray-800 rounded"
-    >
-      <div class="relative">
-        <label
-          class="shadow-xs bg-gray-300 dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+        <div class="flex w-fit space-x-2">
+          {#each ["1Y", "3Y", "5Y", "Max"] as item}
+            <label
+              on:click={() => changePlotPeriod(item)}
+              class="px-2 sm:px-3 py-1 {selectedPlotPeriod === item
+                ? 'bg-gray-300 dark:bg-white text-muted'
+                : 'text-muted dark:text-white bg-gray-100 dark:bg-table text-opacity-[0.6]'} text-xs border border-gray-200 dark:border-gray-700 font-semibold transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-[2px] cursor-pointer"
+            >
+              {item}
+            </label>
+          {/each}
+        </div>
+        <div
+          class="ml-auto w-fit relative inline-block text-left cursor-pointer shadow-xs -mt-2.5"
         >
-          <span
-            class="loading loading-spinner loading-md text-muted dark:text-gray-400"
-          ></span>
-        </label>
+          <DropdownMenu.Root>
+            <DropdownMenu.Trigger asChild let:builder>
+              <Button
+                builders={[builder]}
+                class="w-full min-w-30 border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-2 py-1 h-9 rounded truncate"
+              >
+                <span class="truncate text-sm"
+                  >{selectedPlotCategory?.name}</span
+                >
+                <svg
+                  class="-mr-1 ml-3 h-5 w-5 xs:ml-2 inline-block"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  style="max-width:40px"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </Button>
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Content
+              class="w-full max-w-80 sm:w-64 h-fit max-h-72 overflow-y-auto scroller"
+            >
+              <DropdownMenu.Group>
+                {#each categoryList as item}
+                  <DropdownMenu.Item
+                    on:click={() => changeCategory(item)}
+                    class="{selectedPlotCategory?.name === item?.name
+                      ? 'dark:bg-gray-300 dark:bg-primary'
+                      : ''} cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                  >
+                    {item?.name}
+                  </DropdownMenu.Item>
+                {/each}
+              </DropdownMenu.Group>
+            </DropdownMenu.Content>
+          </DropdownMenu.Root>
+        </div>
       </div>
-    </div>
-  {/if}
+      <div
+        class="shadow-xs border border-gray-300 dark:border-gray-800 rounded w-full h-[400px]"
+        use:highcharts={config}
+      ></div>
+    {:else}
+      <div
+        class="mt-2 flex justify-center items-center h-96 border border-gray-300 dark:border-gray-800 rounded"
+      >
+        <div class="relative">
+          <label
+            class="shadow-xs bg-gray-300 dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+          >
+            <span
+              class="loading loading-spinner loading-md text-muted dark:text-gray-400"
+            ></span>
+          </label>
+        </div>
+      </div>
+    {/if}
+  </div>
 {/if}
