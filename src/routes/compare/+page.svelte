@@ -397,15 +397,6 @@
       "effectiveTaxRate",
     ].includes(selectedPlotCategory?.value);
 
-    // Create a formatter function for values based on category type
-    const formatValue = (value) => {
-      if (isPercentageCategory) {
-        return value.toFixed(2) + "%";
-      } else {
-        return abbreviateNumber(value);
-      }
-    };
-
     return {
       chart: {
         backgroundColor: $mode === "light" ? "#fff" : "#09090B",
@@ -726,7 +717,9 @@
     }
 
     if (!downloadWorker) {
-      const DownloadWorker = await import("./workers/downloadWorker?worker");
+      const DownloadWorker = await import(
+        "$lib/workers/downloadCompareWorker?worker"
+      );
       downloadWorker = new DownloadWorker.default();
       downloadWorker.onmessage = handleDownloadMessage;
     }
