@@ -5,6 +5,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
   const { query, chatId } = await request.json();
 
   // simple premium check
+  /*
   if (!["Pro", "Plus"].includes(user?.tier)) {
     return new Response(
       JSON.stringify({
@@ -14,8 +15,9 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     );
     
   }
+    */
 
-  if (user?.credits < 20) {
+  if (user?.credits < 1) {
     return new Response(
       JSON.stringify({
         error: `Insufficient credits. Your current balance is ${user?.credits}. Each prompt costs 20 credits. Credits are reset at the start of each month.`
@@ -65,7 +67,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     }
 
     await pb?.collection("users")?.update(user?.id, {
-      credits: user?.credits -20,
+      credits: user?.credits -1,
       });
 
     const decoder = new TextDecoder();

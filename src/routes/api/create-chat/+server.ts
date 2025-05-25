@@ -1,5 +1,4 @@
 import type { RequestHandler } from "./$types";
-import { redirect } from "@sveltejs/kit";
 
 export const POST: RequestHandler = async ({ request, locals }) => {
   const { user, pb } = locals;
@@ -15,24 +14,15 @@ export const POST: RequestHandler = async ({ request, locals }) => {
   }
     */
 
-  if (user?.credits < 20) {
+  if (user?.credits < 1) {
     return new Response(
       JSON.stringify({ error: `Insufficient credits. Your current balance is ${user?.credits}.` }),
       { status: 400 }
     );
   }
   
-
   
-  // Early return if user doesn't have required tier
-  const isPremiumUser = ["Pro", "Plus"].includes(user?.tier);
-  if (!isPremiumUser) {
-    return new Response(
-      JSON.stringify({ error: "Subscribe to unlock this feature" }),
-      { status: 403 }
-    );
-  }
-
+ 
   // Extract messages from the request
   try {
     const newChat = await pb.collection("chat").create({

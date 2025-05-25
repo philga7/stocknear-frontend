@@ -3,7 +3,6 @@
 
   import Arrow from "lucide-svelte/icons/arrow-up";
   import Plus from "lucide-svelte/icons/plus";
-  import Coin from "lucide-svelte/icons/coins";
 
   import { agentOptions } from "$lib/utils";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
@@ -269,7 +268,7 @@
 
       isStreaming = false; // End streaming - disable
       if (data?.user) {
-        data.user.credits -= 20;
+        data.user.credits -= 1;
       }
       await saveChat();
     } catch (error) {
@@ -519,17 +518,14 @@
                   <Plus class="sm:-mr-1 sm:ml-1 h-5 w-5 inline-block" />
                 </Button>
 
-                {#if ["Pro", "Plus"]?.includes(data?.user?.tier)}
+                {#if data?.user}
                   <label
                     class="ml-auto mr-2 whitespace-nowrap w-auto text-xs border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default flex flex-row justify-between items-center px-3 rounded"
                   >
                     <div>
                       {data?.user?.credits?.toLocaleString("en-US")}
-                      <span class="hidden sm:inline-block">Credits</span>
+                      <span class="hidden sm:inline-block">AI Prompts</span>
                     </div>
-                    <Coin
-                      class="ml-1 w-3 h-3 text-center m-auto flex justify-center items-center"
-                    />
                   </label>
                 {/if}
 

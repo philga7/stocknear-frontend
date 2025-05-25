@@ -198,6 +198,21 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
+            ><span class="">100 AI Prompts/mo</span>
+          </li>
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path></svg
             ><span class="">Unlimited Watchlist (up to 100 stocks)</span>
           </li>
           <li class="flex items-start">
@@ -232,21 +247,7 @@
 
             <span class="">Unlimited Stock Screener</span>
           </li>
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="">500 Credits</span>
-          </li>
+
           <li class="flex items-start">
             <svg
               class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
@@ -531,6 +532,21 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
+            ><span class="">300 AI Prompts/mo</span>
+          </li>
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path></svg
             ><span class="">Everything in Plus and ...</span>
           </li>
 
@@ -548,22 +564,6 @@
                 d="M5 13l4 4L19 7"
               ></path></svg
             ><span class="">Watchlist with up to 300 stocks</span>
-          </li>
-
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="">1,000 Credits</span>
           </li>
 
           <li class="flex items-start">
@@ -675,22 +675,7 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="">Unlimited Credits</span>
-          </li>
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="">Unlimited queries (for AI Agent)</span>
+            ><span class="">Unlimited AI Prompts</span>
           </li>
 
           <li class="flex items-start">
@@ -793,25 +778,6 @@
                     unmatched price. We also offer proprietary AI Agents and
                     models for accurate analyzes, all within a single unified
                     platform.
-                  </p>
-                </div>
-              </details>
-            </li>
-
-            <li class="border-b border-gray-300 dark:border-gray-800">
-              <details class="collapse collapse-arrow">
-                <summary
-                  class="font-semibold collapse-title text-[1rem] sm:text-xl flex items-center justify-between w-full text-left py-5"
-                >
-                  What is a Credit and How Can I Use It?
-                </summary>
-                <div class="collapse-content">
-                  <p
-                    class="text-sm sm:text-[1rem] pb-5 dark:text-gray-200 transition-all duration-300 ease-in-out"
-                  >
-                    Your monthly credit enables features like the AI Agent and
-                    bulk downloads. It resets at the start of each month based
-                    on your subscription tier.
                   </p>
                 </div>
               </details>

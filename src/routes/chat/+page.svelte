@@ -2,7 +2,6 @@
   import { onMount } from "svelte";
   import Chat from "lucide-svelte/icons/message-circle";
   import Arrow from "lucide-svelte/icons/arrow-up";
-  import Coin from "lucide-svelte/icons/coins";
   import { mode } from "mode-watcher";
   import { toast } from "svelte-sonner";
   import { goto } from "$app/navigation";
@@ -216,6 +215,7 @@
 
   async function createChat() {
     isLoading = true;
+    /*
     if (!["Pro", "Plus"].includes(data?.user?.tier)) {
       toast.error("Upgrade your account to unlock this feature", {
         style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
@@ -223,8 +223,9 @@
       isLoading = false;
       return;
     }
+      */
 
-    if (data?.user?.credits < 20) {
+    if (data?.user?.credits < 1) {
       toast.error(
         `Insufficient credits. Your current balance is ${data?.user?.credits}.`,
         {
@@ -442,17 +443,16 @@
                           </DropdownMenu.Content>
                         </DropdownMenu.Root>
                       </div>
-                      {#if ["Pro", "Plus"]?.includes(data?.user?.tier)}
+                      {#if data?.user}
                         <label
                           class="ml-auto mr-2 whitespace-nowrap w-auto text-xs border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default flex flex-row justify-between items-center px-3 rounded"
                         >
                           <div>
                             {data?.user?.credits?.toLocaleString("en-US")}
-                            <span class="hidden sm:inline-block">Credits</span>
+                            <span class="hidden sm:inline-block"
+                              >AI Prompts</span
+                            >
                           </div>
-                          <Coin
-                            class="ml-1 w-3 h-3 text-center m-auto flex justify-center items-center"
-                          />
                         </label>
                       {/if}
 

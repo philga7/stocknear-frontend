@@ -7,13 +7,15 @@ export const POST = (async ({ request, locals }) => {
   let output;
 
    // Early return if user doesn't have required tier
-   const isPremiumUser = ["Pro", "Plus"].includes(user?.tier);
-   if (!isPremiumUser) {
+   
+   //const isPremiumUser = ["Pro", "Plus"].includes(user?.tier);
+   if (user?.id) {
      return new Response(
-       JSON.stringify({ error: "Subscribe to unlock this feature" }),
+       JSON.stringify({ error: "Sign In to save the chat..." }),
        { status: 403 }
      );
    }
+    
 
   try {
         output = await pb.collection("chat").update(data?.chatId, {
