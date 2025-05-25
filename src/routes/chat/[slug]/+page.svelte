@@ -1,5 +1,7 @@
 <script lang="ts">
   import ChatMessage from "$lib/components/Chat/ChatMessage.svelte";
+  import CompareGraph from "$lib/components/Plot/CompareGraph.svelte";
+
   import Arrow from "lucide-svelte/icons/arrow-up";
   import Plus from "lucide-svelte/icons/plus";
   import Coin from "lucide-svelte/icons/coins";
@@ -254,10 +256,11 @@
               console.error("Stream error:", json.error);
               break;
             }
-
             if (json?.content) {
               assistantText = json?.content;
               messages[idx].content = assistantText;
+              messages[idx].plot = json?.plot ?? false;
+              messages[idx].tickerList = json?.tickerList ?? [];
               messages = [...messages]; // Trigger reactivity
             }
           } catch (err) {
@@ -442,6 +445,11 @@
             <ChatMessage {message} isLoading={true} />
           {:else}
             <ChatMessage {message} isLoading={false} />
+          {/if}
+          {#if message?.plot && message?.tickerList?.length > 0}
+            <div class="left-0 flex-wrap mb-10 m-auto w-full max-w-[700px]">
+              <CompareGraph tickerList={message?.tickerList} />
+            </div>
           {/if}
         {/each}
         <!-- sentinel div always at the bottom -->

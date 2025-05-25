@@ -1,13 +1,12 @@
 <script lang="ts">
   import { abbreviateNumber } from "$lib/utils";
   import { mode } from "mode-watcher";
+  import { screenWidth } from "$lib/store";
   import highcharts from "$lib/highcharts.ts";
-
   import { onMount } from "svelte";
 
-  export let tickerList = ["AMD"];
+  export let tickerList = [];
   export let selectedPlotCategory = {
-    name: "Stock Price",
     value: "close",
     type: "price",
   };
@@ -150,7 +149,7 @@
       chart: {
         backgroundColor: $mode === "light" ? "#fff" : "#09090B",
         animation: false,
-        height: 500,
+        height: 400,
         events: {
           render: function () {
             const chart = this;
