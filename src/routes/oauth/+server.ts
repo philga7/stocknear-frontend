@@ -42,18 +42,21 @@ export const GET = async ({ locals, url, cookies }) => {
   try {
     //
 
-    await locals.pb
+    const userLogin = await locals.pb
       ?.collection("users")
       .authWithOAuth2Code(provider.name, code, expectedVerifier, redirectURL);
 
-
+      if (userLogin?.meta?.isNew) {
+        await locals.pb.collection("users").update(userLogin?.record?.id, {
+          credits: 10,
+        })
+      }
     
   } catch (err) {
     console.log("Error logging in with OAuth2 user", err);
     redirect(302, "/register");
   }
 
-  console.log(cookies?.get("path"))
   if (cookies?.get("path")) {
     redirect(301, cookies?.get("path"));
   } else {

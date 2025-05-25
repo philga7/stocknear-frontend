@@ -37,6 +37,11 @@ export const actions = {
     try {
        const newUser = await locals.pb.collection("users").create(formData);
 
+      await locals.pb.collection("users").update(newUser?.id, {
+        'credits': 10,
+      });
+
+
       await locals.pb.collection("users").requestVerification(formData.email);
     } catch (err) {
       console.log("Error: ", err);
