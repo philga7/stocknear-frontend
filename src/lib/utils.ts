@@ -1928,4 +1928,21 @@ export const sectorNavigation = [
 ];
 
 
-export const agentOptions = ["RealtimeData","Analyst","DarkPoolFlow", "OptionsFlow", "TickerNews","Plot"];
+export const agentOptions = [
+  {"name": "BullvsBear", "credit": 3},
+  {"name": "Snapshot", "credit": 2},
+  {"name": "AnalystData", "credit": 2},
+  {"name": "DarkPoolData", "credit": 5},
+  {"name": "OptionsData", "credit": 5},
+  {"name": "TickerNews", "credit": 1},
+  {"name": "Plot", "credit": 1}
+]
+
+export function getCreditFromQuery(query, agentOptions) {
+  for (const item of agentOptions) {
+    if (query?.includes(`@${item?.name}`)) {
+      return item?.credit;
+    }
+  }
+  return 1;
+}

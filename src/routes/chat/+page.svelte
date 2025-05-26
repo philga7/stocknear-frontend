@@ -32,16 +32,17 @@
 
   let defaultChats = [
     {
-      chat: "@OptionsFlow summary of nvda options activity for today",
+      chat: "@BullvsBear for Nvidia",
     },
     {
       chat: "@DarkPoolFlow summary of nvda dark pool activity for today",
     },
-    { chat: "@RealtimeData Tell me everything about Tesla." },
+    { chat: "@Overview Tell me everything about Tesla." },
     { chat: "@TickerNews What happened today for AMD?" },
     { chat: "How's the market flowing today?" },
     { chat: "How does Google make money?" },
   ];
+  let agentNames = agentOptions?.map((item) => item?.name);
 
   const editorHighlighter = new Plugin({
     props: {
@@ -58,7 +59,7 @@
           let match;
           while ((match = regex.exec(text)) !== null) {
             const mention = match[1];
-            if (agentOptions?.includes(mention)) {
+            if (agentNames?.includes(mention)) {
               decorations?.push(
                 Decoration?.inline(
                   pos + match.index,
@@ -95,7 +96,7 @@
 
     if (match) {
       currentQuery = match[1];
-      suggestions = agentOptions?.filter((s) =>
+      suggestions = agentNames?.filter((s) =>
         s.toLowerCase().startsWith(currentQuery.toLowerCase()),
       );
 
@@ -295,7 +296,7 @@
     editorView?.dispatch(tr);
     editorView?.focus();
   }
-  function agentMentionDeletePlugin(agentOptions: string[]) {
+  function agentMentionDeletePlugin(agentNames: string[]) {
     return keymap({
       Backspace: (state, dispatch, view) => {
         const { $cursor } = state.selection as any;
@@ -313,7 +314,7 @@
         const regex = /\@([a-zA-Z0-9_]+)$/;
         const match = regex.exec(textBefore);
 
-        if (match && agentOptions.includes(match[1])) {
+        if (match && agentNames?.includes(match[1])) {
           const start = pos - match[0].length;
 
           if (dispatch) {
@@ -341,7 +342,7 @@
         const regex = /^\@([a-zA-Z0-9_]+)/;
         const match = regex.exec(textAfter);
 
-        if (match && agentOptions.includes(match[1])) {
+        if (match && agentNames?.includes(match[1])) {
           const end = pos + match[0].length;
 
           if (dispatch) {
@@ -452,10 +453,18 @@
                             <DropdownMenu.Group>
                               {#each agentOptions as option}
                                 <DropdownMenu.Item
-                                  on:click={() => insertAgentOption(option)}
+                                  on:click={() =>
+                                    insertAgentOption(option?.name)}
                                   class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                                 >
-                                  {option}
+                                  <div
+                                    class="flex flex-row items-center w-full"
+                                  >
+                                    <span>{option?.name}</span>
+                                    <span class="ml-auto"
+                                      >{option?.credit} Credits</span
+                                    >
+                                  </div>
                                 </DropdownMenu.Item>
                               {/each}
                             </DropdownMenu.Group>
@@ -468,9 +477,7 @@
                         >
                           <div>
                             {data?.user?.credits?.toLocaleString("en-US")}
-                            <span class="hidden sm:inline-block"
-                              >AI Prompts</span
-                            >
+                            <span class="hidden sm:inline-block">Credits</span>
                           </div>
                         </label>
                       {/if}

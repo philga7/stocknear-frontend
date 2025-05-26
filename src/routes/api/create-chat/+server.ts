@@ -1,4 +1,5 @@
 import type { RequestHandler } from "./$types";
+import { getCreditFromQuery, agentOptions } from "$lib/utils";
 
 export const POST: RequestHandler = async ({ request, locals }) => {
   const { user, pb } = locals;
@@ -13,8 +14,9 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     );
   }
     */
+  const costOfCredit = getCreditFromQuery(data?.query, agentOptions);
 
-  if (user?.credits < 1) {
+  if (user?.credits < costOfCredit) {
     return new Response(
       JSON.stringify({ error: `Insufficient credits. Your current balance is ${user?.credits}.` }),
       { status: 400 }
