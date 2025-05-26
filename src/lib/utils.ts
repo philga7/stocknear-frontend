@@ -1930,11 +1930,8 @@ export const sectorNavigation = [
 
 export const agentOptions = [
   {"name": "BullvsBear", "credit": 3},
-  {"name": "Snapshot", "credit": 2},
-  {"name": "AnalystData", "credit": 2},
-  {"name": "DarkPoolData", "credit": 5},
-  {"name": "OptionsData", "credit": 5},
-  {"name": "TickerNews", "credit": 1},
+  {"name": "DarkPoolData", "credit": 3},
+  {"name": "OptionsData", "credit": 4},
   {"name": "Plot", "credit": 1}
 ]
 
