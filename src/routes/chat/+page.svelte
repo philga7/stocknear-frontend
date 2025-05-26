@@ -220,6 +220,10 @@
   }
 
   async function createChat() {
+    if (isLoading) {
+      return;
+    }
+
     isLoading = true;
     /*
     if (!["Pro", "Plus"].includes(data?.user?.tier)) {

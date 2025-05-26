@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onDestroy } from "svelte";
   import CompareGraph from "$lib/components/Plot/CompareGraph.svelte";
 
   export let message: {
@@ -7,6 +8,42 @@
     callComponent: {};
   };
   export let isLoading = false;
+
+  let loadingTime = 0;
+  let intervalId: ReturnType<typeof setInterval> | null = null; // Specify type for clarity
+  const loadingMessages = [
+    "Fetching data...",
+    "Analyzing....",
+    "Thinking...",
+    "Finalizing....",
+  ];
+
+  $: {
+    if (intervalId) {
+      clearInterval(intervalId);
+      intervalId = null;
+    }
+
+    if (isLoading) {
+      intervalId = setInterval(() => {
+        // Only increment if we haven't reached the last message
+        if (loadingTime < loadingMessages.length + 2) {
+          // +2 because of "Preparing insights..." and then index 0 of loadingMessages
+          loadingTime += 1;
+        } else {
+          // If we've reached the last message, clear the interval
+          clearInterval(intervalId as ReturnType<typeof setInterval>);
+          intervalId = null;
+        }
+      }, 3000);
+    } else {
+      loadingTime = 0;
+    }
+  }
+
+  onDestroy(() => {
+    if (intervalId) clearInterval(intervalId);
+  });
 </script>
 
 <div
@@ -32,11 +69,19 @@
           : 'mr-auto w-fit'}"
     >
       {#if isLoading}
-        <div class=" text-center">
-          <span class="loading loading-dots loading-sm"></span>
+        <div class="text-center">
+          <span class="text-sm animate-pulse">
+            {#if loadingTime <= 2}
+              Preparing insights...
+            {:else}
+              {loadingMessages[
+                Math.min(loadingTime - 3, loadingMessages.length - 1)
+              ]}
+            {/if}
+          </span>
         </div>
       {:else}
-        <div class=" w-full">
+        <div class="w-full">
           <p class="w-full">{@html message?.content}</p>
           {#if message?.callComponent?.plot && message?.callComponent?.tickerList?.length > 0}
             <div class="">
