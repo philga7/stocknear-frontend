@@ -35,12 +35,15 @@
       chat: "@BullvsBear for Nvidia",
     },
     {
-      chat: "@DarkPoolFlow summary of nvda dark pool activity for today",
+      chat: "@DarkPoolData will SPY go up or down",
     },
-    { chat: "@Overview Tell me everything about Tesla." },
-    { chat: "@TickerNews What happened today for AMD?" },
+    {
+      chat: "@OptionsData how is the sentiment for Tesla right now",
+    },
+    {
+      chat: "@Plot compare the data for Gamestop and SPY",
+    },
     { chat: "How's the market flowing today?" },
-    { chat: "How does Google make money?" },
   ];
   let agentNames = agentOptions?.map((item) => item?.name);
 
