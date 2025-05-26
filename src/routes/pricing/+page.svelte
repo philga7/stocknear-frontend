@@ -198,7 +198,7 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="">100 AI Prompts/mo</span>
+            ><span class="">100 AI Credits/mo</span>
           </li>
           <li class="flex items-start">
             <svg
@@ -532,7 +532,7 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="">300 AI Prompts/mo</span>
+            ><span class="">300 AI Credits/mo</span>
           </li>
           <li class="flex items-start">
             <svg
@@ -675,7 +675,7 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="">Unlimited AI Prompts</span>
+            ><span class="">Unlimited AI Credits</span>
           </li>
 
           <li class="flex items-start">
