@@ -1928,4 +1928,4 @@ export const sectorNavigation = [
 ];
 
 
-export const agentOptions = ["RealtimeData","Analyst","DarkPoolFlow", "OptionsFlow", "News","Plot"];
+export const agentOptions = ["RealtimeData","Analyst","DarkPoolFlow", "OptionsFlow", "TickerNews","Plot"];
