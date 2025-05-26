@@ -38,7 +38,7 @@
       chat: "@DarkPoolFlow summary of nvda dark pool activity for today",
     },
     { chat: "@RealtimeData Tell me everything about Tesla." },
-    { chat: "@News What happened today for AMD?" },
+    { chat: "@TickerNews What happened today for AMD?" },
     { chat: "How's the market flowing today?" },
     { chat: "How does Google make money?" },
   ];
