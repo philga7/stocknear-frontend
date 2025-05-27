@@ -1929,9 +1929,9 @@ export const sectorNavigation = [
 
 
 export const agentOptions = [
-  {"name": "BullvsBear", "credit": 3},
-  {"name": "DarkPoolData", "credit": 3},
-  {"name": "OptionsData", "credit": 4},
+  {"name": "BullvsBear", "credit": 5},
+  {"name": "DarkPoolData", "credit": 6},
+  {"name": "OptionsData", "credit": 7},
   {"name": "Plot", "credit": 1}
 ]
 
@@ -1941,5 +1941,5 @@ export function getCreditFromQuery(query, agentOptions) {
       return item?.credit;
     }
   }
-  return 1;
+  return 2;
 }
