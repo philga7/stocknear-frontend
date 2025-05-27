@@ -1932,6 +1932,7 @@ export const agentOptions = [
   {"name": "BullvsBear", "credit": 5},
   {"name": "CompareStocks", "credit": 6},
   {"name": "DarkPoolData", "credit": 6},
+  {"name": "FundamentalData", "credit": 5},
   {"name": "OptionsData", "credit": 7},
   {"name": "Plot", "credit": 1}
 ]
