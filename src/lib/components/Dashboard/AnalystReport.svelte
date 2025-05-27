@@ -15,17 +15,7 @@
           class="text-xl sm:text-2xl text-muted dark:text-white font-semibold"
           >Analyst Insight Report
         </Card.Title>
-        {#if analystReport?.date}
-          <label class="hidden sm:inline-block text-sm italic ml-auto"
-            >Updated {analystReport?.date}</label
-          >
-        {/if}
       </div>
-      {#if analystReport?.date}
-        <label class="sm:hidden text-xs italic mt-2"
-          >Updated {analystReport?.date}</label
-        >
-      {/if}
     </div>
   </Card.Header>
   <Card.Content>

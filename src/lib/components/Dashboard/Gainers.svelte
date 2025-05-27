@@ -51,7 +51,7 @@
               >Symbol</Table.Head
             >
             <Table.Head class="text-right text-sm font-bold dark:font-semibold"
-              >Market Cap</Table.Head
+              >Mkt Cap</Table.Head
             >
             <Table.Head class=" text-right text-sm font-bold dark:font-semibold"
               >Price</Table.Head
