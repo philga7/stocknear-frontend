@@ -138,14 +138,24 @@
     if (!browser) return;
 
     if ("serviceWorker" in navigator) {
-      try {
-        const registrations = await navigator.serviceWorker.getRegistrations();
+      navigator.serviceWorker
+        .register("/service-worker.js")
+        .then((registration) => {
+          console.log("SW registered:", registration);
 
-        // Unregister all in parallel (not sequentially)
-        await Promise?.all(registrations?.map((reg) => reg?.unregister()));
-      } catch (err) {
-        console.error("Error unregistering service workers:", err);
-      }
+          // 🚀 Force skipWaiting
+          if (registration.waiting) {
+            registration.waiting.postMessage({ type: "SKIP_WAITING" });
+          }
+
+          navigator.serviceWorker.ready.then((reg) => {
+            console.log("SW ready:", reg);
+            // safe to subscribe for push
+          });
+        })
+        .catch((err) => {
+          console.error("SW registration failed:", err);
+        });
     }
 
     if ("caches" in window) {
@@ -168,7 +178,7 @@
         if (data?.user?.id) {
           await loadWorker();
         }
-      }, 500);
+      }, 1000);
     });
 
     // Cache clearing interval (independent of the deferred tasks)

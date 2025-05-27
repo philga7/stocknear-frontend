@@ -101,9 +101,9 @@ async function sendSubscriptionToServer(subscription) {
 	}
 
 	export async function subscribeUser() {
-		if ('serviceWorker' in navigator) {
-		  try {
+		try {
 			const registration = await navigator?.serviceWorker?.ready;
+			console.log(registration)
 			// Convert the VAPID key string to Uint8Array:
 			const vapidKey = urlBase64ToUint8Array(import.meta.env.VITE_VAPID_PUBLIC_KEY);
 	  
@@ -111,14 +111,13 @@ async function sendSubscriptionToServer(subscription) {
 			  userVisibleOnly: true,
 			  applicationServerKey: vapidKey
 			});
-	  
+			console.log(subscription)
 			const output = await sendSubscriptionToServer(subscription);
 			return output;
 		  } catch (err) {
 			console.error('Error subscribing:', err);
 			return { success: false };
 		  }
-		}
 	  }
 	  
 
