@@ -478,7 +478,7 @@
   <div class="w-full">
     {#if config && isLoaded}
       <div
-        class="w-full relative mt-2 mb-2 flex flex-row items-center justify-between z-10"
+        class="w-full relative mt-2 mb-2 flex flex-col sm:flex-row items-start sm:items-center justify-between z-10"
       >
         <div class="flex w-fit space-x-2">
           {#each ["1Y", "3Y", "5Y", "Max"] as item}
