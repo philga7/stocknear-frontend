@@ -24,7 +24,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
   if (user?.credits < costOfCredit) {
     return new Response(
       JSON.stringify({
-        error: `Insufficient credits. Your current balance is ${user?.credits}. Each prompt costs 20 credits. Credits are reset at the start of each month.`
+        error: `Insufficient credits. Your current balance is ${user?.credits}. Your prompt would cost ${costOfCredit} credits. Credits are reset at the start of each month.`
       }),
       { status: 400 }
     );
