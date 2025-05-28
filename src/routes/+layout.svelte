@@ -141,15 +141,14 @@
       navigator.serviceWorker
         .register("/service-worker.js")
         .then((registration) => {
-          console.log("SW registered:", registration);
+          //console.log("SW registered:", registration);
 
-          // 🚀 Force skipWaiting
           if (registration.waiting) {
             registration.waiting.postMessage({ type: "SKIP_WAITING" });
           }
 
           navigator.serviceWorker.ready.then((reg) => {
-            console.log("SW ready:", reg);
+            //console.log("SW ready:", reg);
             // safe to subscribe for push
           });
         })
