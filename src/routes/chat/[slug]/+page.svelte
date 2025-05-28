@@ -184,7 +184,7 @@
   });
 
   async function llmChat(userMessage?: string) {
-    if (isLoading && isStreaming) {
+    if (isLoading || isStreaming) {
       //making sure to not send another request when the llm is responding already
       return;
     }
@@ -554,7 +554,7 @@
                     : 'cursor-not-allowed opacity-60'} py-2 text-white dark:text-black text-[1rem] rounded border border-gray-300 dark:border-gray-700 bg-black dark:bg-gray-50 px-3 transition-colors duration-200"
                   type="button"
                 >
-                  {#if isLoading && isStreaming}
+                  {#if isLoading || isStreaming}
                     <span
                       class="loading loading-spinner loading-xs text-center m-auto flex justify-center items-center text-white dark:text-black"
                     ></span>
