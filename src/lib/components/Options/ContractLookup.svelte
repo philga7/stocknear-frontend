@@ -362,6 +362,7 @@
             year: "numeric",
             month: "short",
             day: "numeric",
+            timeZone: "UTC",
           })}</span><br>`;
 
           // Add each series entry, appending "%" when series.name === "IV"
