@@ -126,11 +126,11 @@
   <div class="px-3">
     <div class="mx-auto text-center mb-8">
       <h1 class="text-4xl sm:text-5xl font-bold pb-4">
-        Success is well-researched
+        Big Insights for Pocket Change
       </h1>
     </div>
 
-    <Discount />
+    <!--<Discount />-->
 
     <div class="flex flex-row items-center justify-center mb-5 sm:mb-0">
       <div class="flex flex-row items-center ml-auto">
@@ -168,7 +168,7 @@
           Best for Intermediate Investors
         </p>
         <div class="mt-4">
-          <span class="text-4xl font-bold">{mode ? "$7.50" : "$10"}</span>
+          <span class="text-4xl font-bold">{mode ? "$3.75" : "$5"}</span>
           <!--
           <span class="text-pink-700 dark:text-pink-500 text-4xl font-bold ml-1"
             >{mode ? "$3.75" : "$5"}</span
@@ -198,7 +198,7 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="">100 AI Credits/mo</span>
+            ><span class="">50 AI Credits/mo</span>
           </li>
           <li class="flex items-start">
             <svg
@@ -502,7 +502,7 @@
           Best for Professional Investors
         </p>
         <div class="mt-4">
-          <span class="text-4xl font-bold">{mode ? "$15" : "$20"}</span
+          <span class="text-4xl font-bold">{mode ? "$7.5" : "$10"}</span
           ><!--<span
             class="text-pink-700 dark:text-pink-500 text-4xl font-bold ml-1"
             >{mode ? "$7.5" : "$10"}</span
@@ -532,7 +532,7 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="">300 AI Credits/mo</span>
+            ><span class="">100 AI Credits/mo</span>
           </li>
           <li class="flex items-start">
             <svg
