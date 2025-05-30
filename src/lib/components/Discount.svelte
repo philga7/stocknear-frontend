@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
-  let targetDate = new Date("2025-05-23");
+  let targetDate = new Date("2025-06-09");
 
   let days = "-";
   let hours = "-";
@@ -41,7 +41,7 @@
 <div class="lg:max-w-xl w-full rounded-none sm:rounded m-auto mb-10">
   <div class="container">
     <h2 class="text-2xl font-bold text-center text-pink-700 dark:text-pink-500">
-      40% OFF Your Subscription!
+      50% OFF Your Subscription!
     </h2>
   </div>
   <div class="container text-center">

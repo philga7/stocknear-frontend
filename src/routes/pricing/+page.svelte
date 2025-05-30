@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
 
   import SEO from "$lib/components/SEO.svelte";
-  //import Discount from "$lib/components/Discount.svelte";
+  import Discount from "$lib/components/Discount.svelte";
   export let data;
   export let form;
 
@@ -130,7 +130,7 @@
       </h1>
     </div>
 
-    <!--<Discount />-->
+    <Discount />
 
     <div class="flex flex-row items-center justify-center mb-5 sm:mb-0">
       <div class="flex flex-row items-center ml-auto">
@@ -483,11 +483,11 @@
       </div>
       <div
         style="opacity: 1; transform: translateY(20px);"
-        class="transform transition-all duration-300 sm:hover:-translate-y-1 flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
+        class="mt-5 sm:mt-0 transform transition-all duration-300 sm:hover:-translate-y-1 flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
       >
         <div
           class="w-fit absolute -top-[20px] left-1/2 transform -translate-x-1/2 whitespace-nowrap m-auto px-4 py-1.5 rounded text-sm font-medium backdrop-blur-xl
-              bg-blue-600 text-white shadow-xs"
+              bg-pink-600 text-white shadow-xs"
         >
           <span class="flex items-center gap-1.5"
             ><svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"

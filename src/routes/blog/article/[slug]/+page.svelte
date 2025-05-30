@@ -1,7 +1,8 @@
 <script lang="ts">
   import { getImageURL } from "$lib/utils";
   import SEO from "$lib/components/SEO.svelte";
-  //import Overview from "$lib/components/Blog/Overview.svelte";
+  import PreEarningsPost from "$lib/components/Blog/PreEarningsPost.svelte";
+
   //import ArticleBreadcrumbStructuredData from "$lib/components/ArticleBreadcrumbStructuredData.svelte";
   export let data;
 
@@ -12,22 +13,6 @@
       article = data?.getArticle;
     }
   }
-  /*
-  const overviewList = [
-    { label: "Market Cap", value: "$3.26T" },
-    { label: "Industry", value: "Technology" },
-    { label: "EPS (TTM)", value: "$6.49" },
-    { label: "P/E (TTM)", value: "32.46" },
-    { label: "Div & Yield", value: "$1.00 (0.46%)" },
-    { label: "P/S (TTM)", value: "8.54" },
-    { label: "P/B", value: "43.92" },
-    { label: "Shares Outstanding", value: "15.33B" },
-    { label: "Short % Float", value: "1.23%" },
-    { label: "Short % Outstanding", value: "1.11%" },
-    { label: "Forward P/E", value: "31.27" },
-    { label: "Next Earnings", value: "May 11, 2025" },
-  ];
-  */
 </script>
 
 <SEO
@@ -87,6 +72,7 @@
             <div class="text-lg mt-4">
               <div class="content max-w-4xl">
                 {@html article?.description}
+                <!--<PreEarningsPost />-->
               </div>
             </div>
           </article>

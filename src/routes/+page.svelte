@@ -78,7 +78,6 @@
   {#if AppInstalled && !$closedPWA}
     <svelte:component this={AppInstalled} />
   {/if}
-  <!--
 
   {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
     <div class="flex justify-center mb-5 whitespace-nowrap mt-5 sm:mt-0">
@@ -101,13 +100,12 @@
               clip-rule="evenodd"
             ></path>
           </svg>
-          <strong class="text-pink-500"> Offer Ends Today!</strong>
+          <strong class="text-pink-500 text-[1rem]"> Summer Sale:</strong>
         </div>
         <div>Get <strong> 50% OFF</strong> on your Subscription!</div>
       </a>
     </div>
   {/if}
-  -->
 
   <div class="flex flex-col m-auto justify-center items-center">
     <div class="text-center mb-10 w-full px-4 sm:px-3 mt-10">
@@ -117,6 +115,7 @@
         {/await}
       {/if}
 
+      <!--
       <div
         class="text-center mb-5 relative w-fit flex justify-center m-auto text-white"
       >
@@ -135,6 +134,7 @@
           >
         </div>
       </div>
+      -->
 
       <h1
         class="block text-2xl lg:text-4xl text-muted dark:text-white font-bold text-center mb-10 relative w-fit flex justify-center m-auto"
