@@ -1,7 +1,7 @@
 import { error, fail, redirect } from "@sveltejs/kit";
 
-// Constants
-const CACHE_DURATION = 60 * 1000; // 1 minute
+/// Constants
+const CACHE_DURATION = 60 * 1000; // 60 seconds
 const REQUEST_TIMEOUT = 5000;
 
 // LRU Cache implementation
@@ -12,26 +12,25 @@ class LRUCache {
   }
 
   get(key) {
-    const entry = this?.cache.get(key);
+    const entry = this.cache.get(key);
     if (!entry) return null;
     const { data, timestamp } = entry;
     if (Date.now() - timestamp > CACHE_DURATION) {
-      this?.cache?.delete(key);
+      this.cache.delete(key);
       return null;
     }
     // Refresh order
-    this?.cache?.delete(key);
-    this?.cache?.set(key, entry);
+    this.cache.delete(key);
+    this.cache.set(key, entry);
     return data;
   }
 
   set(key, data) {
-    if (this?.cache?.size >= this?.maxSize) {
-      // Remove oldest
-      const oldest = this.cache.keys().next().value;
-      this?.cache?.delete(oldest);
+    if (this.cache.size >= this.maxSize) {
+      const oldestKey = this.cache.keys().next().value;
+      this.cache.delete(oldestKey);
     }
-    this?.cache?.set(key, { data, timestamp: Date.now() });
+    this.cache.set(key, { data, timestamp: Date.now() });
   }
 }
 
@@ -51,56 +50,34 @@ async function fetchWithTimeout(url, options = {}, timeout = REQUEST_TIMEOUT) {
 }
 
 // Load function
-export async function load({ locals, cookies }) {
+export async function load({ locals }) {
   const { apiKey, apiURL } = locals;
-  const defaultSettings = [
-    'gainers', 'losers', 'wiim', 'analystReport', 'upcomingEarnings', 'recentEarnings'
-  ];
+  const cacheKey = `dashboard:${apiKey}`;
 
-  // Parse custom settings from cookie
-  function getCustomSettings() {
-    try {
-      const raw = cookies.get('custom-dashboard-widget');
-      if (!raw) return defaultSettings;
-      const parsed = JSON.parse(raw);
-      const ids = Array.isArray(parsed)
-        ? parsed.map(item => item.id).filter(Boolean)
-        : [];
-      return ids.length ? ids : defaultSettings;
-    } catch {
-      return defaultSettings;
-    }
-  }
-
-  const customSettings = getCustomSettings();
-  const cacheKey = `dashboard:${customSettings.join(',')}`;
-
-  // Attempt to load from cache or fetch
+  // Check cache
   let dashboardData = dashboardCache.get(cacheKey);
+
   if (!dashboardData) {
     try {
-      const postBody = { customSettings };
       dashboardData = await fetchWithTimeout(
         `${apiURL}/dashboard-info`,
         {
-          method: 'POST',
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             'X-API-KEY': apiKey
           },
-          body: JSON.stringify(postBody)
         }
       );
       dashboardCache.set(cacheKey, dashboardData);
     } catch (err) {
       console.error('Dashboard fetch error', err);
-      dashboardData = {};
+      dashboardData = {}; // or `throw error(500, 'Dashboard fetch failed')` if you want to fail
     }
   }
 
   return {
-    getDashboard: dashboardData,
-    getCustomSettings: customSettings
+    getDashboard: dashboardData
   };
 }
 

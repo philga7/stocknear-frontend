@@ -13,7 +13,6 @@
   import HoverStockChart from "$lib/components/HoverStockChart.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
   import SEO from "$lib/components/SEO.svelte";
-  import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import { mode } from "mode-watcher";
 
   export let data;
@@ -598,7 +597,6 @@
                         </tbody>
                       </table>
                     </div>
-                    <UpgradeToPro {data} />
                   {:else}
                     <div class="mt-5 mb-3">
                       <Infobox

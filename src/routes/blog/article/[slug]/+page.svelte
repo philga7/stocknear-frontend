@@ -71,8 +71,8 @@
 
             <div class="text-lg mt-4">
               <div class="content max-w-4xl">
-                {@html article?.description}
-                <!--<PreEarningsPost />-->
+                <!--{@html article?.description}-->
+                <PreEarningsPost />
               </div>
             </div>
           </article>

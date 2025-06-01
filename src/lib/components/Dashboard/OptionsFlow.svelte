@@ -1,108 +1,74 @@
 <script lang="ts">
-  import * as Card from "$lib/components/shadcn/card/index.ts";
-  import * as Table from "$lib/components/shadcn/table/index.ts";
   import Infobox from "$lib/components/Infobox.svelte";
   import { abbreviateNumber } from "$lib/utils";
 
   export let optionsFlowList;
 </script>
 
-<Card.Root
-  class=" bg-gray-50 dark:bg-default overflow-x-auto overflow-hidden overflow-y-auto no-scrollbar"
->
-  <Card.Header class="flex flex-row items-center">
-    <div class="flex flex-col items-start w-full">
-      <div class="flex flex-row w-full items-center">
-        <Card.Title>
-          <a
-            href="/options-flow/"
-            class="text-xl sm:text-2xl text-muted dark:text-white font-semibold cursor-pointer sm:hover:underline sm:hover:underline-offset-4"
-          >
-            Options Flow Order
-            <svg
-              class="h-5 w-5 inline-block"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              style="max-width:40px"
-              aria-hidden="true"
-              ><path
-                fill-rule="evenodd"
-                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                clip-rule="evenodd"
-              ></path></svg
+<section>
+  <a href="/options-flow" class="inline-flex items-center"
+    ><h2
+      class="mb-2 text-xl font-bold leading-tight bp:text-2xl bp:leading-tight"
+    >
+      Unusual Options Orders
+    </h2>
+    <svg
+      class="h-5 w-5"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      style="max-width:40px"
+      aria-hidden="true"
+      ><path
+        fill-rule="evenodd"
+        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+        clip-rule="evenodd"
+      ></path></svg
+    ></a
+  >
+  {#if optionsFlowList?.length > 0}
+    <table class="w-full text-sm sm:text-[1rem]">
+      <thead data-svelte-h="svelte-1nmoxi0"
+        ><tr
+          ><th class="border border-gray-800 px-2 py-1.5 text-left">Symbol</th>
+          <th class="border border-gray-800 px-2 py-1.5 text-left">Type</th>
+          <th class="border border-gray-800 px-2 py-1.5 text-left">Prem</th>
+          <th class="border border-gray-800 px-2 py-1.5 text-left">Strike</th
+          ></tr
+        ></thead
+      >
+      <tbody>
+        {#each optionsFlowList as item}
+          <tr
+            ><td
+              class="whitespace-nowrap border border-gray-800 px-2 py-1.5 text-left"
+              ><a
+                href={`/${item?.underlying_type === "stock" ? "stocks" : "etf"}/${item?.ticker}/options/unusual-activity`}
+                class="text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted cursor-pointer"
+                >{item?.ticker}</a
+              ></td
             >
-          </a></Card.Title
-        >
-      </div>
-    </div>
-  </Card.Header>
-  <Card.Content>
-    {#if optionsFlowList?.length > 0}
-      <Table.Root class="overflow-x-auto w-full">
-        <Table.Header>
-          <Table.Row>
-            <Table.Head class=" text-left text-sm font-bold dark:font-semibold"
-              >Symbol</Table.Head
-            >
-            <Table.Head
-              class="text-right table-cell text-sm font-bold dark:font-semibold"
-              >Prem</Table.Head
-            >
-            <Table.Head
-              class="text-right table-cell text-sm font-bold dark:font-semibold"
-              >Sent</Table.Head
-            >
-            <Table.Head class=" text-right text-sm font-bold dark:font-semibold"
-              >Strike</Table.Head
-            >
-            <Table.Head class=" text-right text-sm font-bold dark:font-semibold"
-              >OI</Table.Head
-            >
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {#each optionsFlowList as item}
-            <Table.Row>
-              <Table.Cell class="text-sm sm:text-[1rem]">
-                <a
-                  href={`/${item?.underlying_type === "stock" ? "stocks" : "etf"}/${item?.ticker}`}
-                  class="text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted cursor-pointer"
-                  >{item?.ticker}</a
+            <td class="border border-gray-800 px-2 py-1.5 text-left">
+              {#if item?.put_call === "Calls"}
+                <span class="text-green-800 dark:text-[#00FC50]"
+                  >{item?.put_call}</span
                 >
-              </Table.Cell>
-              <Table.Cell
-                class="table-cell xl:table.-column text-sm sm:text-[1rem] text-right"
-              >
-                ${abbreviateNumber(item?.cost_basis)}
-              </Table.Cell>
-              <Table.Cell
-                class="table-cell xl:table.-column text-sm sm:text-[1rem] text-right {item?.sentiment ===
-                'Bullish'
-                  ? 'text-green-800 dark:text-[#00FC50]'
-                  : item?.sentiment === 'Bearish'
-                    ? 'text-red-800 dark:text-[#FF2F1F]'
-                    : ''}"
-              >
-                {item?.sentiment}
-              </Table.Cell>
-              <Table.Cell
-                class="text-right xl:table.-column text-sm sm:text-[1rem]"
-              >
-                {item?.strike_price}
-              </Table.Cell>
-              <Table.Cell
-                class="text-right md:table.-cell xl:table.-column text-sm sm:text-[1rem] "
-              >
-                {item?.open_interest
-                  ? Number(item?.open_interest)?.toLocaleString("en-US")
-                  : "n/a"}
-              </Table.Cell>
-            </Table.Row>
-          {/each}
-        </Table.Body>
-      </Table.Root>
-    {:else}
-      <Infobox text="Currently, no unusual options flow data available." />
-    {/if}
-  </Card.Content>
-</Card.Root>
+              {:else}
+                <span class="text-red-800 dark:text-[#FF2F1F]"
+                  >{item?.put_call}
+                </span>
+              {/if}
+            </td>
+            <td class="border border-gray-800 px-2 py-1.5 text-left">
+              ${abbreviateNumber(item?.cost_basis)}</td
+            >
+            <td class="border border-gray-800 px-2 py-1.5 text-left"
+              >${item?.strike_price}</td
+            >
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+  {:else}
+    <Infobox text="Currently, no unusual options flow data available." />
+  {/if}
+</section>

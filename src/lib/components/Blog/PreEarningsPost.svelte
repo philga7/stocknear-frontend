@@ -1,5 +1,7 @@
 <script lang="ts">
   import Overview from "$lib/components/Blog/Overview.svelte";
+  import Dividends from "$lib/components/Blog/Dividends.svelte";
+  import Valuation from "$lib/components/Blog/Valuation.svelte";
 
   const overviewList = [
     { label: "Market Cap", value: "$3.26T" },
@@ -18,3 +20,7 @@
 </script>
 
 <Overview dataList={overviewList} />
+
+<Dividends />
+
+<Valuation />
