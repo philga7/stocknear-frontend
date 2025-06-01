@@ -526,8 +526,13 @@
               {#each defaultChats as item}
                 <div
                   on:click={() => {
-                    insertDefaultChat(item?.query);
-                    createChat();
+                    if (data?.user) {
+                      insertDefaultChat(item?.query);
+                      createChat();
+                    } else {
+                      const closePopup = document.getElementById("userLogin");
+                      closePopup?.dispatchEvent(new MouseEvent("click"));
+                    }
                   }}
                   class="flex flex-col border border-gray-300 dark:border-gray-700 sm:hover:bg-gray-100 dark:sm:hover:bg-secondary bg-white dark:bg-default shadow-sm"
                 >
