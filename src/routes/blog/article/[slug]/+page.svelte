@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getImageURL } from "$lib/utils";
   import SEO from "$lib/components/SEO.svelte";
-  import PreEarningsPost from "$lib/components/Blog/PreEarningsPost.svelte";
+  //import PreEarningsPost from "$lib/components/Blog/PreEarningsPost.svelte";
 
   //import ArticleBreadcrumbStructuredData from "$lib/components/ArticleBreadcrumbStructuredData.svelte";
   export let data;
@@ -71,8 +71,8 @@
 
             <div class="text-lg mt-4">
               <div class="content max-w-4xl">
-                <!--{@html article?.description}-->
-                <PreEarningsPost />
+                {@html article?.description}
+                <!--<PreEarningsPost />-->
               </div>
             </div>
           </article>
