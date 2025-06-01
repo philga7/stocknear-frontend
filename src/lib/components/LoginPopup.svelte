@@ -196,7 +196,7 @@ const output = await response.json();
             action="?/login"
             method="POST"
             use:enhance={submitLogin}
-            class="flex flex-col items-center space-y-2 w-full md:w-5/6 md:ml-auto md:mr-auto"
+            class="flex flex-col text-start items-center space-y-2 w-full md:w-5/6 md:ml-auto md:mr-auto"
           >
             <Input
               type="email"
@@ -879,7 +879,7 @@ const output = await response.json();
             method="POST"
             action="?/register"
             use:enhance={submitRegistration}
-            class="flex flex-col items-center space-y-2 w-full md:w-5/6 pt-4 md:ml-auto md:mr-auto"
+            class="flex flex-col text-start items-center space-y-2 w-full md:w-5/6 pt-4 md:ml-auto md:mr-auto"
           >
             <!--<Input id="name" label="Your first and last name" value={form?.data?.name} errors={form?.errors?.name} />-->
 

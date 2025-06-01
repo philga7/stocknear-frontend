@@ -11,10 +11,12 @@
     </h2>
   </label>
   {#if wiim?.length > 0}
-    <table class="border-t border-gray-800 text-sm sm:text-[1rem]">
+    <table
+      class="border-t border-gray-300 dark:border-gray-800 text-sm sm:text-[1rem]"
+    >
       <tbody>
         {#each wiim as item}
-          <tr class="border-b border-gray-800"
+          <tr class="border-b border-gray-300 dark:border-gray-800"
             ><td class="pr-1 pt-2 align-top text-faded">{item?.timeAgo}</td>
             <td class="py-2 pl-2">
               {item?.text}

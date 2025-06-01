@@ -1,6 +1,5 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import Chat from "lucide-svelte/icons/message-circle";
   import Arrow from "lucide-svelte/icons/arrow-up";
   import { mode } from "mode-watcher";
   import { toast } from "svelte-sonner";
@@ -10,11 +9,9 @@
   import { EditorState, Plugin } from "prosemirror-state";
   import { EditorView, Decoration, DecorationSet } from "prosemirror-view";
   import { keymap } from "prosemirror-keymap";
-  import { agentOptions } from "$lib/utils";
+  import { agentOptions, getCreditFromQuery } from "$lib/utils";
 
   import { schema } from "prosemirror-schema-basic";
-
-  import SEO from "$lib/components/SEO.svelte";
 
   export let data;
   export let form;
@@ -131,7 +128,7 @@
         const widget = Decoration.widget(1, () => {
           const span = document.createElement("span");
           span.className =
-            "text-gray-800 dark:text-gray-400 pointer-events-none text-sm sm:text-[1rem]";
+            "text-gray-700 dark:text-gray-300 pointer-events-none text-sm sm:text-[1rem]";
           span.textContent =
             "Ask anything about stocks — get real-time updates";
           return span;
@@ -239,19 +236,20 @@
     if (isLoading) {
       return;
     }
+    const costOfCredit = getCreditFromQuery(editorText, agentOptions);
 
     isLoading = true;
     /*
-    if (!["Pro", "Plus"].includes(data?.user?.tier)) {
-      toast.error("Upgrade your account to unlock this feature", {
-        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
-      });
-      isLoading = false;
-      return;
-    }
-      */
+      if (!["Pro", "Plus"].includes(data?.user?.tier)) {
+        toast.error("Upgrade your account to unlock this feature", {
+          style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
+        });
+        isLoading = false;
+        return;
+      }
+        */
 
-    if (data?.user?.credits < 1) {
+    if (data?.user?.credits < costOfCredit) {
       toast.error(
         `Insufficient credits. Your current balance is ${data?.user?.credits}.`,
         {
@@ -372,219 +370,183 @@
   }
 </script>
 
-<SEO
-  title="Stocknear AI Agent – Real-Time Market Insights, Options Flow, and News"
-  description="Get real-time stock market insights with Stocknear AI Agent. Analyze fundamentals, dark pool activity, options flow, and breaking market news – all in one place."
-/>
-
 <div
-  class="w-full max-w-5xl overflow-hidden m-auto min-h-screen bg-white dark:bg-default mb-16"
+  class="w-full flex flex-col justify-center items-center bg-white dark:bg-[#2A2E39]"
 >
-  <div class="flex flex-col m-auto justify-center items-center">
-    <div class="text-center mb-10 w-full px-4 sm:px-3">
-      <main class="flex flex-1 flex-col gap-4 sm:p-4 md:gap-8 text-start">
-        <div class="h-full w-full flex">
-          <div
-            class="w-full flex flex-col justify-center items-center gap-6 pb-4"
+  <div
+    class="block p-3 w-full border border-gray-300 dark:border-gray-600 shadow-sm rounded-[8px] overflow-hidden"
+  >
+    <div
+      bind:this={editorDiv}
+      class="ml-2 bg-white dark:bg-[#2A2E39] w-full min-h-[50px] text-start"
+      on:keydown={handleKeyDown}
+    />
+
+    <!-- Suggestions Dropdown -->
+    {#if showSuggestions}
+      <ul
+        class="absolute bg-white dark:bg-default rounded shadow-md border border-gray-300 dark:border-gray-600 mt-1 z-60 w-56 h-fit max-h-72 overflow-y-auto scroller"
+        style="top: {suggestionPos?.top}px; left: {suggestionPos?.left}px;"
+      >
+        {#each suggestions as suggestion, i}
+          <li
+            class="text-start px-2 py-1 cursor-pointer sm:hover:bg-gray-100 dark:sm:hover:bg-[#1E222D] text-sm {i ===
+            selectedSuggestion
+              ? ' bg-gray-100 dark:bg-[#1E222D]'
+              : ''}"
+            on:click={() => insertSuggestion(suggestion)}
           >
-            <img
-              class="m-auto w-16 sm:w-20 rounded-full pt-4"
-              src="/pwa-192x192.png"
-              alt="Stocknear Logo"
-              loading="lazy"
-            />
-            <h1
-              class="block text-2xl lg:text-4xl font-bold text-center mb-10 relative w-fit flex justify-center m-auto break-words"
-            >
-              Research your Trading Ideas
-            </h1>
-
+            {suggestion}
+          </li>
+        {/each}
+      </ul>
+    {/if}
+    <form
+      class="grow rounded relative flex items-center w-full overflow-hidden"
+    >
+      <div
+        class="relative min-h-12 h-auto overflow-y-hidden w-full outline-none"
+      >
+        <div
+          class="absolute bottom-0 flex flex-row justify-end w-full bg:inherit dark:bg-[#2A2E39]"
+        >
+          <div class="flex flex-row justify-between w-full">
             <div
-              class="block p-3 w-full border border-gray-300 dark:border-gray-600 shadow-sm rounded-[8px] overflow-hidden"
+              class="order-first relative inline-block text-left cursor-pointer shadow-xs"
             >
-              <div
-                bind:this={editorDiv}
-                class="ml-2 bg-white dark:bg-default w-full min-h-[50px]"
-                on:keydown={handleKeyDown}
-              />
-
-              <!-- Suggestions Dropdown -->
-              {#if showSuggestions}
-                <ul
-                  class="absolute bg-white dark:bg-default rounded shadow-md border border-gray-300 dark:border-gray-600 mt-1 z-60 w-56 h-fit max-h-72 overflow-y-auto scroller"
-                  style="top: {suggestionPos?.top}px; left: {suggestionPos?.left}px;"
-                >
-                  {#each suggestions as suggestion, i}
-                    <li
-                      class="px-2 py-1 cursor-pointer sm:hover:bg-gray-100 dark:sm:hover:bg-[#1E222D] text-sm {i ===
-                      selectedSuggestion
-                        ? ' bg-gray-100 dark:bg-[#1E222D]'
-                        : ''}"
-                      on:click={() => insertSuggestion(suggestion)}
-                    >
-                      {suggestion}
-                    </li>
-                  {/each}
-                </ul>
-              {/if}
-              <form
-                class="grow rounded relative flex items-center w-full overflow-hidden"
-              >
-                <div
-                  class="relative min-h-12 h-auto overflow-y-hidden w-full outline-none"
-                >
-                  <div
-                    class="absolute bottom-0 flex flex-row justify-end w-full bg:inherit dark:bg-default"
+              <DropdownMenu.Root>
+                <DropdownMenu.Trigger asChild let:builder>
+                  <Button
+                    builders={[builder]}
+                    class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-[#2A2E39] sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                   >
-                    <div class="flex flex-row justify-between w-full">
-                      <div
-                        class="order-first relative inline-block text-left cursor-pointer shadow-xs"
-                      >
-                        <DropdownMenu.Root>
-                          <DropdownMenu.Trigger asChild let:builder>
-                            <Button
-                              builders={[builder]}
-                              class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
-                            >
-                              <span class="truncate">@Agents</span>
-                              <svg
-                                class="-mr-1 ml-3 h-5 w-5 xs:ml-2 inline-block"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                                style="max-width:40px"
-                                aria-hidden="true"
-                              >
-                                <path
-                                  fill-rule="evenodd"
-                                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                  clip-rule="evenodd"
-                                ></path>
-                              </svg>
-                            </Button>
-                          </DropdownMenu.Trigger>
-                          <DropdownMenu.Content
-                            class="w-56 h-fit max-h-72 overflow-y-auto scroller"
-                          >
-                            <DropdownMenu.Group>
-                              {#each agentOptions as option}
-                                <DropdownMenu.Item
-                                  on:click={() =>
-                                    insertAgentOption(option?.name)}
-                                  class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
-                                >
-                                  <div
-                                    class="flex flex-row items-center w-full"
-                                  >
-                                    <span>{option?.name}</span>
-                                    <span class="ml-auto"
-                                      >{option?.credit} Credits</span
-                                    >
-                                  </div>
-                                </DropdownMenu.Item>
-                              {/each}
-                            </DropdownMenu.Group>
-                          </DropdownMenu.Content>
-                        </DropdownMenu.Root>
-                      </div>
-                      {#if data?.user}
-                        <label
-                          class="ml-auto mr-2 whitespace-nowrap w-auto text-xs border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default flex flex-row justify-between items-center px-3 rounded"
-                        >
-                          <div>
-                            {data?.user?.credits?.toLocaleString("en-US")}
-                            <span class="hidden sm:inline-block">Credits</span>
-                          </div>
-                        </label>
-                      {/if}
-
-                      <label
-                        for={!data?.user ? "userLogin" : ""}
-                        on:click={() => (data?.user ? createChat() : "")}
-                        class="{editorText?.trim()?.length > 0
-                          ? 'cursor-pointer'
-                          : 'cursor-not-allowed opacity-60'} py-2 text-white dark:text-black text-[1rem] rounded border border-gray-300 dark:border-gray-700 bg-black dark:bg-white px-3 transition-colors duration-200"
-                      >
-                        {#if isLoading}
-                          <span
-                            class="loading loading-spinner loading-xs text-center m-auto flex justify-center items-center text-white dark:text-black"
-                          ></span>
-                        {:else}
-                          <Arrow
-                            class="w-4 h-4 text-center m-auto flex justify-center items-center text-white dark:text-black"
-                          />
-                        {/if}
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-
-            <div
-              class="grid grid-cols-1 md:grid-cols-2 gap-2 shrink w-full overflow-y-auto sidenav-scrollbar"
-            >
-              {#each defaultChats as item}
-                <div
-                  on:click={() => {
-                    insertDefaultChat(item?.query);
-                    createChat();
-                  }}
-                  class="flex flex-col border border-gray-300 dark:border-gray-700 sm:hover:bg-gray-100 dark:sm:hover:bg-secondary bg-white dark:bg-default shadow-sm"
-                >
-                  <div class="block flex-grow">
-                    <button
-                      type="button"
-                      class="w-full h-full p-2 group font-sans focus:outline-none outline-none outline-transparent transition duration-300 ease-in-out items-center relative group cursor-pointer"
-                      ><div
-                        class="flex leading-none items-center h-full flex-grow"
-                      >
-                        <div
-                          class="ml-2 text-left font-medium flex flex-col justify-center box-border relative text-wrap"
-                        >
-                          {item?.label}
-                          <div class="flex items-center">
-                            <svg
-                              viewBox="0 0 76 76"
-                              xmlns="http://www.w3.org/2000/svg"
-                              version="1.1"
-                              baseProfile="full"
-                              enable-background="new 0 0 76.00 76.00"
-                              xml:space="preserve"
-                              fill="currentColor"
-                              class="h-5 w-5"
-                              ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
-                                id="SVGRepo_tracerCarrier"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              ></g><g id="SVGRepo_iconCarrier"
-                                ><path
-                                  fill="currentColor"
-                                  fill-opacity="1"
-                                  stroke-width="0.2"
-                                  stroke-linejoin="round"
-                                  d="M 15.8332,47.5002L 15.8332,40.1901L 25.3332,31.6669L 30.0832,36.4169L 34.8331,20.5836L 44.3331,31.6669L 50.6664,25.3336L 45.9164,20.5836L 58.583,20.5836L 58.583,33.2502L 53.8331,28.5003L 44.3331,38.0002L 36.4165,28.5003L 31.6665,44.3335L 25.3332,38.0002L 15.8332,47.5002 Z "
-                                ></path><path
-                                  fill="currentColor"
-                                  fill-opacity="1"
-                                  stroke-width="0.2"
-                                  stroke-linejoin="round"
-                                  d="M 58.5833,55.4167L 53.8333,55.4167L 53.8333,34.8333L 58.5833,39.5833L 58.5833,55.4167 Z M 49.0833,55.4167L 44.3333,55.4167L 44.3333,44.3333L 49.0833,39.5834L 49.0833,55.4167 Z M 39.5833,55.4167L 34.8333,55.4167L 34.8333,45.9167L 37.2083,36.4167L 39.5833,39.5833L 39.5833,55.4167 Z M 30.0833,55.4167L 25.3333,55.4167L 25.3333,44.3333L 30.0833,49.0833L 30.0833,55.4167 Z M 20.5833,55.4167L 15.8333,55.4167L 15.8333,53.8334L 20.5833,49.0834L 20.5833,55.4167 Z "
-                                ></path></g
-                              ></svg
-                            ><span class="text-xs">{item?.type}</span>
-                          </div>
-                        </div>
-                      </div></button
+                    <span class="truncate">@Agents</span>
+                    <svg
+                      class="-mr-1 ml-3 h-5 w-5 xs:ml-2 inline-block"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      style="max-width:40px"
+                      aria-hidden="true"
                     >
-                  </div>
-                </div>
-              {/each}
+                      <path
+                        fill-rule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                  </Button>
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Content
+                  class="w-56 h-fit max-h-72 overflow-y-auto scroller"
+                >
+                  <DropdownMenu.Group>
+                    {#each agentOptions as option}
+                      <DropdownMenu.Item
+                        on:click={() => insertAgentOption(option?.name)}
+                        class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                      >
+                        <div class="flex flex-row items-center w-full">
+                          <span>{option?.name}</span>
+                          <span class="ml-auto">{option?.credit} Credits</span>
+                        </div>
+                      </DropdownMenu.Item>
+                    {/each}
+                  </DropdownMenu.Group>
+                </DropdownMenu.Content>
+              </DropdownMenu.Root>
             </div>
+            {#if data?.user}
+              <label
+                class="ml-auto mr-2 whitespace-nowrap w-auto text-xs border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-[#2A2E39] flex flex-row justify-between items-center px-3 rounded"
+              >
+                <div>
+                  {data?.user?.credits?.toLocaleString("en-US")}
+                  <span class="hidden sm:inline-block">Credits</span>
+                </div>
+              </label>
+            {/if}
+
+            <label
+              for={!data?.user ? "userLogin" : ""}
+              on:click={() => (data?.user ? createChat() : "")}
+              class="{editorText?.trim()?.length > 0
+                ? 'cursor-pointer'
+                : 'cursor-not-allowed opacity-60'} py-2 text-white dark:text-black text-[1rem] rounded border border-gray-300 dark:border-gray-700 bg-black dark:bg-white px-3 transition-colors duration-200"
+            >
+              {#if isLoading}
+                <span
+                  class="loading loading-spinner loading-xs text-center m-auto flex justify-center items-center text-white dark:text-black"
+                ></span>
+              {:else}
+                <Arrow
+                  class="w-4 h-4 text-center m-auto flex justify-center items-center text-white dark:text-black"
+                />
+              {/if}
+            </label>
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </form>
   </div>
+</div>
+
+<div
+  class="hidden sm:grid grid-cols-1 md:grid-cols-2 gap-2 shrink w-full overflow-y-auto sidenav-scrollbar mt-3"
+>
+  {#each defaultChats as item}
+    <div
+      on:click={() => {
+        insertDefaultChat(item?.query);
+        createChat();
+      }}
+      class="flex flex-col border border-gray-300 dark:border-gray-700 sm:hover:bg-gray-100 dark:sm:hover:bg-secondary bg-white dark:bg-[#1C1E22] shadow-sm"
+    >
+      <div class="block flex-grow">
+        <button
+          type="button"
+          class="w-full h-full p-2 group font-sans focus:outline-none outline-none outline-transparent transition duration-300 ease-in-out items-center relative group cursor-pointer"
+          ><div class="flex leading-none items-center h-full flex-grow">
+            <div
+              class="ml-2 text-left font-medium flex flex-col justify-center box-border relative text-wrap"
+            >
+              {item?.label}
+              <div class="flex items-center">
+                <svg
+                  viewBox="0 0 76 76"
+                  xmlns="http://www.w3.org/2000/svg"
+                  version="1.1"
+                  baseProfile="full"
+                  enable-background="new 0 0 76.00 76.00"
+                  xml:space="preserve"
+                  fill="currentColor"
+                  class="h-5 w-5"
+                  ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></g><g id="SVGRepo_iconCarrier"
+                    ><path
+                      fill="currentColor"
+                      fill-opacity="1"
+                      stroke-width="0.2"
+                      stroke-linejoin="round"
+                      d="M 15.8332,47.5002L 15.8332,40.1901L 25.3332,31.6669L 30.0832,36.4169L 34.8331,20.5836L 44.3331,31.6669L 50.6664,25.3336L 45.9164,20.5836L 58.583,20.5836L 58.583,33.2502L 53.8331,28.5003L 44.3331,38.0002L 36.4165,28.5003L 31.6665,44.3335L 25.3332,38.0002L 15.8332,47.5002 Z "
+                    ></path><path
+                      fill="currentColor"
+                      fill-opacity="1"
+                      stroke-width="0.2"
+                      stroke-linejoin="round"
+                      d="M 58.5833,55.4167L 53.8333,55.4167L 53.8333,34.8333L 58.5833,39.5833L 58.5833,55.4167 Z M 49.0833,55.4167L 44.3333,55.4167L 44.3333,44.3333L 49.0833,39.5834L 49.0833,55.4167 Z M 39.5833,55.4167L 34.8333,55.4167L 34.8333,45.9167L 37.2083,36.4167L 39.5833,39.5833L 39.5833,55.4167 Z M 30.0833,55.4167L 25.3333,55.4167L 25.3333,44.3333L 30.0833,49.0833L 30.0833,55.4167 Z M 20.5833,55.4167L 15.8333,55.4167L 15.8333,53.8334L 20.5833,49.0834L 20.5833,55.4167 Z "
+                    ></path></g
+                  ></svg
+                ><span class="text-xs">{item?.type}</span>
+              </div>
+            </div>
+          </div></button
+        >
+      </div>
+    </div>
+  {/each}
 </div>
 
 {#await import("$lib/components/LoginPopup.svelte") then { default: Comp }}

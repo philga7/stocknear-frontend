@@ -9,8 +9,10 @@
   import UpcomingEarnings from "$lib/components/Dashboard/UpcomingEarnings.svelte";
   import OptionsFlow from "$lib/components/Dashboard/OptionsFlow.svelte";
   import Wiim from "$lib/components/Dashboard/Wiim.svelte";
+  import AIAgent from "$lib/components/Dashboard/AIAgent.svelte";
 
   export let data;
+  export let form;
 
   let gainersList = data?.getDashboard?.gainers || [];
   let losersList = data?.getDashboard?.losers || [];
@@ -96,7 +98,7 @@
 -->
   <main id="main">
     <div
-      class="border-b border-gray-800 rounded-[5px] px-4 bg-[#1C1E22] pt-12 shadow-sm pb-26 landscape:border-t-2 landscape:md:border-t-0"
+      class="border-b border-gray-100 dark:border-gray-800 rounded-[5px] px-4 bg-gray-100 dark:bg-[#1C1E22] pt-12 shadow-sm pb-26 landscape:border-t-2 landscape:md:border-t-0"
     >
       <div class="mx-auto max-w-[850px] text-center">
         <h1
@@ -107,51 +109,12 @@
         <p
           class="mb-4 text-base sm:text-lg md:mb-5 md:text-xl lg:mb-7 lg:text-[22px] lg:leading-8"
         >
-          Accurate information on 100,000+ stocks and funds, including all the
-          companies in the S&amp;P500 index. See stock prices, news, financials,
-          forecasts, charts and more.
+          Accurate information on all US Stocks and funds. See stock prices,
+          options data, dark pool orders, news, financials, forecasts, charts
+          and more.
         </p>
-        <div class="mx-auto mb-5 max-w-[95%] md:max-w-[75%] lg:max-w-lg">
-          <form action="/symbol-lookup/" method="get" role="search">
-            <div class="relative flex items-center">
-              <div class="absolute inset-y-0 left-0 flex items-center pl-2.5">
-                <svg
-                  class="h-4 w-4 text-icon xs:h-5 xs:w-5"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="3"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  style="max-width: 40px"
-                  aria-hidden="true"
-                  ><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  ></path></svg
-                >
-              </div>
-              <input
-                class="grow rounded-sm border border-gray-800 py-1.5 pl-7 text-sm placeholder-gray-700 dark:placeholder-gray-200 focus:border-gray-800 focus:shadow-lg focus:outline-none focus:ring-0 tiny:pl-8 xs:pl-10 xs:text-base md:py-2 w-full bg-gray-50 hover:bg-white focus:bg-white dark:bg-dark-700 dark:hover:bg-dark-700 dark:focus:bg-dark-700 lg:text-[17px] bg-white"
-                type="text"
-                aria-label="Search"
-                role="combobox"
-                aria-expanded="false"
-                aria-controls="owned_listbox"
-                autocomplete="off"
-                spellcheck="false"
-                aria-autocomplete="list"
-                placeholder="Company or stock symbol..."
-                name="q"
-                id="search-home-page"
-              />
-              <div
-                class="pointer-events-none absolute inset-y-0 right-0 flex items-center gap-x-2 px-3 text-base font-semibold text-gray-500"
-              >
-                <div class="rounded-md border border-gray-600 px-2 py-0.5">
-                  /
-                </div>
-              </div>
-            </div>
-          </form>
+        <div class="mx-auto max-w-[95%] md:max-w-[85%]">
+          <AIAgent {data} {form} />
         </div>
       </div>
     </div>
@@ -162,13 +125,12 @@
         >
           <a
             href="/chat/"
-            class="border border-gray-600 flex flex-col justify-center items-center p-4 bg-white dark:bg-secondary rounded-[5px] shadow font-semibold gap-2 hover:shadow-lg text-center dark:hover:shadow-dark-600 dark:hover:shadow-md"
+            class="border border-gray-300 dark:border-gray-600 flex flex-col justify-center items-center p-4 bg-white dark:bg-secondary rounded-[5px] shadow font-semibold gap-2 hover:shadow-lg text-center dark:hover:shadow-dark-600 dark:hover:shadow-md"
           >
             <svg
               fill="currentColor"
               class="h-8 w-8"
               version="1.1"
-              id="_x32_"
               xmlns="http://www.w3.org/2000/svg"
               xmlns:xlink="http://www.w3.org/1999/xlink"
               viewBox="0 0 512 512"
@@ -180,27 +142,24 @@
               ></g><g id="SVGRepo_iconCarrier">
                 <g>
                   <path
-                    class="st0"
                     d="M247.355,106.9C222.705,82.241,205.833,39.18,197.46,0c-8.386,39.188-25.24,82.258-49.899,106.917 c-24.65,24.642-67.724,41.514-106.896,49.904c39.188,8.373,82.254,25.235,106.904,49.895c24.65,24.65,41.522,67.72,49.908,106.9 c8.373-39.188,25.24-82.258,49.886-106.917c24.65-24.65,67.724-41.514,106.896-49.904 C315.08,148.422,272.014,131.551,247.355,106.9z"
                   ></path>
                   <path
-                    class="st0"
                     d="M407.471,304.339c-14.714-14.721-24.81-40.46-29.812-63.864c-5.011,23.404-15.073,49.142-29.803,63.872 c-14.73,14.714-40.464,24.801-63.864,29.812c23.408,5.01,49.134,15.081,63.864,29.811c14.73,14.722,24.81,40.46,29.82,63.864 c5.001-23.413,15.081-49.142,29.802-63.872c14.722-14.722,40.46-24.802,63.856-29.82 C447.939,329.14,422.201,319.061,407.471,304.339z"
                   ></path>
                   <path
-                    class="st0"
                     d="M146.352,354.702c-4.207,19.648-12.655,41.263-25.019,53.626c-12.362,12.354-33.968,20.82-53.613,25.027 c19.645,4.216,41.251,12.656,53.613,25.027c12.364,12.362,20.829,33.96,25.036,53.618c4.203-19.658,12.655-41.255,25.023-53.626 c12.354-12.362,33.964-20.82,53.605-25.035c-19.64-4.2-41.251-12.656-53.613-25.019 C159.024,395.966,150.555,374.351,146.352,354.702z"
                   ></path>
                 </g>
               </g></svg
             >
 
-            <div data-svelte-h="svelte-i9uyt5">AI Agent</div></a
+            <div>AI Agent</div></a
           >
 
           <a
             href="/options-flow"
-            class="border border-gray-600 flex flex-col justify-center items-center p-4 bg-white dark:bg-secondary rounded-[5px] shadow font-semibold gap-2 hover:shadow-lg text-center dark:hover:shadow-dark-600 dark:hover:shadow-md"
+            class="border border-gray-300 dark:border-gray-600 flex flex-col justify-center items-center p-4 bg-white dark:bg-secondary rounded-[5px] shadow font-semibold gap-2 hover:shadow-lg text-center dark:hover:shadow-dark-600 dark:hover:shadow-md"
           >
             <svg
               fill="currentColor"
@@ -236,11 +195,11 @@
               </g></svg
             >
 
-            <div data-svelte-h="svelte-1r3j8kd">Options Flow</div></a
+            <div>Options Flow</div></a
           >
           <a
             href="/potus-tracker"
-            class="border border-gray-600 flex flex-col justify-center items-center p-4 bg-white dark:bg-secondary rounded-[5px] shadow font-semibold gap-2 hover:shadow-lg text-center dark:hover:shadow-dark-600 dark:hover:shadow-md"
+            class="border border-gray-300 dark:border-gray-600 flex flex-col justify-center items-center p-4 bg-white dark:bg-secondary rounded-[5px] shadow font-semibold gap-2 hover:shadow-lg text-center dark:hover:shadow-dark-600 dark:hover:shadow-md"
           >
             <svg
               fill="currentColor"
@@ -264,11 +223,11 @@
               </g></svg
             >
 
-            <div data-svelte-h="svelte-1sh2705">POTUS Tracker</div></a
+            <div>POTUS Tracker</div></a
           >
           <a
-            href="/stocks/screener/"
-            class="border border-gray-600 flex flex-col justify-center items-center p-4 bg-white dark:bg-secondary rounded-[5px] shadow font-semibold gap-2 hover:shadow-lg text-center dark:hover:shadow-dark-600 dark:hover:shadow-md"
+            href="/stock-screener"
+            class="border border-gray-300 dark:border-gray-600 flex flex-col justify-center items-center p-4 bg-white dark:bg-secondary rounded-[5px] shadow font-semibold gap-2 hover:shadow-lg text-center dark:hover:shadow-dark-600 dark:hover:shadow-md"
             ><svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -279,11 +238,11 @@
                 d="M6 12a.75.75 0 01-.75-.75v-7.5a.75.75 0 111.5 0v7.5A.75.75 0 016 12zM18 12a.75.75 0 01-.75-.75v-7.5a.75.75 0 011.5 0v7.5A.75.75 0 0118 12zM6.75 20.25v-1.5a.75.75 0 00-1.5 0v1.5a.75.75 0 001.5 0zM18.75 18.75v1.5a.75.75 0 01-1.5 0v-1.5a.75.75 0 011.5 0zM12.75 5.25v-1.5a.75.75 0 00-1.5 0v1.5a.75.75 0 001.5 0zM12 21a.75.75 0 01-.75-.75v-7.5a.75.75 0 011.5 0v7.5A.75.75 0 0112 21zM3.75 15a2.25 2.25 0 104.5 0 2.25 2.25 0 00-4.5 0zM12 11.25a2.25 2.25 0 110-4.5 2.25 2.25 0 010 4.5zM15.75 15a2.25 2.25 0 104.5 0 2.25 2.25 0 00-4.5 0z"
               ></path></svg
             >
-            <div data-svelte-h="svelte-nuxvu3">Stock Screener</div></a
+            <div>Stock Screener</div></a
           >
           <a
-            href="/stocks/earnings-calendar/"
-            class="border border-gray-600 flex flex-col justify-center items-center p-4 bg-white dark:bg-secondary rounded-[5px] shadow font-semibold gap-2 hover:shadow-lg text-center dark:hover:shadow-dark-600 dark:hover:shadow-md"
+            href="/compare"
+            class="border border-gray-300 dark:border-gray-600 flex flex-col justify-center items-center p-4 bg-white dark:bg-secondary rounded-[5px] shadow font-semibold gap-2 hover:shadow-lg text-center dark:hover:shadow-dark-600 dark:hover:shadow-md"
             ><svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -296,11 +255,11 @@
                 clip-rule="evenodd"
               ></path></svg
             >
-            <div data-svelte-h="svelte-20bqo5">Compare Stocks</div></a
+            <div>Compare Stocks</div></a
           >
           <a
-            href="/markets/gainers/"
-            class="border border-gray-600 flex flex-col justify-center items-center p-4 bg-white dark:bg-secondary rounded-[5px] shadow font-semibold gap-2 hover:shadow-lg text-center dark:hover:shadow-dark-600 dark:hover:shadow-md"
+            href="/market-mover/gainers"
+            class="border border-gray-300 dark:border-gray-600 flex flex-col justify-center items-center p-4 bg-white dark:bg-secondary rounded-[5px] shadow font-semibold gap-2 hover:shadow-lg text-center dark:hover:shadow-dark-600 dark:hover:shadow-md"
             ><svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -313,7 +272,7 @@
                 clip-rule="evenodd"
               ></path></svg
             >
-            <div data-svelte-h="svelte-b01gpo">Market Movers</div></a
+            <div>Market Movers</div></a
           >
         </div>
       </div>

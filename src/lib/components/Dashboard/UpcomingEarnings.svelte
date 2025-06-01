@@ -27,10 +27,12 @@
     ></a
   >
   {#if upcomingEarnings?.length !== 0}
-    <table class="border-t border-gray-800 text-sm sm:text-[1rem]">
+    <table
+      class="border-t border-gray-300 dark:border-gray-800 text-sm sm:text-[1rem]"
+    >
       <tbody>
-        {#each upcomingEarnings as item, index}
-          <tr class="border-b border-gray-800">
+        {#each upcomingEarnings as item}
+          <tr class="border-b border-gray-300 dark:border-gray-800">
             <td class="py-2 pl-2">
               <strong>{item?.name}</strong>
               {item?.isToday === true
