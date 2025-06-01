@@ -3,18 +3,12 @@
 
   import { screenWidth } from "$lib/store";
   import { isPWAInstalled } from "$lib/utils";
-  import Infobox from "$lib/components/Infobox.svelte";
   import { closedPWA } from "$lib/store";
   import SEO from "$lib/components/SEO.svelte";
   import MarketMover from "$lib/components/Dashboard/MarketMover.svelte";
-  import WIIM from "$lib/components/Dashboard/Wiim.svelte";
   import UpcomingEarnings from "$lib/components/Dashboard/UpcomingEarnings.svelte";
-  import RecentEarnings from "$lib/components/Dashboard/RecentEarnings.svelte";
-  import AnalystReport from "$lib/components/Dashboard/AnalystReport.svelte";
   import OptionsFlow from "$lib/components/Dashboard/OptionsFlow.svelte";
-  import DarkPool from "$lib/components/Dashboard/DarkPool.svelte";
-  import EconomicCalendar from "$lib/components/Dashboard/EconomicCalendar.svelte";
-  import UpgradeToPro from "$lib/components/Dashboard/UpgradeToPro.svelte";
+  import Wiim from "$lib/components/Dashboard/Wiim.svelte";
 
   export let data;
 
@@ -24,8 +18,7 @@
 
   let wiim = data?.getDashboard?.wiim || [];
   let optionsFlowList = data?.getDashboard?.optionsFlow || [];
-  let darkPoolList = data?.getDashboard?.darkpool || [];
-
+  let upcomingEarnings = data?.getDashboard?.upcomingEarnings || [];
   let pwaInstalled = false;
   let AppInstalled = null;
 
@@ -326,43 +319,15 @@
       </div>
     </div>
     <div class="mb-8 pb-3 pt-6 md:pt-8 lg:pt-10">
-      <MarketMover {gainersList} {losersList} {marketStatus} />
+      <MarketMover {gainersList} {losersList} {marketStatus} {charNumber} />
 
       <div
         class="mx-auto flex flex-col px-3 pt-6 xs:px-4 sm:px-5 md:pt-8 lg:grid lg:max-w-[1200px] lg:grid-cols-3 lg:justify-evenly lg:gap-8 lg:pt-10"
       >
-        <section class="mx-auto lg:col-span-2">
-          <label class="inline-flex items-center text-left w-full"
-            ><h2 class="mb-2 text-xl font-bold leading-tight bp:text-2xl">
-              Market News
-            </h2>
-          </label>
-          <table class="border-t border-gray-800 text-sm sm:text-[1rem]">
-            <tbody>
-              {#each wiim as item}
-                <tr class="border-b border-gray-800"
-                  ><td class="pr-1 pt-2 align-top text-faded"
-                    >{item?.timeAgo}</td
-                  >
-                  <td class="py-2 pl-2">
-                    {item?.text}
-
-                    <a
-                      href={`/${item?.assetType}/${item?.ticker}`}
-                      class="inline-block rounded badge border border-gray-300 dark:border-gray-800 shadow-xs duration-0 bg-blue-100 dark:bg-primary font-semibold dark:font-normal rounded-sm ml-1 px-2 m-auto text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted"
-                      >{item?.ticker}</a
-                    >
-                  </td>
-                </tr>
-              {/each}
-            </tbody>
-          </table>
-        </section>
+        <Wiim {wiim} />
         <div class="flex flex-col space-y-6 pt-6 lg:space-y-8 lg:pt-0">
           <OptionsFlow {optionsFlowList} />
-          <UpcomingEarnings
-            upcomingEarnings={data?.getDashboard?.upcomingEarnings}
-          />
+          <UpcomingEarnings {upcomingEarnings} />
         </div>
       </div>
     </div>

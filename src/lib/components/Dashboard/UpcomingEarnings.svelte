@@ -70,8 +70,6 @@
       </tbody>
     </table>
   {:else}
-    <Infobox
-      text="There are no major upcoming earnings to report today but you can check the earnings calendar for a complete list."
-    />
+    <Infobox text="There are no major upcoming earnings to report today." />
   {/if}
 </section>

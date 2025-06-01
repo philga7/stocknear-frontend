@@ -1,42 +1,35 @@
 <script lang="ts">
-  import * as Card from "$lib/components/shadcn/card/index.ts";
   import Infobox from "$lib/components/Infobox.svelte";
 
-  export let dataList = [];
+  export let wiim = [];
 </script>
 
-<Card.Root
-  class=" bg-gray-50 dark:bg-default overflow-x-auto overflow-hidden overflow-y-auto no-scrollbar h-fit"
->
-  <Card.Header class="flex flex-row items-center">
-    <div class="flex flex-col items-start w-full">
-      <div class="flex flex-row w-full items-center">
-        <Card.Title class="text-xl sm:text-2xl  font-semibold"
-          >Stock & Market News</Card.Title
-        >
-      </div>
-    </div>
-  </Card.Header>
-  <Card.Content>
-    {#if dataList?.length !== 0}
-      <ul style="padding-left: 5px;">
-        {#each dataList as item}
-          <li
-            class="text-sm sm:text-[1rem]"
-            style="margin-left: 8px; margin-bottom: 15px; list-style-type: disc;"
-          >
-            {item?.text}
+<section class="mx-auto lg:col-span-2 w-full">
+  <label class="inline-flex items-center text-left w-full"
+    ><h2 class="mb-2 text-xl font-bold leading-tight bp:text-2xl">
+      Market News
+    </h2>
+  </label>
+  {#if wiim?.length > 0}
+    <table class="border-t border-gray-800 text-sm sm:text-[1rem]">
+      <tbody>
+        {#each wiim as item}
+          <tr class="border-b border-gray-800"
+            ><td class="pr-1 pt-2 align-top text-faded">{item?.timeAgo}</td>
+            <td class="py-2 pl-2">
+              {item?.text}
 
-            <a
-              href={`/${item?.assetType}/${item?.ticker}`}
-              class="inline-block rounded badge border border-gray-300 dark:border-gray-800 shadow-xs duration-0 bg-blue-100 dark:bg-primary font-semibold dark:font-normal rounded-sm ml-1 px-2 m-auto text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted"
-              >{item?.ticker}</a
-            >
-          </li>
+              <a
+                href={`/${item?.assetType}/${item?.ticker}`}
+                class="inline-block rounded badge border border-gray-300 dark:border-gray-800 shadow-xs duration-0 bg-blue-100 dark:bg-primary font-semibold dark:font-normal rounded-sm ml-1 px-2 m-auto text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted"
+                >{item?.ticker}</a
+              >
+            </td>
+          </tr>
         {/each}
-      </ul>
-    {:else}
-      <Infobox text="There are no major stock market news available yet." />
-    {/if}
-  </Card.Content>
-</Card.Root>
+      </tbody>
+    </table>
+  {:else}
+    <Infobox text="There are no major stock market news available yet." />
+  {/if}
+</section>
