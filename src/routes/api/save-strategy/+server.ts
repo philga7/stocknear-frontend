@@ -8,7 +8,7 @@ export const POST = (async ({ request, locals }) => {
   let output;
 
   try {
-        output = await pb.collection("stockscreener").update(data?.strategyId, {
+        output = await pb?.collection("stockscreener")?.update(data?.strategyId, {
             'rules': data?.rules
         })
     }

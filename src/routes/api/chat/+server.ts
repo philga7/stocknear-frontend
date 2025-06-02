@@ -70,9 +70,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
       return new Response(errText, { status: upstream.status });
     }
 
-    await pb?.collection("users")?.update(user?.id, {
-      credits: user?.credits - costOfCredit,
-      });
+ 
 
     const decoder = new TextDecoder();
     const upstreamReader = upstream.body.getReader();
@@ -94,6 +92,10 @@ export const POST: RequestHandler = async ({ request, locals }) => {
         }
       }
     });
+
+    await pb?.collection("users")?.update(user?.id, {
+      credits: user?.credits - costOfCredit,
+      });
 
     return new Response(stream, {
       headers: {
