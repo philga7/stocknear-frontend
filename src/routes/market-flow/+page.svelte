@@ -492,7 +492,7 @@
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6"
               >
                 <div
-                  class="net-volume-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded p-4"
+                  class="net-volume-driver shadow-md bg-gray-100 dark:bg-[#1C1E22] rounded p-4"
                 >
                   <div
                     class="dark:text-[#c3c6d0] text-sm mb-2 flex items-center"
@@ -527,7 +527,7 @@
                 </div>
 
                 <div
-                  class="net-call-premium-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded p-4"
+                  class="net-call-premium-driver shadow-md bg-gray-100 dark:bg-[#1C1E22] rounded p-4"
                 >
                   <div
                     class="dark:text-[#c3c6d0] text-sm mb-2 flex items-center"
@@ -562,7 +562,7 @@
                 </div>
 
                 <div
-                  class="net-put-premium-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded p-4"
+                  class="net-put-premium-driver shadow-md bg-gray-100 dark:bg-[#1C1E22] rounded p-4"
                 >
                   <div
                     class="dark:text-[#c3c6d0] text-sm mb-2 flex items-center"

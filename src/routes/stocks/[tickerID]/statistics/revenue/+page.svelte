@@ -324,7 +324,7 @@
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 mt-3"
               >
                 <div
-                  class="revenue-ttm-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded p-4"
+                  class="revenue-ttm-driver shadow-md bg-gray-100 dark:bg-[#1C1E22] rounded p-4"
                 >
                   <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
                     <span>Revenue (ttm)</span>
@@ -337,7 +337,7 @@
                 </div>
 
                 <div
-                  class="revenue-growth-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded p-4"
+                  class="revenue-growth-driver shadow-md bg-gray-100 dark:bg-[#1C1E22] rounded p-4"
                 >
                   <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
                     <span>Revenue Growth</span>
@@ -350,7 +350,7 @@
                 </div>
 
                 <div
-                  class="ps-ratio-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded p-4"
+                  class="ps-ratio-driver shadow-md bg-gray-100 dark:bg-[#1C1E22] rounded p-4"
                 >
                   <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
                     <span>Price / Sales Ratio</span>
@@ -363,7 +363,7 @@
                 </div>
 
                 <div
-                  class="rev-per-emp-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded p-4"
+                  class="rev-per-emp-driver shadow-md bg-gray-100 dark:bg-[#1C1E22] rounded p-4"
                 >
                   <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
                     <span>Revenue / Employee </span>
@@ -379,7 +379,7 @@
                 </div>
 
                 <div
-                  class="employees-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded p-4"
+                  class="employees-driver shadow-md bg-gray-100 dark:bg-[#1C1E22] rounded p-4"
                 >
                   <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
                     <span>Employees </span>
@@ -391,7 +391,7 @@
                   </div>
                 </div>
                 <div
-                  class="marketCap-driver shadow-md bg-gray-100 dark:bg-gray-800/30 rounded p-4"
+                  class="marketCap-driver shadow-md bg-gray-100 dark:bg-[#1C1E22] rounded p-4"
                 >
                   <div class="text-sm sm:text-[1rem] mb-2 flex items-center">
                     <span>Market Cap </span>
@@ -424,9 +424,7 @@
                           : ''} "
                       >
                         {#if timeIdx === i}
-                          <div
-                            class="absolute inset-0 rounded bg-[#fff]"
-                          ></div>
+                          <div class="absolute inset-0 rounded bg-[#fff]"></div>
                         {/if}
                         <span
                           class="relative text-sm block font-semibold {timeIdx ===
