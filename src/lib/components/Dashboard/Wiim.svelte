@@ -17,8 +17,12 @@
       <tbody>
         {#each wiim as item}
           <tr class="border-b border-gray-300 dark:border-gray-800"
-            ><td class="pr-1 pt-2 align-top text-faded">{item?.timeAgo}</td>
+            ><td
+              class="hidden sm:inline-block pr-1 pt-2 align-top text-sm whitespace-nowrap"
+              >{item?.timeAgo}</td
+            >
             <td class="py-2 pl-2">
+              <span class="sm:hidden">{item?.timeAgo} ago -</span>
               {item?.text}
 
               <a
