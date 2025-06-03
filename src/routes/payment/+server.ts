@@ -91,10 +91,11 @@ export const POST = async ({ request, locals }) => {
 
     // Parse the JSON payload
     const payload = JSON.parse(bodyText);
+    const eventName = payload?.meta?.event_name;
     const userId = payload?.meta?.custom_data?.userId;
     const { status, refunded } = payload?.data?.attributes || {};
-
     const productName = payload?.data?.attributes?.first_order_item?.product_name;
+
     
     if (!userId || status === undefined) {
       console.error("Missing userId or status in payload:", payload);
@@ -107,6 +108,45 @@ export const POST = async ({ request, locals }) => {
       );
     }
 
+
+    //for order created update the AI credit
+    if (eventName === "order_created") {
+      const tier = determineTier(productName, status, refunded);
+
+      // Define credits for tiers
+      let credits = 10;
+      if (tier === "Plus") credits = 50;
+      if (tier === "Pro") credits = 100;
+
+      try {
+        await locals.pb.collection("users").update(userId, {
+          tier,
+          freeTrial: false,
+          credits,
+          lifetime: productName?.includes("Life Time"),
+        });
+
+        const paymentData = { user: userId, data: payload };
+        await locals.pb.collection("payments").create(paymentData);
+
+        return new Response(
+          JSON.stringify({ message: "Payment data received and credit score updated!" }),
+          {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+
+      } catch (dbError) {
+        console.error("Database error:", dbError);
+        return new Response(JSON.stringify({ error: "Pocketbase error" }), {
+          status: 500,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+    }
+
+    //=========================
   
     const tier = determineTier(payload?.data?.attributes?.product_name, status, refunded);
     //console.log(tier, payload?.data?.attributes?.product_name)

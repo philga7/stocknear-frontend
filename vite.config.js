@@ -1,27 +1,28 @@
 import tailwindcss from "@tailwindcss/vite";
 import { sveltekit } from "@sveltejs/kit/vite";
-//import { partytownVite } from '@builder.io/partytown/utils';
-//import { visualizer } from "rollup-plugin-visualizer";
+// import { partytownVite } from '@builder.io/partytown/utils';
+// import { visualizer } from "rollup-plugin-visualizer";
 
 /** @type {import('vite').UserConfig} */
 const config = {
   plugins: [
-    //visualizer({ open: true }) // Plugin to visualize the bundle
+    // visualizer({ open: true }), // Plugin to visualize the bundle
     tailwindcss(),
     sveltekit(),
-    //partytownVite(),
+    // partytownVite(),
   ],
-  
+
   server: {
     cors: true,
-     watch: {
-        usePolling: false, // Use native FS events for better performance
-      },
+    watch: {
+      usePolling: false, // Use native FS events for better performance
+    },
+    //allowedHosts: ["rnaja-78-94-200-246.a.free.pinggy.link"],
   },
 
   build: {
     target: "esnext",
-    minify: 'esbuild',
+    minify: "esbuild",
     sourcemap: false,
     cssCodeSplit: true, // Extract CSS into separate files
     chunkSizeWarningLimit: 500, // Lower this to ensure chunks are appropriately sized
@@ -40,8 +41,6 @@ const config = {
     },
     brotliSize: true, // Enable Brotli compression
   },
-  
-
 };
 
 export default config;
