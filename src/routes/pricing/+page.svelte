@@ -130,7 +130,7 @@
       </h1>
     </div>
 
-    <!--<Discount />-->
+    <Discount />
 
     <div class="flex flex-row items-center justify-center mb-5 sm:mb-0">
       <div class="flex flex-row items-center ml-auto">
