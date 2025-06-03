@@ -168,13 +168,13 @@
           Best for Intermediate Investors
         </p>
         <div class="mt-4">
-          <span class="text-4xl font-bold">{mode ? "$3.75" : "$5"}</span>
-          <!--
+          <span class="text-4xl font-bold line-through"
+            >{mode ? "$7.50" : "$10"}</span
+          >
+
           <span class="text-pink-700 dark:text-pink-500 text-4xl font-bold ml-1"
             >{mode ? "$3.75" : "$5"}</span
-          >--><span
-            class=" text-xl">/Month</span
-          >
+          ><span class=" text-xl">/Month</span>
         </div>
         <p
           class="text-muted dark:text-gray-400 text-sm mt-1 mx-4 {!mode
@@ -502,13 +502,12 @@
           Best for Professional Investors
         </p>
         <div class="mt-4">
-          <span class="text-4xl font-bold">{mode ? "$7.5" : "$10"}</span
-          ><!--<span
+          <span class="text-4xl font-bold line-through"
+            >{mode ? "$15" : "$20"}</span
+          ><span
             class="text-pink-700 dark:text-pink-500 text-4xl font-bold ml-1"
             >{mode ? "$7.5" : "$10"}</span
-          >--><span
-            class=" text-xl ml-1">/Month</span
-          >
+          ><span class=" text-xl ml-1">/Month</span>
         </div>
         <p
           class="text-muted dark:text-gray-400 text-sm mt-1 mx-4 {!mode
