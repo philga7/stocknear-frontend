@@ -61,6 +61,8 @@ function convertUnitToValue(input: string | number | string[]) {
       ...sectorList,
       ...industryList,
       ...listOfRelevantCountries,
+      'before market open',
+      'after market close',
       'quarterly',
       'monthly',
       'annual',
@@ -113,9 +115,83 @@ function createRuleCheck(rule, ruleName, ruleValue) {
   // Handle 'any' condition quickly
   if (rule.value === 'any') return () => true;
 
+
+
+  if (rule.name === 'earningsDate') {
+    // Force ruleValueRaw to a lower‐cased string. If it was passed as a number/array, coerce to string first.
+    const label = String(rule.value).trim().toLowerCase();
+
+    // Get “midnight UTC” of “today”
+    const now = new Date();
+    const todayUTC = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+
+    // Helper: format a Date object as "YYYY-MM-DD"
+    const fmt = (d: Date) => d.toISOString().slice(0, 10);
+
+    // Pre‐compute ranges for each label
+    // Each entry is [startDateString, endDateString], inclusive
+    const ranges: Record<string, [string, string]> = {
+      'today': [fmt(todayUTC), fmt(todayUTC)],
+      'tomorrow': [
+        fmt(new Date(todayUTC.getTime() + 86400_000)), 
+        fmt(new Date(todayUTC.getTime() + 86400_000))
+      ],
+      'yesterday': [
+        fmt(new Date(todayUTC.getTime() - 86400_000)), 
+        fmt(new Date(todayUTC.getTime() - 86400_000))
+      ],
+      'next 7d': [
+        fmt(todayUTC),
+        fmt(new Date(todayUTC.getTime() + 7 * 86400_000))
+      ],
+      'next 30d': [
+        fmt(todayUTC),
+        fmt(new Date(todayUTC.getTime() + 30 * 86400_000))
+      ],
+      'this month': (() => {
+        // first day of this month UTC
+        const start = new Date(Date.UTC(todayUTC.getUTCFullYear(), todayUTC.getUTCMonth(), 1));
+        // last day of this month UTC: month+1, day 0
+        const end = new Date(Date.UTC(todayUTC.getUTCFullYear(), todayUTC.getUTCMonth() + 1, 0));
+        return [fmt(start), fmt(end)];
+      })(),
+      'next month': (() => {
+        // first day of next month UTC
+        const start = new Date(Date.UTC(todayUTC.getUTCFullYear(), todayUTC.getUTCMonth() + 1, 1));
+        // last day of next month UTC: (month+2, day 0)
+        const end = new Date(Date.UTC(todayUTC.getUTCFullYear(), todayUTC.getUTCMonth() + 2, 0));
+        return [fmt(start), fmt(end)];
+      })()
+    };
+
+    // If the label isn’t recognized, log and return “always true”
+    if (!ranges[label]) {
+      console.warn(`Unrecognized earningsDate label: "${rule.value}"`);
+      return () => true;
+    }
+
+    const [minDateStr, maxDateStr] = ranges[label];
+
+    return (item) => {
+      if (!item.earningsDate) return false;
+      // Parse item.earningsDate into a UTC “YYYY-MM-DD” string
+      //  – If item.earningsDate is already "YYYY-MM-DD", new Date(...) will treat it as UTC.
+      //  – If it’s "YYYY-MM-DDThh:mm:ssZ", new Date(...) also parses it as UTC.
+      const d = new Date(item.earningsDate);
+      if (isNaN(d.getTime())) {
+        // If parse fails, treat as “no match”:
+        return false;
+      }
+      const itemDateStr = d.toISOString().slice(0, 10);
+      return itemDateStr >= minDateStr && itemDateStr <= maxDateStr;
+    };
+  }
+
+    
+
   // Categorical checks
   const categoricalFields = [
-    'analystRating', 'topAnalystRating', 'halalStocks', 'score', 
+    'analystRating', 'topAnalystRating', 'earningsTime','halalStocks', 'score', 
     'sector', 'industry', 'country','payoutFrequency'
   ];
 

@@ -1206,6 +1206,29 @@
       defaultCondition: "over",
       defaultValue: "any",
     },
+    earningsTime: {
+      label: "Earnings Time",
+      step: ["Before Market Open", "After Market Close"],
+      defaultCondition: "",
+      defaultValue: "any",
+      category: "Earnings Report",
+    },
+    earningsDate: {
+      label: "Earnings Date",
+      step: [
+        "Today",
+        "Tomorrow",
+        "Yesterday",
+        "Next 7D",
+        "Next 30D",
+        "This Month",
+        "Next Month",
+      ],
+      defaultCondition: "",
+      defaultValue: "any",
+      varType: "date",
+      category: "Earnings Report",
+    },
     analystRating: {
       label: "Analyst Rating",
       step: ["Strong Buy", "Buy", "Hold", "Sell", "Strong Sell"],
@@ -1467,6 +1490,8 @@
             [
               "analystRating",
               "topAnalystRating",
+              "earningsTime",
+              "earningsDate",
               "halalStocks",
               "sector",
               "payoutFrequency",
@@ -1616,6 +1641,8 @@
           [
             "analystRating",
             "topAnalystRating",
+            "earningsTime",
+            "earningsDate",
             "halalStocks",
             "sector",
             "country",
@@ -1719,6 +1746,8 @@
       case "analystRating":
       case "payoutFrequency":
       case "topAnalystRating":
+      case "earningsTime":
+      case "earningsDate":
       case "halalStocks":
       case "score":
       case "sector":
@@ -2011,6 +2040,8 @@ const handleKeyDown = (event) => {
           "ema200",
           "grahamNumber",
           "analystRating",
+          "earningsTime",
+          "earningsDate",
           "payoutFrequency",
           "topAnalystRating",
           "halalStocks",
@@ -2116,6 +2147,8 @@ const handleKeyDown = (event) => {
         "ema200",
         "grahamNumber",
         "analystRating",
+        "earningsTime",
+        "earningsDate",
         "payoutFrequency",
         "topAnalystRating",
         "halalStocks",
@@ -2424,6 +2457,8 @@ const handleKeyDown = (event) => {
     "score",
     "sector",
     "analystRating",
+    "earningsTime",
+    "earningsDate",
     "topAnalystRating",
     "halalStocks",
     "payoutFrequency",
@@ -3035,7 +3070,7 @@ const handleKeyDown = (event) => {
                       <DropdownMenu.Content
                         class="w-64 min-h-auto max-h-72 overflow-y-auto scroller"
                       >
-                        {#if !["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber", "analystRating", "payoutFrequency", "topAnalystRating", "halalStocks", "score", "sector", "industry", "country"]?.includes(row?.rule)}
+                        {#if !["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber", "analystRating", "payoutFrequency", "topAnalystRating", "earningsTime", "earningsDate", "halalStocks", "score", "sector", "industry", "country"]?.includes(row?.rule)}
                           <DropdownMenu.Label
                             class="absolute mt-2 h-11 border-gray-300 dark:border-gray-800 border-b -top-1 z-20 fixed sticky bg-white dark:bg-default"
                           >
@@ -3211,7 +3246,7 @@ const handleKeyDown = (event) => {
                           </div>
                         {/if}
                         <DropdownMenu.Group class="min-h-10 mt-2">
-                          {#if !["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber", "analystRating", "payoutFrequency", "topAnalystRating", "halalStocks", "score", "sector", "industry", "country"]?.includes(row?.rule)}
+                          {#if !["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber", "analystRating", "payoutFrequency", "topAnalystRating", "earningsTime", "earningsDate", "halalStocks", "score", "sector", "industry", "country"]?.includes(row?.rule)}
                             {#each row?.step as newValue, index}
                               {#if ruleCondition[row?.rule] === "between"}
                                 {#if newValue && row?.step[index + 1]}
@@ -3256,7 +3291,7 @@ const handleKeyDown = (event) => {
                                 </DropdownMenu.Item>
                               {/if}
                             {/each}
-                          {:else if ["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber", "payoutFrequency"]?.includes(row?.rule)}
+                          {:else if ["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber", "payoutFrequency", "earningsTime", "earningsDate"]?.includes(row?.rule)}
                             {#each row?.step as item}
                               <DropdownMenu.Item
                                 class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
@@ -3528,8 +3563,20 @@ const handleKeyDown = (event) => {
                       <td
                         class="whitespace-nowrap text-sm sm:text-[1rem] text-end"
                       >
-                        {#if ["ema20", "ema50", "ema100", "ema200", "halalStocks", "sector", "industry", "country", "payoutFrequency"]?.includes(row?.rule)}
-                          {item[row?.rule]}
+                        {#if ["ema20", "ema50", "ema100", "ema200", "earningsTime", "halalStocks", "sector", "industry", "country", "payoutFrequency"]?.includes(row?.rule)}
+                          {item[row?.rule]
+                            ?.replace("After Market Close", "After Close")
+                            ?.replace("Before Market Open", "Before Open")}
+                        {:else if row?.varType && row?.varType === "date"}
+                          {new Date(item[row?.rule]).toLocaleDateString(
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                              timeZone: "UTC",
+                            },
+                          )}
                         {:else if row?.varType && row?.varType === "percentSign"}
                           <span
                             class={item[row?.rule] >= 0
