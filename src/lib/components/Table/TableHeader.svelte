@@ -81,6 +81,10 @@
     "Return on Equity": "ROE",
     "Return on Assets": "ROA",
     "Return on Capital Employed": "ROCE",
+    "Earnings Revenue Estimate": "Est. Rev.",
+    "Revenue Estimated Growth": "Est. Rev. Growth",
+    "Earnings EPS Estimate": "Est. EPS",
+    "EPS Estimated Growth": "Est. EPS Growth",
   };
 
   function formatLabel(label: string): string {
