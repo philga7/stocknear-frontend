@@ -131,7 +131,7 @@
         const widget = Decoration.widget(1, () => {
           const span = document.createElement("span");
           span.className =
-            "text-gray-800 dark:text-gray-400 pointer-events-none text-sm sm:text-[1rem]";
+            "text-gray-800 dark:text-gray-200 pointer-events-none text-sm sm:text-[1rem]";
           span.textContent =
             "Ask anything about stocks — get real-time updates";
           return span;
@@ -400,11 +400,11 @@
             </h1>
 
             <div
-              class="block p-3 w-full border border-gray-300 dark:border-gray-600 shadow-sm rounded-[8px] overflow-hidden"
+              class="block p-3 w-full border border-gray-300 dark:border-gray-600 shadow-sm rounded-[8px] overflow-hidden bg-gray-50 dark:bg-[#2A2E39]"
             >
               <div
                 bind:this={editorDiv}
-                class="ml-2 bg-white dark:bg-default w-full min-h-[50px]"
+                class="ml-2 bg-gray-50 dark:bg-[#2A2E39] w-full min-h-[50px]"
                 on:keydown={handleKeyDown}
               />
 
@@ -434,7 +434,7 @@
                   class="relative min-h-12 h-auto overflow-y-hidden w-full outline-none"
                 >
                   <div
-                    class="absolute bottom-0 flex flex-row justify-end w-full bg:inherit dark:bg-default"
+                    class="absolute bottom-0 flex flex-row justify-end w-full bg-gray-50 dark:bg-[#2A2E39]"
                   >
                     <div class="flex flex-row justify-between w-full">
                       <div
@@ -444,7 +444,7 @@
                           <DropdownMenu.Trigger asChild let:builder>
                             <Button
                               builders={[builder]}
-                              class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
+                              class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-gray-50 dark:bg-[#2A2E39] sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                             >
                               <span class="truncate">@Agents</span>
                               <svg
@@ -488,7 +488,7 @@
                       </div>
                       {#if data?.user}
                         <label
-                          class="ml-auto mr-2 whitespace-nowrap w-auto text-xs border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default flex flex-row justify-between items-center px-3 rounded"
+                          class="ml-auto mr-2 whitespace-nowrap w-auto text-xs border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-gray-50 dark:bg-[#2A2E39] flex flex-row justify-between items-center px-3 rounded"
                         >
                           <div>
                             {data?.user?.credits?.toLocaleString("en-US")}

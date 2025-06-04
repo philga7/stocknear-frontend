@@ -117,7 +117,7 @@
         const widget = Decoration.widget(1, () => {
           const span = document.createElement("span");
           span.className =
-            "text-gray-800 dark:text-gray-400 pointer-events-none";
+            "text-gray-800 dark:text-gray-200 pointer-events-none";
           span.textContent = "Ask anything";
           return span;
         });
@@ -458,11 +458,11 @@
       </div>
 
       <div
-        class="bg-gray-50 dark:bg-default fixed absolute bottom-10 sm:bottom-20 left-1/2 transform -translate-x-1/2 block p-3 min-w-[90vw] sm:min-w-0 sm:w-full sm:max-w-3xl border border-gray-300 dark:border-gray-600 shadow rounded-[8px] overflow-hidden"
+        class="bg-gray-50 dark:bg-[#2A2E39] fixed absolute bottom-10 sm:bottom-20 left-1/2 transform -translate-x-1/2 block p-3 min-w-[90vw] sm:min-w-0 sm:w-full sm:max-w-3xl border border-gray-300 dark:border-gray-600 shadow rounded-[8px] overflow-hidden"
       >
         <div
           bind:this={editorDiv}
-          class="ml-2 bg-gray-50 dark:bg-default w-full min-h-[5vh] sm:min-h-[60px]"
+          class="ml-2 bg-gray-50 dark:bg-[#2A2E39] w-full min-h-[5vh] sm:min-h-[60px]"
           on:keydown={handleKeyDown}
         />
 
@@ -473,7 +473,7 @@
             class="relative min-h-12 h-auto overflow-y-hidden w-full outline-none"
           >
             <div
-              class="absolute bottom-0 flex flex-row justify-end w-full bg:inherit dark:bg-default"
+              class="absolute bottom-0 flex flex-row justify-end w-full bg-gray-50 dark:bg-[#2A2E39]"
             >
               <div class="flex flex-row justify-between w-full">
                 <div
@@ -483,7 +483,7 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-gray-50 dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 rounded truncate"
+                        class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-gray-50 dark:bg-[#2A2E39] sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 rounded truncate"
                       >
                         <span class="truncate">@Agents</span>
                         <svg
@@ -525,7 +525,7 @@
 
                 <Button
                   on:click={() => goto("/chat")}
-                  class="mr-auto ml-2 w-fit border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-gray-50 dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 rounded truncate"
+                  class="mr-auto ml-2 w-fit border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-gray-50 dark:bg-[#2A2E39] sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 rounded truncate"
                 >
                   <span class="hidden sm:block"> New chat</span>
                   <Plus class="sm:-mr-1 sm:ml-1 h-5 w-5 inline-block" />
@@ -533,7 +533,7 @@
 
                 {#if data?.user}
                   <label
-                    class="ml-auto mr-2 whitespace-nowrap w-auto text-xs border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default flex flex-row justify-between items-center px-3 rounded"
+                    class="ml-auto mr-2 whitespace-nowrap w-auto text-xs border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-gray-50 dark:bg-[#2A2E39] flex flex-row justify-between items-center px-3 rounded"
                   >
                     <div>
                       {data?.user?.credits?.toLocaleString("en-US")}
@@ -574,7 +574,7 @@
     </main>
     {#if showSuggestions}
       <ul
-        class=" fixed bg-gray-50 dark:bg-default rounded shadow-md border border-gray-300 dark:border-gray-600 z-[9999] w-56 h-fit max-h-72 overflow-y-auto scroller"
+        class=" fixed bg-gray-50 dark:bg-[#2A2E39] rounded shadow-md border border-gray-300 dark:border-gray-600 z-[9999] w-56 h-fit max-h-72 overflow-y-auto scroller"
         style="top: {suggestionPos?.top}px; left: {suggestionPos?.left}px;"
       >
         {#each suggestions as suggestion, i}
