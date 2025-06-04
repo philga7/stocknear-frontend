@@ -1935,6 +1935,7 @@ export const agentOptions = [
   {"name": "DarkPoolData", "credit": 6},
   {"name": "FundamentalData", "credit": 5},
   {"name": "OptionsData", "credit": 7},
+  {"name": "StockScreener", "credit": 3},
   //{"name": "Plot", "credit": 1},
   
 ]
