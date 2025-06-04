@@ -1218,7 +1218,6 @@
       step: [
         "Today",
         "Tomorrow",
-        "Yesterday",
         "Next 7D",
         "Next 30D",
         "This Month",

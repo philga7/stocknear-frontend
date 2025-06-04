@@ -136,10 +136,6 @@ function createRuleCheck(rule, ruleName, ruleValue) {
         fmt(new Date(todayUTC.getTime() + 86400_000)), 
         fmt(new Date(todayUTC.getTime() + 86400_000))
       ],
-      'yesterday': [
-        fmt(new Date(todayUTC.getTime() - 86400_000)), 
-        fmt(new Date(todayUTC.getTime() - 86400_000))
-      ],
       'next 7d': [
         fmt(todayUTC),
         fmt(new Date(todayUTC.getTime() + 7 * 86400_000))
