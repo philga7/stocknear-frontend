@@ -6,6 +6,7 @@
     setCache,
   } from "$lib/store";
   import InfoModal from "$lib/components/InfoModal.svelte";
+  import { onMount, onDestroy } from "svelte";
 
   export let parameter = "";
   export let label;
@@ -46,7 +47,7 @@
     await getInfoText();
     clearTimeout(leaveTimeout);
     hoverTimeout = setTimeout(() => {
-      $activePopupParameter = parameter; // Show this popup only
+      $activePopupParameter = parameter;
       isPositioned = false;
       setTimeout(updatePopupPosition, 0);
     }, 400);
@@ -56,7 +57,7 @@
     clearTimeout(hoverTimeout);
     leaveTimeout = setTimeout(() => {
       if ($activePopupParameter && $activePopupParameter === parameter) {
-        $activePopupParameter = null; // Hide it only if this popup is currently shown
+        $activePopupParameter = null;
       }
     }, 200);
   }
@@ -71,15 +72,10 @@
     let top = labelRect.top - popupRect.height - spacing;
     let left = labelRect.left + labelRect.width / 2 - popupRect.width / 2;
 
-    // Prevent left overflow
     if (left < 8) left = 8;
-
-    // Prevent right overflow
     if (left + popupRect.width > window.innerWidth) {
       left = window.innerWidth - popupRect.width - 8;
     }
-
-    // If above overflows, place below
     if (top < 0) {
       top = labelRect.bottom + spacing;
     }
@@ -88,6 +84,22 @@
     popupY = top;
     isPositioned = true;
   }
+
+  function handleScrollOrResize() {
+    if (show) {
+      updatePopupPosition();
+    }
+  }
+
+  onMount(() => {
+    window.addEventListener("scroll", handleScrollOrResize, true);
+    window.addEventListener("resize", handleScrollOrResize);
+
+    return () => {
+      window.removeEventListener("scroll", handleScrollOrResize, true);
+      window.removeEventListener("resize", handleScrollOrResize);
+    };
+  });
 </script>
 
 <tr
@@ -122,15 +134,14 @@
         bind:this={popupEl}
         class="hidden sm:block fixed z-50 w-[400px] cursor-default rounded-md border border-gray-200 bg-white shadow-lg dark:border-dark-600 dark:bg-dark-700 dark:text-dark-100 popup-fade"
         style="
-        opacity: {isPositioned ? 1 : 0};
-        transform: translateY({isPositioned ? '0' : '10px'});
-        top: {popupY}px;
-        left: {popupX}px;
-        pointer-events: {isPositioned ? 'auto' : 'none'};
-      "
+          opacity: {isPositioned ? 1 : 0};
+          transform: translateY({isPositioned ? '0' : '10px'});
+          top: {popupY}px;
+          left: {popupX}px;
+          pointer-events: {isPositioned ? 'auto' : 'none'};
+        "
       >
         <div class="relative p-3">
-          <!-- Close button -->
           <button
             class="absolute right-2 top-2 text-gray-500 cursor-pointer"
             on:click={() => {
