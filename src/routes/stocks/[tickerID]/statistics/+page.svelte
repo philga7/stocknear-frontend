@@ -56,82 +56,59 @@
                 in one year.
               </p>
               <table class="w-full border border-gray-300 dark:border-gray-800">
-                <tbody
-                  ><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Shares Outstanding</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.sharesOutStanding
-                        ? abbreviateNumber(rawData?.sharesOutStanding)
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Shares Change (YoY)</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{checkValue(rawData?.sharesYoY, "percent")}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Shares Change (QoQ)</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{checkValue(rawData?.sharesQoQ, "percent")}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Owned by Institutions (%)</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{checkValue(
-                        rawData?.institutionalOwnership,
-                        "percent",
-                      )}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Shares Floating</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.floatShare
-                        ? abbreviateNumber(rawData?.floatShares)
-                        : "n/a"}</td
-                    >
-                  </tr>
-                  <tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Failed to Deliver (FTD) Shares</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.failToDeliver
-                        ? rawData?.failToDeliver?.toLocaleString("en-US")
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>FTD / Avg. Volume</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.relativeFTD
-                        ? rawData?.relativeFTD < 0.01
-                          ? "< 0.01%"
-                          : checkValue(
-                              abbreviateNumber(rawData?.relativeFTD),
-                              "percent",
-                            )
-                        : "n/a"}</td
-                    >
-                  </tr></tbody
-                >
+                <tbody>
+                  <PopupInfo
+                    label="Shares Outstanding"
+                    parameter="sharesOutStanding"
+                    value={rawData?.sharesOutStanding
+                      ? abbreviateNumber(rawData?.sharesOutStanding)
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    label="Shares Change (YoY)"
+                    parameter="sharesYoY"
+                    value={checkValue(rawData?.sharesYoY, "percent")}
+                  />
+                  <PopupInfo
+                    label="Shares Change (QoQ)"
+                    parameter="sharesQoQ"
+                    value={checkValue(rawData?.sharesQoQ, "percent")}
+                  />
+                  <PopupInfo
+                    label="Owned by Institutions (%)"
+                    parameter="institutionalOwnership"
+                    value={checkValue(
+                      rawData?.institutionalOwnership,
+                      "percent",
+                    )}
+                  />
+                  <PopupInfo
+                    label="Shares Floating"
+                    parameter="floatShare"
+                    value={rawData?.floatShare
+                      ? abbreviateNumber(rawData?.floatShares)
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    label="Failed to Deliver (FTD) Shares"
+                    parameter="failToDeliver"
+                    value={rawData?.failToDeliver
+                      ? rawData?.failToDeliver?.toLocaleString("en-US")
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    label="FTD / Avg. Volume"
+                    parameter="relativeFTD"
+                    value={rawData?.relativeFTD
+                      ? rawData?.relativeFTD < 0.01
+                        ? "< 0.01%"
+                        : checkValue(
+                            abbreviateNumber(rawData?.relativeFTD),
+                            "percent",
+                          )
+                      : "n/a"}
+                  />
+                </tbody>
               </table>
             </div>
             <div>
@@ -148,47 +125,34 @@
                 </p>
               {/if}
               <table class="w-full border border-gray-300 dark:border-gray-800">
-                <tbody
-                  ><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Short Interest</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.sharesShort
-                        ? abbreviateNumber(rawData?.sharesShort)
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Short % of Shares Out</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.shortOutstandingPercent
-                        ? rawData?.shortOutstandingPercent + "%"
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Short % of Float</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.shortFloatPercent
-                        ? rawData?.shortFloatPercent + "%"
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Short Ratio (days to cover)</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.shortRatio ? rawData?.shortRatio : "n/a"}</td
-                    >
-                  </tr></tbody
-                >
+                <tbody>
+                  <PopupInfo
+                    label="Short Interest"
+                    parameter="sharesShort"
+                    value={rawData?.sharesShort
+                      ? abbreviateNumber(rawData?.sharesShort)
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    label="Short % of Shares Out"
+                    parameter="shortOutstandingPercent"
+                    value={rawData?.shortOutstandingPercent
+                      ? rawData?.shortOutstandingPercent + "%"
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    label="Short % of Float"
+                    parameter="shortFloatPercent"
+                    value={rawData?.shortFloatPercent
+                      ? rawData?.shortFloatPercent + "%"
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    label="Short Ratio (days to cover)"
+                    parameter="shortRatio"
+                    value={rawData?.shortRatio ? rawData?.shortRatio : "n/a"}
+                  />
+                </tbody>
               </table>
             </div>
             <div>
@@ -205,67 +169,45 @@
               {/if}
 
               <table class="w-full border border-gray-300 dark:border-gray-800">
-                <tbody
-                  ><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>PE Ratio</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.priceToEarningsRatio ?? "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Forward PE</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.forwardPE ?? "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>PS Ratio</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.priceToSalesRatio ?? "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Forward PS</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.forwardPS ?? "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>PB Ratio</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.priceToBookRatio ?? "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>P/FCF Ratio</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.priceToFreeCashFlowRatio ?? "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>PEG Ratio</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.priceToEarningsGrowthRatio !== null
-                        ? rawData?.priceToEarningsGrowthRatio
-                        : "n/a"}</td
-                    >
-                  </tr></tbody
-                >
+                <tbody>
+                  <PopupInfo
+                    label="PE Ratio"
+                    parameter="priceToEarningsRatio"
+                    value={rawData?.priceToEarningsRatio ?? "n/a"}
+                  />
+                  <PopupInfo
+                    label="Forward PE"
+                    parameter="forwardPE"
+                    value={rawData?.forwardPE ?? "n/a"}
+                  />
+                  <PopupInfo
+                    label="PS Ratio"
+                    parameter="priceToSalesRatio"
+                    value={rawData?.priceToSalesRatio ?? "n/a"}
+                  />
+                  <PopupInfo
+                    label="Forward PS"
+                    parameter="forwardPS"
+                    value={rawData?.forwardPS ?? "n/a"}
+                  />
+                  <PopupInfo
+                    label="PB Ratio"
+                    parameter="priceToBookRatio"
+                    value={rawData?.priceToBookRatio ?? "n/a"}
+                  />
+                  <PopupInfo
+                    label="P/FCF Ratio"
+                    parameter="priceToFreeCashFlowRatio"
+                    value={rawData?.priceToFreeCashFlowRatio ?? "n/a"}
+                  />
+                  <PopupInfo
+                    label="PEG Ratio"
+                    parameter="priceToEarningsGrowthRatio"
+                    value={rawData?.priceToEarningsGrowthRatio !== null
+                      ? rawData?.priceToEarningsGrowthRatio
+                      : "n/a"}
+                  />
+                </tbody>
               </table>
               <a
                 href={`/stocks/${$stockTicker}/financials/ratios`}
@@ -289,41 +231,28 @@
                 {/if}
               </p>
               <table class="w-full border border-gray-300 dark:border-gray-800">
-                <tbody
-                  ><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>EV / Sales</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.evToSales ?? "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>EV / EBITDA</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.evToEBITDA ?? "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>EV / EBIT</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.evToOperatingCashFlow ?? "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>EV / FCF</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.evToFreeCashFlow ?? "n/a"}</td
-                    >
-                  </tr></tbody
-                >
+                <tbody>
+                  <PopupInfo
+                    label="EV / Sales"
+                    parameter="evToSales"
+                    value={rawData?.evToSales ?? "n/a"}
+                  />
+                  <PopupInfo
+                    label="EV / EBITDA"
+                    parameter="evToEBITDA"
+                    value={rawData?.evToEBITDA ?? "n/a"}
+                  />
+                  <PopupInfo
+                    label="EV / EBIT"
+                    parameter="evToOperatingCashFlow"
+                    value={rawData?.evToOperatingCashFlow ?? "n/a"}
+                  />
+                  <PopupInfo
+                    label="EV / FCF"
+                    parameter="evToFreeCashFlow"
+                    value={rawData?.evToFreeCashFlow ?? "n/a"}
+                  />
+                </tbody>
               </table>
             </div>
             <div>
@@ -335,62 +264,42 @@
                 </p>
               {/if}
               <table class="w-full border border-gray-300 dark:border-gray-800">
-                <tbody
-                  ><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Current Ratio</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.currentRatio ?? "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Quick Ratio</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.quickRatio ?? "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Debt / Equity</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.debtToEquityRatio ?? "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Debt / EBITDA</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.debtToEBITDARatio
-                        ? abbreviateNumber(rawData?.debtToEBITDARatio)
-                        : "n/a"}</td
-                    >
-                  </tr>
-                  <tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Debt / FCF</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.debtToFreeCashFlowRatio
-                        ? abbreviateNumber(rawData?.debtToFreeCashFlowRatio)
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Interest Coverage</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.interestCoverageRatio}</td
-                    >
-                  </tr></tbody
-                >
+                <tbody>
+                  <PopupInfo
+                    label="Current Ratio"
+                    parameter="currentRatio"
+                    value={rawData?.currentRatio ?? "n/a"}
+                  />
+                  <PopupInfo
+                    label="Quick Ratio"
+                    parameter="quickRatio"
+                    value={rawData?.quickRatio ?? "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="debtToEquityRatio"
+                    label="Debt / Equity"
+                    value={rawData?.debtToEquityRatio ?? "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="debtToEBITDARatio"
+                    label="Debt / EBITDA"
+                    value={rawData?.debtToEBITDARatio
+                      ? abbreviateNumber(rawData?.debtToEBITDARatio)
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="debtToFreeCashFlowRatio"
+                    label="Debt / FCF"
+                    value={rawData?.debtToFreeCashFlowRatio
+                      ? abbreviateNumber(rawData?.debtToFreeCashFlowRatio)
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="interestCoverageRatio"
+                    label="Interest Coverage"
+                    value={rawData?.interestCoverageRatio}
+                  />
+                </tbody>
               </table>
             </div>
             <div>
@@ -407,110 +316,78 @@
                 )}.
               </p>
               <table class="w-full border border-gray-300 dark:border-gray-800">
-                <tbody
-                  ><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Return on Equity</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{checkValue(rawData?.returnOnEquity, "percent")}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Return on Assets</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{checkValue(rawData?.returnOnAssets, "percent")}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Return on Invested Capital</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{checkValue(
-                        rawData?.returnOnInvestedCapital,
-                        "percent",
-                      )}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Revenue Per Employee</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.revenuePerEmployee
-                        ? "$" +
-                          rawData?.revenuePerEmployee?.toLocaleString("en-US")
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Profits Per Employee</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.profitPerEmployee
-                        ? "$" +
-                          rawData?.profitPerEmployee?.toLocaleString("en-US")
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Employee Count</span></td
-                    >
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.employees?.toLocaleString("en-US")}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Asset Turnover</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.assetTurnover ?? "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Inventory Turnover</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.inventoryTurnover
-                        ? abbreviateNumber(rawData?.inventoryTurnover, false)
-                        : "n/a"}</td
-                    >
-                  </tr></tbody
-                >
+                <tbody>
+                  <PopupInfo
+                    parameter="returnOnEquity"
+                    label="Return on Equity"
+                    value={checkValue(rawData?.returnOnEquity, "percent")}
+                  />
+                  <PopupInfo
+                    parameter="returnOnAssets"
+                    label="Return on Assets"
+                    value={checkValue(rawData?.returnOnAssets, "percent")}
+                  />
+                  <PopupInfo
+                    parameter="returnOnInvestedCapital"
+                    label="Return on Invested Capital"
+                    value={checkValue(
+                      rawData?.returnOnInvestedCapital,
+                      "percent",
+                    )}
+                  />
+                  <PopupInfo
+                    parameter="revenuePerEmployee"
+                    label="Revenue Per Employee"
+                    value={rawData?.revenuePerEmployee
+                      ? "$" +
+                        rawData?.revenuePerEmployee?.toLocaleString("en-US")
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="profitPerEmployee"
+                    label="Profits Per Employee"
+                    value={rawData?.profitPerEmployee
+                      ? "$" +
+                        rawData?.profitPerEmployee?.toLocaleString("en-US")
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="employees"
+                    label="Employee Count"
+                    value={rawData?.employees?.toLocaleString("en-US")}
+                  />
+                  <PopupInfo
+                    parameter="assetTurnover"
+                    label="Asset Turnover"
+                    value={rawData?.assetTurnover ?? "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="inventoryTurnover"
+                    label="Inventory Turnover"
+                    value={rawData?.inventoryTurnover
+                      ? abbreviateNumber(rawData?.inventoryTurnover, false)
+                      : "n/a"}
+                  />
+                </tbody>
               </table>
             </div>
             <div>
               <h2 class="mb-2 px-0.5 text-xl font-bold">Taxes</h2>
               <table class="w-full border border-gray-300 dark:border-gray-800">
-                <tbody
-                  ><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Income Tax</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.incomeTaxExpense
-                        ? abbreviateNumber(rawData?.incomeTaxExpense)
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Effective Tax Rate</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{checkValue(rawData?.effectiveTaxRate, "percent")}</td
-                    >
-                  </tr></tbody
-                >
+                <tbody>
+                  <PopupInfo
+                    parameter="incomeTaxExpense"
+                    label="Income Tax"
+                    value={rawData?.incomeTaxExpense
+                      ? abbreviateNumber(rawData?.incomeTaxExpense)
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="effectiveTaxRate"
+                    label="Effective Tax Rate"
+                    value={checkValue(rawData?.effectiveTaxRate, "percent")}
+                  />
+                </tbody>
               </table>
             </div>
           </div>
@@ -527,59 +404,36 @@
                   : "lower"} than the market average.
               </p>
               <table class="w-full border border-gray-300 dark:border-gray-800">
-                <tbody
-                  ><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Beta</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.beta}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>52-Week Price Change</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.change1Y ? rawData?.change1Y + "%" : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>50-Day Moving Average</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.sma50 ?? "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>200-Day Moving Average</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.sma200 ?? "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Relative Strength Index (RSI)</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.rsi ?? "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Average Volume (20 Days)</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.avgVolume
-                        ? rawData?.avgVolume?.toLocaleString("en-US")
-                        : "n/a"}</td
-                    >
-                  </tr></tbody
-                >
+                <tbody>
+                  <PopupInfo parameter="" label="Beta" value={rawData?.beta} />
+                  <PopupInfo
+                    parameter="change1Y"
+                    label="52-Week Price Change"
+                    value={rawData?.change1Y ? rawData?.change1Y + "%" : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="sma50"
+                    label="50-Day Moving Average"
+                    value={rawData?.sma50 ?? "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="sma200"
+                    label="200-Day Moving Average"
+                    value={rawData?.sma200 ?? "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="rsi"
+                    label="Relative Strength Index (RSI)"
+                    value={rawData?.rsi ?? "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="avgVolume"
+                    label="Average Volume (20 Days)"
+                    value={rawData?.avgVolume
+                      ? rawData?.avgVolume?.toLocaleString("en-US")
+                      : "n/a"}
+                  />
+                </tbody>
               </table>
             </div>
 
@@ -596,77 +450,55 @@
                 {/if}
               </p>
               <table class="w-full border border-gray-300 dark:border-gray-800">
-                <tbody
-                  ><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Revenue</span></td
-                    >
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.revenue !== 0 && rawData?.revenue !== null
-                        ? abbreviateNumber(rawData?.revenue, false)
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Gross Profit</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.grossProfit
-                        ? abbreviateNumber(rawData?.grossProfit)
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Operating Income</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.operatingIncome
-                        ? abbreviateNumber(rawData?.operatingIncome)
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Net Income</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.netIncome
-                        ? abbreviateNumber(rawData?.netIncome)
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>EBITDA</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.ebitda
-                        ? abbreviateNumber(rawData?.ebitda)
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>EBIT</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.ebit !== 0 && rawData?.ebit !== null
-                        ? abbreviateNumber(rawData?.ebit, false)
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Earnings Per Share (EPS)</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.eps ?? "n/a"}</td
-                    >
-                  </tr></tbody
-                >
+                <tbody>
+                  <PopupInfo
+                    parameter="revenue"
+                    label="Revenue"
+                    value={rawData?.revenue !== 0 && rawData?.revenue !== null
+                      ? abbreviateNumber(rawData?.revenue, false)
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="grossProfit"
+                    label="Gross Profit"
+                    value={rawData?.grossProfit
+                      ? abbreviateNumber(rawData?.grossProfit)
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="operatingIncome"
+                    label="Operating Income"
+                    value={rawData?.operatingIncome
+                      ? abbreviateNumber(rawData?.operatingIncome)
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="netIncome"
+                    label="Net Income"
+                    value={rawData?.netIncome
+                      ? abbreviateNumber(rawData?.netIncome)
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="ebitda"
+                    label="EBITDA"
+                    value={rawData?.ebitda
+                      ? abbreviateNumber(rawData?.ebitda)
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="ebit"
+                    label="EBIT"
+                    value={rawData?.ebit !== 0 && rawData?.ebit !== null
+                      ? abbreviateNumber(rawData?.ebit, false)
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="eps"
+                    label="Earnings Per Share (EPS)"
+                    value={rawData?.eps ?? "n/a"}
+                  />
+                </tbody>
               </table>
               <a
                 href={`/stocks/${$stockTicker}/financials`}
@@ -690,72 +522,52 @@
                 </p>
               {/if}
               <table class="w-full border border-gray-300 dark:border-gray-800">
-                <tbody
-                  ><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Cash &amp; Cash Equivalents</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.cashAndCashEquivalents
-                        ? abbreviateNumber(rawData?.cashAndCashEquivalents)
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Total Debt</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.totalDebt
-                        ? abbreviateNumber(rawData?.totalDebt)
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Net Cash</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.cashAndCashEquivalents && rawData?.totalDebt
-                        ? abbreviateNumber(
-                            rawData?.cashAndCashEquivalents -
-                              rawData?.totalDebt,
-                          )
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Retained Earnings</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.retainedEarnings
-                        ? abbreviateNumber(rawData?.retainedEarnings)
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Total Assets</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.totalAssets
-                        ? abbreviateNumber(rawData?.totalAssets)
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Working Capital</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.workingCapital
-                        ? abbreviateNumber(rawData?.workingCapital)
-                        : "n/a"}</td
-                    >
-                  </tr></tbody
-                >
+                <tbody>
+                  <PopupInfo
+                    parameter="cashAndCashEquivalents"
+                    label="Cash &amp; Cash Equivalents"
+                    value={rawData?.cashAndCashEquivalents
+                      ? abbreviateNumber(rawData?.cashAndCashEquivalents)
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="totalDebt"
+                    label="Total Debt"
+                    value={rawData?.totalDebt
+                      ? abbreviateNumber(rawData?.totalDebt)
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="netCash"
+                    label="Net Cash"
+                    value={rawData?.cashAndCashEquivalents && rawData?.totalDebt
+                      ? abbreviateNumber(
+                          rawData?.cashAndCashEquivalents - rawData?.totalDebt,
+                        )
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="retainedEarnings"
+                    label="Retained Earnings"
+                    value={rawData?.retainedEarnings
+                      ? abbreviateNumber(rawData?.retainedEarnings)
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="totalAssets"
+                    label="Total Assets"
+                    value={rawData?.totalAssets
+                      ? abbreviateNumber(rawData?.totalAssets)
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="workingCapital"
+                    label="Working Capital"
+                    value={rawData?.workingCapital
+                      ? abbreviateNumber(rawData?.workingCapital)
+                      : "n/a"}
+                  />
+                </tbody>
               </table>
               <a
                 href={`/stocks/${$stockTicker}/financials/balance-sheet`}
@@ -782,47 +594,34 @@
                 </p>
               {/if}
               <table class="w-full border border-gray-300 dark:border-gray-800">
-                <tbody
-                  ><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Operating Cash Flow</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.operatingCashFlow
-                        ? abbreviateNumber(rawData?.operatingCashFlow)
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Capital Expenditures</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.capitalExpenditure
-                        ? abbreviateNumber(rawData?.capitalExpenditure)
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Free Cash Flow</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.freeCashFlow
-                        ? abbreviateNumber(rawData?.freeCashFlow)
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>FCF Per Share</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.freeCashFlowPerShare ?? "n/a"}</td
-                    >
-                  </tr></tbody
-                >
+                <tbody>
+                  <PopupInfo
+                    parameter="operatingCashFlow"
+                    label="Operating Cash Flow"
+                    value={rawData?.operatingCashFlow
+                      ? abbreviateNumber(rawData?.operatingCashFlow)
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="capitalExpenditure"
+                    label="Capital Expenditures"
+                    value={rawData?.capitalExpenditure
+                      ? abbreviateNumber(rawData?.capitalExpenditure)
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="freeCashFlow"
+                    label="Free Cash Flow"
+                    value={rawData?.freeCashFlow
+                      ? abbreviateNumber(rawData?.freeCashFlow)
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="freeCashFlowPerShare"
+                    label="FCF Per Share"
+                    value={rawData?.freeCashFlowPerShare ?? "n/a"}
+                  />
+                </tbody>
               </table>
               <a
                 href={`/stocks/${$stockTicker}/financials/cash-flow`}
@@ -845,86 +644,64 @@
                 {/if}
               </p>
               <table class="w-full border border-gray-300 dark:border-gray-800">
-                <tbody
-                  ><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Gross Margin</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.grossProfitMargin !== 0 &&
-                      rawData?.grossProfitMargin !== null
-                        ? checkValue(rawData?.grossProfitMargin, "percent")
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Operating Margin</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.operatingProfitMargin !== 0 &&
-                      rawData?.operatingProfitMargin !== null
-                        ? checkValue(rawData?.operatingProfitMargin, "percent")
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Pretax Margin</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.pretaxProfitMargin !== 0 &&
-                      rawData?.pretaxProfitMargin !== null
-                        ? checkValue(rawData?.pretaxProfitMargin, "percent")
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Profit Margin</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.netProfitMargin !== 0 &&
-                      rawData?.netProfitMargin !== null
-                        ? checkValue(rawData?.netProfitMargin, "percent")
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>EBITDA Margin</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.ebitdaMargin !== 0 &&
-                      rawData?.ebitdaMargin !== null
-                        ? checkValue(rawData?.ebitdaMargin, "percent")
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>EBIT Margin</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.ebitMargin !== 0 &&
-                      rawData?.ebitMargin !== null
-                        ? checkValue(rawData?.ebitMargin, "percent")
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>FCF Margin</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.freeCashFlowMargin !== 0 &&
-                      rawData?.freeCashFlowMargin !== null
-                        ? checkValue(rawData?.freeCashFlowMargin, "percent")
-                        : "n/a"}</td
-                    >
-                  </tr></tbody
-                >
+                <tbody>
+                  <PopupInfo
+                    parameter="grossProfitMargin"
+                    label="Gross Margin"
+                    value={rawData?.grossProfitMargin !== 0 &&
+                    rawData?.grossProfitMargin !== null
+                      ? checkValue(rawData?.grossProfitMargin, "percent")
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="operatingProfitMargin"
+                    label="Operating Margin"
+                    value={rawData?.operatingProfitMargin !== 0 &&
+                    rawData?.operatingProfitMargin !== null
+                      ? checkValue(rawData?.operatingProfitMargin, "percent")
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="pretaxProfitMargin"
+                    label="Pretax Margin"
+                    value={rawData?.pretaxProfitMargin !== 0 &&
+                    rawData?.pretaxProfitMargin !== null
+                      ? checkValue(rawData?.pretaxProfitMargin, "percent")
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="netProfitMargin"
+                    label="Profit Margin"
+                    value={rawData?.netProfitMargin !== 0 &&
+                    rawData?.netProfitMargin !== null
+                      ? checkValue(rawData?.netProfitMargin, "percent")
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="ebitdaMargin"
+                    label="EBITDA Margin"
+                    value={rawData?.ebitdaMargin !== 0 &&
+                    rawData?.ebitdaMargin !== null
+                      ? checkValue(rawData?.ebitdaMargin, "percent")
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="ebitMargin"
+                    label="EBIT Margin"
+                    value={rawData?.ebitMargin !== 0 &&
+                    rawData?.ebitMargin !== null
+                      ? checkValue(rawData?.ebitMargin, "percent")
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="freeCashFlowMargin"
+                    label="FCF Margin"
+                    value={rawData?.freeCashFlowMargin !== 0 &&
+                    rawData?.freeCashFlowMargin !== null
+                      ? checkValue(rawData?.freeCashFlowMargin, "percent")
+                      : "n/a"}
+                  />
+                </tbody>
               </table>
             </div>
           </div>
@@ -945,69 +722,50 @@
                 {/if}
               </p>
               <table class="w-full border border-gray-300 dark:border-gray-800">
-                <tbody
-                  ><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Dividend Per Share</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.annualDividend !== null
-                        ? "$" + rawData?.annualDividend?.toFixed(2)
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Dividend Yield</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.dividendYield !== null
-                        ? rawData?.dividendYield + "%"
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Dividend Growth (YoY)</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.dividendGrowth !== null
-                        ? rawData?.dividendGrowth + "%"
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Payout Ratio</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.payoutRatio !== null
-                        ? rawData?.payoutRatio + "%"
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Earnings Yield</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.earningsYield !== null
-                        ? checkValue(rawData?.earningsYield, "percent")
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>FCF Yield</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.freeCashFlowYield !== null
-                        ? checkValue(rawData?.freeCashFlowYield, "percent")
-                        : "n/a"}</td
-                    >
-                  </tr></tbody
-                >
+                <tbody>
+                  <PopupInfo
+                    parameter="annualDividend"
+                    label="Dividend Per Share"
+                    value={rawData?.annualDividend !== null
+                      ? "$" + rawData?.annualDividend?.toFixed(2)
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="dividendYield"
+                    label="Dividend Yield"
+                    value={rawData?.dividendYield !== null
+                      ? rawData?.dividendYield + "%"
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="dividendGrowth"
+                    label="Dividend Growth (YoY)"
+                    value={rawData?.dividendGrowth !== null
+                      ? rawData?.dividendGrowth + "%"
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="payoutRatio"
+                    label="Payout Ratio"
+                    value={rawData?.payoutRatio !== null
+                      ? rawData?.payoutRatio + "%"
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="earningsYield"
+                    label="Earnings Yield"
+                    value={rawData?.earningsYield !== null
+                      ? checkValue(rawData?.earningsYield, "percent")
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter="freeCashFlowYield"
+                    label="FCF Yield"
+                    value={rawData?.freeCashFlowYield !== null
+                      ? checkValue(rawData?.freeCashFlowYield, "percent")
+                      : "n/a"}
+                  />
+                </tbody>
               </table>
               <a
                 href={`/stocks/${$stockTicker}/dividends`}
@@ -1032,45 +790,32 @@
                 {/if}
               </p>
               <table class="w-full border border-gray-300 dark:border-gray-800">
-                <tbody
-                  ><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Price Target</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.priceTarget !== null
-                        ? "$" + rawData?.priceTarget
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Price Target Difference</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.upside !== null
-                        ? rawData?.upside + "%"
-                        : "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Analyst Consensus</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.analystRating ?? "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Analyst Count</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.analystCounter ?? "n/a"}</td
-                    >
-                  </tr></tbody
-                >
+                <tbody>
+                  <PopupInfo
+                    parameter=""
+                    label="Price Target"
+                    value={rawData?.priceTarget !== null
+                      ? "$" + rawData?.priceTarget
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter=""
+                    label="Price Target Difference"
+                    value={rawData?.upside !== null
+                      ? rawData?.upside + "%"
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    parameter=""
+                    label="Analyst Consensus"
+                    value={rawData?.analystRating ?? "n/a"}
+                  />
+                  <PopupInfo
+                    parameter=""
+                    label="Analyst Count"
+                    value={rawData?.analystCounter ?? "n/a"}
+                  />
+                </tbody>
               </table>
               <a
                 href={`/stocks/${$stockTicker}/forecast/analyst`}
@@ -1096,38 +841,26 @@
                       ? "$" + rawData?.lynchFairValue
                       : "n/a"}
                   />
-
-                  <tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Lynch Upside</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.lynchUpside
-                        ? rawData?.lynchUpside + "%"
-                        : "n/a"}</td
-                    >
-                  </tr>
-                  <tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2">
-                      <span>Graham Number</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.grahamNumber ?? "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Graham Upside</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2">
-                      {rawData?.grahamUpside
-                        ? rawData?.grahamUpside + "%"
-                        : "n/a"}</td
-                    >
-                  </tr></tbody
-                >
+                  <PopupInfo
+                    label="Lynch Upside"
+                    parameter="lynchUpside"
+                    value={rawData?.lynchUpside
+                      ? rawData?.lynchUpside + "%"
+                      : "n/a"}
+                  />
+                  <PopupInfo
+                    label="Graham Number"
+                    parameter="grahamNumber"
+                    value={rawData?.grahamNumber ?? "n/a"}
+                  />
+                  <PopupInfo
+                    label="Graham Upside"
+                    parameter="grahamUpside"
+                    value={rawData?.grahamUpside
+                      ? rawData?.grahamUpside + "%"
+                      : "n/a"}
+                  />
+                </tbody>
               </table>
             </div>
             {#if rawData?.lastStockSplit && rawData?.splitType && rawData?.splitRatio}
@@ -1151,66 +884,49 @@
                 <table
                   class="w-full border border-gray-300 dark:border-gray-800"
                 >
-                  <tbody
-                    ><tr
-                      class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                      ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                        ><span>Last Split Date</span>
-                      </td>
-                      <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                        >{new Date(rawData?.lastStockSplit).toLocaleString(
-                          "en-US",
-                          {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric",
-                            timeZone: "Europe/Berlin",
-                          },
-                        )}</td
-                      >
-                    </tr><tr
-                      class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                      ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                        ><span>Split Type</span>
-                      </td>
-                      <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                        >{rawData?.splitType}</td
-                      >
-                    </tr><tr
-                      class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                      ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                        ><span>Split Ratio</span>
-                      </td>
-                      <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                        >{rawData?.splitRatio}</td
-                      >
-                    </tr></tbody
-                  >
+                  <tbody>
+                    <PopupInfo
+                      label="Last Split Date"
+                      parameter="lastStockSplit"
+                      value={new Date(rawData?.lastStockSplit).toLocaleString(
+                        "en-US",
+                        {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                          timeZone: "Europe/Berlin",
+                        },
+                      )}
+                    />
+                    <PopupInfo
+                      label="Split Type"
+                      value={rawData?.splitType}
+                      parameter="splitType"
+                    />
+                    <PopupInfo
+                      label="Split Ratio"
+                      parameter="splitRatio"
+                      value={rawData?.splitRatio}
+                    />
+                  </tbody>
                 </table>
               </div>
             {/if}
             <div>
               <h2 class="mb-2 px-0.5 text-xl font-bold">Scores</h2>
               <table class="w-full border border-gray-300 dark:border-gray-800">
-                <tbody
-                  ><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Altman Z-Score</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.altmanZScore ?? "n/a"}</td
-                    >
-                  </tr><tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Piotroski F-Score</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.piotroskiScore ?? "n/a"}</td
-                    >
-                  </tr></tbody
-                >
+                <tbody>
+                  <PopupInfo
+                    label="Altman Z-Score"
+                    parameter="altmanZScore"
+                    value={rawData?.altmanZScore ?? "n/a"}
+                  />
+                  <PopupInfo
+                    label="Piotroski F-Score"
+                    parameter="piotroskiScore"
+                    value={rawData?.piotroskiScore ?? "n/a"}
+                  />
+                </tbody>
               </table>
             </div>
           </div>
