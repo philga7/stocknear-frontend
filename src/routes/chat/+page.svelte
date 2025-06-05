@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import Chat from "lucide-svelte/icons/message-circle";
+  import { DateTime } from "luxon";
+
   import Arrow from "lucide-svelte/icons/arrow-up";
   import { mode } from "mode-watcher";
   import { toast } from "svelte-sonner";
@@ -19,6 +20,7 @@
   export let data;
   export let form;
 
+  let historyChat = data?.getAllChats || [];
   let editorDiv;
   let editorView;
   let editorText = "";
@@ -29,6 +31,30 @@
   let selectedSuggestion = 0;
   let currentQuery = "";
   let isLoading = false;
+
+  const formatDate = (dateString) => {
+    // Ensure the date string is ISO compliant
+    const isoDateString = dateString.replace(" ", "T");
+
+    // Parse input and current time as UTC
+    const inputDate = DateTime.fromISO(isoDateString, { zone: "utc" });
+    const currentUTC = DateTime.utc();
+
+    // Calculate difference in minutes
+    const diffInMinutes = Math.abs(
+      inputDate.diff(currentUTC, "minutes").minutes,
+    );
+
+    if (diffInMinutes < 60) {
+      return `${Math.round(diffInMinutes)} minutes`;
+    } else if (diffInMinutes < 1440) {
+      const hours = Math.round(diffInMinutes / 60);
+      return `${hours} hour${hours !== 1 ? "s" : ""}`;
+    } else {
+      const days = Math.round(diffInMinutes / 1440);
+      return `${days} day${days !== 1 ? "s" : ""}`;
+    }
+  };
 
   let defaultChats = [
     {
@@ -400,7 +426,7 @@
             </h1>
 
             <div
-              class="block p-3 w-full border border-gray-300 dark:border-gray-600 shadow-sm rounded-[8px] overflow-hidden bg-gray-50 dark:bg-[#2A2E39]"
+              class="block p-3 w-full border border-gray-300 dark:border-gray-600 shadow-sm rounded-[5px] overflow-hidden bg-gray-50 dark:bg-[#2A2E39]"
             >
               <div
                 bind:this={editorDiv}
@@ -411,7 +437,7 @@
               <!-- Suggestions Dropdown -->
               {#if showSuggestions}
                 <ul
-                  class="absolute bg-white dark:bg-default rounded shadow-md border border-gray-300 dark:border-gray-600 mt-1 z-60 w-56 h-fit max-h-72 overflow-y-auto scroller"
+                  class="absolute bg-white dark:bg-default rounded-[5px] shadow-md border border-gray-300 dark:border-gray-600 mt-1 z-60 w-56 h-fit max-h-72 overflow-y-auto scroller"
                   style="top: {suggestionPos?.top}px; left: {suggestionPos?.left}px;"
                 >
                   {#each suggestions as suggestion, i}
@@ -502,7 +528,7 @@
                         on:click={() => (data?.user ? createChat() : "")}
                         class="{editorText?.trim()?.length > 0
                           ? 'cursor-pointer'
-                          : 'cursor-not-allowed opacity-60'} py-2 text-white dark:text-black text-[1rem] rounded border border-gray-300 dark:border-gray-700 bg-black dark:bg-white px-3 transition-colors duration-200"
+                          : 'cursor-not-allowed opacity-60'} py-2 text-white dark:text-black text-[1rem] rounded border border-gray-300 dark:border-gray-800 bg-black dark:bg-white px-3 transition-colors duration-200"
                       >
                         {#if isLoading}
                           <span
@@ -534,7 +560,7 @@
                       closePopup?.dispatchEvent(new MouseEvent("click"));
                     }
                   }}
-                  class="flex flex-col border border-gray-300 dark:border-gray-700 sm:hover:bg-gray-100 dark:sm:hover:bg-secondary bg-white dark:bg-default shadow-sm"
+                  class="flex flex-col border border-gray-300 dark:border-gray-800 sm:hover:bg-gray-100 dark:sm:hover:bg-secondary transition-all bg-white dark:bg-default shadow-sm"
                 >
                   <div class="block flex-grow">
                     <button
@@ -544,7 +570,7 @@
                         class="flex leading-none items-center h-full flex-grow"
                       >
                         <div
-                          class="ml-2 text-left font-medium flex flex-col justify-center box-border relative text-wrap"
+                          class="ml-2 text-left font-medium text-sm sm:text-[1rem] flex flex-col justify-center relative text-wrap"
                         >
                           {item?.label}
                           <div class="flex items-center">
@@ -587,6 +613,47 @@
             </div>
           </div>
         </div>
+        {#if historyChat?.length > 0}
+          <div class="w-full">
+            <h2
+              class="text-lg sm:text-xl text-start w-full font-semibold flex flex-row items-center"
+            >
+              <svg
+                aria-hidden="true"
+                focusable="false"
+                data-prefix="fasr"
+                data-icon="rectangle-vertical-history"
+                class="w-5 h-5 inline-block"
+                role="img"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 576 512"
+                ><path
+                  fill="currentColor"
+                  d="M240 48V464H528V48H240zM192 0h48H528h48V48 464v48H528 240 192V464 48 0zM96 48h48V464H96V48zM0 96H48V416H0V96z"
+                ></path></svg
+              > <span class="ml-2">Threads</span>
+            </h2>
+            <div class="pb-2 last:mb-10 mt-2">
+              {#each historyChat as item}
+                <a
+                  href={"/chat/" + item?.id}
+                  class="block rounded-[5px] border p-3 mb-3 border-gray-300 dark:border-gray-800 sm:hover:bg-gray-100 dark:sm:hover:bg-secondary transition-all cursor-pointer"
+                >
+                  <div class="group border-transparent rounded-t-md">
+                    <div class="mt-[2px]">
+                      <p class="text-sm sm:text-[1rem]">
+                        {item?.message}
+                      </p>
+                    </div>
+                    <span class="text-sm text-gray-600 dark:text-gray-300"
+                      >Last message {formatDate(item?.updated)} ago</span
+                    >
+                  </div>
+                </a>
+              {/each}
+            </div>
+          </div>
+        {/if}
       </main>
     </div>
   </div>

@@ -2,6 +2,35 @@ import { error, fail, redirect } from "@sveltejs/kit";
 import { validateData } from "$lib/utils";
 import { loginUserSchema, registerUserSchema } from "$lib/schemas";
 
+export const load = async ({ locals }) => {
+  const { pb, user } = locals;
+
+  const getAllChats = async () => {
+    if (!user) return [];
+
+    const output = await pb.collection("chat").getList(1, 10, {
+      sort: "-updated",
+      filter: `user="${user.id}"`,
+    });
+    const lastUserMessages = output.items.map(chat => {
+      const userMessages = chat.messages?.filter(m => m.role === "user");
+      const lastMessage = userMessages?.at(-1)?.content || null;
+
+      return {
+        id: chat?.id,
+        updated: chat?.updated,
+        message: lastMessage,
+      };
+    });
+
+ 
+    return lastUserMessages;
+  };
+
+  return {
+    getAllChats: await getAllChats(),
+  };
+};
 
 
 export const actions = {
