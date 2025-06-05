@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getCache, setCache } from "$lib/store";
+  import { screenWidth, getCache, setCache } from "$lib/store";
 
   import InfoModal from "$lib/components/InfoModal.svelte";
   export let parameter = "";
@@ -8,7 +8,7 @@
 
   let hoverTimeout;
   let leaveTimeout;
-  let content = "";
+  let content = { text: "n/a" };
   let show = false;
 
   async function getInfoText() {
@@ -25,7 +25,8 @@
         body: JSON.stringify(postData),
       });
 
-      content = (await response.json())?.text ?? "n/a";
+      content = (await response.json()) ?? { text: "n/a" };
+      console.log(content);
       setCache(parameter, content, "getInfoText");
     }
   }
@@ -50,18 +51,25 @@
   class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd relative"
 >
   <td
+    on:click={() => {
+      if ($screenWidth < 640) {
+        getInfoText();
+      }
+    }}
     class="px-[5px] py-1.5 xs:px-2.5 xs:py-2 relative flex flex-row items-center"
   >
     <label
       on:mouseenter={handleMouseEnter}
       on:mouseleave={handleMouseLeave}
-      for={parameter}
+      for={$screenWidth < 640 ? parameter : ""}
       class="cursor-text"
     >
       {label}
     </label>
     <div class="sm:hidden">
-      <InfoModal title={label} {content} id={parameter} />
+      {#if content?.text}
+        <InfoModal title={label} content={content?.text} id={parameter} />
+      {/if}
     </div>
 
     {#if show}
@@ -78,29 +86,18 @@
           <div class="whitespace-normal">
             <h4 class="mb-2 text-lg font-semibold text-default">{label}</h4>
             <p
-              class="wrap border-t border-sharp pt-2 text-sm font-normal text-default md:text-smaller"
+              class="mb-2 wrap border-t border-sharp pt-2 text-sm font-normal text-default md:text-smaller"
             >
-              {content}
+              {content?.text}
             </p>
-          </div>
-          <!--
-            <button class="absolute right-1 top-1 hidden md:block">
-              <svg
-                class="h-5 w-5 text-gray-400 hover:text-gray-600"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                style="max-width: 40px"
+            {#if content?.equation}
+              <div
+                class="mb-2 pt-1.5 border-t border-gray-300 text-sm text-muted"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-            -->
+                {content?.equation}
+              </div>
+            {/if}
+          </div>
         </div>
       </div>
     {/if}

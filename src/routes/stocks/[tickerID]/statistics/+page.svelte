@@ -929,9 +929,7 @@
             </div>
           </div>
 
-          <div
-            class="flex flex-col space-y-5 xs:space-y-6 lg:space-y-8 w-full max-w-[360px]"
-          >
+          <div class="flex flex-col space-y-5 xs:space-y-6 lg:space-y-8 w-full">
             <div>
               <h2 class="mb-2 px-0.5 text-xl font-bold">
                 Dividends &amp; Yields
@@ -1097,7 +1095,6 @@
                     value={rawData?.lynchFairValue
                       ? "$" + rawData?.lynchFairValue
                       : "n/a"}
-                    content="The upside/downside for the stock price according to the Peter Lynch Fair Value formula, which can be used to estimate a company's intrinsic value. If the number is positive, the stock may be undervalued. If the number is negative, the stock may be overvalued."
                   />
 
                   <tr
