@@ -48,7 +48,7 @@
       setTimeout(() => {
         updatePopupPosition();
       }, 0);
-    }, 250);
+    }, 400);
   }
 
   function handleMouseLeave() {

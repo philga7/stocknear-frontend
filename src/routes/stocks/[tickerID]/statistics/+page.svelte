@@ -405,7 +405,11 @@
               </p>
               <table class="w-full border border-gray-300 dark:border-gray-800">
                 <tbody>
-                  <PopupInfo parameter="" label="Beta" value={rawData?.beta} />
+                  <PopupInfo
+                    parameter="beta"
+                    label="Beta"
+                    value={rawData?.beta}
+                  />
                   <PopupInfo
                     parameter="change1Y"
                     label="52-Week Price Change"
@@ -792,26 +796,26 @@
               <table class="w-full border border-gray-300 dark:border-gray-800">
                 <tbody>
                   <PopupInfo
-                    parameter=""
+                    parameter="priceTarget"
                     label="Price Target"
                     value={rawData?.priceTarget !== null
                       ? "$" + rawData?.priceTarget
                       : "n/a"}
                   />
                   <PopupInfo
-                    parameter=""
+                    parameter="upside"
                     label="Price Target Difference"
                     value={rawData?.upside !== null
                       ? rawData?.upside + "%"
                       : "n/a"}
                   />
                   <PopupInfo
-                    parameter=""
+                    parameter="analystRating"
                     label="Analyst Consensus"
                     value={rawData?.analystRating ?? "n/a"}
                   />
                   <PopupInfo
-                    parameter=""
+                    parameter="analystCounter"
                     label="Analyst Count"
                     value={rawData?.analystCounter ?? "n/a"}
                   />
