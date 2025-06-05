@@ -1,5 +1,10 @@
 <script lang="ts">
-  import { screenWidth, getCache, setCache } from "$lib/store";
+  import {
+    activePopupParameter,
+    screenWidth,
+    getCache,
+    setCache,
+  } from "$lib/store";
   import InfoModal from "$lib/components/InfoModal.svelte";
 
   export let parameter = "";
@@ -9,7 +14,7 @@
   let hoverTimeout;
   let leaveTimeout;
   let content = { text: "n/a" };
-  let show = false;
+  $: show = $activePopupParameter === parameter;
 
   let popupEl: HTMLDivElement;
   let labelEl: HTMLLabelElement;
@@ -41,20 +46,18 @@
     await getInfoText();
     clearTimeout(leaveTimeout);
     hoverTimeout = setTimeout(() => {
-      show = true;
+      $activePopupParameter = parameter; // Show this popup only
       isPositioned = false;
-
-      // Let the popup mount in the DOM before measuring
-      setTimeout(() => {
-        updatePopupPosition();
-      }, 0);
+      setTimeout(updatePopupPosition, 0);
     }, 400);
   }
 
   function handleMouseLeave() {
     clearTimeout(hoverTimeout);
     leaveTimeout = setTimeout(() => {
-      show = false;
+      if ($activePopupParameter && $activePopupParameter === parameter) {
+        $activePopupParameter = null; // Hide it only if this popup is currently shown
+      }
     }, 200);
   }
 
@@ -130,7 +133,10 @@
           <!-- Close button -->
           <button
             class="absolute right-2 top-2 text-gray-500 cursor-pointer"
-            on:click={() => (show = false)}
+            on:click={() => {
+              show = false;
+              $activePopupParameter = null;
+            }}
             aria-label="Close"
           >
             <svg

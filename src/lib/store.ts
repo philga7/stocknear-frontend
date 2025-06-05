@@ -43,7 +43,7 @@ export const clearCache = () => {
   clientSideCache.set({});
 };
 
-
+export const activePopupParameter = writable<string | null>(null);
 
 export const showCookieConsent = writable(<boolean>false);
 export const shouldUpdatePriceChart = writable(<boolean>false);
