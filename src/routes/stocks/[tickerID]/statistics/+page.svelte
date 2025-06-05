@@ -1080,6 +1080,57 @@
                 Stock Forecasts
               </a>
             </div>
+            <div>
+              <h2 class="mb-2 px-0.5 text-xl font-bold">Fair Value</h2>
+              <p
+                class="mb-4 px-0.5 leading-relaxed xs:text-[1.05rem] lg:leading-normal"
+              >
+                There are several formulas that can be used to estimate the
+                intrinsic value of a stock.
+              </p>
+              <table class="w-full border border-gray-300 dark:border-gray-800">
+                <tbody>
+                  <tr
+                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
+                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
+                      ><span>Lynch Fair Value</span>
+                    </td>
+                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
+                      >{rawData?.lynchFairValue ?? "n/a"}</td
+                    >
+                  </tr><tr
+                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
+                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
+                      ><span>Lynch Upside</span>
+                    </td>
+                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
+                      >{rawData?.lynchUpside
+                        ? rawData?.lynchUpside + "%"
+                        : "n/a"}</td
+                    >
+                  </tr>
+                  <tr
+                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
+                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
+                      ><span>Graham Number</span>
+                    </td>
+                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
+                      >{rawData?.grahamNumber ?? "n/a"}</td
+                    >
+                  </tr><tr
+                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
+                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
+                      ><span>Graham Upside</span>
+                    </td>
+                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2">
+                      {rawData?.grahamUpside
+                        ? rawData?.grahamUpside + "%"
+                        : "n/a"}</td
+                    >
+                  </tr></tbody
+                >
+              </table>
+            </div>
             {#if rawData?.lastStockSplit && rawData?.splitType && rawData?.splitRatio}
               <div>
                 <h2 class="mb-2 px-0.5 text-xl font-bold">Stock Splits</h2>

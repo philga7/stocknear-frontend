@@ -214,6 +214,29 @@
       label: "Graham Number",
       step: ["Price > Graham Number", "Price < Graham Number"],
       defaultValue: "any",
+      category: "Fair Value",
+    },
+    grahamUpside: {
+      label: "Graham Upside",
+      step: ["200%", "100%", "50%", "20%", "10%", "5%", "1%"],
+      defaultCondition: "over",
+      defaultValue: "any",
+      varType: "percentSign",
+      category: "Fair Value",
+    },
+    lynchUpside: {
+      label: "Lynch Upside",
+      step: ["200%", "100%", "50%", "20%", "10%", "5%", "1%"],
+      defaultCondition: "over",
+      defaultValue: "any",
+      varType: "percentSign",
+      category: "Fair Value",
+    },
+    lynchFairValue: {
+      label: "Lynch Fair Value",
+      step: ["Price > Lynch Fair Value", "Price < Lynch Fair Value"],
+      defaultValue: "any",
+      category: "Fair Value",
     },
     price: {
       label: "Stock Price",
@@ -1528,6 +1551,7 @@
               "score",
               "industry",
               "grahamNumber",
+              "lynchFairValue",
             ].includes(rule.name),
           )
           ?.map((rule) => [rule.name, new Set(rule.value)]),
@@ -1678,6 +1702,7 @@
             "score",
             "industry",
             "grahamNumber",
+            "lynchFairValue",
           ]?.includes(rule.name),
         ) // Only include specific rules
         ?.map((rule) => [rule.name, new Set(rule.value)]), // Create Map from filtered rules
@@ -2068,6 +2093,7 @@ const handleKeyDown = (event) => {
           "ema100",
           "ema200",
           "grahamNumber",
+          "lynchFairValue",
           "analystRating",
           "earningsTime",
           "earningsDate",
@@ -2175,6 +2201,7 @@ const handleKeyDown = (event) => {
         "ema100",
         "ema200",
         "grahamNumber",
+        "lynchFairValue",
         "analystRating",
         "earningsTime",
         "earningsDate",
@@ -3099,7 +3126,7 @@ const handleKeyDown = (event) => {
                       <DropdownMenu.Content
                         class="w-64 min-h-auto max-h-72 overflow-y-auto scroller"
                       >
-                        {#if !["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber", "analystRating", "payoutFrequency", "topAnalystRating", "earningsTime", "earningsDate", "halalStocks", "score", "sector", "industry", "country"]?.includes(row?.rule)}
+                        {#if !["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber", "lynchFairValue", "analystRating", "payoutFrequency", "topAnalystRating", "earningsTime", "earningsDate", "halalStocks", "score", "sector", "industry", "country"]?.includes(row?.rule)}
                           <DropdownMenu.Label
                             class="absolute mt-2 h-11 border-gray-300 dark:border-gray-800 border-b -top-1 z-20 fixed sticky bg-white dark:bg-default"
                           >
@@ -3275,7 +3302,7 @@ const handleKeyDown = (event) => {
                           </div>
                         {/if}
                         <DropdownMenu.Group class="min-h-10 mt-2">
-                          {#if !["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber", "analystRating", "payoutFrequency", "topAnalystRating", "earningsTime", "earningsDate", "halalStocks", "score", "sector", "industry", "country"]?.includes(row?.rule)}
+                          {#if !["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber", "lynchFairValue", "analystRating", "payoutFrequency", "topAnalystRating", "earningsTime", "earningsDate", "halalStocks", "score", "sector", "industry", "country"]?.includes(row?.rule)}
                             {#each row?.step as newValue, index}
                               {#if ruleCondition[row?.rule] === "between"}
                                 {#if newValue && row?.step[index + 1]}
@@ -3320,7 +3347,7 @@ const handleKeyDown = (event) => {
                                 </DropdownMenu.Item>
                               {/if}
                             {/each}
-                          {:else if ["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber", "payoutFrequency", "earningsTime", "earningsDate"]?.includes(row?.rule)}
+                          {:else if ["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber", "lynchFairValue", "payoutFrequency", "earningsTime", "earningsDate"]?.includes(row?.rule)}
                             {#each row?.step as item}
                               <DropdownMenu.Item
                                 class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"

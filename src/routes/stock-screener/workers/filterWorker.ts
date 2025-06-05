@@ -40,6 +40,8 @@ const movingAverageConditions = {
 
   "Price > Graham Number": (item) => item.price > item.grahamNumber,
   "Price < Graham Number": (item) => item.price < item.grahamNumber,
+  "Price > Lynch Fair Value": (item) => item.price > item.lynchFairValue,
+  "Price < Lynch Fair Value": (item) => item.price < item.lynchFairValue,
 };
 
 // Convert the input to a value or return it as-is if it's already an array
@@ -205,7 +207,7 @@ function createRuleCheck(rule, ruleName, ruleValue) {
   const movingAverageFields = [
     'ema20', 'ema50', 'ema100', 'ema200', 
     'sma20', 'sma50', 'sma100', 'sma200', 
-    'grahamnumber',
+    'grahamnumber','lynchfairvalue'
   ];
 
   if (movingAverageFields.includes(ruleName)) {
