@@ -4,6 +4,7 @@
   import ScrollToTop from "$lib/components/ScrollToTop.svelte";
   import SEO from "$lib/components/SEO.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
+  import PopupInfo from "$lib/components/PopupInfo.svelte";
 
   export let data;
   let rawData = data?.getStatistics ?? {};
@@ -1090,15 +1091,16 @@
               </p>
               <table class="w-full border border-gray-300 dark:border-gray-800">
                 <tbody>
+                  <PopupInfo
+                    label="Lynch Fair Value"
+                    parameter="lynchFairValue"
+                    value={rawData?.lynchFairValue
+                      ? "$" + rawData?.lynchFairValue
+                      : "n/a"}
+                    content="The upside/downside for the stock price according to the Peter Lynch Fair Value formula, which can be used to estimate a company's intrinsic value. If the number is positive, the stock may be undervalued. If the number is negative, the stock may be overvalued."
+                  />
+
                   <tr
-                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Lynch Fair Value</span>
-                    </td>
-                    <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
-                      >{rawData?.lynchFairValue ?? "n/a"}</td
-                    >
-                  </tr><tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                     ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
                       ><span>Lynch Upside</span>
@@ -1111,8 +1113,8 @@
                   </tr>
                   <tr
                     class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2"
-                      ><span>Graham Number</span>
+                    ><td class="px-[5px] py-1.5 xs:px-2.5 xs:py-2">
+                      <span>Graham Number</span>
                     </td>
                     <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2"
                       >{rawData?.grahamNumber ?? "n/a"}</td
