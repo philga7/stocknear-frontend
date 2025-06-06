@@ -86,7 +86,14 @@
 
             <div class="text-lg mt-4">
               <div class="content max-w-4xl">
-                {@html article?.description}
+                {@html article?.description?.replace(
+                  "__VIDEO_SRC__",
+                  getImageURL(
+                    article?.collectionId,
+                    article?.id,
+                    article?.video,
+                  ),
+                )}
               </div>
             </div>
           </article>
