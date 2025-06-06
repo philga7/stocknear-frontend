@@ -243,18 +243,23 @@
           <a
             href="/compare"
             class="border border-gray-300 dark:border-gray-600 flex flex-col justify-center items-center p-4 bg-white dark:bg-secondary rounded-[5px] shadow font-semibold gap-2 hover:shadow-lg text-center dark:hover:shadow-dark-600 dark:hover:shadow-md"
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
+          >
+            <svg
               fill="currentColor"
               class="h-8 w-8"
-              aria-hidden="true"
-              ><path
-                fill-rule="evenodd"
-                d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zm13.5 9a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5z"
-                clip-rule="evenodd"
-              ></path></svg
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></g><g id="SVGRepo_iconCarrier"
+                ><path
+                  d="M1,8A1,1,0,0,1,2,7H9.586L7.293,4.707A1,1,0,1,1,8.707,3.293l4,4a1,1,0,0,1,0,1.414l-4,4a1,1,0,1,1-1.414-1.414L9.586,9H2A1,1,0,0,1,1,8Zm21,7H14.414l2.293-2.293a1,1,0,0,0-1.414-1.414l-4,4a1,1,0,0,0,0,1.414l4,4a1,1,0,0,0,1.414-1.414L14.414,17H22a1,1,0,0,0,0-2Z"
+                ></path></g
+              ></svg
             >
+
             <div>Compare Stocks</div></a
           >
           <a
