@@ -115,8 +115,8 @@ export const POST = async ({ request, locals }) => {
 
       // Define credits for tiers
       let credits = 10;
-      if (tier === "Plus") credits = 50;
-      if (tier === "Pro") credits = 100;
+      if (tier === "Plus") credits = 150;
+      if (tier === "Pro") credits = 1000;
 
       try {
         await locals.pb.collection("users").update(userId, {
