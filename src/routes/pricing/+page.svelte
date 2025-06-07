@@ -161,6 +161,559 @@
     >
       <div
         style="opacity: 1; transform: translateY(20px);"
+        class="transform transition-all duration-300 sm:hover:-translate-y-1 hidden lg:flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
+      >
+        <h3 class="text-3xl font-bold">Basic</h3>
+        <p class="text-muted dark:text-zinc-300 text-sm mt-1">
+          Ideal for Beginners
+        </p>
+        <div class="mt-4">
+          <span class="text-4xl font-bold">$0</span><span class=" text-xl ml-1"
+            >/Month</span
+          >
+        </div>
+
+        <ul class="mt-6 mb-6 space-y-2">
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path></svg
+            ><span class="">10 AI Credits/mo</span>
+          </li>
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path></svg
+            ><span class="">1 Watchlist (up to 5 stocks)</span>
+          </li>
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path></svg
+            ><span class="">3 Price Alerts</span>
+          </li>
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path></svg
+            ><span class="">10 Credits</span>
+          </li>
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path></svg
+            ><span class="">Realtime Notification</span>
+          </li>
+
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
+              viewBox="0 0 64 64"
+              version="1.1"
+              fill="currentColor"
+              style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+              ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></g><g id="SVGRepo_iconCarrier">
+                <rect
+                  id="Icons"
+                  x="-448"
+                  y="-64"
+                  width="1280"
+                  height="800"
+                  style="fill:none;"
+                ></rect>
+                <g id="Icons1" serif:id="Icons">
+                  <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g>
+                  <g id="H3"> </g> <g id="list-ul"> </g>
+                  <g id="hamburger-1"> </g> <g id="hamburger-2"> </g>
+                  <g id="list-ol"> </g> <g id="list-task"> </g>
+                  <g id="trash"> </g> <g id="vertical-menu"> </g>
+                  <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g>
+                  <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> </g>
+                  <g id="clock"> </g> <g id="external-link"> </g>
+                  <g id="hr"> </g> <g id="info"> </g> <g id="warning"> </g>
+                  <g id="plus-circle"> </g> <g id="minus-circle"> </g>
+                  <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g>
+                  <path
+                    id="times"
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path>
+                  <path
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path> <g id="radio-check"> </g> <g id="eye-slash"> </g>
+                  <g id="eye"> </g> <g id="toggle-off"> </g>
+                  <g id="shredder"> </g>
+                  <g
+                    id="spinner--loading--dots-"
+                    serif:id="spinner [loading, dots]"
+                  >
+                  </g> <g id="react"> </g> <g id="check-selected"> </g>
+                  <g id="turn-off"> </g> <g id="code-block"> </g>
+                  <g id="user"> </g> <g id="coffee-bean"> </g>
+                  <g id="coffee-beans">
+                    <g id="coffee-bean1" serif:id="coffee-bean"> </g>
+                  </g> <g id="coffee-bean-filled"> </g>
+                  <g id="coffee-beans-filled">
+                    <g id="coffee-bean2" serif:id="coffee-bean"> </g>
+                  </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g>
+                  <g id="clipboard-copy"> </g> <g id="Layer1"> </g>
+                </g>
+              </g></svg
+            >
+
+            <span class="text-muted dark:text-gray-400"
+              >Hedge Fund Portfolio Access</span
+            >
+          </li>
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
+              viewBox="0 0 64 64"
+              version="1.1"
+              fill="currentColor"
+              style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+              ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></g><g id="SVGRepo_iconCarrier">
+                <rect
+                  id="Icons"
+                  x="-448"
+                  y="-64"
+                  width="1280"
+                  height="800"
+                  style="fill:none;"
+                ></rect>
+                <g id="Icons1" serif:id="Icons">
+                  <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g>
+                  <g id="H3"> </g> <g id="list-ul"> </g>
+                  <g id="hamburger-1"> </g> <g id="hamburger-2"> </g>
+                  <g id="list-ol"> </g> <g id="list-task"> </g>
+                  <g id="trash"> </g> <g id="vertical-menu"> </g>
+                  <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g>
+                  <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> </g>
+                  <g id="clock"> </g> <g id="external-link"> </g>
+                  <g id="hr"> </g> <g id="info"> </g> <g id="warning"> </g>
+                  <g id="plus-circle"> </g> <g id="minus-circle"> </g>
+                  <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g>
+                  <path
+                    id="times"
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path>
+                  <path
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path> <g id="radio-check"> </g> <g id="eye-slash"> </g>
+                  <g id="eye"> </g> <g id="toggle-off"> </g>
+                  <g id="shredder"> </g>
+                  <g
+                    id="spinner--loading--dots-"
+                    serif:id="spinner [loading, dots]"
+                  >
+                  </g> <g id="react"> </g> <g id="check-selected"> </g>
+                  <g id="turn-off"> </g> <g id="code-block"> </g>
+                  <g id="user"> </g> <g id="coffee-bean"> </g>
+                  <g id="coffee-beans">
+                    <g id="coffee-bean1" serif:id="coffee-bean"> </g>
+                  </g> <g id="coffee-bean-filled"> </g>
+                  <g id="coffee-beans-filled">
+                    <g id="coffee-bean2" serif:id="coffee-bean"> </g>
+                  </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g>
+                  <g id="clipboard-copy"> </g> <g id="Layer1"> </g>
+                </g>
+              </g></svg
+            >
+
+            <span class="text-muted dark:text-gray-400"
+              >US Congress Portfolio Access</span
+            >
+          </li>
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
+              viewBox="0 0 64 64"
+              version="1.1"
+              fill="currentColor"
+              style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+              ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></g><g id="SVGRepo_iconCarrier">
+                <rect
+                  id="Icons"
+                  x="-448"
+                  y="-64"
+                  width="1280"
+                  height="800"
+                  style="fill:none;"
+                ></rect>
+                <g id="Icons1" serif:id="Icons">
+                  <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g>
+                  <g id="H3"> </g> <g id="list-ul"> </g>
+                  <g id="hamburger-1"> </g> <g id="hamburger-2"> </g>
+                  <g id="list-ol"> </g> <g id="list-task"> </g>
+                  <g id="trash"> </g> <g id="vertical-menu"> </g>
+                  <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g>
+                  <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> </g>
+                  <g id="clock"> </g> <g id="external-link"> </g>
+                  <g id="hr"> </g> <g id="info"> </g> <g id="warning"> </g>
+                  <g id="plus-circle"> </g> <g id="minus-circle"> </g>
+                  <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g>
+                  <path
+                    id="times"
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path>
+                  <path
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path> <g id="radio-check"> </g> <g id="eye-slash"> </g>
+                  <g id="eye"> </g> <g id="toggle-off"> </g>
+                  <g id="shredder"> </g>
+                  <g
+                    id="spinner--loading--dots-"
+                    serif:id="spinner [loading, dots]"
+                  >
+                  </g> <g id="react"> </g> <g id="check-selected"> </g>
+                  <g id="turn-off"> </g> <g id="code-block"> </g>
+                  <g id="user"> </g> <g id="coffee-bean"> </g>
+                  <g id="coffee-beans">
+                    <g id="coffee-bean1" serif:id="coffee-bean"> </g>
+                  </g> <g id="coffee-bean-filled"> </g>
+                  <g id="coffee-beans-filled">
+                    <g id="coffee-bean2" serif:id="coffee-bean"> </g>
+                  </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g>
+                  <g id="clipboard-copy"> </g> <g id="Layer1"> </g>
+                </g>
+              </g></svg
+            >
+
+            <span class="text-muted dark:text-gray-400"
+              >Financial History Access</span
+            >
+          </li>
+
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
+              viewBox="0 0 64 64"
+              version="1.1"
+              fill="currentColor"
+              style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+              ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></g><g id="SVGRepo_iconCarrier">
+                <rect
+                  id="Icons"
+                  x="-448"
+                  y="-64"
+                  width="1280"
+                  height="800"
+                  style="fill:none;"
+                ></rect>
+                <g id="Icons1" serif:id="Icons">
+                  <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g>
+                  <g id="H3"> </g> <g id="list-ul"> </g>
+                  <g id="hamburger-1"> </g> <g id="hamburger-2"> </g>
+                  <g id="list-ol"> </g> <g id="list-task"> </g>
+                  <g id="trash"> </g> <g id="vertical-menu"> </g>
+                  <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g>
+                  <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> </g>
+                  <g id="clock"> </g> <g id="external-link"> </g>
+                  <g id="hr"> </g> <g id="info"> </g> <g id="warning"> </g>
+                  <g id="plus-circle"> </g> <g id="minus-circle"> </g>
+                  <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g>
+                  <path
+                    id="times"
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path>
+                  <path
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path> <g id="radio-check"> </g> <g id="eye-slash"> </g>
+                  <g id="eye"> </g> <g id="toggle-off"> </g>
+                  <g id="shredder"> </g>
+                  <g
+                    id="spinner--loading--dots-"
+                    serif:id="spinner [loading, dots]"
+                  >
+                  </g> <g id="react"> </g> <g id="check-selected"> </g>
+                  <g id="turn-off"> </g> <g id="code-block"> </g>
+                  <g id="user"> </g> <g id="coffee-bean"> </g>
+                  <g id="coffee-beans">
+                    <g id="coffee-bean1" serif:id="coffee-bean"> </g>
+                  </g> <g id="coffee-bean-filled"> </g>
+                  <g id="coffee-beans-filled">
+                    <g id="coffee-bean2" serif:id="coffee-bean"> </g>
+                  </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g>
+                  <g id="clipboard-copy"> </g> <g id="Layer1"> </g>
+                </g>
+              </g></svg
+            >
+
+            <span class="text-muted dark:text-gray-400">Stock Screener</span>
+          </li>
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
+              viewBox="0 0 64 64"
+              version="1.1"
+              fill="currentColor"
+              style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+              ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></g><g id="SVGRepo_iconCarrier">
+                <rect
+                  id="Icons"
+                  x="-448"
+                  y="-64"
+                  width="1280"
+                  height="800"
+                  style="fill:none;"
+                ></rect>
+                <g id="Icons1" serif:id="Icons">
+                  <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g>
+                  <g id="H3"> </g> <g id="list-ul"> </g>
+                  <g id="hamburger-1"> </g> <g id="hamburger-2"> </g>
+                  <g id="list-ol"> </g> <g id="list-task"> </g>
+                  <g id="trash"> </g> <g id="vertical-menu"> </g>
+                  <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g>
+                  <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> </g>
+                  <g id="clock"> </g> <g id="external-link"> </g>
+                  <g id="hr"> </g> <g id="info"> </g> <g id="warning"> </g>
+                  <g id="plus-circle"> </g> <g id="minus-circle"> </g>
+                  <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g>
+                  <path
+                    id="times"
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path>
+                  <path
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path> <g id="radio-check"> </g> <g id="eye-slash"> </g>
+                  <g id="eye"> </g> <g id="toggle-off"> </g>
+                  <g id="shredder"> </g>
+                  <g
+                    id="spinner--loading--dots-"
+                    serif:id="spinner [loading, dots]"
+                  >
+                  </g> <g id="react"> </g> <g id="check-selected"> </g>
+                  <g id="turn-off"> </g> <g id="code-block"> </g>
+                  <g id="user"> </g> <g id="coffee-bean"> </g>
+                  <g id="coffee-beans">
+                    <g id="coffee-bean1" serif:id="coffee-bean"> </g>
+                  </g> <g id="coffee-bean-filled"> </g>
+                  <g id="coffee-beans-filled">
+                    <g id="coffee-bean2" serif:id="coffee-bean"> </g>
+                  </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g>
+                  <g id="clipboard-copy"> </g> <g id="Layer1"> </g>
+                </g>
+              </g></svg
+            >
+
+            <span class="text-muted dark:text-gray-400">No Ads</span>
+          </li>
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
+              viewBox="0 0 64 64"
+              version="1.1"
+              fill="currentColor"
+              style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+              ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></g><g id="SVGRepo_iconCarrier">
+                <rect
+                  id="Icons"
+                  x="-448"
+                  y="-64"
+                  width="1280"
+                  height="800"
+                  style="fill:none;"
+                ></rect>
+                <g id="Icons1" serif:id="Icons">
+                  <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g>
+                  <g id="H3"> </g> <g id="list-ul"> </g>
+                  <g id="hamburger-1"> </g> <g id="hamburger-2"> </g>
+                  <g id="list-ol"> </g> <g id="list-task"> </g>
+                  <g id="trash"> </g> <g id="vertical-menu"> </g>
+                  <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g>
+                  <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> </g>
+                  <g id="clock"> </g> <g id="external-link"> </g>
+                  <g id="hr"> </g> <g id="info"> </g> <g id="warning"> </g>
+                  <g id="plus-circle"> </g> <g id="minus-circle"> </g>
+                  <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g>
+                  <path
+                    id="times"
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path>
+                  <path
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path> <g id="radio-check"> </g> <g id="eye-slash"> </g>
+                  <g id="eye"> </g> <g id="toggle-off"> </g>
+                  <g id="shredder"> </g>
+                  <g
+                    id="spinner--loading--dots-"
+                    serif:id="spinner [loading, dots]"
+                  >
+                  </g> <g id="react"> </g> <g id="check-selected"> </g>
+                  <g id="turn-off"> </g> <g id="code-block"> </g>
+                  <g id="user"> </g> <g id="coffee-bean"> </g>
+                  <g id="coffee-beans">
+                    <g id="coffee-bean1" serif:id="coffee-bean"> </g>
+                  </g> <g id="coffee-bean-filled"> </g>
+                  <g id="coffee-beans-filled">
+                    <g id="coffee-bean2" serif:id="coffee-bean"> </g>
+                  </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g>
+                  <g id="clipboard-copy"> </g> <g id="Layer1"> </g>
+                </g>
+              </g></svg
+            >
+
+            <span class="text-muted dark:text-gray-400"
+              >Realtime Options Activity</span
+            >
+          </li>
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
+              viewBox="0 0 64 64"
+              version="1.1"
+              fill="currentColor"
+              style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+              ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></g><g id="SVGRepo_iconCarrier">
+                <rect
+                  id="Icons"
+                  x="-448"
+                  y="-64"
+                  width="1280"
+                  height="800"
+                  style="fill:none;"
+                ></rect>
+                <g id="Icons1" serif:id="Icons">
+                  <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g>
+                  <g id="H3"> </g> <g id="list-ul"> </g>
+                  <g id="hamburger-1"> </g> <g id="hamburger-2"> </g>
+                  <g id="list-ol"> </g> <g id="list-task"> </g>
+                  <g id="trash"> </g> <g id="vertical-menu"> </g>
+                  <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g>
+                  <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> </g>
+                  <g id="clock"> </g> <g id="external-link"> </g>
+                  <g id="hr"> </g> <g id="info"> </g> <g id="warning"> </g>
+                  <g id="plus-circle"> </g> <g id="minus-circle"> </g>
+                  <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g>
+                  <path
+                    id="times"
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path>
+                  <path
+                    d="M32.033,29.19l15.55,-15.55l2.863,2.863l-15.55,15.55l15.55,15.55l-2.863,2.863l-15.55,-15.55l-15.55,15.55l-2.863,-2.863l15.55,-15.55l-15.55,-15.55l2.863,-2.863l15.55,15.55Z"
+                  ></path> <g id="radio-check"> </g> <g id="eye-slash"> </g>
+                  <g id="eye"> </g> <g id="toggle-off"> </g>
+                  <g id="shredder"> </g>
+                  <g
+                    id="spinner--loading--dots-"
+                    serif:id="spinner [loading, dots]"
+                  >
+                  </g> <g id="react"> </g> <g id="check-selected"> </g>
+                  <g id="turn-off"> </g> <g id="code-block"> </g>
+                  <g id="user"> </g> <g id="coffee-bean"> </g>
+                  <g id="coffee-beans">
+                    <g id="coffee-bean1" serif:id="coffee-bean"> </g>
+                  </g> <g id="coffee-bean-filled"> </g>
+                  <g id="coffee-beans-filled">
+                    <g id="coffee-bean2" serif:id="coffee-bean"> </g>
+                  </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g>
+                  <g id="clipboard-copy"> </g> <g id="Layer1"> </g>
+                </g>
+              </g></svg
+            >
+
+            <span class="text-muted dark:text-gray-400"
+              >Realtime Dark Pool Trades</span
+            >
+          </li>
+        </ul>
+        <div class="mt-auto pt-6 border-t border-zinc-700 mx-4">
+          {#if !data?.user}
+            <label
+              for="userLogin"
+              class="text-white cursor-pointer w-full py-3 px-4 bg-blue-600 rounded font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
+              >Get Registered Now<svg
+                class="w-5 h-5 ml-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                ><path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                ></path></svg
+              ></label
+            >
+          {/if}
+        </div>
+      </div>
+
+      <div
+        style="opacity: 1; transform: translateY(20px);"
         class="transform transition-all duration-300 sm:hover:-translate-y-1 relative flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
       >
         <h3 class="text-3xl font-bold">Plus</h3>
@@ -198,7 +751,7 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="">50 AI Credits/mo</span>
+            ><span class="">150 AI Credits/mo</span>
           </li>
           <li class="flex items-start">
             <svg
@@ -486,7 +1039,7 @@
         class="mt-5 sm:mt-0 transform transition-all duration-300 sm:hover:-translate-y-1 flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
       >
         <div
-          class="w-fit absolute -top-[20px] left-1/2 transform -translate-x-1/2 whitespace-nowrap m-auto px-4 py-1.5 rounded text-sm font-medium backdrop-blur-xl
+          class="hidden w-fit absolute -top-[20px] left-1/2 transform -translate-x-1/2 whitespace-nowrap m-auto px-4 py-1.5 rounded text-sm font-medium backdrop-blur-xl
               bg-pink-600 text-white shadow-xs"
         >
           <span class="flex items-center gap-1.5"
@@ -532,7 +1085,7 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="">100 AI Credits/mo</span>
+            ><span class="">1,000 AI Credits/mo</span>
           </li>
           <li class="flex items-start">
             <svg
@@ -632,7 +1185,7 @@
           >
         </div>
       </div>
-
+      <!--
       <div
         style="opacity: 1; transform: translateY(20px);"
         class="transform transition-all duration-300 sm:hover:-translate-y-1 flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
@@ -703,6 +1256,7 @@
           >
         </div>
       </div>
+      -->
       <!--
       <div
         class="relative text-left w-full col-span-1 lg:col-span-3 bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-200 dark:border-zinc-600 p-6 isolate translate-y-5 opacity-100"
