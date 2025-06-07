@@ -1,9 +1,8 @@
 import type { RequestHandler } from "./$types";
 
 export const POST = (async ({ request, locals }) => {
-  const { user, pb } = locals;
+  const {  pb } = locals;
   const data = await request.json();
-  
   let output;
 
    // Early return if user doesn't have required tier

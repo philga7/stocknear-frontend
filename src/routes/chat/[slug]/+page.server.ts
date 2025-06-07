@@ -10,12 +10,11 @@ export const load = async ({ locals, url, params }) => {
     // Alternatively, if you're using SvelteKit with named parameters in your routes
     // you can directly use params.chatId if your route is defined as "/chat/[chatId]"
     // const chatId = params.chatId;
-   
+    let editable = true;
     const getChat = async () => {
       try {
         if (!user) {
-          console.error("No authenticated user");
-         redirect(302, "/chat")
+          editable = false;
         }
         
         // Based on your output, the field is named "user", not "userId"
@@ -23,10 +22,11 @@ export const load = async ({ locals, url, params }) => {
 
         // Verify the chat belongs to the current user
         if (output.user !== user.id) {
-          console.error("Chat doesn't belong to current user");
-         redirect(302, "/chat") // Return null for unauthorized access
+          editable = false;
         }
         
+        output.editable = editable;
+
         return output;
       } catch (error) {
         console.error("Error fetching chat:", error);

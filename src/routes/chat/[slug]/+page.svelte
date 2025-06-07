@@ -25,6 +25,7 @@
   ];
 
   let chatId = data?.getChat?.id;
+  let editable = data?.getChat?.editable ?? false;
 
   let chatContainer: HTMLDivElement;
   let bottomEl: HTMLDivElement;
@@ -118,7 +119,9 @@
           const span = document.createElement("span");
           span.className =
             "text-gray-800 dark:text-gray-200 pointer-events-none";
-          span.textContent = "Ask anything";
+          span.textContent = editable
+            ? "Ask anything"
+            : "Read-only: You don’t have permission to edit this chat.";
           return span;
         });
 
@@ -140,7 +143,11 @@
       attributes: {
         style: "outline: none !important; border: none !important;",
       },
+      editable: () => editable, // <-- Respect the editable variable from props
       dispatchTransaction(transaction) {
+        // Prevent dispatch if not editable
+        if (!editable) return;
+
         const newState = editorView.state.apply(transaction);
         editorView.updateState(newState);
         editorText = editorView?.state.doc?.textContent;
@@ -462,7 +469,9 @@
       >
         <div
           bind:this={editorDiv}
-          class="ml-2 bg-gray-50 dark:bg-[#2A2E39] w-full min-h-[5vh] sm:min-h-[60px]"
+          class="ml-2 bg-gray-50 dark:bg-[#2A2E39] w-full min-h-[5vh] sm:min-h-[60px] {!editable
+            ? 'cursor-not-allowed'
+            : ''}"
           on:keydown={handleKeyDown}
         />
 
