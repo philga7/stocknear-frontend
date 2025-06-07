@@ -130,7 +130,7 @@
                         <div class="flex flex-row items-center">
                           <div class="shrink-0">
                             <svg
-                              class="w-5 h-5 text-green-400 dark:text-green-600"
+                              class="w-5 h-5 text-green-400 dark:text-green-800"
                               viewBox="0 0 20 20"
                               fill="currentColor"
                               style="max-width:40px"
