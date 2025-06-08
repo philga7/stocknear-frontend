@@ -21,7 +21,7 @@ export const load = async ({ locals, url, params }) => {
         const output = await pb.collection("chat").getOne(chatId);
 
         // Verify the chat belongs to the current user
-        if (output.user !== user.id) {
+        if (output?.user !== user?.id) {
           editable = false;
         }
         
