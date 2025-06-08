@@ -4,7 +4,7 @@
   import Arrow from "lucide-svelte/icons/arrow-up";
   import Plus from "lucide-svelte/icons/plus";
 
-  import { getCreditFromQuery, agentOptions } from "$lib/utils";
+  import { getCreditFromQuery, agentOptions, agentCategory } from "$lib/utils";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
   import { goto } from "$app/navigation";
@@ -18,7 +18,7 @@
   import SEO from "$lib/components/SEO.svelte";
 
   export let data;
-
+  let selectedGroup = "overview";
   // Initialize messages with default or data
   let messages = data?.getChat?.messages || [
     { content: "Hello! How can I help you today?", role: "system" },
@@ -511,23 +511,83 @@
                       </Button>
                     </DropdownMenu.Trigger>
                     <DropdownMenu.Content
-                      class="w-56 h-fit max-h-72 overflow-y-auto scroller"
+                      class="w-56 h-fit max-h-56 overflow-y-auto scroller"
                     >
-                      <DropdownMenu.Group>
-                        {#each agentOptions as option}
-                          <DropdownMenu.Item
-                            on:click={() => insertAgentOption(option?.name)}
-                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
-                          >
-                            <div class="flex flex-row items-center w-full">
-                              <span>{option?.name}</span>
-                              <span class="ml-auto"
-                                >{option?.credit} Credits</span
+                      {#if selectedGroup === "overview"}
+                        <DropdownMenu.Group>
+                          {#each agentCategory as option}
+                            <DropdownMenu.Item
+                              on:click={(e) => {
+                                e.preventDefault();
+                                selectedGroup = option;
+                              }}
+                              class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                            >
+                              <div class="flex flex-row items-center w-full">
+                                <span
+                                  >{option} ({agentOptions?.filter(
+                                    (item) => item?.group === option,
+                                  )?.length})</span
+                                >
+
+                                <svg
+                                  class="ml-auto h-5 w-5 inline-block rotate-270"
+                                  viewBox="0 0 20 20"
+                                  fill="currentColor"
+                                  style="max-width:40px"
+                                  aria-hidden="true"
+                                >
+                                  <path
+                                    fill-rule="evenodd"
+                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                    clip-rule="evenodd"
+                                  ></path>
+                                </svg>
+                              </div>
+                            </DropdownMenu.Item>
+                          {/each}
+                        </DropdownMenu.Group>
+                      {:else}
+                        <DropdownMenu.Group>
+                          <div class="w-full p-1 flex items-stretch gap-1">
+                            <button
+                              type="button"
+                              on:click={(e) => {
+                                e.preventDefault();
+                                selectedGroup = "overview";
+                              }}
+                              class="aspect-square flex items-center cursor-pointer"
+                              ><svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="w-5 h-5"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                ><path d="m15 18-6-6 6-6"></path></svg
+                              ></button
+                            >
+                          </div>
+                          {#each agentOptions as option}
+                            {#if option?.group === selectedGroup}
+                              <DropdownMenu.Item
+                                on:click={() => insertAgentOption(option?.name)}
+                                class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                               >
-                            </div>
-                          </DropdownMenu.Item>
-                        {/each}
-                      </DropdownMenu.Group>
+                                <div class="flex flex-row items-center w-full">
+                                  <span>{option?.name} </span>
+
+                                  <span class="ml-auto text-xs"
+                                    >{option?.credit} Credits</span
+                                  >
+                                </div>
+                              </DropdownMenu.Item>
+                            {/if}
+                          {/each}
+                        </DropdownMenu.Group>
+                      {/if}
                     </DropdownMenu.Content>
                   </DropdownMenu.Root>
                 </div>
@@ -583,7 +643,7 @@
     </main>
     {#if showSuggestions}
       <ul
-        class=" fixed bg-gray-50 dark:bg-[#2A2E39] rounded shadow-md border border-gray-300 dark:border-gray-600 z-[9999] w-56 h-fit max-h-72 overflow-y-auto scroller"
+        class=" fixed bg-gray-50 dark:bg-[#2A2E39] rounded shadow-md border border-gray-300 dark:border-gray-600 z-[9999] w-56 h-fit max-h-56 overflow-y-auto scroller"
         style="top: {suggestionPos?.top}px; left: {suggestionPos?.left}px;"
       >
         {#each suggestions as suggestion, i}

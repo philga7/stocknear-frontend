@@ -1929,16 +1929,26 @@ export const sectorNavigation = [
 
 
 export const agentOptions = [
-  {"name": "Analyst", "credit": 3},
-  {"name": "BullvsBear", "credit": 5},
-  {"name": "CompareStocks", "credit": 6},
-  {"name": "DarkPoolData", "credit": 6},
-  {"name": "FundamentalData", "credit": 5},
-  {"name": "OptionsData", "credit": 7},
-  {"name": "StockScreener", "credit": 3},
+  {"name": "Analyst", "group": 'Stocks',"credit": 3},
+  {"name": "BullvsBear",  "group": 'Stocks', "credit": 5},
+  {"name": "CompareStocks", "group": 'Stocks',"credit": 6},
+  {"name": "DarkPoolData", "group": 'Stocks',"credit": 6},
+  {"name": "FundamentalData", "group": 'Stocks',"credit": 5},
+  {"name": "OptionsData", "group": 'Options', "credit": 7},
+  {"name": "OptionsFlowFeed", "group": 'Options', "credit": 5},
+  {"name": "StockScreener", "group": 'Others',"credit": 3},
+  {"name": "WarrenBuffet", "group": 'Investors',"credit": 5},
+  {"name": "CharlieMunger", "group": 'Investors',"credit": 5},
+  {"name": "BillAckman", "group": 'Investors',"credit": 5},
+  {"name": "MichaelBurry", "group": 'Investors',"credit": 5},
+  {"name": "PeterLynch", "group": 'Investors',"credit": 5},
+  {"name": "BenjaminGraham", "group": 'Investors',"credit": 5},
   //{"name": "Plot", "credit": 1},
   
 ]
+
+export const agentCategory = ["Stocks", "Options", "Investors", "Others"];
+
 
 export function getCreditFromQuery(query, agentOptions) {
   for (const item of agentOptions) {

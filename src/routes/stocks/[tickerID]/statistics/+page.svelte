@@ -85,7 +85,7 @@
                   <PopupInfo
                     label="Shares Floating"
                     parameter="floatShare"
-                    value={rawData?.floatShare
+                    value={rawData?.floatShares
                       ? abbreviateNumber(rawData?.floatShares)
                       : "n/a"}
                   />
