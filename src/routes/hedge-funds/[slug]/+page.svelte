@@ -1,7 +1,6 @@
 <script lang="ts">
   import { formatString, sectorNavigation, abbreviateNumber } from "$lib/utils";
   import Table from "$lib/components/Table/Table.svelte";
-  import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import SEO from "$lib/components/SEO.svelte";
 
   import defaultAvatar from "$lib/images/hedge-fund-avatar.png";
@@ -222,15 +221,11 @@
             <div class="w-full m-auto mt-4">
               <Table
                 {data}
-                rawData={["Pro", "Plus"]?.includes(data?.user?.tier)
-                  ? data?.getHedgeFundsData?.holdings
-                  : data?.getHedgeFundsData?.holdings?.slice(0, 5)}
+                rawData={data?.getHedgeFundsData?.holdings}
                 {excludedRules}
                 {defaultList}
                 {specificRows}
-                hideLastRow={true}
               />
-              <UpgradeToPro {data} />
             </div>
           </div>
         </main>
