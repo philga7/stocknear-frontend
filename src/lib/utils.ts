@@ -1943,7 +1943,7 @@ export const agentOptions = [
   {"name": "MichaelBurry", "group": 'Investors',"credit": 5},
   {"name": "PeterLynch", "group": 'Investors',"credit": 5},
   {"name": "BenjaminGraham", "group": 'Investors',"credit": 5},
-  {"name": "CathyWood", "group": 'Investors',"credit": 5},
+  {"name": "CathieWood", "group": 'Investors',"credit": 5},
   //{"name": "Plot", "credit": 1},
   
 ]
