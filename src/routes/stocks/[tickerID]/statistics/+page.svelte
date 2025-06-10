@@ -1,7 +1,6 @@
 <script lang="ts">
   import { displayCompanyName, stockTicker } from "$lib/store";
   import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
-  import ScrollToTop from "$lib/components/ScrollToTop.svelte";
   import SEO from "$lib/components/SEO.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
   import PopupInfo from "$lib/components/PopupInfo.svelte";
@@ -36,9 +35,11 @@
     <div class="mb-6">
       {#if Object?.keys(rawData)?.length > 0}
         <div
-          class="space-y-5 xs:space-y-6 lg:grid lg:grid-cols-3 lg:space-x-10 lg:space-y-0"
+          class="space-y-5 xs:space-y-6 lg:grid lg:grid-cols-3 lg:space-x-16 sm:gap-x-5 lg:space-y-0"
         >
-          <div class="flex flex-col space-y-5 xs:space-y-6 lg:space-y-8">
+          <div
+            class="flex flex-col space-y-5 xs:space-y-6 lg:space-y-8 w-full max-w-96"
+          >
             <div class="flex items-start justify-between">
               <h1 class="text-xl sm:text-2xl font-bold">
                 {companyName} Statistics
@@ -391,7 +392,9 @@
               </table>
             </div>
           </div>
-          <div class="flex flex-col space-y-5 xs:space-y-6 lg:space-y-8">
+          <div
+            class="flex flex-col space-y-5 xs:space-y-6 lg:space-y-8 w-full max-w-96"
+          >
             <div class="mt-0 sm:mt-9 2xl:mt-0">
               <h2 class="mb-2 px-0.5 text-xl font-bold">
                 Stock Price Statistics
@@ -710,8 +713,10 @@
             </div>
           </div>
 
-          <div class="flex flex-col space-y-5 xs:space-y-6 lg:space-y-8 w-full">
-            <div>
+          <div
+            class="flex flex-col space-y-5 xs:space-y-6 lg:space-y-8 w-full max-w-96"
+          >
+            <div class="mt-0 sm:mt-9 2xl:mt-0">
               <h2 class="mb-2 px-0.5 text-xl font-bold">
                 Dividends &amp; Yields
               </h2>
@@ -936,10 +941,8 @@
           </div>
         </div>
       {:else}
-        <Infobox text="No data available" />
+        <Infobox text="No statistical data availabe right now." />
       {/if}
     </div>
-
-    <ScrollToTop />
   </div>
 </section>
