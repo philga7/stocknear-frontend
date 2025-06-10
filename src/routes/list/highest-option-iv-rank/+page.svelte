@@ -38,5 +38,11 @@
   />
 
   <!-- Page wrapper -->
-  <Table {data} rawData={data?.getStocks} {excludedRules} {defaultList} />
+  <Table
+    {data}
+    rawData={data?.getData}
+    {excludedRules}
+    {defaultList}
+    title={data?.getData?.length + " " + "Stocks"}
+  />
 </section>

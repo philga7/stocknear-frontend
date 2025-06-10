@@ -281,10 +281,42 @@
         href="/list/reit-stocks">All REITs</a
       >
     </li>
+    <li>
+      <a
+        class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
+        href="/list/spacs-stocks">All SPACs</a
+      >
+    </li>
   </ul>
 </div>
 
-<!--End Other Lists-->
+<!--Start ETF Lists-->
+
+<div>
+  <h2 class="mb-2 text-xl font-bold pt-10">ETF Lists</h2>
+  <ul
+    class="list-outside list-disc space-y-1 p-1 pl-6 md:columns-2 md:gap-x-8 md:text-lg"
+  >
+    <li>
+      <a
+        class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
+        href="/etf/new-launches">New Launches</a
+      >
+    </li>
+    <li>
+      <a
+        class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
+        href="/etf/etf-providers">ETF Providers</a
+      >
+    </li>
+    <li>
+      <a
+        class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
+        href="/list/bitcoin-etfs">Bitcoin ETFs</a
+      >
+    </li>
+  </ul>
+</div>
 
 <div>
   <h2 class="mb-2 text-xl font-bold pt-10">
@@ -517,33 +549,3 @@
 </div>
 
 <!--End Sector Group-->
-
-<!--Start ETF Lists-->
-
-<div>
-  <h2 class="mb-2 text-xl font-bold pt-10">ETF Lists</h2>
-  <ul
-    class="list-outside list-disc space-y-1 p-1 pl-6 md:columns-2 md:gap-x-8 md:text-lg"
-  >
-    <li>
-      <a
-        class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
-        href="/etf/new-launches">New Launches</a
-      >
-    </li>
-    <li>
-      <a
-        class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
-        href="/etf/etf-providers">ETF Providers</a
-      >
-    </li>
-    <li>
-      <a
-        class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
-        href="/list/bitcoin-etfs">Bitcoin ETFs</a
-      >
-    </li>
-  </ul>
-</div>
-
-<!--End ETF Lists-->

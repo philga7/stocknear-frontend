@@ -296,6 +296,10 @@
       title: "Stocks That Pay Monthly Dividends",
       link: "/list/monthly-dividend-stocks",
     },
+    {
+      title: "All Active SPACs on the US Stock Market",
+      link: "/list/spacs-stocks",
+    },
   ];
 
   navigation = [...navigationIndustry, ...navigation];

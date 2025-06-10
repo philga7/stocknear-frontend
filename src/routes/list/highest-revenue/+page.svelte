@@ -26,5 +26,10 @@
   />
 
   <!-- Page wrapper -->
-  <Table {data} rawData={data?.getData} {defaultList} />
+  <Table
+    {data}
+    rawData={data?.getData}
+    {defaultList}
+    title={data?.getData?.length + " " + "Stocks"}
+  />
 </section>

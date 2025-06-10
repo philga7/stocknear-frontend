@@ -154,5 +154,5 @@
   </div>
 
   <!-- Page wrapper -->
-  <Table {data} {rawData} />
+  <Table {data} {rawData} title={rawData?.length + " " + "Stocks"} />
 </section>

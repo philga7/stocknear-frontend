@@ -1,4 +1,4 @@
-export const load = async ({ locals, setHeaders }) => {
+export const load = async ({ locals }) => {
 
   const getStocks = async () => {
     const { apiKey, apiURL } = locals;
@@ -14,7 +14,6 @@ export const load = async ({ locals, setHeaders }) => {
     });
 
     const output = await response.json();
-    setHeaders({ "cache-control": "public, max-age=60*5" });
 
     return output;
   };

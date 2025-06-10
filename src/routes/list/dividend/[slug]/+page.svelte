@@ -46,5 +46,6 @@
     rawData={data?.getDividendCategory}
     {excludedRules}
     {defaultList}
+    title={data?.getDividendCategory?.length + " " + "Stocks"}
   />
 </section>
