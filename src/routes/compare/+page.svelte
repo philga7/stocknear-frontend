@@ -213,10 +213,9 @@
 
     if (tickerList?.includes(ticker)) {
       toast?.error("Ticker is already included");
-      return;
+    } else {
+      tickerList.push(ticker);
     }
-
-    tickerList.push(ticker);
     tickerList = [...tickerList];
 
     handleSave();
