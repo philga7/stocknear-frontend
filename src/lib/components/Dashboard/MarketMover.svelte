@@ -114,7 +114,7 @@
     <div class="mb-1 flex flex-row items-end justify-between">
       <a
         class="flex items-center"
-        href={`/market-mover/${marketStatus === 0 ? "gainers" : marketStatus === 1 ? "premarket/gainers" : "afterhours/gainers"}`}
+        href={`/market-mover/${marketStatus === 0 ? "losers" : marketStatus === 1 ? "premarket/losers" : "afterhours/losers"}`}
         ><h2
           class="mb-0.5 text-xl font-bold leading-tight sm:text-2xl bp:leading-tight md:mb-1"
         >
