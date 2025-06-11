@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getImageURL } from "$lib/utils";
   import SEO from "$lib/components/SEO.svelte";
-  //import PreEarningsPost from "$lib/components/Blog/PreEarningsPost.svelte";
+  import PreEarningsPost from "$lib/components/Blog/PreEarningsPost.svelte";
 
   //import ArticleBreadcrumbStructuredData from "$lib/components/ArticleBreadcrumbStructuredData.svelte";
   export let data;
@@ -36,7 +36,7 @@
               article?.id,
               article?.cover,
             )}
-            class="h-[200px] w-full object-cover lg:h-[350px] rounded border border-gray-300 dark:border-gray-800"
+            class="h-[200px] w-full object-cover lg:h-[350px] rounded-[5px]"
             loading="lazy"
             alt="Wallpaper"
           />
@@ -45,7 +45,7 @@
           <article
             class="z-5 relative mx-1 {article?.cover
               ? '-mt-10 lg:-mt-16'
-              : 'lg:-mt-8'} rounded-t-md bg-white dark:bg-default p-3 xs:p-4 lg:ml-3 lg:p-5 xl:mx-4"
+              : 'lg:-mt-8'} rounded-t-[8px] bg-gray-50 dark:bg-default p-3 xs:p-4 lg:ml-3 lg:p-5 xl:mx-4"
           >
             <header
               class="pb-3 border-b-[2px] border-[#2C6288] dark:border-white w-full sm:min-w-[850px] sm:max-w-[850px]"
@@ -71,8 +71,11 @@
 
             <div class="text-lg mt-4">
               <div class="content max-w-4xl">
-                {@html article?.description}
-                <!--<PreEarningsPost />-->
+                {#if article?.category === "pre-earnings"}
+                  <PreEarningsPost />
+                {:else}
+                  {@html article?.description}
+                {/if}
               </div>
             </div>
           </article>

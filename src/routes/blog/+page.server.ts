@@ -7,7 +7,7 @@ export const load = async ({ locals, url }) => {
   const getAllBlogPost = async () => {
     const output = await pb.collection("articles").getList(page, 6, {
       sort: "-created",
-      filter: "category='blog'"
+          filter: "category = 'blog' || category = 'pre-earnings'"
     });
 
     return output?.items;
@@ -15,7 +15,7 @@ export const load = async ({ locals, url }) => {
 
   const getTotalLength = async () => {
     const output = await pb.collection("articles").getFullList( {
-      filter: "category='blog'"
+          filter: "category = 'blog' || category = 'pre-earnings'"
     });
 
     return output?.length;
