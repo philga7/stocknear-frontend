@@ -94,8 +94,8 @@
         ? "#047857"
         : "#00FC50";
     const fillColorStart = isNegative
-      ? "rgba(204, 38, 26, 0.4)"
-      : "rgb(4, 120, 87, 0.4)"; //"rgba(0, 252, 80, 0.3)";
+      ? "rgba(204, 38, 26, 0.6)"
+      : "rgb(4, 120, 87, 0.6)"; //"rgba(0, 252, 80, 0.3)";
     const fillColorEnd = isNegative
       ? "rgba(204, 38, 26, 0.004)"
       : "rgb(4, 120, 87, 0.004)"; //"rgba(0, 252, 80, 0.004)";
@@ -123,7 +123,7 @@
       chart: {
         backgroundColor: $mode === "light" ? "#fff" : "#09090B",
         animation: false,
-        height: 360,
+        height: 320,
         events: {
           // Add touch event handling to hide tooltip on mobile
           load: function () {
@@ -223,21 +223,21 @@
                 hour: "numeric",
                 hour12: true,
               });
-              return `<span class="text-xs">${timeString.replace(/\s/g, " ")}</span>`;
+              return `<span class=" text-xs">${timeString.replace(/\s/g, " ")}</span>`;
             } else if (["1W", "1M"].includes(displayData)) {
               const timeString = date?.toLocaleDateString("en-US", {
                 month: "short",
                 day: "numeric",
                 timeZone: "UTC",
               });
-              return `<span class="text-xs">${timeString}</span>`;
+              return `<span class=" text-xs">${timeString}</span>`;
             } else {
               const timeString = date?.toLocaleDateString("en-US", {
                 year: "2-digit",
                 month: "short",
                 timeZone: "UTC",
               });
-              return `<span class="text-xs">${timeString}</span>`;
+              return `<span class=" text-xs">${timeString}</span>`;
             }
           },
         },
@@ -765,7 +765,7 @@
                 <div use:highcharts={config}></div>
               {:else}
                 <div
-                  class="flex justify-center w-full sm:w-[650px] h-[300px] sm:h-[330px] items-center"
+                  class="flex justify-center w-full sm:w-[650px] h-[300px] sm:h-[320px] items-center"
                 >
                   <div class="relative">
                     <label

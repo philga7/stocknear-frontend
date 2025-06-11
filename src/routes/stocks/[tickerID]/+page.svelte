@@ -95,8 +95,8 @@
         ? "#047857"
         : "#00FC50";
     const fillColorStart = isNegative
-      ? "rgba(204, 38, 26, 0.4)"
-      : "rgb(4, 120, 87, 0.4)"; //"rgba(0, 252, 80, 0.3)";
+      ? "rgba(204, 38, 26, 0.6)"
+      : "rgb(4, 120, 87, 0.6)"; //"rgba(0, 252, 80, 0.3)";
     const fillColorEnd = isNegative
       ? "rgba(204, 38, 26, 0.004)"
       : "rgb(4, 120, 87, 0.004)"; //"rgba(0, 252, 80, 0.004)";
@@ -124,7 +124,7 @@
       chart: {
         backgroundColor: $mode === "light" ? "#fff" : "#09090B",
         animation: false,
-        height: 360,
+        height: 320,
         events: {
           // Add touch event handling to hide tooltip on mobile
           load: function () {
@@ -718,7 +718,7 @@
           <!-- Start Graph -->
 
           <div
-            class="sm:pl-7 mt-4 mb-5 lg:flex lg:flex-row lg:gap-x-4 w-full min-h-[360px]"
+            class="sm:pl-7 mt-4 mb-5 lg:flex lg:flex-row lg:gap-x-4 w-full min-h-[320px]"
           >
             <div
               class="order-1 lg:order-5 grow overflow-hidden border-gray-300 dark:border-gray-800 py-0.5 xs:py-1 sm:px-0.5 sm:pb-3 sm:pt-2.5 lg:mb-0 lg:border-0 lg:border-l lg:border-sharp lg:px-0 lg:py-0 lg:pl-5 md:mb-4 md:border-b"
@@ -768,7 +768,7 @@
                 <div use:highcharts={config}></div>
               {:else}
                 <div
-                  class="flex justify-center w-full sm:w-[650px] h-[300px] sm:h-[330px] items-center"
+                  class="flex justify-center w-full sm:w-[650px] h-[300px] sm:h-[320px] items-center"
                 >
                   <div class="relative">
                     <label

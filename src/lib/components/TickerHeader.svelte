@@ -16,7 +16,7 @@
         class="flex flex-row justify-between items-center w-full sm:-mt-[50px] mb-5 sm:mb-10"
       >
         <div class="flex flex-col items-start">
-          <h1 class="text-2xl lg:text-3xl font-bold">
+          <h1 class="text-xl sm:text-2xl font-bold">
             {displayCompanyName?.length > charNumber
               ? displayCompanyName?.slice(0, charNumber) + "..."
               : displayCompanyName}
