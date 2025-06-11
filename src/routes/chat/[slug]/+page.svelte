@@ -270,7 +270,7 @@
             if (json?.content) {
               assistantText = json?.content;
               messages[idx].content = assistantText;
-              messages[idx].callComponent = json?.callComponent ?? {};
+              //messages[idx].callComponent = json?.callComponent ?? {};
               messages = [...messages]; // Trigger reactivity
             }
           } catch (err) {

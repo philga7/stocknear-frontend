@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
-  import CompareGraph from "$lib/components/Plot/CompareGraph.svelte";
+  //import CompareGraph from "$lib/components/Plot/CompareGraph.svelte";
 
   export let message: {
     text: string;
@@ -85,11 +85,13 @@
           <p class="w-full">
             {@html message?.content}
           </p>
+          <!--
           {#if message?.callComponent?.plot && message?.callComponent?.tickerList?.length > 0}
             <div class="mt-6">
               <CompareGraph tickerList={message?.callComponent?.tickerList} />
             </div>
           {/if}
+          -->
         </div>
       {/if}
     </div>
