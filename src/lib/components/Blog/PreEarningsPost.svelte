@@ -4,24 +4,21 @@
   import Valuation from "$lib/components/Blog/Valuation.svelte";
   import Average from "$lib/components/Blog/Average.svelte";
   import PriceReaction from "$lib/components/Blog/PriceReaction.svelte";
+  import Summary from "$lib/components/Blog/Summary.svelte";
+  import FinancialHealth from "$lib/components/Blog/FinancialHealth.svelte";
+  import Management from "$lib/components/Blog/Management.svelte";
+  import Growth from "$lib/components/Blog/Growth.svelte";
+  import { stockTicker, displayCompanyName } from "$lib/store";
+  export let rawData = {};
 
-  const overviewList = [
-    { label: "Market Cap", value: "$3.26T" },
-    { label: "Industry", value: "Technology" },
-    { label: "EPS (TTM)", value: "$6.49" },
-    { label: "P/E (TTM)", value: "32.46" },
-    { label: "Div & Yield", value: "$1.00 (0.46%)" },
-    { label: "P/S (TTM)", value: "8.54" },
-    { label: "P/B", value: "43.92" },
-    { label: "Shares Outstanding", value: "15.33B" },
-    { label: "Short % Float", value: "1.23%" },
-    { label: "Short % Outstanding", value: "1.11%" },
-    { label: "Forward P/E", value: "31.27" },
-    { label: "Next Earnings", value: "May 11, 2025" },
-  ];
+  $stockTicker = rawData?.symbol;
+  $displayCompanyName = rawData?.name;
 </script>
 
-<Overview dataList={overviewList} />
+<Overview blogData={rawData?.overview} />
+
+<FinancialHealth />
+<Growth />
 
 <Dividends />
 
@@ -30,3 +27,6 @@
 <Average />
 
 <PriceReaction />
+
+<Management />
+<Summary />

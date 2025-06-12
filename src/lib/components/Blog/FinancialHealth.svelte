@@ -5,24 +5,29 @@
 
   let fundamentalData = [
     {
-      label: "P/E of 32.46 is above 5-Year Avg 26.72",
-      value: 21.46,
+      label: "Gross Profit Margin",
+      value: 2.94,
+      sentiment: "Good",
+    },
+    {
+      label: "Operating Profit Margin",
+      value: 2.94,
       sentiment: "Bad",
     },
     {
-      label: "P/FCF of 31.97 is above 5-Year Avg 24.45",
-      value: 30.74,
-      sentiment: "Very Bad",
+      label: "Net Margin",
+      value: 2.94,
+      sentiment: "Bad",
     },
     {
-      label: "P/S of 8.60 is above 5-Year Avg 6.41",
-      value: 34.04,
-      sentiment: "Very Bad",
+      label: "FCF Margin",
+      value: 2.94,
+      sentiment: "Bad",
     },
     {
-      label: "Forward PEG Ratio",
-      value: 4.31,
-      sentiment: "Very Bad",
+      label: "EBITDA Margin",
+      value: 2.94,
+      sentiment: "Bad",
     },
   ];
 
@@ -49,7 +54,7 @@
         height: 360,
       },
       title: {
-        text: `<h3 class="mt-3 mb-1 ">Valuation Metrics</h3>`,
+        text: `<h3 class="mt-3 mb-1 ">Profitability</h3>`,
         style: {
           color: $mode === "light" ? "black" : "white",
           // Using inline CSS for margin-top and margin-bottom
@@ -174,17 +179,7 @@
   let config = plotData();
 </script>
 
-<h2 class="text-xl sm:text-3xl font-bold mt-8">Valuation</h2>
-
-<p class="mt-3 mb-4">
-  Apple's Price to Earnings (P/E) ratio is currently at 32.46, which is higher
-  than its 5-year average of 26.72 by approximately 21.46%. This indicates that
-  investors are willing to pay more for each dollar of Apple's earnings compared
-  to the historical aver- age, suggesting a premium valuation. The Forward PEG
-  Ratio, which measures the stock price relative to its expected earnings
-  growth, stands at a high value of 4.31, indicating that growth expectations
-  may not fully justify the current price.
-</p>
+<h2 class="text-xl sm:text-3xl font-bold mt-8">Financial Health</h2>
 
 <div
   class="overflow-x-auto no-scrollbar flex justify-start items-center w-full m-auto rounded-none sm:rounded mb-8 mt-5"
@@ -223,25 +218,32 @@
 {/if}
 
 <p class="mt-8 mb-4">
-  In terms of cash flow, Apple's Price to Free Cash Flow (P/FCF) ratio is also
-  elevated at 31.97 versus the 5-year average of 24.45, an increase of around
-  30.74%. This suggests that the market is valuing Apple's cash-generating
-  ability more richly now than in recent years. Additionally, the Free Cash Flow
-  Risk Premium is about 0.74, implying that investors are receiving a lower
-  risk-ad- justed return on Apple's free cash flow compared to risk-free
-  alternatives.
+  Apple's growth profile presents a mixed picture, with some areas showing
+  improvement while others indicate challenges. The company's revenue has
+  slightly decreased by 0.9 percent, which could suggest a slowdown in sales or
+  more competitive market conditions.
 </p>
 
 <p class="mb-4">
-  The company's Price to Sales (P/S) ratio has risen as well; it currently sits
-  at 8.60 compared to the five-year average of 6.41—a significant jump of
-  roughly 34.04%. This means that investors are paying more for each dollar of
-  Apple’s sales revenue now than they have on average over the past five years.
+  Despite the dip in revenue, Apple has managed to increase its gross profit by
+  4.62 percent. This indicates that while they may be selling less, they are
+  making more money on what they do sell due to better margins or cost
+  efficiencies. Operating income and net income have also seen increases of 5.29
+  percent and 6.43 percent respectively, demonstrating Apple's ability to grow
+  its profits from core business activities.
 </p>
 
 <p class="mb-4">
-  Overall, with all key valuation metrics—P/E, P/FCF and P/S—exceeding their
-  historical averages and low scores in both Forward PEG Ratio and FCF Risk
-  Premium, it appears that Apple’s stock might be considered overvalued by
-  traditional standards.
+  The company's cash flow situation is also generally positive, with operating
+  cash flow up by 0.89 percent and free cash flow—which represents the cash
+  Apple can use for dividends, share buybacks, or investments—increasing by 4.54
+  percent.
+</p>
+
+<p class="mb-4">
+  In summary, despite a slight decrease in revenue, Apple has shown an ability
+  to improve profitability and maintain healthy cash flows. These factors
+  contribute to an average growth score of 3.13/5 according to Stock Unlock's
+  analysis, reflecting a solid but not exceptional performance in growth metrics
+  for the period assessed.
 </p>

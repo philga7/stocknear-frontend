@@ -45,10 +45,10 @@
           <article
             class="z-5 relative mx-1 {article?.cover
               ? '-mt-10 lg:-mt-16'
-              : 'lg:-mt-8'} rounded-t-[8px] bg-gray-50 dark:bg-default p-3 xs:p-4 lg:ml-3 lg:p-5 xl:mx-4"
+              : 'lg:-mt-8'} rounded-t-[8px] p-3 xs:p-4 lg:ml-3 lg:p-5 xl:mx-4 bg-white dark:bg-default"
           >
             <header
-              class="pb-3 border-b-[2px] border-[#2C6288] dark:border-white w-full sm:min-w-[850px] sm:max-w-[850px]"
+              class="pb-3 border-b-[2px] border-[#2C6288] dark:border-white w-full sm:min-w-[1000px] sm:max-w-[1000px]"
             >
               <h1 class="mb-3 text-2xl sm:text-4xl font-bold">
                 {article?.title}
@@ -70,9 +70,9 @@
             </header>
 
             <div class="text-lg mt-4">
-              <div class="content max-w-4xl">
+              <div class="content max-w-[1000px]">
                 {#if article?.category === "pre-earnings"}
-                  <PreEarningsPost />
+                  <PreEarningsPost rawData={article?.data} />
                 {:else}
                   {@html article?.description}
                 {/if}

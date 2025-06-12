@@ -873,3 +873,37 @@
     </div>
   </div>
 </div>
+
+<p class="mt-8 mb-4">
+  The stock’s historical earnings performance presents a mixed picture, with
+  notable strengths in profitability but clear room for improvement on the
+  revenue front. Over the last eight quarters, the company has beaten EPS
+  estimates 75 percent of the time, reflecting consistent bottom-line execution
+  and suggesting strong cost controls or better-than-expected earnings power.
+</p>
+<p class="mb-4">
+  However, revenue beats have been far less frequent, occurring in just 2 out of
+  8 quarters—or 25 percent of the time. This indicates potential challenges in
+  top-line growth, possibly due to slowing demand, pricing pressure, or sector
+  headwinds. This divergence between earnings and revenue performance is
+  something investors should watch closely.
+</p>
+<p class="mb-4">
+  In terms of price reaction, the stock has shown a modest but positive trend
+  following earnings, with an average next-day gain of 0.3 percent. While not a
+  dramatic move, this suggests that investors tend to respond favorably to the
+  company’s earnings announcements, particularly when EPS surprises are
+  involved.
+</p>
+<p class="mb-4">
+  Volatility around earnings has been significant, with an average price range
+  movement of ±4.9 percent. This high level of impact underscores the importance
+  of earnings dates as key catalysts for the stock, offering both risk and
+  opportunity for traders and long-term investors alike.
+</p>
+<p class="mb-4">
+  Overall, the company's earnings history reveals solid earnings execution,
+  tempered by weaker revenue performance, and accompanied by elevated price
+  volatility. For investors, this means earnings reports are critical moments
+  that can shape both short-term movements and longer-term sentiment.
+</p>
