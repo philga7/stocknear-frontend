@@ -3,6 +3,7 @@
   import Dividends from "$lib/components/Blog/Dividends.svelte";
   import Valuation from "$lib/components/Blog/Valuation.svelte";
   import Average from "$lib/components/Blog/Average.svelte";
+  import PriceReaction from "$lib/components/Blog/PriceReaction.svelte";
 
   const overviewList = [
     { label: "Market Cap", value: "$3.26T" },
@@ -27,3 +28,5 @@
 <Valuation />
 
 <Average />
+
+<PriceReaction />

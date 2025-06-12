@@ -1,6 +1,4 @@
 <script lang="ts">
-  import TableHeader from "$lib/components/Table/TableHeader.svelte";
-
   export let dataList = [
     {
       label: "Dividend Growth Rate",
