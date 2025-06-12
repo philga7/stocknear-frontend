@@ -26,13 +26,13 @@
 
     // Volatility impact (average absolute range)
     const volatilityImpact =
-      data.reduce((sum, item) => {
+      data?.reduce((sum, item) => {
         if (item?.high && item?.low && item?.close) {
           const range = ((item.high - item.low) / item.close) * 100;
           return sum + range;
         }
         return sum;
-      }, 0) / data.length;
+      }, 0) / data?.length;
 
     return {
       avgPriceImpact: avgPriceImpact?.toFixed(1),
@@ -44,7 +44,7 @@
 
   function checkTime(timeString) {
     if (!timeString) {
-      return "n/a"; // Return "n/a" if timeString is undefined or null
+      return "-"; // Return "-" if timeString is undefined or null
     }
 
     const [hours, minutes, seconds] = timeString.split(":").map(Number);
@@ -61,7 +61,7 @@
     } else if (totalSeconds < bmcEnd) {
       return "BMC";
     } else {
-      return "n/a"; // Optional: if the time is in between
+      return "-"; // Optional: if the time is in between
     }
   }
 
@@ -197,7 +197,7 @@
             <Tutorial {steps} />
           </div>
 
-          {#if rawData?.length !== 0 && rawData?.at(0)?.high !== undefined}
+          {#if rawData?.length > 0}
             <div
               class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6"
             >
@@ -373,7 +373,7 @@
                                       daySuffix: "2-digit",
                                     },
                                   )
-                                : "n/a"}
+                                : "-"}
                               ({item?.quarter})
                             </div>
                             <div class="ml-1 text-end">
@@ -409,7 +409,7 @@
                           ? 'rounded-tl-md border-t-violet-800 dark:border-t-violet-500'
                           : ''} px-4 last:pr-11 w-17 last:w-24.5 border-l border-l-violet-800 dark:border-l-violet-500 px-1 text-right"
                         ><span class=" text-sm sm:text-[1rem]"
-                          >{item?.open?.toFixed(2)}</span
+                          >{item?.open ? item?.open?.toFixed(2) : "-"}</span
                         ></td
                       ><td
                         class="border-gray-300 dark:border-primary px-3.5 py-0.5 border-t border-l border-r {index ===
@@ -417,7 +417,7 @@
                           ? 'border-t-violet-800 dark:border-t-violet-500'
                           : ''} px-4 last:pr-11 w-17 last:w-24.5 px-1 text-right"
                         ><span class=" text-sm sm:text-[1rem]"
-                          >{item?.high?.toFixed(2)}</span
+                          >{item?.high ? item?.high?.toFixed(2) : "-"}</span
                         ></td
                       ><td
                         class="border-gray-300 dark:border-primary px-3.5 py-0.5 border-t border-l border-r {index ===
@@ -425,7 +425,7 @@
                           ? 'border-t-violet-800 dark:border-t-violet-500'
                           : ''} px-4 last:pr-11 w-17 last:w-24.5 px-1 text-right"
                         ><span class=" text-sm sm:text-[1rem]"
-                          >{item?.low?.toFixed(2)}</span
+                          >{item?.low ? item?.low?.toFixed(2) : "-"}</span
                         ></td
                       ><td
                         class="border-gray-300 dark:border-primary px-3.5 py-0.5 border-t {index ===
@@ -433,7 +433,7 @@
                           ? 'rounded-tr-md border-t-violet-800 dark:border-t-violet-500'
                           : ''} border-r dark:border-r-violet-500 px-4 last:pr-11 w-17 last:w-24.5 px-1 text-right"
                         ><span class=" text-sm sm:text-[1rem]"
-                          >{item?.close?.toFixed(2)}</span
+                          >{item?.close ? item?.close?.toFixed(2) : "-"}</span
                         ></td
                       ><td
                         class="border-gray-300 dark:border-primary px-3.5 py-0.5 px-4 last:pr-11 w-17 last:w-24.5 px-1"
@@ -442,35 +442,35 @@
                         ><span class=" text-sm sm:text-[1rem]"
                           >{item?.forward_2_days_close !== undefined
                             ? item?.forward_2_days_close?.toFixed(2)
-                            : "n/a"}</span
+                            : "-"}</span
                         ></td
                       ><td
                         class="border-gray-300 dark:border-primary px-3.5 py-0.5 border-t border-l px-4 last:pr-11 w-17 last:w-24.5 px-1 text-right"
                         ><span class=" text-sm sm:text-[1rem]"
                           >{item?.forward_3_days_close !== undefined
                             ? item?.forward_3_days_close?.toFixed(2)
-                            : "n/a"}</span
+                            : "-"}</span
                         ></td
                       ><td
                         class="border-gray-300 dark:border-primary border-t border-l border-r px-3.5 py-0.5 px-4 last:pr-11 w-17 last:w-24.5 px-1 text-right"
                         ><span class=" text-sm sm:text-[1rem]"
                           >{item?.forward_4_days_close !== undefined
                             ? item?.forward_4_days_close?.toFixed(2)
-                            : "n/a"}</span
+                            : "-"}</span
                         ></td
                       ><td
                         class="border-gray-300 dark:border-primary px-3.5 py-0.5 border-t border-r px-4 last:pr-11 w-17 last:w-24.5 px-1 text-right"
                         ><span class=" text-sm sm:text-[1rem]"
                           >{item?.forward_6_days_close !== undefined
                             ? item?.forward_6_days_close?.toFixed(2)
-                            : "n/a"}</span
+                            : "-"}</span
                         ></td
                       ><td
                         class="border-gray-300 dark:border-primary px-3.5 py-0.5 border-t border-r px-4 last:pr-11 w-17 last:w-24.5 px-1 text-right"
                         ><span class=" text-sm sm:text-[1rem]"
                           >{item?.backward_4_days_close
                             ? item?.backward_4_days_close?.toFixed(2)
-                            : "n/a"}</span
+                            : "-"}</span
                         ></td
                       ></tr
                     >
@@ -505,7 +505,7 @@
                             <div
                               class="leading-3 w-full whitespace-nowrap text-purple-700 dark:text-purple-400"
                             >
-                              {item?.rsi ?? "n/a"}
+                              {item?.rsi ?? "-"}
                             </div>
                           </div>
 
@@ -549,42 +549,58 @@
                       ></td><td
                         class="px-4 last:pr-11 w-17 last:w-24.5 border-gray-300 dark:border-primary px-3.5 py-0.5 border-l border-r border-violet-800 dark:border-l-violet-500 px-1 text-right"
                         ><div
-                          class="w-full whitespace-nowrap rounded border-gray-800 badge-lg text-sm sm:text-[1rem] {item?.open_change_percent >=
-                          0
-                            ? "bg-positive/60 before:content-['+'] "
-                            : 'bg-negative/70'}"
+                          class="w-full whitespace-nowrap rounded border-gray-800 text-sm sm:text-[1rem] {item?.open_change_percent &&
+                          item?.open_change_percent >= 0
+                            ? "bg-positive/60 before:content-['+'] badge-lg"
+                            : item?.open_change_percent < 0
+                              ? 'bg-negative/70 badge-lg'
+                              : ''}"
                         >
-                          {item?.open_change_percent?.toFixed(2)}%
+                          {item?.open_change_percent
+                            ? item?.open_change_percent?.toFixed(2) + "%"
+                            : "-"}
                         </div></td
                       ><td
                         class="px-4 last:pr-11 w-17 last:w-24.5 px-3.5 py-0.5 px-1 text-right border-l border-r border-gray-300 dark:border-primary"
                         ><div
-                          class="w-full whitespace-nowrap rounded border-gray-800 badge-lg text-sm sm:text-[1rem] {item?.high_change_percent >=
-                          0
-                            ? "bg-positive/60 before:content-['+'] "
-                            : 'bg-negative/70'}"
+                          class="w-full whitespace-nowrap rounded border-gray-800 text-sm sm:text-[1rem] {item?.high_change_percent &&
+                          item?.high_change_percent >= 0
+                            ? "bg-positive/60 before:content-['+'] badge-lg"
+                            : item?.high_change_percent < 0
+                              ? 'bg-negative/70 badge-lg'
+                              : ''}"
                         >
-                          {item?.high_change_percent?.toFixed(2)}%
+                          {item?.high_change_percent
+                            ? item?.high_change_percent?.toFixed(2) + "%"
+                            : "-"}
                         </div></td
                       ><td
                         class="px-4 last:pr-11 w-17 last:w-24.5 border-gray-300 px-3.5 py-0.5 px-1 text-right border-l border-r border-gray-300 dark:border-primary"
                         ><div
-                          class="w-full whitespace-nowrap rounded border-gray-800 badge-lg text-sm sm:text-[1rem] {item?.low_change_percent >=
-                          0
-                            ? "bg-positive/60 before:content-['+'] "
-                            : 'bg-negative/70'}"
+                          class="w-full whitespace-nowrap rounded border-gray-800 text-sm sm:text-[1rem] {item?.low_change_percent &&
+                          item?.low_change_percent >= 0
+                            ? "bg-positive/60 before:content-['+'] badge-lg"
+                            : item?.low_change_percent
+                              ? 'bg-negative/70 badge-lg'
+                              : ''}"
                         >
-                          {item?.low_change_percent?.toFixed(2)}%
+                          {item?.low_change_percent
+                            ? item?.low_change_percent?.toFixed(2) + "%"
+                            : "-"}
                         </div></td
                       ><td
                         class="px-4 last:pr-11 w-17 last:w-24.5 border-r border-violet-800 dark:border-violet-500 px-3.5 py-0.5 px-1 text-right"
                         ><div
-                          class="w-full whitespace-nowrap rounded border-gray-800 badge-lg text-sm sm:text-[1rem] {item?.close_change_percent >=
-                          0
-                            ? "bg-positive/60 before:content-['+'] "
-                            : 'bg-negative/70'}"
+                          class="w-full whitespace-nowrap rounded border-gray-800 text-sm sm:text-[1rem] {item?.close_change_percent &&
+                          item?.close_change_percent >= 0
+                            ? "bg-positive/60 before:content-['+'] badge-lg "
+                            : item?.close_change_percent < 0
+                              ? 'bg-negative/70 badge-lg'
+                              : ''}"
                         >
-                          {item?.close_change_percent?.toFixed(2)}%
+                          {item?.close_change_percent
+                            ? item?.close_change_percent?.toFixed(2) + "%"
+                            : "-"}
                         </div></td
                       ><td
                         class="px-4 last:pr-11 w-17 last:w-24.5 border-gray-300 dark:border-primary px-3.5 py-0.5 px-1 text-right"
@@ -599,7 +615,7 @@
                               : ''}"
                           >{item?.forward_2_days_change_percent !== undefined
                             ? item?.forward_2_days_change_percent + "%"
-                            : "n/a"}<span class="w-0 text-center"></span></span
+                            : "-"}<span class="w-0 text-center"></span></span
                         ></td
                       ><td
                         class="px-4 last:pr-11 w-17 last:w-24.5 border-l border-r border-gray-300 dark:border-primary px-3.5 py-0.5 px-1 text-right"
@@ -612,7 +628,7 @@
                               : ''}"
                           >{item?.forward_3_days_change_percent !== undefined
                             ? item?.forward_3_days_change_percent + "%"
-                            : "n/a"}<span class="w-0 text-center"></span></span
+                            : "-"}<span class="w-0 text-center"></span></span
                         ></td
                       ><td
                         class="px-4 last:pr-11 w-17 last:w-24.5 border-gray-300 dark:border-primary px-3.5 py-0.5 px-1 text-right"
@@ -625,7 +641,7 @@
                               : ''}"
                           >{item?.forward_4_days_change_percent !== undefined
                             ? item?.forward_4_days_change_percent + "%"
-                            : "n/a"}<span class="w-0 text-center"></span></span
+                            : "-"}<span class="w-0 text-center"></span></span
                         ></td
                       ><td
                         class="px-4 last:pr-11 w-17 last:w-24.5 border-gray-300 dark:border-primary px-3.5 py-0.5 border-l px-1 text-right"
@@ -638,7 +654,7 @@
                               : ''}"
                           >{item?.forward_6_days_change_percent !== undefined
                             ? item?.forward_6_days_change_percent + "%"
-                            : "n/a"}<span class="w-0 text-center"></span></span
+                            : "-"}<span class="w-0 text-center"></span></span
                         ></td
                       ><td
                         class="px-4 last:pr-11 w-17 last:w-24.5 border-gray-300 dark:border-primary px-3.5 py-0.5 border-l border-r px-1 text-right"
