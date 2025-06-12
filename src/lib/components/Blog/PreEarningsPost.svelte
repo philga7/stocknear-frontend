@@ -17,8 +17,8 @@
 
 <Overview blogData={rawData?.overview} />
 
-<FinancialHealth />
-<Growth />
+<FinancialHealth blogData={rawData?.financialHealth} />
+<Growth blogData={rawData?.growth} />
 
 <Dividends />
 

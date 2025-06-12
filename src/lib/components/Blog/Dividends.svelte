@@ -300,13 +300,6 @@
   </div>
 </div>
 
-{#if config}
-  <div
-    class="chart-driver border border-gray-300 shadow-xs dark:border-gray-800 rounded"
-    use:highcharts={config}
-  ></div>
-{/if}
-
 <p class="mt-8 mb-4">
   Apple's forward dividend yield currently stands at 0.47%, which is a decrease
   from its 5-year average of 0.72%. This represents a significant drop of

@@ -75,6 +75,9 @@
         gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
         labels: {
           style: { color: $mode === "light" ? "#545454" : "white" },
+          formatter: function () {
+            return this.value + "%";
+          },
         },
         title: { text: null },
         opposite: true,
@@ -124,7 +127,16 @@
         },
       },
       legend: {
-        enabled: false,
+        enabled: true,
+        align: "center", // Positions legend at the left edge
+        verticalAlign: "top", // Positions legend at the top
+        layout: "horizontal", // Align items horizontally (use 'vertical' if preferred)
+        itemStyle: {
+          color: $mode === "light" ? "black" : "white",
+        },
+        symbolWidth: 14, // Controls the width of the legend symbol
+        symbolRadius: 1, // Creates circular symbols (adjust radius as needed)
+        squareSymbol: true, // Ensures symbols are circular, not square
       },
       series: [
         {
