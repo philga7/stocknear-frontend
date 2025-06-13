@@ -1,5 +1,5 @@
 <script>
-  import { abbreviateNumber } from "$lib/utils";
+  import { abbreviateNumber, sectorNavigation } from "$lib/utils";
   import { stockTicker, displayCompanyName } from "$lib/store";
   import { mode } from "mode-watcher";
   import highcharts from "$lib/highcharts.ts";
@@ -187,7 +187,14 @@
     <div class="flex flex-col">
       <div class="text-gray-500 dark:text-gray-300 text-sm">Sector</div>
       <div class="mt-0.5 text-lg bp:text-lg sm:mt-1.5 sm:text-xl font-semibold">
-        {blogData?.sector}
+        <a
+          href={sectorNavigation?.find(
+            (listItem) => listItem?.title === blogData?.sector,
+          )?.link}
+          class="inline-block text-blue-800 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted"
+        >
+          {blogData?.sector}
+        </a>
       </div>
     </div>
     <div class="flex flex-col">
