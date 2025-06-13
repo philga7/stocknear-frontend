@@ -1,4 +1,6 @@
 <script lang="ts">
+  import Introduction from "$lib/components/Blog/Introduction.svelte";
+
   import Overview from "$lib/components/Blog/Overview.svelte";
   //import Dividends from "$lib/components/Blog/Dividends.svelte";
   import Valuation from "$lib/components/Blog/Valuation.svelte";
@@ -13,7 +15,11 @@
 
   $stockTicker = rawData?.symbol;
   $displayCompanyName = rawData?.name;
+
+  console.log(rawData?.priceReaction);
 </script>
+
+<Introduction blogData={rawData?.nextEarningsData} />
 
 <Overview blogData={rawData?.overview} />
 
@@ -26,7 +32,7 @@
 
 <Average blogData={rawData?.industry} />
 
-<PriceReaction />
+<PriceReaction blogData={rawData?.priceReaction} />
 
 <Management blogData={rawData?.management} />
-<Summary />
+<Summary blogData={rawData?.summary} />
