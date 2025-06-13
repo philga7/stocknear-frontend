@@ -7,9 +7,6 @@
   export let blogData = {};
 
   function plotData() {
-    const fillColorStart = "rgb(70, 129, 244,0.5)";
-    const fillColorEnd = "rgb(70, 129, 244,0.001)";
-
     const dates = blogData?.cumulativeReturns?.map((item) => item?.date);
     const tickerData = blogData?.cumulativeReturns?.map(
       (item) => item?.cumulativeTicker,

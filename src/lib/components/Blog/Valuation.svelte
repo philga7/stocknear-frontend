@@ -2,93 +2,67 @@
   import highcharts from "$lib/highcharts.ts";
   import { abbreviateNumber } from "$lib/utils";
   import { mode } from "mode-watcher";
+  export let blogData = {};
+
+  let peData = blogData?.priceToEarningsRatio;
+  let pFCFData = blogData?.priceToFreeCashFlowRatio;
+  let psData = blogData?.priceToSalesRatio;
+  let pegData = blogData?.priceToEarningsGrowthRatio;
 
   let fundamentalData = [
     {
-      label: "P/E of 32.46 is above 5-Year Avg 26.72",
-      value: 21.46,
-      sentiment: "Bad",
+      label: `P/E of ${peData?.value} is ${peData?.value > peData?.fiveYearAvg ? "above" : "below"} 5-Year Avg ${peData?.fiveYearAvg}`,
+      value: peData?.upside,
+      sentiment: peData?.sentiment,
     },
     {
-      label: "P/FCF of 31.97 is above 5-Year Avg 24.45",
-      value: 30.74,
-      sentiment: "Very Bad",
+      label: `P/FCF of ${pFCFData?.value} is ${pFCFData?.value > pFCFData?.fiveYearAvg ? "above" : "below"} 5-Year Avg ${pFCFData?.fiveYearAvg}`,
+      value: pFCFData?.upside,
+      sentiment: pFCFData?.sentiment,
     },
     {
-      label: "P/S of 8.60 is above 5-Year Avg 6.41",
-      value: 34.04,
-      sentiment: "Very Bad",
+      label: `P/S of ${psData?.value} is  ${psData?.value > psData?.fiveYearAvg ? "above" : "below"} 5-Year Avg ${psData?.fiveYearAvg}`,
+      value: psData?.upside,
+      sentiment: psData?.sentiment,
     },
     {
-      label: "Forward PEG Ratio",
-      value: 4.31,
-      sentiment: "Very Bad",
+      label: `PEG Ratio of ${pegData?.value} is  ${pegData?.value > pegData?.fiveYearAvg ? "above" : "below"} 5-Year Avg ${pegData?.fiveYearAvg}`,
+      value: pegData?.upside,
+      sentiment: pegData?.sentiment,
     },
   ];
 
   function plotData() {
-    const fillColorStart = "rgb(70, 129, 244,0.5)";
-    const fillColorEnd = "rgb(70, 129, 244,0.001)";
-    const dummyDates = [
-      "2024-01-01",
-      "2024-02-01",
-      "2024-03-01",
-      "2024-04-01",
-      "2024-05-01",
-    ];
-
-    const dummyData = [100, 120, 90, 150, 130];
+    const categories = ["P/E Ratio", "P/FCF Ratio", "P/S Ratio", "PEG Ratio"];
+    const values = fundamentalData.map((d) => d.value);
+    const barColor = "#fff"; // blue fill color
 
     const options = {
-      credits: {
-        enabled: false,
-      },
+      credits: { enabled: false },
       chart: {
+        type: "column",
         backgroundColor: $mode === "light" ? "#fff" : "#09090B",
         plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
         height: 360,
       },
       title: {
-        text: `<h3 class="mt-3 mb-1 ">Valuation Metrics</h3>`,
+        text: `<h3 class="mt-3 mb-1 ">Current vs 5 Year Avg Upside</h3>`,
         style: {
           color: $mode === "light" ? "black" : "white",
-          // Using inline CSS for margin-top and margin-bottom
         },
-        useHTML: true, // Enable HTML to apply custom class styling
+        useHTML: true,
       },
       xAxis: {
-        type: "datetime",
-        endOnTick: false,
-        categories: dummyDates,
+        categories: categories,
         crosshair: {
-          color: $mode === "light" ? "black" : "white", // Set the color of the crosshair line
-          width: 1, // Adjust the line width as needed
+          color: $mode === "light" ? "black" : "white",
+          width: 1,
           dashStyle: "Solid",
         },
         labels: {
           style: {
             color: $mode === "light" ? "#545454" : "white",
           },
-          distance: 10, // Increases space between label and axis
-          formatter: function () {
-            const date = new Date(this.value);
-            return date.toLocaleDateString("en-US", {
-              month: "short",
-              year: "numeric",
-            });
-          },
-        },
-        tickPositioner: function () {
-          // Create custom tick positions with wider spacing
-          const positions = [];
-          const info = this.getExtremes();
-          const tickCount = 5; // Reduce number of ticks displayed
-          const interval = Math.floor((info.max - info.min) / tickCount);
-
-          for (let i = 0; i <= tickCount; i++) {
-            positions.push(info.min + i * interval);
-          }
-          return positions;
         },
       },
       yAxis: {
@@ -96,6 +70,9 @@
         gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
         labels: {
           style: { color: $mode === "light" ? "#545454" : "white" },
+          formatter: function () {
+            return this.value + "%";
+          },
         },
         title: { text: null },
         opposite: true,
@@ -103,8 +80,8 @@
       tooltip: {
         shared: true,
         useHTML: true,
-        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
-        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        borderColor: "rgba(255, 255, 255, 0.2)",
         borderWidth: 1,
         style: {
           color: "#fff",
@@ -113,35 +90,26 @@
         },
         borderRadius: 4,
         formatter: function () {
-          // Format the x value to display time in a custom format
-          let tooltipContent = `<span class="m-auto text-[1rem] font-[501]">${new Date(
-            this?.x,
-          ).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-          })}</span><br>`;
-
-          // Loop through each point in the shared tooltip
-          this.points.forEach((point) => {
-            tooltipContent += `
-          <span class="font-semibold text-sm">${point.series.name}:</span> 
-          <span class="font-normal text-sm">${abbreviateNumber(point.y)}</span><br>`;
-          });
-
-          return tooltipContent;
+          return this.points
+            .map(
+              (point) => `
+            <span class="font-semibold text-sm">${point.key}:</span> 
+            <span class="font-normal text-sm">${abbreviateNumber(point.y)}%</span><br>
+          `,
+            )
+            .join("");
         },
       },
-
       plotOptions: {
+        column: {
+          colorByPoint: false, // all bars same color
+          color: barColor,
+          borderColor: barColor,
+          borderWidth: 1,
+        },
         series: {
-          color: "white",
-          animation: false, // Disable series animation
-          states: {
-            hover: {
-              enabled: false, // Disable hover effect globally
-            },
-          },
+          animation: false,
+          states: { hover: { enabled: false } },
         },
       },
       legend: {
@@ -149,21 +117,8 @@
       },
       series: [
         {
-          name: "Mkt Cap",
-          type: "area",
-          data: dummyData,
-          color: "#4681f4",
-          lineWidth: 1.2,
-          marker: {
-            enabled: false,
-          },
-          fillColor: {
-            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-            stops: [
-              [0, fillColorStart],
-              [1, fillColorEnd],
-            ],
-          },
+          name: "Upside",
+          data: values,
         },
       ],
     };
@@ -205,8 +160,15 @@
           </td>
 
           <td class=" text-sm sm:text-[1rem] whitespace-nowrap text-end">
-            <label class="badge badge-lg w-24 rounded-[3px]"
-              >{item?.sentiment}</label
+            <label
+              class="badge badge-lg w-24 rounded-[3px] {[
+                'Very Good',
+                'Good',
+              ]?.includes(item?.sentiment)
+                ? 'bg-green-800 dark:bg-green-600'
+                : item?.sentiment === 'Average'
+                  ? 'bg-orange-800 dark:bg-orange-600'
+                  : 'bg-red-800 dark:bg-red-600'}">{item?.sentiment}</label
             >
           </td>
         </tr>

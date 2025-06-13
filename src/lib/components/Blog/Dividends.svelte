@@ -1,183 +1,34 @@
 <script lang="ts">
-  import highcharts from "$lib/highcharts.ts";
-  import { abbreviateNumber } from "$lib/utils";
-  import { mode } from "mode-watcher";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
 
-  export let dataList = [
+  export let blogData = [
     {
       label: "Forward dividend yield is below fasdf fasdfak",
       value: -34.71,
-      rating: "Very Bad",
+      sentiment: "Very Bad",
     },
     {
       label: "Dividends Per Share Increasing",
       value: 4.17,
-      rating: "Average",
+      sentiment: "Average",
     },
     {
       label: "5-Year Dividends Per Share increasing (CAGR)",
       value: 14.87,
-      rating: "Very Good",
+      sentiment: "Very Good",
     },
     {
       label: "Payout Ratio",
       value: 14.87,
-      rating: "Very Good",
+      sentiment: "Very Good",
     },
     {
       label: "Free Cash Flow Payout Ratio",
       value: 14.65,
-      rating: "Very Good",
+      sentiment: "Very Good",
     },
   ];
 
-  function plotData() {
-    const fillColorStart = "rgb(70, 129, 244,0.5)";
-    const fillColorEnd = "rgb(70, 129, 244,0.001)";
-    const dummyDates = [
-      "2024-01-01",
-      "2024-02-01",
-      "2024-03-01",
-      "2024-04-01",
-      "2024-05-01",
-    ];
-
-    const dummyData = [100, 120, 90, 150, 130];
-
-    const options = {
-      credits: {
-        enabled: false,
-      },
-      chart: {
-        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
-        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
-        height: 360,
-      },
-      title: {
-        text: `<h3 class="mt-3 mb-1 ">Historical Dividend Yield</h3>`,
-        style: {
-          color: $mode === "light" ? "black" : "white",
-          // Using inline CSS for margin-top and margin-bottom
-        },
-        useHTML: true, // Enable HTML to apply custom class styling
-      },
-      xAxis: {
-        type: "datetime",
-        endOnTick: false,
-        categories: dummyDates,
-        crosshair: {
-          color: $mode === "light" ? "black" : "white", // Set the color of the crosshair line
-          width: 1, // Adjust the line width as needed
-          dashStyle: "Solid",
-        },
-        labels: {
-          style: {
-            color: $mode === "light" ? "#545454" : "white",
-          },
-          distance: 10, // Increases space between label and axis
-          formatter: function () {
-            const date = new Date(this.value);
-            return date.toLocaleDateString("en-US", {
-              month: "short",
-              year: "numeric",
-            });
-          },
-        },
-        tickPositioner: function () {
-          // Create custom tick positions with wider spacing
-          const positions = [];
-          const info = this.getExtremes();
-          const tickCount = 5; // Reduce number of ticks displayed
-          const interval = Math.floor((info.max - info.min) / tickCount);
-
-          for (let i = 0; i <= tickCount; i++) {
-            positions.push(info.min + i * interval);
-          }
-          return positions;
-        },
-      },
-      yAxis: {
-        gridLineWidth: 1,
-        gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
-        labels: {
-          style: { color: $mode === "light" ? "#545454" : "white" },
-        },
-        title: { text: null },
-        opposite: true,
-      },
-      tooltip: {
-        shared: true,
-        useHTML: true,
-        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
-        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
-        borderWidth: 1,
-        style: {
-          color: "#fff",
-          fontSize: "16px",
-          padding: "10px",
-        },
-        borderRadius: 4,
-        formatter: function () {
-          // Format the x value to display time in a custom format
-          let tooltipContent = `<span class="m-auto text-[1rem] font-[501]">${new Date(
-            this?.x,
-          ).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-          })}</span><br>`;
-
-          // Loop through each point in the shared tooltip
-          this.points.forEach((point) => {
-            tooltipContent += `
-        <span class="font-semibold text-sm">${point.series.name}:</span> 
-        <span class="font-normal text-sm">${abbreviateNumber(point.y)}</span><br>`;
-          });
-
-          return tooltipContent;
-        },
-      },
-
-      plotOptions: {
-        series: {
-          color: "white",
-          animation: false, // Disable series animation
-          states: {
-            hover: {
-              enabled: false, // Disable hover effect globally
-            },
-          },
-        },
-      },
-      legend: {
-        enabled: false,
-      },
-      series: [
-        {
-          name: "Mkt Cap",
-          type: "area",
-          data: dummyData,
-          color: "#4681f4",
-          lineWidth: 1.2,
-          marker: {
-            enabled: false,
-          },
-          fillColor: {
-            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-            stops: [
-              [0, fillColorStart],
-              [1, fillColorEnd],
-            ],
-          },
-        },
-      ],
-    };
-
-    return options;
-  }
-
-  let config = plotData();
   let dividendList = [
     {
       symbol: "A",
@@ -277,27 +128,40 @@
 </script>
 
 <h2 class="text-xl sm:text-3xl font-bold mt-8">Dividends</h2>
-<div class="overflow-x-auto w-full">
-  <div class="my-5 w-full">
-    {#each dataList as item}
-      <div
-        class="grid
-               gap-3 p-2
-              xs:mt-6 bp:mt-7
-              grid-cols-3 sm:gap-6 flex flex-row items-center border border-gray-800"
-      >
-        <div class="text-sm sm:text-[1rem] font-semibold">
-          {item?.label}
-        </div>
-        <div class="text-end text-[1rem]">
-          {item?.value}%
-        </div>
-        <div class="text-end text-[1rem]">
-          {item?.rating}
-        </div>
-      </div>
-    {/each}
-  </div>
+<div
+  class="overflow-x-auto no-scrollbar flex justify-start items-center w-full m-auto rounded-none sm:rounded mb-8 mt-5"
+>
+  <table
+    class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
+  >
+    <tbody class="">
+      {#each blogData as item}
+        <tr
+          class=" dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
+        >
+          <td class="text-start text-sm sm:text-[1rem] whitespace-nowrap">
+            {item?.label}
+          </td>
+          <td class="text-end text-sm sm:text-[1rem] whitespace-nowrap">
+            {item?.value + "%"}
+          </td>
+
+          <td class=" text-sm sm:text-[1rem] whitespace-nowrap text-end">
+            <label
+              class="badge badge-lg w-24 rounded-[3px] {[
+                'Very Good',
+                'Good',
+              ]?.includes(item?.sentiment)
+                ? 'bg-green-800 dark:bg-green-600'
+                : item?.sentiment === 'Average'
+                  ? 'bg-orange-800 dark:bg-orange-600'
+                  : 'bg-red-800 dark:bg-red-600'}">{item?.sentiment}</label
+            >
+          </td>
+        </tr>
+      {/each}
+    </tbody>
+  </table>
 </div>
 
 <p class="mt-8 mb-4">

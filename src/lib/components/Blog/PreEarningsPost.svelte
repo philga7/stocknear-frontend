@@ -1,6 +1,6 @@
 <script lang="ts">
   import Overview from "$lib/components/Blog/Overview.svelte";
-  import Dividends from "$lib/components/Blog/Dividends.svelte";
+  //import Dividends from "$lib/components/Blog/Dividends.svelte";
   import Valuation from "$lib/components/Blog/Valuation.svelte";
   import Average from "$lib/components/Blog/Average.svelte";
   import PriceReaction from "$lib/components/Blog/PriceReaction.svelte";
@@ -20,13 +20,13 @@
 <FinancialHealth blogData={rawData?.financialHealth} />
 <Growth blogData={rawData?.growth} />
 
-<Dividends />
+<!--<Dividends />-->
 
-<Valuation />
+<Valuation blogData={rawData?.valuation} />
 
-<Average />
+<Average blogData={rawData?.industry} />
 
 <PriceReaction />
 
-<Management />
+<Management blogData={rawData?.management} />
 <Summary />
