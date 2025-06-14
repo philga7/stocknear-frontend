@@ -15,8 +15,6 @@
 
   $stockTicker = rawData?.symbol;
   $displayCompanyName = rawData?.name;
-
-  console.log(rawData?.priceReaction);
 </script>
 
 <Introduction blogData={rawData?.nextEarningsData} />
