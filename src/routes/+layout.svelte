@@ -11,6 +11,7 @@
   import Footer from "$lib/components/Footer.svelte";
   import Searchbar from "$lib/components/Searchbar.svelte";
   import NotificationBell from "$lib/components/NotificationBell.svelte";
+  import CTA from "$lib/components/CTA.svelte";
 
   //import PullToRefresh from '$lib/components/PullToRefresh.svelte';
 
@@ -277,6 +278,28 @@
       });
     } catch (error) {
       console.error("Failed to update theme:", error);
+    }
+  }
+
+  let urlChangeCount = 0;
+  let lastPath = "";
+
+  // This will update every time the URL changes
+  $: currentPath = $page.url.pathname;
+
+  $: if (
+    !["Plus", "Pro"]?.includes(data?.user?.tier) &&
+    currentPath !== lastPath &&
+    typeof window !== "undefined"
+  ) {
+    lastPath = currentPath;
+    urlChangeCount++;
+
+    if (urlChangeCount % 5 === 0) {
+      setTimeout(() => {
+        const closePopup = document.getElementById("ctaModal");
+        closePopup?.dispatchEvent(new MouseEvent("click"));
+      }, 1000);
     }
   }
 </script>
@@ -1407,6 +1430,11 @@
               <slot />
 
               <Toaster position="top-center" />
+              {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
+                {#await import("$lib/components/CTA.svelte") then { default: Comp }}
+                  <svelte:component this={Comp} />
+                {/await}
+              {/if}
               <!--
               {#if Cookie && $showCookieConsent === true}
                 <Cookie />

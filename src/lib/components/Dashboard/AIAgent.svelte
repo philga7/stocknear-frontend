@@ -46,13 +46,49 @@
         "Give me a summary of today’s top market news and key financial events.",
       type: "Stocks",
     },
-
     {
       label: "Bull vs Bear Case for Nvidia",
       query: "@BullvsBear for Nvidia",
       type: "Stocks",
     },
+    {
+      label: "Should I buy Intel right now as a value investor.",
+      query: "@WarrenBuffet should I buy Intel right now?",
+      type: "Stocks",
+    },
+    {
+      label: "What does Cathie Wood evaluate Tesla right now",
+      query:
+        "@CathieWood evaluate tesla and tell me if you would buy or sell it",
+      type: "Stocks",
+    },
+    {
+      label: "Latest Option Data updates for SPY",
+      query: "@OptionsData latest options data updates for SPY",
+      type: "ETF",
+    },
+    {
+      label: "Latest Dark Pool Activity for Microsoft",
+      query: "@DarkPoolData latest dark pool activity for microsoft",
+      type: "ETF",
+    },
+    {
+      label: "Find me undervalued stocks",
+      query:
+        "@StockScreener find me undervalued stocks with p/e above 0 and revenue growth above 5%",
+      type: "Stocks",
+    },
+    {
+      label: "How healthy is Gamestop?",
+      query: "@FundamentalData how healthy is Gamestop?",
+      type: "Stocks",
+    },
   ];
+
+  const randomChats = defaultChats
+    ?.sort(() => 0.5 - Math.random())
+    ?.slice(0, 4);
+
   let agentNames = agentOptions?.map((item) => item?.name);
 
   const editorHighlighter = new Plugin({
@@ -555,7 +591,7 @@
 <div
   class="hidden sm:grid grid-cols-1 md:grid-cols-2 gap-2 shrink w-full overflow-y-auto sidenav-scrollbar mt-3"
 >
-  {#each defaultChats as item}
+  {#each randomChats as item}
     <div
       on:click={() => {
         if (data?.user) {
