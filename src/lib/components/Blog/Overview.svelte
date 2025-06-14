@@ -95,9 +95,10 @@
           // Format the x value to display time in a custom format
           let tooltipContent = `<span class="m-auto text-[1rem] font-[501]">${new Date(
             this?.x,
-          )?.toLocaleTimeString("en-US", {
-            hour: "2-digit",
-            minute: "2-digit",
+          ).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
           })}</span><br>`;
 
           // Loop through each point in the shared tooltip
@@ -105,7 +106,7 @@
             tooltipContent += `
         <span style="display:inline-block; width:10px; height:10px; background-color:${point.color}; border-radius:50%; margin-right:5px;"></span>
         <span class="font-semibold text-sm">${point.series.name}:</span> 
-        <span class="font-normal text-sm">${abbreviateNumber(point.y)}</span><br>`;
+        <span class="font-normal text-sm">${abbreviateNumber(point.y)}%</span><br>`;
           });
 
           return tooltipContent;
