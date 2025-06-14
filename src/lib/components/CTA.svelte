@@ -6,17 +6,16 @@
 
 <dialog
   id="ctaModal"
-  class="modal modal-bottom sm:modal-top p-0 sm:p-6 text-muted dark:text-white bg-black/40"
+  class="modal p-4 sm:p-6"
   aria-labelledby="cta-title"
   aria-modal="true"
   role="dialog"
 >
   <!-- Backdrop -->
-  <label for="ctaModal" class="modal-backdrop cursor-pointer"></label>
 
   <!-- Modal content -->
   <div
-    class="modal-box relative w-full bg-white dark:bg-secondary text-center rounded-xl border border-gray-300 dark:border-gray-600 shadow-xl"
+    class="modal-box relative m-auto w-full max-w-3xl bg-white dark:bg-secondary text-center rounded-[5px] border border-gray-300 dark:border-gray-600 shadow"
   >
     <!-- Close Button (Top Right Corner) -->
     <div class="absolute top-4 right-4">
@@ -37,11 +36,11 @@
 
     <!-- Heading -->
     <h2 class="text-2xl sm:text-3xl font-bold mb-2 mt-8">
-      Get more with Stocknear Pro
+      Get more with Pro⚡
     </h2>
 
     <!-- Description -->
-    <p class="text-[1rem] sm:text-lg mb-5 text-start sm:text-center">
+    <p class="text-[1rem] sm:text-lg mb-5 text-center">
       Upgrade to Stocknear Pro to gain access to all premium data, advanced
       charts, AI Agent, ad-free browsing, data downloads, and other exclusive
       features.
@@ -50,7 +49,7 @@
     <!-- CTA Button -->
     <label
       for="ctaModal"
-      class="btn btn-primary btn-lg w-full sm:w-auto"
+      class="btn btn-primary btn-lg"
       on:click={() => goto("/pricing")}
     >
       View Plans & Pricing
