@@ -8,8 +8,7 @@
 <section>
   <a href="/earnings-calendar/" class="inline-flex items-center"
     ><h2
-      class="mb-2 text-xl font-bold leading-tight bp:text-2xl bp:leading-tight"
-      data-svelte-h="svelte-u0668b"
+      class="mb-2 text-xl font-bold leading-tight bp:text-2xl bp:leading-tight sm:hover:underline sm:hover:underline-offset-4"
     >
       Upcoming Earnings
     </h2>

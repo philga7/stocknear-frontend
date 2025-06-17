@@ -78,10 +78,7 @@ ${paragraphs.join("\n")}
                 <tbody
                   ><tr
                     class="border-b border-gray-300 dark:border-gray-600 last:border-0"
-                    ><td
-                      class="px-1 py-1.5 font-semibold lg:py-2"
-                      data-svelte-h="svelte-bpivlp">Country</td
-                    >
+                    ><td class="px-1 py-1.5 font-semibold lg:py-2">Country</td>
                     <td class="px-1 py-1.5 text-right lg:py-2"
                       >{rawData?.country
                         ? rawData?.country?.replace("US", "United States")
@@ -91,10 +88,7 @@ ${paragraphs.join("\n")}
 
                   <tr
                     class="border-b border-gray-300 dark:border-gray-600 last:border-0"
-                    ><td
-                      class="px-1 py-1.5 font-semibold lg:py-2"
-                      data-svelte-h="svelte-pqn7mx">IPO Date</td
-                    >
+                    ><td class="px-1 py-1.5 font-semibold lg:py-2">IPO Date</td>
                     <td class="px-1 py-1.5 text-right lg:py-2"
                       >{rawData?.ipoDate !== null &&
                       rawData?.ipoDate?.length > 0
@@ -122,10 +116,7 @@ ${paragraphs.join("\n")}
                   >
                   <tr
                     class="border-b border-gray-300 dark:border-gray-600 last:border-0"
-                    ><td
-                      class="px-1 py-1.5 font-semibold lg:py-2"
-                      data-svelte-h="svelte-5e1uzt">Sector</td
-                    >
+                    ><td class="px-1 py-1.5 font-semibold lg:py-2">Sector</td>
                     <td class="px-1 py-1.5 text-right lg:py-2">
                       <a
                         href={sectorNavigation?.find(
@@ -154,10 +145,7 @@ ${paragraphs.join("\n")}
                   >
                   <tr
                     class="border-b border-gray-300 dark:border-gray-600 last:border-0"
-                    ><td
-                      class="px-1 py-1.5 font-semibold lg:py-2"
-                      data-svelte-h="svelte-1qhfmvo">CEO</td
-                    >
+                    ><td class="px-1 py-1.5 font-semibold lg:py-2">CEO</td>
                     <td class="px-1 py-1.5 text-right lg:py-2"
                       >{rawData?.ceo || "n/a"}</td
                     ></tr

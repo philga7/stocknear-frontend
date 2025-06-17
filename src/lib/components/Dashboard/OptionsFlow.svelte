@@ -8,7 +8,7 @@
 <section>
   <a href="/options-flow" class="inline-flex items-center"
     ><h2
-      class="mb-2 text-xl font-bold leading-tight bp:text-2xl bp:leading-tight"
+      class="mb-2 text-xl font-bold leading-tight bp:text-2xl bp:leading-tight sm:hover:underline sm:hover:underline-offset-4"
     >
       Unusual Options Orders
     </h2>
@@ -27,7 +27,7 @@
   >
   {#if optionsFlowList?.length > 0}
     <table class="w-full text-sm sm:text-[1rem]">
-      <thead data-svelte-h="svelte-1nmoxi0"
+      <thead
         ><tr
           ><th
             class="border border-gray-300 dark:border-gray-800 px-2 py-1.5 text-left"
