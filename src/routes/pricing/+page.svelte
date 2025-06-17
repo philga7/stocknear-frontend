@@ -126,7 +126,7 @@
   <div class="px-3">
     <div class="mx-auto text-center mb-8">
       <h1 class="text-4xl sm:text-5xl font-bold pb-4">
-        Big Insights for Pocket Change
+        Success is Well-Researched
       </h1>
     </div>
 
@@ -1244,7 +1244,7 @@
         </div>
       </div>
       -->
-
+      <!--
       <div
         class="relative text-left w-full col-span-1 lg:col-span-3 bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-200 dark:border-zinc-600 p-6 isolate translate-y-5 opacity-100"
       >
@@ -1282,6 +1282,7 @@
           </button>
         </div>
       </div>
+    -->
     </div>
 
     <!--Start FAQ-->

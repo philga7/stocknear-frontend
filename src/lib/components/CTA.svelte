@@ -12,7 +12,7 @@
   role="dialog"
 >
   <!-- Backdrop -->
-
+  <label for="ctaModal" class="cursor-pointer modal-backdrop"></label>
   <!-- Modal content -->
   <div
     class="modal-box relative m-auto w-full max-w-3xl bg-white dark:bg-secondary text-center rounded-[5px] border border-gray-300 dark:border-gray-600 shadow"
