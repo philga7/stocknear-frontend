@@ -213,7 +213,9 @@
     <div class="flex flex-col">
       <div class="text-gray-500 dark:text-gray-300 text-sm">Div & Yield</div>
       <div class="mt-0.5 text-lg bp:text-lg sm:mt-1.5 sm:text-xl font-semibold">
-        {blogData?.annualDividend} ({blogData?.dividendYield + "%"})
+        {blogData?.annualDividend ?? "n/a"} ({blogData?.dividendYield
+          ? blogData?.dividendYield + "%"
+          : "n/a"})
       </div>
     </div>
 
