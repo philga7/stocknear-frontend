@@ -1270,7 +1270,7 @@
       step: ["100%", "50%", "20%", "10%", "5%", "0%"],
       defaultCondition: "over",
       defaultValue: "any",
-      varType: "percent",
+      varType: "percentSign",
       category: "Earnings Report",
     },
     earningsEPSGrowthEst: {
@@ -1278,7 +1278,7 @@
       step: ["100%", "50%", "20%", "10%", "5%", "0%"],
       defaultCondition: "over",
       defaultValue: "any",
-      varType: "percent",
+      varType: "percentSign",
       category: "Earnings Report",
     },
     analystRating: {
