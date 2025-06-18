@@ -146,12 +146,30 @@
                   class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-300 dark:sm:border-gray-600 md:py-6"
                 >
                   <div class="text-2xl font-bold tracking-tight">
-                    <span
-                      class={hedgeFundStats?.winRate >= 0
-                        ? "before:content-['+'] text-green-800 dark:text-[#36D984]"
-                        : "text-red-800 dark:text-[#EF4444]"}
-                      >{hedgeFundStats?.winRate?.toFixed(2)}%</span
-                    >
+                    {#if ["Plus", "Pro"]?.includes(data?.user?.tier)}
+                      <span
+                        class={hedgeFundStats?.winRate >= 0
+                          ? "before:content-['+'] text-green-800 dark:text-[#36D984]"
+                          : "text-red-800 dark:text-[#EF4444]"}
+                        >{hedgeFundStats?.winRate?.toFixed(2)}%</span
+                      >
+                    {:else}
+                      <a href="/pricing" class="flex justify-center mb-2">
+                        <svg
+                          class="size-6 text-muted dark:text-[#fff]"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          style="max-width: 40px;"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                            clip-rule="evenodd"
+                          >
+                          </path>
+                        </svg>
+                      </a>
+                    {/if}
                   </div>
                   <div
                     class="text-sm font-semibold leading-6 text-muted dark:text-gray-300"
@@ -163,14 +181,32 @@
                   class="flex flex-col px-4 py-2 bp:px-6 sm:border-l sm:border-gray-300 dark:sm:border-gray-600 md:py-6"
                 >
                   <div class="text-2xl font-bold tracking-tight">
-                    <span
-                      class={hedgeFundStats?.performancePercentage3Year >= 0
-                        ? "before:content-['+'] text-green-800 dark:text-[#36D984]"
-                        : "text-red-800 dark:text-[#EF4444]"}
-                      >{hedgeFundStats?.performancePercentage3Year?.toFixed(
-                        2,
-                      )}%</span
-                    >
+                    {#if ["Plus", "Pro"]?.includes(data?.user?.tier)}
+                      <span
+                        class={hedgeFundStats?.performancePercentage3Year >= 0
+                          ? "before:content-['+'] text-green-800 dark:text-[#36D984]"
+                          : "text-red-800 dark:text-[#EF4444]"}
+                        >{hedgeFundStats?.performancePercentage3Year?.toFixed(
+                          2,
+                        )}%</span
+                      >
+                    {:else}
+                      <a href="/pricing" class="flex justify-center mb-2">
+                        <svg
+                          class="size-6 text-muted dark:text-[#fff]"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          style="max-width: 40px;"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                            clip-rule="evenodd"
+                          >
+                          </path>
+                        </svg>
+                      </a>
+                    {/if}
                   </div>
                   <div
                     class="text-sm font-semibold leading-6 text-muted dark:text-gray-300"
