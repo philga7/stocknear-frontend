@@ -96,6 +96,25 @@
     </div>
   {/if}
 -->
+  {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
+    <div class="flex justify-center mb-5 whitespace-nowrap mt-5 sm:mt-0">
+      <div class="mb-4 flex justify-center mt-2 lg:mb-3">
+        <a href="/analysts/analyst-flow"
+          ><div
+            class="flex items-center justify-center sm:hover:text-muted dark:sm:hover:text-white text-blue-700 dark:text-blue-400"
+          >
+            <div class="text-lg sm:text-xl font-semibold">Lifetime Access</div>
+            <div
+              class="-mt-2 ml-1 -rotate-6 rounded-[3px] bg-red-500 px-1 py-0.5 text-xs font-semibold text-white"
+            >
+              New
+            </div>
+          </div></a
+        >
+      </div>
+    </div>
+  {/if}
+
   <main id="main">
     <div
       class="border-b border-gray-100 dark:border-gray-800 rounded-[5px] px-4 bg-gray-100 dark:bg-[#1C1E22] pt-12 shadow-sm pb-26 landscape:border-t-2 landscape:md:border-t-0"
