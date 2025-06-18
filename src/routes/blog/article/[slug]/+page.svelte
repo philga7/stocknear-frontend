@@ -36,7 +36,7 @@
               article?.id,
               article?.cover,
             )}
-            class="h-[200px] w-full object-cover lg:h-[350px] rounded-[5px]"
+            class="h-[200px] w-full object-cover lg:h-[350px] rounded-[5px] border border-gray-100 dark:border-gray-900"
             loading="lazy"
             alt="Wallpaper"
           />
@@ -45,7 +45,7 @@
           <article
             class="z-5 relative mx-1 {article?.cover
               ? '-mt-10 lg:-mt-16'
-              : 'lg:-mt-8'} rounded-t-[8px] p-3 xs:p-4 lg:ml-3 lg:p-5 xl:mx-4 bg-white dark:bg-default"
+              : 'lg:-mt-8'} rounded-t-[8px] p-3 xs:p-4 lg:ml-3 lg:p-5 xl:mx-4 bg-white dark:bg-default border border-gray-100 dark:border-gray-900 shadow-sm"
           >
             <header
               class="pb-3 border-b-[2px] border-[#2C6288] dark:border-white w-full sm:min-w-[1000px] sm:max-w-[1000px]"

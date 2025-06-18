@@ -5,12 +5,22 @@ export const load = async ({ locals, url }) => {
   const page = parseInt(url.searchParams.get('page')) || 1;
 
   const getAllBlogPost = async () => {
-    const output = await pb.collection("articles").getList(page, 6, {
+    const output = (await pb.collection("articles").getList(page, 6, {
       sort: "-created",
           filter: "category = 'blog' || category = 'pre-earnings'"
-    });
+    }))?.items;
 
-    return output?.items;
+    const filteredList = output?.map(({ id, collectionId,title, abstract, created, cover }) => ({
+      id,
+      collectionId,
+      title,
+      abstract,
+      created,
+      cover,
+
+    }));
+
+    return filteredList;
   };
 
   const getTotalLength = async () => {
