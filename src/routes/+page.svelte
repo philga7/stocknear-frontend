@@ -99,7 +99,7 @@
   {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
     <div class="flex justify-center mb-5 whitespace-nowrap mt-5 sm:mt-0">
       <div class="mb-4 flex justify-center mt-2 lg:mb-3">
-        <a href="/analysts/analyst-flow"
+        <a href="/pricing"
           ><div
             class="flex items-center justify-center sm:hover:text-muted dark:sm:hover:text-white text-blue-700 dark:text-blue-400"
           >
