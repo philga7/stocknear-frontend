@@ -26,49 +26,53 @@
   }
 </script>
 
-<p class="mb-4">
-  {$displayCompanyName} is scheduled to release its earnings on {new Date(
-    blogData?.date ?? null,
-  )?.toLocaleString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    timeZone: "Europe/Berlin",
-  })},
-  {#if compareTimes(blogData?.time, "16:00") > 0}
-    after market closes.
-  {:else if compareTimes(blogData?.time, "09:30") < 0}
-    before market opens.
-  {:else}
-    during market hours.
-  {/if}
-  <br />Analysts project revenue of
+<div
+  class="mb-6 rounded border-l-4 border-[#2C6288] bg-[#f3f4f6] dark:bg-table/60 px-5 py-3"
+>
+  <p class="mb-2">
+    {$displayCompanyName} is scheduled to release its earnings on {new Date(
+      blogData?.date ?? null,
+    )?.toLocaleString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      timeZone: "Europe/Berlin",
+    })},
+    {#if compareTimes(blogData?.time, "16:00") > 0}
+      after market closes.
+    {:else if compareTimes(blogData?.time, "09:30") < 0}
+      before market opens.
+    {:else}
+      during market hours.
+    {/if}
+    <br />Analysts project revenue of
 
-  <span class=""
-    >{@html abbreviateNumber(blogData?.revenueEst, true, true)}</span
-  >, reflecting a
-  <span
-    class="{revenueRatio >= 0 && revenueRatio !== 'Infinity'
-      ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
-      : revenueRatio < 0 && revenueRatio !== 'Infinity'
-        ? 'text-red-800 dark:text-[#FF2F1F]'
-        : 'text-muted dark:text-white'} "
-    >{revenueRatio !== "Infinity"
-      ? abbreviateNumber(revenueRatio) + "%"
-      : "n/a"}</span
-  >
-  YoY {revenueRatio > 0 ? "growth" : revenueRatio < 0 ? "shrinking" : ""}
-  {#if epsRatio !== null}
-    and earnings per share of
-    <span class="">{blogData?.epsEst}</span>, making a
+    <span class=""
+      >{@html abbreviateNumber(blogData?.revenueEst, true, true)}</span
+    >, reflecting a
     <span
-      class="{epsRatio > 0
+      class="{revenueRatio >= 0 && revenueRatio !== 'Infinity'
         ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
-        : 'text-red-800 dark:text-[#FF2F1F]'} ">{epsRatio}%</span
+        : revenueRatio < 0 && revenueRatio !== 'Infinity'
+          ? 'text-red-800 dark:text-[#FF2F1F]'
+          : 'text-muted dark:text-white'} "
+      >{revenueRatio !== "Infinity"
+        ? abbreviateNumber(revenueRatio) + "%"
+        : "n/a"}</span
     >
-    {epsRatio > 0 ? "increase" : epsRatio < 0 ? "decrease" : ""} YoY.
-  {:else}
-    and earnings per share of
-    <span class="">{blogData?.epsEst}</span>.
-  {/if}
-</p>
+    YoY {revenueRatio > 0 ? "growth" : revenueRatio < 0 ? "shrinking" : ""}
+    {#if epsRatio !== null}
+      and earnings per share of
+      <span class="">{blogData?.epsEst}</span>, making a
+      <span
+        class="{epsRatio > 0
+          ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
+          : 'text-red-800 dark:text-[#FF2F1F]'} ">{epsRatio}%</span
+      >
+      {epsRatio > 0 ? "increase" : epsRatio < 0 ? "decrease" : ""} YoY.
+    {:else}
+      and earnings per share of
+      <span class="">{blogData?.epsEst}</span>.
+    {/if}
+  </p>
+</div>

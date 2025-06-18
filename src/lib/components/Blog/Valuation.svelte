@@ -91,20 +91,20 @@
         borderRadius: 4,
         formatter: function () {
           return this.points
-            .map(
+            ?.map(
               (point) => `
             <span class="font-semibold text-sm">${point.key}:</span> 
             <span class="font-normal text-sm">${abbreviateNumber(point.y)}%</span><br>
           `,
             )
-            .join("");
+            ?.join("");
         },
       },
       plotOptions: {
         column: {
           colorByPoint: false, // all bars same color
-          color: barColor,
-          borderColor: barColor,
+          color: $mode === "light" ? "#2C6288" : barColor,
+          borderColor: $mode === "light" ? "#2C6288" : barColor,
           borderWidth: 1,
         },
         series: {
