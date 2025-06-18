@@ -28,7 +28,7 @@
           <div class=" w-full m-auto">
             <div class="">
               <p class="dark:text-gray-200 italic mb-2 text-sm">
-                Last updated: 28.02.2025
+                Last updated: 18.06.2025
               </p>
 
               <p class=" mb-10">
@@ -195,13 +195,17 @@
                 Lifetime Access
               </h2>
 
-              <div class=" mb-10">
+              <div class="mb-10">
                 Lifetime access grants you the right to use our Services for as
-                long as they are provided by Stocknear.<br /><br />
-                While Stocknear is committed to offering its Services for the foreseeable
-                future, we do not guarantee perpetual access. In the event that Stocknear
-                ceases operations or discontinues the Services, lifetime access will
-                consequently terminate.
+                long as they are offered by Stocknear.<br /><br />
+                While Stocknear is committed to maintaining its Services for the
+                foreseeable future, we do not guarantee indefinite or uninterrupted
+                availability. If Stocknear discontinues the Services or ceases operations,
+                your lifetime access will end accordingly.<br /><br />
+                Please note that specific features of the Services, including but
+                not limited to the allocation of AI Credits, may be modified, limited,
+                or adjusted at any time and without prior notice. These adjustments
+                are necessary to ensure the sustainability and viability of our business.
               </div>
 
               <h2 class="mb-1 text-2xl sm:text-3xl font-bold mb-3">
