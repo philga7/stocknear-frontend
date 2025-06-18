@@ -2,7 +2,7 @@ import { convertToSlug } from "$lib/utils";
 
 const pages = [
   { title: "/" },
-  { title: "/chat"},
+  { title: "/chat" },
   { title: "/compare" },
   { title: "/reddit-tracker" },
   { title: "/list/most-shorted-stocks" },
@@ -76,26 +76,33 @@ const pages = [
   { title: "/dark-pool-flow" },
   { title: "/potus-tracker" },
   { title: "/options-calculator" },
-  { title: "/faq" },
+  { title: "/faq" }
 ];
 
 const website = "https://stocknear.com";
 
 // Helper to ensure lastmod is in "YYYY-MM-DD" format
 function formatLastmod(dateString) {
-  // Make sure dateString is valid and parseable
   const date = new Date(dateString);
   if (isNaN(date.getTime())) {
-    return ""; // or handle invalid date gracefully
+    return "";
   }
-  // Return "YYYY-MM-DD" portion only (common for sitemaps)
   return date.toISOString().split("T")[0];
+}
+
+// Escape XML special characters
+function escapeXml(unsafe) {
+  return unsafe
+    ?.replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
 }
 
 const createUrlElement = (loc, { lastmod, changefreq, priority } = {}) => {
   let lastmodTag = "";
   if (lastmod) {
-    // Reformat the date to YYYY-MM-DD
     const formattedDate = formatLastmod(lastmod);
     if (formattedDate) {
       lastmodTag = `<lastmod>${formattedDate}</lastmod>`;
@@ -103,7 +110,7 @@ const createUrlElement = (loc, { lastmod, changefreq, priority } = {}) => {
   }
   return `
   <url>
-    <loc>${loc}</loc>
+    <loc>${escapeXml(loc)}</loc>
     ${lastmodTag}
     ${changefreq ? `<changefreq>${changefreq}</changefreq>` : ""}
     ${priority ? `<priority>${priority}</priority>` : ""}
@@ -111,98 +118,38 @@ const createUrlElement = (loc, { lastmod, changefreq, priority } = {}) => {
   `;
 };
 
-// Default settings for different content types.
+// Default settings for pages
 const defaultStaticPageSettings = { changefreq: "daily", priority: "1.0" };
 const homePageSettings = { changefreq: "daily", priority: "1.0" };
 const articleSettings = { changefreq: "daily", priority: "1.0" };
 const tutorialSettings = { changefreq: "daily", priority: "1.0" };
 const stockSettings = { changefreq: "daily", priority: "1.0" };
 
-// Define extra subdirectories for stocks.
-/*
-const stockExtraSubPaths = [
-  "/financials",
-  "/financials/balance-sheet",
-  "/financials/cash-flow",
-  "/financials/ratios",
-  "/statistics",
-  "/statistics/market-cap",
-  "/statistics/short-interest",
-  "/statistics/revenue",
-  "/statistics/price-reaction",
-  "/statistics/fail-to-deliver",
-  "/metrics",
-  "/forecast",
-  "/forecast/analyst",
-  "/forecast/ai",
-  "/dark-pool",
-  "/options",
-  "/options/unusual-activity",
-  "/options/contract-lookup",
-  "/options/hottest-contracts",
-  "/options/volatility",
-  "/options/oi",
-  "/insider",
-  "/insider/institute",
-  "/insider/congress-trading",
-  "/insider/transcripts",
-  "/dividends",
-  "/history",
-  "/profile",
-  "/profile/employees"
-];
-
-const etfExtraSubPaths = [
-  "/holdings",
-  "/dark-pool",
-  "/options",
-  "/options/unusual-activity",
-  "/options/contract-lookup",
-  "/options/hottest-contracts",
-  "/options/volatility",
-  "/options/oi",
-  "/insider",
-  "/dividends",
-  "/history"
-];
-*/
-
-
 /** @type {import('./$types').RequestHandler} */
-// Removed 'params' as it's no longer needed for sitemap indexing
 export async function GET({ locals }) {
   const { apiKey, apiURL, pb } = locals;
 
-  // Fetch stocks data.
-  const rawData = await fetch(apiURL + "/full-searchbar", {
+  // Fetch stocks data
+  const rawData = await fetch(`${apiURL}/full-searchbar`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      "X-API-KEY": apiKey,
-    },
+      "X-API-KEY": apiKey
+    }
   });
   const outputStocks = await rawData.json();
-  const stocks = outputStocks?.map((item) => ({
-    id: item?.symbol,
-    type: item?.type,
-  }));
+  const stocks = outputStocks?.map(item => ({ id: item?.symbol, type: item?.type }));
 
-  // Fetch articles and tutorials.
-  const articles = await pb.collection("articles").getFullList({
-    sort: "-created",
-  });
-  const tutorials = await pb.collection("tutorials").getFullList({
-    sort: "-created",
-  });
+  // Fetch articles and tutorials
+  const articles = await pb.collection("articles").getFullList({ sort: "-created" });
+  const tutorials = await pb.collection("tutorials").getFullList({ sort: "-created" });
 
-  // Generate the sitemap with all data
+  // Build sitemap XML
   const body = sitemap(stocks, articles, pages, tutorials);
-  const response = new Response(body);
-  response.headers.set("Content-Type", "application/xml");
-  return response;
+  return new Response(body, { headers: { "Content-Type": "application/xml" } });
 }
 
-// Sitemap generation function.
+// Sitemap generator
 const sitemap = (stocks, articles, pages, tutorials) => `<?xml version="1.0" encoding="UTF-8" ?>
 <urlset
   xmlns="https://www.sitemaps.org/schemas/sitemap/0.9"
@@ -213,51 +160,32 @@ const sitemap = (stocks, articles, pages, tutorials) => `<?xml version="1.0" enc
   xmlns:video="https://www.google.com/schemas/sitemap-video/1.1"
 >
   ${pages
-    ?.map((page) => {
+    .map(page => {
       const loc = `${website}${page.title}`;
       const settings = page.title === "/" ? homePageSettings : defaultStaticPageSettings;
       return createUrlElement(loc, settings);
     })
-    ?.join("")}
+    .join("")}
   ${articles
-    ?.map((item) => {
+    .map(item => {
       const loc = `${website}/blog/article/${convertToSlug(item?.title)}`;
       return createUrlElement(loc, { ...articleSettings, lastmod: item.created });
     })
-    ?.join("")}
+    .join("")}
   ${tutorials
-    ?.map((item) => {
+    .map(item => {
       const loc = `${website}/learning-center/article/${convertToSlug(item?.title)}`;
       return createUrlElement(loc, { ...tutorialSettings, lastmod: item.created });
     })
-    ?.join("")}
+    .join("")}
   ${stocks
-    ?.map((ticker) => {
-      // Determine the base path.
-      const basePath =
-        ticker.type === "Stock"
-          ? "/stocks/"
-          : ticker.type === "ETF"
-          ? "/etf/"
-          : "/index/";
-      // Main URL element for the ticker.
-      let urlElements = createUrlElement(`${website}${basePath}${ticker.id}`, stockSettings);
-
-      // For stocks only, add extra subdirectory URLs.
-      /*
-      if (ticker.type === "Stock") {
-        stockExtraSubPaths?.forEach((subPath) => {
-          urlElements += createUrlElement(`${website}${basePath}${ticker.id}${subPath}`, stockSettings);
-        });
-      } else if (ticker.type === "ETF") {
-        etfExtraSubPaths?.forEach((subPath) => {
-          urlElements += createUrlElement(`${website}${basePath}${ticker.id}${subPath}`, stockSettings);
-        });
-      }
-        */
-
-      return urlElements;
+    .map(ticker => {
+      const basePath = ticker.type === "Stock"
+        ? "/stocks/"
+        : ticker.type === "ETF"
+        ? "/etf/"
+        : "/index/";
+      return createUrlElement(`${website}${basePath}${ticker.id}`, stockSettings);
     })
-    ?.join("")}
-</urlset>
-`;
+    .join("")}
+</urlset>`;
