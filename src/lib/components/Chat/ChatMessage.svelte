@@ -244,6 +244,7 @@
               </button>
 
               <!-- Edit button -->
+              <!--
               <button
                 on:click={() => (editMode = true)}
                 class="cursor-pointer text-token-text-secondary hover:bg-token-bg-secondary rounded-lg text-muted dark:text-gray-300 dark:sm:hover:text-white"
@@ -268,8 +269,10 @@
                   </svg>
                 </span>
               </button>
+            -->
             </div>
           </div>
+          <!--
           {#if editMode}
             <div
               class="min-h-[100px] h-auto max-h-[800px] overflow-y-auto border border-gray-200 dark:border-gray-800 rounded-[5px] bg-gray-100 dark:bg-table px-3 py-3"
@@ -296,6 +299,7 @@
               </div>
             </div>
           {/if}
+          -->
         {/if}
       {/if}
     </div>
