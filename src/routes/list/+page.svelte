@@ -315,6 +315,12 @@
         href="/list/bitcoin-etfs">Bitcoin ETFs</a
       >
     </li>
+    <li>
+      <a
+        class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
+        href="/list/ethereum-etfs">Ethereum ETFs</a
+      >
+    </li>
   </ul>
 </div>
 

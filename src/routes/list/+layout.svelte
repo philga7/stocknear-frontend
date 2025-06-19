@@ -300,6 +300,10 @@
       title: "All Active SPACs on the US Stock Market",
       link: "/list/spacs-stocks",
     },
+    {
+      title: "Ethereum ETFs List",
+      link: "/list/ethereum-etfs",
+    },
   ];
 
   navigation = [...navigationIndustry, ...navigation];
