@@ -312,6 +312,10 @@
       title: "Crypto ETFs List",
       link: "/list/crypto-etfs",
     },
+    {
+      title: "Covered Call ETFs",
+      link: "/list/covered-call-etfs",
+    },
   ];
 
   navigation = [...navigationIndustry, ...navigation];

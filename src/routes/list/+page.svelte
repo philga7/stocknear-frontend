@@ -330,6 +330,12 @@
     <li>
       <a
         class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
+        href="/list/covered-call-etfs">Covered Call ETFs</a
+      >
+    </li>
+    <li>
+      <a
+        class="text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
         href="/list/monthly-dividend-etfs">Monthly Dividend ETFs</a
       >
     </li>
