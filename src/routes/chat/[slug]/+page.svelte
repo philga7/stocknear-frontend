@@ -309,7 +309,7 @@
     if (index < 1 || index > messages?.length) return;
     const userMessage = messages?.[index - 1]?.content;
     //messages = [...messages?.splice(index - 1, 1)]; // Remove the message at that index
-    messages = messages?.filter((_, i) => i !== index);
+    messages = messages?.slice(0, index);
     await llmChat(userMessage);
   }
 
