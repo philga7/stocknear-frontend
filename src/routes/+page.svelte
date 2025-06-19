@@ -96,6 +96,7 @@
     </div>
   {/if}
 -->
+  <!--
   {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
     <div class="flex justify-center mb-5 whitespace-nowrap mt-5 sm:mt-0">
       <div class="mb-4 flex justify-center mt-2 lg:mb-3">
@@ -114,6 +115,7 @@
       </div>
     </div>
   {/if}
+  -->
 
   <main id="main">
     <div

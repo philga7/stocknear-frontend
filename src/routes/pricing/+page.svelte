@@ -130,8 +130,8 @@
       </h1>
     </div>
 
-    <Discount />
-    <!--
+    <!--<Discount />-->
+
     <div class="flex flex-row items-center justify-center mb-5 sm:mb-0">
       <div class="flex flex-row items-center ml-auto">
         <span class="text-[1rem] font-semibold mr-3"> Monthly </span>
@@ -155,17 +155,17 @@
         <div class="ml-3 flex flex-col text-[1rem] items-start">Annually</div>
       </div>
     </div>
--->
+
     <div
-      class="grid w-fit grid-cols-1 gap-6 mx-auto text-center lg:grid-cols-2"
+      class="grid max-w-md grid-cols-1 gap-6 mx-auto text-center lg:max-w-full lg:grid-cols-3"
     >
       <div
         style="opacity: 1; transform: translateY(20px);"
-        class="order-2 lg:order-0 w-full max-w-[400px] transform transition-all duration-300 sm:hover:-translate-y-1 lg:flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
+        class="transform transition-all duration-300 sm:hover:-translate-y-1 lg:flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
       >
         <h3 class="text-3xl font-bold">Basic</h3>
         <p class="text-muted dark:text-zinc-300 text-sm mt-1">
-          Best for Beginners
+          Ideal for Beginners
         </p>
         <div class="mt-4">
           <span class="text-4xl font-bold">$0</span><span class=" text-xl ml-1"
@@ -699,259 +699,7 @@
 
       <div
         style="opacity: 1; transform: translateY(20px);"
-        class="order-0 lg:order-1 w-full max-w-[400px] transform transition-all duration-300 sm:hover:-translate-y-1 flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
-      >
-        <div
-          class=" hidden w-fit absolute -top-[20px] left-1/2 transform -translate-x-1/2 whitespace-nowrap m-auto px-4 py-1.5 rounded text-sm font-medium backdrop-blur-xl
-            bg-pink-600 text-white shadow-xs"
-        >
-          <span class="flex items-center gap-1.5"
-            ><svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"
-              ><path
-                d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"
-              ></path></svg
-            >Most Popular</span
-          >
-        </div>
-
-        <h3 class="text-3xl font-bold">Lifetime Access</h3>
-        <p class="text-muted dark:text-zinc-300 text-sm mt-1">Limited Offer</p>
-        <div class="mt-4">
-          <span class="text-4xl font-bold line-through">$599</span>
-          <span class="text-pink-700 dark:text-pink-500 text-4xl font-bold ml-1"
-            >$399</span
-          >
-        </div>
-
-        <ul class="mt-6 mb-6 space-y-2">
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="">1,000 AI Credits/mo</span>
-          </li>
-
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="">Unlimited Watchlist (up to 300 stocks)</span>
-          </li>
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="">Unlimited Price Alerts</span>
-          </li>
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            >
-
-            <span class="">Unlimited Stock Screener</span>
-          </li>
-
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="">Realtime Notification</span>
-          </li>
-
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            >
-
-            <span class="">Hedge Fund Portfolio Access</span>
-          </li>
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            >
-
-            <span class="">US Congress Portfolio Access</span>
-          </li>
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            >
-
-            <span class="">Financial History Access</span>
-          </li>
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            >
-
-            <span class="">No Ads</span>
-          </li>
-
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            >
-
-            <span class="">Realtime Options Activity</span>
-          </li>
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            >
-
-            <span class="">Realtime Dark Pool Trades</span>
-          </li>
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            >
-
-            <span class="">Pay once and never again</span>
-          </li>
-        </ul>
-
-        <div class="mt-auto pt-6 border-t border-zinc-700 mx-4">
-          <label
-            for={!data?.user ? "userLogin" : ""}
-            on:click={() => purchasePlan("lifeTime")}
-            class="text-white cursor-pointer w-full py-3 px-4 bg-blue-600 rounded font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
-            >Unlock Lifetime Access Now<svg
-              class="w-5 h-5 ml-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 5l7 7-7 7"
-              ></path></svg
-            ></label
-          >
-        </div>
-      </div>
-
-      <!--
-      <div
-        style="opacity: 1; transform: translateY(20px);"
-        class="order-1 lg:order-2 transform transition-all duration-300 sm:hover:-translate-y-1 relative flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
+        class="transform transition-all duration-300 sm:hover:-translate-y-1 relative flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
       >
         <h3 class="text-3xl font-bold">Plus</h3>
         <p class="text-muted dark:text-zinc-300 text-sm mt-1">
@@ -959,7 +707,12 @@
         </p>
         <div class="mt-4">
           <span class="text-4xl font-bold">{mode ? "$7.50" : "$10"}</span>
-          <span class=" text-xl">/Month</span>
+          <!--
+          <span class="text-pink-700 dark:text-pink-500 text-4xl font-bold ml-1"
+            >{mode ? "$3.75" : "$5"}</span
+          >--><span
+            class=" text-xl">/Month</span
+          >
         </div>
         <p
           class="text-muted dark:text-gray-400 text-sm mt-1 mx-4 {!mode
@@ -1266,7 +1019,159 @@
           >
         </div>
       </div>
--->
+      <div
+        style="opacity: 1; transform: translateY(20px);"
+        class=" transform transition-all duration-300 sm:hover:-translate-y-1 flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
+      >
+        <!--
+        <div
+          class="hidden w-fit absolute -top-[20px] left-1/2 transform -translate-x-1/2 whitespace-nowrap m-auto px-4 py-1.5 rounded text-sm font-medium backdrop-blur-xl
+              bg-pink-600 text-white shadow-xs"
+        >
+          <span class="flex items-center gap-1.5"
+            ><svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"
+              ><path
+                d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"
+              ></path></svg
+            >Most Popular</span
+          >
+        </div>
+        -->
+        <h3 class="text-3xl font-bold">Pro</h3>
+        <p class="text-muted dark:text-zinc-300 text-sm mt-1">
+          Best for Professional Investors
+        </p>
+        <div class="mt-4">
+          <span class="text-4xl font-bold">{mode ? "$15" : "$20"}</span>
+          <!--<span
+            class="text-pink-700 dark:text-pink-500 text-4xl font-bold ml-1"
+            >{mode ? "$7.5" : "$10"}</span
+          >--><span
+            class=" text-xl ml-1">/Month</span
+          >
+        </div>
+        <p
+          class="text-muted dark:text-gray-400 text-sm mt-1 mx-4 {!mode
+            ? 'hidden'
+            : ''}"
+        >
+          (Billed Annually)
+        </p>
+
+        <ul class="mt-6 mb-6 space-y-2">
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path></svg
+            ><span class="">1,000 AI Credits/mo</span>
+          </li>
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path></svg
+            ><span class="">Everything in Plus and ...</span>
+          </li>
+
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path></svg
+            ><span class="">Watchlist with up to 300 stocks</span>
+          </li>
+
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path></svg
+            >
+
+            <span class="">Realtime Options Activity</span>
+          </li>
+          <li class="flex items-start">
+            <svg
+              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path></svg
+            >
+
+            <span class="">Realtime Dark Pool Trades</span>
+          </li>
+        </ul>
+        <!--
+        {#if !["Pro", "Plus"]?.includes(data?.user?.tier) || data?.user?.freeTrial === true}
+          <div class="mt-3 items-center text-[1rem] font-medium mb-5">
+            Promo Code: <strong>EASTERSALE</strong>
+            <br class="mb-2" />
+            Get started with <strong></strong> on Pro Monthly to test our Service!
+          </div>
+        {/if}
+        -->
+
+        <div class="mt-auto pt-6 border-t border-zinc-700 mx-4">
+          <label
+            for={!data?.user ? "userLogin" : ""}
+            on:click={() => purchasePlan("pro")}
+            class="text-white cursor-pointer w-full py-3 px-4 bg-blue-600 rounded font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
+            >Unlock Pro Access Now<svg
+              class="w-5 h-5 ml-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              ></path></svg
+            ></label
+          >
+        </div>
+      </div>
       <!--
       <div
         style="opacity: 1; transform: translateY(20px);"
