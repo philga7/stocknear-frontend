@@ -3,6 +3,8 @@
   import { page } from "$app/stores";
   import { toast } from "svelte-sonner";
   import { mode } from "mode-watcher";
+  import { createEventDispatcher } from "svelte";
+  const dispatch = createEventDispatcher();
 
   //import CompareGraph from "$lib/components/Plot/CompareGraph.svelte";
 
@@ -13,6 +15,7 @@
   };
   export let isLoading = false;
   export let isStreaming = false;
+  export let index;
 
   let loadingTime = 0;
   let intervalId: ReturnType<typeof setInterval> | null = null; // Specify type for clarity
@@ -149,6 +152,11 @@
 
               <button
                 type="button"
+                on:click={() => {
+                  if (!isStreaming) {
+                    dispatch("rewrite", index);
+                  }
+                }}
                 class="text-muted dark:text-gray-300 dark:sm:hover:text-white focus-visible:bg-offsetPlus dark:focus-visible:bg-offsetPlusDark hover:bg-offsetPlus text-textOff dark:text-textOffDark hover:text-textMain dark:hover:bg-offsetPlusDark dark:hover:text-textMainDark font-sans focus:outline-none outline-none outline-transparent transition duration-300 ease-out font-sans select-none items-center relative group/button justify-center text-center items-center rounded-full cursor-pointer active:scale-[0.97] active:duration-150 active:ease-outExpo origin-center whitespace-nowrap inline-flex text-sm h-8 pl-1 sm:pl-2.5 pr-3"
                 ><div
                   class="flex flex-row items-center min-w-0 font-medium gap-1.5 justify-center"

@@ -303,6 +303,16 @@
     }
   }
 
+  async function rewriteResponse(dispatchData: number) {
+    const index = dispatchData?.detail ?? null;
+
+    if (index < 1 || index > messages?.length) return;
+    const userMessage = messages?.[index - 1]?.content;
+    //messages = [...messages?.splice(index - 1, 1)]; // Remove the message at that index
+    messages = messages?.filter((_, i) => i !== index);
+    await llmChat(userMessage);
+  }
+
   async function saveChat() {
     const postData = { messages: messages, chatId: chatId };
 
@@ -454,9 +464,21 @@
       <div class="pb-60">
         {#each messages as message, index}
           {#if index === messages.length - 1 && message.role === "system" && isLoading}
-            <ChatMessage {message} isLoading={true} {isStreaming} />
+            <ChatMessage
+              {message}
+              {index}
+              isLoading={true}
+              {isStreaming}
+              on:rewrite={rewriteResponse}
+            />
           {:else}
-            <ChatMessage {message} isLoading={false} {isStreaming} />
+            <ChatMessage
+              {message}
+              {index}
+              isLoading={false}
+              {isStreaming}
+              on:rewrite={rewriteResponse}
+            />
           {/if}
         {/each}
         <!-- sentinel div always at the bottom -->
