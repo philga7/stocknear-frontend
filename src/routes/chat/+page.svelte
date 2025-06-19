@@ -11,7 +11,7 @@
   import { EditorState, Plugin } from "prosemirror-state";
   import { EditorView, Decoration, DecorationSet } from "prosemirror-view";
   import { keymap } from "prosemirror-keymap";
-  import { agentOptions, agentCategory } from "$lib/utils";
+  import { agentOptions, agentCategory, defaultChats } from "$lib/utils";
 
   import { schema } from "prosemirror-schema-basic";
 
@@ -56,32 +56,9 @@
     }
   };
 
-  let defaultChats = [
-    {
-      label: "Summarize Pelosi's trading moves",
-      query:
-        "Summarize Nancy Pelosi’s most recent stock trades and provide a sentiment analysis (bullish or bearish) for each company involved, based on the nature and timing of the transactions.",
-      type: "Stocks",
-    },
-    {
-      label: "Highlights of options flow orders today",
-      query:
-        "Provide an overview of today's notable options flow, focusing on large block trades, unusual volume spikes, and directional sentiment.",
-      type: "Options",
-    },
-    {
-      label: "Todays Market News",
-      query:
-        "Give me a summary of today’s top market news and key financial events.",
-      type: "Stocks",
-    },
-
-    {
-      label: "Bull vs Bear Case for Nvidia",
-      query: "@BullvsBear for Nvidia",
-      type: "Stocks",
-    },
-  ];
+  const randomChats = defaultChats
+    ?.sort(() => 0.5 - Math.random())
+    ?.slice(0, 4);
   let agentNames = agentOptions?.map((item) => item?.name);
 
   const editorHighlighter = new Plugin({
@@ -404,14 +381,16 @@
 />
 
 <div
-  class="w-full max-w-5xl overflow-hidden m-auto min-h-screen bg-white dark:bg-default mb-16"
+  class="w-full max-w-8xl overflow-hidden m-auto min-h-screen bg-white dark:bg-default mb-16"
 >
   <div class="flex flex-col m-auto justify-center items-center">
     <div class="text-center mb-10 w-full px-4 sm:px-3">
       <main class="flex flex-1 flex-col gap-4 sm:p-4 md:gap-8 text-start">
-        <div class="h-full w-full flex">
+        <div
+          class="border-b border-gray-100 dark:border-gray-800 rounded-[5px] px-4 bg-gray-100 dark:bg-[#1C1E22] landscape:border-t-2 landscape:md:border-t-0"
+        >
           <div
-            class="w-full flex flex-col justify-center items-center gap-6 pb-4"
+            class="mx-auto w-full max-w-[850px] flex flex-col justify-center items-center gap-6 pb-4"
           >
             <img
               class="m-auto w-16 sm:w-20 rounded-full pt-4"
@@ -420,17 +399,17 @@
               loading="lazy"
             />
             <h1
-              class="block text-2xl lg:text-4xl font-bold text-center mb-10 relative w-fit flex justify-center m-auto break-words"
+              class="block text-2xl lg:text-4xl font-bold mb-3 text-center relative w-fit flex justify-center m-auto break-words"
             >
               Research your Trading Ideas
             </h1>
 
             <div
-              class="block p-3 w-full border border-gray-300 dark:border-gray-600 shadow-sm rounded-[5px] overflow-hidden bg-gray-50 dark:bg-[#2A2E39]"
+              class="block p-3 w-full border border-gray-300 dark:border-gray-600 rounded-[5px] overflow-hidden bg-white dark:bg-[#2A2E39]"
             >
               <div
                 bind:this={editorDiv}
-                class="ml-2 bg-gray-50 dark:bg-[#2A2E39] w-full min-h-[50px]"
+                class="ml-2 bg-white dark:bg-[#2A2E39] w-full min-h-[50px]"
                 on:keydown={handleKeyDown}
               />
 
@@ -460,7 +439,7 @@
                   class="relative min-h-12 h-auto overflow-y-hidden w-full outline-none"
                 >
                   <div
-                    class="absolute bottom-0 flex flex-row justify-end w-full bg-gray-50 dark:bg-[#2A2E39]"
+                    class="absolute bottom-0 flex flex-row justify-end w-full bg-white dark:bg-[#2A2E39]"
                   >
                     <div class="flex flex-row justify-between w-full">
                       <div
@@ -470,7 +449,7 @@
                           <DropdownMenu.Trigger asChild let:builder>
                             <Button
                               builders={[builder]}
-                              class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-gray-50 dark:bg-[#2A2E39] sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
+                              class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-[#2A2E39] sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                             >
                               <span class="truncate">@Agents</span>
                               <svg
@@ -578,7 +557,7 @@
                       </div>
                       {#if data?.user}
                         <label
-                          class="ml-auto mr-2 whitespace-nowrap w-auto text-xs border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-gray-50 dark:bg-[#2A2E39] flex flex-row justify-between items-center px-3 rounded"
+                          class="ml-auto mr-2 whitespace-nowrap w-auto text-xs border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-[#2A2E39] flex flex-row justify-between items-center px-3 rounded"
                         >
                           <div>
                             {data?.user?.credits?.toLocaleString("en-US")}
@@ -613,7 +592,7 @@
             <div
               class="grid grid-cols-1 md:grid-cols-2 gap-2 shrink w-full overflow-y-auto sidenav-scrollbar"
             >
-              {#each defaultChats as item}
+              {#each randomChats as item}
                 <div
                   on:click={() => {
                     if (data?.user) {
@@ -624,7 +603,7 @@
                       closePopup?.dispatchEvent(new MouseEvent("click"));
                     }
                   }}
-                  class="flex flex-col border border-gray-300 dark:border-gray-800 sm:hover:bg-gray-100 dark:sm:hover:bg-secondary transition-all bg-white dark:bg-default shadow-sm"
+                  class="flex flex-col border border-gray-300 dark:border-gray-700 sm:hover:bg-gray-100 dark:sm:hover:bg-secondary bg-white dark:bg-[#1C1E22] shadow-sm"
                 >
                   <div class="block flex-grow">
                     <button
@@ -634,7 +613,7 @@
                         class="flex leading-none items-center h-full flex-grow"
                       >
                         <div
-                          class="ml-2 text-left font-medium text-sm sm:text-[1rem] flex flex-col justify-center relative text-wrap"
+                          class="ml-2 text-left font-medium flex flex-col justify-center box-border relative text-wrap"
                         >
                           {item?.label}
                           <div class="flex items-center">
@@ -678,7 +657,7 @@
           </div>
         </div>
         {#if historyChat?.length > 0}
-          <div class="w-full">
+          <div class="mx-auto w-full max-w-[850px]">
             <h2
               class="text-lg sm:text-xl text-start w-full font-semibold flex flex-row items-center"
             >

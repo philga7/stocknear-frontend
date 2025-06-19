@@ -1959,3 +1959,61 @@ export function getCreditFromQuery(query, agentOptions) {
   }
   return 2;
 }
+
+export let defaultChats = [
+  {
+    label: "Summarize Pelosi's trading moves",
+    query:
+      "Summarize Nancy Pelosi’s most recent stock trades and provide a sentiment analysis (bullish or bearish) for each company involved, based on the nature and timing of the transactions.",
+    type: "Stocks",
+  },
+  {
+    label: "Highlights of options flow orders today",
+    query:
+      "Provide an overview of today's notable options flow, focusing on large block trades, unusual volume spikes, and directional sentiment.",
+    type: "Options",
+  },
+  {
+    label: "Todays Market News",
+    query:
+      "Give me a summary of today’s top market news and key financial events.",
+    type: "Stocks",
+  },
+  {
+    label: "Bull vs Bear Case for Nvidia",
+    query: "@BullvsBear for Nvidia",
+    type: "Stocks",
+  },
+  {
+    label: "Should I buy Intel right now as a value investor.",
+    query: "@WarrenBuffet should I buy Intel right now?",
+    type: "Stocks",
+  },
+  {
+    label: "What does Cathie Wood evaluate Tesla right now",
+    query:
+      "@CathieWood evaluate tesla and tell me if you would buy or sell it",
+    type: "Stocks",
+  },
+  {
+    label: "Latest Option Data updates for SPY",
+    query: "@OptionsData latest options data updates for SPY",
+    type: "ETF",
+  },
+  {
+    label: "Latest Dark Pool Activity for Microsoft",
+    query: "@DarkPoolData latest dark pool activity for microsoft",
+    type: "ETF",
+  },
+  {
+    label: "Find me undervalued stocks",
+    query:
+      "@StockScreener find me undervalued stocks with p/e above 0 and revenue growth above 5%",
+    type: "Stocks",
+  },
+  {
+    label: "How healthy is Gamestop?",
+    query: "@FundamentalData how healthy is Gamestop?",
+    type: "Stocks",
+  },
+];

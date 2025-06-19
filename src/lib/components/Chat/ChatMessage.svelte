@@ -128,7 +128,7 @@
         <div class="w-full">
           <p
             class="w-full {message?.role === 'user'
-              ? 'p-3  border border-gray-200 dark:border-gray-800 rounded-[5px] bg-gray-100 dark:bg-table'
+              ? 'p-3  border border-gray-200 dark:border-gray-800 rounded-[5px] bg-gray-200 dark:bg-table'
               : ''}"
           >
             {@html message?.content}
