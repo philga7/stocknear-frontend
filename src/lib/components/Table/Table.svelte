@@ -701,7 +701,7 @@
   class="flex flex-row items-center justify-between w-full mt-5 text-muted dark:text-white"
 >
   {#if title}
-    <h2 class="text-xl sm:text-2xl font-bold">
+    <h2 class="text-xl sm:text-2xl font-semibold sm:font-bold">
       {title}
     </h2>
   {/if}

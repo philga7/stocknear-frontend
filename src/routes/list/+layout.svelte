@@ -304,6 +304,10 @@
       title: "Ethereum ETFs List",
       link: "/list/ethereum-etfs",
     },
+    {
+      title: "Monthly Dividend ETFs List",
+      link: "/list/monthly-dividend-etfs",
+    },
   ];
 
   navigation = [...navigationIndustry, ...navigation];
