@@ -148,7 +148,7 @@
   </div>
 
   <div class="flex flex-row items-end justify-end w-fit ml-auto mt-5 mb-2">
-    <DownloadData {data} rawData={data?.getData} title="etf_bitcoin_list" />
+    <DownloadData {data} rawData={data?.getData} title="etf_ethereum_list" />
   </div>
 
   <!-- Page wrapper -->
