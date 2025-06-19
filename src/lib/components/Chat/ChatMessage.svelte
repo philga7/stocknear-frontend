@@ -17,6 +17,7 @@
   export let isStreaming = false;
   export let index;
 
+  let editMode = false;
   let loadingTime = 0;
   let intervalId: ReturnType<typeof setInterval> | null = null; // Specify type for clarity
   const loadingMessages = [
@@ -25,8 +26,6 @@
     "Thinking...",
     "Finalizing....",
   ];
-
-  let copyPrompt = false;
 
   $: {
     if (intervalId) {
@@ -220,7 +219,7 @@
               <!-- Copy button -->
               <button
                 on:click={handleCopyPrompt}
-                class="cursor-pointer text-token-text-secondary hover:bg-token-bg-secondary rounded-lg"
+                class="cursor-pointer text-token-text-secondary hover:bg-token-bg-secondary rounded-lg text-muted dark:text-gray-300 dark:sm:hover:text-white"
                 aria-label="Copy"
                 aria-selected="false"
                 data-testid="copy-turn-action-button"
@@ -246,7 +245,8 @@
 
               <!-- Edit button -->
               <button
-                class="cursor-pointer text-token-text-secondary hover:bg-token-bg-secondary rounded-lg"
+                on:click={() => (editMode = true)}
+                class="cursor-pointer text-token-text-secondary hover:bg-token-bg-secondary rounded-lg text-muted dark:text-gray-300 dark:sm:hover:text-white"
                 aria-label="Edit message"
                 aria-selected="false"
                 data-state="closed"
@@ -270,6 +270,32 @@
               </button>
             </div>
           </div>
+          {#if editMode}
+            <div
+              class="min-h-[100px] h-auto max-h-[800px] overflow-y-auto border border-gray-200 dark:border-gray-800 rounded-[5px] bg-gray-100 dark:bg-table px-3 py-3"
+            >
+              <div class="m-2">
+                <textarea
+                  class="min-h-[100px] w-full resize-none p-0 m-0 w-full resize-none border-0 bg-transparent focus:outline-none"
+                  >{message?.content}</textarea
+                >
+              </div>
+              <div class="flex justify-end gap-2">
+                <button
+                  on:click={() => (editMode = false)}
+                  class="cursor-pointer px-2.5 py-1.5 rounded-full text-sm relative bg-secondary"
+                  ><div class="flex items-center justify-center">
+                    Cancel
+                  </div></button
+                ><button
+                  class="cursor-pointer px-3.5 py-1.5 rounded-full text-sm relative bg-white text-black"
+                  ><div class="flex items-center justify-center">
+                    Send
+                  </div></button
+                >
+              </div>
+            </div>
+          {/if}
         {/if}
       {/if}
     </div>
