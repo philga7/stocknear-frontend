@@ -454,9 +454,9 @@
       <div class="pb-60">
         {#each messages as message, index}
           {#if index === messages.length - 1 && message.role === "system" && isLoading}
-            <ChatMessage {message} isLoading={true} />
+            <ChatMessage {message} isLoading={true} {isStreaming} />
           {:else}
-            <ChatMessage {message} isLoading={false} />
+            <ChatMessage {message} isLoading={false} {isStreaming} />
           {/if}
         {/each}
         <!-- sentinel div always at the bottom -->
