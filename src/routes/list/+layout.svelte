@@ -308,6 +308,10 @@
       title: "Monthly Dividend ETFs List",
       link: "/list/monthly-dividend-etfs",
     },
+    {
+      title: "Crypto ETFs List",
+      link: "/list/crypto-etfs",
+    },
   ];
 
   navigation = [...navigationIndustry, ...navigation];
