@@ -304,13 +304,15 @@
   }
 
   async function rewriteResponse(dispatchData: number) {
-    const index = dispatchData?.detail ?? null;
+    if (editable) {
+      const index = dispatchData?.detail ?? null;
 
-    if (index < 1 || index > messages?.length) return;
-    const userMessage = messages?.[index - 1]?.content;
-    //messages = [...messages?.splice(index - 1, 1)]; // Remove the message at that index
-    messages = messages?.slice(0, index);
-    await llmChat(userMessage);
+      if (index < 1 || index > messages?.length) return;
+      const userMessage = messages?.[index - 1]?.content;
+      //messages = [...messages?.splice(index - 1, 1)]; // Remove the message at that index
+      messages = messages?.slice(0, index);
+      await llmChat(userMessage);
+    }
   }
 
   async function saveChat() {
@@ -469,6 +471,7 @@
               {index}
               isLoading={true}
               {isStreaming}
+              {editable}
               on:rewrite={rewriteResponse}
             />
           {:else}
@@ -477,6 +480,7 @@
               {index}
               isLoading={false}
               {isStreaming}
+              {editable}
               on:rewrite={rewriteResponse}
             />
           {/if}
