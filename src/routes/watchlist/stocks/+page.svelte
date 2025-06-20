@@ -400,7 +400,6 @@
 
     const postData = {
       watchListId: displayWatchList?.id,
-      path: "delete-watchlist",
     };
 
     try {
