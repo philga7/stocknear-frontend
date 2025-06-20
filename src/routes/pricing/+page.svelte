@@ -174,7 +174,7 @@
         </div>
 
         <ul class="mt-6 mb-6 space-y-2">
-          <li class="flex items-start">
+          <li class="flex flex-row items-center">
             <svg
               class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
               fill="none"
@@ -187,7 +187,11 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="">10 AI Credits/mo</span>
+            ><span class="mr-2">10 AI Credits/mo</span>
+            <span
+              class="select-none h-4 text-[12px] px-1.5 rounded-full bg-[#01AB83] text-white flex items-center justify-center"
+              >GPT-4.1-nano</span
+            >
           </li>
           <li class="flex items-start">
             <svg
@@ -723,7 +727,7 @@
         </p>
 
         <ul class="mt-6 mb-6 space-y-2">
-          <li class="flex items-start">
+          <li class="flex flex-row items-center whitespace-nowrap">
             <svg
               class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
               fill="none"
@@ -736,7 +740,11 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="">150 AI Credits/mo</span>
+            ><span class="mr-2">150 AI Credits/mo </span>
+            <span
+              class="select-none h-4 text-[12px] px-1.5 rounded-full bg-[#01AB83] text-white flex items-center justify-center"
+              >GPT-4.1-mini</span
+            >
           </li>
           <li class="flex items-start">
             <svg
@@ -1060,7 +1068,7 @@
         </p>
 
         <ul class="mt-6 mb-6 space-y-2">
-          <li class="flex items-start">
+          <li class="flex flex-row items-center">
             <svg
               class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
               fill="none"
@@ -1073,7 +1081,11 @@
                 stroke-width="2"
                 d="M5 13l4 4L19 7"
               ></path></svg
-            ><span class="">1,000 AI Credits/mo</span>
+            ><span class="mr-2">1,000 AI Credits/mo</span>
+            <span
+              class="select-none h-4 text-[12px] px-1.5 rounded-full bg-[#01AB83] text-white flex items-center justify-center"
+              >GPT-o3-mini</span
+            >
           </li>
           <li class="flex items-start">
             <svg
