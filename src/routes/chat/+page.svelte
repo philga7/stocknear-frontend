@@ -747,7 +747,7 @@
                 >
                   <div class="group border-transparent rounded-t-md">
                     <div class="mt-[2px]">
-                      <p class="text-sm sm:text-[1rem]">
+                      <p class="text-[1rem]">
                         {item?.message}
                       </p>
                     </div>
@@ -755,7 +755,7 @@
                       class="flex flex-row items-center justify-between w-full"
                     >
                       <span
-                        class="text-sm text-gray-600 dark:text-gray-300 w-full"
+                        class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 w-full"
                         >Last message {formatDate(item?.updated)} ago</span
                       >
                       <button
@@ -771,7 +771,7 @@
                           ><svg
                             role="graphics-symbol"
                             viewBox="0 0 16 16"
-                            class="w-4 h-4"
+                            class="w-3.5 h-3.5 sm:w-4 sm:h-4"
                             fill="currentColor"
                             stroke="currentColor"
                             stroke-width="0"
