@@ -427,10 +427,10 @@
     <div class="text-center mb-10 w-full px-4 sm:px-3">
       <main class="flex flex-1 flex-col gap-4 sm:p-4 md:gap-8 text-start">
         <div
-          class="border-b border-gray-100 dark:border-gray-800 rounded-[5px] px-4 bg-gray-100 dark:bg-[#1C1E22] landscape:border-t-2 landscape:md:border-t-0"
+          class="border-b border-gray-100 dark:border-gray-800 rounded-[8px] px-4 bg-gray-100 dark:bg-[#1C1E22] landscape:border-t-2 landscape:md:border-t-0"
         >
           <div
-            class="mx-auto w-full max-w-[850px] flex flex-col justify-center items-center gap-6 pb-4"
+            class="mx-auto w-full max-w-[850px] flex flex-col justify-center items-center gap-6 pb-8"
           >
             <img
               class="m-auto w-16 sm:w-20 rounded-full pt-4"
@@ -785,6 +785,46 @@
                   </div>
                 </a>
               {/each}
+            </div>
+          </div>
+        {:else}
+          <div class="mx-auto w-full max-w-[850px]">
+            <h2
+              class="text-lg sm:text-xl text-start w-full font-semibold flex flex-row items-center"
+            >
+              <svg
+                aria-hidden="true"
+                focusable="false"
+                data-prefix="fasr"
+                data-icon="rectangle-vertical-history"
+                class="w-5 h-5 inline-block"
+                role="img"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 576 512"
+                ><path
+                  fill="currentColor"
+                  d="M240 48V464H528V48H240zM192 0h48H528h48V48 464v48H528 240 192V464 48 0zM96 48h48V464H96V48zM0 96H48V416H0V96z"
+                ></path></svg
+              > <span class="ml-2">Threads</span>
+            </h2>
+            <div class="pb-2 last:mb-10 mt-2">
+              Looks like we haven’t chatted before.
+            </div>
+
+            <div
+              class="bg-blue-100 dark:bg-[#2A2E39] p-6 rounded mt-8 text-center mb-8"
+            >
+              <h2 class="text-xl sm:text-2xl font-bold mb-4">
+                Ready to Analyze Stocks?
+              </h2>
+              <p class="mb-4">
+                Explore detailed financial data, analyst ratings, and technicals
+                for thousands of stocks.
+              </p>
+              <a
+                class="bg-blue-600 text-white px-4 py-2 rounded sm:hover:bg-blue-700 inline-block text-sm sm:text-[1rem] font-semibold"
+                href="/login">Sign Up Today</a
+              >
             </div>
           </div>
         {/if}

@@ -110,7 +110,7 @@
         ? 'ml-auto group/turn-messages'
         : message?.role === 'system' && message?.callComponent?.tickerList
           ? 'mr-auto w-full'
-          : 'mr-auto w-fit border-b border-gray-300 dark:border-gray-700'}"
+          : 'mr-auto w-fit border-b rounded-none border-gray-300 dark:border-gray-700'}"
     >
       {#if isLoading}
         <div class="text-center">
