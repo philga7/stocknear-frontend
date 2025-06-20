@@ -161,7 +161,7 @@
     >
       <div
         style="opacity: 1; transform: translateY(20px);"
-        class="transform transition-all duration-300 sm:hover:-translate-y-1 lg:flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
+        class=" rounded-xl transform transition-all duration-300 sm:hover:-translate-y-1 lg:flex flex-col relative bg-white dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-gray-400 dark:border-zinc-600 p-6 isolate"
       >
         <h3 class="text-3xl font-bold">Basic</h3>
         <p class="text-muted dark:text-zinc-300 text-sm mt-1">
@@ -703,7 +703,7 @@
 
       <div
         style="opacity: 1; transform: translateY(20px);"
-        class="transform transition-all duration-300 sm:hover:-translate-y-1 relative flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
+        class="rounded-xl transform transition-all duration-300 sm:hover:-translate-y-1 relative flex flex-col relative bg-white dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-gray-400 dark:border-zinc-600 p-6 isolate"
       >
         <h3 class="text-3xl font-bold">Plus</h3>
         <p class="text-muted dark:text-zinc-300 text-sm mt-1">
@@ -1029,7 +1029,7 @@
       </div>
       <div
         style="opacity: 1; transform: translateY(20px);"
-        class=" transform transition-all duration-300 sm:hover:-translate-y-1 flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
+        class=" rounded-xl text-white transform transition-all duration-300 sm:hover:-translate-y-1 flex flex-col relative bg-[#18181B] dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-gray-400 dark:border-zinc-600 p-6 isolate"
       >
         <!--
         <div
@@ -1046,11 +1046,12 @@
         </div>
         -->
         <h3 class="text-3xl font-bold">Pro</h3>
-        <p class="text-muted dark:text-zinc-300 text-sm mt-1">
+        <p class="text-white dark:text-zinc-300 text-sm mt-1">
           Best for Professional Investors
         </p>
         <div class="mt-4">
-          <span class="text-4xl font-bold {!mode ? 'line-through' : ''}"
+          <span
+            class="text-white text-4xl font-bold {!mode ? 'line-through' : ''}"
             >{mode ? "$15" : "$20"}</span
           >
           {#if !mode}
@@ -1060,7 +1061,7 @@
             >{/if}<span class=" text-xl ml-1">/Month</span>
         </div>
         <p
-          class="text-muted dark:text-gray-400 text-sm mt-1 mx-4 {!mode
+          class="text-white dark:text-gray-400 text-sm mt-1 mx-4 {!mode
             ? 'hidden'
             : ''}"
         >
@@ -1087,7 +1088,7 @@
               >GPT-o3-mini</span
             >
           </li>
-          <li class="flex items-start">
+          <li class="flex items-start text-white">
             <svg
               class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
               fill="none"
@@ -1103,7 +1104,7 @@
             ><span class="">Everything in Plus and ...</span>
           </li>
 
-          <li class="flex items-start">
+          <li class="flex items-start text-white">
             <svg
               class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
               fill="none"
@@ -1119,7 +1120,7 @@
             ><span class="">Watchlist with up to 300 stocks</span>
           </li>
 
-          <li class="flex items-start">
+          <li class="flex items-start text-white">
             <svg
               class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
               fill="none"
@@ -1136,7 +1137,7 @@
 
             <span class="">Realtime Options Activity</span>
           </li>
-          <li class="flex items-start">
+          <li class="flex items-start text-white">
             <svg
               class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
               fill="none"
@@ -1188,7 +1189,7 @@
       <!--
       <div
         style="opacity: 1; transform: translateY(20px);"
-        class="transform transition-all duration-300 sm:hover:-translate-y-1 flex flex-col relative bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-300 dark:border-zinc-600 p-6 isolate"
+        class="transform transition-all duration-300 sm:hover:-translate-y-1 flex flex-col relative bg-white dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-gray-400 dark:border-zinc-600 p-6 isolate"
       >
         <h3 class="text-3xl font-bold">Enterprise</h3>
         <p class="text-muted dark:text-zinc-300 text-sm mt-1">
@@ -1259,7 +1260,7 @@
       -->
       <!--
       <div
-        class="relative text-left w-full col-span-1 lg:col-span-3 bg-zinc-300 dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-200 dark:border-zinc-600 p-6 isolate translate-y-5 opacity-100"
+        class="relative text-left w-full col-span-1 lg:col-span-3 bg-white dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-200 dark:border-zinc-600 p-6 isolate translate-y-5 opacity-100"
       >
         <div class="flex flex-row items-center justify-between">
           <h3 class="text-2xl md:text-3xl font-bold">Lifetime</h3>
