@@ -1,6 +1,7 @@
 <script lang="ts">
   import Table from "$lib/components/Table/Table.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
+  import SEO from "$lib/components/SEO.svelte";
 
   export let data;
 
@@ -23,6 +24,11 @@
 
   const hideLastRow = true;
 </script>
+
+<SEO
+  title="Top Aftermarket Losers Today"
+  description="Discover which stocks are falling the most in after-hours trading. Track extended hours price drops, volume, market cap, and other key metrics."
+/>
 
 {#if rawData?.length > 0}
   <Table {data} {rawData} {excludedRules} {defaultList} {hideLastRow} />

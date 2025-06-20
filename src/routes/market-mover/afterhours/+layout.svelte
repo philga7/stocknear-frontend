@@ -1,5 +1,4 @@
 <script lang="ts">
-  import SEO from "$lib/components/SEO.svelte";
   import { getLastTradingDay } from "$lib/utils";
   import { page } from "$app/stores";
   import InfoModal from "$lib/components/InfoModal.svelte";
@@ -16,11 +15,6 @@
 
   $: categoryType = $page.url.pathname.split("/").pop();
 </script>
-
-<SEO
-  title="Today's Afterhours Top Stocks"
-  description="A list of the stocks with the highest percentage gain, highest percentage loss and most active today. See stock price, volume, market cap and more."
-/>
 
 <section class="w-full overflow-hidden m-auto min-h-screen">
   <div class="flex justify-center w-full m-auto overflow-hidden">

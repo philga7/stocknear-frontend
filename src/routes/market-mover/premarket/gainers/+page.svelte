@@ -2,6 +2,7 @@
   import Table from "$lib/components/Table/Table.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
+  import SEO from "$lib/components/SEO.svelte";
 
   export let data;
 
@@ -24,6 +25,11 @@
 
   const hideLastRow = true;
 </script>
+
+<SEO
+  title="Top Premarket Gainers Today"
+  description="Explore today's top premarket stock gainers based on percentage increase. View extended hours stock performance, volume, market cap, and more."
+/>
 
 {#if rawData?.length > 0}
   <Table {data} {rawData} {excludedRules} {defaultList} {hideLastRow} />
