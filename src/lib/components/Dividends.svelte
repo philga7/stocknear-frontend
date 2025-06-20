@@ -418,7 +418,7 @@
                 </tbody>
               </table>
             </div>
-            <span class="text-gray-200 text-sm italic">
+            <span class="text-gray-800 dark:text-gray-200 text-sm italic">
               * Dividend amounts are adjusted for stock splits when applicable.
             </span>
           {:else}
