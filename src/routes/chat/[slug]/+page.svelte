@@ -537,7 +537,7 @@
                       </Button>
                     </DropdownMenu.Trigger>
                     <DropdownMenu.Content
-                      class="w-56 h-fit max-h-56 overflow-y-auto scroller"
+                      class="w-64 h-fit max-h-56 overflow-y-auto scroller"
                     >
                       {#if selectedGroup === "overview"}
                         <DropdownMenu.Group>
@@ -572,6 +572,29 @@
                               </div>
                             </DropdownMenu.Item>
                           {/each}
+                          <DropdownMenu.Item
+                            on:click={() => goto("/faq/ai-agents")}
+                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                          >
+                            <div
+                              class="flex flex-row items-center w-full text-sm"
+                            >
+                              <span>How to Use Agents correctly</span>
+                            </div>
+                            <svg
+                              class="ml-auto h-5 w-5 inline-block rotate-270"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                              style="max-width:40px"
+                              aria-hidden="true"
+                            >
+                              <path
+                                fill-rule="evenodd"
+                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                clip-rule="evenodd"
+                              ></path>
+                            </svg>
+                          </DropdownMenu.Item>
                         </DropdownMenu.Group>
                       {:else}
                         <DropdownMenu.Group>
