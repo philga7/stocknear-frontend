@@ -41,7 +41,7 @@
 <div class="lg:max-w-xl w-full rounded-none sm:rounded m-auto mb-10">
   <div class="container">
     <h2 class="text-2xl font-bold text-center text-pink-700 dark:text-pink-500">
-      Lifetime Deal: Save $200 Before It’s Gone!
+      Try Pro for a Full Month – Just $2!
     </h2>
   </div>
   <div class="container text-center">
@@ -50,7 +50,7 @@
       Use Promo Code: <span class="font-extrabold">SUMMER25</span>
     </p>
   -->
-    <p class=" font-bold text-xl">Use Promo Code: SUMMER25</p>
+    <p class=" font-bold text-xl">Use Promo Code: TEST</p>
     <div
       class="grid grid-flow-col gap-5 font-bold text-center m-auto auto-cols-max justify-center mt-6"
     >

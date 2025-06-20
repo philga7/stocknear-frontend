@@ -130,7 +130,7 @@
       </h1>
     </div>
 
-    <!--<Discount />-->
+    <Discount />
 
     <div class="flex flex-row items-center justify-center mb-5 sm:mb-0">
       <div class="flex flex-row items-center ml-auto">
@@ -1042,13 +1042,14 @@
           Best for Professional Investors
         </p>
         <div class="mt-4">
-          <span class="text-4xl font-bold">{mode ? "$15" : "$20"}</span>
-          <!--<span
-            class="text-pink-700 dark:text-pink-500 text-4xl font-bold ml-1"
-            >{mode ? "$7.5" : "$10"}</span
-          >--><span
-            class=" text-xl ml-1">/Month</span
+          <span class="text-4xl font-bold {!mode ? 'line-through' : ''}"
+            >{mode ? "$15" : "$20"}</span
           >
+          {#if !mode}
+            <span
+              class="text-pink-700 dark:text-pink-500 text-4xl font-bold ml-1"
+              >$2</span
+            >{/if}<span class=" text-xl ml-1">/Month</span>
         </div>
         <p
           class="text-muted dark:text-gray-400 text-sm mt-1 mx-4 {!mode
