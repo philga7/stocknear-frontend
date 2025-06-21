@@ -168,6 +168,7 @@
     },
     { key: "marketValue", label: "Market Value", align: "right" },
     { key: "weight", label: "Portfolio", align: "right" },
+    { key: "filingDate", label: "Filing Date", align: "right" },
   ];
 
   let sortOrders = {
@@ -177,6 +178,7 @@
     changeInSharesNumberPercentage: { order: "none", type: "number" },
     marketValue: { order: "none", type: "number" },
     weight: { order: "none", type: "number" },
+    filingDate: { order: "none", type: "date" },
   };
 
   const sortData = (key) => {
@@ -588,6 +590,17 @@
                     {item?.weight <= 0.01
                       ? "< 0.01%"
                       : item?.weight?.toFixed(2) + "%"}
+                  </td>
+
+                  <td
+                    class=" text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                  >
+                    {new Date(item?.filingDate)?.toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "2-digit",
+                      year: "numeric",
+                      timeZone: "UTC",
+                    })}
                   </td>
                 </tr>
               {/if}
