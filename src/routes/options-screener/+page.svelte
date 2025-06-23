@@ -60,6 +60,7 @@
       step: ["20%", "10%", "5%", "0%", "-5%", "-10%"],
       defaultCondition: "over",
       defaultValue: "any",
+      varType: "percentSign",
     },
 
     totalPrem: {
@@ -81,6 +82,7 @@
       defaultCondition: "over",
       defaultValue: "any",
       category: "Options Activity",
+      varType: "percent",
     },
     iv: {
       label: "Implied Volatility",
@@ -88,6 +90,7 @@
       defaultCondition: "over",
       defaultValue: "any",
       category: "Options Activity",
+      varType: "percent",
     },
     oi: {
       label: "Open Interest",
@@ -95,6 +98,7 @@
       defaultCondition: "over",
       defaultValue: "any",
       category: "Options Activity",
+      varType: "decimal",
     },
     changeOI: {
       label: "Change OI",
@@ -102,6 +106,7 @@
       defaultCondition: "over",
       defaultValue: "any",
       category: "Options Activity",
+      varType: "percentSign",
     },
     volume: {
       label: "Volume",
@@ -109,6 +114,7 @@
       defaultCondition: "over",
       defaultValue: "any",
       category: "Options Activity",
+      varType: "decimal",
     },
   };
 
@@ -1077,6 +1083,16 @@
           { key: "strike", label: "Strike", align: "right" },
           { key: "optionType", label: "P/C", align: "right" },
         ],
+        greeks: [
+          { key: "symbol", label: "Symbol", align: "left" },
+          { key: "name", label: "Name", align: "left" },
+          { key: "strike", label: "Strike", align: "right" },
+          { key: "optionType", label: "P/C", align: "right" },
+          { key: "delta", label: "Delta", align: "right" },
+          { key: "gamma", label: "Gamma", align: "right" },
+          { key: "theta", label: "Theta", align: "right" },
+          { key: "vega", label: "Vega", align: "right" },
+        ],
       };
 
       const baseSortOrdersMap = {
@@ -1085,6 +1101,16 @@
           name: { order: "none", type: "string" },
           strike: { order: "none", type: "number" },
           optionType: { order: "none", type: "string" },
+        },
+        greeks: {
+          symbol: { order: "none", type: "string" },
+          name: { order: "none", type: "string" },
+          strike: { order: "none", type: "number" },
+          optionType: { order: "none", type: "string" },
+          delta: { order: "none", type: "number" },
+          gamma: { order: "none", type: "number" },
+          theta: { order: "none", type: "number" },
+          vega: { order: "none", type: "number" },
         },
       };
 
@@ -1095,7 +1121,8 @@
         columns = [...(baseColumnsMap[displayTableTab] || [])];
         sortOrders = { ...(baseSortOrdersMap[displayTableTab] || {}) };
 
-        const rulesList = displayRules;
+        const rulesList = displayTableTab === "greeks" ? [] : displayRules;
+        console.log(rulesList);
 
         rulesList?.forEach((rule) => {
           if (!["optionType", "strike"]?.includes(rule.rule)) {
@@ -1889,6 +1916,17 @@
               </span>
             </button>
           </li>
+          <li>
+            <button
+              on:click={() => (displayTableTab = "greeks")}
+              class="cursor-pointer text-[1rem] flex flex-row items-center relative block rounded px-2 py-1 sm:hover:bg-gray-100 dark:sm:hover:bg-primary {displayTableTab ===
+              'greeks'
+                ? 'font-semibold bg-gray-100 dark:bg-primary'
+                : ''} focus:outline-hidden"
+            >
+              <span class="">Greeks</span>
+            </button>
+          </li>
         </ul>
         <!--
         <div class="w-fit ml-auto hidden sm:inline-block">
@@ -2074,6 +2112,8 @@
                           </span>
                         {:else if row?.varType && row?.varType === "percent"}
                           {abbreviateNumber(item[row?.rule])}%
+                        {:else if row?.varType && row?.varType === "decimal"}
+                          {item[row?.rule]?.toLocaleString("en-US")}
                         {:else if ["optionType"]?.includes(row?.rule)}
                           {#if "Call" === item[row?.rule]}
                             <span class=" text-green-800 dark:text-[#00FC50]"
@@ -2090,6 +2130,64 @@
                       </td>
                     {/if}
                   {/each}
+                </tr>
+              {/each}
+            </tbody>
+          </table>
+        </div>
+      {:else if displayTableTab === "greeks"}
+        <div class="w-full rounded overflow-x-auto">
+          <table
+            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
+          >
+            <thead>
+              <TableHeader {columns} {sortOrders} {sortData} />
+            </thead>
+            <tbody>
+              {#each displayResults as item}
+                <tr
+                  class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
+                >
+                  <td class=" whitespace-nowrap">
+                    <a
+                      href={`/${item?.assetType}/` +
+                        item?.symbol +
+                        `/options/contract-lookup?query=${item?.optionSymbol}`}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      class="text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400 text-sm sm:text-[1rem]"
+                      >{item?.symbol}</a
+                    >
+                  </td>
+                  <td class=" whitespace-nowrap text-[1rem]">
+                    {item?.name?.length > charNumber
+                      ? item?.name?.slice(0, charNumber) + "..."
+                      : item?.name}
+                  </td>
+                  <td class="whitespace-nowrap text-sm sm:text-[1rem] text-end">
+                    {item?.strike}
+                  </td>
+                  <td
+                    class=" text-sm sm:text-[1rem] text-end
+                {item?.optionType === 'Call'
+                      ? 'text-green-800 dark:text-[#00FC50]'
+                      : 'text-red-800 dark:text-[#FF2F1F]'} "
+                  >
+                    {item?.optionType}
+                  </td>
+
+                  <td class="whitespace-nowrap text-sm sm:text-[1rem] text-end">
+                    {item?.delta}
+                  </td>
+                  <td class="whitespace-nowrap text-sm sm:text-[1rem] text-end">
+                    {item?.gamma}
+                  </td>
+                  <td class="whitespace-nowrap text-sm sm:text-[1rem] text-end">
+                    {item?.theta}
+                  </td>
+                  <td class="whitespace-nowrap text-sm sm:text-[1rem] text-end">
+                    {item?.vega}
+                  </td>
                 </tr>
               {/each}
             </tbody>
