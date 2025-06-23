@@ -6,17 +6,11 @@
   import { toast } from "svelte-sonner";
   import { mode } from "mode-watcher";
 
-  import {
-    abbreviateNumber,
-    sectorList,
-    industryList,
-    listOfRelevantCountries,
-    groupScreenerRules,
-  } from "$lib/utils";
+  import { abbreviateNumber, groupScreenerRules } from "$lib/utils";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
-  import DownloadData from "$lib/components/DownloadData.svelte";
+  //import DownloadData from "$lib/components/DownloadData.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
   import Input from "$lib/components/Input.svelte";
   import SEO from "$lib/components/SEO.svelte";
@@ -32,12 +26,12 @@
   let isLoaded = false;
   let syncWorker: Worker | undefined;
   let downloadWorker: Worker | undefined;
-  let searchQuery = "";
+  let selectedDate = "2025-06-27";
+  let expirationList = ["2025-06-23", "2025-06-27"];
+
   let infoText = {};
   let tooltipTitle;
   let removeList = false;
-
-  $: testList = [];
 
   let strategyList = data?.getAllStrategies || [];
   let selectedStrategy = strategyList?.at(0)?.id ?? "";
@@ -74,34 +68,41 @@
   const allRules = {
     moneyness: {
       label: "Moneyness",
-      step: ["20%", "10%", "5%", "0%", "-5%", "10%"],
+      step: ["20%", "10%", "5%", "0%", "-5%", "-10%"],
+      defaultCondition: "over",
+      defaultValue: "any",
+    },
+
+    totalPrem: {
+      label: "Total Premium",
+      step: ["20M", "10M", "1M", "500K", "100K", "10K"],
       defaultCondition: "over",
       defaultValue: "any",
     },
 
     optionType: {
       label: "Option Type",
-      step: ["CALL", "PUT"],
+      step: ["Call", "Put"],
       defaultCondition: "",
       defaultValue: "any",
     },
     ivRank: {
       label: "IV Rank",
-      step: [50, 30, 20, 10, 5, 1, 0],
+      step: ["90%", "80%", "50%", "30%", "10%"],
       defaultCondition: "over",
       defaultValue: "any",
       category: "Options Activity",
     },
     iv: {
-      label: "IV",
-      step: [1, 0.5, 0.3, 0.1, 0],
+      label: "Implied Volatility",
+      step: ["100%", "80%", "50%", "30%", "10%"],
       defaultCondition: "over",
       defaultValue: "any",
       category: "Options Activity",
     },
     oi: {
-      label: "OI",
-      step: ["500K", "300K", "200K", "100K", "50K", "10K", "1K"],
+      label: "Open Interest",
+      step: ["100K", "50K", "30K", "10K", "5K", "1K"],
       defaultCondition: "over",
       defaultValue: "any",
       category: "Options Activity",
@@ -115,7 +116,7 @@
     },
     volume: {
       label: "Volume",
-      step: ["100K", "50K", "20K", "10K", "5K", "1K"],
+      step: ["50K", "20K", "10K", "5K", "1K"],
       defaultCondition: "over",
       defaultValue: "any",
       category: "Options Activity",
@@ -127,7 +128,7 @@
 
   // Generate allRows from allRules
   $: allRows = Object?.entries(allRules)
-    ?.sort(([, a], [, b]) => a.label.localeCompare(b.label)) // Sort by label
+    ?.sort(([, a], [, b]) => a?.label.localeCompare(b.label)) // Sort by label
     ?.map(([ruleName, ruleProps]) => ({
       rule: ruleName,
       ...ruleProps,
@@ -160,6 +161,19 @@
       rule.condition || allRules[rule.name].defaultCondition;
     valueMappings[rule.name] = rule.value || allRules[rule.name].defaultValue;
   });
+
+  const formatDate = (dateString: string): string => {
+    if (!dateString) return "n/a";
+    const date = new Date(dateString);
+    return isNaN(date.getTime())
+      ? "n/a"
+      : date.toLocaleDateString("en-US", {
+          month: "short",
+          day: "2-digit",
+          year: "numeric",
+          timeZone: "UTC",
+        });
+  };
 
   async function getInfoText(parameter, title) {
     tooltipTitle = title;
@@ -230,7 +244,7 @@
         displayResults = [];
       }
 
-      await updateStockScreenerData();
+      //await updateStockScreenerData();
 
       checkedItems = new Map(
         ruleOfList
@@ -383,55 +397,18 @@
       filteredData = [];
       displayResults = [];
     }
-    await updateStockScreenerData();
+    //await updateStockScreenerData();
     checkedItems = new Map(
       ruleOfList
-        ?.filter((rule) =>
-          [
-            "analystRating",
-            "topAnalystRating",
-            "earningsTime",
-            "earningsDate",
-            "halalStocks",
-            "sector",
-            "country",
-            "score",
-            "industry",
-            "grahamNumber",
-            "lynchFairValue",
-          ]?.includes(rule.name),
-        ) // Only include specific rules
+        ?.filter((rule) => ["optionType"]?.includes(rule.name)) // Only include specific rules
         ?.map((rule) => [rule.name, new Set(rule.value)]), // Create Map from filtered rules
     );
   }
 
   function changeRule(state: string) {
-    if (
-      !["Pro", "Plus"]?.includes(data?.user?.tier) &&
-      [
-        "gexRatio",
-        "ivRank",
-        "iv30d",
-        "totalOI",
-        "changeOI",
-        "netCallPrem",
-        "netPutPrem",
-        "callVolume",
-        "putVolume",
-        "pcRatio",
-        "topAnalystRating",
-        "topAnalystCounter",
-        "topAnalystPriceTarget",
-        "topAnalystUpside",
-        "score",
-      ]?.includes(state)
-    ) {
-      goto("/pricing");
-    } else {
-      selectedPopularStrategy = "";
-      ruleName = state;
-      handleAddRule();
-    }
+    selectedPopularStrategy = "";
+    ruleName = state;
+    handleAddRule();
   }
 
   const handleMessage = (event) => {
@@ -468,18 +445,7 @@
   };
 
   const updateStockScreenerData = async () => {
-    if (
-      ["performance", "analysts", "dividends", "financials"]?.includes(
-        displayTableTab,
-      ) ||
-      hoverStatus
-    ) {
-      downloadWorker.postMessage({
-        ruleOfList: [...ruleOfList, ...otherTabRules],
-      });
-    } else {
-      downloadWorker.postMessage({ ruleOfList: ruleOfList });
-    }
+    downloadWorker.postMessage({ ruleOfList: ruleOfList });
   };
 
   function handleAddRule() {
@@ -493,25 +459,7 @@
     let newRule;
 
     switch (ruleName) {
-      case "analystRating":
-      case "payoutFrequency":
-      case "topAnalystRating":
-      case "earningsTime":
-      case "earningsDate":
-      case "halalStocks":
-      case "score":
-      case "sector":
-      case "industry":
-      case "country":
-      case "ema20":
-      case "ema50":
-      case "ema100":
-      case "ema200":
-      case "sma20":
-      case "grahamNumber":
-      case "sma50":
-      case "sma100":
-      case "sma200":
+      case "optionType":
         newRule = {
           name: ruleName,
           value: Array.isArray(valueMappings[ruleName])
@@ -548,7 +496,7 @@
     } else {
       ruleOfList = [...ruleOfList, newRule];
 
-      await updateStockScreenerData();
+      //await updateStockScreenerData();
     }
   }
 
@@ -565,7 +513,7 @@
     displayResults = [];
     checkedItems = new Map();
     ruleOfList = [...ruleOfList];
-    await updateStockScreenerData();
+    //await updateStockScreenerData();
     //await handleSave(false);
   }
 
@@ -620,7 +568,7 @@
         }
       }
 
-      await updateStockScreenerData();
+      //await updateStockScreenerData();
     }
   }
 
@@ -699,7 +647,7 @@
       };
 
       const savePromise = (async () => {
-        const response = await fetch("/api/save-strategy", {
+        const response = await fetch("/api/save-options-screener", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(postData),
@@ -757,7 +705,7 @@
     }
   }
 
-  $: charNumber = $screenWidth < 640 ? 20 : 40;
+  $: charNumber = $screenWidth < 640 ? 20 : 20;
 
   function changeRuleCondition(name: string, state: string) {
     ruleName = name;
@@ -778,30 +726,7 @@
 
   let checkedItems = new Map(
     ruleOfList
-      ?.filter((rule) =>
-        [
-          "sma20",
-          "sma50",
-          "sma100",
-          "sma200",
-          "ema20",
-          "ema50",
-          "ema100",
-          "ema200",
-          "grahamNumber",
-          "lynchFairValue",
-          "analystRating",
-          "earningsTime",
-          "earningsDate",
-          "payoutFrequency",
-          "topAnalystRating",
-          "halalStocks",
-          "score",
-          "sector",
-          "industry",
-          "country",
-        ]?.includes(rule.name),
-      ) // Only include specific rules
+      ?.filter((rule) => ["optionType"]?.includes(rule.name)) // Only include specific rules
       ?.map((rule) => [rule.name, new Set(rule.value)]), // Create Map from filtered rules
   );
 
@@ -886,30 +811,7 @@
       checkedItems?.set(ruleName, new Set([valueKey]));
     }
 
-    if (
-      [
-        "sma20",
-        "sma50",
-        "sma100",
-        "sma200",
-        "ema20",
-        "ema50",
-        "ema100",
-        "ema200",
-        "grahamNumber",
-        "lynchFairValue",
-        "analystRating",
-        "earningsTime",
-        "earningsDate",
-        "payoutFrequency",
-        "topAnalystRating",
-        "halalStocks",
-        "score",
-        "sector",
-        "industry",
-        "country",
-      ]?.includes(ruleName)
-    ) {
+    if (["optionType"]?.includes(ruleName)) {
       searchQuery = "";
       if (!Array.isArray(valueMappings[ruleName])) {
         valueMappings[ruleName] = [];
@@ -934,7 +836,7 @@
         valueMappings[ruleName] = "any";
       }
 
-      await updateStockScreenerData();
+      //await updateStockScreenerData();
     } else if (ruleName in valueMappings) {
       if (ruleCondition[ruleName] === "between" && Array?.isArray(value)) {
         // Apply sorting only if shouldSort is true
@@ -948,7 +850,7 @@
 
     // Add this at the end of the function to ensure the filter is applied
     if (ruleCondition[ruleName] === "between" && value.some((v) => v !== "")) {
-      await updateStockScreenerData();
+      //await updateStockScreenerData();
     }
   }
 
@@ -1088,37 +990,8 @@
         handleChangeValue(row?.value);
       });
 
-      await updateStockScreenerData();
+      //await updateStockScreenerData();
     }
-  }
-
-  function handleInput(event) {
-    const searchQuery = event.target.value?.toLowerCase() || "";
-
-    setTimeout(() => {
-      testList = [];
-
-      if (searchQuery.length > 0) {
-        const rawList =
-          ruleName === "country"
-            ? listOfRelevantCountries
-            : ruleName === "sector"
-              ? sectorList
-              : ruleName === "industry"
-                ? industryList
-                : ["analystRating", "topAnalystRating", "score"]?.includes(
-                      ruleName,
-                    )
-                  ? ["Strong Buy", "Buy", "Hold", "Sell", "Strong Sell"]
-                  : []; //["Compliant", "Non-Compliant"];
-        testList =
-          rawList?.filter((item) => {
-            const index = item?.toLowerCase();
-            // Check if country starts with searchQuery
-            return index?.startsWith(searchQuery);
-          }) || [];
-      }
-    }, 50);
   }
 
   const sortData = (key) => {
@@ -1195,6 +1068,7 @@
     { key: "volume", label: "Volume", align: "right" },
     { key: "oi", label: "OI", align: "right" },
     { key: "changeOI", label: "% Change OI", align: "right" },
+    { key: "totalPrem", label: "Total Prem", align: "right" },
   ];
 
   const generalSortOrders = {
@@ -1209,20 +1083,10 @@
     volume: { order: "none", type: "number" },
     oi: { order: "none", type: "number" },
     changeOI: { order: "none", type: "number" },
+    totalPrem: { order: "none", type: "number" },
   };
 
-  const stringTypeRules = [
-    "country",
-    "industry",
-    "score",
-    "sector",
-    "analystRating",
-    "earningsTime",
-    "earningsDate",
-    "topAnalystRating",
-    "halalStocks",
-    "payoutFrequency",
-  ];
+  const stringTypeRules = ["optionType"];
 
   // Helper to determine the type based on stringTypeRules
   const getType = (key) =>
@@ -1234,7 +1098,6 @@
         filters: [
           { key: "symbol", label: "Symbol", align: "left" },
           { key: "name", label: "Name", align: "left" },
-          { key: "marketCap", label: "Market Cap", align: "right" },
         ],
       };
 
@@ -1252,16 +1115,10 @@
         columns = [...(baseColumnsMap[displayTableTab] || [])];
         sortOrders = { ...(baseSortOrdersMap[displayTableTab] || {}) };
 
-        const rulesList = [
-          "performance",
-          "analysts",
-          "dividends",
-          "financials",
-        ]?.includes(displayTableTab)
-          ? tabRuleList
-          : displayRules;
+        const rulesList = displayRules;
+
         rulesList?.forEach((rule) => {
-          if (rule.rule !== "marketCap") {
+          if (!["optionType", "strike"]?.includes(rule.rule)) {
             columns.push({
               key: rule.rule,
               label: rule.label,
@@ -1274,70 +1131,7 @@
     }
   }
 
-  let tabRuleList = [];
   let hoverStatus = false;
-  async function changeTab(state) {
-    displayTableTab = state;
-
-    if (displayTableTab === "performance") {
-      hoverStatus = false;
-      otherTabRules = [
-        { name: "marketCap", value: "any" },
-        { name: "change1W", value: "any" },
-        { name: "change1M", value: "any" },
-        { name: "change3M", value: "any" },
-        { name: "change1Y", value: "any" },
-      ];
-      tabRuleList = otherTabRules
-        ?.map((rule) => allRows.find((row) => row.rule === rule.name))
-        ?.filter(Boolean);
-
-      await updateStockScreenerData();
-    } else if (displayTableTab === "analysts") {
-      hoverStatus = false;
-      otherTabRules = [
-        { name: "marketCap", value: "any" },
-        { name: "analystRating", value: "any" },
-        { name: "analystCounter", value: "any" },
-        { name: "priceTarget", value: "any" },
-        { name: "upside", value: "any" },
-      ];
-      tabRuleList = otherTabRules
-        ?.map((rule) => allRows?.find((row) => row?.rule === rule?.name))
-        ?.filter(Boolean);
-
-      await updateStockScreenerData();
-    } else if (displayTableTab === "dividends") {
-      hoverStatus = false;
-      otherTabRules = [
-        { name: "marketCap", value: "any" },
-        { name: "annualDividend", value: "any" },
-        { name: "dividendYield", value: "any" },
-        { name: "payoutRatio", value: "any" },
-        { name: "dividendGrowth", value: "any" },
-      ];
-      tabRuleList = otherTabRules
-        ?.map((rule) => allRows?.find((row) => row?.rule === rule?.name))
-        ?.filter(Boolean);
-
-      await updateStockScreenerData();
-    } else if (displayTableTab === "financials") {
-      hoverStatus = false;
-      otherTabRules = [
-        { name: "marketCap", value: "any" },
-        { name: "revenue", value: "any" },
-        { name: "operatingIncome", value: "any" },
-        { name: "netIncome", value: "any" },
-        { name: "freeCashFlow", value: "any" },
-        { name: "eps", value: "any" },
-      ];
-      tabRuleList = otherTabRules
-        ?.map((rule) => allRows?.find((row) => row?.rule === rule?.name))
-        ?.filter(Boolean);
-
-      await updateStockScreenerData();
-    }
-  }
 </script>
 
 <SEO
@@ -1353,7 +1147,9 @@
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
       <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
-      <li><span class="text-muted dark:text-gray-300">Stock Screener</span></li>
+      <li>
+        <span class="text-muted dark:text-gray-300">Options Screener</span>
+      </li>
     </ul>
   </div>
 
@@ -1361,9 +1157,9 @@
   <div class="sm:rounded">
     <div class="flex flex-col md:flex-row items-start md:items-center mb-5">
       <div class="w-full flex flex-row items-center sm:mt-4">
-        <h1 class=" text-3xl font-semibold">Stock Screener</h1>
+        <h1 class=" text-3xl font-semibold">Options Screener</h1>
         <span class="inline-block text-xs sm:text-sm font-semibold ml-2 mt-3">
-          {filteredData?.length} Matches Found
+          {filteredData?.length} Contracts Found
         </span>
       </div>
 
@@ -1586,6 +1382,72 @@
             <div>Add Filters</div>
           </label>
 
+          <DropdownMenu.Root>
+            <DropdownMenu.Trigger asChild let:builder>
+              <Button
+                builders={[builder]}
+                class="ml-2 h-10 border-none text-[0.95rem] text-white inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-blue-500 sm:hover:bg-blue-600 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out"
+              >
+                <span class="truncate text-sm">Date Expiration</span>
+                <svg
+                  class="-mr-1 ml-2 h-5 w-5 inline-block"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  style="max-width:40px"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </Button>
+            </DropdownMenu.Trigger>
+
+            <DropdownMenu.Content
+              class="min-w-48 w-auto max-w-60 max-h-[400px] overflow-y-auto scroller relative"
+            >
+              <!-- Dropdown items -->
+              <DropdownMenu.Group class="pb-2"
+                >{#each expirationList as item, index}
+                  {#if data?.user?.tier === "Pro" || index == 0}
+                    <DropdownMenu.Item
+                      on:click={() => {
+                        selectedDate = item;
+                      }}
+                      class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
+                    >
+                      {formatDate(item)}
+                    </DropdownMenu.Item>
+                  {:else}
+                    <DropdownMenu.Item
+                      on:click={() => goto("/pricing")}
+                      class="cursor-pointer sm:hover:bg-gray-200 dark:sm:hover:bg-primary"
+                    >
+                      <div class="flex flex-row items-center gap-x-2">
+                        <span> {formatDate(item)}</span>
+                        <svg
+                          class="size-4"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          style="max-width: 40px;"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                            clip-rule="evenodd"
+                          >
+                          </path>
+                        </svg>
+                      </div>
+                    </DropdownMenu.Item>
+                  {/if}
+                {/each}</DropdownMenu.Group
+              >
+            </DropdownMenu.Content>
+          </DropdownMenu.Root>
+
           {#if data?.user}
             <label
               for={!data?.user ? "userLogin" : ""}
@@ -1756,7 +1618,7 @@
                       <DropdownMenu.Content
                         class="w-64 min-h-auto max-h-72 overflow-y-auto scroller"
                       >
-                        {#if !["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber", "lynchFairValue", "analystRating", "payoutFrequency", "topAnalystRating", "earningsTime", "earningsDate", "halalStocks", "score", "sector", "industry", "country"]?.includes(row?.rule)}
+                        {#if !["optionType"]?.includes(row?.rule)}
                           <DropdownMenu.Label
                             class="absolute mt-2 h-11 border-gray-300 dark:border-gray-800 border-b -top-1 z-20 fixed sticky bg-white dark:bg-default"
                           >
@@ -1904,35 +1766,9 @@
                               <!--End Dropdown for Condition-->
                             </div>
                           </DropdownMenu.Label>
-                        {:else}
-                          <div
-                            class="relative sticky z-40 focus:outline-hidden -top-1"
-                            tabindex="0"
-                            role="menu"
-                            style=""
-                          >
-                            <input
-                              bind:value={searchQuery}
-                              on:input={handleInput}
-                              autocomplete="off"
-                              class="{![
-                                'analystRating',
-                                'topAnalystRating',
-                                'halalStocks',
-                                'score',
-                                'sector',
-                                'industry',
-                                'country',
-                              ]?.includes(row?.rule)
-                                ? 'hidden'
-                                : ''} text-sm p-2 absolute fixed sticky w-full border-0 bg-white dark:bg-default border-b border-gray-200 dark:border-gray-600
-                                        focus:outline-none placeholder:text-gray-500 dark:placeholder:text-gray-300"
-                              placeholder="Search..."
-                            />
-                          </div>
                         {/if}
                         <DropdownMenu.Group class="min-h-10 mt-2">
-                          {#if !["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber", "lynchFairValue", "analystRating", "payoutFrequency", "topAnalystRating", "earningsTime", "earningsDate", "halalStocks", "score", "sector", "industry", "country"]?.includes(row?.rule)}
+                          {#if !["optionType"]?.includes(row?.rule)}
                             {#each row?.step as newValue, index}
                               {#if ruleCondition[row?.rule] === "between"}
                                 {#if newValue && row?.step[index + 1]}
@@ -1977,35 +1813,8 @@
                                 </DropdownMenu.Item>
                               {/if}
                             {/each}
-                          {:else if ["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber", "lynchFairValue", "payoutFrequency", "earningsTime", "earningsDate"]?.includes(row?.rule)}
+                          {:else if ["optionType"]?.includes(row?.rule)}
                             {#each row?.step as item}
-                              <DropdownMenu.Item
-                                class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
-                              >
-                                <div
-                                  class="flex items-center"
-                                  on:click|capture={(event) =>
-                                    event.preventDefault()}
-                                >
-                                  <label
-                                    on:click={() => {
-                                      handleChangeValue(item);
-                                    }}
-                                    class="cursor-pointer"
-                                    for={item}
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      class="rounded"
-                                      checked={isChecked(item, row?.rule)}
-                                    />
-                                    <span class="ml-2">{item}</span>
-                                  </label>
-                                </div>
-                              </DropdownMenu.Item>
-                            {/each}
-                          {:else}
-                            {#each testList.length > 0 && searchQuery?.length > 0 ? testList : searchQuery?.length > 0 && testList?.length === 0 ? [] : row?.rule === "country" ? listOfRelevantCountries : row?.rule === "sector" ? sectorList : row?.rule === "industry" ? industryList : ["analystRating", "topAnalystRating", "score"]?.includes(ruleName) ? ["Strong Buy", "Buy", "Hold", "Sell", "Strong Sell"] : [] as item}
                               <DropdownMenu.Item
                                 class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                               >
@@ -2106,6 +1915,10 @@
     </div>
   </div>
 
+  <h3 class="text-[1rem] font-semibold mb-2 whitespace-nowrap">
+    All option contracts expire on {formatDate(selectedDate)}
+  </h3>
+
   <!--Start Matching Preview-->
   {#if isLoaded}
     {#if filteredData?.length !== 0}
@@ -2127,6 +1940,8 @@
                       href={`/${item?.assetType}/` +
                         item?.symbol +
                         `/options/contract-lookup?query=${item?.optionSymbol}`}
+                      rel="noopener noreferrer"
+                      target="_blank"
                       class="text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400 text-sm sm:text-[1rem]"
                       >{item?.symbol}</a
                     >
@@ -2144,11 +1959,11 @@
 
                   <td
                     class=" text-sm sm:text-[1rem] text-end
-                  {item?.optionType === 'call'
+                  {item?.optionType === 'Call'
                       ? 'text-green-800 dark:text-[#00FC50]'
                       : 'text-red-800 dark:text-[#FF2F1F]'} "
                   >
-                    {item?.optionType?.toUpperCase()}
+                    {item?.optionType}
                   </td>
 
                   <td class=" text-sm sm:text-[1rem] text-end">
@@ -2194,15 +2009,21 @@
                       <span class="text-green-800 dark:text-[#00FC50]"
                         >+{item?.changeOI >= 1000
                           ? abbreviateNumber(item?.changeOI)
-                          : item?.changeOI?.toFixed(2)}%</span
+                          : item?.changeOI?.toFixed(1)}%</span
                       >
                     {:else}
                       <span class="text-red-800 dark:text-[#FF2F1F]"
                         >{item?.changeOI <= -1000
                           ? abbreviateNumber(item?.changeOI)
-                          : item?.changeOI?.toFixed(2)}%
+                          : item?.changeOI?.toFixed(1)}%
                       </span>
                     {/if}
+                  </td>
+
+                  <td class=" text-sm sm:text-[1rem] text-end">
+                    {item?.totalPrem
+                      ? abbreviateNumber(item?.totalPrem)
+                      : "n/a"}
                   </td>
                 </tr>
               {/each}
@@ -2224,7 +2045,11 @@
                 >
                   <td class=" whitespace-nowrap">
                     <a
-                      href={`/${item?.assetType}/` + item?.symbol}
+                      href={`/${item?.assetType}/` +
+                        item?.symbol +
+                        `/options/contract-lookup?query=${item?.optionSymbol}`}
+                      rel="noopener noreferrer"
+                      target="_blank"
                       class="text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400 text-sm sm:text-[1rem]"
                       >{item?.symbol}</a
                     >
@@ -2235,28 +2060,23 @@
                       : item?.name}
                   </td>
                   <td class="whitespace-nowrap text-sm sm:text-[1rem] text-end">
-                    {abbreviateNumber(item?.marketCap)}
+                    {item?.strike}
                   </td>
+                  <td
+                    class=" text-sm sm:text-[1rem] text-end
+                {item?.optionType === 'Call'
+                      ? 'text-green-800 dark:text-[#00FC50]'
+                      : 'text-red-800 dark:text-[#FF2F1F]'} "
+                  >
+                    {item?.optionType}
+                  </td>
+
                   {#each displayRules as row (row?.rule)}
                     {#if row?.rule !== "marketCap"}
                       <td
                         class="whitespace-nowrap text-sm sm:text-[1rem] text-end"
                       >
-                        {#if ["ema20", "ema50", "ema100", "ema200", "earningsTime", "halalStocks", "sector", "industry", "country", "payoutFrequency"]?.includes(row?.rule)}
-                          {item[row?.rule]
-                            ?.replace("After Market Close", "After Close")
-                            ?.replace("Before Market Open", "Before Open")}
-                        {:else if row?.varType && row?.varType === "date"}
-                          {new Date(item[row?.rule]).toLocaleDateString(
-                            "en-US",
-                            {
-                              year: "numeric",
-                              month: "short",
-                              day: "numeric",
-                              timeZone: "UTC",
-                            },
-                          )}
-                        {:else if row?.varType && row?.varType === "percentSign"}
+                        {#if row?.varType && row?.varType === "percentSign"}
                           <span
                             class={item[row?.rule] >= 0
                               ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
@@ -2266,203 +2086,21 @@
                           </span>
                         {:else if row?.varType && row?.varType === "percent"}
                           {abbreviateNumber(item[row?.rule])}%
-                        {:else if ["score", "analystRating", "topAnalystRating"]?.includes(row?.rule)}
-                          {#if ["Strong Buy", "Buy"].includes(item[row?.rule])}
+                        {:else if ["optionType"]?.includes(row?.rule)}
+                          {#if "Call" === item[row?.rule]}
                             <span class=" text-green-800 dark:text-[#00FC50]"
                               >{item[row?.rule]}</span
                             >
-                          {:else if ["Strong Sell", "Sell"].includes(item[row?.rule])}
+                          {:else if "Put" === item[row?.rule]}
                             <span class=" text-red-800 dark:text-[#FF2F1F]"
                               >{item[row?.rule]}</span
                             >
-                          {:else if item[row?.rule] === "Hold"}
-                            <span class=" text-orange-800 dark:text-[#FFA838]"
-                              >{item[row?.rule]}</span
-                            >
-                          {:else}
-                            -
                           {/if}
                         {:else}
                           {abbreviateNumber(item[row?.rule])}
                         {/if}
                       </td>
                     {/if}
-                  {/each}
-                </tr>
-              {/each}
-            </tbody>
-          </table>
-        </div>
-      {:else if displayTableTab === "performance"}
-        <div class="w-full rounded overflow-x-auto">
-          <table
-            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
-          >
-            <thead>
-              <TableHeader {columns} {sortOrders} {sortData} />
-            </thead>
-            <tbody>
-              {#each displayResults as item (item?.symbol)}
-                <tr
-                  class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                >
-                  <td class=" whitespace-nowrap">
-                    <a
-                      href={`/${item?.assetType}/` + item?.symbol}
-                      class="text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400 text-sm sm:text-[1rem]"
-                      >{item?.symbol}</a
-                    >
-                  </td>
-                  <td class="whitespace-nowrap text-[1rem]">
-                    {item?.name?.length > charNumber
-                      ? item?.name?.slice(0, charNumber) + "..."
-                      : item?.name}
-                  </td>
-
-                  {#each tabRuleList as row (row?.rule)}
-                    <td
-                      class="whitespace-nowrap text-sm sm:text-[1rem] text-end"
-                    >
-                      {#if row?.rule === "marketCap"}
-                        {abbreviateNumber(item[row?.rule])}
-                      {:else if item[row?.rule] > 0}
-                        <span class="text-green-800 dark:text-[#00FC50]"
-                          >+{abbreviateNumber(
-                            item[row?.rule]?.toFixed(2),
-                          )}%</span
-                        >
-                      {:else if item[row?.rule] < 0}
-                        <span class="text-red-800 dark:text-[#FF2F1F]"
-                          >{abbreviateNumber(
-                            item[row?.rule]?.toFixed(2),
-                          )}%</span
-                        >
-                      {:else}
-                        <span class="">n/a</span>
-                      {/if}
-                    </td>
-                  {/each}
-                </tr>
-              {/each}
-            </tbody>
-          </table>
-        </div>
-      {:else if displayTableTab === "analysts"}
-        <div class="w-full rounded overflow-x-auto">
-          <table
-            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
-          >
-            <thead>
-              <TableHeader {columns} {sortOrders} {sortData} />
-            </thead>
-            <tbody>
-              {#each displayResults as item (item?.symbol)}
-                <tr
-                  class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                >
-                  <td class=" whitespace-nowrap">
-                    <a
-                      href={`/${item?.assetType}/` + item?.symbol}
-                      class="text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400 text-sm sm:text-[1rem]"
-                      >{item?.symbol}</a
-                    >
-                  </td>
-                  <td class="whitespace-nowrap text-[1rem]">
-                    {item?.name?.length > charNumber
-                      ? item?.name?.slice(0, charNumber) + "..."
-                      : item?.name}
-                  </td>
-
-                  {#each tabRuleList as row (row?.rule)}
-                    <td
-                      class="whitespace-nowrap text-sm sm:text-[1rem] text-end"
-                    >
-                      {#if row?.rule === "marketCap"}
-                        {abbreviateNumber(item[row?.rule])}
-                      {:else if ["analystCounter", "priceTarget"]?.includes(row?.rule)}
-                        <span class=""
-                          >{item[row?.rule]
-                            ? abbreviateNumber(item[row?.rule])
-                            : "n/a"}</span
-                        >
-                      {:else if row?.rule === "upside"}
-                        {#if item[row?.rule] > 0}
-                          <span class="text-green-800 dark:text-[#00FC50]"
-                            >+{item[row?.rule]?.toFixed(2)}%</span
-                          >
-                        {:else if item[row?.rule] < 0}
-                          <span class="text-red-800 dark:text-[#FF2F1F]"
-                            >{item[row?.rule]?.toFixed(2)}%</span
-                          >
-                        {:else}
-                          <span class="">n/a</span>
-                        {/if}
-                      {:else if ["analystRating", "topAnalystRating"]?.includes(row?.rule)}
-                        {#if ["Strong Buy", "Buy"].includes(item[row?.rule])}
-                          <span class=" text-green-800 dark:text-[#00FC50]"
-                            >{item[row?.rule]}</span
-                          >
-                        {:else if ["Strong Sell", "Sell"].includes(item[row?.rule])}
-                          <span class=" text-red-800 dark:text-[#FF2F1F]"
-                            >{item[row?.rule]}</span
-                          >
-                        {:else if item[row?.rule] === "Hold"}
-                          <span class=" text-orange-600 dark:text-[#FFA838]"
-                            >{item[row?.rule]}</span
-                          >
-                        {:else}
-                          n/a
-                        {/if}
-                      {/if}
-                    </td>
-                  {/each}
-                </tr>
-              {/each}
-            </tbody>
-          </table>
-        </div>
-      {:else if ["dividends", "financials"]?.includes(displayTableTab)}
-        <div class="w-full rounded overflow-x-auto">
-          <table
-            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
-          >
-            <thead>
-              <TableHeader {columns} {sortOrders} {sortData} />
-            </thead>
-            <tbody>
-              {#each displayResults as item (item?.symbol)}
-                <tr
-                  class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
-                >
-                  <td class=" whitespace-nowrap">
-                    <a
-                      href={`/${item?.assetType}/` + item?.symbol}
-                      class="text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400 text-sm sm:text-[1rem]"
-                      >{item?.symbol}</a
-                    >
-                  </td>
-                  <td class="whitespace-nowrap text-[1rem]">
-                    {item?.name?.length > charNumber
-                      ? item?.name?.slice(0, charNumber) + "..."
-                      : item?.name}
-                  </td>
-
-                  {#each tabRuleList as row (row?.rule)}
-                    <td
-                      class="whitespace-nowrap text-sm sm:text-[1rem] text-end"
-                    >
-                      {#if row?.rule === "marketCap"}
-                        {abbreviateNumber(item[row?.rule])}
-                      {:else if row?.varType && row?.varType === "percent"}
-                        {item[row?.rule]
-                          ? abbreviateNumber(item[row?.rule]) + "%"
-                          : "n/a"}
-                      {:else}
-                        {item[row?.rule]
-                          ? abbreviateNumber(item[row?.rule])
-                          : "n/a"}
-                      {/if}
-                    </td>
                   {/each}
                 </tr>
               {/each}
@@ -2619,29 +2257,14 @@
               <div
                 class="flex w-full items-center space-x-1.5 py-1.5 md:w-1/2 lg:w-1/3 lg:py-1"
               >
-                {#if ["gexRatio", "ivRank", "iv30d", "totalOI", "changeOI", "netCallPrem", "netPutPrem", "callVolume", "putVolume", "pcRatio", "topAnalystRating", "topAnalystCounter", "topAnalystPriceTarget", "topAnalystUpside", "score"]?.includes(row?.rule) && !["Pro", "Plus"]?.includes(data?.user?.tier)}
-                  <label id={row?.rule} on:click={() => changeRule(row?.rule)}>
-                    <svg
-                      class="w-4 h-4 mb-1 inline-block cursor-pointer"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      ><path
-                        fill="currentColor"
-                        d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                      /></svg
-                    >
-                  </label>
-                {:else}
-                  <input
-                    on:click={() => changeRule(row?.rule)}
-                    id={row?.rule}
-                    type="checkbox"
-                    checked={ruleOfList?.find(
-                      (rule) => rule?.name === row?.rule,
-                    )}
-                    class="h-[18px] w-[18px] rounded-sm ring-offset-0 lg:h-4 lg:w-4"
-                  />
-                {/if}
+                <input
+                  on:click={() => changeRule(row?.rule)}
+                  id={row?.rule}
+                  type="checkbox"
+                  checked={ruleOfList?.find((rule) => rule?.name === row?.rule)}
+                  class="h-[18px] w-[18px] rounded-sm ring-offset-0 lg:h-4 lg:w-4"
+                />
+
                 <div class="-mt-0.5">
                   <label for={row?.rule} class="cursor-pointer text-[1rem]"
                     >{row?.label}</label
