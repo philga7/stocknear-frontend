@@ -154,7 +154,7 @@ onmessage = async (event: MessageEvent) => {
       ruleOfList
     );
 
-    filteredData = filteredData?.sort((a,b) => b?.marketCap - a?.marketCap);
+    //filteredData = filteredData?.sort((a,b) => b?.totalPrem - a?.totalPrem);
 
     postMessage({ 
       message: "success", 

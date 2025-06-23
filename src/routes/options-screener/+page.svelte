@@ -27,7 +27,7 @@
   let syncWorker: Worker | undefined;
   let downloadWorker: Worker | undefined;
   let expirationList = data?.getScreenerData?.expirationList;
-  let selectedDate = expirationList?.at(0);
+  let selectedDate = expirationList?.at(0)?.date;
 
   let infoText = {};
   let tooltipTitle;
@@ -50,19 +50,8 @@
   ];
 
   let displayTableTab = "general";
-  let otherTabRules = [];
 
-  let stockScreenerData = data?.getScreenerData?.data?.filter((item) =>
-    Object?.values(item)?.every(
-      (value) =>
-        value !== null &&
-        value !== undefined &&
-        (typeof value !== "object" ||
-          Object?.values(value)?.every(
-            (subValue) => subValue !== null && subValue !== undefined,
-          )),
-    ),
-  );
+  let stockScreenerData = data?.getScreenerData?.data;
 
   // Define all possible rules and their properties
   const allRules = {
@@ -426,22 +415,10 @@
   };
 
   const loadWorker = async () => {
-    if (
-      ["performance", "analysts", "dividends", "financials"]?.includes(
-        displayTableTab,
-      ) ||
-      hoverStatus
-    ) {
-      syncWorker.postMessage({
-        stockScreenerData,
-        ruleOfList: [...ruleOfList, ...otherTabRules],
-      });
-    } else {
-      syncWorker.postMessage({
-        stockScreenerData,
-        ruleOfList,
-      });
-    }
+    syncWorker.postMessage({
+      stockScreenerData,
+      ruleOfList,
+    });
   };
 
   const updateStockScreenerData = async () => {
@@ -1097,6 +1074,8 @@
         filters: [
           { key: "symbol", label: "Symbol", align: "left" },
           { key: "name", label: "Name", align: "left" },
+          { key: "strike", label: "Strike", align: "right" },
+          { key: "optionType", label: "P/C", align: "right" },
         ],
       };
 
@@ -1104,6 +1083,8 @@
         filters: {
           symbol: { order: "none", type: "string" },
           name: { order: "none", type: "string" },
+          strike: { order: "none", type: "number" },
+          optionType: { order: "none", type: "string" },
         },
       };
 
@@ -1129,8 +1110,6 @@
       }
     }
   }
-
-  let hoverStatus = false;
 </script>
 
 <SEO
@@ -1414,12 +1393,13 @@
                   {#if data?.user?.tier === "Pro" || index == 0}
                     <DropdownMenu.Item
                       on:click={() => {
-                        selectedDate = item;
+                        selectedDate = item?.date;
                         updateStockScreenerData();
                       }}
                       class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
                     >
-                      {formatDate(item)}
+                      {formatDate(item?.date)}
+                      ({item?.contractLength?.toLocaleString("en-US")})
                     </DropdownMenu.Item>
                   {:else}
                     <DropdownMenu.Item
@@ -1427,7 +1407,10 @@
                       class="cursor-pointer sm:hover:bg-gray-200 dark:sm:hover:bg-primary"
                     >
                       <div class="flex flex-row items-center gap-x-2">
-                        <span> {formatDate(item)}</span>
+                        <span>
+                          {formatDate(item?.date)}
+                          ({item?.contractLength?.toLocaleString("en-US")})
+                        </span>
                         <svg
                           class="size-4"
                           viewBox="0 0 20 20"
@@ -1449,6 +1432,7 @@
             </DropdownMenu.Content>
           </DropdownMenu.Root>
 
+          <!--
           {#if data?.user}
             <label
               for={!data?.user ? "userLogin" : ""}
@@ -1480,6 +1464,7 @@
               </label>
             {/if}
           {/if}
+          -->
 
           {#if ruleOfList?.length !== 0}
             <label
@@ -1863,7 +1848,7 @@
     class="mt-6 grid-cols-2 items-center sm:grid lg:flex lg:space-x-1 lg:overflow-visible lg:px-1 py-1.5 border-t border-b border-gray-300 dark:border-gray-800 mb-2"
   >
     <h2 class=" whitespace-nowrap text-xl font-semibold bp:text-[1.3rem]">
-      {filteredData?.length} Contracts
+      {filteredData?.length?.toLocaleString("en-US")} Contracts
     </h2>
     <div
       class="col-span-2 flex flex-row items-center lg:order-2 lg:grow lg:border-0 lg:pl-1 xl:pl-3"
@@ -2040,7 +2025,7 @@
               <TableHeader {columns} {sortOrders} {sortData} />
             </thead>
             <tbody>
-              {#each displayResults as item (item?.symbol)}
+              {#each displayResults as item}
                 <tr
                   class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                 >
@@ -2073,7 +2058,7 @@
                   </td>
 
                   {#each displayRules as row (row?.rule)}
-                    {#if row?.rule !== "marketCap"}
+                    {#if !["strike", "optionType"]?.includes(row?.rule)}
                       <td
                         class="whitespace-nowrap text-sm sm:text-[1rem] text-end"
                       >

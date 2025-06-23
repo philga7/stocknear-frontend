@@ -85,6 +85,8 @@
     "Revenue Estimated Growth": "Est. Rev. Growth",
     "Earnings EPS Estimate": "Est. EPS",
     "EPS Estimated Growth": "Est. EPS Growth",
+    "Open Interest": "OI",
+    "Total Premium": "Total Prem",
   };
 
   function formatLabel(label: string): string {

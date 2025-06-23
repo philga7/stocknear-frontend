@@ -36,7 +36,6 @@ const getScreenerData = async (selectedDate) => {
 onmessage = async (event) => {
   const { selectedDate } = event.data || {};
   const output = await getScreenerData(selectedDate);
-
   const stockScreenerData = output?.filter((item) =>
     Object?.values(item)?.every(
       (value) =>
