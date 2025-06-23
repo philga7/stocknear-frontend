@@ -428,7 +428,9 @@
   };
 
   const updateStockScreenerData = async () => {
+    isLoaded = false;
     downloadWorker.postMessage({ selectedDate: selectedDate });
+    isLoaded = true;
   };
 
   function handleAddRule() {
@@ -2031,18 +2033,20 @@
                   </td>
 
                   <td class=" text-end text-sm sm:text-[1rem]">
-                    {#if item?.changeOI >= 0}
+                    {#if item?.changeOI > 0}
                       <span class="text-green-800 dark:text-[#00FC50]"
                         >+{item?.changeOI >= 1000
                           ? abbreviateNumber(item?.changeOI)
                           : item?.changeOI?.toFixed(1)}%</span
                       >
-                    {:else}
+                    {:else if item?.changeOI < 0}
                       <span class="text-red-800 dark:text-[#FF2F1F]"
                         >{item?.changeOI <= -1000
                           ? abbreviateNumber(item?.changeOI)
                           : item?.changeOI?.toFixed(1)}%
                       </span>
+                    {:else}
+                      <span class="">{item?.changeOI?.toFixed(1)}% </span>
                     {/if}
                   </td>
 
@@ -2104,9 +2108,11 @@
                       >
                         {#if row?.varType && row?.varType === "percentSign"}
                           <span
-                            class={item[row?.rule] >= 0
+                            class={item[row?.rule] > 0
                               ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
-                              : "text-red-800 dark:text-[#FF2F1F]"}
+                              : item[row?.rule] < 0
+                                ? "text-red-800 dark:text-[#FF2F1F]"
+                                : ""}
                           >
                             {abbreviateNumber(item[row?.rule])}%
                           </span>
