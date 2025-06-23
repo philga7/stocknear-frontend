@@ -55,6 +55,7 @@
   import Tools from "lucide-svelte/icons/wrench";
   import Gem from "lucide-svelte/icons/gem";
   import Plus from "lucide-svelte/icons/plus";
+  import Screener from "lucide-svelte/icons/microscope";
 
   export let data;
 
@@ -441,17 +442,6 @@
                             class="w-full bg-gray-100 dark:bg-[#18181B]"
                           >
                             <a
-                              href="/stock-screener"
-                              class="text-start w-full text-[1rem] text-muted dark:text-white ml-4 mt-4"
-                              >Stock Screener</a
-                            >
-                          </Button>
-                          <Button
-                            builders={[builder]}
-                            type="submit"
-                            class="w-full bg-gray-100 dark:bg-[#18181B]"
-                          >
-                            <a
                               href="/market-mover/gainers"
                               class="text-start w-full text-[1rem] text-muted dark:text-white ml-4 mt-4"
                               >Market Mover</a
@@ -779,6 +769,55 @@
                               href="/dark-pool-flow"
                               class="text-start w-full text-[1rem] text-muted dark:text-white ml-4 mt-4"
                               >Dark Pool Flow</a
+                            >
+                          </Button>
+                        </div>
+                      </Sheet.Close>
+                    </Accordion.Content>
+                  </Accordion.Item>
+                </Accordion.Root>
+              </div>
+
+              <div class="flex flex-row items-center w-full">
+                <Accordion.Root class="w-full">
+                  <Accordion.Item value="item-1">
+                    <Accordion.Trigger class="">
+                      <Screener
+                        class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1"
+                      />
+                      <span class="text-muted dark:text-white ml-1 mr-auto"
+                        >Screener</span
+                      >
+                    </Accordion.Trigger>
+                    <Accordion.Content
+                      class="border-l border-gray-500 ml-2 mt-5"
+                    >
+                      <Sheet.Close asChild let:builder>
+                        <div class="flex flex-col items-start">
+                          <Button
+                            builders={[builder]}
+                            type="submit"
+                            class="w-full bg-gray-100 dark:bg-[#18181B]"
+                          >
+                            <a
+                              href="/stock-screener"
+                              class="text-start w-full text-[1rem] text-muted dark:text-white ml-4 mt-4"
+                              >Stock Screener</a
+                            >
+                          </Button>
+                        </div>
+                      </Sheet.Close>
+                      <Sheet.Close asChild let:builder>
+                        <div class="flex flex-col items-start">
+                          <Button
+                            builders={[builder]}
+                            type="submit"
+                            class="w-full bg-gray-100 dark:bg-[#18181B]"
+                          >
+                            <a
+                              href="/options-screener"
+                              class="text-start w-full text-[1rem] text-muted dark:text-white ml-4 mt-4"
+                              >Options Screener</a
                             >
                           </Button>
                         </div>
@@ -1123,11 +1162,7 @@
                             class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
                             >By Industry</a
                           >
-                          <a
-                            href="/stock-screener"
-                            class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
-                            >Stock Screener</a
-                          >
+
                           <a
                             href="/market-mover/gainers"
                             class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
@@ -1332,6 +1367,38 @@
                             href="/dark-pool-flow"
                             class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
                             >Dark Pool Flow</a
+                          >
+                        </div>
+                      </Accordion.Content>
+                    </Accordion.Item>
+                  </Accordion.Root>
+                </div>
+
+                <div class="flex flex-row items-center ml-9 w-full mt-3">
+                  <Accordion.Root class="w-full">
+                    <Accordion.Item value="item-1">
+                      <Accordion.Trigger class="">
+                        <Screener
+                          class="h-5.5 w-5.5 mr-3 text-muted dark:text-white ml-1"
+                        />
+                        <span class="text-muted dark:text-white ml-1 mr-auto"
+                          >Screener</span
+                        >
+                      </Accordion.Trigger>
+                      <Accordion.Content
+                        class="border-l border-gray-500 ml-2 mt-5"
+                      >
+                        <div class="flex flex-col items-start">
+                          <a
+                            href="/stock-screener"
+                            class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
+                            >Stock Screener</a
+                          >
+
+                          <a
+                            href="/options-screener"
+                            class="text-[1rem] text-muted dark:text-white ml-4 mt-4"
+                            >Options Screener</a
                           >
                         </div>
                       </Accordion.Content>

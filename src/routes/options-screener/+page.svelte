@@ -26,8 +26,8 @@
   let isLoaded = false;
   let syncWorker: Worker | undefined;
   let downloadWorker: Worker | undefined;
-  let selectedDate = "2025-06-27";
-  let expirationList = ["2025-06-23", "2025-06-27"];
+  let expirationList = data?.getScreenerData?.expirationList;
+  let selectedDate = expirationList?.at(0);
 
   let infoText = {};
   let tooltipTitle;
@@ -52,7 +52,7 @@
   let displayTableTab = "general";
   let otherTabRules = [];
 
-  let stockScreenerData = data?.getScreenerData?.filter((item) =>
+  let stockScreenerData = data?.getScreenerData?.data?.filter((item) =>
     Object?.values(item)?.every(
       (value) =>
         value !== null &&
@@ -445,7 +445,7 @@
   };
 
   const updateStockScreenerData = async () => {
-    downloadWorker.postMessage({ ruleOfList: ruleOfList });
+    downloadWorker.postMessage({ selectedDate: selectedDate });
   };
 
   function handleAddRule() {
@@ -812,7 +812,6 @@
     }
 
     if (["optionType"]?.includes(ruleName)) {
-      searchQuery = "";
       if (!Array.isArray(valueMappings[ruleName])) {
         valueMappings[ruleName] = [];
       }
@@ -1162,7 +1161,7 @@
           {filteredData?.length} Contracts Found
         </span>
       </div>
-
+      <!--
       <div class="flex flex-row items-center w-full mt-5">
         <div class="flex w-full sm:w-[50%] md:block md:w-auto sm:ml-auto">
           <div
@@ -1330,6 +1329,7 @@
           </div>
         </div>
       </div>
+      -->
     </div>
 
     <div
@@ -1386,11 +1386,11 @@
             <DropdownMenu.Trigger asChild let:builder>
               <Button
                 builders={[builder]}
-                class="ml-2 h-10 border-none text-[0.95rem] text-white inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-blue-500 sm:hover:bg-blue-600 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out"
+                class="sm:ml-2 h-10 w-full sm:w-fit border-none text-[0.95rem] text-white inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-blue-500 sm:hover:bg-blue-600 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out"
               >
-                <span class="truncate text-sm">Date Expiration</span>
+                <span class="truncate text-sm">{formatDate(selectedDate)}</span>
                 <svg
-                  class="-mr-1 ml-2 h-5 w-5 inline-block"
+                  class="-mr-1 ml-2 h-5 w-5 inline-block rotate-270 sm:rotate-0"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                   style="max-width:40px"
@@ -1415,6 +1415,7 @@
                     <DropdownMenu.Item
                       on:click={() => {
                         selectedDate = item;
+                        updateStockScreenerData();
                       }}
                       class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
                     >

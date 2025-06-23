@@ -10,7 +10,7 @@ export const load = async ({ locals }) => {
   const getScreenerData = async () => {
 
   
-    const postData = { selectedDates: ["2025-06-27"] };
+    const postData = { selectedDates: [] };
     const response = await fetch(apiURL + "/options-screener-data", {
       method: "POST",
       headers: {
