@@ -429,8 +429,8 @@
 
   const updateStockScreenerData = async () => {
     isLoaded = false;
+
     downloadWorker.postMessage({ selectedDate: selectedDate });
-    isLoaded = true;
   };
 
   function handleAddRule() {
@@ -598,7 +598,6 @@
 
     shouldLoadWorker.subscribe(async (value) => {
       if (value) {
-        isLoaded = false;
         await loadWorker();
         shouldLoadWorker.set(false); // Reset after worker is loaded
         isLoaded = true;
