@@ -1140,8 +1140,8 @@
 </script>
 
 <SEO
-  title="Free Stock Screener - Search, Filter and Analyze Stocks"
-  description={`A free stock screener to search, filter and analyze stocks by ${allRows?.length} different indicators and metrics. The screener data is updated once per minute.`}
+  title="Free Options Screener - Search, Filter and Analyze Options"
+  description={`A free options screener to search, filter, and analyze options by ${allRows?.length} different indicators and metrics.`}
 />
 
 <svelte:window on:scroll={handleScroll} />
