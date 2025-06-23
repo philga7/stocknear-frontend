@@ -885,7 +885,7 @@
                           <DropdownMenu.Item
                             on:click={() => changeCategory(item)}
                             class="{selectedPlotCategory?.name === item?.name
-                              ? 'dark:bg-gray-300 dark:bg-primary'
+                              ? 'bg-gray-200 dark:bg-primary'
                               : ''} cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                           >
                             {item?.name}

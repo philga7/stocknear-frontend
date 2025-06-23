@@ -1396,7 +1396,9 @@
                         selectedDate = item?.date;
                         updateStockScreenerData();
                       }}
-                      class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
+                      class="{selectedDate === item?.date
+                        ? 'bg-gray-200 dark:bg-primary'
+                        : ''}  sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
                     >
                       {formatDate(item?.date)}
                       ({item?.contractLength?.toLocaleString("en-US")})
