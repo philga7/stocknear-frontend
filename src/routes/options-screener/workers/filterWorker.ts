@@ -11,16 +11,18 @@ function convertUnitToValue(input: string | number | string[]) {
       return input; // Return as-is if not a string or number
     }
 
-    const lowerInput = input.toLowerCase();
+    const lowerInput = input?.toLowerCase();
 
     // Pre-compute the set for quick lookups
     const nonNumericValues = new Set([
       "any",
       "call",
       "put",
+      "stock",
+      "etf",
     ]);
     
-    if (nonNumericValues.has(lowerInput)) return input;
+    if (nonNumericValues?.has(lowerInput)) return input;
 
     // Handle percentage values
     if (input?.endsWith("%")) {
@@ -64,14 +66,16 @@ function createRuleCheck(rule, ruleName, ruleValue) {
 
   // Categorical checks
   const categoricalFields = [
-    'optionType'
+    'optionType',
+    'assetType'
   ];
 
-  if (categoricalFields.includes(rule.name)) {
+  if (categoricalFields?.includes(rule.name)) {
     return (item) => {
       const itemValue = item[rule.name];
       if (Array.isArray(ruleValue)) {
-        return ruleValue.includes(itemValue);
+        console.log(ruleValue, itemValue)
+        return ruleValue?.includes(itemValue);
       }
       return itemValue === ruleValue;
     };

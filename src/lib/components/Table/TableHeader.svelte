@@ -87,6 +87,7 @@
     "EPS Estimated Growth": "Est. EPS Growth",
     "Open Interest": "OI",
     "Total Premium": "Total Prem",
+    MoneynessPercentage: "% Moneyness",
   };
 
   function formatLabel(label: string): string {

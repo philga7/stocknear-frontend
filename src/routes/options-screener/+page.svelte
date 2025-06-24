@@ -55,8 +55,8 @@
 
   // Define all possible rules and their properties
   const allRules = {
-    moneyness: {
-      label: "Moneyness",
+    moneynessPercentage: {
+      label: "% Moneyness",
       step: ["20%", "10%", "5%", "0%", "-5%", "-10%"],
       defaultCondition: "over",
       defaultValue: "any",
@@ -69,10 +69,15 @@
       defaultCondition: "over",
       defaultValue: "any",
     },
-
     optionType: {
       label: "Option Type",
       step: ["Call", "Put"],
+      defaultCondition: "",
+      defaultValue: "any",
+    },
+    assetType: {
+      label: "Asset Type",
+      step: ["Stock", "ETF"],
       defaultCondition: "",
       defaultValue: "any",
     },
@@ -100,9 +105,9 @@
       category: "Options Activity",
       varType: "decimal",
     },
-    changeOI: {
-      label: "Change OI",
-      step: ["5K", "3K", "1K", "500", "300", "100"],
+    changesPercentageOI: {
+      label: "% Change OI",
+      step: ["100%", "80%", "50%", "30%", "10%"],
       defaultCondition: "over",
       defaultValue: "any",
       category: "Options Activity",
@@ -395,7 +400,7 @@
     //await updateStockScreenerData();
     checkedItems = new Map(
       ruleOfList
-        ?.filter((rule) => ["optionType"]?.includes(rule.name)) // Only include specific rules
+        ?.filter((rule) => ["optionType", "assetType"]?.includes(rule.name)) // Only include specific rules
         ?.map((rule) => [rule.name, new Set(rule.value)]), // Create Map from filtered rules
     );
   }
@@ -445,6 +450,7 @@
 
     switch (ruleName) {
       case "optionType":
+      case "assetType":
         newRule = {
           name: ruleName,
           value: Array.isArray(valueMappings[ruleName])
@@ -710,7 +716,7 @@
 
   let checkedItems = new Map(
     ruleOfList
-      ?.filter((rule) => ["optionType"]?.includes(rule.name)) // Only include specific rules
+      ?.filter((rule) => ["optionType", "assetType"]?.includes(rule.name)) // Only include specific rules
       ?.map((rule) => [rule.name, new Set(rule.value)]), // Create Map from filtered rules
   );
 
@@ -795,7 +801,7 @@
       checkedItems?.set(ruleName, new Set([valueKey]));
     }
 
-    if (["optionType"]?.includes(ruleName)) {
+    if (["optionType", "assetType"]?.includes(ruleName)) {
       if (!Array.isArray(valueMappings[ruleName])) {
         valueMappings[ruleName] = [];
       }
@@ -1047,10 +1053,14 @@
     { key: "iv", label: "IV", align: "right" },
     { key: "ivRank", label: "IV Rank", align: "right" },
     { key: "close", label: "Close Price", align: "right" },
-    { key: "moneyness", label: "Moneyness", align: "right" },
+    {
+      key: "moneynessPercentage",
+      label: "MoneynessPercentage",
+      align: "right",
+    },
     { key: "volume", label: "Volume", align: "right" },
     { key: "oi", label: "OI", align: "right" },
-    { key: "changeOI", label: "% Change OI", align: "right" },
+    { key: "changesPercentageOI", label: "% Change OI", align: "right" },
     { key: "totalPrem", label: "Total Prem", align: "right" },
   ];
 
@@ -1061,11 +1071,11 @@
     strike: { order: "none", type: "number" },
     iv: { order: "none", type: "number" },
     ivRank: { order: "none", type: "number" },
-    moneyness: { order: "none", type: "number" },
+    moneynessPercentage: { order: "none", type: "number" },
     close: { order: "none", type: "number" },
     volume: { order: "none", type: "number" },
     oi: { order: "none", type: "number" },
-    changeOI: { order: "none", type: "number" },
+    changesPercentageOI: { order: "none", type: "number" },
     totalPrem: { order: "none", type: "number" },
   };
 
@@ -1634,7 +1644,7 @@
                       <DropdownMenu.Content
                         class="w-64 min-h-auto max-h-72 overflow-y-auto scroller"
                       >
-                        {#if !["optionType"]?.includes(row?.rule)}
+                        {#if !["optionType", "assetType"]?.includes(row?.rule)}
                           <DropdownMenu.Label
                             class="absolute mt-2 h-11 border-gray-300 dark:border-gray-800 border-b -top-1 z-20 fixed sticky bg-white dark:bg-default"
                           >
@@ -1784,7 +1794,7 @@
                           </DropdownMenu.Label>
                         {/if}
                         <DropdownMenu.Group class="min-h-10 mt-2">
-                          {#if !["optionType"]?.includes(row?.rule)}
+                          {#if !["optionType", "assetType"]?.includes(row?.rule)}
                             {#each row?.step as newValue, index}
                               {#if ruleCondition[row?.rule] === "between"}
                                 {#if newValue && row?.step[index + 1]}
@@ -1829,7 +1839,7 @@
                                 </DropdownMenu.Item>
                               {/if}
                             {/each}
-                          {:else if ["optionType"]?.includes(row?.rule)}
+                          {:else if ["optionType", "assetType"]?.includes(row?.rule)}
                             {#each row?.step as item}
                               <DropdownMenu.Item
                                 class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
@@ -1964,7 +1974,7 @@
                 >
                   <td class=" whitespace-nowrap">
                     <a
-                      href={`/${item?.assetType}/` +
+                      href={`/${item?.assetType === "Stock" ? "stocks" : item?.assetType === "ETF" ? "etf" : "index"}/` +
                         item?.symbol +
                         `/options/contract-lookup?query=${item?.optionSymbol}`}
                       rel="noopener noreferrer"
@@ -2006,17 +2016,17 @@
                   </td>
 
                   <td class=" text-end text-sm sm:text-[1rem]">
-                    {#if item?.moneyness >= 0}
+                    {#if item?.moneynessPercentage >= 0}
                       <span class="text-green-800 dark:text-[#00FC50]"
-                        >+{item?.moneyness >= 1000
-                          ? abbreviateNumber(item?.moneyness)
-                          : item?.moneyness?.toFixed(2)}%</span
+                        >+{item?.moneynessPercentage >= 1000
+                          ? abbreviateNumber(item?.moneynessPercentage)
+                          : item?.moneynessPercentage?.toFixed(2)}%</span
                       >
                     {:else}
                       <span class="text-red-800 dark:text-[#FF2F1F]"
-                        >{item?.moneyness <= -1000
-                          ? abbreviateNumber(item?.moneyness)
-                          : item?.moneyness?.toFixed(2)}%
+                        >{item?.moneynessPercentage <= -1000
+                          ? abbreviateNumber(item?.moneynessPercentage)
+                          : item?.moneynessPercentage?.toFixed(2)}%
                       </span>
                     {/if}
                   </td>
@@ -2032,20 +2042,22 @@
                   </td>
 
                   <td class=" text-end text-sm sm:text-[1rem]">
-                    {#if item?.changeOI > 0}
+                    {#if item?.changesPercentageOI > 0}
                       <span class="text-green-800 dark:text-[#00FC50]"
-                        >+{item?.changeOI >= 1000
-                          ? abbreviateNumber(item?.changeOI)
-                          : item?.changeOI?.toFixed(1)}%</span
+                        >+{item?.changesPercentageOI >= 1000
+                          ? abbreviateNumber(item?.changesPercentageOI)
+                          : item?.changesPercentageOI?.toFixed(1)}%</span
                       >
-                    {:else if item?.changeOI < 0}
+                    {:else if item?.changesPercentageOI < 0}
                       <span class="text-red-800 dark:text-[#FF2F1F]"
-                        >{item?.changeOI <= -1000
-                          ? abbreviateNumber(item?.changeOI)
-                          : item?.changeOI?.toFixed(1)}%
+                        >{item?.changesPercentageOI <= -1000
+                          ? abbreviateNumber(item?.changesPercentageOI)
+                          : item?.changesPercentageOI?.toFixed(1)}%
                       </span>
                     {:else}
-                      <span class="">{item?.changeOI?.toFixed(1)}% </span>
+                      <span class=""
+                        >{item?.changesPercentageOI?.toFixed(1)}%
+                      </span>
                     {/if}
                   </td>
 
@@ -2074,7 +2086,7 @@
                 >
                   <td class=" whitespace-nowrap">
                     <a
-                      href={`/${item?.assetType}/` +
+                      href={`/${item?.assetType === "Stock" ? "stocks" : item?.assetType === "ETF" ? "etf" : "index"}/` +
                         item?.symbol +
                         `/options/contract-lookup?query=${item?.optionSymbol}`}
                       rel="noopener noreferrer"
