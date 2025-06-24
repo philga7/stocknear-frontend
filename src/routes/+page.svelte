@@ -9,7 +9,7 @@
   import UpcomingEarnings from "$lib/components/Dashboard/UpcomingEarnings.svelte";
   import OptionsFlow from "$lib/components/Dashboard/OptionsFlow.svelte";
   import Wiim from "$lib/components/Dashboard/Wiim.svelte";
-  import AIAgent from "$lib/components/Dashboard/AIAgent.svelte";
+  //import AIAgent from "$lib/components/Dashboard/AIAgent.svelte";
 
   export let data;
   export let form;
@@ -99,10 +99,10 @@
 
   <main id="main">
     <div
-      class="border-b border-gray-100 dark:border-gray-800 rounded-[5px] px-4 bg-gray-100 dark:bg-[#1C1E22] pt-12 shadow-sm pb-26 landscape:border-t-2 landscape:md:border-t-0"
+      class="border-b border-gray-100 dark:border-gray-800 rounded-[5px] px-4 bg-gray-100 dark:bg-[#1C1E22] pt-8 sm:pt-12 shadow-sm pb-26 landscape:border-t-2 landscape:md:border-t-0"
     >
-      <div class="flex justify-center mb-5 whitespace-nowrap mt-5 sm:mt-0">
-        <div class="mb-4 flex justify-center mt-2 lg:mb-3">
+      <div class="flex justify-center mb-5 whitespace-nowrap">
+        <div class=" flex justify-center lg:mb-3">
           <a href="/options-screener"
             ><div
               class="flex items-center justify-center sm:hover:text-muted dark:sm:hover:text-white text-blue-700 dark:text-blue-400"
@@ -122,26 +122,26 @@
 
       <div class="mx-auto max-w-[850px] text-center">
         <h1
-          class="mb-3 text-2xl font-bold xs:text-3xl sm:mb-5 md:text-4xl lg:mb-7 lg:text-[42px]"
+          class="mb-3 text-2xl font-bold sm:mb-5 md:text-4xl lg:mb-7 lg:text-[42px]"
         >
           Research your Trading Ideas
         </h1>
-        <p
-          class="mb-4 text-base sm:text-lg md:mb-5 md:text-xl lg:mb-7 lg:text-[22px] lg:leading-8"
-        >
+        <p class=" sm:text-lg md:text-xl lg:text-[22px] lg:leading-8">
           Accurate information on all US Stocks and funds. See stock prices,
           options data, dark pool orders, news, financials, forecasts, charts
           and more.
         </p>
+        <!--
         <div class="mx-auto max-w-[95%] md:max-w-[85%]">
           <AIAgent {data} {form} />
         </div>
+        -->
       </div>
     </div>
     <div>
       <div class="mb-4 flex justify-center">
         <div
-          class="-mt-8 grid max-w-[90%] grid-cols-2 gap-4 sm:grid-cols-3 md:-mt-10 lg:grid-cols-6 xl:-mt-12 xl:max-w-[80%] xl:gap-6"
+          class="-mt-12 grid max-w-[90%] grid-cols-2 gap-4 sm:grid-cols-3 md:-mt-10 lg:grid-cols-6 xl:-mt-12 xl:max-w-[80%] xl:gap-6"
         >
           <a
             href="/chat/"
