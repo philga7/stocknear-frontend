@@ -9,6 +9,7 @@
   import UpcomingEarnings from "$lib/components/Dashboard/UpcomingEarnings.svelte";
   import OptionsFlow from "$lib/components/Dashboard/OptionsFlow.svelte";
   import Wiim from "$lib/components/Dashboard/Wiim.svelte";
+  import AnalystReport from "$lib/components/Dashboard/AnalystReport.svelte";
   //import AIAgent from "$lib/components/Dashboard/AIAgent.svelte";
 
   export let data;
@@ -21,6 +22,7 @@
   let wiim = data?.getDashboard?.wiim || [];
   let optionsFlowList = data?.getDashboard?.optionsFlow || [];
   let upcomingEarnings = data?.getDashboard?.upcomingEarnings || [];
+  let analystReport = data?.getDashboard?.analystReport || {};
   let pwaInstalled = false;
   let AppInstalled = null;
 
@@ -162,9 +164,12 @@
         class="mx-auto flex flex-col px-3 pt-6 xs:px-4 sm:px-5 md:pt-8 lg:grid lg:max-w-[1200px] lg:grid-cols-3 lg:justify-evenly lg:gap-8 lg:pt-10"
       >
         <Wiim {wiim} />
+
         <div class="flex flex-col space-y-6 pt-6 lg:space-y-8 lg:pt-0">
-          <OptionsFlow {optionsFlowList} />
+          <AnalystReport {analystReport} />
+
           <UpcomingEarnings {upcomingEarnings} />
+          <OptionsFlow {optionsFlowList} />
         </div>
       </div>
     </div>
