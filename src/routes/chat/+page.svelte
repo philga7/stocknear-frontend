@@ -748,7 +748,9 @@
                   <div class="group border-transparent rounded-t-md">
                     <div class="mt-[2px]">
                       <p class="text-[1rem]">
-                        {item?.message}
+                        {item?.message?.length > 250
+                          ? item?.message?.slice(0, 250) + "..."
+                          : item?.message}
                       </p>
                     </div>
                     <div
