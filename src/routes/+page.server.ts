@@ -1,4 +1,5 @@
 import { error, fail, redirect } from "@sveltejs/kit";
+import { allCards} from "$lib/utils";
 
 /// Constants
 const CACHE_DURATION = 60 * 1000; // 60 seconds
@@ -49,9 +50,35 @@ async function fetchWithTimeout(url, options = {}, timeout = REQUEST_TIMEOUT) {
   }
 }
 
+
+function pickRandomCards(cards, userTier, count = 6) {
+  // Identify the “Unlimited Access” card
+  const unlimitedCard = cards?.find(c => c.label === 'Unlimited Access');
+  // Pool excluding unlimited
+  const withoutUnlimited = cards?.filter(c => c !== unlimitedCard);
+
+  // If user is Plus or Pro, we never include Unlimited
+  if (['Plus', 'Pro']?.includes(userTier)) {
+    // just pick from the reduced pool
+    const shuffled = [...withoutUnlimited]?.sort(() => 0.5 - Math.random());
+    return shuffled?.slice(0, count);
+  }
+
+  // Otherwise, we *must* include Unlimited at the end.
+  // Pick the other (count - 1) cards at random:
+  const shuffled = [...withoutUnlimited]?.sort(() => 0.5 - Math.random());
+  const picks = shuffled?.slice(0, count - 1);
+
+  // Append the Unlimited card last
+  picks?.push(unlimitedCard);
+  return picks;
+}
+
+
+
 // Load function
 export async function load({ locals }) {
-  const { apiKey, apiURL } = locals;
+  const { apiKey, apiURL, user } = locals;
   const cacheKey = `dashboard:${apiKey}`;
 
   // Check cache
@@ -77,7 +104,8 @@ export async function load({ locals }) {
   }
 
   return {
-    getDashboard: dashboardData
+    getDashboard: dashboardData,
+    selectedCards: pickRandomCards(allCards, user?.tier)
   };
 }
 
