@@ -132,7 +132,7 @@
 
     <Discount />
 
-    <div class="flex flex-row items-center justify-center mb-5 sm:mb-0">
+    <div class="flex flex-row items-center justify-center">
       <div class="flex flex-row items-center ml-auto">
         <span class="text-[1rem] font-semibold mr-3"> Monthly </span>
 
@@ -1258,7 +1258,7 @@
         </div>
       </div>
       -->
-      <!--
+
       <div
         class="relative text-left w-full col-span-1 lg:col-span-3 bg-white dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded overflow-visible border border-zinc-200 dark:border-zinc-600 p-6 isolate translate-y-5 opacity-100"
       >
@@ -1296,7 +1296,6 @@
           </button>
         </div>
       </div>
-    -->
     </div>
 
     <!--Start FAQ-->
