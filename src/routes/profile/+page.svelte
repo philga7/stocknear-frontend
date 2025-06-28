@@ -456,8 +456,9 @@
                       : 'bg-[#FF3131]'} opacity-75"
                   ></span>
                   <span
-                    class="relative inline-flex rounded-full h-2 w-2 {subscriptionData?.status_formatted ===
-                      'Active' ||
+                    class="relative inline-flex rounded-full h-2 w-2 {data?.user
+                      ?.lifetime ||
+                    subscriptionData?.status_formatted === 'Active' ||
                     subscriptionData?.status_formatted === 'Paid' ||
                     subscriptionData?.status_formatted === 'On Trial' ||
                     data?.user?.freeTrial === true
@@ -467,7 +468,7 @@
                 </span>
 
                 <span class="ml-2 text-[1rem] dark:text-slate-200">
-                  {#if data?.user?.freeTrial === true}
+                  {#if data?.user?.freeTrial === true || data?.user?.lifetime === true}
                     Active
                   {:else}
                     {subscriptionData?.status_formatted ??
@@ -476,31 +477,34 @@
                 </span>
               </div>
             </div>
-            {#if subscriptionData?.status_formatted === "Active"}
-              <span class=" text-sm pr-5">
-                Your subscription will automatically renew on {new Date(
-                  subscriptionData?.renews_at,
-                )?.toLocaleDateString("en-GB", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })}
-              </span>
-            {:else if subscriptionData?.status_formatted === "Cancelled"}
-              <span class=" text-sm">
-                Your subscription will remain active until {new Date(
-                  subscriptionData?.ends_at,
-                )?.toLocaleDateString("en-GB", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })}
-              </span>
+            {#if !data?.user?.lifetime}
+              {#if subscriptionData?.status_formatted === "Active"}
+                <span class=" text-sm pr-5">
+                  Your subscription will automatically renew on {new Date(
+                    subscriptionData?.renews_at,
+                  )?.toLocaleDateString("en-GB", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </span>
+              {:else if subscriptionData?.status_formatted === "Cancelled"}
+                <span class=" text-sm">
+                  Your subscription will remain active until {new Date(
+                    subscriptionData?.ends_at,
+                  )?.toLocaleDateString("en-GB", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </span>
+              {/if}
             {/if}
+
             <div class="flex flex-col justify-start items-start mt-4 mb-3">
               <span class=" mr-2 text-lg"> Current Plan: </span>
               <span class="text-[1rem]">
-                {#if subscriptionData?.first_order_item?.product_name === "Pro Subscription (Life Time Access)"}
+                {#if data?.user?.lifetime}
                   Lifetime Access
                 {:else if data?.user?.freeTrial === true}
                   Pro Subscription (Free Trial)
@@ -514,50 +518,52 @@
               </span>
             </div>
 
-            {#if subscriptionData?.status_formatted === "Active"}
-              <div
-                class="flex flex-col items-start sm:flex-row sm:items-center"
-              >
-                <label
-                  for="cancelSubscriptionModal"
-                  class="cursor-pointer border border-gray-300 shadow-sshadow-xs m dark:border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded"
+            {#if !data?.user?.lifetime}
+              {#if subscriptionData?.status_formatted === "Active"}
+                <div
+                  class="flex flex-col items-start sm:flex-row sm:items-center"
                 >
-                  Cancel Subscription
+                  <label
+                    for="cancelSubscriptionModal"
+                    class="cursor-pointer border border-gray-300 shadow-sshadow-xs m dark:border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded"
+                  >
+                    Cancel Subscription
+                  </label>
+                  {#if subscriptionData?.product_name === "Plus Subscription (Monthly)"}
+                    <label
+                      for="changeSubscriptionPlusAnnualModal"
+                      class="mt-3 sm:mt-0 sm:ml-3 cursor-pointer border border-gray-300 shadow-sshadow-xs m dark:border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded"
+                    >
+                      Upgrade to Plus (Annual Plan)
+                    </label>
+                  {:else if subscriptionData?.product_name === "Plus Subscription (Annually)" || subscriptionData?.product_name === "Pro Subscription (Monthly)"}
+                    <label
+                      for="changeSubscriptionProAnnualModal"
+                      class="mt-3 sm:mt-0 sm:ml-3 cursor-pointer border border-gray-300 shadow-sshadow-xs m dark:border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded"
+                    >
+                      Upgrade to Pro (Annual Plan)
+                    </label>
+                  {/if}
+                </div>
+              {:else if subscriptionData?.status_formatted === "Cancelled"}
+                <label
+                  for="reactivateSubscriptionModal"
+                  class="cursor-pointer border border-gray-300 shadow-sshadow-xs m dark:border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
+                >
+                  Reactivate Subscription
                 </label>
-                {#if subscriptionData?.product_name === "Plus Subscription (Monthly)"}
-                  <label
-                    for="changeSubscriptionPlusAnnualModal"
-                    class="mt-3 sm:mt-0 sm:ml-3 cursor-pointer border border-gray-300 shadow-sshadow-xs m dark:border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded"
-                  >
-                    Upgrade to Plus (Annual Plan)
-                  </label>
-                {:else if subscriptionData?.product_name === "Plus Subscription (Annually)" || subscriptionData?.product_name === "Pro Subscription (Monthly)"}
-                  <label
-                    for="changeSubscriptionProAnnualModal"
-                    class="mt-3 sm:mt-0 sm:ml-3 cursor-pointer border border-gray-300 shadow-sshadow-xs m dark:border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded"
-                  >
-                    Upgrade to Pro (Annual Plan)
-                  </label>
-                {/if}
-              </div>
-            {:else if subscriptionData?.status_formatted === "Cancelled"}
-              <label
-                for="reactivateSubscriptionModal"
-                class="cursor-pointer border border-gray-300 shadow-sshadow-xs m dark:border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
-              >
-                Reactivate Subscription
-              </label>
-            {:else if subscriptionData?.status_formatted === "Paid" && !subscriptionData?.first_order_item?.product_name === "Pro Subscription (Life Time Access)"}
-              <span class=" mt-5">
-                Please wait a moment; you will be updated to Pro in a second.
-              </span>
-            {:else if subscriptionData?.first_order_item?.product_name?.includes("Life Time")}{:else}
-              <a
-                href="/pricing"
-                class="sm:hover:text-muted dark:sm:hover:text-white text-blue-700 dark:text-blue-400"
-              >
-                Get Full Access with our Subscription.
-              </a>
+              {:else if subscriptionData?.status_formatted === "Paid" && !subscriptionData?.first_order_item?.product_name === "Pro Subscription (Life Time Access)"}
+                <span class=" mt-5">
+                  Please wait a moment; you will be updated to Pro in a second.
+                </span>
+              {:else}
+                <a
+                  href="/pricing"
+                  class="sm:hover:text-muted dark:sm:hover:text-white text-blue-700 dark:text-blue-400"
+                >
+                  Get Full Access with our Subscription.
+                </a>
+              {/if}
             {/if}
           </div>
 
