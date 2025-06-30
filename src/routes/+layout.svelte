@@ -11,7 +11,7 @@
   import Footer from "$lib/components/Footer.svelte";
   import Searchbar from "$lib/components/Searchbar.svelte";
   import NotificationBell from "$lib/components/NotificationBell.svelte";
-  import CTA from "$lib/components/CTA.svelte";
+  //import CTA from "$lib/components/CTA.svelte";
 
   //import PullToRefresh from '$lib/components/PullToRefresh.svelte';
 
@@ -282,12 +282,12 @@
     }
   }
 
+  /*
   let urlChangeCount = 0;
   let lastPath = "";
 
-  // This will update every time the URL changes
   $: currentPath = $page.url.pathname;
-
+  
   $: if (
     !["Plus", "Pro"]?.includes(data?.user?.tier) &&
     currentPath !== lastPath &&
@@ -303,6 +303,7 @@
       }, 1000);
     }
   }
+    */
 </script>
 
 <svelte:window bind:innerWidth={$screenWidth} />
@@ -1497,11 +1498,13 @@
               <slot />
 
               <Toaster position="top-center" />
+              <!--
               {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
                 {#await import("$lib/components/CTA.svelte") then { default: Comp }}
                   <svelte:component this={Comp} />
                 {/await}
               {/if}
+              -->
               <!--
               {#if Cookie && $showCookieConsent === true}
                 <Cookie />
