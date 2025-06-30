@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
-  let targetDate = new Date("2025-06-30");
+  let targetDate = new Date("2025-07-15");
 
   let days = "-";
   let hours = "-";

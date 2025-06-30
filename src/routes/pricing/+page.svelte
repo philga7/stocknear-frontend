@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
 
   import SEO from "$lib/components/SEO.svelte";
-  import Discount from "$lib/components/Discount.svelte";
+  //import Discount from "$lib/components/Discount.svelte";
   export let data;
   export let form;
 
@@ -109,7 +109,7 @@
         ><path
           d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"
         ></path></svg
-      ><span class="ml-1 mr-2 font-bold"><span>4.4</span>/5</span><span
+      ><span class="ml-1 mr-2 font-bold"><span>4.5</span>/5</span><span
         class="font-medium"
         >Rated "Excellent" on <a
           rel="noopener noreferrer"
@@ -130,7 +130,7 @@
       </h1>
     </div>
 
-    <Discount />
+    <!--<Discount />-->
 
     <div class="flex flex-row items-center justify-center">
       <div class="flex flex-row items-center ml-auto">
@@ -723,7 +723,7 @@
             ? 'hidden'
             : ''}"
         >
-          (Billed Annually)
+          ($90 Billed Annually)
         </p>
 
         <ul class="mt-6 mb-6 space-y-2">
@@ -1050,22 +1050,24 @@
           Best for Professional Investors
         </p>
         <div class="mt-4">
-          <span
-            class="text-white text-4xl font-bold {!mode ? 'line-through' : ''}"
+          <span class="text-white text-4xl font-bold {!mode ? '' : ''}"
             >{mode ? "$15" : "$20"}</span
           >
+          <!--
           {#if !mode}
             <span
               class="text-pink-700 dark:text-pink-500 text-4xl font-bold ml-1"
               >$2</span
-            >{/if}<span class=" text-xl ml-1">/Month</span>
+            >{/if}
+            -->
+          <span class=" text-xl ml-1">/Month</span>
         </div>
         <p
           class="text-white dark:text-gray-400 text-sm mt-1 mx-4 {!mode
             ? 'hidden'
             : ''}"
         >
-          (Billed Annually)
+          ($180 Billed Annually)
         </p>
 
         <ul class="mt-6 mb-6 space-y-2">
