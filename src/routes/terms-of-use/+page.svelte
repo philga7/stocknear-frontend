@@ -155,7 +155,7 @@
                 Subscriptions
               </h2>
 
-              <p class=" mb-10">
+              <p class="mb-10">
                 We may offer subscription services via Lemon Squeezy. Specific
                 terms related to subscriptions will be presented at the time of
                 purchase, and by subscribing, you agree to those terms.<br /><br
@@ -171,8 +171,12 @@
                   >support@stocknear.com</a
                 >.<br /><br />
                 If you are not completely satisfied with your subscription, you may
-                request a full refund within 30 days of your initial purchase. Refund
-                requests made after 30 days will not be eligible.
+                request a full refund within 30 days of your initial purchase. Please
+                note, however, that each user is eligible for a refund only once;
+                subsequent purchases will not be eligible for a refund. This policy
+                is intended to prevent abuse of our refund program and ensure fairness
+                to all customers. Refund requests made after 30 days will not be
+                eligible.
               </p>
 
               <h2 class="mb-1 text-2xl sm:text-3xl font-bold mb-3">
