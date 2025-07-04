@@ -21,9 +21,9 @@
         <p
           class="mx-auto mt-5 max-w-3xl text-xl leading-normal md:mt-7 md:text-2xl"
         >
-          Welcome to Stocknear — a stock analysis platform built by users, for
-          users. Our goal is to be the internet's top source of free stock data
-          and information for retail investors.
+          Welcome to Stocknear — a stock analysis platform created by users, for
+          users. We’re here to make stock analysis simple, valueable and
+          accessible for everyday investors like you.
         </p>
       </div>
     </div>
