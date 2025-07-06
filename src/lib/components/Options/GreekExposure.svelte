@@ -171,23 +171,9 @@
             return date.toLocaleDateString("en-US", {
               day: "2-digit", // Include day number
               month: "short", // Display short month name
-              year: "numeric", // Include year
               timeZone: "UTC",
             });
           },
-        },
-        tickPositioner: function () {
-          // Create custom tick positions with optimized spacing
-          const positions = [];
-          const info = this.getExtremes();
-          const tickCount = 6; // Increase tick count for better readability
-          const interval = Math.floor((info.max - info.min) / (tickCount - 1));
-
-          for (let i = 0; i < tickCount; i++) {
-            const tick = info.min + i * interval;
-            positions.push(Math.round(tick)); // Ensure clean tick values
-          }
-          return positions;
         },
       },
 

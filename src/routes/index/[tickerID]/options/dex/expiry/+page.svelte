@@ -20,7 +20,7 @@
       class="w-full relative flex justify-center items-center overflow-hidden"
     >
       {#if rawData?.length > 0}
-        <GreekByExpiry {data} title="Delta" />
+        <GreekByExpiry {data} title="Delta" ticker={$indexTicker} />
       {:else}
         <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto">
           <div class="">
