@@ -15,6 +15,8 @@
       gex: "/options/gex",
       dex: "/options/dex",
       oi: "/options/oi",
+      "contract-lookup": "/options/contract-lookup",
+      "max-pain": "/options/max-pain",
     };
 
     if (state !== "overview" && subSectionMap[state]) {
@@ -36,6 +38,8 @@
         gex: "gex",
         dex: "dex",
         oi: "oi",
+        "max-pain": "max-pain",
+        "contract-lookup": "contract-lookup",
       };
 
       const foundSection = parts?.find((part) =>
@@ -71,6 +75,16 @@
                 Overview
               </a>
               <a
+                href={`/index/${$indexTicker}/options/contract-lookup`}
+                on:click={() => changeSubSection("contract-lookup")}
+                class="p-2 px-5 cursor-pointer {displaySubSection ===
+                'contract-lookup'
+                  ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                  : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+              >
+                Contract Lookup
+              </a>
+              <a
                 href={`/index/${$indexTicker}/options/hottest-contracts`}
                 on:click={() => changeSubSection("hottest-contracts")}
                 class="p-2 px-5 cursor-pointer {displaySubSection ===
@@ -79,6 +93,15 @@
                   : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
               >
                 Hottest Contracts
+              </a>
+              <a
+                href={`/index/${$indexTicker}/options/max-pain`}
+                on:click={() => changeSubSection("max-pain")}
+                class="p-2 px-5 cursor-pointer {displaySubSection === 'max-pain'
+                  ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
+                  : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
+              >
+                Max Pain
               </a>
               <a
                 href={`/index/${$indexTicker}/options/volatility`}

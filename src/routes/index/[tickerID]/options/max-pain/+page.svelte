@@ -1,27 +1,30 @@
 <script lang="ts">
   import { indexTicker, displayCompanyName } from "$lib/store";
+
   import Infobox from "$lib/components/Infobox.svelte";
-  import GreekExposure from "$lib/components/Options/GreekExposure.svelte";
   import SEO from "$lib/components/SEO.svelte";
+
+  import MaxPain from "$lib/components/Options/MaxPain.svelte";
 
   export let data;
 </script>
 
 <SEO
-  title="Daily Gamma Exposure"
-  description={`Analyze daily gamma exposure for ${$displayCompanyName} (${$indexTicker}). Access historical volume, open interest trends, and save options contracts for detailed analysis and insights.`}
+  title={`${$displayCompanyName} (${$indexTicker?.toUpperCase()}) Options Max Pain Chart`}
+  description={`View the Max Pain chart for ${$displayCompanyName} (${$indexTicker?.toUpperCase()}) to analyze options strike price pressure and market sentiment.`}
 />
-<section class="w-full overflow-hidden min-h-screen pb-40">
+
+<section class="w-full overflow-hidden min-h-screen">
   <div class="w-full flex h-full overflow-hidden">
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"
     >
       {#if data?.getData?.length > 0}
-        <GreekExposure {data} title="Gamma" params="" />
+        <MaxPain {data} ticker={$indexTicker?.toUpperCase()} />
       {:else}
         <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto">
           <div class="">
-            <Infobox text="No data is available" />
+            <Infobox text="No Max Pain data available for the company." />
           </div>
         </div>
       {/if}

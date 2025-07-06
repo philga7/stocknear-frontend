@@ -18,9 +18,7 @@ export const load = async ({ locals, params }) => {
       },
       body: JSON.stringify(postData),
     });
-  let output = await response.json();
-
-  output = output?.filter(item => (item?.call_gex + item?.put_gex) !== 0);
+  const output = await response.json();
   
     return output;
   }; 
