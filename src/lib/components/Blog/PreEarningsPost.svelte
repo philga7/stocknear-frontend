@@ -1,8 +1,6 @@
 <script lang="ts">
   import Introduction from "$lib/components/Blog/Introduction.svelte";
-
   import Overview from "$lib/components/Blog/Overview.svelte";
-  //import Dividends from "$lib/components/Blog/Dividends.svelte";
   import Valuation from "$lib/components/Blog/Valuation.svelte";
   import Average from "$lib/components/Blog/Average.svelte";
   import PriceReaction from "$lib/components/Blog/PriceReaction.svelte";
@@ -11,10 +9,13 @@
   import Management from "$lib/components/Blog/Management.svelte";
   import Growth from "$lib/components/Blog/Growth.svelte";
   import { stockTicker, displayCompanyName } from "$lib/store";
+  import { onMount } from "svelte";
   export let rawData = {};
 
-  $stockTicker = rawData?.symbol;
-  $displayCompanyName = rawData?.name;
+  onMount(() => {
+    if (rawData?.symbol) $stockTicker = rawData.symbol;
+    if (rawData?.name) $displayCompanyName = rawData.name;
+  });
 </script>
 
 <Introduction blogData={rawData?.nextEarningsData} />
