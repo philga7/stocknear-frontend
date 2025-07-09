@@ -1,12 +1,17 @@
 <script lang="ts">
-  import { etfTicker, displayCompanyName } from "$lib/store";
+  import { etfTicker, displayCompanyName, screenWidth } from "$lib/store";
   import { removeCompanyStrings, abbreviateNumber } from "$lib/utils";
   import Table from "$lib/components/Table/Table.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
   import SEO from "$lib/components/SEO.svelte";
+  import highcharts from "$lib/highcharts.ts";
+  import { mode } from "mode-watcher";
 
   export let data;
   let rawData = [...data?.getETFHoldings?.holdings] ?? [];
+
+  let configBarChart;
+  let configPieChart;
 
   let options = {
     month: "short",
@@ -37,6 +42,299 @@
     { name: "Shares", rule: "sharesNumber", type: "int" },
   ];
 
+  function plotPieChart() {
+    // Sector allocation data
+    const sectorData = [
+      {
+        sector: "Technology",
+        weightPercentage: 33.05,
+      },
+      {
+        sector: "Financials",
+        weightPercentage: 12.36,
+      },
+      {
+        sector: "Consumer Discretionary",
+        weightPercentage: 10.35,
+      },
+      {
+        sector: "Health Care",
+        weightPercentage: 9.22,
+      },
+      {
+        sector: "Industrials",
+        weightPercentage: 8.6,
+      },
+      {
+        sector: "Communication Services",
+        weightPercentage: 7.99,
+      },
+      {
+        sector: "Consumer Staples",
+        weightPercentage: 5.52,
+      },
+      {
+        sector: "Other",
+        weightPercentage: 3.58,
+      },
+      {
+        sector: "Energy",
+        weightPercentage: 3.01,
+      },
+      {
+        sector: "Utilities",
+        weightPercentage: 2.38,
+      },
+      {
+        sector: "Real Estate",
+        weightPercentage: 2.03,
+      },
+      {
+        sector: "Materials",
+        weightPercentage: 1.91,
+      },
+    ];
+
+    // Color palette matching the screenshot
+    const colors = [
+      "#2B5F75", // Technology - Dark blue
+      "#4A7BA7", // Financials - Medium blue
+      "#8B5A9B", // Consumer Discretionary - Purple
+      "#C85A9B", // Health Care - Pink-purple
+      "#E85A85", // Industrials - Pink
+      "#F5756B", // Communication Services - Coral
+      "#F9A05C", // Consumer Staples - Orange
+      "#FFC04D", // Other - Yellow
+      "#FFD93D", // Energy - Bright yellow
+      "#4A6B8A", // Utilities - Blue-gray
+      "#9B7BA7", // Real Estate - Light purple
+      "#D85A9B", // Materials - Pink
+    ];
+
+    // Transform data for Highcharts pie chart
+    const pieData = sectorData.map((item, index) => ({
+      name: item.sector,
+      y: item.weightPercentage,
+      color: colors[index % colors.length],
+    }));
+
+    // Highcharts configuration options
+    const options = {
+      credits: {
+        enabled: false,
+      },
+      chart: {
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        type: "pie",
+        height: 330,
+        animation: false,
+      },
+      title: {
+        text: null,
+      },
+      plotOptions: {
+        pie: {
+          allowPointSelect: false,
+          cursor: "pointer",
+          dataLabels: {
+            enabled: true,
+            distance: 30,
+            style: {
+              color: $mode === "light" ? "#333" : "#fff",
+              fontSize: "14px",
+              fontWeight: "500",
+              textOutline: "none",
+            },
+            formatter: function () {
+              return `<span style="font-weight: 600">${this.point.name}:</span> ${this.y.toFixed(2)}%`;
+            },
+          },
+          showInLegend: false,
+          borderWidth: 0,
+          size: "80%",
+          innerSize: "0%",
+          animation: false,
+          enableMouseTracking: false,
+          states: {
+            hover: {
+              enabled: false,
+            },
+            inactive: {
+              enabled: false,
+            },
+          },
+        },
+      },
+      tooltip: {
+        enabled: false,
+      },
+      series: [
+        {
+          name: "Sectors",
+          data: pieData,
+          animation: false,
+        },
+      ],
+      legend: {
+        enabled: false,
+      },
+    };
+
+    return options;
+  }
+
+  function plotBarChart() {
+    // Sector allocation data
+    const sectorData = [
+      {
+        sector: "Technology",
+        weightPercentage: 33.05,
+      },
+      {
+        sector: "Financials",
+        weightPercentage: 12.36,
+      },
+      {
+        sector: "Consumer Discretion...",
+        weightPercentage: 10.35,
+      },
+      {
+        sector: "Health Care",
+        weightPercentage: 9.22,
+      },
+      {
+        sector: "Industrials",
+        weightPercentage: 8.6,
+      },
+      {
+        sector: "Communication Serv...",
+        weightPercentage: 7.99,
+      },
+      {
+        sector: "Consumer Staples",
+        weightPercentage: 5.52,
+      },
+      {
+        sector: "Other",
+        weightPercentage: 3.58,
+      },
+      {
+        sector: "Energy",
+        weightPercentage: 3.01,
+      },
+      {
+        sector: "Utilities",
+        weightPercentage: 2.38,
+      },
+      {
+        sector: "Real Estate",
+        weightPercentage: 2.03,
+      },
+      {
+        sector: "Materials",
+        weightPercentage: 1.91,
+      },
+    ];
+
+    // Transform data for Highcharts horizontal bar chart
+    const categories = sectorData.map((item) => item.sector);
+    const data = sectorData.map((item) => item.weightPercentage);
+
+    // Highcharts configuration options
+    const options = {
+      credits: {
+        enabled: false,
+      },
+      chart: {
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        type: "bar",
+        height: 500,
+        animation: false,
+      },
+      title: {
+        text: null,
+      },
+      xAxis: {
+        categories: categories,
+        title: {
+          text: null,
+        },
+        labels: {
+          style: {
+            color: $mode === "light" ? "#333" : "#fff",
+            fontSize: "14px",
+            fontWeight: "400",
+          },
+        },
+        lineWidth: 0,
+        tickLength: 0,
+      },
+      yAxis: {
+        min: 0,
+        max: 35,
+        title: {
+          text: null,
+        },
+        labels: {
+          enabled: false,
+        },
+        gridLineWidth: 0,
+        lineWidth: 0,
+        tickLength: 0,
+      },
+      plotOptions: {
+        bar: {
+          dataLabels: {
+            enabled: true,
+            inside: false,
+            align: "left",
+            x: 5,
+            style: {
+              color: $mode === "light" ? "#333" : "#fff",
+              fontSize: "14px",
+              fontWeight: "600",
+              textOutline: "none",
+            },
+            formatter: function () {
+              return this.y.toFixed(2) + "%";
+            },
+          },
+          color: "#4A90A4",
+          borderWidth: 0,
+          pointPadding: 0.1,
+          groupPadding: 0.1,
+          animation: false,
+          enableMouseTracking: false,
+          states: {
+            hover: {
+              enabled: false,
+            },
+            inactive: {
+              enabled: false,
+            },
+          },
+        },
+      },
+      tooltip: {
+        enabled: false,
+      },
+      series: [
+        {
+          name: "Percentage",
+          data: data,
+          animation: false,
+        },
+      ],
+      legend: {
+        enabled: false,
+      },
+    };
+
+    return options;
+  }
+
   function generateStatementInfoHTML() {
     if (rawData?.length > 0) {
       const holdingsCount = rawData.length;
@@ -62,6 +360,13 @@
         No financial data available for ${$displayCompanyName}.
       </span>
     `;
+    }
+  }
+
+  $: {
+    if ($mode && typeof window !== "undefined") {
+      configBarChart = plotBarChart() || null;
+      configPieChart = plotPieChart() || null;
     }
   }
 </script>
@@ -169,6 +474,23 @@
 
             <div class="mt-1 break-words font-semibold leading-8 text-xl">
               {data?.getETFProfile?.at(0)?.expenseRatio?.toFixed(4) + "%"}
+            </div>
+          </div>
+        </div>
+
+        <div class="">
+          <div class="grow mt-5">
+            <div class="relative">
+              <h2 class="mb-2 text-xl sm:text-2xl font-bold">
+                Sector Allocation
+              </h2>
+
+              <div
+                class=" sm:p-3 shadow-xs border border-gray-300 dark:border-gray-800 rounded"
+                use:highcharts={$screenWidth < 640
+                  ? configBarChart
+                  : configPieChart}
+              ></div>
             </div>
           </div>
         </div>
