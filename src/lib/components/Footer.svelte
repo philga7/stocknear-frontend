@@ -18,225 +18,238 @@
   }
 </script>
 
-<!--Footer-->
-
 <footer
-  class="clear-both mt-auto bg-gray-800 dark:bg-default border-t border-gray-600"
+  class="w-full mt-auto bg-gray-800 dark:bg-default border-t border-gray-600"
 >
-  <div class="mx-auto max-w-7xl px-5 pt-12 sm:px-6 lg:px-8 lg:pb-8 lg:pt-16">
-    <div class="xl:grid xl:grid-cols-2 xl:gap-8">
-      <div class="grid grid-cols-2 gap-8 xl:col-span-2">
-        <div class="md:grid md:grid-cols-2 md:gap-8">
-          <div>
-            <h4
-              class="text-sm font-semibold uppercase tracking-wider text-gray-400 dark:text-dark-400"
-            >
-              Sections
-            </h4>
-            <ul class="mt-4 space-y-4 text-gray-300 hover:text-white">
-              <li>
-                <a
-                  class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
-                  href="/stocks/">Stocks</a
-                >
-              </li>
-              <li>
-                <a
-                  class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
-                  href="/ipos/">IPOs</a
-                >
-              </li>
-              <li>
-                <a
-                  class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
-                  href="/etf/">ETFs</a
-                >
-              </li>
-              <li>
-                <a
-                  class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
-                  href="/blog/">Blog</a
-                >
-              </li>
-            </ul>
-          </div>
-          <div class="mt-12 md:mt-0">
-            <h4
-              class="text-sm font-semibold uppercase tracking-wider text-gray-400 dark:text-dark-400"
-            >
-              Services
-            </h4>
-            <ul class="mt-4 space-y-4">
-              <li>
-                <a
-                  class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
-                  href="/pricing/">Pricing Plan</a
-                >
-              </li>
-              <li>
-                <a
-                  class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
-                  href="/discord-bot/">Discord Bot</a
-                >
-              </li>
-              <li>
-                <a
-                  class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
-                  href="/newsletter/">Free Newsletter</a
-                >
-              </li>
-              <li>
-                <a
-                  class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
-                  href="/support/">Get Support</a
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="md:grid md:grid-cols-2 md:gap-8">
-          <div>
-            <h4
-              class="text-sm font-semibold uppercase tracking-wider text-gray-400 dark:text-dark-400"
-            >
-              Website
-            </h4>
-            <ul class="mt-4 space-y-4">
-              <li>
-                <a
-                  class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
-                  href="/login/">Login</a
-                >
-              </li>
-              <li>
-                <a
-                  class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
-                  href="/faq/">FAQ</a
-                >
-              </li>
-
-              <li>
-                <a
-                  class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
-                  href="/sitemap/">Sitemap</a
-                >
-              </li>
-              <li>
-                <a
-                  class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
-                  href="/learning-center/">Learning Center</a
-                >
-              </li>
-              <!--
-              <li>
-                <a
-                  class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
-                  href="/affiliate-program/">Affiliate Program</a
-                >
-              </li>
-              -->
-              <li class="text-te">
-                <div class="flex rounded-md shadow-sm">
-                  <button
-                    id="lightBtn"
-                    on:click={() => handleModeChange("light")}
-                    class="cursor-pointer {$mode === 'light'
-                      ? 'bg-gray-600 dark:bg-primary'
-                      : ''} text-sm flex items-center gap-x-2 px-3 sm:px-4 py-2 rounded-l-md border border-gray-600 dark:border-gray-800 sm:hover:bg-gray-600 text-white focus:z-10 focus:outline-none transition-all"
-                  >
-                    <svg
-                      class="h-4 w-4 -mr-1 sm:mr-0"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-                      ></path>
-                    </svg>
-                    Light
-                    <span class="sr-only">Toggle theme</span>
-                  </button>
-                  <button
-                    id="darkBtn"
-                    on:click={() => handleModeChange("dark")}
-                    class="cursor-pointer {$mode === 'dark'
-                      ? 'bg-gray-600 dark:bg-primary'
-                      : ''} text-sm flex items-center gap-x-2 px-3 sm:px-4 py-2 text-sm font-medium rounded-l-md border border-gray-600 dark:border-gray-800 sm:hover:bg-gray-600 text-white focus:z-10 focus:outline-none transition-all"
-                  >
-                    <svg
-                      class="h-4 w-4 -mr-1 sm:mr-0"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-                      ></path>
-                    </svg>
-                    Dark
-                    <span class="sr-only">Toggle theme</span>
-                  </button>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <div class="mt-12 md:mt-0">
-            <h4
-              class="text-sm font-semibold uppercase tracking-wider text-gray-400 dark:text-dark-400"
-            >
-              Company
-            </h4>
-            <ul class="mt-4 space-y-4">
-              <li>
-                <a
-                  class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
-                  href="/about/">About</a
-                >
-              </li>
-              <li>
-                <a
-                  class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
-                  href="/contact/">Contact Us</a
-                >
-              </li>
-              <li>
-                <a
-                  class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
-                  href="/terms-of-use/">Terms of Use</a
-                >
-              </li>
-              <li>
-                <a
-                  class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
-                  href="/privacy-policy/">Privacy Policy</a
-                >
-              </li>
-              <li>
-                <a
-                  class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
-                  href="/data-disclaimer/">Data Disclaimer</a
-                >
-              </li>
-              <li>
-                <a
-                  class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
-                  href="/imprint/">Imprint</a
-                >
-              </li>
-            </ul>
-          </div>
+  <div class="mx-auto max-w-7xl px-5 pt-12 sm:px-6 lg:px-8 lg:pb-8">
+    <div
+      class="flex flex-col md:flex-row md:items-start md:justify-between gap-12"
+    >
+      <!-- Branding -->
+      <div
+        class="w-80 flex-shrink-0 flex flex-col sm:flex-row items-start space-x-4"
+      >
+        <img src="/pwa-192x192.png" alt="logo" class="w-12 h-12 rounded-lg" />
+        <div>
+          <span class="text-2xl font-bold text-white">Stocknear</span>
+          <p class="mt-2 text-gray-100">
+            All-in-one Stock Analysis Platform to research your trading ideas.
+          </p>
         </div>
       </div>
+
+      <!-- Nav Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 w-full">
+        <!-- Repeat this block for each section -->
+        <nav class="space-y-3">
+          <h6
+            class="text-sm font-semibold uppercase tracking-wider text-white dark:text-dark-400"
+          >
+            Sections
+          </h6>
+          <ul class="space-y-2">
+            <li>
+              <a
+                class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
+                href="/stocks/">Stocks</a
+              >
+            </li>
+            <li>
+              <a
+                class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
+                href="/ipos/">IPOs</a
+              >
+            </li>
+            <li>
+              <a
+                class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
+                href="/etf/">ETFs</a
+              >
+            </li>
+            <li>
+              <a
+                class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
+                href="/blog/">Blog</a
+              >
+            </li>
+          </ul>
+        </nav>
+        <nav class="space-y-3">
+          <h6
+            class="text-sm font-semibold uppercase tracking-wider text-white dark:text-dark-400"
+          >
+            Services
+          </h6>
+          <ul class="space-y-2">
+            <li>
+              <a
+                class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
+                href="/pricing/">Pricing Plan</a
+              >
+            </li>
+            <li>
+              <a
+                class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
+                href="/discord-bot/">Discord Bot</a
+              >
+            </li>
+            <li>
+              <a
+                class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
+                href="/newsletter/">Free Newsletter</a
+              >
+            </li>
+            <li>
+              <a
+                class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
+                href="/support/">Get Support</a
+              >
+            </li>
+          </ul>
+        </nav>
+        <nav class="space-y-3">
+          <h6
+            class="text-sm font-semibold uppercase tracking-wider text-white dark:text-dark-400"
+          >
+            Website
+          </h6>
+          <ul class="space-y-2">
+            <li>
+              <a
+                class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
+                href="/login/">Login</a
+              >
+            </li>
+            <li>
+              <a
+                class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
+                href="/faq/">FAQ</a
+              >
+            </li>
+
+            <li>
+              <a
+                class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
+                href="/sitemap/">Sitemap</a
+              >
+            </li>
+            <li>
+              <a
+                class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
+                href="/learning-center/">Learning Center</a
+              >
+            </li>
+            <!--
+            <li>
+              <a
+                class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
+                href="/affiliate-program/">Affiliate Program</a
+              >
+            </li>
+            -->
+            <li class="text-te">
+              <div class="flex rounded-md shadow-sm">
+                <button
+                  id="lightBtn"
+                  on:click={() => handleModeChange("light")}
+                  class="cursor-pointer {$mode === 'light'
+                    ? 'bg-gray-600 dark:bg-primary'
+                    : ''} text-sm flex items-center gap-x-2 px-3 py-2 rounded-l-md border border-gray-600 dark:border-gray-800 sm:hover:bg-gray-600 text-white focus:z-10 focus:outline-none transition-all"
+                >
+                  <svg
+                    class="h-4 w-4 -mr-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                    ></path>
+                  </svg>
+                  Light
+                  <span class="sr-only">Toggle theme</span>
+                </button>
+                <button
+                  id="darkBtn"
+                  on:click={() => handleModeChange("dark")}
+                  class="cursor-pointer {$mode === 'dark'
+                    ? 'bg-gray-600 dark:bg-primary'
+                    : ''} text-sm flex items-center gap-x-2 px-3 py-2 text-sm font-medium rounded-l-md border border-gray-600 dark:border-gray-800 sm:hover:bg-gray-600 text-white focus:z-10 focus:outline-none transition-all"
+                >
+                  <svg
+                    class="h-4 w-4 -mr-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                    ></path>
+                  </svg>
+                  Dark
+                  <span class="sr-only">Toggle theme</span>
+                </button>
+              </div>
+            </li>
+          </ul>
+        </nav>
+        <nav class="space-y-3">
+          <h6
+            class="text-sm font-semibold uppercase tracking-wider text-white dark:text-dark-400"
+          >
+            Company
+          </h6>
+          <ul class="space-y-2">
+            <li>
+              <a
+                class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
+                href="/about/">About</a
+              >
+            </li>
+            <li>
+              <a
+                class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
+                href="/contact/">Contact Us</a
+              >
+            </li>
+            <li>
+              <a
+                class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
+                href="/terms-of-use/">Terms of Use</a
+              >
+            </li>
+            <li>
+              <a
+                class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
+                href="/privacy-policy/">Privacy Policy</a
+              >
+            </li>
+            <li>
+              <a
+                class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
+                href="/data-disclaimer/">Data Disclaimer</a
+              >
+            </li>
+            <li>
+              <a
+                class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
+                href="/imprint/">Imprint</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
+
+    <!-- Bottom bar -->
     <div
-      class="mt-8 border-t border-gray-700 pt-8 dark:border-dark-700 md:flex md:items-center md:justify-between"
+      class="-mb-8 pb-3 mt-8 border-t border-gray-700 pt-8 dark:border-dark-700 md:flex md:items-center md:justify-between"
     >
       <div class="flex space-x-6 md:order-1">
         <a
@@ -294,7 +307,7 @@
           ></a
         >
       </div>
-      <p class="my-8 text-gray-400 dark:text-dark-400 md:order-2 md:my-0">
+      <p class="my-3 text-gray-400 dark:text-dark-400 md:order-2 md:my-0">
         © 2025 Stocknear. All rights reserved.
       </p>
     </div>
