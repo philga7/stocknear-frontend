@@ -96,9 +96,22 @@ const fetchWithTimeout = async (url, options, timeout) => {
 
 // Main data fetching function with SPX/SPY handling
 const fetchData = async (apiURL, apiKey, endpoint, ticker) => {
-  const useSpyTicker = ticker?.toLowerCase() === "^spx" && 
+  const INDEX_TO_ETF = {
+    "^spx": "SPY",     // S&P 500
+    "^dji": "DIA",     // Dow Jones Industrial Average
+    "^ixic": "QQQ",    // Nasdaq-100
+    "^rut": "IWM",     // Russell 2000
+  };
+  
+  const useProxyTicker =
+    ticker?.toLowerCase() in INDEX_TO_ETF &&
     SPY_PROXY_ENDPOINTS.includes(endpoint);
-  const effectiveTicker = useSpyTicker ? "SPY" : ticker;
+  
+  const effectiveTicker =
+    useProxyTicker ? INDEX_TO_ETF[ticker.toLowerCase()] : ticker;
+
+    
+
   
   const cacheKey = `${endpoint}-${effectiveTicker}`;
   const cachedData = dataCache.get(cacheKey);

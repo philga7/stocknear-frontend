@@ -40,7 +40,7 @@
       <!--Start Content-->
       <div class="w-auto lg:w-full flex flex-col m-auto">
         <h2 class="mb-2 text-2xl flex flex-row items-center">
-          <span class="font-bold">Top Sectors</span>
+          <span class="font-bold">Top 5 Sectors</span>
         </h2>
 
         <div class="mt-2 w-full overflow-hidden">
@@ -53,7 +53,7 @@
               </tr>
             </thead>
             <tbody>
-              {#each topSectorList as item}
+              {#each topSectorList?.slice(0, 5) as item}
                 {#if item?.weightPercentage > 0}
                   <tr class=" border-b border-gray-300 dark:border-gray-800">
                     <td class="px-1 py-1.5 text-left xs:px-2">
@@ -78,10 +78,10 @@
         </div>
 
         <a
-          href={`/industry/sectors`}
+          href={`/index/${$indexTicker}/holdings`}
           class="flex justify-center items-center rounded cursor-pointer w-full py-2 mt-3 text-[1rem] text-center font-semibold text-white dark:text-black m-auto sm:hover:bg-muted dark:sm:hover:bg-gray-300 bg-black dark:bg-[#fff] transition duration-100"
         >
-          All Sectors
+          View All Sectors
         </a>
       </div>
     </div>
