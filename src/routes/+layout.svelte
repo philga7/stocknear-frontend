@@ -1494,7 +1494,7 @@
             </aside>
           </div>
           <div class="w-full">
-            <main class="w-full overflow-y-auto sm:p-4">
+            <main class=" w-full overflow-y-auto sm:p-4">
               <slot />
 
               <Toaster position="top-center" />

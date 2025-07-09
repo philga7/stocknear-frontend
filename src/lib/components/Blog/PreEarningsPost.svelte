@@ -13,8 +13,8 @@
   export let rawData = {};
 
   onMount(() => {
-    if (rawData?.symbol) $stockTicker = rawData.symbol;
-    if (rawData?.name) $displayCompanyName = rawData.name;
+    if (rawData?.symbol) $stockTicker = rawData?.symbol;
+    if (rawData?.name) $displayCompanyName = rawData?.name;
   });
 </script>
 

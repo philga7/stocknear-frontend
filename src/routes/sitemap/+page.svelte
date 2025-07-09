@@ -237,7 +237,7 @@
                     {#each tabs as item}
                       <li>
                         <a
-                          class="sm:hover:underline sm:hover:underline-offset-4"
+                          class="text-blue-800 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
                           href={item?.link}
                           title={`Visit ${item?.title} page`}>{item?.title}</a
                         >
@@ -253,12 +253,12 @@
                   <ul
                     class="list-outside list-disc space-y-1 p-1 pl-6 md:gap-x-8 md:text-lg"
                   >
-                    {#each data?.getBlogPosts as item}
-                      {#if item?.category === "blog"}
+                    {#each data?.getBlogPosts?.slice(0, 15) as item}
+                      {#if ["blog", "pre-earnings"]?.includes(item?.category)}
                         <li>
                           <a
                             href={"/blog/article/" + convertToSlug(item?.title)}
-                            class="sm:hover:underline sm:hover:underline-offset-4"
+                            class="text-blue-800 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
                             title={`Visit ${item?.title} page`}>{item?.title}</a
                           >
                         </li>
@@ -274,12 +274,12 @@
                   <ul
                     class="list-outside list-disc space-y-1 p-1 pl-6 md:gap-x-8 md:text-lg"
                   >
-                    {#each data?.getTutorialPost as item}
+                    {#each data?.getTutorialPost?.slice(0, 15) as item}
                       <li>
                         <a
                           href={"/learning-center/article/" +
                             convertToSlug(item?.title)}
-                          class="sm:hover:underline sm:hover:underline-offset-4"
+                          class="text-blue-800 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
                           title={`Visit ${item?.title} page`}>{item?.title}</a
                         >
                       </li>
@@ -300,7 +300,7 @@
                       <li>
                         <a
                           href={"/blog/article/" + convertToSlug(item?.title)}
-                          class="sm:hover:underline sm:hover:underline-offset-4"
+                          class="text-blue-800 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
                           title={`Visit ${item?.title} page`}
                         >
                           {item?.title}

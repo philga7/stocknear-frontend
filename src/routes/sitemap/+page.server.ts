@@ -6,9 +6,16 @@ export const load = async ({locals}) => {
 
 
       // make the POST request to the endpoint
-      const output = await pb.collection("articles").getFullList({
+      let output = await pb.collection("articles").getFullList({
         sort: "-created",
       }) || [];
+
+      for (let i = 0; i < output?.length; i++) {
+        output[i].abstract = "" //faster loading set it empty
+        output[i].cover = "" //faster loading set it empty
+        output[i].description = "" //faster loading set it empty
+        output[i].data = "" //faster loading set it empty
+      }
 
     return output;
   };
