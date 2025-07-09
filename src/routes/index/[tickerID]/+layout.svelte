@@ -52,7 +52,6 @@
   function changeSection(state) {
     const sectionMap = {
       options: "/options",
-      holdings: "holdings",
       history: "/history",
     };
 
@@ -315,7 +314,6 @@
     if ($page?.url?.pathname) {
       const parts = $page?.url?.pathname?.split("/");
       const sectionMap = {
-        holdings: "holdings",
         options: "options",
         history: "history",
       };
@@ -440,16 +438,6 @@
                           Overview
                         </a>
 
-                        <a
-                          href={`/index/${$indexTicker}/holdings`}
-                          on:click={() => changeSection("holdings")}
-                          class="p-2 px-5 cursor-pointer {displaySection ===
-                          'holdings'
-                            ? ' bg-[#EEEEEE] dark:bg-secondary font-semibold'
-                            : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
-                        >
-                          Holdings
-                        </a>
                         <a
                           href={`/index/${$indexTicker}/options`}
                           on:click={() => changeSection("options")}
