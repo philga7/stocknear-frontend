@@ -1,6 +1,6 @@
 <script lang="ts">
   import { etfTicker, displayCompanyName } from "$lib/store";
-  import { formatString } from "$lib/utils";
+  import { removeCompanyStrings, abbreviateNumber } from "$lib/utils";
   import Table from "$lib/components/Table/Table.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
   import SEO from "$lib/components/SEO.svelte";
@@ -39,13 +39,21 @@
 
   function generateStatementInfoHTML() {
     if (rawData?.length > 0) {
+      const holdingsCount = rawData.length;
+
+      // build the top 5 holdings text
+      const topHoldings = rawData
+        ?.slice(0, 5)
+        ?.map((item) => {
+          return `${removeCompanyStrings(item.name)} at ${item.weightPercentage?.toFixed(2)}%`;
+        })
+        ?.join(", ")
+        ?.replace(/, ([^,]*)$/, ", and $1"); // replace last comma with ", and"
+
       return `
       <span>
-         The ${$displayCompanyName} holds ${rawData?.length} different assets
-              and the largest one in the portfolio is ${formatString(
-                rawData?.at(0)?.name,
-              )}, making up ${rawData?.at(0)?.weightPercentage?.toFixed(2)}% of
-              the total.
+        The ${$displayCompanyName} is an equity ETF with a total of ${holdingsCount} individual holdings. 
+        The top holdings are ${topHoldings}.
       </span>
     `;
     } else {
@@ -85,6 +93,84 @@
         </div>
         <div class="mt-5">
           <Infobox text={htmlOutput} />
+        </div>
+
+        <div
+          class="mt-4 shadow-xs mb-4 grid grid-cols-2 grid-rows-1 divide-gray-300 dark:divide-gray-600 rounded border border-gray-300 dark:border-gray-600 md:grid-cols-3 md:grid-rows-1 divide-x"
+        >
+          <div class="p-4 bp:p-5 sm:p-6">
+            <label
+              class="mr-1 cursor-pointer flex flex-row items-center text-[1rem]"
+            >
+              Total Holdings
+            </label>
+            <div class="mt-1 break-words font-semibold leading-8 text-xl">
+              {rawData?.length?.toLocaleString("en-US")}
+            </div>
+          </div>
+          <div
+            class="p-4 bp:p-5 sm:p-6 border-b border-gray-300 dark:border-gray-600"
+          >
+            <label
+              class="mr-1 cursor-pointer flex flex-row items-center text-[1rem]"
+            >
+              Top 10 Percentage
+            </label>
+
+            <div class="mt-1 break-words font-semibold leading-8 text-xl">
+              {rawData
+                ?.slice(0, 10)
+                ?.reduce((acc, item) => acc + (item?.weightPercentage || 0), 0)
+                ?.toFixed(2) + "%"}
+            </div>
+          </div>
+          <div class="p-4 bp:p-5 sm:p-6 border-t border-b sm:border-none">
+            <label
+              class="mr-1 cursor-pointer flex flex-row items-center text-[1rem]"
+            >
+              Asset Class
+            </label>
+
+            <div class="mt-1 break-words font-semibold leading-8 text-xl">
+              {data?.getETFProfile?.at(0)?.assetClass}
+            </div>
+          </div>
+
+          <div class="p-4 bp:p-5 sm:p-6 border-t">
+            <label
+              class="mr-1 cursor-pointer flex flex-row items-center text-[1rem]"
+            >
+              Assets
+            </label>
+
+            <div class="mt-1 break-words font-semibold leading-8 text-xl">
+              {abbreviateNumber(data?.getETFProfile?.at(0)?.aum)}
+            </div>
+          </div>
+          <div class="p-4 bp:p-5 sm:p-6">
+            <label
+              class="mr-1 cursor-pointer flex flex-row items-center text-[1rem]"
+            >
+              PE Ratio
+            </label>
+
+            <div class="mt-1 break-words font-semibold leading-8 text-xl">
+              {data?.getStockQuote?.pe?.toFixed(2) ?? "n/a"}
+            </div>
+          </div>
+          <div
+            class="p-4 bp:p-5 sm:p-6 border-t border-gray-300 dark:border-gray-600"
+          >
+            <label
+              class="mr-1 cursor-pointer flex flex-row items-center text-[1rem]"
+            >
+              Expense Ratio
+            </label>
+
+            <div class="mt-1 break-words font-semibold leading-8 text-xl">
+              {data?.getETFProfile?.at(0)?.expenseRatio?.toFixed(4) + "%"}
+            </div>
+          </div>
         </div>
 
         {#if rawData?.length > 0}
