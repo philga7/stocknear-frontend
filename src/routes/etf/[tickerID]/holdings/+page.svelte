@@ -44,56 +44,7 @@
 
   function plotPieChart() {
     // Sector allocation data
-    const sectorData = [
-      {
-        sector: "Technology",
-        weightPercentage: 33.05,
-      },
-      {
-        sector: "Financials",
-        weightPercentage: 12.36,
-      },
-      {
-        sector: "Consumer Discretionary",
-        weightPercentage: 10.35,
-      },
-      {
-        sector: "Health Care",
-        weightPercentage: 9.22,
-      },
-      {
-        sector: "Industrials",
-        weightPercentage: 8.6,
-      },
-      {
-        sector: "Communication Services",
-        weightPercentage: 7.99,
-      },
-      {
-        sector: "Consumer Staples",
-        weightPercentage: 5.52,
-      },
-      {
-        sector: "Other",
-        weightPercentage: 3.58,
-      },
-      {
-        sector: "Energy",
-        weightPercentage: 3.01,
-      },
-      {
-        sector: "Utilities",
-        weightPercentage: 2.38,
-      },
-      {
-        sector: "Real Estate",
-        weightPercentage: 2.03,
-      },
-      {
-        sector: "Materials",
-        weightPercentage: 1.91,
-      },
-    ];
+    const sectorData = data?.getETFSectorWeighting;
 
     // Color palette matching the screenshot
     const colors = [
@@ -186,60 +137,11 @@
 
   function plotBarChart() {
     // Sector allocation data
-    const sectorData = [
-      {
-        sector: "Technology",
-        weightPercentage: 33.05,
-      },
-      {
-        sector: "Financials",
-        weightPercentage: 12.36,
-      },
-      {
-        sector: "Consumer Discretion...",
-        weightPercentage: 10.35,
-      },
-      {
-        sector: "Health Care",
-        weightPercentage: 9.22,
-      },
-      {
-        sector: "Industrials",
-        weightPercentage: 8.6,
-      },
-      {
-        sector: "Communication Serv...",
-        weightPercentage: 7.99,
-      },
-      {
-        sector: "Consumer Staples",
-        weightPercentage: 5.52,
-      },
-      {
-        sector: "Other",
-        weightPercentage: 3.58,
-      },
-      {
-        sector: "Energy",
-        weightPercentage: 3.01,
-      },
-      {
-        sector: "Utilities",
-        weightPercentage: 2.38,
-      },
-      {
-        sector: "Real Estate",
-        weightPercentage: 2.03,
-      },
-      {
-        sector: "Materials",
-        weightPercentage: 1.91,
-      },
-    ];
+    const sectorData = data?.getETFSectorWeighting;
 
     // Transform data for Highcharts horizontal bar chart
     const categories = sectorData.map((item) => item.sector);
-    const data = sectorData.map((item) => item.weightPercentage);
+    const values = sectorData.map((item) => item.weightPercentage);
 
     // Highcharts configuration options
     const options = {
@@ -288,7 +190,7 @@
         bar: {
           dataLabels: {
             enabled: true,
-            inside: false,
+            inside: true,
             align: "left",
             x: 5,
             style: {
@@ -323,7 +225,7 @@
       series: [
         {
           name: "Percentage",
-          data: data,
+          data: values,
           animation: false,
         },
       ],
