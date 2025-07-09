@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { etfTicker, displayCompanyName, screenWidth } from "$lib/store";
-  import { removeCompanyStrings, abbreviateNumber } from "$lib/utils";
+  import { indexTicker, displayCompanyName, screenWidth } from "$lib/store";
+  import { removeCompanyStrings } from "$lib/utils";
   import Table from "$lib/components/Table/Table.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
   import SEO from "$lib/components/SEO.svelte";
@@ -274,8 +274,8 @@
 </script>
 
 <SEO
-  title={`${$displayCompanyName} (${$etfTicker}) Holdings List`}
-  description={`Get the Holdings List of ${$displayCompanyName} (${$etfTicker}).`}
+  title={`${$displayCompanyName} (${$indexTicker}) Holdings List`}
+  description={`Get the Holdings List of ${$displayCompanyName} (${$indexTicker}).`}
 />
 
 <section
@@ -288,7 +288,7 @@
       <div class="mt-5 sm:mt-0 sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto">
         <div class="flex flex-row items-center md:space-x-4 md:border-0">
           <h1 class=" text-xl sm:text-2xl font-bold">
-            {$etfTicker} Holdings List
+            {$indexTicker} Holdings List
           </h1>
           {#if data?.getETFHoldings?.lastUpdate}
             <div
