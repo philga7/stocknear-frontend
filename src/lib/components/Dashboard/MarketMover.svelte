@@ -182,7 +182,7 @@
               >
               <td
                 class="border border-gray-300 dark:border-gray-800 py-1.5 text-right px-3 sm:py-2 xl:px-3.5 xxxl:px-4"
-                >${item?.price}</td
+                >${item?.price ? item?.price?.toFixed(2) : item?.price}</td
               >
               <td
                 class="border border-gray-300 dark:border-gray-800 py-1.5 text-right text-red-default px-3 sm:py-2 xl:px-3.5 xxxl:px-4"

@@ -2026,7 +2026,7 @@ export let allCards = [
     label: 'AI Agent',
     icon: `<svg
     fill="currentColor"
-    class="h-8 w-8"
+    class="h-8 w-8 text-gray-500 dark:text-white"
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -2056,7 +2056,7 @@ export let allCards = [
     label: 'Options Flow',
     icon: ` <svg
               fill="currentColor"
-              class="h-8 w-8"
+              class="h-8 w-8 text-gray-500 dark:text-white"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
               ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
@@ -2093,7 +2093,7 @@ export let allCards = [
     label: 'POTUS Tracker',
     icon: ` <svg
               fill="currentColor"
-              class="h-9 w-9"
+              class="h-9 w-9 text-gray-500 dark:text-white"
               version="1.1"
               id="Capa_1"
               xmlns="http://www.w3.org/2000/svg"
@@ -2116,14 +2116,14 @@ export let allCards = [
   {
     href: '/stock-screener',
     label: 'Stock Screener',
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-8 w-8" aria-hidden="true"><path d="M6 12a.75.75 0 01-.75-.75v-7.5a.75.75 0 111.5 0v7.5A.75.75 0 016 12zM18 12a.75.75 0 01-.75-.75v-7.5a.75.75 0 011.5 0v7.5A.75.75 0 0118 12zM6.75 20.25v-1.5a.75.75 0 00-1.5 0v1.5a.75.75 0 001.5 0zM18.75 18.75v1.5a.75.75 0 01-1.5 0v-1.5a.75.75 0 011.5 0zM12.75 5.25v-1.5a.75.75 0 00-1.5 0v1.5a.75.75 0 001.5 0zM12 21a.75.75 0 01-.75-.75v-7.5a.75.75 0 011.5 0v7.5A.75.75 0 0112 21zM3.75 15a2.25 2.25 0 104.5 0 2.25 2.25 0 00-4.5 0zM12 11.25a2.25 2.25 0 110-4.5 2.25 2.25 0 010 4.5zM15.75 15a2.25 2.25 0 104.5 0 2.25 2.25 0 00-4.5 0z"></path></svg>`,
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-8 w-8 text-gray-500 dark:text-white" aria-hidden="true"><path d="M6 12a.75.75 0 01-.75-.75v-7.5a.75.75 0 111.5 0v7.5A.75.75 0 016 12zM18 12a.75.75 0 01-.75-.75v-7.5a.75.75 0 011.5 0v7.5A.75.75 0 0118 12zM6.75 20.25v-1.5a.75.75 0 00-1.5 0v1.5a.75.75 0 001.5 0zM18.75 18.75v1.5a.75.75 0 01-1.5 0v-1.5a.75.75 0 011.5 0zM12.75 5.25v-1.5a.75.75 0 00-1.5 0v1.5a.75.75 0 001.5 0zM12 21a.75.75 0 01-.75-.75v-7.5a.75.75 0 011.5 0v7.5A.75.75 0 0112 21zM3.75 15a2.25 2.25 0 104.5 0 2.25 2.25 0 00-4.5 0zM12 11.25a2.25 2.25 0 110-4.5 2.25 2.25 0 010 4.5zM15.75 15a2.25 2.25 0 104.5 0 2.25 2.25 0 00-4.5 0z"></path></svg>`,
   },
   {
     href: '/compare',
     label: 'Compare Stocks',
     icon: `<svg
               fill="currentColor"
-              class="h-8 w-8"
+              class="h-8 w-8 text-gray-500 dark:text-white"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
               ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
@@ -2144,7 +2144,7 @@ export let allCards = [
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
-              class="h-8 w-8"
+              class="h-8 w-8 text-gray-500 dark:text-white"
               aria-hidden="true"
               ><path
                 fill-rule="evenodd"
@@ -2160,7 +2160,7 @@ export let allCards = [
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
-              class="h-8 w-8"
+              class="h-8 w-8 text-gray-500 dark:text-white"
               aria-hidden="true"
               ><path
                 fill-rule="evenodd"
@@ -2176,7 +2176,7 @@ export let allCards = [
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
-              class="h-8 w-8"
+              class="h-8 w-8 text-gray-500 dark:text-white"
               aria-hidden="true"
               ><path
                 fill-rule="evenodd"
@@ -2192,7 +2192,7 @@ export let allCards = [
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
-              class="h-8 w-8"
+              class="h-8 w-8 text-gray-500 dark:text-white"
               aria-hidden="true"
               ><path
                 fill-rule="evenodd"
@@ -2208,7 +2208,7 @@ export let allCards = [
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
-              class="h-8 w-8"
+              class="h-8 w-8 text-gray-500 dark:text-white"
               aria-hidden="true"
               ><path
                 fill-rule="evenodd"
@@ -2224,7 +2224,7 @@ export let allCards = [
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
-              class="h-8 w-8"
+              class="h-8 w-8 text-gray-500 dark:text-white"
               aria-hidden="true"
               ><path
                 fill-rule="evenodd"
