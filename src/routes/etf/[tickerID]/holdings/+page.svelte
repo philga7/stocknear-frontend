@@ -380,22 +380,24 @@
           </div>
         </div>
 
-        <div class="">
-          <div class="grow mt-5">
-            <div class="relative">
-              <h2 class="mb-2 text-xl sm:text-2xl font-bold">
-                Sector Allocation
-              </h2>
+        {#if data?.getETFSectorWeighting?.at(0)?.weightPercentage > 0}
+          <div class="">
+            <div class="grow mt-5">
+              <div class="relative">
+                <h2 class="mb-2 text-xl sm:text-2xl font-bold">
+                  Sector Allocation
+                </h2>
 
-              <div
-                class=" sm:p-3 shadow-xs border border-gray-300 dark:border-gray-800 rounded"
-                use:highcharts={$screenWidth < 640
-                  ? configBarChart
-                  : configPieChart}
-              ></div>
+                <div
+                  class=" sm:p-3 shadow-xs border border-gray-300 dark:border-gray-800 rounded"
+                  use:highcharts={$screenWidth < 640
+                    ? configBarChart
+                    : configPieChart}
+                ></div>
+              </div>
             </div>
           </div>
-        </div>
+        {/if}
 
         {#if rawData?.length > 0}
           <Table
