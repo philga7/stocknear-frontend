@@ -48,6 +48,56 @@
   let displaySection = "";
   let displayLegend = {};
 
+  let isComponentDestroyed = false;
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+  function clearScheduledUpdate() {
+    if (timeoutId !== null) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
+  }
+
+  function scheduleNextUpdate(delay = 6000) {
+    if (isComponentDestroyed) {
+      console.log("Component destroyed. Not scheduling update.");
+      return;
+    }
+
+    if ($isOpen) {
+      console.log("Market is Open!");
+      return;
+    }
+
+    clearScheduledUpdate();
+    timeoutId = setTimeout(updateOptionsFlowData, delay);
+  }
+
+  $: {
+    if (!$isOpen) {
+      scheduleNextUpdate();
+    } else {
+      clearScheduledUpdate();
+    }
+  }
+
+  async function updateOptionsFlowData() {
+    try {
+      const postData = { ticker: $stockTicker, path: "pre-post-quote" };
+      const response = await fetch("/api/ticker-data", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(postData),
+      });
+
+      prePostData = (await response.json()) || {};
+    } catch (error) {
+      console.error("Failed to fetch real-time data:", error);
+    } finally {
+      scheduleNextUpdate();
+    }
+  }
+
   function changeSection(state) {
     const sectionMap = {
       insider: "/insider",
@@ -219,6 +269,9 @@
   });
 
   onDestroy(() => {
+    isComponentDestroyed = true;
+    // --- Clear any pending timeout on destroy ---
+    clearScheduledUpdate();
     try {
       //socket?.send('close')
       socket?.close();
