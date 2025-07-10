@@ -58,7 +58,7 @@
     }
   }
 
-  function scheduleNextUpdate(delay = 6000) {
+  function scheduleNextUpdate(delay = 8000) {
     if (isComponentDestroyed) {
       console.log("Component destroyed. Not scheduling update.");
       return;
@@ -90,7 +90,10 @@
         body: JSON.stringify(postData),
       });
 
-      prePostData = (await response.json()) || {};
+      const output = (await response?.json()) || null;
+      if (output && !output?.message) {
+        prePostData = output;
+      }
     } catch (error) {
       console.error("Failed to fetch real-time data:", error);
     } finally {
