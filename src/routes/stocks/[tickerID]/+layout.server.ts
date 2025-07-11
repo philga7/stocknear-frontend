@@ -16,6 +16,43 @@ const REMOVE_PATTERNS = {
   ].join("|")})\\b|,`, "gi")
 };
 
+const checkMarketHour = () => {
+  const holidays = [
+    "2025-01-01",
+    "2025-01-09",
+    "2025-01-20",
+    "2025-02-17",
+    "2025-04-18",
+    "2025-05-26",
+    "2025-06-19",
+    "2025-07-04",
+    "2025-09-01",
+    "2025-11-27",
+    "2025-12-25",
+  ];
+
+  const currentDate = new Date().toISOString().split("T")[0];
+
+  const etTimeZone = "America/New_York";
+  const nowET = new Date(
+    new Date().toLocaleString("en-US", { timeZone: etTimeZone })
+  );
+
+  const day = nowET.getDay(); // 0 = Sunday, 6 = Saturday
+  const hour = nowET.getHours();
+  const minutes = nowET.getMinutes();
+
+  const isWeekend = day === 0 || day === 6;
+  const isHoliday = holidays.includes(currentDate);
+  const isBeforeOpen = hour < 9 || (hour === 9 && minutes < 30);
+  const isAfterClose = hour > 16 || (hour === 16 && minutes > 0);
+
+  const isOpen = !(isWeekend || isHoliday || isBeforeOpen || isAfterClose);
+
+  return isOpen;
+};
+
+
 // Memoized string cleaning function
 const cleanString = (() => {
   const cache = new Map();
@@ -141,18 +178,16 @@ export const load = async ({ params, locals }) => {
   }
 
   try {
-    // Fetch data in parallel
     const [stockData, userWatchlist] = await Promise.all([
       fetchData(apiURL, apiKey, "/bulk-data", tickerID),
       fetchWatchlist(pb, user?.id)
     ]);
 
-    // Destructure with default empty object to prevent undefined errors
     const {
       '/stockdeck': getStockDeck = {},
       '/analyst-summary-rating': getAnalystSummary = {},
       '/stock-quote': getStockQuote = {},
-      '/pre-post-quote': getPrePostQuote = {},
+      '/pre-post-quote': fetchedPrePostQuote = {},
       '/wiim': getWhyPriceMoved = {},
       '/one-day-price': getOneDayPrice = {},
       '/next-earnings': getNextEarnings = {},
@@ -160,6 +195,8 @@ export const load = async ({ params, locals }) => {
       '/stock-news': getNews = {}
     } = stockData;
 
+    // 👇 Decide based on market hours
+    const getPrePostQuote = checkMarketHour() ?  {} : fetchedPrePostQuote;
     return {
       getStockDeck,
       getAnalystSummary,
