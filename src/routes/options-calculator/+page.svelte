@@ -889,10 +889,10 @@
                 <button
                   type="button"
                   on:click={() => handleAddOptionLeg()}
-                  class="cursor-pointer mt-3 sm:mt-0 sm:ml-3 align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm shadow-xs border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
+                  class="cursor-pointer mt-3 sm:mt-0 sm:ml-3 align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm shadow-xs border-gray-300 dark:border-gray-600 border bg-default sm:hover:bg-black text-white dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
                 >
                   <svg
-                    class="-ml-0.5 h-5 w-5 text-gray-600 dark:text-gray-300"
+                    class="-ml-0.5 h-5 w-5"
                     viewBox="0 0 20 20"
                     fill="currentColor"
                     aria-hidden="true"
@@ -908,7 +908,7 @@
                 <button
                   type="button"
                   on:click={handleSaveStrategy}
-                  class="cursor-pointer mt-3 sm:mt-0 sm:ml-3 align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm shadow-xs border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
+                  class="cursor-pointer mt-3 sm:mt-0 sm:ml-3 align-middle inline-flex items-center gap-x-1.5 rounded px-2.5 py-2 text-sm shadow-xs border-gray-300 bg-default sm:hover:bg-black text-white dark:border-gray-600 border dark:sm:hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none transition duration-150 ease-in-out whitespace-nowrap"
                 >
                   <svg
                     class="w-3.5 h-3.5 inline-block cursor-pointer shrink-0"
@@ -928,7 +928,7 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
+                        class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-default sm:hover:bg-black text-white dark:bg-default  dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                       >
                         <span class="truncate">Custom Strategy</span>
                         <svg
@@ -947,6 +947,10 @@
                       </Button>
                     </DropdownMenu.Trigger>
                     <DropdownMenu.Content
+                      side="bottom"
+                      align="end"
+                      sideOffset={10}
+                      alignOffset={0}
                       class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                     >
                       <DropdownMenu.Label

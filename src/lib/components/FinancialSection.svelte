@@ -289,6 +289,10 @@
                         </Button>
                       </DropdownMenu.Trigger>
                       <DropdownMenu.Content
+                        side="bottom"
+                        align="end"
+                        sideOffset={10}
+                        alignOffset={0}
                         class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                       >
                         <DropdownMenu.Label

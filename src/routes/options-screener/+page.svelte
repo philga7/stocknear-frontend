@@ -1381,7 +1381,7 @@
         <div class="mt-3 flex flex-col gap-y-2.5 sm:flex-row lg:gap-y-2">
           <label
             for="ruleModal"
-            class="text-[0.95rem] text-white inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-blue-500 sm:hover:bg-blue-600 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+            class="text-[0.95rem] text-white inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-default sm:hover:bg-black dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden"
           >
             <svg
               class="h-5 w-5"
@@ -1403,7 +1403,7 @@
             <DropdownMenu.Trigger asChild let:builder>
               <Button
                 builders={[builder]}
-                class="sm:ml-2 h-10 w-full sm:w-fit border-none text-[0.95rem] text-white inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-blue-500 sm:hover:bg-blue-600 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out"
+                class="sm:ml-2 h-10 w-full sm:w-fit border-none text-[0.95rem] text-white inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-default sm:hover:bg-black dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out"
               >
                 <span class="truncate text-sm">{formatDate(selectedDate)}</span>
                 <svg
@@ -1423,6 +1423,10 @@
             </DropdownMenu.Trigger>
 
             <DropdownMenu.Content
+              side="bottom"
+              align="end"
+              sideOffset={10}
+              alignOffset={0}
               class="min-w-48 w-auto max-w-60 max-h-[400px] overflow-y-auto scroller relative"
             >
               <!-- Dropdown items -->
@@ -1477,7 +1481,7 @@
             <label
               for={!data?.user ? "userLogin" : ""}
               on:click={() => handleSave(true)}
-              class="text-[0.95rem] sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+              class="text-[0.95rem] sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden "
             >
               <svg
                 class="h-5 w-5"
@@ -1497,7 +1501,7 @@
                 on:click={() => {
                   handleCreateStrategy();
                 }}
-                class="text-[0.95rem] sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                class="text-[0.95rem] sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden "
               >
                 <Copy class="w-4 h-4 inline-block mr-2" />
                 <div>Save as New</div>
@@ -1509,7 +1513,7 @@
           {#if ruleOfList?.length !== 0}
             <label
               on:click={handleResetAll}
-              class="text-[0.95rem] sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:text-red-500 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+              class="text-[0.95rem] sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold shadow-xs bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:text-red-500 ease-out focus:outline-hidden"
             >
               <svg
                 class="h-4 w-4"
@@ -1571,7 +1575,7 @@
               <div class="flex items-center">
                 <button
                   on:click={() => handleDeleteRule(row?.rule)}
-                  class="mr-1.5 cursor-pointer text-gray-500 dark:text-gray-300 sm:hover:text-red-500 focus:outline-hidden"
+                  class="mr-1.5 cursor-pointer text-muted dark:text-gray-300 sm:hover:text-red-800 dark:sm:hover:text-red-400 focus:outline-hidden"
                   title="Remove filter"
                   >{#if ruleOfList?.find((item) => item.name === row?.rule)?.value !== "any"}
                     <svg
@@ -1609,7 +1613,7 @@
                       <DropdownMenu.Trigger asChild let:builder>
                         <Button
                           builders={[builder]}
-                          class="border-gray-300 dark:border-none shadow-xs bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center w-[140px] xs:w-[130px] sm:w-[140px] px-3  rounded truncate"
+                          class="border-gray-300 dark:border-none shadow-xs bg-default sm:hover:bg-black text-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center w-[140px] xs:w-[130px] sm:w-[140px] px-3  rounded truncate"
                         >
                           <span class="truncate ml-2 text-sm">
                             {#if valueMappings[row?.rule] === "any"}
@@ -1642,6 +1646,10 @@
                         </Button>
                       </DropdownMenu.Trigger>
                       <DropdownMenu.Content
+                        side="bottom"
+                        align="end"
+                        sideOffset={10}
+                        alignOffset={0}
                         class="w-64 min-h-auto max-h-72 overflow-y-auto scroller"
                       >
                         {#if !["optionType", "assetType"]?.includes(row?.rule)}
@@ -2417,7 +2425,7 @@
 
       <button
         type="submit"
-        class="cursor-pointer mt-2 py-2.5 bg-blue-500 sm:hover:bg-blue-600 dark:bg-[#fff] dark:sm:hover:bg-gray-300 duration-100 w-full rounded m-auto text-white dark:text-black font-semibold text-md"
+        class="cursor-pointer mt-2 py-2.5 bg-default sm:hover:bg-black dark:bg-[#fff] dark:sm:hover:bg-gray-300 duration-100 w-full rounded m-auto text-white dark:text-black font-semibold text-md"
       >
         Create Screener
       </button>

@@ -1872,7 +1872,7 @@
                       class="inline-flex justify-center w-full rounded sm:w-auto mb-3"
                     >
                       <div
-                        class="bg-gray-200 dark:bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded p-1 mt-4"
+                        class="bg-default text-white dark:bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded p-1 mt-4"
                       >
                         {#each tabs as item, i}
                           {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}

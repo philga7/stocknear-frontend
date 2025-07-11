@@ -96,9 +96,7 @@
   }
 </script>
 
-<tr
-  class="bg-white dark:bg-default border-b border-[#27272A] text-muted dark:text-white"
->
+<tr class="bg-default border-b border-[#27272A] text-white">
   {#each columns as column}
     <th
       on:click={() => sortData(column.key)}

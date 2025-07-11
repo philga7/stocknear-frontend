@@ -426,7 +426,7 @@
                   class="table table-sm table-compact rounded-none sm:rounded w-full bg-white dark:bg-table border border-gray-300 dark:border-gray-800 m-auto mt-4"
                 >
                   <!-- head -->
-                  <thead class="text-muted dark:text-white dark:bg-default">
+                  <thead class="text-white bg-default">
                     <tr class="">
                       <th class=" font-semibold text-sm sm:text-[1rem]"
                         >Symbol</th
@@ -543,7 +543,7 @@
                   class="inline-flex justify-center w-full rounded sm:w-auto mb-3"
                 >
                   <div
-                    class="bg-gray-200 dark:bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded p-1 mt-4"
+                    class="bg-default text-white dark:bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded p-1 mt-4"
                   >
                     {#each tabs as item, i}
                       {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}

@@ -270,7 +270,7 @@
             <DropdownMenu.Trigger asChild let:builder>
               <Button
                 builders={[builder]}
-                class="filter-type-driver border-gray-300 dark:border-gray-600 border border-gray-300 shadow-xs sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  px-3 py-2  rounded "
+                class="filter-type-driver border-gray-300 dark:border-gray-600 border border-gray-300  text-white bg-default sm:hover:bg-black dark:sm:hover:bg-primary ease-out  px-3 py-2  rounded "
               >
                 <span class="truncate">Filter Type</span>
                 <svg
@@ -289,6 +289,10 @@
               </Button>
             </DropdownMenu.Trigger>
             <DropdownMenu.Content
+              side="bottom"
+              align="end"
+              sideOffset={10}
+              alignOffset={0}
               class="w-56 h-fit max-h-72 overflow-y-auto scroller"
             >
               <DropdownMenu.Group>
