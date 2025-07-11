@@ -79,7 +79,7 @@
       minValue = data?.getStockQuote?.dayLow;
     }
 
-    let padding = 0.015;
+    let padding = 0.002;
     let yMin = minValue * (1 - padding) === 0 ? null : minValue * (1 - padding);
     let yMax = maxValue * (1 + padding) === 0 ? null : maxValue * (1 + padding);
 

@@ -24,7 +24,7 @@
             >
           </h1>
 
-          <div class="mt-[1px] text-xs text-gray-600 dark:text-gray-300">
+          <div class="mt-[1px] text-xs text-gray-800 dark:text-gray-300">
             {data?.getStockQuote?.exchange}: {ticker?.toUpperCase()}
             · Real-Time Price · USD
           </div>
@@ -32,7 +32,7 @@
       </div>
 
       <div
-        class=" sm:-mt-5 mb-5 flex flex-row items-end space-x-2 xs:space-x-3 sm:space-x-5 divide-x sm:divide-none divide-gray-300 dark:divide-gray-600"
+        class="-mt-3.5 sm:-mt-7 mb-3 flex flex-row items-end space-x-2 xs:space-x-3 sm:space-x-5 divide-x sm:divide-none divide-gray-300 dark:divide-gray-600"
       >
         <div class="w-full max-w-[50%] whitespace-nowrap pr-5">
           <div

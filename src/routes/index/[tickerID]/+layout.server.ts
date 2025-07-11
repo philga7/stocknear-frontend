@@ -1,3 +1,5 @@
+import { checkMarketHourSSR} from "$lib/utils";
+
 // Pre-compile regex pattern and substrings for cleaning
 const REMOVE_PATTERNS = {
   pattern: new RegExp(`\\b(${[
@@ -182,7 +184,7 @@ export const load = async ({ params, locals }) => {
   }
 
   try {
-    const promises = ENDPOINTS.map(endpoint => 
+    const promises = ENDPOINTS.map(endpoint =>
       fetchData(apiURL, apiKey, endpoint, tickerID)
     );
     promises.push(fetchWatchlist(pb, user?.id));
@@ -192,19 +194,21 @@ export const load = async ({ params, locals }) => {
       getIndexHolding,
       getIndexSectorWeighting,
       getStockQuote,
-      getPrePostQuote,
+      fetchedPrePostQuote,
       getWhyPriceMoved,
       getOneDayPrice,
       getNews,
       getUserWatchlist,
     ] = await Promise.all(promises);
 
+    const getPrePostQuote = (checkMarketHourSSR() || {} ) ? {} : fetchedPrePostQuote;
+
     return {
       getIndexProfile: getIndexProfile || [],
       getIndexHolding: getIndexHolding || [],
       getIndexSectorWeighting: getIndexSectorWeighting || [],
       getStockQuote: getStockQuote || [],
-      getPrePostQuote: getPrePostQuote || [],
+      getPrePostQuote,
       getWhyPriceMoved: getWhyPriceMoved || [],
       getOneDayPrice: getOneDayPrice || [],
       getNews: getNews || [],

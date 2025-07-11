@@ -1,3 +1,5 @@
+import { checkMarketHourSSR} from "$lib/utils";
+
 // Pre-compile regex pattern and substrings for cleaning
 const REMOVE_PATTERNS = {
   pattern: new RegExp(`\\b(${[
@@ -146,18 +148,20 @@ export const load = async ({ params, locals }) => {
       fetchWatchlist(pb, user?.id)
     ]);
 
-    // Destructure with default empty arrays to prevent undefined errors
     const {
       '/etf-profile': getETFProfile = [],
       '/etf-holdings': getETFHoldings = [],
       '/etf-sector-weighting': getETFSectorWeighting = [],
       '/stock-dividend': getStockDividend = [],
       '/stock-quote': getStockQuote = [],
-      '/pre-post-quote': getPrePostQuote = [],
+      '/pre-post-quote': fetchedPrePostQuote = {},
       '/wiim': getWhyPriceMoved = [],
       '/one-day-price': getOneDayPrice = [],
       '/stock-news': getNews = []
     } = bulkData;
+
+    // 👇 override if market is closed
+    const getPrePostQuote = checkMarketHourSSR() ?  {} : fetchedPrePostQuote;
 
     return {
       getETFProfile,
@@ -177,6 +181,7 @@ export const load = async ({ params, locals }) => {
     return getDefaultResponse(tickerID);
   }
 };
+
 
 // Helper function to generate default response
 const getDefaultResponse = (tickerID) => ({

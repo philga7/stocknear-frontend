@@ -1,3 +1,5 @@
+import { checkMarketHourSSR} from "$lib/utils";
+
 // Pre-compile regex pattern and substrings for cleaning
 const REMOVE_PATTERNS = {
   pattern: new RegExp(`\\b(${[
@@ -16,41 +18,6 @@ const REMOVE_PATTERNS = {
   ].join("|")})\\b|,`, "gi")
 };
 
-const checkMarketHour = () => {
-  const holidays = [
-    "2025-01-01",
-    "2025-01-09",
-    "2025-01-20",
-    "2025-02-17",
-    "2025-04-18",
-    "2025-05-26",
-    "2025-06-19",
-    "2025-07-04",
-    "2025-09-01",
-    "2025-11-27",
-    "2025-12-25",
-  ];
-
-  const currentDate = new Date().toISOString().split("T")[0];
-
-  const etTimeZone = "America/New_York";
-  const nowET = new Date(
-    new Date().toLocaleString("en-US", { timeZone: etTimeZone })
-  );
-
-  const day = nowET.getDay(); // 0 = Sunday, 6 = Saturday
-  const hour = nowET.getHours();
-  const minutes = nowET.getMinutes();
-
-  const isWeekend = day === 0 || day === 6;
-  const isHoliday = holidays.includes(currentDate);
-  const isBeforeOpen = hour < 9 || (hour === 9 && minutes < 30);
-  const isAfterClose = hour > 16 || (hour === 16 && minutes > 0);
-
-  const isOpen = !(isWeekend || isHoliday || isBeforeOpen || isAfterClose);
-
-  return isOpen;
-};
 
 
 // Memoized string cleaning function
@@ -196,7 +163,7 @@ export const load = async ({ params, locals }) => {
     } = stockData;
 
     // 👇 Decide based on market hours
-    const getPrePostQuote = checkMarketHour() ?  {} : fetchedPrePostQuote;
+    const getPrePostQuote = checkMarketHourSSR() ?  {} : fetchedPrePostQuote;
     return {
       getStockDeck,
       getAnalystSummary,
