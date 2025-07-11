@@ -166,10 +166,6 @@
       link: "/pricing",
     },
     {
-      title: "Discord Bot",
-      link: "/discord-bot",
-    },
-    {
       title: "Free Newsletter",
       link: "/newsletter",
     },

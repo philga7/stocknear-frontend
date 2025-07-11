@@ -87,12 +87,7 @@
                 href="/pricing/">Pricing Plan</a
               >
             </li>
-            <li>
-              <a
-                class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
-                href="/discord-bot/">Discord Bot</a
-              >
-            </li>
+
             <li>
               <a
                 class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
