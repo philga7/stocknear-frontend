@@ -553,13 +553,13 @@
                       ><td
                         class="px-4 last:pr-11 w-17 last:w-24.5 border border-gray-300 dark:border-primary px-3.5 py-0.5 px-1 text-right"
                       ></td><td
-                        class="px-4 last:pr-11 w-17 last:w-24.5 border-gray-300 dark:border-primary px-3.5 py-0.5 border-l border-r border-violet-800 dark:border-l-violet-500 px-1 text-right"
+                        class="px-4 last:pr-11 w-17 last:w-24.5 border-gray-300 dark:border-primary px-3.5 py-0.5 dark:border-l-violet-500 px-1 text-right"
                         ><div
-                          class="w-full whitespace-nowrap rounded border-gray-800 text-sm sm:text-[1rem] {item?.open_change_percent &&
+                          class="text-center w-full whitespace-nowrap rounded border-gray-800 text-sm sm:text-[1rem] {item?.open_change_percent &&
                           item?.open_change_percent >= 0
-                            ? "bg-positive/60 before:content-['+'] badge-lg"
+                            ? "bg-positive/60 before:content-['+'] "
                             : item?.open_change_percent < 0
-                              ? 'bg-negative/70 badge-lg'
+                              ? 'bg-negative/70 '
                               : ''}"
                         >
                           {item?.open_change_percent
@@ -569,11 +569,11 @@
                       ><td
                         class="px-4 last:pr-11 w-17 last:w-24.5 px-3.5 py-0.5 px-1 text-right border-l border-r border-gray-300 dark:border-primary"
                         ><div
-                          class="w-full whitespace-nowrap rounded border-gray-800 text-sm sm:text-[1rem] {item?.high_change_percent &&
+                          class="text-center w-full whitespace-nowrap rounded border-gray-800 text-sm sm:text-[1rem] {item?.high_change_percent &&
                           item?.high_change_percent >= 0
-                            ? "bg-positive/60 before:content-['+'] badge-lg"
+                            ? "bg-positive/60 before:content-['+'] "
                             : item?.high_change_percent < 0
-                              ? 'bg-negative/70 badge-lg'
+                              ? 'bg-negative/70 '
                               : ''}"
                         >
                           {item?.high_change_percent
@@ -583,11 +583,11 @@
                       ><td
                         class="px-4 last:pr-11 w-17 last:w-24.5 border-gray-300 px-3.5 py-0.5 px-1 text-right border-l border-r border-gray-300 dark:border-primary"
                         ><div
-                          class="w-full whitespace-nowrap rounded border-gray-800 text-sm sm:text-[1rem] {item?.low_change_percent &&
+                          class="text-center w-full whitespace-nowrap rounded border-gray-800 text-sm sm:text-[1rem] {item?.low_change_percent &&
                           item?.low_change_percent >= 0
-                            ? "bg-positive/60 before:content-['+'] badge-lg"
+                            ? "bg-positive/60 before:content-['+'] "
                             : item?.low_change_percent
-                              ? 'bg-negative/70 badge-lg'
+                              ? 'bg-negative/70 '
                               : ''}"
                         >
                           {item?.low_change_percent
@@ -595,13 +595,13 @@
                             : "-"}
                         </div></td
                       ><td
-                        class="px-4 last:pr-11 w-17 last:w-24.5 border-r border-violet-800 dark:border-violet-500 px-3.5 py-0.5 px-1 text-right"
+                        class="px-4 last:pr-11 w-17 last:w-24.5 border-r border-gray-300 dark:border-violet-500 px-3.5 py-0.5 px-1 text-right"
                         ><div
-                          class="w-full whitespace-nowrap rounded border-gray-800 text-sm sm:text-[1rem] {item?.close_change_percent &&
+                          class="text-center w-full whitespace-nowrap rounded border-gray-800 text-sm sm:text-[1rem] {item?.close_change_percent &&
                           item?.close_change_percent >= 0
-                            ? "bg-positive/60 before:content-['+'] badge-lg "
+                            ? "bg-positive/60 before:content-['+']  "
                             : item?.close_change_percent < 0
-                              ? 'bg-negative/70 badge-lg'
+                              ? 'bg-negative/70 '
                               : ''}"
                         >
                           {item?.close_change_percent
