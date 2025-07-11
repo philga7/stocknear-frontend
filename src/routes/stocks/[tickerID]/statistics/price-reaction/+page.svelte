@@ -202,7 +202,7 @@
               class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6"
             >
               <div
-                class="eps-beats-driver shadow-md bg-gray-100 dark:bg-[#1C1E22] rounded p-4"
+                class="eps-beats-driver shadow-md bg-gray-200 dark:bg-[#1C1E22] rounded p-4"
               >
                 <div class=" text-sm mb-2 flex items-center">
                   <span>EPS Beats Estimate</span>
@@ -216,7 +216,9 @@
                       >{`${earningsData?.positiveEpsSurprises}/${earningsData?.totalReports}`}
                       quarters</span
                     >
-                    <span class="text-xs text-violet-700 dark:text-violet-400">
+                    <span
+                      class="text-xs font-semibold text-violet-700 dark:text-violet-400"
+                    >
                       {earningsData?.positiveEpsSurprises >
                       earningsData?.totalReports / 2
                         ? "Above Average"
@@ -227,7 +229,7 @@
               </div>
 
               <div
-                class="revenue-beats-driver shadow-md bg-gray-100 dark:bg-[#1C1E22] rounded p-4"
+                class="revenue-beats-driver shadow-md bg-gray-200 dark:bg-[#1C1E22] rounded p-4"
               >
                 <div class=" text-sm mb-2 flex items-center">
                   <span>Revenue Beats Estimate</span>
@@ -241,7 +243,9 @@
                       >{`${earningsData?.positiveRevenueSurprises}/${earningsData?.totalReports}`}
                       quarters</span
                     >
-                    <span class="text-xs text-red-800 dark:text-red-400">
+                    <span
+                      class="text-xs font-semibold text-red-800 dark:text-red-400"
+                    >
                       {earningsData?.positiveRevenueSurprises >
                       earningsData?.totalReports / 2
                         ? "Above Average"
@@ -252,7 +256,7 @@
               </div>
 
               <div
-                class="avg-price-impact-driver shadow-md bg-gray-100 dark:bg-[#1C1E22] rounded p-4"
+                class="avg-price-impact-driver shadow-md bg-gray-200 dark:bg-[#1C1E22] rounded p-4"
               >
                 <div class=" text-sm mb-2 flex items-center">
                   <span>Avg. Price Impact</span>
@@ -266,9 +270,9 @@
                   <div class="flex flex-col ml-2">
                     <span class="text-sm">Next Day</span>
                     <span
-                      class="text-xs text-{metrics?.avgPriceImpact >= 0
-                        ? 'green'
-                        : 'red'}-400"
+                      class="text-xs font-semibold {metrics?.avgPriceImpact >= 0
+                        ? 'text-green-800 dark:text-green-400'
+                        : 'text-red-800 dark:text-red-400'}"
                     >
                       {metrics?.avgPriceImpact >= 0 ? "Positive" : "Negative"} Trend
                     </span>
@@ -277,7 +281,7 @@
               </div>
 
               <div
-                class="volatility-impact-driver shadow-md bg-gray-100 dark:bg-[#1C1E22] rounded p-4"
+                class="volatility-impact-driver shadow-md bg-gray-200 dark:bg-[#1C1E22] rounded p-4"
               >
                 <div class=" text-sm mb-2 flex items-center">
                   <span>Volatility Impact</span>
@@ -288,7 +292,9 @@
                   >
                   <div class="flex flex-col ml-2">
                     <span class="text-sm">Range</span>
-                    <span class="text-xs text-yellow-700 dark:text-yellow-400">
+                    <span
+                      class="text-xs font-semibold text-yellow-700 dark:text-yellow-400"
+                    >
                       {Number(metrics.volatilityImpact) > 3 ? "High" : "Normal"}
                       Impact
                     </span>
