@@ -1038,7 +1038,7 @@
               <div
                 class="w-full m-auto sm:pl-6 sm:pb-6 {Object?.keys(
                   data?.getEarningsSurprise || {},
-                )?.length !== 0
+                )?.length > 0
                   ? ''
                   : 'hidden'}"
               >
