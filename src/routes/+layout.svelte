@@ -1,6 +1,5 @@
 <script lang="ts">
   import "../app.css";
-  //import { partytownSnippet } from "@builder.io/partytown/integration";
   import { Toaster } from "svelte-sonner";
   import "@bprogress/core/css";
   import { BProgress } from "@bprogress/core";
@@ -11,7 +10,6 @@
   import Footer from "$lib/components/Footer.svelte";
   import Searchbar from "$lib/components/Searchbar.svelte";
   import NotificationBell from "$lib/components/NotificationBell.svelte";
-  //import CTA from "$lib/components/CTA.svelte";
 
   //import PullToRefresh from '$lib/components/PullToRefresh.svelte';
 
@@ -27,6 +25,7 @@
     screenWidth,
     stockTicker,
     etfTicker,
+    indexTicker,
     loginData,
     numberOfUnreadNotification,
     clientSideCache,
@@ -222,6 +221,12 @@
     }
   }
 
+  $: {
+    if ($indexTicker && !$clientSideCache[$indexTicker]) {
+      $clientSideCache[$indexTicker] = {};
+    }
+  }
+
   const checkMarketHour = () => {
     const holidays = [
       "2025-01-01",
@@ -281,29 +286,6 @@
       console.error("Failed to update theme:", error);
     }
   }
-
-  /*
-  let urlChangeCount = 0;
-  let lastPath = "";
-
-  $: currentPath = $page.url.pathname;
-  
-  $: if (
-    !["Plus", "Pro"]?.includes(data?.user?.tier) &&
-    currentPath !== lastPath &&
-    typeof window !== "undefined"
-  ) {
-    lastPath = currentPath;
-    urlChangeCount++;
-
-    if (urlChangeCount % 5 === 0) {
-      setTimeout(() => {
-        const closePopup = document.getElementById("ctaModal");
-        closePopup?.dispatchEvent(new MouseEvent("click"));
-      }, 1000);
-    }
-  }
-    */
 </script>
 
 <svelte:window bind:innerWidth={$screenWidth} />
@@ -1498,13 +1480,7 @@
               <slot />
 
               <Toaster position="top-center" />
-              <!--
-              {#if !["Plus", "Pro"]?.includes(data?.user?.tier)}
-                {#await import("$lib/components/CTA.svelte") then { default: Comp }}
-                  <svelte:component this={Comp} />
-                {/await}
-              {/if}
-              -->
+
               <!--
               {#if Cookie && $showCookieConsent === true}
                 <Cookie />

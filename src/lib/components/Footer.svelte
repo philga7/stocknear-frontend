@@ -249,7 +249,7 @@
 
     <!-- Bottom bar -->
     <div
-      class="-mb-8 pb-3 mt-8 border-t border-gray-700 pt-8 dark:border-dark-700 md:flex md:items-center md:justify-between"
+      class="-mb-8 pb-5 mt-8 border-t border-gray-700 pt-8 dark:border-dark-700 md:flex md:items-center md:justify-between"
     >
       <div class="flex space-x-6 md:order-1">
         <a
@@ -257,10 +257,10 @@
           rel="noopener noreferrer"
           target="_blank"
           aria-label="Join us on Reddit"
-          class="text-gray-400 hover:text-gray-300 dark:text-dark-400 dark:hover:text-dark-300"
+          class=" text-gray-400 hover:text-gray-300 dark:text-dark-400 dark:hover:text-dark-300"
         >
           <svg
-            class="pointer-events-none h-6 w-6 sm:h-8 sm:w-8"
+            class="pointer-events-none h-8 w-8"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             aria-hidden="true"
@@ -276,10 +276,10 @@
           rel="noopener noreferrer"
           target="_blank"
           aria-label="Join us on Discord"
-          class="text-gray-400 hover:text-gray-300 dark:text-dark-400 dark:hover:text-dark-300"
+          class="w-5 h-5 text-gray-400 hover:text-gray-300 dark:text-dark-400 dark:hover:text-dark-300"
         >
           <svg
-            class="pointer-events-none h-6 w-6 sm:h-8 sm:w-8"
+            class="pointer-events-none h-8 w-8 -ml-1"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             ><path
@@ -296,7 +296,7 @@
           class="text-gray-400 hover:text-gray-300 dark:text-dark-400 dark:hover:text-dark-300"
           aria-label="Follow on X"
           ><svg
-            class="pointer-events-none h-6 w-6 sm:h-8 sm:w-8"
+            class="pointer-events-none h-8 w-8"
             fill="currentColor"
             viewBox="0 0 24 24"
             style="max-width:40px"
