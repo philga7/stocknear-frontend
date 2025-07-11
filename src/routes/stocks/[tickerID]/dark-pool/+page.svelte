@@ -36,7 +36,7 @@
                 for="darkPoolInfo"
                 class="mr-1 cursor-pointer flex flex-row items-center text-xl sm:text-2xl font-bold"
               >
-                {$stockTicker?.toUpperCase()} Dark Pool Data
+                {$stockTicker?.toUpperCase()} Dark Pool Overview
               </label>
               <InfoModal
                 title={"Dark Pool Data"}

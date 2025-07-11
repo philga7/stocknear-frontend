@@ -527,7 +527,7 @@
           <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto">
             {#if config}
               <h1 class="text-xl sm:text-2xl font-bold mb-3">
-                {removeCompanyStrings($displayCompanyName)} Stock Price History
+                {ticker} Stock Price History
               </h1>
               <div class="relative">
                 <div
@@ -562,7 +562,7 @@
                       <DropdownMenu.Trigger asChild let:builder>
                         <Button
                           builders={[builder]}
-                          class="shadow-xs w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
+                          class="transition-all w-fit bg-default text-white shadow-xs dark:border-gray-600 border sm:hover:bg-black dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 rounded truncate"
                         >
                           <span class="truncate px-1">{timePeriod}</span>
                           <svg
@@ -581,6 +581,10 @@
                         </Button>
                       </DropdownMenu.Trigger>
                       <DropdownMenu.Content
+                        side="bottom"
+                        align="end"
+                        sideOffset={10}
+                        alignOffset={0}
                         class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                       >
                         <DropdownMenu.Label
@@ -647,7 +651,7 @@
 
                   <Button
                     on:click={() => exportData()}
-                    class="shadow-xs ml-2 border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded truncate"
+                    class="ml-2 transition-all w-full bg-default text-white shadow-xs dark:border-gray-600 border sm:hover:bg-black dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 rounded truncate"
                   >
                     <span class="truncate">Download</span>
                     <svg

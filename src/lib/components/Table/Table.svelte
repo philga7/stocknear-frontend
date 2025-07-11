@@ -712,7 +712,7 @@
     <DropdownMenu.Trigger asChild let:builder>
       <Button
         builders={[builder]}
-        class="shadow-xs min-w-[110px] w-fit ml-3 border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5  rounded"
+        class="ml-2 transition-all min-w-[110px]  bg-default text-white shadow-xs dark:border-gray-600 border sm:hover:bg-black dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 rounded truncate"
       >
         <span class="w-fit text-sm sm:text-[1rem]">Indicators</span>
         <svg
@@ -732,6 +732,10 @@
     </DropdownMenu.Trigger>
 
     <DropdownMenu.Content
+      side="bottom"
+      align="end"
+      sideOffset={10}
+      alignOffset={0}
       class="w-60 max-h-[400px] overflow-y-auto scroller relative"
     >
       <!-- Search Input -->

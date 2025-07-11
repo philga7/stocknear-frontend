@@ -370,7 +370,7 @@
                         >
                           <label
                             for={data?.user ? "addWatchListModal" : "userLogin"}
-                            class="inline-flex items-center justify-center gap-x-1.5 cursor-pointer transition-all whitespace-nowrap rounded bg-[#2C6288] dark:bg-default sm:hover:bg-blue-500 dark:sm:hover:bg-[#2A2E39] border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-base font-semibold text-white shadow-xs lg:px-2.5 flex-1 md:flex-initial"
+                            class="inline-flex items-center justify-center gap-x-1.5 cursor-pointer transition-all whitespace-nowrap rounded bg-default sm:hover:bg-black dark:sm:hover:bg-[#2A2E39] border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-base font-semibold text-white shadow-xs lg:px-2.5 flex-1 md:flex-initial"
                             ><svg
                               class="size-5 flex-shrink-0"
                               fill="none"
@@ -391,7 +391,7 @@
                           <label
                             on:click={() => ($openPriceAlert = true)}
                             for={data?.user ? "priceAlertModal" : "userLogin"}
-                            class="inline-flex items-center justify-center gap-x-1.5 cursor-pointer transition-all whitespace-nowrap rounded bg-[#2C6288] dark:bg-default sm:hover:bg-blue-500 dark:sm:hover:bg-[#2A2E39] border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-base font-semibold text-white shadow-xs lg:px-2.5 flex-1 md:flex-initial"
+                            class="inline-flex items-center justify-center gap-x-1.5 cursor-pointer transition-all whitespace-nowrap rounded bg-default sm:hover:bg-black dark:sm:hover:bg-[#2A2E39] border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-base font-semibold text-white shadow-xs lg:px-2.5 flex-1 md:flex-initial"
                             ><svg
                               xmlns="http://www.w3.org/2000/svg"
                               class="size-5 flex-shrink-0"
@@ -447,7 +447,7 @@
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'overview'
                             ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
-                            : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
+                            : 'text-gray-600 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                         >
                           Overview
                         </a>
@@ -458,7 +458,7 @@
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'holdings'
                             ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
-                            : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
+                            : 'text-gray-600 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                         >
                           Holdings
                         </a>
@@ -469,7 +469,7 @@
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'dark-pool'
                             ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
-                            : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
+                            : 'text-gray-600 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                         >
                           Dark Pool
                         </a>
@@ -479,7 +479,7 @@
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'options'
                             ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
-                            : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
+                            : 'text-gray-600 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                         >
                           Options
                         </a>
@@ -490,7 +490,7 @@
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'dividends'
                             ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
-                            : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
+                            : 'text-gray-600 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                         >
                           Dividends
                         </a>
@@ -500,7 +500,7 @@
                           class="p-2 px-5 cursor-pointer {displaySection ===
                           'history'
                             ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-secondary font-semibold'
-                            : 'text-blue-700 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
+                            : 'text-gray-600 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-secondary'}"
                         >
                           History
                         </a>

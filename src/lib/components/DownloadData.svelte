@@ -54,7 +54,7 @@
 
 <Button
   on:click={() => exportData("csv")}
-  class="w-full border-gray-300 shadow-xs dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 rounded truncate"
+  class="transition-all w-full bg-default text-white shadow-xs dark:border-gray-600 border sm:hover:bg-black dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 rounded truncate"
 >
   <span class="truncate">Download</span>
   <svg

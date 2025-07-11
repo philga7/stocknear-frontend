@@ -1006,7 +1006,7 @@
               class="mute-driver xl:tooltip xl:tooltip-bottom flex flex-col items-center mr-3 cursor-pointer"
             >
               <div
-                class="rounded-full w-10 h-10 relative bg-gray-400 dark:bg-[#000] flex items-center justify-center"
+                class="rounded-full w-10 h-10 relative text-white bg-[#000] flex items-center justify-center"
               >
                 {#if !muted}
                   <svg
@@ -1131,7 +1131,7 @@
               <Popover.Root>
                 <Popover.Trigger asChild let:builder>
                   <Button
-                    class="date-picker-driver  w-full sm:w-[160px] truncate sm:mr-3 py-3 shadow-xs dark:bg-[#000] border-gray-300 justify-center sm:justify-start text-center sm:text-left  border-none rounded"
+                    class="date-picker-driver w-full sm:w-[160px] truncate sm:mr-3 py-3 shadow-xs text-white bg-[#000] border-gray-300 justify-center sm:justify-start text-center sm:text-left  border-none rounded"
                     builders={[builder]}
                   >
                     <CalendarIcon class="mr-2 h-4 w-4" />
@@ -1143,7 +1143,11 @@
                   </Button>
                 </Popover.Trigger>
                 <Popover.Content
-                  class="w-auto p-0 border-gray-500 bg-white dark:bg-[#000]"
+                  side="bottom"
+                  align="end"
+                  sideOffset={10}
+                  alignOffset={0}
+                  class="w-auto p-0 border-gray-500 text-muted dark:text-white bg-white dark:bg-[#000]"
                 >
                   <Calendar
                     class=" "
@@ -1185,7 +1189,7 @@
           <div class="mt-3 flex flex-col gap-y-2.5 sm:flex-row lg:gap-y-2 pb-1">
             <label
               for="ruleModal"
-              class="filter-driver inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded border border-gray-300 dark:border-none py-2 pl-3 pr-4 font-semibold shadow-xs bg-white sm:hover:bg-gray-100 dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+              class="filter-driver inline-flex cursor-pointer items-center justify-center space-x-1 whitespace-nowrap rounded border border-gray-300 dark:border-none py-2 pl-3 pr-4 font-semibold shadow-xs bg-default text-white sm:hover:bg-black dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden focus:ring-2 focus:ring-blue-500"
             >
               <svg
                 class="h-5 w-5"
@@ -1268,7 +1272,7 @@
                 <div class="flex items-center">
                   <button
                     on:click={() => handleDeleteRule(row?.rule)}
-                    class="mr-1.5 cursor-pointer text-gray-500 dark:text-gray-300 sm:hover:text-red-500 focus:outline-hidden"
+                    class="mr-1.5 cursor-pointer text-muted dark:text-gray-300 sm:hover:text-red-800 dark:sm:hover:text-red-400 focus:outline-hidden"
                     title="Remove filter"
                   >
                     <svg
@@ -1292,7 +1296,7 @@
                         <DropdownMenu.Trigger asChild let:builder>
                           <Button
                             builders={[builder]}
-                            class="shadow-xs h-[40px] flex flex-row justify-between items-center w-[150px] xs:w-[140px] sm:w-[150px] px-3 rounded truncate"
+                            class="shadow-xs h-[40px] bg-default sm:hover:bg-black text-white flex flex-row justify-between items-center w-[150px] xs:w-[140px] sm:w-[150px] px-3 rounded truncate"
                           >
                             <span class="truncate ml-2 text-sm">
                               {#if valueMappings[row?.rule] === "any"}
@@ -1325,6 +1329,10 @@
                           </Button>
                         </DropdownMenu.Trigger>
                         <DropdownMenu.Content
+                          side="bottom"
+                          align="end"
+                          sideOffset={10}
+                          alignOffset={0}
                           class="w-64 min-h-auto max-h-72 overflow-y-auto scroller"
                         >
                           {#if !categoricalRules?.includes(row?.rule)}

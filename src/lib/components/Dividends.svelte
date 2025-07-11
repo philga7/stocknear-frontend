@@ -321,7 +321,7 @@
             <h2 class="text-xl sm:text-2xl font-bold">Dividends History</h2>
             <Button
               on:click={() => exportData("csv")}
-              class="ml-2 w-fit shadow-xs border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded truncate"
+              class="ml-2 transition-all w-fit bg-default text-white shadow-xs dark:border-gray-600 border sm:hover:bg-black dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 rounded truncate"
             >
               <span class="truncate text-xs sm:text-sm">Download</span>
               <svg
