@@ -329,16 +329,16 @@
                       >-1 Day</th
                     ><th class="px-0 w-1 whitespace-nowrap font-normal h-5 p-0"
                     ></th><th
-                      class="px-4 last:pr-11 w-20 last:w-24.5 text-violet-600 dark:text-violet-300 font-semibold whitespace-nowrap font-normal h-5 text-right p-0"
+                      class="px-4 last:pr-11 w-20 last:w-24.5 whitespace-nowrap font-normal h-5 text-center p-0 font-semibold"
                       >Open</th
                     ><th
-                      class="px-4 last:pr-11 w-20 last:w-24.5 text-violet-600 dark:text-violet-300 font-semibold whitespace-nowrap font-normal h-5 text-right p-0"
+                      class="px-4 last:pr-11 w-20 last:w-24.5 whitespace-nowrap font-normal h-5 text-center p-0 font-semibold"
                       >High</th
                     ><th
-                      class="px-4 last:pr-11 w-20 last:w-24.5 text-violet-600 dark:text-violet-300 font-semibold whitespace-nowrap font-normal h-5 text-right p-0"
+                      class="px-4 last:pr-11 w-20 last:w-24.5 whitespace-nowrap font-normal h-5 text-center p-0 font-semibold"
                       >Low</th
                     ><th
-                      class="px-4 last:pr-11 w-20 last:w-24.5 text-violet-600 dark:text-violet-300 font-semibold whitespace-nowrap font-normal h-5 text-right p-0"
+                      class="px-4 last:pr-11 w-20 last:w-24.5 whitespace-nowrap font-normal h-5 text-center p-0 font-semibold"
                       >Close</th
                     ><th class="px-0 w-1 whitespace-nowrap font-normal h-5 p-0"
                     ></th><th
@@ -382,7 +382,7 @@
                                 : "-"}
                               ({item?.quarter})
                             </div>
-                            <div class="ml-1 text-end">
+                            <div class="ml-1 text-end w-full">
                               {checkTime(item?.time)}
                             </div>
                           </div>
@@ -410,34 +410,22 @@
                       ><td
                         class="border-gray-300 dark:border-primary px-3.5 py-0.5 px-4 last:pr-11 w-17 last:w-24.5 px-1"
                       ></td><td
-                        class="border-gray-300 dark:border-primary px-3.5 py-0.5 border-t border-l {index ===
-                        0
-                          ? 'rounded-tl-md border-t-violet-800 dark:border-t-violet-500'
-                          : ''} px-4 last:pr-11 w-17 last:w-24.5 border-l border-l-violet-800 dark:border-l-violet-500 px-1 text-right"
+                        class="border-gray-300 dark:border-primary px-3.5 py-0.5 border-t border-l px-4 last:pr-11 w-17 last:w-24.5 dark:border-l-gray-800 px-1 text-right"
                         ><span class=" text-sm sm:text-[1rem]"
                           >{item?.open ? item?.open?.toFixed(2) : "-"}</span
                         ></td
                       ><td
-                        class="border-gray-300 dark:border-primary px-3.5 py-0.5 border-t border-l border-r {index ===
-                        0
-                          ? 'border-t-violet-800 dark:border-t-violet-500'
-                          : ''} px-4 last:pr-11 w-17 last:w-24.5 px-1 text-right"
+                        class="border-gray-300 dark:border-primary px-3.5 py-0.5 border-t border-l border-r px-4 last:pr-11 w-17 last:w-24.5 px-1 text-right"
                         ><span class=" text-sm sm:text-[1rem]"
                           >{item?.high ? item?.high?.toFixed(2) : "-"}</span
                         ></td
                       ><td
-                        class="border-gray-300 dark:border-primary px-3.5 py-0.5 border-t border-l border-r {index ===
-                        0
-                          ? 'border-t-violet-800 dark:border-t-violet-500'
-                          : ''} px-4 last:pr-11 w-17 last:w-24.5 px-1 text-right"
+                        class="border-gray-300 dark:border-primary px-3.5 py-0.5 border-t border-l border-r px-4 last:pr-11 w-17 last:w-24.5 px-1 text-right"
                         ><span class=" text-sm sm:text-[1rem]"
                           >{item?.low ? item?.low?.toFixed(2) : "-"}</span
                         ></td
                       ><td
-                        class="border-gray-300 dark:border-primary px-3.5 py-0.5 border-t {index ===
-                        0
-                          ? 'rounded-tr-md border-t-violet-800 dark:border-t-violet-500'
-                          : ''} border-r dark:border-r-violet-500 px-4 last:pr-11 w-17 last:w-24.5 px-1 text-right"
+                        class="border-gray-300 dark:border-primary px-3.5 py-0.5 border-t border-r dark:border-r-gray-800 px-4 last:pr-11 w-17 last:w-24.5 px-1 text-right"
                         ><span class=" text-sm sm:text-[1rem]"
                           >{item?.close ? item?.close?.toFixed(2) : "-"}</span
                         ></td
@@ -490,32 +478,24 @@
                         class="border-l border-gray-300 dark:border-primary pl-1 text-muted dark:text-gray-200 text-sm px-1"
                         ><div class="flex w-full justify-between">
                           <div class="flex items-center">
+                            <div class="mr-1 font-semibold">IV:</div>
                             <div
-                              class="mr-1 text-purple-700 dark:text-purple-400"
-                            >
-                              IV:
-                            </div>
-                            <div
-                              class="leading-3 w-full whitespace-nowrap text-purple-700 dark:text-purple-400"
+                              class="leading-3 w-full whitespace-nowrap font-semibold"
                             >
                               {item?.iv ?? "-"}
                             </div>
                           </div>
 
                           <div class="flex items-center">
+                            <div class="mr-1 font-semibold">RSI:</div>
                             <div
-                              class="mr-1 text-purple-700 dark:text-purple-400"
-                            >
-                              RSI:
-                            </div>
-                            <div
-                              class="leading-3 w-full whitespace-nowrap text-purple-700 dark:text-purple-400"
+                              class="leading-3 w-full whitespace-nowrap font-semibold"
                             >
                               {item?.rsi ?? "-"}
                             </div>
                           </div>
 
-                          <div>{$stockTicker} %</div>
+                          <div>% Change</div>
                         </div></td
                       ><td
                         class="px-4 last:pr-11 w-17 last:w-24.5 border-gray-300 dark:border-primary px-3.5 py-0.5 border-l px-1 text-right"
@@ -553,9 +533,9 @@
                       ><td
                         class="px-4 last:pr-11 w-17 last:w-24.5 border border-gray-300 dark:border-primary px-3.5 py-0.5 px-1 text-right"
                       ></td><td
-                        class="px-4 last:pr-11 w-17 last:w-24.5 border-gray-300 dark:border-primary px-3.5 py-0.5 dark:border-l-violet-500 px-1 text-right"
+                        class="px-4 last:pr-11 w-17 last:w-24.5 border-gray-300 dark:border-primary px-3.5 py-0.5 dark:border-l-gray-800 px-1 text-right"
                         ><div
-                          class="text-center w-full whitespace-nowrap rounded border-gray-800 text-sm sm:text-[1rem] {item?.open_change_percent &&
+                          class="text-center w-full whitespace-nowrap rounded text-sm sm:text-[1rem] {item?.open_change_percent &&
                           item?.open_change_percent >= 0
                             ? "bg-positive/60 before:content-['+'] "
                             : item?.open_change_percent < 0
@@ -569,7 +549,7 @@
                       ><td
                         class="px-4 last:pr-11 w-17 last:w-24.5 px-3.5 py-0.5 px-1 text-right border-l border-r border-gray-300 dark:border-primary"
                         ><div
-                          class="text-center w-full whitespace-nowrap rounded border-gray-800 text-sm sm:text-[1rem] {item?.high_change_percent &&
+                          class="text-center w-full whitespace-nowrap rounded text-sm sm:text-[1rem] {item?.high_change_percent &&
                           item?.high_change_percent >= 0
                             ? "bg-positive/60 before:content-['+'] "
                             : item?.high_change_percent < 0
@@ -583,7 +563,7 @@
                       ><td
                         class="px-4 last:pr-11 w-17 last:w-24.5 border-gray-300 px-3.5 py-0.5 px-1 text-right border-l border-r border-gray-300 dark:border-primary"
                         ><div
-                          class="text-center w-full whitespace-nowrap rounded border-gray-800 text-sm sm:text-[1rem] {item?.low_change_percent &&
+                          class="text-center w-full whitespace-nowrap rounded text-sm sm:text-[1rem] {item?.low_change_percent &&
                           item?.low_change_percent >= 0
                             ? "bg-positive/60 before:content-['+'] "
                             : item?.low_change_percent
@@ -595,9 +575,9 @@
                             : "-"}
                         </div></td
                       ><td
-                        class="px-4 last:pr-11 w-17 last:w-24.5 border-r border-gray-300 dark:border-violet-500 px-3.5 py-0.5 px-1 text-right"
+                        class="px-4 last:pr-11 w-17 last:w-24.5 border-r border-gray-300 dark:border-gray-800 px-3.5 py-0.5 px-1 text-right"
                         ><div
-                          class="text-center w-full whitespace-nowrap rounded border-gray-800 text-sm sm:text-[1rem] {item?.close_change_percent &&
+                          class="text-center w-full whitespace-nowrap rounded text-sm sm:text-[1rem] {item?.close_change_percent &&
                           item?.close_change_percent >= 0
                             ? "bg-positive/60 before:content-['+']  "
                             : item?.close_change_percent < 0
