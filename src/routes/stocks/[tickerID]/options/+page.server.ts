@@ -6,54 +6,16 @@ import { loginUserSchema, registerUserSchema } from "$lib/schemas";
 export const load = async ({ locals, params }) => {
   const { apiKey, apiURL } = locals;
 
-  const getDailyStats = async () => {
-    const postData = {
-      ticker: params.tickerID,
-    };
-
-    const response = await fetch(apiURL + "/options-stats-ticker", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-API-KEY": apiKey,
-      },
-      body: JSON.stringify(postData),
-    });
-
-    const output = await response.json();
-
-    return output;
-  };
-
-
-   const getTickerFlow = async () => {
-    const postData = {
-      ticker: params.tickerID,
-    };
-
-    const response = await fetch(apiURL + "/ticker-flow", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-API-KEY": apiKey,
-      },
-      body: JSON.stringify(postData),
-    });
-
-    const output = await response.json();
-
-    return output;
-  };
 
 
 
-  const getOptionsHistoricalData = async () => {
+  const getOptionsChainStatistics = async () => {
     const postData = {
       ticker: params.tickerID,
     };
 
     // make the POST request to the endpoint
-    const response = await fetch(apiURL + "/options-historical-data-ticker", {
+    const response = await fetch(apiURL + "/options-chain-statistics", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -63,7 +25,6 @@ export const load = async ({ locals, params }) => {
     });
 
     const output = await response.json();
-
     return output;
   };
 
@@ -71,9 +32,7 @@ export const load = async ({ locals, params }) => {
 
   // Make sure to return a promise
   return {
-    getDailyStats: await getDailyStats(),
-    getTickerFlow: await getTickerFlow(),
-    getOptionsHistoricalData: await getOptionsHistoricalData(),
+    getOptionsChainStatistics: await getOptionsChainStatistics(),
   };
 };
 
