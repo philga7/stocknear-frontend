@@ -86,9 +86,9 @@ export const GET: RequestHandler = async ({  locals }) => {
           }
 
           await pb?.collection('users')?.update(user?.id, {
-            discordPremium: true
+            discord: {'access': true, id: userDiscordId}
           });
-          
+
         } else {
           // tier === "Free" - Remove Pro role if they have it
           if (member.roles.cache.has(proRole.id)) {
