@@ -14,6 +14,7 @@
     assetType,
     displayCompanyName,
     isOpen,
+    isWeekend,
     priceChartData,
   } from "$lib/store";
 
@@ -74,7 +75,7 @@
   }
 
   $: {
-    if (!$isOpen) {
+    if (!$isOpen && !$isWeekend) {
       scheduleNextUpdate();
     } else {
       clearScheduledUpdate();
