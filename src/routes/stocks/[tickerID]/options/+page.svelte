@@ -46,7 +46,7 @@
       },
 
       title: {
-        text: `<h3 class="mt-3 mb-1">IV (30d)</h3>`,
+        text: `<h3 class="">IV (30d)</h3>`,
         style: {
           color: $mode === "light" ? "black" : "white",
           // Using inline CSS for margin-top and margin-bottom
@@ -235,7 +235,184 @@
         </div>
 
         <!-- Apply the blur class to the chart -->
-        <div class="w-fit max-w-56 border" use:highcharts={config}></div>
+        <h2 class="mb-6 text-xl sm:text-2xl font-bold w-fit">
+          Implied Volatility
+        </h2>
+        <div
+          class="flex flex-col -mt-4 mb-8 md:flex-row gap-4 justify-between items-center max-w-4xl w-full m-auto"
+        >
+          <!-- Gauge -->
+          <div
+            class="w-fit max-w-56 max-h-56 mx-auto md:mx-0 ml-auto"
+            use:highcharts={config}
+          ></div>
+
+          <!-- Stats -->
+          <div
+            class="grid grid-cols-2 sm:grid-cols-3 gap-8 text-sm md:text-base"
+          >
+            <div class="flex flex-col">
+              <span class="text-gray-500 dark:text-gray-300"
+                >Implied Volatility (30d)</span
+              >
+              <span class="font-semibold">55.80%</span>
+            </div>
+
+            <div class="flex flex-col">
+              <span class="text-gray-500 dark:text-gray-300">IV Rank</span>
+              <span class="font-semibold">17.27%</span>
+            </div>
+
+            <div class="flex flex-col">
+              <span class="text-gray-500 dark:text-gray-300">IV Percentile</span
+              >
+              <span class="font-semibold">24.4%</span>
+            </div>
+
+            <div class="flex flex-col">
+              <span class="text-gray-500 dark:text-gray-300"
+                >Historical Volatility</span
+              >
+              <span class="font-semibold">70.09%</span>
+            </div>
+
+            <div class="flex flex-col">
+              <span class="text-gray-500 dark:text-gray-300">IV Low</span>
+              <span class="font-semibold"
+                >45.36% <span class="text-gray-400 dark:text-gray-300 text-xs"
+                  >on 08/30/24</span
+                ></span
+              >
+            </div>
+
+            <div class="flex flex-col">
+              <span class="text-gray-500 dark:text-gray-300">IV High</span>
+              <span class="font-semibold"
+                >105.85% <span class="text-gray-400 dark:text-gray-3000 text-xs"
+                  >on 04/08/25</span
+                ></span
+              >
+            </div>
+          </div>
+        </div>
+
+        <h2 class="mb-6 text-xl sm:text-2xl font-bold w-fit">Open Interest</h2>
+        <div
+          class="flex flex-col -mt-4 mb-8 md:flex-row gap-4 justify-between items-center max-w-4xl w-full m-auto"
+        >
+          <!-- Gauge -->
+          <div
+            class="w-fit max-w-56 max-h-56 mx-auto md:mx-0 ml-auto"
+            use:highcharts={config}
+          ></div>
+
+          <!-- Stats -->
+          <div
+            class="grid grid-cols-2 sm:grid-cols-3 gap-8 text-sm md:text-base"
+          >
+            <div class="flex flex-col">
+              <span class="text-gray-500 dark:text-gray-300"
+                >Implied Volatility (30d)</span
+              >
+              <span class="font-semibold">55.80%</span>
+            </div>
+
+            <div class="flex flex-col">
+              <span class="text-gray-500 dark:text-gray-300">IV Rank</span>
+              <span class="font-semibold">17.27%</span>
+            </div>
+
+            <div class="flex flex-col">
+              <span class="text-gray-500 dark:text-gray-300">IV Percentile</span
+              >
+              <span class="font-semibold">24.4%</span>
+            </div>
+
+            <div class="flex flex-col">
+              <span class="text-gray-500 dark:text-gray-300"
+                >Historical Volatility</span
+              >
+              <span class="font-semibold">70.09%</span>
+            </div>
+
+            <div class="flex flex-col">
+              <span class="text-gray-500 dark:text-gray-300">IV Low</span>
+              <span class="font-semibold"
+                >45.36% <span class="text-gray-400 dark:text-gray-300 text-xs"
+                  >on 08/30/24</span
+                ></span
+              >
+            </div>
+
+            <div class="flex flex-col">
+              <span class="text-gray-500 dark:text-gray-300">IV High</span>
+              <span class="font-semibold"
+                >105.85% <span class="text-gray-400 dark:text-gray-3000 text-xs"
+                  >on 04/08/25</span
+                ></span
+              >
+            </div>
+          </div>
+        </div>
+
+        <h2 class="mb-6 text-xl sm:text-2xl font-bold w-fit">Option Volume</h2>
+        <div
+          class="flex flex-col -mt-4 mb-8 md:flex-row gap-4 justify-between items-center max-w-4xl w-full m-auto"
+        >
+          <!-- Gauge -->
+          <div
+            class="w-fit max-w-56 max-h-56 mx-auto md:mx-0 ml-auto"
+            use:highcharts={config}
+          ></div>
+
+          <!-- Stats -->
+          <div
+            class="grid grid-cols-2 sm:grid-cols-3 gap-8 text-sm md:text-base"
+          >
+            <div class="flex flex-col">
+              <span class="text-gray-500 dark:text-gray-300"
+                >Implied Volatility (30d)</span
+              >
+              <span class="font-semibold">55.80%</span>
+            </div>
+
+            <div class="flex flex-col">
+              <span class="text-gray-500 dark:text-gray-300">IV Rank</span>
+              <span class="font-semibold">17.27%</span>
+            </div>
+
+            <div class="flex flex-col">
+              <span class="text-gray-500 dark:text-gray-300">IV Percentile</span
+              >
+              <span class="font-semibold">24.4%</span>
+            </div>
+
+            <div class="flex flex-col">
+              <span class="text-gray-500 dark:text-gray-300"
+                >Historical Volatility</span
+              >
+              <span class="font-semibold">70.09%</span>
+            </div>
+
+            <div class="flex flex-col">
+              <span class="text-gray-500 dark:text-gray-300">IV Low</span>
+              <span class="font-semibold"
+                >45.36% <span class="text-gray-400 dark:text-gray-300 text-xs"
+                  >on 08/30/24</span
+                ></span
+              >
+            </div>
+
+            <div class="flex flex-col">
+              <span class="text-gray-500 dark:text-gray-300">IV High</span>
+              <span class="font-semibold"
+                >105.85% <span class="text-gray-400 dark:text-gray-3000 text-xs"
+                  >on 04/08/25</span
+                ></span
+              >
+            </div>
+          </div>
+        </div>
 
         {#if rawData?.length > 0}
           {#if optionList?.length !== 0}
@@ -280,16 +457,7 @@
                       class=" font-semibold text-sm text-center border-r border-gray-800"
                       >P Volume</td
                     >
-                    <!--
-                    <td class=" font-semibold text-sm text-end"
-                      >Vol/30D</td
-                    >
-                      -->
-                    <!--
-                    <td class=" font-semibold text-sm text-end"
-                      >🐻/🐂 Prem</td
-                    >
-                  -->
+
                     <td
                       class=" font-semibold text-sm text-end border-r border-gray-800"
                       >Total OI</td
@@ -358,84 +526,6 @@
                       >
                         {item?.put_volume?.toLocaleString("en-US")}
                       </td>
-                      <!--
-                      <td class="text-sm sm:text-[1rem]  text-end">
-                        {item?.avgVolumeRatio?.toFixed(2)}
-                      </td>
-                      -->
-                      <!--
-                      <td class="text-sm sm:text-[1rem] text-end">
-                        <HoverCard.Root>
-                          <HoverCard.Trigger
-                            class="rounded-sm underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-black"
-                          >
-                            <div class="flex items-center justify-end">
-                              <div
-                                class="flex w-full max-w-28 h-5 bg-gray-200 rounded overflow-hidden"
-                              >
-                                <div
-                                  class="bg-red-500 h-full"
-                                  style="width: calc(({item
-                                    ?.premium_ratio[0]} / ({item
-                                    ?.premium_ratio[0]} + {item
-                                    ?.premium_ratio[1]} + {item
-                                    ?.premium_ratio[2]})) * 100%)"
-                                ></div>
-
-                                <div
-                                  class="bg-gray-300 h-full"
-                                  style="width: calc(({item
-                                    ?.premium_ratio[1]} / ({item
-                                    ?.premium_ratio[0]} + {item
-                                    ?.premium_ratio[1]} + {item
-                                    ?.premium_ratio[2]})) * 100%)"
-                                ></div>
-
-                                <div
-                                  class="bg-green-500 h-full"
-                                  style="width: calc(({item
-                                    ?.premium_ratio[2]} / ({item
-                                    ?.premium_ratio[0]} + {item
-                                    ?.premium_ratio[1]} + {item
-                                    ?.premium_ratio[2]})) * 100%)"
-                                ></div>
-                              </div>
-                            </div>
-                          </HoverCard.Trigger>
-                          <HoverCard.Content
-                            class="w-auto bg-secondary border border-gray-600"
-                          >
-                            <div class="flex justify-between space-x-4">
-                              <div
-                                class="space-y-1 flex flex-col items-start "
-                              >
-                                <div>
-                                  Bearish: {@html abbreviateNumber(
-                                    item?.premium_ratio[0],
-                                    false,
-                                    true,
-                                  )}
-                                </div>
-                                <div>
-                                  Neutral: {@html abbreviateNumber(
-                                    item?.premium_ratio[1],
-                                    false,
-                                    true,
-                                  )}
-                                </div>
-                                <div>
-                                  Bullish: {@html abbreviateNumber(
-                                    item?.premium_ratio[2],
-                                    false,
-                                    true,
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                          </HoverCard.Content>
-                        </HoverCard.Root>
-                      </td>
-                      -->
 
                       <td class="text-sm sm:text-[1rem] text-end">
                         {@html abbreviateNumber(
@@ -488,23 +578,6 @@
                       <td class="text-sm sm:text-[1rem] text-end">
                         {@html abbreviateNumber(item?.put_premium, false, true)}
                       </td>
-                      <!--
-                      <td class="text-sm sm:text-[1rem] text-end ">
-                        {@html abbreviateNumber(
-                          item?.net_premium,
-                          false,
-                          true,
-                        )}
-                      </td>
-
-                      <td class="text-sm sm:text-[1rem] text-end ">
-                        {@html abbreviateNumber(
-                          item?.total_premium,
-                          false,
-                          true,
-                        )}
-                      </td>
-                      -->
                     </tr>
                   {/each}
                 </tbody>
