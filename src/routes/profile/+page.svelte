@@ -3,6 +3,7 @@
   import { toast } from "svelte-sonner";
   import { mode } from "mode-watcher";
   import Crown from "lucide-svelte/icons/crown";
+  import Link from "lucide-svelte/icons/link";
 
   import { enhance } from "$app/forms";
   import { isPWAInstalled } from "$lib/utils";
@@ -259,6 +260,7 @@
       {
         loading: "Assigning premium access...",
         success: () => {
+          data.user.discordPremium = true;
           return "Premium access granted!";
         },
         error: "Failed to assign premium access. Please try again later.",
@@ -337,13 +339,34 @@
             and much more — all designed to keep you ahead of the market.
 
             <div class="mt-2">
-              <button
-                on:click={handlePremiumAccess}
-                class="flex flex-row items-center w-fit cursor-pointer border border-gray-300 dark:border-gray-300 dark:border-gray-600 bg-default sm:hover:bg-black dark:bg-default text-white dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
-              >
-                <Crown class="w-4 h-4 inline-block mr-1.5" />
-                Premium Access
-              </button>
+              {#if data?.getDiscordAccount}
+                {#if data?.user?.discordPremium}
+                  <button
+                    class="flex flex-row items-center w-fit border border-gray-300 dark:border-gray-300 dark:border-gray-600 bg-default sm:hover:bg-black dark:bg-default text-white dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
+                  >
+                    Access Granted
+                  </button>
+                {:else}
+                  <button
+                    on:click={handlePremiumAccess}
+                    class="flex flex-row items-center w-fit cursor-pointer border border-gray-300 dark:border-gray-300 dark:border-gray-600 bg-default sm:hover:bg-black dark:bg-default text-white dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
+                  >
+                    <Crown class="w-4 h-4 inline-block mr-1.5" />
+                    Premium Access
+                  </button>
+                {/if}
+              {:else}
+                <form method="post" action="?/oauth2">
+                  <input class="hidden" name="provider" value="discord" />
+                  <button
+                    aria-label="Discord Login"
+                    class="flex flex-row items-center w-fit cursor-pointer border border-gray-300 dark:border-gray-300 dark:border-gray-600 bg-default sm:hover:bg-black dark:bg-default text-white dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
+                  >
+                    <Link class="w-4 h-4 inline-block mr-1.5" />
+                    Link Discord Account
+                  </button>
+                </form>
+              {/if}
             </div>
           </div>
 

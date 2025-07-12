@@ -81,13 +81,22 @@ const getPushSubscriptionData = async () => {
     return output;
   };
 
-
+  const getDiscordAccount = async () => {
+    const userDiscordId = (await pb.collection('users')
+      ?.listExternalAuths(pb?.authStore?.model?.id))
+      ?.find(item => item?.provider === 'discord')?.providerId;
+    
+    
+    return !!userDiscordId;
+  };
+  
 
 
   return {
     getSubscriptionData: await getSubscriptionData(),
     getPushSubscriptionData: await getPushSubscriptionData(),
     getNotificationChannels: await getNotificationChannels(),
+    getDiscordAccount: await getDiscordAccount(),
   };
 
 };
@@ -203,5 +212,69 @@ export const actions = {
     }
 
     redirect(302, "/profile");
+  },
+
+  oauth2: async ({ url, locals, request, cookies }) => {
+    const authMethods = (await locals?.pb
+      ?.collection("users")
+      ?.listAuthMethods())?.oauth2;
+
+
+    const data = await request?.formData();
+    const providerSelected = data?.get("provider");
+
+    if (!authMethods) {
+      return {
+        authProviderRedirect: "",
+        authProviderState: "",
+      };
+    }
+    const redirectURL = `${url.origin}/oauth`;
+
+    const targetItem = authMethods?.providers?.findIndex(
+      (item) => item?.name === providerSelected,
+    );
+  
+
+    const provider = authMethods.providers[targetItem];
+    const authProviderRedirect = `${provider.authUrl}${redirectURL}`;
+    const state = provider.state;
+    const verifier = provider.codeVerifier;
+
+    
+    
+    cookies.set("state", state, {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: true,
+      path: "/",
+      maxAge: 60 * 60,
+    });
+
+    cookies.set("verifier", verifier, {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: true,
+      path: "/",
+      maxAge: 60 * 60,
+    });
+
+    cookies.set("provider", providerSelected, {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: true,
+      path: "/",
+      maxAge: 60 * 60,
+    });
+
+    cookies.set("path", "/profile", {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: true,
+      path: "/",
+      maxAge: 60,
+    });
+
+    redirect(301, authProviderRedirect);
   },
 };

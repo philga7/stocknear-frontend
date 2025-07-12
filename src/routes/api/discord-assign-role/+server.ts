@@ -24,7 +24,7 @@ export const GET: RequestHandler = async ({  locals }) => {
 
     // Check if user has Discord ID from OAuth2
     if (!userDiscordId) {
-        console.log("Discord ID not found for user")
+        console.log("Discord ID not found for")
       return new Response(JSON.stringify({ error: "Discord ID not found for user" }), { status: 400 });
     }
 
@@ -84,6 +84,11 @@ export const GET: RequestHandler = async ({  locals }) => {
             assignmentResults.push(`Already has Pro role in ${guild.name}`);
             console.log(`User ${member.displayName} already has Pro role in ${guild.name}`);
           }
+
+          await pb?.collection('users')?.update(user?.id, {
+            discordPremium: true
+          });
+          
         } else {
           // tier === "Free" - Remove Pro role if they have it
           if (member.roles.cache.has(proRole.id)) {
