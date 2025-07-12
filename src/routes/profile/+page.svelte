@@ -2,7 +2,6 @@
   import SEO from "$lib/components/SEO.svelte";
   import { toast } from "svelte-sonner";
   import { mode } from "mode-watcher";
-  import Lock from "lucide-svelte/icons/lock";
   import Crown from "lucide-svelte/icons/crown";
 
   import { enhance } from "$app/forms";
@@ -235,6 +234,50 @@
     modeStatus[state] = !modeStatus[state];
     await updateNotificationChannels();
   }
+
+  async function handlePremiumAccess() {
+    // build the promise that does the work
+    if (data?.user?.tier !== "Pro") {
+      toast?.error("Premium Access is for Pro Members only.", {
+        style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
+      });
+      return;
+    }
+    const premiumPromise = fetch("/api/discord-assign-role", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
+      if (!res.ok) throw new Error(`Status ${res.status}`);
+      return res.json();
+    });
+
+    // show toast while promise is pending
+    toast.promise(
+      premiumPromise,
+      {
+        loading: "Assigning premium access...",
+        success: () => {
+          return "Premium access granted!";
+        },
+        error: "Failed to assign premium access. Please try again later.",
+      },
+      {
+        style: {
+          borderRadius: "5px",
+          background: "#fff",
+          color: "#000",
+          borderColor: $mode === "light" ? "#F9FAFB" : "#4B5563",
+          fontSize: "15px",
+        },
+      },
+    );
+
+    // optional: wait for the result if you need to do something with it
+    const output = await premiumPromise;
+    // you can use `output` here if needed
+  }
 </script>
 
 <SEO
@@ -294,13 +337,13 @@
             and much more — all designed to keep you ahead of the market.
 
             <div class="mt-2">
-              <label
-                for="installModal"
+              <button
+                on:click={handlePremiumAccess}
                 class="flex flex-row items-center w-fit cursor-pointer border border-gray-300 dark:border-gray-300 dark:border-gray-600 bg-default sm:hover:bg-black dark:bg-default text-white dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
               >
                 <Crown class="w-4 h-4 inline-block mr-1.5" />
                 Premium Access
-              </label>
+              </button>
             </div>
           </div>
 
