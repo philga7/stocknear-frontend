@@ -2,6 +2,8 @@
   import SEO from "$lib/components/SEO.svelte";
   import { toast } from "svelte-sonner";
   import { mode } from "mode-watcher";
+  import Lock from "lucide-svelte/icons/lock";
+  import Crown from "lucide-svelte/icons/crown";
 
   import { enhance } from "$app/forms";
   import { isPWAInstalled } from "$lib/utils";
@@ -281,6 +283,25 @@
               class="sm:hover:text-muted dark:sm:hover:text-white text-blue-800 dark:text-blue-400"
               >Update Password</a
             >
+          </div>
+
+          <div
+            class="mt-6 rounded shadow-xs border border-gray-300 dark:border-gray-600 p-4 xs:text-lg pb-6"
+          >
+            <h2 class=" text-2xl font-semibold mb-3">Premium Discord Access</h2>
+            Gain access to real-time options flow from major institutional players,
+            live dark pool activity, instant earnings updates, market-moving news,
+            and much more — all designed to keep you ahead of the market.
+
+            <div class="mt-2">
+              <label
+                for="installModal"
+                class="flex flex-row items-center w-fit cursor-pointer border border-gray-300 dark:border-gray-300 dark:border-gray-600 bg-default sm:hover:bg-black dark:bg-default text-white dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
+              >
+                <Crown class="w-4 h-4 inline-block mr-1.5" />
+                Premium Access
+              </label>
+            </div>
           </div>
 
           <div
