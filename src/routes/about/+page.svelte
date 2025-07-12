@@ -47,7 +47,7 @@
           <div class="relative">
             <dt>
               <div
-                class="absolute flex h-12 w-12 items-center justify-center rounded bg-[#3B82F6] dark:bg-white text-white dark:text-black"
+                class="absolute flex h-12 w-12 items-center justify-center rounded bg-default dark:bg-white text-white dark:text-black"
               >
                 <svg
                   class="w-6 h-6"
@@ -74,7 +74,7 @@
           <div class="relative">
             <dt>
               <div
-                class="absolute flex h-12 w-12 items-center justify-center rounded bg-[#3B82F6] dark:bg-white text-white dark:text-black"
+                class="absolute flex h-12 w-12 items-center justify-center rounded bg-default dark:bg-white text-white dark:text-black"
               >
                 <svg
                   class="w-5 h-5"
@@ -101,7 +101,7 @@
           <div class="relative">
             <dt>
               <div
-                class="absolute flex h-12 w-12 items-center justify-center rounded bg-[#3B82F6] dark:bg-white text-white dark:text-black"
+                class="absolute flex h-12 w-12 items-center justify-center rounded bg-default dark:bg-white text-white dark:text-black"
               >
                 <svg
                   class="w-6 h-6"
@@ -128,7 +128,7 @@
           <div class="relative">
             <dt>
               <div
-                class="absolute flex h-12 w-12 items-center justify-center rounded bg-[#3B82F6] dark:bg-white text-white dark:text-black"
+                class="absolute flex h-12 w-12 items-center justify-center rounded bg-default dark:bg-white text-white dark:text-black"
               >
                 <svg
                   class="h-6 w-6"
@@ -208,7 +208,7 @@
                       <li>
                         <a
                           href="https://github.com/stocknear"
-                          class="text-gray-400 hover:text-gray-500"
+                          class="text-muted hover:text-gray-500"
                           target="_blank"
                           rel="noopener noreferrer"
                           ><span class="sr-only">Github</span>
@@ -229,7 +229,7 @@
                       <li>
                         <a
                           href="https://x.com/intent/follow?screen_name=stocknear"
-                          class="text-gray-400 hover:text-gray-500"
+                          class="text-muted hover:text-gray-500"
                           target="_blank"
                           rel="noopener noreferrer"
                           ><span class="sr-only">Twitter</span>
@@ -248,7 +248,7 @@
                       <li>
                         <a
                           href="https://www.linkedin.com/in/dr-muslem-rahimi-013956172/"
-                          class="text-gray-400 hover:text-gray-500"
+                          class="text-muted hover:text-gray-500"
                           target="_blank"
                           rel="noopener noreferrer"
                           ><span class="sr-only">LinkedIn</span>

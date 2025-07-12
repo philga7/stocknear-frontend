@@ -12,6 +12,8 @@
     { name: "Market Cap", rule: "marketCap" },
     { name: "Revenue", rule: "revenue" },
   ];
+
+  const excludedRules = new Set(["industry", "revenue", "marketCap"]);
 </script>
 
 <SEO
@@ -47,7 +49,7 @@
           <div class="w-full m-auto">
             <!--Start Top Winners/Losers-->
             <div class="flex flex-col justify-center items-center">
-              <Table {data} {rawData} {defaultList} />
+              <Table {data} {rawData} {defaultList} {excludedRules} />
             </div>
           </div>
         </main>
