@@ -1,36 +1,19 @@
 <script lang="ts">
   import { displayCompanyName, screenWidth, stockTicker } from "$lib/store";
-  import DailyStats from "$lib/components/Options/DailyStats.svelte";
-  import TickerFlow from "$lib/components/Options/TickerFlow.svelte";
-
-  import { abbreviateNumber, monthNames } from "$lib/utils";
+  import { mode } from "mode-watcher";
+  import { abbreviateNumber } from "$lib/utils";
   import { onMount } from "svelte";
-  import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
+  import highcharts from "$lib/highcharts.ts";
 
   import Infobox from "$lib/components/Infobox.svelte";
   import SEO from "$lib/components/SEO.svelte";
 
   export let data;
-  let dailyStats = {};
-  let tickerFlow = [];
 
-  let filteredList = [];
+  let rawData = data?.getOptionsHistoricalData;
+  let optionList = rawData?.slice(0, 100);
 
-  let displayData;
-  let options;
-
-  let rawData = [];
-  let optionList = [];
-
-  let dateList; //= data?.getOptionsPlotData?.dateList;
-
-  let callVolumeList; //= data?.getOptionsPlotData?.callVolumeList;
-  let putVolumeList; //= data?.getOptionsPlotData?.putVolumeList;
-  let callOpenInterestList; //= data?.getOptionsPlotData?.callOpenInterestList;
-  let putOpenInterestList; //= data?.getOptionsPlotData?.putOpenInterestList;
-  let priceList;
-
-  let displayTimePeriod = "oneYear";
+  let config;
 
   function formatDate(dateStr) {
     // Convert the input date string to a Date object in New York time
@@ -49,199 +32,148 @@
     return formatter.format(date);
   }
 
-  function plotData(callData, putData, priceList) {
+  function plotData() {
     const options = {
-      animation: false,
-      tooltip: {
-        trigger: "axis",
-        hideDelay: 100,
-        borderColor: "#969696", // Black border color
-        borderWidth: 1, // Border width of 1px
-        backgroundColor: "#313131", // Optional: Set background color for contrast
-        textStyle: {
-          color: "#fff", // Optional: Text color for better visibility
-        },
-        formatter: function (params) {
-          // Get the timestamp from the first parameter
-          const timestamp = params[0].axisValue;
-
-          // Initialize result with timestamp
-          let result = timestamp + "<br/>";
-
-          // Sort params to ensure Vol appears last
-          params.sort((a, b) => {
-            if (a.seriesName === "Vol") return 1;
-            if (b.seriesName === "Vol") return -1;
-            return 0;
-          });
-
-          // Add each series data
-          params?.forEach((param) => {
-            const marker =
-              '<span style="display:inline-block;margin-right:4px;' +
-              "border-radius:10px;width:10px;height:10px;background-color:" +
-              param.color +
-              '"></span>';
-            result +=
-              marker +
-              param.seriesName +
-              ": " +
-              abbreviateNumber(param.value, false, true) +
-              "<br/>";
-          });
-
-          return result;
-        },
-        axisPointer: {
-          lineStyle: {
-            color: "#fff",
-          },
-        },
+      credits: {
+        enabled: false,
       },
-      silent: true,
-      grid: {
-        left: $screenWidth < 640 ? "5%" : "2%",
-        right: $screenWidth < 640 ? "5%" : "2%",
-        bottom: "10%",
-        containLabel: true,
+      chart: {
+        type: "gauge",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        height: 280,
+        animation: false, // Disable initial animation
       },
-      xAxis: [
-        {
-          type: "category",
-          data: dateList,
-          axisLabel: {
-            color: "#fff",
 
-            formatter: function (value) {
-              // Assuming dates are in the format 'yyyy-mm-dd'
-              const dateParts = value.split("-");
-              const monthIndex = parseInt(dateParts[1]) - 1; // Months are zero-indexed in JavaScript Date objects
-              const year = parseInt(dateParts[0]);
-              const day = parseInt(dateParts[2]);
-              return `${day} ${monthNames[monthIndex]} ${year}`;
-            },
-          },
+      title: {
+        text: `<h3 class="mt-3 mb-1">IV (30d)</h3>`,
+        style: {
+          color: $mode === "light" ? "black" : "white",
+          // Using inline CSS for margin-top and margin-bottom
         },
-      ],
-      yAxis: [
-        {
-          type: "value",
-          splitLine: {
-            show: false, // Disable x-axis grid lines
+        useHTML: true, // Enable HTML to apply custom class styling
+      },
+
+      pane: {
+        startAngle: -90,
+        endAngle: 90,
+        background: [
+          {
+            // Outer circle (black line)
+            outerRadius: "101%",
+            innerRadius: "100%",
+            backgroundColor: "#000",
+            borderWidth: 0,
+            shape: "arc",
           },
-          axisLabel: {
-            show: false, // Hide y-axis labels
-          },
+          null, // keep existing null if needed
+        ],
+      },
+
+      // the value axis
+      yAxis: {
+        min: 0,
+        max: 100,
+        tickPosition: "inside",
+        tickLength: 10,
+        tickWidth: 0,
+        minorTickInterval: null,
+        lineWidth: 0,
+        // Remove numeric tick labels
+        labels: {
+          enabled: false,
         },
-        {
-          type: "value",
-          splitLine: {
-            show: false, // Disable x-axis grid lines
+        plotBands: [
+          {
+            from: 0,
+            to: 19.5,
+            color: "#55BF3B",
+            thickness: 20,
+            borderRadius: "0px",
           },
-          position: "right",
-          axisLabel: {
-            show: false, // Hide y-axis labels
+          {
+            from: 19.5,
+            to: 20,
+            color: "#fff",
+            thickness: 20,
+            borderRadius: "0px",
           },
-        },
-      ],
+          {
+            from: 20,
+            to: 39.5,
+            color: "#55BF3B",
+            thickness: 20,
+            borderRadius: "0px",
+          },
+          {
+            from: 39.5,
+            to: 40,
+            color: "#fff",
+            thickness: 20,
+            borderRadius: "0px",
+          },
+          {
+            from: 40,
+            to: 59.5,
+            color: "#DDDF0D",
+            thickness: 20,
+            borderRadius: "0px",
+          },
+          {
+            from: 59.5,
+            to: 60,
+            color: "#fff",
+            thickness: 20,
+            borderRadius: "0px",
+          },
+          {
+            from: 60,
+            to: 79.5,
+            color: "#DF5353",
+            thickness: 20,
+            borderRadius: "0px",
+          },
+          {
+            from: 79.5,
+            to: 80,
+            color: "#fff",
+            thickness: 20,
+            borderRadius: "0px",
+          },
+          {
+            from: 80,
+            to: 100,
+            color: "#DF5353",
+            thickness: 20,
+            borderRadius: "0px",
+          },
+        ],
+      },
+
       series: [
         {
-          name: "Call",
-          type: "bar",
-          stack: "Put-Call Ratio",
-          emphasis: {
-            focus: "series",
+          name: "IV",
+          data: [55.8],
+          animation: false,
+          dataLabels: {
+            useHTML: true, // ensure HTML works if you keep custom markup
+            backgroundColor: "none", // removes background
+            borderWidth: 0, // removes border
+            shadow: false, // removes shadow
+            format: '<span class="text-lg font-bold">{y}% IV</span>',
           },
-          data: callData,
-          itemStyle: {
-            color: "#00FC50",
+          dial: {
+            radius: "80%",
+            backgroundColor: $mode === "light" ? "#000" : "#808080",
+            baseWidth: 12,
+            baseLength: "0%",
+            rearLength: "0%",
           },
-        },
-        {
-          name: "Put",
-          type: "bar",
-          stack: "Put-Call Ratio",
-          emphasis: {
-            focus: "series",
-          },
-          data: putData,
-          itemStyle: {
-            color: "#EE5365", //'#7A1C16'
-          },
-        },
-        {
-          name: "Price", // Name for the line chart
-          type: "line", // Type of the chart (line)
-          yAxisIndex: 1, // Use the second y-axis on the right
-          data: priceList, // iv60Data (assumed to be passed as priceList)
-          itemStyle: {
-            color: "#fff", // Choose a color for the line (gold in this case)
-          },
-          lineStyle: {
-            width: 2, // Set the width of the line
-          },
-          smooth: true, // Optional: make the line smooth
-          showSymbol: false,
         },
       ],
     };
+
     return options;
-  }
-
-  function filterDate(filteredList, displayTimePeriod) {
-    const now = Date.now();
-    let cutoffDate;
-
-    switch (displayTimePeriod) {
-      case "oneWeek":
-        cutoffDate = now - 7 * 24 * 60 * 60 * 1000;
-        break;
-      case "oneMonth":
-        cutoffDate = now - 30 * 24 * 60 * 60 * 1000;
-        break;
-      case "threeMonths":
-        cutoffDate = now - 90 * 24 * 60 * 60 * 1000;
-        break;
-      case "sixMonths":
-        cutoffDate = now - 180 * 24 * 60 * 60 * 1000;
-        break;
-      case "oneYear":
-        cutoffDate = now - 365 * 24 * 60 * 60 * 1000;
-        break;
-      default:
-        throw new Error("Invalid time period");
-    }
-
-    return filteredList?.filter((item) => {
-      // Convert YYYY-MM-DD to a timestamp
-      const [year, month, day] = item?.date?.split("-")?.map(Number);
-      const itemTimestamp = new Date(year, month - 1, day)?.getTime();
-
-      return itemTimestamp >= cutoffDate;
-    });
-  }
-
-  function processPlotData(filteredList: any[]) {
-    filteredList = Array.isArray(filteredList)
-      ? filteredList.sort((a, b) => new Date(a?.date) - new Date(b?.date))
-      : [];
-
-    dateList = filteredList?.map((item) => item.date);
-    callVolumeList = filteredList?.map((item) => item?.call_volume);
-    putVolumeList = filteredList?.map((item) => item?.put_volume);
-    priceList = filteredList?.map((item) => item?.price);
-
-    callOpenInterestList = filteredList?.map(
-      (item) => item?.call_open_interest,
-    );
-    putOpenInterestList = filteredList?.map((item) => item?.put_open_interest);
-
-    // Determine the type of plot data to generate based on displayData
-    if (displayData === "volume") {
-      options = plotData(callVolumeList, putVolumeList, priceList);
-    } else if (displayData === "openInterest") {
-      options = plotData(callOpenInterestList, putOpenInterestList, priceList);
-    }
   }
 
   async function handleScroll() {
@@ -255,32 +187,22 @@
   }
 
   onMount(async () => {
-    if (data?.user?.tier === "Pro") {
-      window.addEventListener("scroll", handleScroll);
-      return () => {
-        window.removeEventListener("scroll", handleScroll);
-      };
-    }
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   });
 
   $: {
-    if (displayTimePeriod || displayData || $stockTicker) {
-      displayData = "volume";
-      dailyStats = data?.getDailyStats;
-      tickerFlow = data?.getTickerFlow;
-      rawData = data?.getOptionsHistoricalData;
-      optionList = rawData?.slice(0, 30);
-
-      filteredList = filterDate(rawData, displayTimePeriod);
-      // Process the filtered list to generate the plot data
-      processPlotData(filteredList);
+    if ($mode) {
+      config = plotData();
     }
   }
 </script>
 
 <SEO
-  title={`${$displayCompanyName} (${$stockTicker}) Options Activity`}
-  description={`Explore unusual options activity for ${$displayCompanyName} (${$stockTicker}), providing insights into market sentiment and potential stock movement.`}
+  title={`${$displayCompanyName} (${$stockTicker}) Options Overview`}
+  description={`View comprehensive ${$displayCompanyName} (${$stockTicker}) options with our latest charts on volume, open interest, max pain, and implied volatility.`}
 />
 
 <section class="w-full overflow-hidden min-h-screen">
@@ -289,79 +211,75 @@
       class="w-full relative flex justify-center items-center overflow-hidden"
     >
       <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
+        <!--
         {#if Object?.keys(dailyStats)?.length === 0 && rawData?.length === 0}
           <Infobox text="No Options data available" />
         {/if}
+        -->
 
-        {#if Object?.keys(dailyStats)?.length > 0}
-          <div class="w-full mb-10">
-            <DailyStats rawData={dailyStats} />
-          </div>
-        {/if}
+        <div class="w-full mb-10">
+          <h2 class="mb-4 text-xl sm:text-2xl font-bold w-fit">
+            {$stockTicker} Option Overview
+          </h2>
+          <p>
+            Overview for all option chains of <strong>{$stockTicker}</strong>.
+            As of
+            <strong>July 11, 2025</strong>, <strong>{$stockTicker}</strong>
+            options have an IV of <strong>55.80%</strong> and an IV rank of
+            <strong>17.27%</strong>. The volume is <strong>2,857,903</strong>
+            contracts, which is <strong>113.63%</strong> of average daily volume
+            of <strong>2,515,089</strong> contracts. The volume put-call ratio
+            is <strong>0.84</strong>, indicating a
+            <strong>neutral</strong> sentiment in the market.
+          </p>
+        </div>
 
-        {#if tickerFlow?.length > 0 && data?.getStockQuote?.marketCap > 500 * 10 ** 9}
-          <div class="w-full">
-            <TickerFlow {tickerFlow} />
-          </div>
-        {/if}
+        <!-- Apply the blur class to the chart -->
+        <div class="w-fit max-w-56 border" use:highcharts={config}></div>
 
         {#if rawData?.length > 0}
-          <!--
-          <div class="flex flex-row items-center w-full mt-10">
-  
-            <select
-              class=" w-40 select select-bordered select-sm p-0 pl-5 bg-secondary"
-              on:change={changeVolumeOI}
-            >
-              <option disabled>Choose a category</option>
-              <option value="volume" selected>Volume</option>
-              <option value="openInterest">Open Interest</option>
-            </select>
-          </div>
-
-          <div class="app w-full ">
-            {#if filteredList?.length !== 0}
-              <Chart {init} {options} class="chart" />
-            {:else}
-              <span
-                class="text-xl  m-auto flex justify-center items-center h-full"
-              >
-                <div
-                  class=" text-sm sm:text-[1rem] sm:rounded h-auto border border-gray-600 p-4"
-                >
-                  <svg
-                    class="w-5 h-5 inline-block sm:mr-2 shrink-0"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 256 256"
-                    ><path
-                      fill="#fff"
-                      d="M128 24a104 104 0 1 0 104 104A104.11 104.11 0 0 0 128 24m-4 48a12 12 0 1 1-12 12a12 12 0 0 1 12-12m12 112a16 16 0 0 1-16-16v-40a8 8 0 0 1 0-16a16 16 0 0 1 16 16v40a8 8 0 0 1 0 16"
-                    /></svg
-                  >
-                  No Options activity found
-                </div>
-              </span>
-            {/if}
-          </div>
-          -->
-
           {#if optionList?.length !== 0}
-            <h3 class="text-xl sm:text-2xl font-bold text-start">
-              Historical {$stockTicker} Data
+            <h3 class="mb-4 text-xl sm:text-2xl font-bold w-fit">
+              Option Chain Statistics
             </h3>
+
+            <p>
+              This table provides a comprehensive overview of all <strong
+                >{$stockTicker}</strong
+              >
+              options grouped by their expiration dates.
+            </p>
 
             <div class="flex justify-start items-center m-auto overflow-x-auto">
               <table
                 class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto mt-3"
               >
-                <thead class="text-muted dark:text-white dark:bg-default">
+                <thead class="bg-default text-white">
                   <tr class="">
-                    <td class=" font-semibold text-sm text-start">Date</td>
-                    <td class=" font-semibold text-sm text-end">% Change</td>
-                    <td class=" font-semibold text-sm text-end">P/C</td>
-                    <td class=" font-semibold text-sm text-center">Volume</td>
-                    <td class=" font-semibold text-sm text-center">C Volume</td>
-                    <td class=" font-semibold text-sm text-center">P Volume</td>
+                    <td
+                      class=" font-semibold text-sm text-start border-r border-gray-800"
+                      >Date</td
+                    >
+                    <td
+                      class=" font-semibold text-sm text-end border-r border-gray-800"
+                      >% Change</td
+                    >
+                    <td
+                      class=" font-semibold text-sm text-end border-r border-gray-800"
+                      >P/C</td
+                    >
+                    <td
+                      class=" font-semibold text-sm text-center border-r border-gray-800"
+                      >Volume</td
+                    >
+                    <td
+                      class=" font-semibold text-sm text-center border-r border-gray-800"
+                      >C Volume</td
+                    >
+                    <td
+                      class=" font-semibold text-sm text-center border-r border-gray-800"
+                      >P Volume</td
+                    >
                     <!--
                     <td class=" font-semibold text-sm text-end"
                       >Vol/30D</td
@@ -372,30 +290,32 @@
                       >🐻/🐂 Prem</td
                     >
                   -->
-                    <td class=" font-semibold text-sm text-end">Total OI</td>
-                    <td class=" font-semibold text-sm text-end">OI Change</td>
-                    <td class=" font-semibold text-sm text-end">% OI Change</td>
-                    <td class=" font-semibold text-sm text-end">C Prem</td>
-                    <td class=" font-semibold text-sm text-end">P Prem</td>
-                    <!--
-                    <td class=" font-semibold text-sm text-end"
-                      >Net Prem</td
+                    <td
+                      class=" font-semibold text-sm text-end border-r border-gray-800"
+                      >Total OI</td
                     >
-                    <td class=" font-semibold text-sm text-end"
-                      >Total Prem</td
+                    <td
+                      class=" font-semibold text-sm text-end border-r border-gray-800"
+                      >OI Change</td
                     >
-                      -->
+                    <td
+                      class=" font-semibold text-sm text-end border-r border-gray-800"
+                      >% OI Change</td
+                    >
+                    <td
+                      class=" font-semibold text-sm text-end border-r border-gray-800"
+                      >C Prem</td
+                    >
+                    <td
+                      class=" font-semibold text-sm text-end border-r border-gray-800"
+                      >P Prem</td
+                    >
                   </tr>
                 </thead>
                 <tbody>
-                  {#each data?.user?.tier === "Pro" ? optionList : optionList?.slice(0, 3) as item, index}
+                  {#each optionList?.slice(0, 5) as item}
                     <tr
-                      class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
-                        1 ===
-                        optionList?.slice(0, 3)?.length &&
-                      !['Pro']?.includes(data?.user?.tier)
-                        ? 'opacity-[0.1]'
-                        : ''}"
+                      class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                     >
                       <td class=" text-sm sm:text-[1rem] text-start">
                         {formatDate(item?.date)}
@@ -590,8 +510,6 @@
                 </tbody>
               </table>
             </div>
-
-            <UpgradeToPro {data} display={true} />
           {/if}
         {/if}
       </div>
