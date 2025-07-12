@@ -18,13 +18,13 @@ export const GET: RequestHandler = async ({  locals }) => {
 
   try {
     
-    const userDiscordId = (await pb.collection('users')?.listExternalAuths(pb?.authStore?.model?.id))?.find(item => item?.provider === 'discord')?.id;
+    const userDiscordId = (await pb.collection('users')?.listExternalAuths(pb?.authStore?.model?.id))?.find(item => item?.provider === 'discord')?.providerId;
 
-    console.log(userDiscordId)
 
 
     // Check if user has Discord ID from OAuth2
     if (!userDiscordId) {
+        console.log("Discord ID not found for user")
       return new Response(JSON.stringify({ error: "Discord ID not found for user" }), { status: 400 });
     }
 
