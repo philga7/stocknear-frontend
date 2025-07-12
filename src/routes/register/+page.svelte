@@ -66,8 +66,8 @@
 
 <div
   class="relative w-full max-w-3xl mx-auto {data?.user
-    ? 'min-h-[500px] sm:min-h-[800px]'
-    : 'min-h-screen'}  {oauthLoading ? 'opacity-[0.2]' : ''}"
+    ? 'min-h-[500px] sm:min-h-[900px]'
+    : 'min-h-screen '}  {oauthLoading ? 'opacity-[0.2]' : ''}"
 >
   <div class="grid grid-cols-1 gap-4">
     <div class="relative">
@@ -126,13 +126,13 @@
           {#if !loading && !isClicked}
             <button
               type="submit"
-              class="cursor-pointer py-2.5 bg-[#3B82F6] dark:bg-[#fff] border-none sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 transition duration-100 btn-md w-full rounded m-auto text-white dark:text-black font-semibold text-[1rem]"
+              class="cursor-pointer py-2.5 bg-default dark:bg-[#fff] border-none sm:hover:bg-black dark:sm:hover:bg-gray-300 transition duration-100 btn-md w-full rounded m-auto text-white dark:text-black font-semibold text-[1rem]"
             >
               <span>Register</span>
             </button>
           {:else}
             <label
-              class="cursor-not-allowed btn bg-[#3B82F6] dark:bg-[#fff] opacity-[0.5] border border-gray-600 sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 transition duration-100 btn-md w-full rounded m-auto text-white dark:text-black font-semibold text-[1rem]"
+              class="cursor-not-allowed btn bg-default dark:bg-[#fff] opacity-[0.5] border border-gray-600 sm:hover:bg-black dark:sm:hover:bg-gray-300 transition duration-100 btn-md w-full rounded m-auto text-white dark:text-black font-semibold text-[1rem]"
             >
               <div class="flex flex-row m-auto items-center">
                 <span class="loading loading-infinity"></span>
@@ -141,20 +141,6 @@
             </label>
           {/if}
         </div>
-        <p class="hidden sm:block pb-1 text-xs text-center w-full max-w-lg">
-          By registering you agree to stocknear's
-          <a
-            href="/terms-of-use"
-            class="text-blue-700 dark:text-blue-400 sm:hover:underline"
-            >Terms of Use</a
-          >
-          and acknowledge that you've read our
-          <a
-            href="/privacy-policy"
-            class="text-blue-700 dark:text-blue-400 sm:hover:underline"
-            >Privacy Policy</a
-          >.
-        </p>
 
         <div class="divider divider-[#fff] pt-10 pb-10">
           <span class=" text-[1rem] z-10">Or register using</span>
@@ -790,34 +776,14 @@
           type="submit"
           aria-label="Logout"
           class="cursor-pointer mx-auto mt-2 flex w-full max-w-xs justify-center rounded-[3px]
-          bg-blue-500 border border-transparent px-4 py-2 text-sm font-semibold
-          text-white shadow-sm sm:hover:bg-blue-600 transition-all focus:outline-none
-          focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-          dark:focus:ring-offset-0"
+        bg-default dark:bg-white dark:sm:hover:bg-white/80 dark:text-muted border border-transparent px-4 py-2 text-sm font-semibold
+        text-white shadow-sm sm:hover:bg-black transition-all focus:outline-none
+        focus:ring-offset-0"
           >Log Out
         </button>
       </form>
     {/if}
   </div>
-</div>
-
-<div class="relative sm:hidden w-5/6 flex justify-center items-center m-auto">
-  <p
-    class="absolute bottom-5 pb-1 text-xs text-center w-full max-w-lg text-gray-300"
-  >
-    By registering you agree to stocknear's
-    <a
-      href="/terms-of-use"
-      class="text-blue-700 dark:text-blue-400 sm:hover:underline"
-      >Terms of Use</a
-    >
-    and acknowledge that you've read our
-    <a
-      href="/privacy-policy"
-      class="text-blue-700 dark:text-blue-400 sm:hover:underline"
-      >Privacy Policy</a
-    >.
-  </p>
 </div>
 
 {#if oauthLoading}
