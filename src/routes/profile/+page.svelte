@@ -431,7 +431,7 @@
                 </p>
                 <label
                   for="installModal"
-                  class="cursor-pointer border border-gray-300 shadow-sshadow-xs m dark:border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-default sm:hover:bg-gray-300 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
+                  class="cursor-pointer border border-gray-300 dark:border-gray-300 dark:border-gray-600 bg-default sm:hover:bg-black dark:bg-default text-white dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
                 >
                   Install the App
                 </label>
@@ -525,21 +525,21 @@
                 >
                   <label
                     for="cancelSubscriptionModal"
-                    class="cursor-pointer border border-gray-300 shadow-sshadow-xs m dark:border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded"
+                    class="cursor-pointer border border-gray-300 dark:border-gray-300 dark:border-gray-600 transition-all text-white bg-default sm:hover:bg-primary dark:bg-default dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded"
                   >
                     Cancel Subscription
                   </label>
                   {#if subscriptionData?.product_name === "Plus Subscription (Monthly)"}
                     <label
                       for="changeSubscriptionPlusAnnualModal"
-                      class="mt-3 sm:mt-0 sm:ml-3 cursor-pointer border border-gray-300 shadow-sshadow-xs m dark:border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded"
+                      class="mt-3 sm:mt-0 sm:ml-3 cursor-pointer border border-gray-300 dark:border-gray-300 dark:border-gray-600 dark:bg-default transition-all text-white bg-default sm:hover:bg-primary dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded"
                     >
                       Upgrade to Plus (Annual Plan)
                     </label>
                   {:else if subscriptionData?.product_name === "Plus Subscription (Annually)" || subscriptionData?.product_name === "Pro Subscription (Monthly)"}
                     <label
                       for="changeSubscriptionProAnnualModal"
-                      class="mt-3 sm:mt-0 sm:ml-3 cursor-pointer border border-gray-300 shadow-sshadow-xs m dark:border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded"
+                      class="mt-3 sm:mt-0 sm:ml-3 cursor-pointer border border-gray-300 dark:border-gray-300 dark:border-gray-600 dark:bg-default transition-all text-white bg-default sm:hover:bg-primary dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded"
                     >
                       Upgrade to Pro (Annual Plan)
                     </label>
@@ -548,7 +548,7 @@
               {:else if subscriptionData?.status_formatted === "Cancelled"}
                 <label
                   for="reactivateSubscriptionModal"
-                  class="cursor-pointer border border-gray-300 shadow-sshadow-xs m dark:border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-default sm:hover:bg-gray-200 dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
+                  class="cursor-pointer border border-gray-300 dark:border-gray-300 dark:border-gray-600 transition-all text-white bg-default sm:hover:bg-primary dark:bg-default dark:sm:hover:bg-primary text-sm sm:text-[1rem] px-4 py-2 rounded mt-5"
                 >
                   Reactivate Subscription
                 </label>
@@ -559,7 +559,7 @@
               {:else}
                 <a
                   href="/pricing"
-                  class="sm:hover:text-muted dark:sm:hover:text-white text-blue-700 dark:text-blue-400"
+                  class="sm:hover:text-muted dark:sm:hover:text-white text-blue-800 dark:text-blue-400"
                 >
                   Get Full Access with our Subscription.
                 </a>
@@ -579,7 +579,7 @@
                 <li>
                   Send an email to <a
                     href={`mailto:${emailAddress}`}
-                    class="sm:hover:text-muted dark:sm:hover:text-white text-blue-700 dark:text-blue-400"
+                    class="sm:hover:text-muted dark:sm:hover:text-white text-blue-800 dark:text-blue-400"
                     >{emailAddress}</a
                   >
                 </li>
@@ -589,7 +589,7 @@
                     rel="noopener noreferrer"
                     target="_blank"
                     href="https://www.reddit.com/r/stocknear/"
-                    class="sm:hover:text-muted dark:sm:hover:text-white text-blue-700 dark:text-blue-400"
+                    class="sm:hover:text-muted dark:sm:hover:text-white text-blue-800 dark:text-blue-400"
                   >
                     r/stocknear</a
                   >.
@@ -599,7 +599,7 @@
                     rel="noopener noreferrer"
                     target="_blank"
                     href="https://discord.com/invite/hCwZMMZ2MT"
-                    class="sm:hover:text-muted dark:sm:hover:text-white text-blue-700 dark:text-blue-400"
+                    class="sm:hover:text-muted dark:sm:hover:text-white text-blue-800 dark:text-blue-400"
                     >Discord Channel</a
                   >.
                 </li>
