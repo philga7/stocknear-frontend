@@ -109,6 +109,7 @@
               names={revenueNames}
               {categoryValues}
               {growthValues}
+              href={true}
             />
           {/if}
 
@@ -119,6 +120,7 @@
               names={geographicNames}
               categoryValues={geographiCategoryValues}
               growthValues={geographicGrowthValues}
+              href={false}
             />
           {/if}
 
@@ -129,6 +131,7 @@
               names={operatingExpensesNames}
               categoryValues={operatingExpensesCategoryValues}
               growthValues={operatingExpensesGrowthValues}
+              href={false}
             />
           {/if}
         {:else}

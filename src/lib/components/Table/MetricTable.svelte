@@ -7,6 +7,8 @@
   export let names = [];
   export let categoryValues = [];
   export let growthValues = [];
+  export let href = false;
+
   let getHref = (name) =>
     `/stocks/${$stockTicker}/metrics/${name?.toLowerCase().replace(/ & /g, "-").replace(/ /g, "-")}`; // optional, for linking revenue names
 
@@ -60,7 +62,7 @@
             <th
               class="whitespace-nowrap text-sm sm:text-[1rem] font-normal text-start border-b border-r border-gray-300 dark:border-gray-800"
             >
-              {#if title !== "Revenue by Geography" && getHref}
+              {#if href}
                 <a
                   href={getHref(name)}
                   class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400 cursor-pointer underline underline-offset-4"

@@ -296,7 +296,7 @@
           class="inline-flex justify-center w-full rounded sm:w-auto sm:ml-auto"
         >
           <div
-            class="timeframe-toggle-driver bg-gray-300 dark:bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded p-1"
+            class="timeframe-toggle-driver bg-default text-white dark:bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded p-1"
           >
             {#each tabs as item, i}
               {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}
@@ -347,7 +347,7 @@
         <table
           class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
         >
-          <thead class="text-muted dark:text-white dark:bg-default">
+          <thead class="text-white bg-default">
             <tr>
               <th class=" font-semibold text-start text-sm sm:text-[1rem]"
                 >Date</th

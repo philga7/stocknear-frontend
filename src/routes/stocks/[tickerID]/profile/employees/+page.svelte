@@ -439,7 +439,7 @@
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
                       builders={[builder]}
-                      class="w-full border-gray-300 shadow-xs dark:border-gray-600 border sm:hover:bg-gray-100 dark:bg-default dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
+                      class="w-full border-gray-300  dark:border-gray-600 border bg-black text-white sm:hover:bg-default dark:bg-default dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                     >
                       <span class="truncate">{sortBy}</span>
                       <svg
@@ -458,6 +458,10 @@
                     </Button>
                   </DropdownMenu.Trigger>
                   <DropdownMenu.Content
+                    side="bottom"
+                    align="end"
+                    sideOffset={10}
+                    alignOffset={0}
                     class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                   >
                     <DropdownMenu.Label
@@ -491,7 +495,7 @@
               </div>
               <Button
                 on:click={() => exportData("csv")}
-                class="ml-2 w-fit border-gray-300 shadow-xs dark:border-gray-600 border sm:hover:bg-gray-100 dark:bg-default dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded truncate"
+                class="ml-2 w-fit border-gray-300  dark:border-gray-600 border bg-black text-white sm:hover:bg-default dark:bg-default dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded truncate"
               >
                 <span class="truncate">Download</span>
                 <svg
@@ -525,7 +529,7 @@
               <table
                 class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
               >
-                <thead class="text-muted dark:text-white dark:bg-default">
+                <thead class="text-white bg-default">
                   <tr>
                     <th
                       class="text-start text-sm sm:text-[1rem] whitespace-nowrap font-semibold"

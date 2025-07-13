@@ -238,7 +238,7 @@
                   class="inline-flex justify-center w-full rounded sm:w-auto"
                 >
                   <div
-                    class="bg-gray-300 dark:bg-secondary w-full sm:w-fit relative flex flex-wrap items-center justify-center rounded p-1"
+                    class="bg-default text-white dark:bg-secondary w-full sm:w-fit relative flex flex-wrap items-center justify-center rounded p-1"
                   >
                     {#each tabs as item, i}
                       {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}
@@ -362,7 +362,7 @@
             <table
               class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
             >
-              <thead class="text-muted dark:text-white dark:bg-default">
+              <thead class="text-white bg-default">
                 <tr>
                   <td class=" font-semibold text-sm sm:text-[1rem] text-start"
                     >Analyst</td

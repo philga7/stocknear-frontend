@@ -275,7 +275,7 @@
                 class="mt-5 table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
               >
                 <!-- head -->
-                <thead class="text-muted dark:text-white dark:bg-default">
+                <thead class="text-white bg-default">
                   <tr class="">
                     <th
                       class="hidden lg:table-cell text-start text-sm font-semibold"

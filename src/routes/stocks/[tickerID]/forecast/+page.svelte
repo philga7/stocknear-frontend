@@ -786,7 +786,7 @@
             >
             <div class="inline-flex justify-center w-full rounded sm:w-auto">
               <div
-                class="bg-gray-300 dark:bg-secondary w-full sm:w-fit relative flex flex-wrap items-center justify-center rounded p-1"
+                class="bg-black text-white dark:bg-secondary w-full sm:w-fit relative flex flex-wrap items-center justify-center rounded p-1"
               >
                 {#each tabs as item, i}
                   {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}
@@ -816,9 +816,7 @@
                         : ''} "
                     >
                       {#if activeIdx === i}
-                        <div
-                          class="absolute inset-0 rounded bg-[#fff]"
-                        ></div>
+                        <div class="absolute inset-0 rounded bg-[#fff]"></div>
                       {/if}
                       <span
                         class="relative text-sm block font-semibold whitespace-nowrap {activeIdx ===

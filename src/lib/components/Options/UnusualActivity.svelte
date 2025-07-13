@@ -979,7 +979,7 @@
             <table
               class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
             >
-              <thead class="text-muted dark:text-white dark:bg-default">
+              <thead class="text-white bg-default">
                 <tr class="">
                   <td class=" font-semibold text-sm text-start">Date</td>
                   <td class=" font-semibold text-sm text-end">Vol</td>

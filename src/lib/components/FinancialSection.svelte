@@ -370,7 +370,7 @@
                   <table
                     class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
                   >
-                    <thead class="text-muted dark:text-white dark:bg-default">
+                    <thead class="text-white bg-default">
                       <tr class="border min-w-[250px]">
                         <td class="text-start text-sm font-semibold pr-10"
                           >Fiscal Year</td

@@ -788,7 +788,7 @@
             <table
               class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
             >
-              <thead class="text-muted dark:text-white dark:bg-default">
+              <thead class="text-white bg-default">
                 <tr class="">
                   <th class=" font-semibold text-sm text-start">Fiscal Year</th>
                   {#each xData as item}
@@ -1105,6 +1105,7 @@
           />
         </Lazy>
 
+        <!--
         <Lazy fadeOption={{ delay: 100, duration: 100 }} keep={true}>
           <EstimationGraph
             userTier={data?.user?.tier}
@@ -1130,7 +1131,7 @@
             graphType="growth"
           />
         </Lazy>
-
+      
         <Lazy fadeOption={{ delay: 100, duration: 100 }} keep={true}>
           <EstimationGraph
             userTier={data?.user?.tier}
@@ -1156,6 +1157,7 @@
             graphType="growth"
           />
         </Lazy>
+        -->
       </div>
     </div>
   </main>

@@ -284,7 +284,7 @@ ${paragraphs.join("\n")}
             </h2>
             {#if rawData?.executives?.length > 0}
               <table class="mb-6 w-full xs:mb-8">
-                <thead class="bg-gray-200 shadow-xs dark:bg-primary"
+                <thead class="text-white bg-default dark:bg-primary"
                   ><tr class="border-y border-gray-300 dark:border-gray-600"
                     ><th
                       class="px-2 py-2.5 text-left font-semibold xs:px-3 xs:py-3 sm:px-4"
@@ -319,23 +319,37 @@ ${paragraphs.join("\n")}
             </h2>
             {#if rawData?.filings?.length > 0}
               <table class="w-full">
-                <thead
-                  ><tr
-                    class="border-b border-t border-gray-300 dark:border-gray-600 bg-gray-200 shadow-xs dark:bg-primary"
-                    ><th class="px-1 py-2 text-left xs:px-2">Date</th>
-                    <th class="px-1 py-2 text-left xs:px-2">Type</th>
-                    <th class="px-1 py-2 text-left xs:px-2">Title</th></tr
+                <thead class="text-white bg-default dark:bg-primary"
+                  ><tr class="border-y border-gray-300 dark:border-gray-600"
+                    ><th
+                      class="px-2 py-2.5 text-left font-semibold xs:px-3 xs:py-3 sm:px-4"
+                      >Date</th
+                    >
+                    <th
+                      class="px-2 py-2.5 text-left font-semibold xs:px-3 xs:py-3 sm:px-4"
+                      >Type</th
+                    >
+                    <th
+                      class="px-2 py-2.5 text-left font-semibold xs:px-3 xs:py-3 sm:px-4"
+                      >Title</th
+                    ></tr
                   ></thead
                 >
+
                 <tbody>
                   {#each rawData?.filings as item}
                     <tr
                       class="border-b border-gray-300 dark:border-gray-600 text-sm sm:text-[1rem]"
-                      ><td class="whitespace-nowrap py-3 pr-1 align-top xs:px-2"
+                      ><td
+                        class="px-2 py-2.5 align-top font-semibold xs:px-3 xs:py-3 sm:px-4"
                         >{item?.date}</td
                       >
-                      <td class="px-1 py-3 align-top xs:px-2">{item?.type}</td>
-                      <td class="py-3 pl-1 align-top xs:px-2"
+                      <td
+                        class="px-2 py-2.5 align-top font-semibold xs:px-3 xs:py-3 sm:px-4"
+                        >{item?.type}</td
+                      >
+                      <td
+                        class="px-2 py-2.5 align-top font-semibold xs:px-3 xs:py-3 sm:px-4"
                         ><a
                           class="text-blue-700 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
                           href={item?.link}

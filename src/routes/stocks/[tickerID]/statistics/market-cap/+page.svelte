@@ -742,7 +742,7 @@
                       <DropdownMenu.Trigger asChild let:builder>
                         <Button
                           builders={[builder]}
-                          class="w-full shadow-xs border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
+                          class="w-full  border-gray-300 dark:border-gray-600 border bg-black text-white sm:hover:bg-default dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                         >
                           <span class="truncate text-xs sm:text-sm"
                             >{timePeriod}</span
@@ -824,7 +824,7 @@
                   </div>
                   <Button
                     on:click={() => exportData("csv")}
-                    class="ml-2 w-full shadow-xs border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded truncate"
+                    class="ml-2 w-full  border-gray-300 dark:border-gray-600 border bg-black text-white sm:hover:bg-default dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                   >
                     <span class="truncate text-xs sm:text-sm">Download</span>
                     <svg
@@ -858,7 +858,7 @@
                   class="inline-flex justify-center w-full rounded sm:w-auto sm:ml-auto"
                 >
                   <div
-                    class="bg-gray-300 dark:bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded p-1 mt-4"
+                    class="bg-black text-white dark:bg-secondary w-full min-w-24 sm:w-fit relative flex flex-wrap items-center justify-center rounded p-1 mt-4"
                   >
                     {#each tabs as item, i}
                       {#if !["Pro", "Plus"]?.includes(data?.user?.tier) && i > 0}
