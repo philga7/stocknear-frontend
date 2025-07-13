@@ -1,104 +1,61 @@
 <script lang="ts">
-  import {
-    activePopupParameter,
-    screenWidth,
-    getCache,
-    setCache,
-  } from "$lib/store";
-  import InfoModal from "$lib/components/InfoModal.svelte";
-  import { onMount, onDestroy } from "svelte";
+  import { getCache, setCache } from "$lib/store";
+  import { onMount } from "svelte";
+  import tippy from "tippy.js";
+  import "tippy.js/dist/tippy.css";
 
   export let parameter = "";
   export let label;
   export let value;
 
-  let hoverTimeout;
-  let leaveTimeout;
-  let content = { text: "n/a" };
-  $: show = $activePopupParameter === parameter;
-
-  let popupEl: HTMLDivElement;
   let labelEl: HTMLLabelElement;
 
-  let popupX = 0;
-  let popupY = 0;
-  let isPositioned = false;
+  let content = { text: "Loading…" };
 
   async function getInfoText() {
     const cachedData = getCache(parameter, "getInfoText");
     if (cachedData) {
       content = cachedData;
-    } else {
-      const postData = { parameter };
-      const response = await fetch("/api/info-text", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(postData),
-      });
-
-      content = (await response.json()) ?? { text: "n/a" };
-      setCache(parameter, content, "getInfoText");
-    }
-  }
-
-  async function handleMouseEnter() {
-    await getInfoText();
-    clearTimeout(leaveTimeout);
-    hoverTimeout = setTimeout(() => {
-      $activePopupParameter = parameter;
-      isPositioned = false;
-      setTimeout(updatePopupPosition, 0);
-    }, 400);
-  }
-
-  function handleMouseLeave() {
-    clearTimeout(hoverTimeout);
-    leaveTimeout = setTimeout(() => {
-      if ($activePopupParameter && $activePopupParameter === parameter) {
-        $activePopupParameter = null;
-      }
-    }, 200);
-  }
-
-  function updatePopupPosition() {
-    const labelRect = labelEl?.getBoundingClientRect();
-    const popupRect = popupEl?.getBoundingClientRect();
-
-    if (!labelRect || !popupRect) return;
-
-    const spacing = 8;
-    let top = labelRect.top - popupRect.height - spacing;
-    let left = labelRect.left + labelRect.width / 2 - popupRect.width / 2;
-
-    if (left < 8) left = 8;
-    if (left + popupRect.width > window.innerWidth) {
-      left = window.innerWidth - popupRect.width - 8;
-    }
-    if (top < 0) {
-      top = labelRect.bottom + spacing;
+      return;
     }
 
-    popupX = left;
-    popupY = top;
-    isPositioned = true;
-  }
+    const postData = { parameter };
+    const response = await fetch("/api/info-text", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(postData),
+    });
 
-  function handleScrollOrResize() {
-    if (show) {
-      updatePopupPosition();
-    }
+    content = (await response.json()) ?? { text: "n/a" };
+    setCache(parameter, content, "getInfoText");
   }
 
   onMount(() => {
-    window.addEventListener("scroll", handleScrollOrResize, true);
-    window.addEventListener("resize", handleScrollOrResize);
+    if (!labelEl) return;
 
-    return () => {
-      window.removeEventListener("scroll", handleScrollOrResize, true);
-      window.removeEventListener("resize", handleScrollOrResize);
-    };
+    tippy(labelEl, {
+      trigger: "mouseenter focus",
+      placement: "bottom",
+      theme: "light-border",
+      allowHTML: true,
+      interactive: true,
+      delay: [200, 100],
+      onShow: async (instance) => {
+        instance.setContent("Loading…");
+        await getInfoText();
+        instance.setContent(`
+          <div class=" text-white  w-full mb-3">
+            <h4 class="font-bold mb-1 text-[1rem] w-full">${label}</h4>
+            <p>${content?.text}</p>
+            ${
+              content?.equation
+                ? `<div class="mt-4 pt-2 text-sm border-t border-gray-600 w-fit">${content?.equation}</div>`
+                : ""
+            }
+          </div>
+        `);
+      },
+    });
   });
 </script>
 
@@ -106,91 +63,14 @@
   class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd relative"
 >
   <td
-    on:click={() => {
-      if ($screenWidth < 640) {
-        getInfoText();
-      }
-    }}
     class="px-[5px] py-1.5 xs:px-2.5 xs:py-2 relative flex flex-row items-center"
   >
-    <label
-      bind:this={labelEl}
-      on:mouseenter={handleMouseEnter}
-      on:mouseleave={handleMouseLeave}
-      for={$screenWidth < 640 ? parameter : ""}
-      class="cursor-text"
-    >
+    <label bind:this={labelEl} for="" class="cursor-text">
       {label}
     </label>
-
-    <div class="sm:hidden">
-      {#if content?.text}
-        <InfoModal title={label} content={content?.text} id={parameter} />
-      {/if}
-    </div>
-
-    {#if show}
-      <div
-        bind:this={popupEl}
-        class="hidden sm:block fixed z-50 w-[400px] cursor-default rounded-md border border-gray-200 bg-white shadow-lg dark:border-dark-600 dark:bg-dark-700 dark:text-dark-100 popup-fade"
-        style="
-          opacity: {isPositioned ? 1 : 0};
-          transform: translateY({isPositioned ? '0' : '10px'});
-          top: {popupY}px;
-          left: {popupX}px;
-          pointer-events: {isPositioned ? 'auto' : 'none'};
-        "
-      >
-        <div class="relative p-3">
-          <button
-            class="absolute right-2 top-2 text-gray-500 cursor-pointer"
-            on:click={() => {
-              show = false;
-              $activePopupParameter = null;
-            }}
-            aria-label="Close"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-4 w-4"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M10 8.586L15.657 2.93a1 1 0 111.414 1.414L11.414 10l5.657 5.657a1 1 0 01-1.414 1.414L10 11.414l-5.657 5.657a1 1 0 01-1.414-1.414L8.586 10 2.93 4.343a1 1 0 111.414-1.414L10 8.586z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </button>
-
-          <div class="whitespace-normal">
-            <h4 class="mb-2 text-lg font-semibold text-default">{label}</h4>
-            <p
-              class="mb-2 wrap border-t border-sharp pt-2 text-sm font-normal text-default md:text-smaller"
-            >
-              {content?.text}
-            </p>
-            {#if content?.equation}
-              <div
-                class="mb-2 pt-1.5 border-t border-gray-300 text-sm text-muted"
-              >
-                {content?.equation}
-              </div>
-            {/if}
-          </div>
-        </div>
-      </div>
-    {/if}
   </td>
 
-  <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2">{value}</td>
+  <td class="px-[5px] py-1.5 text-right xs:px-2.5 xs:py-2">
+    {value}
+  </td>
 </tr>
-
-<style>
-  .popup-fade {
-    transition:
-      opacity 0.2s ease,
-      transform 0.2s ease;
-  }
-</style>
