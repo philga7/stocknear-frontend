@@ -191,7 +191,7 @@
   function plotOI() {
     const currentOI = oiData?.total ?? 0;
     const benchmarkOI =
-      oiData?.avgDaily > currentOI ? oiData?.avgDaily * 2 : currentOI * 2;
+      oiData?.avgDaily * 2 > currentOI ? oiData?.avgDaily * 2 : currentOI * 2;
 
     // Define band breakpoints as fractions of benchmarkOI
     const band1 = benchmarkOI * 0.2;
@@ -419,7 +419,7 @@
   function plotVolume() {
     const currentVol = volData?.total ?? 0;
     const benchmarkVol =
-      volData?.avgDaily > currentVol ? volData?.avgDaily * 2 : currentVol * 2;
+      volData?.avgDaily > currentVol ? volData?.avgDaily * 2 : currentVol;
 
     const band1 = benchmarkVol * 0.2;
     const band2 = benchmarkVol * 0.4;
