@@ -767,7 +767,7 @@ Low IV Rank means IV is low — often seen as bullish (calm) or an opportunity t
               </div>
 
               <span class="font-semibold text-sm sm:text-[1rem]"
-                >{ivData?.ivRank ? ivData?.ivRank + "%" : "n/a"}</span
+                >{ivData?.ivRank ? ivData?.ivRank + "%" : "< 0.01%"}</span
               >
             </div>
 

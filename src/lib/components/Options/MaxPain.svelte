@@ -214,8 +214,8 @@
           name: "Call",
           type: "column",
           data: callSeries,
-          color: "#00FC50",
-          borderColor: "#00FC50",
+          color: $mode === "light" ? "#08B108" : "#00FC50",
+          borderColor: $mode === "light" ? "#08B108" : "#00FC50",
           borderRadius: 0,
           marker: { enabled: false },
           animation: false, // Extra safeguard
@@ -224,8 +224,8 @@
           name: "Put",
           type: "column",
           data: putSeries,
-          color: "#EE5365",
-          borderColor: "#EE5365",
+          color: "#FF0808",
+          borderColor: "#FF0808",
           borderRadius: 0,
           marker: { enabled: false },
           animation: false, // Extra safeguard
@@ -475,7 +475,7 @@
             <DropdownMenu.Trigger asChild let:builder>
               <Button
                 builders={[builder]}
-                class=" border border-gray-300 dark:border-gray-700  shadow-xs bg-white dark:default h-[38px] shadow   flex flex-row justify-between items-center min-w-[130px] max-w-[240px] sm:w-auto  px-3  rounded truncate"
+                class=" border border-gray-300 dark:border-gray-700 text-white bg-black sm:hover:bg-default dark:default h-[38px] flex flex-row justify-between items-center min-w-[130px] max-w-[240px] sm:w-auto  px-3  rounded truncate"
               >
                 <span class="truncate text-sm"
                   >Date Expiration | {formatDate(selectedDate)}</span
@@ -561,9 +561,9 @@
         >
           {removeCompanyStrings($displayCompanyName)} Max Pain By Expiry
         </h2>
-        <span class="text-sm text-gray-700 dark:text-gray-300">
-          The Max Pain for all expiration dates of {ticker}.
-        </span>
+        <p class="text-sm sm:text-[1rem] mt-2">
+          The Max Pain for all expiration dates of <strong>{ticker}</strong>.
+        </p>
 
         <div>
           <div class="grow mt-3">

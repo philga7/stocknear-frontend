@@ -219,7 +219,7 @@
               <table
                 class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
               >
-                <thead class="text-muted dark:text-white dark:bg-default">
+                <thead class="text-white bg-default">
                   <tr class="border-b border-gray-300 dark:border-gray-800">
                     <th class=" font-semibold text-start text-sm sm:text-[1rem]"
                       >Quarter</th

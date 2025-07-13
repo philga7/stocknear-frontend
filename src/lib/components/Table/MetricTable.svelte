@@ -1,12 +1,14 @@
 <script>
   import { abbreviateNumber } from "$lib/utils";
+  import { stockTicker } from "$lib/store";
 
   export let title = "";
   export let dateData = [];
   export let names = [];
   export let categoryValues = [];
   export let growthValues = [];
-  export let getHref = (name) => "#"; // optional, for linking revenue names
+  let getHref = (name) =>
+    `/stocks/${$stockTicker}/metrics/${name?.toLowerCase().replace(/ & /g, "-").replace(/ /g, "-")}`; // optional, for linking revenue names
 
   // Helper to format dates consistently.
   const formatDate = (d) => {
@@ -36,16 +38,16 @@
     <table
       class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
     >
-      <thead class="text-muted dark:text-white dark:bg-default">
+      <thead class="bg-default text-white">
         <tr>
           <th
-            class="border-b border-r border-gray-300 dark:border-gray-800 font-semibold text-sm text-start"
+            class="border-b border-r border-gray-800 font-semibold text-sm text-start"
           >
             Period Ending
           </th>
           {#each dateData as item}
             <th
-              class="z-20 border-b border-r min-w-[120px] border-gray-300 dark:border-gray-800 font-semibold text-sm text-end"
+              class="z-20 border-b border-r min-w-[120px] border-gray-800 font-semibold text-sm text-end"
             >
               {formatDate(item)}
             </th>
