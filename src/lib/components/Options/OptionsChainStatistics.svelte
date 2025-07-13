@@ -779,7 +779,7 @@ Low IV Rank means IV is low — often seen as bullish (calm) or an opportunity t
               >
                 <span>Historical Volatility</span>
                 <InfoPopup
-                  text="Historical Volatility shows how much a stock’s price fluctuated over the past 12 months.  
+                  text="Historical Volatility shows how much a stock’s price fluctuated over the past 30 days.  
               High volatility means the stock experienced large price swings — often considered riskier.  
               Low volatility means the stock moved more steadily — often considered less risky."
                 />
