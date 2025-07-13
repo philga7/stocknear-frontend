@@ -442,6 +442,10 @@
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Content
+        side="bottom"
+        align="end"
+        sideOffset={10}
+        alignOffset={0}
         class="min-w-56 w-auto max-w-60 max-h-[400px] overflow-y-auto scroller relative"
       >
         <!-- Dropdown items -->

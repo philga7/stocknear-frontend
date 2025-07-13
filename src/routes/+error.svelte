@@ -31,7 +31,7 @@
           it to us via
           <a
             href={`mailto:${emailAddress}`}
-            class="inline-block text-blue-700 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline"
+            class="inline-block text-blue-800 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline"
             >{emailAddress}</a
           >.
           <br />
@@ -40,7 +40,7 @@
 
         <a
           href="/home"
-          class="flex justify-center items-center w-1/2 m-auto py-2.5 mt-10 rounded duration-100 bg-[#3B82F6] text-white sm:hover:bg-blue-600 dark:bg-[#fff] dark:sm:hover:hover:bg-gray-300 dark:text-black font-semibold"
+          class="flex justify-center items-center w-1/2 m-auto py-2.5 mt-10 rounded duration-100 bg-black sm:hover:bg-muted text-white sm:hover:bg-blue-600 dark:bg-[#fff] dark:sm:hover:hover:bg-gray-300 dark:text-black font-semibold"
         >
           Back to Home Page
         </a>
