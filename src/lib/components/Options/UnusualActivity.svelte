@@ -636,7 +636,7 @@
 
   $: columns = [
     { key: "date", label: "Date", align: "left" },
-    { key: "optionSymbol", label: "Option Chain", align: "center" },
+    { key: "optionSymbol", label: "Option Chain", align: "right" },
     { key: "dte", label: "DTE", align: "right" },
     { key: "unusualType", label: "Type", align: "right" },
     { key: "executionEst", label: "Exec", align: "right" },
@@ -753,7 +753,7 @@
           {ticker} Unusual Activity
         </h2>
         <Infobox
-          text="Unusual options trades with premiums of $500,000 or more, made by hedge funds and major institutions."
+          text="Unusual options orders with premiums of $500,000 or more, made by hedge funds and major institutions."
         />
 
         <div>
@@ -791,11 +791,9 @@
                     {formatDate(item?.date)}
                   </td>
 
-                  <td
-                    class="text-sm sm:text-[1rem] text-start whitespace-nowrap flex justify-between"
-                  >
+                  <td class="text-sm sm:text-[1rem] text-end whitespace-nowrap">
                     <span
-                      class="inline-block px-2 {item?.optionType === 'Calls'
+                      class=" px-2 {item?.optionType === 'Calls'
                         ? 'text-green-800 dark:text-[#00FC50]'
                         : 'text-red-800 dark:text-[#FF2F1F]'}"
                     >
@@ -847,7 +845,7 @@
                       ? 'text-green-800 dark:text-[#00FC50]'
                       : item?.sentiment === 'Bearish'
                         ? 'text-red-800 dark:text-[#FF2F1F]'
-                        : 'text-orange-600 dark:text-[#C8A32D]'} "
+                        : 'text-orange-800 dark:text-[#C8A32D]'} "
                   >
                     {item?.sentiment}
                   </td>

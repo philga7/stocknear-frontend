@@ -828,7 +828,7 @@
                         n/a
                       {:else if tableActualRevenue[index]?.val === null}
                         <span
-                          class="text-orange-600 dark:text-orange-400 {item?.growth >
+                          class="text-orange-800 dark:text-orange-400 {item?.growth >
                           0
                             ? "before:content-['+']"
                             : ''}"
@@ -879,7 +879,7 @@
                         n/a
                       {:else if tableActualRevenue[index]?.val === null}
                         <span
-                          class="text-orange-600 dark:text-orange-400 {item?.growth >
+                          class="text-orange-800 dark:text-orange-400 {item?.growth >
                           0
                             ? "before:content-['+']"
                             : ''}"
@@ -929,7 +929,7 @@
                         n/a
                       {:else if tableActualNetIncome[index]?.val === null}
                         <span
-                          class="text-orange-600 dark:text-orange-400 {item?.growth >
+                          class="text-orange-800 dark:text-orange-400 {item?.growth >
                           0
                             ? "before:content-['+']"
                             : ''}"
@@ -980,7 +980,7 @@
                         n/a
                       {:else if tableActualEbitda[index]?.val === null}
                         <span
-                          class="text-orange-600 dark:text-orange-400 {item?.growth >
+                          class="text-orange-800 dark:text-orange-400 {item?.growth >
                           0
                             ? "before:content-['+']"
                             : ''}"
@@ -1026,7 +1026,7 @@
             Historical EPS numbers are GAAP, while forecasted numbers may be
             non-GAAP.
           </div>
-          <div class="text-orange-600 dark:text-orange-400 text-sm mt-2">
+          <div class="text-orange-800 dark:text-orange-400 text-sm mt-2">
             &#42; This value depends on the forecast
           </div>
           <!--

@@ -3796,7 +3796,7 @@ const handleKeyDown = (event) => {
                             >{item[row?.rule]}</span
                           >
                         {:else if item[row?.rule] === "Hold"}
-                          <span class=" text-orange-600 dark:text-[#FFA838]"
+                          <span class=" text-orange-800 dark:text-[#FFA838]"
                             >{item[row?.rule]}</span
                           >
                         {:else}

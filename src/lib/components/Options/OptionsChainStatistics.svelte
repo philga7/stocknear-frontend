@@ -3,6 +3,7 @@
   import { onMount } from "svelte";
   import highcharts from "$lib/highcharts.ts";
   import { abbreviateNumber } from "$lib/utils";
+  import OPRADisclaimer from "$lib/components/Options/OPRADisclaimer.svelte";
 
   export let data;
   export let ticker;
@@ -684,9 +685,10 @@
           -->
 
         <div class="w-full mb-10">
-          <h2 class="mb-4 text-xl sm:text-2xl font-bold w-fit">
+          <h2 class="mb-2 text-xl sm:text-2xl font-bold w-fit">
             {ticker} Option Overview
           </h2>
+          <OPRADisclaimer />
           <p>
             Overview for all option chains of <strong>{ticker}</strong>. As of
             <strong>{overview?.date}</strong>, <strong>{ticker}</strong>
