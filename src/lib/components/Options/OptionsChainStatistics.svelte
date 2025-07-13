@@ -190,13 +190,14 @@
 
   function plotOI() {
     const currentOI = oiData?.total ?? 0;
-    const avgOI = oiData?.avgDaily * 2;
+    const benchmarkOI =
+      oiData?.avgDaily > currentOI ? oiData?.avgDaily * 2 : currentOI * 2;
 
-    // Define band breakpoints as fractions of avgOI
-    const band1 = avgOI * 0.2;
-    const band2 = avgOI * 0.4;
-    const band3 = avgOI * 0.6;
-    const band4 = avgOI * 0.8;
+    // Define band breakpoints as fractions of benchmarkOI
+    const band1 = benchmarkOI * 0.2;
+    const band2 = benchmarkOI * 0.4;
+    const band3 = benchmarkOI * 0.6;
+    const band4 = benchmarkOI * 0.8;
 
     const optionsOI = {
       credits: { enabled: false },
@@ -234,7 +235,7 @@
 
       yAxis: {
         min: 0,
-        max: avgOI,
+        max: benchmarkOI,
         tickPosition: "outside",
         tickLength: 0,
         tickWidth: 0,
@@ -257,7 +258,7 @@
           { from: band1, to: band2, color: "#55BF3B", thickness: 20 },
           { from: band2, to: band3, color: "#DDDF0D", thickness: 20 },
           { from: band3, to: band4, color: "#DF5353", thickness: 20 },
-          { from: band4, to: avgOI, color: "#DF5353", thickness: 20 },
+          { from: band4, to: benchmarkOI, color: "#DF5353", thickness: 20 },
         ],
       },
 
@@ -417,12 +418,13 @@
 
   function plotVolume() {
     const currentVol = volData?.total ?? 0;
-    const avgVol = volData?.avgDaily * 2;
+    const benchmarkVol =
+      volData?.avgDaily > currentVol ? volData?.avgDaily * 2 : currentVol * 2;
 
-    const band1 = avgVol * 0.2;
-    const band2 = avgVol * 0.4;
-    const band3 = avgVol * 0.6;
-    const band4 = avgVol * 0.8;
+    const band1 = benchmarkVol * 0.2;
+    const band2 = benchmarkVol * 0.4;
+    const band3 = benchmarkVol * 0.6;
+    const band4 = benchmarkVol * 0.8;
 
     const optionsVolume = {
       credits: { enabled: false },
@@ -460,7 +462,7 @@
 
       yAxis: {
         min: 0,
-        max: avgVol,
+        max: benchmarkVol,
         tickPosition: "outside",
         tickLength: 0,
         tickWidth: 0,
@@ -483,7 +485,7 @@
           { from: band1, to: band2, color: "#55BF3B", thickness: 20 },
           { from: band2, to: band3, color: "#DDDF0D", thickness: 20 },
           { from: band3, to: band4, color: "#DF5353", thickness: 20 },
-          { from: band4, to: avgVol, color: "#DF5353", thickness: 20 },
+          { from: band4, to: benchmarkVol, color: "#DF5353", thickness: 20 },
         ],
       },
 
