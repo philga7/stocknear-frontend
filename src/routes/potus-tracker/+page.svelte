@@ -438,7 +438,7 @@
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
                       builders={[builder]}
-                      class="shadow-xs w-full border-gray-300 dark:border-gray-600 border bg-white sm:hover:bg-gray-100 dark:bg-default dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
+                      class="shadow-xs w-full border-gray-300 dark:border-gray-600 border bg-default text-white dark:bg-default dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                     >
                       <span class="truncate">{selectedSector}</span>
                       <svg
@@ -457,6 +457,10 @@
                     </Button>
                   </DropdownMenu.Trigger>
                   <DropdownMenu.Content
+                    side="bottom"
+                    align="end"
+                    sideOffset={10}
+                    alignOffset={0}
                     class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                   >
                     <DropdownMenu.Label
@@ -747,7 +751,7 @@
                                 postDate = item?.date;
                                 postUrl = item?.link;
                               }}
-                              class=" cursor-pointer bg-blue-600 text-white rounded px-3 py-1.5 text-sm font-semibold sm:hover:bg-blue-700 ml-auto"
+                              class=" cursor-pointer bg-black sm:hover:bg-default dark:bg-blue-600 text-white rounded px-3 py-1.5 text-sm font-semibold dark:sm:hover:bg-blue-700 ml-auto"
                             >
                               Read More
                             </label>
@@ -920,7 +924,7 @@
                             postContent = item?.content;
                             postDate = item?.date;
                           }}
-                          class="cursor-pointer bg-blue-600 text-white rounded px-3 py-1.5 text-sm font-semibold sm:hover:bg-blue-700 ml-auto"
+                          class="cursor-pointer bg-black sm:hover:bg-default dark:bg-blue-600 text-white rounded px-3 py-1.5 text-sm font-semibold dark:sm:hover:bg-blue-700 ml-auto"
                         >
                           Read More
                         </label>
@@ -1055,7 +1059,7 @@
       <label
         for="executivePostModal"
         class="cursor-pointer px-4 py-1.5 rounded text-sm font-medium
-            bg-blue-600 text-white sm:hover:bg-blue-700"
+            bg-black sm:hover:bg-default dark:bg-blue-600 text-white dark:sm:hover:bg-blue-700"
         tabindex="0">Close</label
       >
       <a
@@ -1063,7 +1067,7 @@
         rel="noopener noreferrer"
         target="_blank"
         class="cursor-pointer px-4 py-1.5 rounded text-sm font-medium
-            bg-blue-600 text-white sm:hover:bg-blue-700"
+            bg-black sm:hover:bg-default dark:bg-blue-600 text-white dark:sm:hover:bg-blue-700"
         tabindex="0">Read Source</a
       >
     </div>
@@ -1136,7 +1140,7 @@
       <label
         for="socialPostModal"
         class="cursor-pointer px-4 py-1.5 rounded text-sm font-medium
-            bg-blue-600 text-white sm:hover:bg-blue-700"
+            bg-black sm:hover:bg-default dark:bg-blue-600 text-white dark:sm:hover:bg-blue-700"
         tabindex="0">Close</label
       >
     </div>

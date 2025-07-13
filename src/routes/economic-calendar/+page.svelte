@@ -338,7 +338,7 @@
                   on:click={() => changeWeek("previous")}
                   class="{previousMax
                     ? 'opacity-80'
-                    : ''} hidden sm:flex h-16 w-48 cursor-pointer border m-auto flex bg-gray-200 dark:bg-primary border border-gray-300 dark:border-gray-600 mb-3"
+                    : ''} hidden sm:flex h-16 w-48 cursor-pointer border m-auto flex bg-default text-white dark:bg-primary border border-gray-300 dark:border-gray-600 mb-3"
                 >
                   <svg
                     class="w-6 h-6 m-auto rotate-180"
@@ -361,7 +361,7 @@
                       on:click={() => toggleDate(index)}
                       class="m-auto w-full cursor-pointer h-16 {index ===
                       selectedWeekday
-                        ? 'bg-gray-200 dark:bg-white text-black font-semibold'
+                        ? 'bg-default text-white dark:text-black dark:bg-white text-black font-semibold'
                         : ''} rounded sm:rounded-none flex dark:bg-default border border-gray-300 dark:border-gray-600 mb-3"
                     >
                       <div
@@ -413,7 +413,7 @@
                   on:click={() => changeWeek("next")}
                   class="{nextMax
                     ? 'opacity-80'
-                    : ''} hidden sm:flex h-16 w-48 cursor-pointer border m-auto flex bg-gray-200 dark:bg-primary border border-gray-300 dark:border-gray-600 mb-3"
+                    : ''} hidden sm:flex h-16 w-48 cursor-pointer border m-auto flex bg-default text-white dark:bg-primary border border-gray-300 dark:border-gray-600 mb-3"
                 >
                   <svg
                     class="w-6 h-6 m-auto"
@@ -439,7 +439,7 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="border-gray-300 dark:border-gray-600 border border-gray-300 shadow-xs sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded truncate"
+                        class="border-gray-300 dark:border-gray-600 border border-gray-300 bg-black sm:hover:bg-default text-white dark:bg-default  dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                       >
                         <span class="truncate">Filter Country</span>
                         <svg
@@ -458,6 +458,10 @@
                       </Button>
                     </DropdownMenu.Trigger>
                     <DropdownMenu.Content
+                      side="bottom"
+                      align="end"
+                      sideOffset={10}
+                      alignOffset={0}
                       class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                     >
                       <div
@@ -523,7 +527,7 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="border-gray-300 dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-300 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded truncate"
+                        class="border-gray-300 dark:border-gray-600 border border-gray-300 bg-black sm:hover:bg-default text-white dark:bg-default  dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                       >
                         <span class="truncate">Filter Importance</span>
                         <svg
@@ -542,6 +546,10 @@
                       </Button>
                     </DropdownMenu.Trigger>
                     <DropdownMenu.Content
+                      side="bottom"
+                      align="end"
+                      sideOffset={10}
+                      alignOffset={0}
                       class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                     >
                       <div
