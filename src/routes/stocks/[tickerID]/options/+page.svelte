@@ -11,6 +11,9 @@
 
   let overview = data?.getOptionsChainStatistics?.overview;
   let ivData = data?.getOptionsChainStatistics?.impliedVolatility;
+  let oiData = data?.getOptionsChainStatistics?.openInterest;
+  let volData = data?.getOptionsChainStatistics?.volume;
+
   let rawData = data?.getOptionsChainStatistics?.table;
   let optionList = rawData?.slice(0, 100);
 
@@ -826,11 +829,15 @@
           Implied Volatility
         </h2>
         <div
-          class="flex flex-col -mt-4 mb-8 md:flex-row gap-4 p-3 sm:p-0 justify-between items-center max-w-4xl w-full m-auto"
+          class="flex flex-col -mt-2 mb-8 md:flex-row gap-4 justify-between items-center w-full m-auto"
         >
           <!-- Gauge -->
           <div
-            class="w-fit max-w-56 max-h-56 mx-auto md:mx-0 ml-auto"
+            class="invisible max-w-56 max-h-56 mx-auto md:mx-0 ml-auto"
+          ></div>
+
+          <div
+            class="w-fit max-w-56 max-h-56 mx-auto md:mx-0 m-auto"
             use:highcharts={configIV}
           ></div>
 
@@ -906,42 +913,52 @@
               <span class="text-gray-500 dark:text-gray-300"
                 >Last Open Interest</span
               >
-              <span class="font-semibold">5.80%</span>
+              <span class="font-semibold"
+                >{oiData?.total?.toLocaleString("en-US")}</span
+              >
             </div>
 
             <div class="flex flex-col">
               <span class="text-gray-500 dark:text-gray-300"
                 >Put-Call Ratio</span
               >
-              <span class="font-semibold">17.27%</span>
+              <span class="font-semibold">{oiData?.putCallRatio}</span>
             </div>
 
             <div class="flex flex-col">
               <span class="text-gray-500 dark:text-gray-300"
                 >Put Open Interest</span
               >
-              <span class="font-semibold">24.4%</span>
+              <span class="font-semibold"
+                >{oiData?.puts?.toLocaleString("en-US")}</span
+              >
             </div>
 
             <div class="flex flex-col">
               <span class="text-gray-500 dark:text-gray-300"
                 >Call Open Interest</span
               >
-              <span class="font-semibold">70.09%</span>
+              <span class="font-semibold"
+                >{oiData?.calls?.toLocaleString("en-US")}</span
+              >
             </div>
 
             <div class="flex flex-col">
               <span class="text-gray-500 dark:text-gray-300"
                 >Open Interest Avg (30-day)
               </span>
-              <span class="font-semibold">45.36% </span>
+              <span class="font-semibold"
+                >{oiData?.avgDaily?.toLocaleString("en-US")}</span
+              >
             </div>
 
             <div class="flex flex-col">
               <span class="text-gray-500 dark:text-gray-300"
                 >Today vs Open Interest Avg (30-day)
               </span>
-              <span class="font-semibold">105.85% </span>
+              <span class="font-semibold"
+                >{oiData?.todayVsAvg ? oiData?.todayVsAvg + "%" : "n/a"}</span
+              >
             </div>
           </div>
         </div>
@@ -967,35 +984,43 @@
           >
             <div class="flex flex-col">
               <span class="text-gray-500 dark:text-gray-300">Last Volume</span>
-              <span class="font-semibold">5.80%</span>
+              <span class="font-semibold"
+                >{volData?.total?.toLocaleString("en-US")}</span
+              >
             </div>
 
             <div class="flex flex-col">
               <span class="text-gray-500 dark:text-gray-300"
                 >Put-Call Ratio</span
               >
-              <span class="font-semibold">17.27%</span>
+              <span class="font-semibold">{volData?.putCallRatio}</span>
             </div>
 
             <div class="flex flex-col">
               <span class="text-gray-500 dark:text-gray-300"
                 >Put Open Interest</span
               >
-              <span class="font-semibold">24.4%</span>
+              <span class="font-semibold"
+                >{volData?.puts?.toLocaleString("en-US")}</span
+              >
             </div>
 
             <div class="flex flex-col">
               <span class="text-gray-500 dark:text-gray-300"
                 >Call Open Interest</span
               >
-              <span class="font-semibold">70.09%</span>
+              <span class="font-semibold"
+                >{volData?.calls?.toLocaleString("en-US")}</span
+              >
             </div>
 
             <div class="flex flex-col">
               <span class="text-gray-500 dark:text-gray-300"
                 >Volume Avg (30-day)
               </span>
-              <span class="font-semibold">45.36% </span>
+              <span class="font-semibold"
+                >{volData?.avgDaily?.toLocaleString("en-US")}</span
+              >
             </div>
 
             <div class="flex flex-col">
