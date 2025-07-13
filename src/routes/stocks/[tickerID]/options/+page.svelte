@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { displayCompanyName, screenWidth, stockTicker } from "$lib/store";
+  import { displayCompanyName, stockTicker } from "$lib/store";
   import { mode } from "mode-watcher";
-  import { abbreviateNumber } from "$lib/utils";
   import { onMount } from "svelte";
   import highcharts from "$lib/highcharts.ts";
 
@@ -10,7 +9,9 @@
 
   export let data;
 
-  let rawData = data?.getOptionsChainStatistics;
+  let overview = data?.getOptionsChainStatistics?.overview;
+  let ivData = data?.getOptionsChainStatistics?.impliedVolatility;
+  let rawData = data?.getOptionsChainStatistics?.table;
   let optionList = rawData?.slice(0, 100);
 
   let configIV;
@@ -153,7 +154,7 @@
       series: [
         {
           name: "IV",
-          data: [55.8],
+          data: [ivData?.current],
           animation: false,
           dataLabels: {
             useHTML: true, // ensure HTML works if you keep custom markup
@@ -797,13 +798,26 @@
           <p>
             Overview for all option chains of <strong>{$stockTicker}</strong>.
             As of
-            <strong>July 11, 2025</strong>, <strong>{$stockTicker}</strong>
-            options have an IV of <strong>55.80%</strong> and an IV rank of
-            <strong>17.27%</strong>. The volume is <strong>2,857,903</strong>
-            contracts, which is <strong>113.63%</strong> of average daily volume
-            of <strong>2,515,089</strong> contracts. The volume put-call ratio
-            is <strong>0.84</strong>, indicating a
-            <strong>neutral</strong> sentiment in the market.
+            <strong>{overview?.date}</strong>, <strong>{$stockTicker}</strong>
+            options have an IV of
+            <strong
+              >{overview?.currentIV ? overview?.currentIV + "%" : "n/a"}</strong
+            >
+            and an IV rank of
+            <strong>{overview?.ivRank ? overview?.ivRank + "%" : "n/a"}</strong
+            >. The volume is
+            <strong>{overview?.totalVolume?.toLocaleString("en-US")}</strong>
+            contracts, which is
+            <strong
+              >{overview?.volumePercentage
+                ? overview?.volumePercentage + "%"
+                : "n/a"}</strong
+            >
+            of average daily volume of
+            <strong>{overview?.avgDailyVolume?.toLocaleString("en-US")}</strong>
+            contracts. The volume put-call ratio is
+            <strong>{overview?.putCallRatio}</strong>, indicating a
+            <strong>{overview?.sentiment}</strong> sentiment in the market.
           </p>
         </div>
 
@@ -812,7 +826,7 @@
           Implied Volatility
         </h2>
         <div
-          class="flex flex-col -mt-4 mb-8 md:flex-row gap-4 justify-between items-center max-w-4xl w-full m-auto"
+          class="flex flex-col -mt-4 mb-8 md:flex-row gap-4 p-3 sm:p-0 justify-between items-center max-w-4xl w-full m-auto"
         >
           <!-- Gauge -->
           <div
@@ -822,41 +836,47 @@
 
           <!-- Stats -->
           <div
-            class="grid grid-cols-2 sm:grid-cols-3 gap-8 text-sm sm:text-[1rem] w-[50%]"
+            class="grid grid-cols-2 gap-8 p-3 sm:p-0 text-[1rem] w-full sm:w-[50%]"
           >
             <div class="flex flex-col">
               <span class="text-gray-500 dark:text-gray-300"
                 >Implied Volatility (30d)</span
               >
-              <span class="font-semibold">55.80%</span>
+              <span class="font-semibold"
+                >{ivData?.current ? ivData?.current + "%" : "n/a"}</span
+              >
             </div>
 
             <div class="flex flex-col">
               <span class="text-gray-500 dark:text-gray-300">IV Rank</span>
-              <span class="font-semibold">17.27%</span>
-            </div>
-
-            <div class="flex flex-col">
-              <span class="text-gray-500 dark:text-gray-300">IV Percentile</span
+              <span class="font-semibold"
+                >{ivData?.ivRank ? ivData?.ivRank + "%" : "n/a"}</span
               >
-              <span class="font-semibold">24.4%</span>
             </div>
 
             <div class="flex flex-col">
               <span class="text-gray-500 dark:text-gray-300"
                 >Historical Volatility</span
               >
-              <span class="font-semibold">70.09%</span>
+              <span class="font-semibold"
+                >{ivData?.historicalVolatility
+                  ? ivData?.historicalVolatility + "%"
+                  : "n/a"}</span
+              >
             </div>
 
-            <div class="flex flex-col">
+            <div class="flex flex-col whitespace-nowrap">
               <span class="text-gray-500 dark:text-gray-300">IV Low</span>
-              <span class="font-semibold">45.36% on 08/30/24</span>
+              <span class="font-semibold"
+                >{ivData?.ivLow ? ivData?.ivLow + "%" : "n/a"} on {ivData?.ivLowDate}</span
+              >
             </div>
 
-            <div class="flex flex-col">
+            <div class="flex flex-col whitespace-nowrap">
               <span class="text-gray-500 dark:text-gray-300">IV High</span>
-              <span class="font-semibold">105.85% on 04/08/25</span>
+              <span class="font-semibold"
+                >{ivData?.ivHigh ? ivData?.ivHigh + "%" : "n/a"} on {ivData?.ivHighDate}</span
+              >
             </div>
           </div>
         </div>
@@ -879,7 +899,9 @@
           ></div>
 
           <!-- Stats -->
-          <div class="grid grid-cols-2 gap-8 text-sm sm:text-[1rem] w-[50%]">
+          <div
+            class="grid grid-cols-2 gap-8 p-3 sm:p-0 text-[1rem] w-full sm:w-[50%]"
+          >
             <div class="flex flex-col">
               <span class="text-gray-500 dark:text-gray-300"
                 >Last Open Interest</span
@@ -940,7 +962,9 @@
           ></div>
 
           <!-- Stats -->
-          <div class="grid grid-cols-2 gap-8 text-sm sm:text-[1rem] w-[50%]">
+          <div
+            class="grid grid-cols-2 gap-8 p-3 sm:p-0 text-[1rem] w-full sm:w-[50%]"
+          >
             <div class="flex flex-col">
               <span class="text-gray-500 dark:text-gray-300">Last Volume</span>
               <span class="font-semibold">5.80%</span>
@@ -996,49 +1020,27 @@
               options grouped by their expiration dates.
             </p>
 
-            <div class="flex justify-start items-center m-auto overflow-x-auto">
+            <div
+              class="flex justify-start items-center m-auto overflow-x-auto mt-5"
+            >
               <table
                 class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto mt-3"
               >
                 <thead class="bg-default text-white">
                   <tr class="">
-                    <td
-                      class=" font-semibold text-sm text-start border-r border-gray-800"
-                      >Expiration</td
+                    <td class=" font-semibold text-sm text-start">Expiration</td
                     >
-                    <td
-                      class=" font-semibold text-sm text-end border-r border-gray-800"
-                      >Call Vol</td
-                    >
-                    <td
-                      class=" font-semibold text-sm text-end border-r border-gray-800"
-                      >Put Vol</td
-                    >
-                    <td
-                      class=" font-semibold text-sm text-end border-r border-gray-800"
-                      >P/C Vol</td
-                    >
-                    <td
-                      class=" font-semibold text-sm text-end border-r border-gray-800"
-                      >Call OI</td
-                    >
-                    <td
-                      class=" font-semibold text-sm text-end border-r border-gray-800"
-                      >Put OI</td
-                    >
+                    <td class=" font-semibold text-sm text-end">Call Vol</td>
+                    <td class=" font-semibold text-sm text-end">Put Vol</td>
+                    <td class=" font-semibold text-sm text-end">P/C Vol</td>
+                    <td class=" font-semibold text-sm text-end">Call OI</td>
+                    <td class=" font-semibold text-sm text-end">Put OI</td>
 
-                    <td
-                      class=" font-semibold text-sm text-end border-r border-gray-800"
-                      >P/C OI</td
-                    >
-                    <td
-                      class=" font-semibold text-sm text-end border-r border-gray-800"
+                    <td class=" font-semibold text-sm text-end">P/C OI</td>
+                    <td class=" font-semibold text-sm text-end"
                       >Implied Volatility</td
                     >
-                    <td
-                      class=" font-semibold text-sm text-end border-r border-gray-800"
-                      >Max Pain</td
-                    >
+                    <td class=" font-semibold text-sm text-end">Max Pain</td>
                   </tr>
                 </thead>
                 <tbody>
@@ -1046,7 +1048,9 @@
                     <tr
                       class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                     >
-                      <td class=" text-sm sm:text-[1rem] text-start">
+                      <td
+                        class="text-sm sm:text-[1rem] text-start whitespace-nowrap"
+                      >
                         {formatDate(item?.expiration)}
                       </td>
 
