@@ -572,7 +572,7 @@
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
                       builders={[builder]}
-                      class="mb-1 border-gray-300 dark:border-none shadow-xs bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded truncate"
+                      class="mb-1 border-gray-300 dark:border-none shadow-xs text-white bg-black sm:hover:bg-defaultdark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded truncate"
                     >
                       <span class="truncate text-sm"
                         >{formatDate(selectedDate)}</span
@@ -594,6 +594,10 @@
                   </DropdownMenu.Trigger>
 
                   <DropdownMenu.Content
+                    side="bottom"
+                    align="end"
+                    sideOffset={10}
+                    alignOffset={0}
                     class="min-w-48 w-auto max-w-60 max-h-[400px] overflow-y-auto scroller relative"
                   >
                     <!-- Dropdown items -->
@@ -670,7 +674,7 @@
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
                       builders={[builder]}
-                      class="mb-1 border-gray-300 dark:border-none shadow-xs bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded truncate"
+                      class="mb-1 border-gray-300 dark:border-none shadow-xs text-white bg-black sm:hover:bg-default dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded truncate"
                     >
                       <span class="truncate text-sm"
                         >{selectedStrike ?? "n/a"}</span
@@ -692,6 +696,10 @@
                   </DropdownMenu.Trigger>
 
                   <DropdownMenu.Content
+                    side="bottom"
+                    align="end"
+                    sideOffset={10}
+                    alignOffset={0}
                     class="w-auto max-w-60 max-h-[400px] overflow-y-auto scroller relative"
                   >
                     <!-- Dropdown items -->
@@ -744,7 +752,7 @@
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
                       builders={[builder]}
-                      class="mb-1 border-gray-300 dark:border-none shadow-xs bg-white dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded truncate"
+                      class="mb-1 border-gray-300 dark:border-none shadow-xs text-white bg-black sm:hover:bg-default dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded truncate"
                     >
                       <span class="truncate text-sm">{selectedOptionType}</span>
                       <svg
@@ -764,6 +772,10 @@
                   </DropdownMenu.Trigger>
 
                   <DropdownMenu.Content
+                    side="bottom"
+                    align="end"
+                    sideOffset={10}
+                    alignOffset={0}
                     class="w-auto max-w-60 max-h-[400px] overflow-y-auto scroller relative"
                   >
                     <!-- Dropdown items -->
@@ -824,11 +836,11 @@
                     class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
-                      >High</td
+                      >Bid</td
                     >
                     <td
                       class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                      >{rawDataHistory?.at(0)?.high ?? "n/a"}</td
+                      >{rawDataHistory?.at(0)?.close_bid ?? "n/a"}</td
                     ></tr
                   >
 
@@ -836,11 +848,23 @@
                     class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
                     ><td
                       class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
-                      >Low</td
+                      >Mid</td
                     >
                     <td
                       class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                      >{rawDataHistory?.at(0)?.low ?? "n/a"}</td
+                      >{rawDataHistory?.at(0)?.mark?.toFixed(2) ?? "n/a"}</td
+                    ></tr
+                  >
+
+                  <tr
+                    class="flex flex-col border-b border-gray-300 dark:border-gray-600 py-1 sm:table-row sm:py-0"
+                    ><td
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem]"
+                      >Ask</td
+                    >
+                    <td
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
+                      >{rawDataHistory?.at(0)?.close_ask ?? "n/a"}</td
                     ></tr
                   >
 
@@ -893,10 +917,11 @@
                     >
                     <td
                       class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                      >{rawDataHistory?.at(0)
-                        ? Math.floor(
-                            rawDataHistory?.at(0)?.implied_volatility * 100,
-                          ) + "%"
+                    >
+                      {rawDataHistory?.at(0)?.implied_volatility
+                        ? (
+                            rawDataHistory?.at(0)?.implied_volatility * 100
+                          )?.toFixed(2) + "%"
                         : "n/a"}</td
                     ></tr
                   >
@@ -909,7 +934,7 @@
                     >
                     <td
                       class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                      >{rawDataHistory?.at(0)?.delta ?? "n/a"}</td
+                      >{rawDataHistory?.at(0)?.delta?.toFixed(3) ?? "n/a"}</td
                     ></tr
                   >
 
@@ -921,7 +946,7 @@
                     >
                     <td
                       class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
-                      >{rawDataHistory?.at(0)?.gamma ?? "n/a"}</td
+                      >{rawDataHistory?.at(0)?.gamma?.toFixed(3) ?? "n/a"}</td
                     ></tr
                   >
 
@@ -934,7 +959,7 @@
                     <td
                       class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
                     >
-                      {rawDataHistory?.at(0)?.theta ?? "n/a"}
+                      {rawDataHistory?.at(0)?.theta?.toFixed(3) ?? "n/a"}
                     </td></tr
                   >
                   <tr
@@ -946,7 +971,18 @@
                     <td
                       class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem]"
                     >
-                      {rawDataHistory?.at(0)?.vega ?? "n/a"}
+                      {rawDataHistory?.at(0)?.vega?.toFixed(3) ?? "n/a"}
+                    </td></tr
+                  >
+                  <tr class="flex flex-col py-1 sm:table-row sm:py-0"
+                    ><td
+                      class="whitespace-nowrap px-0.5 py-[1px] xs:px-1 sm:py-2 text-[1rem] invisible"
+                      >XXX</td
+                    >
+                    <td
+                      class="whitespace-nowrap px-0.5 py-[1px] text-left text-sm xs:px-1 sm:py-2 sm:text-right sm:text-[1rem] invisible"
+                    >
+                      XXX
                     </td></tr
                   >
                   <tr class="flex flex-col py-1 sm:table-row sm:py-0"
@@ -980,8 +1016,8 @@
                       class="px-3 py-1.5 text-sm {index === 0
                         ? 'mr-1'
                         : ''} {selectGraphType === item
-                        ? 'shadow border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-white text-black '
-                        : 'shadow text-opacity-[0.6] border border-gray-300 dark:border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded cursor-pointer"
+                        ? 'shadow border border-gray-300 dark:border-gray-600 bg-black sm:hover:bg-muted dark:bg-white text-white dark:text-black '
+                        : 'shadow text-opacity-[0.6] border border-gray-300 dark:border-gray-600'}  rounded cursor-pointer"
                     >
                       {item}
                     </label>
@@ -1014,7 +1050,7 @@
                 <table
                   class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
                 >
-                  <thead class="text-muted dark:text-white dark:bg-default">
+                  <thead class="text-white bg-default">
                     <tr class="">
                       <td class=" font-semibold text-sm text-start">Date</td>
                       <td class=" font-semibold text-sm text-end">Vol</td>
@@ -1094,9 +1130,9 @@
                         </td>
 
                         <td class="text-sm sm:text-[1rem] text-end">
-                          {(item?.implied_volatility * 100)?.toLocaleString(
-                            "en-US",
-                          ) + "%"}
+                          {item?.implied_volatility
+                            ? (item?.implied_volatility * 100)?.toFixed(2) + "%"
+                            : "n/a"}
                         </td>
 
                         <td class="text-sm sm:text-[1rem] text-end">
