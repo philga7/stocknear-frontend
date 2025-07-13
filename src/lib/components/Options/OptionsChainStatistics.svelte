@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
   import highcharts from "$lib/highcharts.ts";
   import { abbreviateNumber } from "$lib/utils";
-  import OPRADisclaimer from "$lib/components/Options/OPRADisclaimer.svelte";
+  import InfoPopup from "$lib/components/Options/InfoPopup.svelte";
 
   export let data;
   export let ticker;
@@ -688,8 +688,12 @@
           <h2 class="mb-2 text-xl sm:text-2xl font-bold w-fit">
             {ticker} Option Overview
           </h2>
-          <OPRADisclaimer />
-          <p>
+          <InfoPopup
+            label="OPRA Data EOD delayed"
+            text="Options data from the Options Price Reporting Authority (OPRA) provided by Intrinio.<br>
+					You're viewing End-of-Day (EOD) delayed options data."
+          />
+          <p class="mt-4">
             Overview for all option chains of <strong>{ticker}</strong>. As of
             <strong>{overview?.date}</strong>, <strong>{ticker}</strong>
             options have an IV of
@@ -736,26 +740,50 @@
             class="grid grid-cols-2 gap-8 p-3 sm:p-0 text-[1rem] w-full sm:w-[50%]"
           >
             <div class="flex flex-col">
-              <span class="text-gray-500 dark:text-gray-300"
-                >Implied Volatility (30d)</span
+              <div
+                class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
               >
-              <span class="font-semibold"
+                <span>Implied Volatility (30d)</span>
+                <InfoPopup
+                  text="Implied Volatility (IV) estimates how much the market expects a stock to move over the next 30 days. 
+              A higher IV suggests more expected movement (often bearish fear or bullish excitement), while a lower IV suggests less expected movement."
+                />
+              </div>
+              <span class="font-semibold text-sm sm:text-[1rem]"
                 >{ivData?.current ? ivData?.current + "%" : "n/a"}</span
               >
             </div>
 
             <div class="flex flex-col">
-              <span class="text-gray-500 dark:text-gray-300">IV Rank</span>
-              <span class="font-semibold"
+              <div
+                class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
+              >
+                <span>IV Rank</span>
+                <InfoPopup
+                  text="IV Rank shows how current Implied Volatility (IV) compares to its past levels.  
+High IV Rank means IV is high compared to the past — often seen as bearish (fear) or an opportunity to sell options.  
+Low IV Rank means IV is low — often seen as bullish (calm) or an opportunity to buy options."
+                />
+              </div>
+
+              <span class="font-semibold text-sm sm:text-[1rem]"
                 >{ivData?.ivRank ? ivData?.ivRank + "%" : "n/a"}</span
               >
             </div>
 
             <div class="flex flex-col">
-              <span class="text-gray-500 dark:text-gray-300"
-                >Historical Volatility</span
+              <div
+                class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
               >
-              <span class="font-semibold"
+                <span>Historical Volatility</span>
+                <InfoPopup
+                  text="Historical Volatility shows how much a stock’s price fluctuated over the past 12 months.  
+              High volatility means the stock experienced large price swings — often considered riskier.  
+              Low volatility means the stock moved more steadily — often considered less risky."
+                />
+              </div>
+
+              <span class="font-semibold text-sm sm:text-[1rem]"
                 >{ivData?.historicalVolatility
                   ? ivData?.historicalVolatility + "%"
                   : "n/a"}</span
@@ -763,15 +791,32 @@
             </div>
 
             <div class="flex flex-col whitespace-nowrap">
-              <span class="text-gray-500 dark:text-gray-300">IV Low</span>
-              <span class="font-semibold"
+              <div
+                class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
+              >
+                <span>IV Low</span>
+                <InfoPopup
+                  text="IV Low shows the lowest Implied Volatility (IV) level reached in the past 12 months.  
+              A very low IV can signal calm markets or complacency — often seen as bullish for the stock but may indicate limited option premiums."
+                />
+              </div>
+              <span class="font-semibold text-sm sm:text-[1rem]"
                 >{ivData?.ivLow ? ivData?.ivLow + "%" : "n/a"} on {ivData?.ivLowDate}</span
               >
             </div>
 
             <div class="flex flex-col whitespace-nowrap">
-              <span class="text-gray-500 dark:text-gray-300">IV High</span>
-              <span class="font-semibold"
+              <div
+                class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
+              >
+                <span>IV High</span>
+                <InfoPopup
+                  text="IV High shows the highest Implied Volatility (IV) level reached in the past 12 months.  
+            A very high IV can signal fear or uncertainty — often seen as bearish for the stock but may offer higher option premiums."
+                />
+              </div>
+
+              <span class="font-semibold text-sm sm:text-[1rem]"
                 >{ivData?.ivHigh ? ivData?.ivHigh + "%" : "n/a"} on {ivData?.ivHighDate}</span
               >
             </div>
@@ -800,53 +845,100 @@
             class="grid grid-cols-2 gap-8 p-3 sm:p-0 text-[1rem] w-full sm:w-[50%]"
           >
             <div class="flex flex-col">
-              <span class="text-gray-500 dark:text-gray-300"
-                >Last Open Interest</span
+              <div
+                class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
               >
-              <span class="font-semibold"
+                <span>Today's Open Interest</span>
+                <InfoPopup
+                  text="Open Interest (OI) is the total number of outstanding options contracts (both calls and puts) that are still open.  
+              High OI means more market activity and liquidity.  
+              Low OI means less interest and lower liquidity."
+                />
+              </div>
+              <span class="font-semibold text-sm sm:text-[1rem]"
                 >{oiData?.total?.toLocaleString("en-US")}</span
               >
             </div>
 
             <div class="flex flex-col">
-              <span class="text-gray-500 dark:text-gray-300"
-                >Put-Call Ratio</span
+              <div
+                class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
               >
-              <span class="font-semibold">{oiData?.putCallRatio}</span>
+                <span>Put-Call Ratio</span>
+                <InfoPopup
+                  text="The Open Interest (OI) Put-Call Ratio compares the number of open put contracts to open call contracts.  
+A high ratio (>1) suggests more puts than calls — often seen as bearish.  
+A low ratio (<1) suggests more calls than puts — often seen as bullish."
+                />
+              </div>
+
+              <span class="font-semibold text-sm sm:text-[1rem]"
+                >{oiData?.putCallRatio}</span
+              >
             </div>
 
             <div class="flex flex-col">
-              <span class="text-gray-500 dark:text-gray-300"
-                >Put Open Interest</span
+              <div
+                class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
               >
-              <span class="font-semibold"
+                <span>Put Open Interest</span>
+                <InfoPopup
+                  text="Put Open Interest is the total number of open put option contracts on a stock.  
+            High put OI suggests more traders are buying protection or betting on a decline — often seen as bearish.  
+            Low put OI suggests less demand for downside protection — often seen as bullish or neutral."
+                />
+              </div>
+
+              <span class="font-semibold text-sm sm:text-[1rem]"
                 >{oiData?.puts?.toLocaleString("en-US")}</span
               >
             </div>
 
             <div class="flex flex-col">
-              <span class="text-gray-500 dark:text-gray-300"
-                >Call Open Interest</span
+              <div
+                class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
               >
-              <span class="font-semibold"
+                <span>Call Open Interest</span>
+                <InfoPopup
+                  text="Call Open Interest is the total number of open call option contracts on a stock.  
+            High call OI suggests more traders expect the stock to rise or are speculating — often seen as bullish.  
+            Low call OI suggests less demand for upside bets — often seen as bearish or neutral."
+                />
+              </div>
+
+              <span class="font-semibold text-sm sm:text-[1rem]"
                 >{oiData?.calls?.toLocaleString("en-US")}</span
               >
             </div>
 
             <div class="flex flex-col">
-              <span class="text-gray-500 dark:text-gray-300"
-                >Open Interest Avg (30-day)
-              </span>
-              <span class="font-semibold"
+              <div
+                class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
+              >
+                <span>Open Interest Avg (30-day)</span>
+                <InfoPopup
+                  text="The average Open Interest over the past 30 days shows typical market activity in options contracts."
+                />
+              </div>
+
+              <span class="font-semibold text-sm sm:text-[1rem]"
                 >{oiData?.avgDaily?.toLocaleString("en-US")}</span
               >
             </div>
 
             <div class="flex flex-col">
-              <span class="text-gray-500 dark:text-gray-300"
-                >Today vs Open Interest Avg (30-day)
-              </span>
-              <span class="font-semibold"
+              <div
+                class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
+              >
+                <span>Today vs Open Interest Avg (30-day)</span>
+                <InfoPopup
+                  text="This compares today's Open Interest to the 30-day average.  
+            Higher today’s OI than average suggests increased trader interest or unusual activity — possibly signaling a bigger move.  
+            Lower today’s OI than average suggests less activity or fading interest."
+                />
+              </div>
+
+              <span class="font-semibold text-sm sm:text-[1rem]"
                 >{oiData?.todayVsAvg ? oiData?.todayVsAvg + "%" : "n/a"}</span
               >
             </div>
@@ -873,51 +965,100 @@
             class="grid grid-cols-2 gap-8 p-3 sm:p-0 text-[1rem] w-full sm:w-[50%]"
           >
             <div class="flex flex-col">
-              <span class="text-gray-500 dark:text-gray-300">Last Volume</span>
-              <span class="font-semibold"
+              <div
+                class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
+              >
+                <span>Today's Volume</span>
+                <InfoPopup
+                  text="Today's Volume is the total number of options contracts (calls and puts) traded during the current trading day.  
+              High volume shows strong market activity and interest.  
+              Low volume suggests less trading and lower interest."
+                />
+              </div>
+              <span class="font-semibold text-sm sm:text-[1rem]"
                 >{volData?.total?.toLocaleString("en-US")}</span
               >
             </div>
 
             <div class="flex flex-col">
-              <span class="text-gray-500 dark:text-gray-300"
-                >Put-Call Ratio</span
+              <div
+                class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
               >
-              <span class="font-semibold">{volData?.putCallRatio}</span>
+                <span>Put-Call Ratio</span>
+                <InfoPopup
+                  text="The Put-Call Ratio compares the volume of traded put options to call options during a period.  
+A high ratio (>1) means more puts traded — often seen as bearish sentiment.  
+A low ratio (<1) means more calls traded — often seen as bullish sentiment."
+                />
+              </div>
+
+              <span class="font-semibold text-sm sm:text-[1rem]"
+                >{volData?.putCallRatio}</span
+              >
             </div>
 
             <div class="flex flex-col">
-              <span class="text-gray-500 dark:text-gray-300"
-                >Put Open Interest</span
+              <div
+                class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
               >
-              <span class="font-semibold"
+                <span>Put Volume</span>
+                <InfoPopup
+                  text="Put Volume is the total number of put option contracts traded today.  
+              High put volume suggests many traders are buying protection or betting on a decline — often seen as bearish.  
+              Low put volume suggests less demand for downside protection — often seen as bullish or neutral."
+                />
+              </div>
+
+              <span class="font-semibold text-sm sm:text-[1rem]"
                 >{volData?.puts?.toLocaleString("en-US")}</span
               >
             </div>
 
             <div class="flex flex-col">
-              <span class="text-gray-500 dark:text-gray-300"
-                >Call Open Interest</span
+              <div
+                class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
               >
-              <span class="font-semibold"
+                <span>Call Volume</span>
+                <InfoPopup
+                  text="Call Volume is the total number of call option contracts traded today.  
+              High call volume suggests many traders expect the stock to rise or are speculating — often seen as bullish.  
+              Low call volume suggests less demand for upside bets — often seen as bearish or neutral."
+                />
+              </div>
+
+              <span class="font-semibold text-sm sm:text-[1rem]"
                 >{volData?.calls?.toLocaleString("en-US")}</span
               >
             </div>
 
             <div class="flex flex-col">
-              <span class="text-gray-500 dark:text-gray-300"
-                >Volume Avg (30-day)
-              </span>
-              <span class="font-semibold"
+              <div
+                class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
+              >
+                <span>Volume Avg (30-day)</span>
+                <InfoPopup
+                  text="The average Volume over the past 30 days shows typical market activity in options contracts."
+                />
+              </div>
+
+              <span class="font-semibold text-sm sm:text-[1rem]"
                 >{volData?.avgDaily?.toLocaleString("en-US")}</span
               >
             </div>
 
             <div class="flex flex-col">
-              <span class="text-gray-500 dark:text-gray-300"
-                >Today vs Volume Avg (30-day)
-              </span>
-              <span class="font-semibold"
+              <div
+                class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
+              >
+                <span>Today vs Volume Avg (30-day)</span>
+                <InfoPopup
+                  text="This compares today's trading volume to the 30-day average volume.  
+Higher volume today than average suggests increased trader interest or unusual activity — possibly signaling a bigger move.  
+Lower volume today than average suggests less activity or fading interest."
+                />
+              </div>
+
+              <span class="font-semibold text-sm sm:text-[1rem]"
                 >{volData?.todayVsAvg ? volData?.todayVsAvg + "%" : "n/a"}</span
               >
             </div>
