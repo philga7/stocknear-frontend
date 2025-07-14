@@ -720,7 +720,6 @@
     use:enhance={submitCancellation}
     class="modal-box w-full bg-white dark:bg-secondary shadow-xs border border-gray-300 dark:border-gray-600 flex flex-col items-center"
   >
-    <div class="mx-auto mb-8 h-1.5 w-20 shrink-0 rounded-full bg-gray-500" />
     <div class=" mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">Are you sure?</h3>
       <span class=" text-[1rem] font-normal">
@@ -733,7 +732,7 @@
       on:click={() => (isClicked = !isClicked)}
       class="{!isClicked
         ? ''
-        : 'hidden'} cursor-pointer px-7 py-2 mb-5 rounded bg-blue-500 sm:hover:bg-blue-600 dark:bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-white dark:text-black text-[1rem] font-normal"
+        : 'hidden'} cursor-pointer px-7 py-2 mb-5 rounded bg-black sm:hover:bg-default dark:bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-white dark:text-black text-[1rem] font-normal"
     >
       Proceed
       <input
@@ -744,7 +743,7 @@
     </button>
     {#if isClicked === true}
       <label
-        class="cursor-pointer px-7 py-2 mb-5 rounded bg-blue-500 sm:hove:bg-blue-600 dark:bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-white dark:text-black text-[1rem] font-normal"
+        class="cursor-pointer px-7 py-2 mb-5 rounded bg-black sm:hover:bg-default dark:bg-white dark:bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-white dark:text-black text-[1rem] font-normal"
       >
         <div class="flex flex-row m-auto">
           <span class="loading loading-infinity"></span>
@@ -776,7 +775,6 @@
     use:enhance={submitReactivate}
     class="modal-box w-full bg-white dark:bg-secondary shadow-xs border border-gray-300 dark:border-gray-600 flex flex-col items-center"
   >
-    <div class="mx-auto mb-8 h-1.5 w-20 shrink-0 rounded-full bg-gray-500" />
     <div class=" mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">Reactivate Subscription</h3>
       <span class=" text-[1rem] font-normal">
@@ -789,7 +787,7 @@
       on:click={() => (isClicked = !isClicked)}
       class="{!isClicked
         ? ''
-        : 'hidden'} cursor-pointer px-7 py-2 mb-5 rounded bg-blue-500 sm:hover:bg-blue-600 dark:bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-white dark:text-black text-[1rem] font-normal"
+        : 'hidden'} cursor-pointer px-7 py-2 mb-5 rounded bg-black sm:hover:bg-default dark:bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-white dark:text-black text-[1rem] font-normal"
     >
       Proceed
       <input
@@ -800,7 +798,7 @@
     </button>
     {#if isClicked === true}
       <label
-        class="cursor-pointer px-7 py-2 mb-5 rounded bg-blue-500 sm:hove:bg-blue-600 dark:bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-white dark:text-black text-[1rem] font-normal"
+        class="cursor-pointer px-7 py-2 mb-5 rounded bg-black sm:hover:bg-default dark:bg-white dark:bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-white dark:text-black text-[1rem] font-normal"
       >
         <div class="flex flex-row m-auto">
           <span class="loading loading-infinity"></span>
@@ -812,35 +810,6 @@
 </dialog>
 <!-- End Reactivate Subscription Modal -->
 
-<!-- Start Cancel Subscription Modal -->
-<input type="checkbox" id="errorSubscriptionModal" class="modal-toggle" />
-
-<dialog id="errorSubscriptionModal" class="modal modal-bottom sm:modal-middle">
-  <label
-    for="errorSubscriptionModal"
-    class="cursor-pointer modal-backdrop bg-[#000]/40"
-  ></label>
-
-  <!-- Desktop modal content -->
-  <div class="modal-box w-full bg-secondary flex flex-col items-center">
-    <div class="mx-auto mb-8 h-1.5 w-20 shrink-0 rounded-full bg-gray-500" />
-    <div class=" mb-5 text-center">
-      <h3 class="font-bold text-2xl mb-5">Paypal not supported</h3>
-      <span class=" text-[1rem] font-normal">
-        Apologies, our payment provider currently only supports credit cards for
-        changing plans from monthly to annual. We are working to expand this to
-        other payment methods.
-      </span>
-    </div>
-
-    <label
-      for="errorSubscriptionModal"
-      class="cursor-pointer px-7 py-2 mb-5 rounded-full bg-[#0DDE00] text-center text-black text-[1rem] font-normal"
-    >
-      OK
-    </label>
-  </div>
-</dialog>
 <!-- End Cancel Subscription Modal -->
 
 <!--Change Plan to Plus Annual -->
@@ -865,9 +834,6 @@
     use:enhance={submitChangePlan}
     class="modal-box w-full bg-white dark:bg-secondary shadow-xs border border-gray-300 dark:border-gray-600 flex flex-col items-center"
   >
-    <div
-      class="mx-auto mb-8 h-1.5 w-20 flex-shrink-0 rounded-full bg-[#404040]"
-    />
     <div class=" mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">Are you sure?</h3>
       <span class=" text-[1rem] font-normal">
@@ -880,7 +846,7 @@
       on:click={() => (isClicked = !isClicked)}
       class="{!isClicked
         ? ''
-        : 'hidden'} cursor-pointer px-7 py-2 mb-5 rounded bg-blue-500 sm:hover:bg-blue-600 dark:bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-white dark:text-black text-[1rem] font-normal"
+        : 'hidden'} cursor-pointer px-7 py-2 mb-5 rounded bg-black sm:hover:bg-default dark:bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-white dark:text-black text-[1rem] font-normal"
     >
       Upgrade to Plus (Annual)
       <input
@@ -892,7 +858,7 @@
     </button>
     {#if isClicked === true}
       <label
-        class="cursor-pointer px-7 py-2 mb-5 rounded bg-blue-500 sm:hove:bg-blue-600 dark:bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-white dark:text-black text-[1rem] font-normal"
+        class="cursor-pointer px-7 py-2 mb-5 rounded bg-black sm:hover:bg-default dark:bg-white dark:bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-white dark:text-black text-[1rem] font-normal"
       >
         <div class="flex flex-row m-auto">
           <span class="loading loading-infinity"></span>
@@ -925,9 +891,6 @@
     use:enhance={submitChangePlan}
     class="modal-box w-full bg-white dark:bg-secondary shadow-xs border border-gray-300 dark:border-gray-600 flex flex-col items-center"
   >
-    <div
-      class="mx-auto mb-8 h-1.5 w-20 flex-shrink-0 rounded-full bg-[#404040]"
-    />
     <div class=" mb-5 text-center">
       <h3 class="font-bold text-2xl mb-5">Are you sure?</h3>
       <span class=" text-[1rem] font-normal">
@@ -940,7 +903,7 @@
       on:click={() => (isClicked = !isClicked)}
       class="{!isClicked
         ? ''
-        : 'hidden'} cursor-pointer px-7 py-2 mb-5 rounded bg-blue-500 sm:hover:bg-blue-600 dark:bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-white dark:text-black text-[1rem] font-normal"
+        : 'hidden'} cursor-pointer px-7 py-2 mb-5 rounded bg-black sm:hover:bg-default dark:bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-white dark:text-black text-[1rem] font-normal"
     >
       Upgrade to Pro (Annual)
       <input
@@ -952,7 +915,7 @@
     </button>
     {#if isClicked === true}
       <label
-        class="cursor-pointer px-7 py-2 mb-5 rounded bg-blue-500 sm:hove:bg-blue-600 dark:bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-white dark:text-black text-[1rem] font-normal"
+        class="cursor-pointer px-7 py-2 mb-5 rounded bg-black sm:hover:bg-default dark:bg-white dark:bg-white dark:sm:hover:bg-white/80 ease-out duration-50 text-center text-white dark:text-black text-[1rem] font-normal"
       >
         <div class="flex flex-row m-auto">
           <span class="loading loading-infinity"></span>

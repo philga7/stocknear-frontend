@@ -1185,10 +1185,9 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class=" min-w-[110px] w-full sm:w-fit border-gray-300 bg-black sm:hover:bg-default text-white dark:bg-default dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-1.5  rounded truncate"
+                        class=" min-w-[110px] w-full sm:w-fit border-gray-300 bg-black sm:hover:bg-default text-white dark:bg-default dark:border-gray-600 border dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-1.5 rounded truncate"
                       >
-                        <span
-                          class="truncate font-medium text-sm sm:text-[1rem]"
+                        <span class="truncate font-medium text-sm"
                           >{displayWatchList?.title !== undefined
                             ? displayWatchList?.title
                             : "Create Watchlist"}</span
@@ -1283,58 +1282,7 @@
                 </div>
 
                 <div
-                  class="order-4 w-fit flex justify-end sm:ml-3 {displayWatchList?.title ===
-                  undefined
-                    ? 'hidden'
-                    : ''}"
-                >
-                  <div class="flex flex-row items-center justify-end">
-                    {#if editMode}
-                      <label
-                        on:click={handleDeleteTickers}
-                        class="border text-sm border-gray-300 dark:border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-1.5 pl-3 pr-4 font-semibold bg-black sm:hover:bg-default text-white dark:sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
-                      >
-                        <svg
-                          class="inline-block w-5 h-5"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          ><path
-                            fill="currentColor"
-                            d="M10 5h4a2 2 0 1 0-4 0M8.5 5a3.5 3.5 0 1 1 7 0h5.75a.75.75 0 0 1 0 1.5h-1.32l-1.17 12.111A3.75 3.75 0 0 1 15.026 22H8.974a3.75 3.75 0 0 1-3.733-3.389L4.07 6.5H2.75a.75.75 0 0 1 0-1.5zm2 4.75a.75.75 0 0 0-1.5 0v7.5a.75.75 0 0 0 1.5 0zM14.25 9a.75.75 0 0 1 .75.75v7.5a.75.75 0 0 1-1.5 0v-7.5a.75.75 0 0 1 .75-.75m-7.516 9.467a2.25 2.25 0 0 0 2.24 2.033h6.052a2.25 2.25 0 0 0 2.24-2.033L18.424 6.5H5.576z"
-                          /></svg
-                        >
-                        <span class="ml-1 text-sm">
-                          {numberOfChecked}
-                        </span>
-                      </label>
-                    {/if}
-                    <label
-                      on:click={handleEditMode}
-                      class=" border text-sm border-gray-300 dark:border-gray-600 sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-1.5 px-3 bg-black sm:hover:bg-default text-white dark:sm:hover:bg-primary ease-out"
-                    >
-                      <svg
-                        class="inline-block w-5 h-5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 1024 1024"
-                        ><path
-                          fill="currentColor"
-                          d="M832 512a32 32 0 1 1 64 0v352a32 32 0 0 1-32 32H160a32 32 0 0 1-32-32V160a32 32 0 0 1 32-32h352a32 32 0 0 1 0 64H192v640h640z"
-                        /><path
-                          fill="currentColor"
-                          d="m469.952 554.24l52.8-7.552L847.104 222.4a32 32 0 1 0-45.248-45.248L477.44 501.44l-7.552 52.8zm422.4-422.4a96 96 0 0 1 0 135.808l-331.84 331.84a32 32 0 0 1-18.112 9.088L436.8 623.68a32 32 0 0 1-36.224-36.224l15.104-105.6a32 32 0 0 1 9.024-18.112l331.904-331.84a96 96 0 0 1 135.744 0z"
-                        /></svg
-                      >
-                      {#if !editMode}
-                        <span class="ml-1 text-sm"> Edit Watchlist </span>
-                      {:else}
-                        <span class="ml-1 text-sm"> Cancel </span>
-                      {/if}
-                    </label>
-                  </div>
-                </div>
-
-                <div
-                  class="order-2 sm:order-1 w-full sm:w-fit {displayWatchList?.title ===
+                  class="order-2 sm:order-1 w-full {displayWatchList?.title ===
                   undefined
                     ? 'hidden'
                     : ''}"
@@ -1365,14 +1313,14 @@
                       </div>
                       <Combobox.Input
                         on:input={search}
-                        class="text-sm sm:text-[1rem] controls-input  focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-3 py-2 pl-8 xs:pl-10 grow w-full sm:min-w-56 max-w-xs"
+                        class="text-sm  controls-input bg-gray-200/60 dark:bg-default focus:outline-hidden border border-gray-400/60 dark:border-gray-600 rounded placeholder:text-gray-800 dark:placeholder:text-gray-200 px-3 py-1.5 pl-8 xs:pl-10 grow w-full sm:min-w-56"
                         placeholder="Add new stock"
                         aria-label="Add new stock"
                       />
                     </div>
 
                     <Combobox.Content
-                      class="w-auto z-10 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-default px-1 py-1.5  outline-hidden"
+                      class="w-auto z-10 shadow rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-default px-1 py-1.5  outline-hidden"
                       sideOffset={8}
                     >
                       {#if inputValue?.length > 0}
@@ -1413,6 +1361,57 @@
                       {/if}
                     </Combobox.Content>
                   </Combobox.Root>
+                </div>
+
+                <div
+                  class="order-4 w-fit flex justify-end sm:ml-3 {displayWatchList?.title ===
+                  undefined
+                    ? 'hidden'
+                    : ''}"
+                >
+                  <div class="flex flex-row items-center justify-end">
+                    {#if editMode}
+                      <label
+                        on:click={handleDeleteTickers}
+                        class="border text-sm border-gray-300 dark:border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-1.5 pl-3 pr-4 font-semibold dark:bg-default bg-black sm:hover:bg-default text-white dark:sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
+                      >
+                        <svg
+                          class="inline-block w-5 h-5"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          ><path
+                            fill="currentColor"
+                            d="M10 5h4a2 2 0 1 0-4 0M8.5 5a3.5 3.5 0 1 1 7 0h5.75a.75.75 0 0 1 0 1.5h-1.32l-1.17 12.111A3.75 3.75 0 0 1 15.026 22H8.974a3.75 3.75 0 0 1-3.733-3.389L4.07 6.5H2.75a.75.75 0 0 1 0-1.5zm2 4.75a.75.75 0 0 0-1.5 0v7.5a.75.75 0 0 0 1.5 0zM14.25 9a.75.75 0 0 1 .75.75v7.5a.75.75 0 0 1-1.5 0v-7.5a.75.75 0 0 1 .75-.75m-7.516 9.467a2.25 2.25 0 0 0 2.24 2.033h6.052a2.25 2.25 0 0 0 2.24-2.033L18.424 6.5H5.576z"
+                          /></svg
+                        >
+                        <span class="ml-1 text-sm">
+                          {numberOfChecked}
+                        </span>
+                      </label>
+                    {/if}
+                    <label
+                      on:click={handleEditMode}
+                      class=" border text-sm border-gray-300 dark:border-gray-600 sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-1.5 px-3 dark:bg-default bg-black sm:hover:bg-default text-white dark:sm:hover:bg-primary ease-out"
+                    >
+                      <svg
+                        class="inline-block w-5 h-5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 1024 1024"
+                        ><path
+                          fill="currentColor"
+                          d="M832 512a32 32 0 1 1 64 0v352a32 32 0 0 1-32 32H160a32 32 0 0 1-32-32V160a32 32 0 0 1 32-32h352a32 32 0 0 1 0 64H192v640h640z"
+                        /><path
+                          fill="currentColor"
+                          d="m469.952 554.24l52.8-7.552L847.104 222.4a32 32 0 1 0-45.248-45.248L477.44 501.44l-7.552 52.8zm422.4-422.4a96 96 0 0 1 0 135.808l-331.84 331.84a32 32 0 0 1-18.112 9.088L436.8 623.68a32 32 0 0 1-36.224-36.224l15.104-105.6a32 32 0 0 1 9.024-18.112l331.904-331.84a96 96 0 0 1 135.744 0z"
+                        /></svg
+                      >
+                      {#if !editMode}
+                        <span class="ml-1 text-sm"> Edit Watchlist </span>
+                      {:else}
+                        <span class="ml-1 text-sm"> Cancel </span>
+                      {/if}
+                    </label>
+                  </div>
                 </div>
 
                 <div
