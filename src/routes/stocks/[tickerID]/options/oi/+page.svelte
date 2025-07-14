@@ -19,7 +19,7 @@
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"
     >
-      {#if data?.getData?.length > 0}
+      {#if Object?.keys(data?.getData)?.length > 0}
         <OpenInterestByStrike {data} ticker={$stockTicker?.toUpperCase()} />
       {:else}
         <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto">

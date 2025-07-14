@@ -2,7 +2,6 @@
   import { abbreviateNumber } from "$lib/utils";
   import { onMount } from "svelte";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
-  import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import highcharts from "$lib/highcharts.ts";
   import { mode } from "mode-watcher";
   import Infobox from "$lib/components/Infobox.svelte";
@@ -359,33 +358,9 @@
           <div class="relative">
             <!-- Apply the blur class to the chart -->
             <div
-              class="{!['Pro']?.includes(data?.user?.tier)
-                ? 'blur-[3px]'
-                : ''} mt-5 shadow-xs sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
+              class="mt-5 shadow-xs sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
               use:highcharts={config}
             ></div>
-            <!-- Overlay with "Upgrade to Pro" -->
-            {#if !["Pro"]?.includes(data?.user?.tier)}
-              <div
-                class="font-bold text-lg sm:text-xl absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center text-muted dark:text-white"
-              >
-                <a
-                  href="/pricing"
-                  class="sm:hover:text-blue-700 dark:sm:hover:text-white dark:text-white flex flex-row items-center"
-                >
-                  <span>Upgrade to Pro</span>
-                  <svg
-                    class="ml-1 w-5 h-5 sm:w-6 sm:h-6 inline-block"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    ><path
-                      fill="currentColor"
-                      d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                    /></svg
-                  >
-                </a>
-              </div>
-            {/if}
           </div>
         </div>
       </div>
@@ -405,14 +380,9 @@
         <TableHeader {columns} {sortOrders} {sortData} />
       </thead>
       <tbody>
-        {#each data?.user?.tier === "Pro" ? displayList : displayList?.slice(0, 3) as item, index}
+        {#each displayList as item, index}
           <tr
-            class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
-              1 ===
-              displayList?.slice(0, 3)?.length &&
-            !['Pro']?.includes(data?.user?.tier)
-              ? 'opacity-[0.1]'
-              : ''}"
+            class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
           >
             <td class=" text-sm sm:text-[1rem] text-start whitespace-nowrap">
               {formatDate(item?.expiry)}
@@ -452,6 +422,4 @@
       </tbody>
     </table>
   </div>
-
-  <UpgradeToPro {data} display={true} />
 </div>

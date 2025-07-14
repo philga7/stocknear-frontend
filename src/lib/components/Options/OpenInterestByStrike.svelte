@@ -1,15 +1,29 @@
 <script lang="ts">
   import { abbreviateNumber } from "$lib/utils";
   import { onMount } from "svelte";
+  import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
+  import { Button } from "$lib/components/shadcn/button/index.js";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
-  import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import highcharts from "$lib/highcharts.ts";
   import { mode } from "mode-watcher";
+  import { goto } from "$app/navigation";
+  import Infobox from "$lib/components/Infobox.svelte";
 
   export let data;
   export let ticker;
+  let config = null;
 
-  let rawData = data?.getData || [];
+  let rawData = [];
+  let displayList = [];
+
+  let dateList = [
+    "All",
+    ...Object?.keys(data?.getData ?? {})?.sort(
+      (a, b) => new Date(a) - new Date(b),
+    ),
+  ];
+  let selectedDate = dateList[0];
+
   let currentPrice = null;
 
   rawData = rawData?.map((item) => {
@@ -22,7 +36,53 @@
     };
   });
 
-  let displayList = rawData?.slice(0, 50);
+  function formatDate(dateStr) {
+    try {
+      let date = new Date(dateStr + "T00:00:00Z");
+      let options = {
+        timeZone: "UTC",
+        month: "short", // Full month name
+        day: "numeric", // Day without leading zero
+        year: "numeric", // Full year
+      };
+
+      let formatter = new Intl.DateTimeFormat("en-US", options);
+
+      return formatter?.format(date);
+    } catch (e) {
+      return "n/a";
+    }
+  }
+  function aggregateDict(data) {
+    const map = new Map();
+
+    // pick which keys to accumulate
+    const callKey = "call_oi";
+    const putKey = "put_oi";
+
+    // flatten out all the points into one loop
+    for (const pts of Object?.values(data)) {
+      for (const pt of pts) {
+        const { strike } = pt;
+
+        // on first sight of this strike, seed all four fields at zero
+        if (!map?.has(strike)) {
+          map?.set(strike, {
+            strike,
+            call_oi: 0,
+            put_oi: 0,
+          });
+        }
+
+        // accumulate into the right buckets
+        const agg = map.get(strike);
+        agg[callKey] += pt[callKey] ?? 0;
+        agg[putKey] += pt[putKey] ?? 0;
+      }
+    }
+
+    return Array?.from(map?.values())?.sort((a, b) => a?.strike - b?.strike);
+  }
 
   function plotData() {
     currentPrice = Number(data?.getStockQuote?.price?.toFixed(2));
@@ -134,7 +194,7 @@
             tooltipContent += `
         <span style="display:inline-block; width:10px; height:10px; background-color:${point.color}; border-radius:50%; margin-right:5px;"></span>
         <span class="text-white font-semibold text-sm">${point.series.name}:</span> 
-        <span class="text-white font-normal text-sm">${abbreviateNumber(point.y)}</span><br>`;
+        <span class="text-white font-normal text-sm">${point.y?.toLocaleString("en-US")}</span><br>`;
           });
 
           return tooltipContent;
@@ -153,8 +213,8 @@
           name: "Put",
           type: "column",
           data: putValues,
-          color: "#FF2F1F",
-          borderColor: "#FF2F1F",
+          color: "#CC2619",
+          borderColor: "#CC2619",
           borderRadius: "1px",
           animation: false,
         },
@@ -162,8 +222,8 @@
           name: "Call",
           type: "column",
           data: callValues,
-          color: "#00FC50",
-          borderColor: "#00FC50",
+          color: "#00C440",
+          borderColor: "#00C440",
           borderRadius: "1px",
           animation: false,
         },
@@ -274,9 +334,25 @@
     displayList = [...originalData].sort(compareValues);
   };
 
-  let config = null;
   $: {
-    if ($mode) {
+    if (selectedDate || $mode) {
+      if (selectedDate === "All") {
+        rawData = aggregateDict(data?.getData) || [];
+      } else {
+        rawData = data?.getData[selectedDate] || [];
+      }
+      rawData = rawData?.map((item) => {
+        return {
+          ...item,
+          put_call_ratio:
+            item?.call_oi > 0
+              ? Math.abs((item?.put_oi || 0) / item?.call_oi)
+              : null,
+        };
+      });
+
+      displayList = rawData?.slice(0, 20);
+
       config = plotData() || null;
     }
   }
@@ -287,40 +363,139 @@
     {ticker} Open Interest Chart
   </h2>
 
-  <div class="w-full overflow-hidden m-auto mt-3 shadow-xs">
+  <p class="mt-3 mb-2">
+    {#if rawData?.length > 0}
+      Open interest data for <strong>{ticker}</strong> options contracts.
+      {#if selectedDate === "All"}
+        Displaying aggregated open interest across all expiration dates.
+      {:else}
+        Showing open interest for contracts expiring on <strong
+          >{formatDate(selectedDate)}</strong
+        >.
+      {/if}
+      Current stock price is <strong>${currentPrice}</strong>. Total call open
+      interest is
+      <strong
+        >{rawData
+          ?.reduce((sum, item) => sum + (item?.call_oi || 0), 0)
+          ?.toLocaleString("en-US")}</strong
+      >
+      contracts, while put open interest is
+      <strong
+        >{rawData
+          ?.reduce((sum, item) => sum + (item?.put_oi || 0), 0)
+          ?.toLocaleString("en-US")}</strong
+      >
+      contracts. The overall put-call open interest ratio is
+      <strong
+        >{(
+          rawData.reduce((sum, item) => sum + (item?.put_oi || 0), 0) /
+            rawData.reduce((sum, item) => sum + (item?.call_oi || 0), 0) || 0
+        )?.toFixed(2)}</strong
+      >, indicating a
+      <strong
+        >{rawData.reduce((sum, item) => sum + (item?.put_oi || 0), 0) /
+          rawData.reduce((sum, item) => sum + (item?.call_oi || 0), 0) >
+        1
+          ? "bearish"
+          : "bullish"}</strong
+      >
+      bias in open interest positioning.
+    {:else}
+      No open interest data available for the selected period.
+    {/if}
+  </p>
+
+  <div class="mt-7">
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger asChild let:builder>
+        <Button
+          builders={[builder]}
+          class=" border border-gray-300 dark:border-gray-700 text-white  bg-black sm:hover:bg-default dark:default h-[38px] flex flex-row justify-between items-center min-w-[130px] max-w-[240px] sm:w-auto  px-3  rounded truncate"
+        >
+          <span class="truncate text-sm"
+            >Date Expiration | {selectedDate === "All"
+              ? "All Expiries"
+              : formatDate(selectedDate)}</span
+          >
+          <svg
+            class="-mr-1 ml-2 h-5 w-5 inline-block"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            style="max-width:40px"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </Button>
+      </DropdownMenu.Trigger>
+
+      <DropdownMenu.Content
+        side="bottom"
+        align="end"
+        sideOffset={10}
+        alignOffset={0}
+        class="min-w-56 w-auto max-w-60 max-h-[400px] overflow-y-auto scroller relative"
+      >
+        <!-- Dropdown items -->
+        <DropdownMenu.Group class="pb-2"
+          >{#each dateList as item, index}
+            {#if data?.user?.tier === "Pro" || index === 0}
+              <DropdownMenu.Item
+                on:click={() => {
+                  selectedDate = item;
+                }}
+                class="{selectedDate === item
+                  ? 'bg-gray-200 dark:bg-primary'
+                  : ''} sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
+              >
+                {#if item === "All"}
+                  All Expiries
+                {:else}
+                  {formatDate(item)}
+                {/if}
+              </DropdownMenu.Item>
+            {:else}
+              <DropdownMenu.Item
+                on:click={() => goto("/pricing")}
+                class="cursor-pointer sm:hover:bg-gray-200 dark:sm:hover:bg-primary"
+              >
+                {formatDate(item)}
+                <svg
+                  class="ml-1 size-4"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  style="max-width: 40px;"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                    clip-rule="evenodd"
+                  >
+                  </path>
+                </svg>
+              </DropdownMenu.Item>
+            {/if}
+          {/each}</DropdownMenu.Group
+        >
+      </DropdownMenu.Content>
+    </DropdownMenu.Root>
+  </div>
+
+  <div class="w-full overflow-hidden m-auto sm:mt-3 shadow-xs">
     {#if config !== null}
       <div>
         <div class="grow">
           <div class="relative">
             <!-- Apply the blur class to the chart -->
             <div
-              class="{!['Pro']?.includes(data?.user?.tier)
-                ? 'blur-[3px]'
-                : ''} mt-5 shadow-xs sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
+              class="mt-5 shadow-xs sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
               use:highcharts={config}
             ></div>
-            <!-- Overlay with "Upgrade to Pro" -->
-            {#if !["Pro"]?.includes(data?.user?.tier)}
-              <div
-                class="font-bold text-lg sm:text-xl absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center text-muted dark:text-white"
-              >
-                <a
-                  href="/pricing"
-                  class="sm:hover:text-blue-700 dark:sm:hover:text-white dark:text-white flex flex-row items-center"
-                >
-                  <span>Upgrade to Pro</span>
-                  <svg
-                    class="ml-1 w-5 h-5 sm:w-6 sm:h-6 inline-block"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    ><path
-                      fill="currentColor"
-                      d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                    /></svg
-                  >
-                </a>
-              </div>
-            {/if}
           </div>
         </div>
       </div>
@@ -337,34 +512,27 @@
         <TableHeader {columns} {sortOrders} {sortData} />
       </thead>
       <tbody>
-        {#each data?.user?.tier === "Pro" ? displayList : displayList?.slice(0, 3) as item, index}
+        {#each displayList as item, index}
           <tr
-            class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
-              1 ===
-              displayList?.slice(0, 3)?.length &&
-            !['Pro']?.includes(data?.user?.tier)
-              ? 'opacity-[0.1]'
-              : ''}"
+            class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
           >
             <td class=" text-sm sm:text-[1rem] text-start whitespace-nowrap">
-              {item?.strike?.toFixed(2)}
+              {item?.strike}
             </td>
             <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
-              {abbreviateNumber(item?.call_oi?.toFixed(2))}
+              {item?.call_oi?.toLocaleString("en-US")}
             </td>
             <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
-              {abbreviateNumber(item?.put_oi?.toFixed(2))}
+              {item?.put_oi?.toLocaleString("en-US")}
             </td>
 
             <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
               {#if item?.put_call_ratio <= 1 && item?.put_call_ratio !== null}
-                <span
-                  class="font-semibold dark:font-normal text-green-800 dark:text-[#00FC50]"
+                <span class=" text-green-800 dark:text-[#00FC50]"
                   >{item?.put_call_ratio?.toFixed(2)}</span
                 >
               {:else if item?.put_call_ratio > 1 && item?.put_call_ratio !== null}
-                <span
-                  class="font-semibold dark:font-normal text-red-800 dark:text-[#FF2F1F]"
+                <span class=" text-red-800 dark:text-[#FF2F1F]"
                   >{item?.put_call_ratio?.toFixed(2)}</span
                 >
               {:else}
@@ -376,6 +544,4 @@
       </tbody>
     </table>
   </div>
-
-  <UpgradeToPro {data} display={true} />
 </div>

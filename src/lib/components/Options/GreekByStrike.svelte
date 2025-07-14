@@ -2,7 +2,6 @@
   import { abbreviateNumber } from "$lib/utils";
   import { onMount } from "svelte";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
-  import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
   import highcharts from "$lib/highcharts.ts";
@@ -413,12 +412,51 @@
     />
   </div>
 
+  <p class="mt-3 mb-2">
+    {#if rawData?.length > 0}
+      {title} exposure data for <strong>{ticker}</strong> options contracts.
+      {#if selectedDate === "All"}
+        Displaying aggregated exposure across all expiration dates.
+      {:else}
+        Showing exposure for contracts expiring on <strong
+          >{formatDate(selectedDate)}</strong
+        >.
+      {/if}
+      Total call {title.toLowerCase()}
+      exposure:
+      <strong>
+        {abbreviateNumber(
+          rawData
+            ?.reduce(
+              (sum, item) =>
+                sum + (isGamma ? (item?.call_gex ?? 0) : (item?.call_dex ?? 0)),
+              0,
+            )
+            ?.toFixed(2),
+        )}
+      </strong>. Total put {title.toLowerCase()} exposure:
+      <strong>
+        {abbreviateNumber(
+          rawData
+            ?.reduce(
+              (sum, item) =>
+                sum + (isGamma ? (item?.put_gex ?? 0) : (item?.put_dex ?? 0)),
+              0,
+            )
+            ?.toFixed(2),
+        )}
+      </strong>.
+    {:else}
+      No {title.toLowerCase()} exposure data available for the selected period.
+    {/if}
+  </p>
+
   <div class="mt-7">
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild let:builder>
         <Button
           builders={[builder]}
-          class=" border border-gray-300 dark:border-gray-700  shadow-xs bg-white dark:default h-[38px] shadow   flex flex-row justify-between items-center min-w-[130px] max-w-[240px] sm:w-auto  px-3  rounded truncate"
+          class=" border border-gray-300 dark:border-gray-700  text-white bg-black sm:hover:bg-default dark:default h-[38px] flex flex-row justify-between items-center min-w-[130px] max-w-[240px] sm:w-auto  px-3  rounded truncate"
         >
           <span class="truncate text-sm"
             >Date Expiration | {selectedDate === "All"
@@ -520,14 +558,9 @@
         <TableHeader {columns} {sortOrders} {sortData} />
       </thead>
       <tbody>
-        {#each data?.user?.tier === "Pro" ? displayList : displayList?.slice(0, 3) as item, index}
+        {#each displayList as item, index}
           <tr
-            class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
-              1 ===
-              displayList?.slice(0, 3)?.length &&
-            !['Pro']?.includes(data?.user?.tier)
-              ? 'opacity-[0.1]'
-              : ''}"
+            class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
           >
             <td class=" text-sm sm:text-[1rem] text-start whitespace-nowrap">
               {item?.strike?.toFixed(2)}
@@ -567,6 +600,4 @@
       </tbody>
     </table>
   </div>
-
-  <UpgradeToPro {data} display={true} />
 </div>
