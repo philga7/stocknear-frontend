@@ -316,7 +316,7 @@
       {@const farthestExpiry = rawData.sort(
         (a, b) => new Date(b.expiry) - new Date(a.expiry),
       )[0]}
-
+      <br />
       Total open interest across all expiries is
       <strong>{totalOI.toLocaleString("en-US")}</strong>
       contracts, with <strong>{totalCallOI.toLocaleString("en-US")}</strong>
