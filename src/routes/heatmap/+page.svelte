@@ -154,7 +154,9 @@
         class="relative flex justify-center items-start overflow-hidden w-full"
       >
         <main class="w-full">
-          <div class="border-b-[2px] flex justify-between items-center gap-4">
+          <div
+            class="border-b-[2px] border-black flex justify-between items-center gap-4"
+          >
             <h1 class="mb-1 text-2xl sm:text-3xl font-bold">
               S&P 500 - {selectedTimePeriod} Performance
             </h1>
@@ -168,7 +170,7 @@
                 <DropdownMenu.Trigger asChild let:builder>
                   <Button
                     builders={[builder]}
-                    class=" border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-gray-300 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 shadow-xs rounded"
+                    class=" border-gray-300 dark:border-gray-600 border bg-black sm:hover:bg-default text-white dark:sm:hover:bg-gray-300 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded"
                     disabled={isLoading}
                   >
                     <span class="truncate">Time Period</span>
@@ -188,6 +190,10 @@
                   </Button>
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Content
+                  side="bottom"
+                  align="end"
+                  sideOffset={10}
+                  alignOffset={0}
                   class="w-auto h-fit max-h-72 overflow-y-auto scroller"
                 >
                   <div
@@ -213,7 +219,7 @@
                 <DropdownMenu.Trigger asChild let:builder>
                   <Button
                     builders={[builder]}
-                    class="shadow-xs border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded truncate"
+                    class=" border-gray-300 dark:border-gray-600 border bg-black sm:hover:bg-default text-white dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                     disabled={isLoading || !isLoaded}
                   >
                     <span class="truncate">Download</span>
@@ -233,6 +239,10 @@
                   </Button>
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Content
+                  side="bottom"
+                  align="end"
+                  sideOffset={10}
+                  alignOffset={0}
                   class="w-auto h-fit max-h-72 overflow-y-auto scroller"
                 >
                   <div

@@ -277,7 +277,7 @@
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
                       builders={[builder]}
-                      class="ml-3 border-gray-300 dark:border-gray-600 border border-gray-300 shadow-xs sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  px-3 py-2  rounded "
+                      class="ml-3 border-gray-300 dark:border-gray-600 border border-gray-300 bg-black text-white sm:hover:bg-defaiöt dark:sm:hover:bg-primary ease-out  px-3 py-2  rounded "
                     >
                       <span class="truncate">Filter by Party</span>
                       <svg
@@ -296,6 +296,10 @@
                     </Button>
                   </DropdownMenu.Trigger>
                   <DropdownMenu.Content
+                    side="bottom"
+                    align="end"
+                    sideOffset={10}
+                    alignOffset={0}
                     class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                   >
                     <DropdownMenu.Group>
@@ -336,7 +340,7 @@
                   {#each displayList as item}
                     <a
                       href={`/politicians/${item?.id}`}
-                      class="w-full cursor-pointer bg-gray-300 dark:bg-[#141417] sm:hover:bg-gray-200 dark:sm:hover:bg-[#000] ease-in-out border dark:sm:hover:border-[#000] sm:hover:shadow-[#8C5F1B] border-gray-300 dark:border-gray-800 shadow-md rounded h-auto pb-4 pt-4 mb-7 {item?.party ===
+                      class="w-full cursor-pointer bg-black dark:bg-[#141417] sm:hover:bg-default text-white dark:sm:hover:bg-[#000] ease-in-out border dark:sm:hover:border-[#000] sm:hover:shadow-[#8C5F1B] border-gray-300 dark:border-gray-800 shadow-md rounded h-auto pb-4 pt-4 mb-7 {item?.party ===
                       'Republican'
                         ? 'sm:hover:shadow-[#80000D]'
                         : item?.party === 'Democratic'

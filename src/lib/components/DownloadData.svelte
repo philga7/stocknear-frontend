@@ -7,35 +7,40 @@
   export let title;
 
   const exportData = (format = "csv") => {
-    if (["Pro", "Plus"]?.includes(data?.user?.tier)) {
-      // Add headers row
+    if (["Pro", "Plus"].includes(data?.user?.tier)) {
       const csvRows = [];
 
       if (rawData.length > 0) {
-        // Sanitize the "name" field in rawData by removing commas
-        rawData?.forEach((row) => {
+        // Sanitize "name" field by removing commas
+        rawData.forEach((row) => {
           if (row["name"]) {
             row["name"] = row["name"].replace(/,/g, "");
           }
         });
-        // Dynamically get the headers from the keys of the first object in rawData
+
         let headers = Object.keys(rawData[0]);
 
-        // Check if "rank" exists in headers and move it to the first position
         if (headers.includes("rank")) {
-          headers = ["rank", ...headers.filter((header) => header !== "rank")];
+          headers = ["rank", ...headers.filter((h) => h !== "rank")];
         }
 
-        csvRows.push(headers.join(",")); // Join keys as comma-separated headers row
+        csvRows.push(headers.join(","));
 
-        // Add data rows
         for (const row of rawData) {
-          const csvRow = headers.map((header) => row[header] ?? "").join(","); // Join values of each key in order
+          const csvRow = headers
+            .map((header) => {
+              let value = row[header] ?? "";
+              // If value contains comma, quote, or newline, wrap in quotes & escape quotes
+              if (typeof value === "string" && /[",\n]/.test(value)) {
+                value = `"${value.replace(/"/g, '""')}"`;
+              }
+              return value;
+            })
+            .join(",");
           csvRows.push(csvRow);
         }
       }
 
-      // Create CSV blob and trigger download
       const csv = csvRows.join("\n");
       const blob = new Blob([csv], { type: "text/csv" });
       const url = window.URL.createObjectURL(blob);

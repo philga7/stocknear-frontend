@@ -757,6 +757,7 @@
                   >{new Date(overview?.date).toLocaleDateString("en-US", {
                     month: "long",
                     day: "numeric",
+                    year: "numeric",
                   })}</strong
                 >, the total volume is
                 <strong
