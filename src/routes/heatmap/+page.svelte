@@ -154,9 +154,7 @@
         class="relative flex justify-center items-start overflow-hidden w-full"
       >
         <main class="w-full">
-          <div
-            class="border-b-[2px] border-black flex justify-between items-center gap-4"
-          >
+          <div class="mb-6 border-[#2C6288] dark:border-white border-b-[2px]">
             <h1 class="mb-1 text-2xl sm:text-3xl font-bold">
               S&P 500 - {selectedTimePeriod} Performance
             </h1>

@@ -1185,7 +1185,7 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="shadow-xs min-w-[110px] w-full sm:w-fit border-gray-300 bg-white dark:bg-default dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-1.5  rounded truncate"
+                        class=" min-w-[110px] w-full sm:w-fit border-gray-300 bg-black sm:hover:bg-default text-white dark:bg-default dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-1.5  rounded truncate"
                       >
                         <span
                           class="truncate font-medium text-sm sm:text-[1rem]"
@@ -1209,6 +1209,10 @@
                       </Button>
                     </DropdownMenu.Trigger>
                     <DropdownMenu.Content
+                      side="bottom"
+                      align="end"
+                      sideOffset={10}
+                      alignOffset={0}
                       class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                     >
                       <DropdownMenu.Label>
@@ -1288,7 +1292,7 @@
                     {#if editMode}
                       <label
                         on:click={handleDeleteTickers}
-                        class="border shadow-xs text-sm border-gray-300 dark:border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 pl-3 pr-4 font-semibold sm:hover:bg-gray-200 dark:sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
+                        class="border text-sm border-gray-300 dark:border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-1.5 pl-3 pr-4 font-semibold bg-black sm:hover:bg-default text-white dark:sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
                       >
                         <svg
                           class="inline-block w-5 h-5"
@@ -1306,7 +1310,7 @@
                     {/if}
                     <label
                       on:click={handleEditMode}
-                      class="shadow-xs border text-sm border-gray-300 dark:border-gray-600 sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-1.5 px-3 sm:hover:bg-gray-200 dark:sm:hover:bg-primary ease-out"
+                      class=" border text-sm border-gray-300 dark:border-gray-600 sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-1.5 px-3 bg-black sm:hover:bg-default text-white dark:sm:hover:bg-primary ease-out"
                     >
                       <svg
                         class="inline-block w-5 h-5"
@@ -1321,13 +1325,9 @@
                         /></svg
                       >
                       {#if !editMode}
-                        <span class="ml-1 text-sm sm:text-[1rem]">
-                          Edit Watchlist
-                        </span>
+                        <span class="ml-1 text-sm"> Edit Watchlist </span>
                       {:else}
-                        <span class="ml-1 text-sm sm:text-[1rem]">
-                          Cancel
-                        </span>
+                        <span class="ml-1 text-sm"> Cancel </span>
                       {/if}
                     </label>
                   </div>
@@ -1365,14 +1365,14 @@
                       </div>
                       <Combobox.Input
                         on:input={search}
-                        class="text-sm sm:text-[1rem] controls-input shadow-xs focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-3 py-2 pl-8 xs:pl-10 grow w-full sm:min-w-56 max-w-xs"
+                        class="text-sm sm:text-[1rem] controls-input  focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-3 py-2 pl-8 xs:pl-10 grow w-full sm:min-w-56 max-w-xs"
                         placeholder="Add new stock"
                         aria-label="Add new stock"
                       />
                     </div>
 
                     <Combobox.Content
-                      class="w-auto z-10 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-default px-1 py-1.5 shadow-xs outline-hidden"
+                      class="w-auto z-10 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-default px-1 py-1.5  outline-hidden"
                       sideOffset={8}
                     >
                       {#if inputValue?.length > 0}
@@ -1425,11 +1425,9 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="shadow-xs sm:ml-auto min-w-[110px] w-full sm:w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5  rounded truncate"
+                        class=" sm:ml-auto min-w-[110px] w-full sm:w-fit border-gray-300 dark:border-gray-600 border bg-black sm:hover:bg-default text-white dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5  rounded truncate"
                       >
-                        <span class="truncate text-sm sm:text-[1rem]"
-                          >Indicators</span
-                        >
+                        <span class="truncate text-sm">Indicators</span>
                         <svg
                           class="-mr-1 ml-2 h-5 w-5 inline-block"
                           viewBox="0 0 20 20"
@@ -1447,6 +1445,10 @@
                     </DropdownMenu.Trigger>
 
                     <DropdownMenu.Content
+                      side="bottom"
+                      align="end"
+                      sideOffset={10}
+                      alignOffset={0}
                       class="w-60 max-h-[400px] overflow-y-auto scroller relative "
                     >
                       <!-- Search Input -->
@@ -1595,11 +1597,9 @@
                     <DropdownMenu.Trigger asChild let:builder>
                       <Button
                         builders={[builder]}
-                        class="shadow-xs min-w-[110px] w-full sm:w-fit border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-200 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5  rounded truncate"
+                        class=" min-w-[110px] w-full sm:w-fit border-gray-300 dark:border-gray-600 border bg-black sm:hover:bg-default text-white dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5  rounded truncate"
                       >
-                        <span class="truncate text-sm sm:text-[1rem]"
-                          >Bulk Download</span
-                        >
+                        <span class="truncate text-sm">Bulk Download</span>
                         <svg
                           class="-mr-1 ml-2 h-5 w-5 inline-block"
                           viewBox="0 0 20 20"
@@ -1617,6 +1617,10 @@
                     </DropdownMenu.Trigger>
 
                     <DropdownMenu.Content
+                      side="bottom"
+                      align="end"
+                      sideOffset={10}
+                      alignOffset={0}
                       class="w-auto min-w-64 max-w-80 max-h-[400px] overflow-y-auto scroller relative"
                     >
                       <DropdownMenu.Label
@@ -2092,7 +2096,7 @@
             <div class="flex justify-center items-center h-80">
               <div class="relative">
                 <label
-                  class="shadow-xs bg-default dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                  class=" bg-default dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                 >
                   <span
                     class="loading loading-spinner loading-md text-white dark:text-gray-400"
@@ -2160,7 +2164,7 @@
   ></label>
 
   <div
-    class="modal-box w-full p-6 rounded shadow-xs border
+    class="modal-box w-full p-6 rounded border
         bg-white dark:bg-secondary border border-gray-300 dark:border-gray-600"
   >
     <h3 class="text-lg font-medium mb-2">Delete Watchlist</h3>

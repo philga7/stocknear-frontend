@@ -96,7 +96,7 @@
                 <DropdownMenu.Trigger asChild let:builder>
                   <Button
                     builders={[builder]}
-                    class="w-full shadow-xs border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
+                    class="w-full  border-gray-300 dark:border-gray-600 border bg-black sm:hover:bg-default text-white dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                   >
                     <span class="truncate">Year: {year}</span>
                     <svg
@@ -115,6 +115,10 @@
                   </Button>
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Content
+                  side="bottom"
+                  align="end"
+                  sideOffset={10}
+                  alignOffset={0}
                   class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                 >
                   <DropdownMenu.Label class="text-gray-400">
@@ -137,12 +141,12 @@
                 </DropdownMenu.Content>
               </DropdownMenu.Root>
             </div>
-            <div class="relative inline-block text-left grow ml-3">
+            <div class="relative inline-block text-left grow">
               <DropdownMenu.Root>
                 <DropdownMenu.Trigger asChild let:builder>
                   <Button
                     builders={[builder]}
-                    class="w-full shadow-xs border-gray-300 dark:border-gray-600 border  sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
+                    class="w-full  border-gray-300 dark:border-gray-600 border  bg-black sm:hover:bg-default text-white dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                   >
                     <span class="truncate">Quarter: Q{quarter}</span>
                     <svg
@@ -161,6 +165,10 @@
                   </Button>
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Content
+                  side="bottom"
+                  align="end"
+                  sideOffset={10}
+                  alignOffset={0}
                   class="w-56 h-fit max-h-72 overflow-y-auto scroller"
                 >
                   <DropdownMenu.Label class="text-gray-400">
@@ -228,7 +236,7 @@
                     </div>
                   </div>
                   <div
-                    class="shadow-xs flex flex-col w-full leading-1.5 p-4 border border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-primary rounded-l-xl rounded-tr-xl"
+                    class=" flex flex-col w-full leading-1.5 p-4 border border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-primary rounded-l-xl rounded-tr-xl"
                   >
                     <p class="text-sm font-normal py-2.5">
                       {@html item?.description}
@@ -256,7 +264,7 @@
                     </div>
                   </div>
                   <div
-                    class="flex flex-col w-full leading-1.5 p-4 border border-gray-300 dark:border-gray-600 shadow-xs bg-gray-200 dark:bg-secondary rounded-r-xl rounded-tl-xl"
+                    class="flex flex-col w-full leading-1.5 p-4 border border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-secondary rounded-r-xl rounded-tl-xl"
                   >
                     <p class="text-sm font-normal py-2.5">
                       {@html item?.description}
@@ -281,7 +289,7 @@
           <div class="flex justify-center items-center h-80">
             <div class="relative">
               <label
-                class="shadow-xs bg-default dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                class=" bg-default dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
               >
                 <span
                   class="loading loading-spinner loading-md text-white dark:text-gray-400"

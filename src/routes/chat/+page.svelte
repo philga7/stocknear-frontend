@@ -489,7 +489,7 @@
                           <DropdownMenu.Trigger asChild let:builder>
                             <Button
                               builders={[builder]}
-                              class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-white dark:bg-[#2A2E39] sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
+                              class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-black sm:hover:bg-default text-white dark:bg-[#2A2E39] sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                             >
                               <span class="truncate">@Agents</span>
                               <svg
@@ -845,7 +845,7 @@
     class="modal-box w-full p-6 rounded shadow-xs border
         bg-white dark:bg-secondary border border-gray-300 dark:border-gray-600"
   >
-    <h3 class="text-lg font-medium mb-2">Delete Thread</h3>
+    <h3 class="text-lg font-bold mb-2">Delete Thread</h3>
     <p class="text-sm mb-6">
       Are you sure you want to delete this thread? This action cannot be undone.
     </p>
@@ -853,8 +853,7 @@
       <label
         for="deleteThread"
         class="cursor-pointer px-4 py-2 rounded text-sm font-medium
-            transition-colors duration-100
-            bg-gray-600 text-white dark:bg-white dark:text-black"
+            transition-colors bg-black sm:hover:bg-default text-white dark:bg-white dark:text-black"
         tabindex="0">Cancel</label
       ><label
         for="deleteThread"

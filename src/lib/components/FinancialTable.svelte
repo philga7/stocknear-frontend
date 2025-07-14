@@ -2,13 +2,15 @@
   import { abbreviateNumber } from "$lib/utils";
   import {
     selectedTimePeriod,
-    screenWidth,
     stockTicker,
     getCache,
     setCache,
   } from "$lib/store";
 
   import { mode } from "mode-watcher";
+  import { onMount } from "svelte";
+  import tippy from "tippy.js";
+  import "tippy.js/dist/tippy.css";
   import highcharts from "$lib/highcharts.ts";
 
   export let data: any[];
@@ -22,7 +24,9 @@
   let lowestValueDate;
   let lowestValue;
   let fiveYearsGrowth;
-  let infoText = {};
+
+  // Store references to info icon elements
+  let infoElements: { [key: string]: HTMLElement } = {};
 
   const marginKeys = new Set([
     /*
@@ -116,8 +120,8 @@
         endOnTick: false,
         categories: dateList,
         crosshair: {
-          color: $mode === "light" ? "black" : "white", // Set the color of the crosshair line
-          width: 1, // Adjust the line width as needed
+          color: $mode === "light" ? "black" : "white",
+          width: 1,
           dashStyle: "Solid",
         },
         labels: {
@@ -125,7 +129,7 @@
             color: $mode === "light" ? "#545454" : "white",
           },
           rotation: -45,
-          distance: 10, // Increases space between label and axis
+          distance: 10,
         },
       },
       yAxis: {
@@ -182,25 +186,68 @@
     config = plotData(label, key);
   }
 
-  async function getInfoText(parameter, title) {
-    modalLabel = title;
+  async function getInfoText(parameter) {
     const cachedData = getCache(parameter, "getInfoText");
     if (cachedData) {
-      infoText = cachedData;
-    } else {
-      const postData = { parameter };
-      const response = await fetch("/api/info-text", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(postData),
-      });
-
-      infoText = await response.json();
-      setCache(parameter, infoText, "getInfoText");
+      return cachedData;
     }
+
+    const postData = { parameter };
+    const response = await fetch("/api/info-text", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(postData),
+    });
+
+    const infoText = await response.json();
+    setCache(parameter, infoText, "getInfoText");
+    return infoText;
   }
+
+  onMount(() => {
+    // Initialize tippy for all info elements
+    Object.entries(infoElements).forEach(([key, element]) => {
+      if (!element) return;
+
+      const field = fields.find((f) => f.key === key);
+      if (!field) return;
+
+      tippy(element, {
+        trigger: "mouseenter focus",
+        placement: "bottom",
+        theme: "light-border",
+        allowHTML: true,
+        interactive: true,
+        delay: [200, 100],
+        onShow: async (instance) => {
+          instance.setContent("Loading…");
+          try {
+            const content = await getInfoText(key);
+            instance.setContent(`
+              <div class="text-white w-full mb-3">
+                <h4 class="font-bold mb-1 text-[1rem] w-full">${field.label}</h4>
+                <p>${content?.text || "n/a"}</p>
+                ${
+                  content?.equation
+                    ? `<div class="mt-4 pt-2 text-sm border-t border-gray-600 w-fit">${content?.equation}</div>`
+                    : ""
+                }
+              </div>
+            `);
+          } catch (error) {
+            instance.setContent(`
+              <div class="text-white w-full mb-3">
+                <h4 class="font-bold mb-1 text-[1rem] w-full">${field.label}</h4>
+                <p>Error loading information</p>
+              </div>
+            `);
+          }
+        },
+      });
+    });
+  });
 </script>
 
 {#each computedFields as { label, key, isMargin } (key)}
@@ -210,22 +257,12 @@
     <td
       class="text-start min-w-[220px] sm:min-w-[320px] text-sm sm:text-[1rem] border-r border-gray-300 dark:border-gray-800 w-full flex flex-row items-center justify-between"
     >
-      <label
-        for="tooltipModal"
-        class="truncate w-fit max-w-40 sm:max-w-64 cursor-pointer"
-        on:click={() => getInfoText(key, label)}
-        >{label}
-        <svg
-          class="-ml-0.5 -mt-4 h-[10.5px] w-[10.5px] inline-block text-gray-600 dark:text-gray-400"
-          viewBox="0 0 4 16"
-          fill="currentColor"
-          style="max-width:20px"
-        >
-          <path
-            d="M0 6h4v10h-4v-10zm2-6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"
-          ></path>
-        </svg>
-      </label>
+      <div
+        bind:this={infoElements[key]}
+        class="truncate w-fit max-w-40 sm:max-w-64 cursor-text flex items-center"
+      >
+        <span class="truncate">{label}</span>
+      </div>
 
       <label
         for="financialPlotModal"
@@ -286,36 +323,6 @@
       <label
         for="financialPlotModal"
         class="mt-4 font-semibold text-xl m-auto flex justify-center cursor-pointer"
-      >
-        Close
-      </label>
-    </div>
-  </div>
-</dialog>
-
-<input type="checkbox" id="tooltipModal" class="modal-toggle" />
-<dialog id="tooltipModal" class="modal p-3 w-full">
-  <label for="tooltipModal" class="cursor-pointer modal-backdrop"></label>
-
-  <!-- Desktop modal content -->
-  <div
-    class="modal-box w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-secondary flex flex-col items-center"
-  >
-    <div class=" mb-5 text-center">
-      <h3 class="font-bold text-2xl mb-5">{modalLabel}</h3>
-      <span class=" text-[1rem] font-normal">{infoText?.text ?? "n/a"}</span>
-      {#if infoText?.equation !== undefined}
-        <div class="w-5/6 m-auto mt-5"></div>
-        <div class="text-[1rem] w-full pt-3 pb-3 m-auto">
-          {infoText?.equation}
-        </div>
-      {/if}
-    </div>
-
-    <div class="border-t border-gray-300 dark:border-gray-600 mt-2 w-full">
-      <label
-        for="tooltipModal"
-        class="cursor-pointer mt-4 font-semibold text-xl m-auto flex justify-center"
       >
         Close
       </label>

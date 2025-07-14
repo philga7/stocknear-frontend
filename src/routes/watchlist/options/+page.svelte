@@ -638,7 +638,7 @@
               </h2>
               <a
                 href="/options-flow"
-                class="border shadow-xs text-sm border-gray-300 dark:border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 pl-3 pr-4 font-semibold sm:hover:bg-gray-100 dark:sm:hover:bg-default/60 ease-out dark:sm:hover:text-gray-300"
+                class="border text-sm border-gray-300 dark:border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 pl-3 pr-4 font-semibold bg-black sm:hover:bg-default text-white dark:sm:hover:bg-default/60 ease-out dark:sm:hover:text-gray-300"
               >
                 <Star class="inline-block w-5 h-5" />
                 <span class="ml-1 text-sm"> Add Contracts </span>
@@ -646,7 +646,7 @@
               {#if editMode}
                 <label
                   on:click={handleDelete}
-                  class="border shadow-xs text-sm border-gray-300 dark:border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 pl-3 pr-4 font-semibold sm:hover:bg-gray-100 dark:sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
+                  class="border text-sm border-gray-300 dark:border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 pl-3 pr-4 font-semibold bg-black sm:hover:bg-default text-white dark:sm:hover:bg-default/60 ease-out sm:hover:text-red-500"
                 >
                   <svg
                     class="inline-block w-5 h-5"
@@ -665,7 +665,7 @@
 
               <label
                 on:click={() => (editMode = !editMode)}
-                class="border shadow-xs text-sm border-gray-300 dark:border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 pl-3 pr-4 font-semibold sm:hover:bg-gray-100 dark:sm:hover:bg-default/60 ease-out sm:hover:text-gray-800 dark:sm:hover:text-gray-200"
+                class="border text-sm border-gray-300 dark:border-gray-600 mr-2 sm:ml-3 sm:mr-0 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded py-2 pl-3 pr-4 font-semibold bg-black sm:hover:bg-default text-white dark:sm:hover:bg-default/60 ease-out"
               >
                 <svg
                   class="inline-block w-5 h-5"
@@ -988,8 +988,8 @@
             <label
               on:click={() => (selectGraphType = item)}
               class="px-3 py-1.5 {selectGraphType === item
-                ? 'shadow-xs bg-gray-100 dark:bg-white text-black '
-                : 'shadow-xs text-opacity-[0.6] border border-gray-300 dark:border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded cursor-pointer"
+                ? ' bg-gray-100 dark:bg-white text-black '
+                : ' text-opacity-[0.6] border border-gray-300 dark:border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded cursor-pointer"
             >
               {item}
             </label>
@@ -1108,7 +1108,7 @@
             <div class="m-auto flex justify-center items-center h-80">
               <div class="relative">
                 <label
-                  class="shadow-xs bg-default dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                  class=" bg-default dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                 >
                   <span
                     class="loading loading-spinner loading-md text-white dark:text-gray-400"
