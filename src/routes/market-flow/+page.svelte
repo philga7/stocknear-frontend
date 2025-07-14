@@ -1,27 +1,20 @@
 <script lang="ts">
-  import HoverStockChart from "$lib/components/HoverStockChart.svelte";
-  import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import { abbreviateNumber } from "$lib/utils";
-  import InfoModal from "$lib/components/InfoModal.svelte";
-  import Infobox from "$lib/components/Infobox.svelte";
-
-  import Tutorial from "$lib/components/Tutorial.svelte";
+  import InfoPopup from "$lib/components/Options/InfoPopup.svelte";
 
   import { mode } from "mode-watcher";
-
-  import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
 
   import SEO from "$lib/components/SEO.svelte";
   import highcharts from "$lib/highcharts.ts";
 
   export let data;
-  let config = null;
-  //let sectorData = data?.getData?.sectorData || [];
-  let topPosNetPremium = data?.getData?.topPosNetPremium || [];
-
+  let config;
+  let configOI;
+  let configOIPutCall;
+  let configVolume;
+  let configVolumePutCall;
   let marketTideData = data?.getData?.marketTide || {};
-  let originalPosTickers = topPosNetPremium;
-  let displayPosTickers = topPosNetPremium;
+  let overview = data?.getData?.overview || {};
 
   function findLastNonNull(dataArray, key) {
     for (let i = dataArray.length - 1; i >= 0; i--) {
@@ -35,124 +28,7 @@
     return null; // Return null if no non-null value is found.
   }
 
-  function formatDate(dateStr) {
-    // Parse the input date string
-    var date = new Date(dateStr);
-
-    // Get month, day, and year
-    var month = date.getMonth() + 1; // Month starts from 0
-    var day = date.getDate();
-    var year = date.getFullYear();
-
-    // Get hours and minutes
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-
-    // Determine AM/PM and adjust hours
-    var ampm = hours >= 12 ? "PM" : "AM";
-    hours = hours % 12;
-    hours = hours === 0 ? 12 : hours; // Convert 0 hours to 12 for AM/PM
-
-    // Add leading zeros if necessary
-    month = (month < 10 ? "0" : "") + month;
-    day = (day < 10 ? "0" : "") + day;
-    minutes = (minutes < 10 ? "0" : "") + minutes;
-
-    // Format the date as MM/DD/YYYY HH:MM AM/PM
-    var formattedDate = `${month}/${day}/${year} ${hours}:${minutes} ${ampm}`;
-
-    return formattedDate;
-  }
-
-  $: sortOrders = {
-    rank: { order: "none", type: "number" },
-    date: { order: "none", type: "date" },
-    ticker: { order: "none", type: "string" },
-    name: { order: "none", type: "string" },
-    price: { order: "none", type: "number" },
-    changesPercentage: { order: "none", type: "number" },
-    call_volume: { order: "none", type: "number" },
-    put_volume: { order: "none", type: "number" },
-    net_premium: { order: "none", type: "number" },
-    net_call_premium: { order: "none", type: "number" },
-    net_put_premium: { order: "none", type: "number" },
-    call_premium: { order: "none", type: "number" },
-    put_premium: { order: "none", type: "number" },
-    iv_rank: { order: "none", type: "number" },
-  };
-
-  $: topColumns = [
-    { key: "rank", label: "Rank", align: "left" },
-    { key: "ticker", label: "Symbol", align: "left" },
-    { key: "name", label: "Name", align: "left" },
-    { key: "price", label: "Price", align: "right" },
-    { key: "changesPercentage", label: "% Change", align: "right" },
-    { key: "net_premium", label: "Net Prem", align: "right" },
-    { key: "net_call_premium", label: "Net Call Prem", align: "right" },
-    { key: "net_put_premium", label: "Net Put Prem", align: "right" },
-    { key: "iv_rank", label: "IV Rank", align: "right" },
-  ];
-
-  const sortPosTickers = (key) => {
-    // Reset all other keys to 'none' except the current key
-    for (const k in sortOrders) {
-      if (k !== key) {
-        sortOrders[k].order = "none";
-      }
-    }
-
-    // Cycle through 'none', 'asc', 'desc' for the clicked key
-    const orderCycle = ["none", "asc", "desc"];
-
-    const currentOrderIndex = orderCycle.indexOf(sortOrders[key].order);
-    sortOrders[key].order =
-      orderCycle[(currentOrderIndex + 1) % orderCycle.length];
-    const sortOrder = sortOrders[key].order;
-
-    // Reset to original data when 'none' and stop further sorting
-    if (sortOrder === "none") {
-      originalPosTickers = [...topPosNetPremium]; // Reset originalPosTickers to sectorData
-      displayPosTickers = originalPosTickers?.slice(0, 50);
-      return;
-    }
-
-    // Define a generic comparison function
-    const compareValues = (a, b) => {
-      const { type } = sortOrders[key];
-      let valueA, valueB;
-
-      switch (type) {
-        case "date":
-          valueA = new Date(a[key]);
-          valueB = new Date(b[key]);
-          break;
-        case "string":
-          valueA = a[key].toUpperCase();
-          valueB = b[key].toUpperCase();
-          return sortOrder === "asc"
-            ? valueA.localeCompare(valueB)
-            : valueB.localeCompare(valueA);
-        case "number":
-        default:
-          valueA = parseFloat(a[key]);
-          valueB = parseFloat(b[key]);
-          break;
-      }
-
-      if (sortOrder === "asc") {
-        return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
-      } else {
-        return valueA > valueB ? -1 : valueA < valueB ? 1 : 0;
-      }
-    };
-
-    // Sort using the generic comparison function
-    displayPosTickers = [...originalPosTickers]
-      .sort(compareValues)
-      ?.slice(0, 50);
-  };
-
-  function plotData() {
+  function plotDataFlow() {
     // Determine the base date (using the first data point, or fallback to today)
     const baseDate =
       marketTideData && marketTideData.length
@@ -385,73 +261,478 @@
     return options;
   }
 
-  let steps = [
-    {
-      popover: {
-        title: "Market Flow",
-        description: `Track real‑time S&P 500 options flow to pinpoint large call and put premium trades, monitor net premium movement, and gauge bullish vs. bearish sentiment. Instantly spot institutional‑size orders, follow shifts in market skew, and align your strategy with the prevailing market bias.`,
-        side: "center",
-        align: "center",
+  function plotOI() {
+    const currentOI = overview?.putOI + overview?.callOI ?? 0;
+    const benchmarkOI =
+      overview?.avg30OI * 2 > currentOI ? overview?.avg30OI * 2 : currentOI;
+
+    // Define band breakpoints as fractions of benchmarkOI
+    const band1 = benchmarkOI * 0.2;
+    const band2 = benchmarkOI * 0.4;
+    const band3 = benchmarkOI * 0.6;
+    const band4 = benchmarkOI * 0.8;
+
+    const optionsOI = {
+      credits: { enabled: false },
+
+      chart: {
+        type: "gauge",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        height: 280,
+        animation: false,
       },
-    },
-    {
-      element: ".net-volume-driver",
-      popover: {
-        title: "Net Volume",
-        description: `Net volume is defined as (call ask volume − call bid volume) − (put ask volume − put bid volume). It reflects the balance of aggressive buying versus selling across calls and puts. A positive value suggests bullish sentiment, while a negative value indicates bearish pressure from big whales.`,
-        side: "left",
-        align: "start",
+
+      title: {
+        text: `<h3 class="">Open Interest</h3>`,
+        style: {
+          color: $mode === "light" ? "black" : "white",
+        },
+        useHTML: true,
       },
-    },
-    {
-      element: ".net-call-premium-driver",
-      popover: {
-        title: "Net Call Premium",
-        description: `Net call premium is defined as (call premium ask side) − (call premium bid side). It shows the flow of capital into call options, helping identify whether big whales are aggressively buying calls. A high positive value suggests bullish sentiment and potential institutional interest.`,
-        side: "left",
-        align: "start",
+
+      pane: {
+        startAngle: -90,
+        endAngle: 90,
+        background: [
+          {
+            outerRadius: "101%",
+            innerRadius: "100%",
+            backgroundColor: "#000",
+            borderWidth: 0,
+            shape: "arc",
+          },
+          null,
+        ],
       },
-    },
-    {
-      element: ".net-put-premium-driver",
-      popover: {
-        title: "Net Put Premium",
-        description: `Net put premium is defined as (put premium ask side) − (put premium bid side). It highlights the capital flow into put options, revealing whether big whales are positioning for downside. A high positive value signals strong bearish sentiment or hedging activity.`,
-        side: "right",
-        align: "start",
+
+      yAxis: {
+        min: 0,
+        max: benchmarkOI,
+        tickPosition: "outside",
+        tickLength: 0,
+        tickWidth: 0,
+        minorTickInterval: null,
+        lineWidth: 0,
+        labels: {
+          enabled: true,
+          distance: 20,
+          style: {
+            color: $mode === "light" ? "#000" : "#fff",
+            fontSize: "15px",
+          },
+          formatter: function () {
+            return abbreviateNumber(this.value);
+          },
+          y: 0,
+        },
+        plotBands: [
+          { from: 0, to: band1, color: "#55BF3B", thickness: 20 },
+          { from: band1, to: band2, color: "#55BF3B", thickness: 20 },
+          { from: band2, to: band3, color: "#DDDF0D", thickness: 20 },
+          { from: band3, to: band4, color: "#DF5353", thickness: 20 },
+          { from: band4, to: benchmarkOI, color: "#DF5353", thickness: 20 },
+        ],
       },
-    },
-    {
-      element: ".chart-driver",
-      popover: {
-        title: "S&P500 Flow Chart",
-        description: `This chart displays the price movement (white line) alongside net call premium (green line) and net put premium (red line) throughout the trading day from 9 AM to 4 PM. to get realtime updates about market sentiment.`,
-        side: "bottom",
-        align: "start",
+
+      series: [
+        {
+          name: "OI",
+          data: [currentOI],
+          animation: false,
+          dataLabels: {
+            useHTML: true,
+            backgroundColor: "none",
+            borderWidth: 0,
+            shadow: false,
+            formatter: function () {
+              return `<span class="text-lg font-bold">${abbreviateNumber(this.y)}</span>`;
+            },
+          },
+          dial: {
+            radius: "80%",
+            backgroundColor: $mode === "light" ? "#000" : "#808080",
+            baseWidth: 12,
+            baseLength: "0%",
+            rearLength: "0%",
+          },
+        },
+      ],
+    };
+
+    const actualValue = overview?.pcOI ?? 0;
+
+    const optionsOIPutCall = {
+      credits: {
+        enabled: false,
       },
-    },
-    {
-      element: ".net-premium-driver",
-      popover: {
-        title: "Top Tickers by Net Premium",
-        description: `This table highlights stocks with the strongest bullish options flow, where traders are aggressively buying calls or selling puts. A high positive net premium often signals institutional positioning or speculation on upside moves over the coming days, weeks, or months.`,
-        side: "bottom",
-        align: "start",
+      chart: {
+        type: "gauge",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        height: 280,
+        animation: false, // Disable initial animation
       },
-    },
-    {
-      popover: {
-        title: "You’re All Set!",
-        description:
-          "You’ve now seen how market flow, including volume, premium, and directional bias, can reveal where the money is moving. Use these insights to spot momentum shifts, follow smart money, and sharpen your trading decisions. Happy trading!",
-        side: "center",
-        align: "center",
+
+      title: {
+        text: `<h3 class="">Put-Call Ratio</h3>`,
+        style: {
+          color: $mode === "light" ? "black" : "white",
+          // Using inline CSS for margin-top and margin-bottom
+        },
+        useHTML: true, // Enable HTML to apply custom class styling
       },
-    },
-  ];
+
+      pane: {
+        startAngle: -90,
+        endAngle: 90,
+        background: [
+          {
+            // Outer circle (black line)
+            outerRadius: "101%",
+            innerRadius: "100%",
+            backgroundColor: "#000",
+            borderWidth: 0,
+            shape: "arc",
+          },
+          null, // keep existing null if needed
+        ],
+      },
+
+      // the value axis
+      yAxis: {
+        min: 0,
+        max: 2,
+        tickPosition: "outside",
+        tickLength: 10,
+        tickWidth: 0,
+        tickPositions: [0, 1, 2],
+        minorTickInterval: null,
+        lineWidth: 0,
+        labels: {
+          enabled: true,
+          distance: 20, // move closer to the center
+          style: {
+            color: $mode === "light" ? "#000" : "#fff",
+            fontSize: "15px",
+          },
+          formatter: function () {
+            return this.value;
+          },
+          y: -0, // adjust vertical position upward
+        },
+        plotBands: [
+          {
+            from: 0,
+            to: 0.49,
+            color: "#55BF3B",
+            thickness: 20,
+            borderRadius: "0px",
+          },
+          {
+            from: 0.49,
+            to: 0.5,
+            color: "#fff",
+            thickness: 20,
+            borderRadius: "0px",
+          },
+          {
+            from: 0.5,
+            to: 0.99,
+            color: "#DDDF0D",
+            thickness: 20,
+            borderRadius: "0px",
+          },
+          {
+            from: 0.99,
+            to: 1,
+            color: "#fff",
+            thickness: 20,
+            borderRadius: "0px",
+          },
+          {
+            from: 1,
+            to: 2,
+            color: "#DF5353",
+            thickness: 20,
+            borderRadius: "0px",
+          },
+        ],
+      },
+
+      series: [
+        {
+          name: "OI P/C",
+          data: [Math.min(actualValue, 2)], // dial limited to 2
+          animation: false,
+          dataLabels: {
+            useHTML: true,
+            backgroundColor: "none",
+            borderWidth: 0,
+            shadow: false,
+            formatter: function () {
+              // Show actual value even if >2
+              return `<span class="text-lg font-bold">${actualValue}</span>`;
+            },
+          },
+          dial: {
+            radius: "80%",
+            backgroundColor: $mode === "light" ? "#000" : "#808080",
+            baseWidth: 12,
+            baseLength: "0%",
+            rearLength: "0%",
+          },
+        },
+      ],
+    };
+
+    return { optionsOI, optionsOIPutCall };
+  }
+
+  function plotVolume() {
+    const currentVol = overview?.putVol + overview?.callVol ?? 0;
+    const benchmarkVol =
+      overview?.avg30Vol * 2 > currentVol ? overview?.avg30Vol * 2 : currentVol;
+
+    const band1 = benchmarkVol * 0.2;
+    const band2 = benchmarkVol * 0.4;
+    const band3 = benchmarkVol * 0.6;
+    const band4 = benchmarkVol * 0.8;
+
+    const optionsVolume = {
+      credits: { enabled: false },
+
+      chart: {
+        type: "gauge",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        height: 280,
+        animation: false,
+      },
+
+      title: {
+        text: `<h3 class="">Volume</h3>`,
+        style: {
+          color: $mode === "light" ? "black" : "white",
+        },
+        useHTML: true,
+      },
+
+      pane: {
+        startAngle: -90,
+        endAngle: 90,
+        background: [
+          {
+            outerRadius: "101%",
+            innerRadius: "100%",
+            backgroundColor: "#000",
+            borderWidth: 0,
+            shape: "arc",
+          },
+          null,
+        ],
+      },
+
+      yAxis: {
+        min: 0,
+        max: benchmarkVol,
+        tickPosition: "outside",
+        tickLength: 0,
+        tickWidth: 0,
+        minorTickInterval: null,
+        lineWidth: 0,
+        labels: {
+          enabled: true,
+          distance: 20,
+          style: {
+            color: $mode === "light" ? "#000" : "#fff",
+            fontSize: "15px",
+          },
+          formatter: function () {
+            return abbreviateNumber(this.value);
+          },
+          y: 0,
+        },
+        plotBands: [
+          { from: 0, to: band1, color: "#55BF3B", thickness: 20 },
+          { from: band1, to: band2, color: "#55BF3B", thickness: 20 },
+          { from: band2, to: band3, color: "#DDDF0D", thickness: 20 },
+          { from: band3, to: band4, color: "#DF5353", thickness: 20 },
+          { from: band4, to: benchmarkVol, color: "#DF5353", thickness: 20 },
+        ],
+      },
+
+      series: [
+        {
+          name: "Vol",
+          data: [currentVol],
+          animation: false,
+          dataLabels: {
+            useHTML: true,
+            backgroundColor: "none",
+            borderWidth: 0,
+            shadow: false,
+            formatter: function () {
+              return `<span class="text-lg font-bold">${abbreviateNumber(this.y)}</span>`;
+            },
+          },
+          dial: {
+            radius: "80%",
+            backgroundColor: $mode === "light" ? "#000" : "#808080",
+            baseWidth: 12,
+            baseLength: "0%",
+            rearLength: "0%",
+          },
+        },
+      ],
+    };
+
+    const actualValue = overview?.pcVol ?? 0;
+
+    const optionsVolumePutCall = {
+      credits: {
+        enabled: false,
+      },
+      chart: {
+        type: "gauge",
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        height: 280,
+        animation: false, // Disable initial animation
+      },
+
+      title: {
+        text: `<h3 class="">Put-Call Ratio</h3>`,
+        style: {
+          color: $mode === "light" ? "black" : "white",
+          // Using inline CSS for margin-top and margin-bottom
+        },
+        useHTML: true, // Enable HTML to apply custom class styling
+      },
+
+      pane: {
+        startAngle: -90,
+        endAngle: 90,
+        background: [
+          {
+            // Outer circle (black line)
+            outerRadius: "101%",
+            innerRadius: "100%",
+            backgroundColor: "#000",
+            borderWidth: 0,
+            shape: "arc",
+          },
+          null, // keep existing null if needed
+        ],
+      },
+
+      // the value axis
+      yAxis: {
+        min: 0,
+        max: 2,
+        tickPosition: "outside",
+        tickLength: 10,
+        tickWidth: 0,
+        tickPositions: [0, 1, 2],
+        minorTickInterval: null,
+        lineWidth: 0,
+        labels: {
+          enabled: true,
+          distance: 20, // move closer to the center
+          style: {
+            color: $mode === "light" ? "#000" : "#fff",
+            fontSize: "15px",
+          },
+          formatter: function () {
+            return this.value;
+          },
+          y: -0, // adjust vertical position upward
+        },
+        plotBands: [
+          {
+            from: 0,
+            to: 0.49,
+            color: "#55BF3B",
+            thickness: 20,
+            borderRadius: "0px",
+          },
+          {
+            from: 0.49,
+            to: 0.5,
+            color: "#fff",
+            thickness: 20,
+            borderRadius: "0px",
+          },
+          {
+            from: 0.5,
+            to: 0.99,
+            color: "#DDDF0D",
+            thickness: 20,
+            borderRadius: "0px",
+          },
+          {
+            from: 0.99,
+            to: 1,
+            color: "#fff",
+            thickness: 20,
+            borderRadius: "0px",
+          },
+          {
+            from: 1,
+            to: 2,
+            color: "#DF5353",
+            thickness: 20,
+            borderRadius: "0px",
+          },
+        ],
+      },
+
+      series: [
+        {
+          name: "Vol P/C",
+          data: [Math.min(actualValue, 2)], // dial limited to 2
+          animation: false,
+          dataLabels: {
+            useHTML: true,
+            backgroundColor: "none",
+            borderWidth: 0,
+            shadow: false,
+            formatter: function () {
+              // Show actual value even if >2
+              return `<span class="text-lg font-bold">${actualValue}</span>`;
+            },
+          },
+          dial: {
+            radius: "80%",
+            backgroundColor: $mode === "light" ? "#000" : "#808080",
+            baseWidth: 12,
+            baseLength: "0%",
+            rearLength: "0%",
+          },
+        },
+      ],
+    };
+
+    return { optionsVolume, optionsVolumePutCall };
+  }
+
   $: {
     if ($mode) {
-      config = marketTideData ? plotData() : null;
+      config = marketTideData ? plotDataFlow() : null;
+    }
+  }
+
+  $: {
+    if ($mode) {
+      config = marketTideData ? plotDataFlow() : null;
+
+      const { optionsOI, optionsOIPutCall } = plotOI();
+      const { optionsVolume, optionsVolumePutCall } = plotVolume();
+
+      configOI = optionsOI;
+      configOIPutCall = optionsOIPutCall;
+      configVolume = optionsVolume;
+      configVolumePutCall = optionsVolumePutCall;
     }
   }
 </script>
@@ -470,23 +751,59 @@
         <main class="w-full">
           <div class="w-full m-auto">
             {#if config !== null}
-              <div class="mt-4">
-                <Infobox
-                  text={`Market Flow evaluates the balance between advancing and
-                declining stocks by analyzing S&P500 price movements, net call
-                premiums and net put premiums, providing a real-time snapshot of
-                market sentiment and momentum.`}
-                />
-              </div>
-
-              <div class="mt-5 mb-3 flex flex-row items-center justify-between">
-                <div class="text-xs sm:text-sm italic">
-                  Last Updated: {formatDate(
-                    findLastNonNull(marketTideData, "time"),
-                  )}
-                </div>
-                <Tutorial {steps} />
-              </div>
+              <p class="mb-10">
+                Overview for all option chains of <strong>S&P500</strong>. As of
+                <strong
+                  >{new Date(overview?.date).toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "numeric",
+                  })}</strong
+                >, the total volume is
+                <strong
+                  >{(overview?.putVol + overview?.callVol)?.toLocaleString(
+                    "en-US",
+                  ) || "n/a"}</strong
+                >
+                contracts, which is
+                <strong>
+                  {overview?.avg30Vol && overview?.avg30Vol > 0
+                    ? (
+                        ((overview?.callVol + overview?.putVol) /
+                          overview?.avg30Vol) *
+                        100
+                      )?.toFixed(2) + "%"
+                    : "n/a"}
+                </strong>
+                of average daily volume of
+                <strong
+                  >{overview?.avg30Vol?.toLocaleString("en-US") ||
+                    "n/a"}</strong
+                >
+                contracts. The volume put-call ratio is
+                <strong>{overview?.pcVol?.toFixed(2) || "n/a"}</strong>,
+                indicating a
+                <strong>
+                  {overview?.pcVol
+                    ? overview?.pcVol > 1.2
+                      ? "bearish"
+                      : overview?.pcVol < 0.8
+                        ? "bullish"
+                        : "neutral"
+                    : "unknown"}
+                </strong>
+                sentiment in the market. Current net call premium flow is
+                <strong
+                  >{abbreviateNumber(
+                    findLastNonNull(marketTideData, "net_call_premium"),
+                  ) || "n/a"}</strong
+                >
+                and net put premium flow is
+                <strong
+                  >{abbreviateNumber(
+                    findLastNonNull(marketTideData, "net_put_premium"),
+                  ) || "n/a"}</strong
+                >.
+              </p>
 
               <div
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6"
@@ -631,103 +948,273 @@
                 </div>
               </div>
             {/if}
-            <div class="w-full m-auto mt-5">
-              <div
-                class="flex flex-wrap sm:flex-row items-center sm:justify-between mb-4"
-              >
-                <div class="flex flex-row items-center">
-                  <label
-                    for="topPosNetPrem"
-                    class="net-premium-driver mr-1 cursor-pointer flex flex-row items-center text-xl font-bold"
+            {#if Object?.keys(overview)?.length > 0}
+              <div class="w-full m-auto mt-10">
+                <div
+                  class="flex flex-wrap sm:flex-row items-center sm:justify-between mb-4"
+                >
+                  <h2 class="mb-6 text-xl sm:text-2xl font-bold w-fit">
+                    Open Interest (OI)
+                  </h2>
+                  <div
+                    class="flex flex-col -mt-2 mb-8 md:flex-row gap-4 justify-between items-center w-full m-auto"
                   >
-                    Top Tickers by Net Premium
-                  </label>
-                  <InfoModal
-                    title={"Top Tickers by Net Prem"}
-                    content={"This list showcases top stocks with a positive net premium, indicating bullish sentiment. Track price movements, analyze options activity, and uncover the stocks leading their sectors with detailed options data."}
-                    id={"topPosNetPrem"}
-                  />
+                    <!-- Gauge -->
+                    <div
+                      class="w-fit max-w-56 max-h-56 mx-auto md:mx-0 ml-auto flex-shrink-0"
+                      use:highcharts={configOI}
+                    ></div>
+
+                    <div
+                      class="w-fit max-w-56 max-h-56 mx-auto md:mx-0 ml-auto flex-shrink-0"
+                      use:highcharts={configOIPutCall}
+                    ></div>
+
+                    <!-- Stats -->
+                    <div
+                      class="grid grid-cols-2 gap-8 p-3 sm:p-0 text-[1rem] w-full sm:w-[50%]"
+                    >
+                      <div class="flex flex-col">
+                        <div
+                          class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
+                        >
+                          <span>Today's Open Interest</span>
+                          <InfoPopup
+                            text="Open Interest (OI) is the total number of outstanding options contracts (both calls and puts) that are still open.  
+                    High OI means more market activity and liquidity.  
+                    Low OI means less interest and lower liquidity."
+                          />
+                        </div>
+                        <span class="font-semibold text-sm sm:text-[1rem]"
+                          >{(
+                            overview?.putOI + overview?.callOI
+                          )?.toLocaleString("en-US")}</span
+                        >
+                      </div>
+
+                      <div class="flex flex-col">
+                        <div
+                          class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
+                        >
+                          <span>Put-Call Ratio</span>
+                          <InfoPopup
+                            text="The Open Interest (OI) Put-Call Ratio compares the number of open put contracts to open call contracts.  
+      A high ratio (>1) suggests more puts than calls — often seen as bearish.  
+      A low ratio (<1) suggests more calls than puts — often seen as bullish."
+                          />
+                        </div>
+
+                        <span class="font-semibold text-sm sm:text-[1rem]"
+                          >{overview?.pcOI?.toFixed(2)}</span
+                        >
+                      </div>
+
+                      <div class="flex flex-col">
+                        <div
+                          class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
+                        >
+                          <span>Put Open Interest</span>
+                          <InfoPopup
+                            text="Put Open Interest is the total number of open put option contracts on a stock.  
+                  High put OI suggests more traders are buying protection or betting on a decline — often seen as bearish.  
+                  Low put OI suggests less demand for downside protection — often seen as bullish or neutral."
+                          />
+                        </div>
+
+                        <span class="font-semibold text-sm sm:text-[1rem]"
+                          >{overview?.putOI?.toLocaleString("en-US")}</span
+                        >
+                      </div>
+
+                      <div class="flex flex-col">
+                        <div
+                          class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
+                        >
+                          <span>Call Open Interest</span>
+                          <InfoPopup
+                            text="Call Open Interest is the total number of open call option contracts on a stock.  
+                  High call OI suggests more traders expect the stock to rise or are speculating — often seen as bullish.  
+                  Low call OI suggests less demand for upside bets — often seen as bearish or neutral."
+                          />
+                        </div>
+
+                        <span class="font-semibold text-sm sm:text-[1rem]"
+                          >{overview?.callOI?.toLocaleString("en-US")}</span
+                        >
+                      </div>
+
+                      <div class="flex flex-col">
+                        <div
+                          class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
+                        >
+                          <span>Open Interest Avg (30-day)</span>
+                          <InfoPopup
+                            text="The average Open Interest over the past 30 days shows typical market activity in options contracts."
+                          />
+                        </div>
+
+                        <span class="font-semibold text-sm sm:text-[1rem]"
+                          >{overview?.avg30OI?.toLocaleString("en-US")}</span
+                        >
+                      </div>
+
+                      <div class="flex flex-col">
+                        <div
+                          class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
+                        >
+                          <span>Today vs Open Interest Avg (30-day)</span>
+                          <InfoPopup
+                            text="This compares today's Open Interest to the 30-day average.  
+                  Higher today’s OI than average suggests increased trader interest or unusual activity — possibly signaling a bigger move.  
+                  Lower today’s OI than average suggests less activity or fading interest."
+                          />
+                        </div>
+
+                        <span class="font-semibold text-sm sm:text-[1rem]"
+                          >{overview?.avg30OI && overview?.avg30OI > 0
+                            ? (
+                                ((overview?.callOI + overview?.putOI) /
+                                  overview?.avg30OI) *
+                                100
+                              )?.toFixed(2) + "%"
+                            : "n/a"}</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+
+                  <h2 class="mb-6 text-xl sm:text-2xl font-bold w-fit">
+                    Option Order Volume
+                  </h2>
+                  <div
+                    class="flex flex-col -mt-2 mb-8 md:flex-row gap-4 justify-between items-center w-full"
+                  >
+                    <!-- Gauge -->
+                    <div
+                      class="w-fit max-w-56 max-h-56 mx-auto md:mx-0 ml-auto flex-shrink-0"
+                      use:highcharts={configVolume}
+                    ></div>
+
+                    <div
+                      class="w-fit max-w-56 max-h-56 mx-auto md:mx-0 ml-auto flex-shrink-0"
+                      use:highcharts={configVolumePutCall}
+                    ></div>
+
+                    <!-- Stats -->
+                    <div
+                      class="grid grid-cols-2 gap-8 p-3 sm:p-0 text-[1rem] w-full sm:w-[50%]"
+                    >
+                      <div class="flex flex-col">
+                        <div
+                          class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
+                        >
+                          <span>Today's Volume</span>
+                          <InfoPopup
+                            text="Today's Volume is the total number of options contracts (calls and puts) traded during the current trading day.  
+                    High volume shows strong market activity and interest.  
+                    Low volume suggests less trading and lower interest."
+                          />
+                        </div>
+                        <span class="font-semibold text-sm sm:text-[1rem]"
+                          >{(
+                            overview?.callVol + overview?.putVol
+                          )?.toLocaleString("en-US")}</span
+                        >
+                      </div>
+
+                      <div class="flex flex-col">
+                        <div
+                          class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
+                        >
+                          <span>Put-Call Ratio</span>
+                          <InfoPopup
+                            text="The Put-Call Ratio compares the volume of traded put options to call options during a period.  
+      A high ratio (>1) means more puts traded — often seen as bearish sentiment.  
+      A low ratio (<1) means more calls traded — often seen as bullish sentiment."
+                          />
+                        </div>
+
+                        <span class="font-semibold text-sm sm:text-[1rem]"
+                          >{overview?.pcVol?.toFixed(2)}</span
+                        >
+                      </div>
+
+                      <div class="flex flex-col">
+                        <div
+                          class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
+                        >
+                          <span>Put Volume</span>
+                          <InfoPopup
+                            text="Put Volume is the total number of put option contracts traded today.  
+                    High put volume suggests many traders are buying protection or betting on a decline — often seen as bearish.  
+                    Low put volume suggests less demand for downside protection — often seen as bullish or neutral."
+                          />
+                        </div>
+
+                        <span class="font-semibold text-sm sm:text-[1rem]"
+                          >{overview?.putVol?.toLocaleString("en-US")}</span
+                        >
+                      </div>
+
+                      <div class="flex flex-col">
+                        <div
+                          class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
+                        >
+                          <span>Call Volume</span>
+                          <InfoPopup
+                            text="Call Volume is the total number of call option contracts traded today.  
+                    High call volume suggests many traders expect the stock to rise or are speculating — often seen as bullish.  
+                    Low call volume suggests less demand for upside bets — often seen as bearish or neutral."
+                          />
+                        </div>
+
+                        <span class="font-semibold text-sm sm:text-[1rem]"
+                          >{overview?.callVol?.toLocaleString("en-US")}</span
+                        >
+                      </div>
+
+                      <div class="flex flex-col">
+                        <div
+                          class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
+                        >
+                          <span>Volume Avg (30-day)</span>
+                          <InfoPopup
+                            text="The average Volume over the past 30 days shows typical market activity in options contracts."
+                          />
+                        </div>
+
+                        <span class="font-semibold text-sm sm:text-[1rem]"
+                          >{overview?.avg30Vol?.toLocaleString("en-US")}</span
+                        >
+                      </div>
+
+                      <div class="flex flex-col">
+                        <div
+                          class="text-gray-500 dark:text-gray-300 text-sm sm:text-[1rem] flex flex-row items-center gap-x-2"
+                        >
+                          <span>Today vs Volume Avg (30-day)</span>
+                          <InfoPopup
+                            text="This compares today's trading volume to the 30-day average volume.  
+      Higher volume today than average suggests increased trader interest or unusual activity — possibly signaling a bigger move.  
+      Lower volume today than average suggests less activity or fading interest."
+                          />
+                        </div>
+
+                        <span class="font-semibold text-sm sm:text-[1rem]"
+                          >{overview?.avg30Vol && overview?.avg30Vol > 0
+                            ? (
+                                ((overview?.callVol + overview?.putVol) /
+                                  overview?.avg30Vol) *
+                                100
+                              )?.toFixed(2) + "%"
+                            : "n/a"}</span
+                        >
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-
-              <div
-                class="w-full m-auto rounded-none sm:rounded mb-4 overflow-x-auto"
-              >
-                <table
-                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
-                >
-                  <thead>
-                    <TableHeader
-                      columns={topColumns}
-                      {sortOrders}
-                      sortData={sortPosTickers}
-                    />
-                  </thead>
-                  <tbody>
-                    {#each displayPosTickers as item, index}
-                      <tr
-                        class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
-                          1 ===
-                          originalPosTickers?.length &&
-                        !['Pro']?.includes(data?.user?.tier)
-                          ? 'opacity-[0.1]'
-                          : ''}"
-                      >
-                        <td
-                          class="text-start text-sm sm:text-[1rem] whitespace-nowrap"
-                        >
-                          {item?.rank}
-                        </td>
-
-                        <td
-                          class="text-sm sm:text-[1rem] text-start whitespace-nowrap"
-                        >
-                          <HoverStockChart symbol={item?.symbol} />
-                        </td>
-
-                        <td
-                          class="text-start text-sm sm:text-[1rem] whitespace-nowrap"
-                        >
-                          {item?.name?.length > 20
-                            ? item?.name?.slice(0, 20) + "..."
-                            : item?.name}
-                        </td>
-
-                        <td
-                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
-                        >
-                          {item?.price}
-                        </td>
-
-                        <td
-                          class="text-sm sm:text-[1rem] {item?.changesPercentage >=
-                          0
-                            ? "text-green-800 dark:text-[#00FC50] before:content-['+'] "
-                            : 'text-red-800 dark:text-[#FF2F1F]'} text-end"
-                        >
-                          {item?.changesPercentage?.toFixed(2)}%
-                        </td>
-
-                        <td class="text-sm sm:text-[1rem] text-end">
-                          {@html abbreviateNumber(item?.net_premium)}
-                        </td>
-                        <td class="text-sm sm:text-[1rem] text-end">
-                          {@html abbreviateNumber(item?.net_call_premium)}
-                        </td>
-                        <td class="text-sm sm:text-[1rem] text-end">
-                          {@html abbreviateNumber(item?.net_put_premium)}
-                        </td>
-
-                        <td class="text-sm sm:text-[1rem] text-end">
-                          {item?.iv_rank}
-                        </td>
-                      </tr>
-                    {/each}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <UpgradeToPro {data} display={true} />
+            {/if}
           </div>
         </main>
       </div>

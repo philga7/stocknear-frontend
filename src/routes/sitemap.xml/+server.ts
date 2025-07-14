@@ -70,7 +70,6 @@ const pages = [
   { title: "/analysts/analyst-flow" },
   { title: "/heatmap" },
   { title: "/market-flow" },
-  { title: "/market-flow/sector-flow" },
   { title: "/affiliate-program" },
   { title: "/dark-pool-flow" },
   { title: "/potus-tracker" },
