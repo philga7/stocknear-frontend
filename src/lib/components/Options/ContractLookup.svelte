@@ -163,7 +163,7 @@
             new Date(item.date).getTime(),
             item?.mark,
           ]),
-          color: "#F21C64",
+          color: "#4279E6",
           yAxis: 2,
           lineWidth: 1.3,
           animation: false,
@@ -176,8 +176,8 @@
             new Date(item.date).getTime(),
             item.volume,
           ]),
-          color: "#FD7E14",
-          borderColor: "#FD7E14",
+          color: "#FD8789",
+          borderColor: "#FD8789",
           borderRadius: "1px",
           yAxis: 0,
           animation: false,
@@ -189,8 +189,8 @@
             new Date(item.date).getTime(),
             item.open_interest,
           ]),
-          color: "#33B890",
-          borderColor: "#33B890",
+          color: "#33ABA0",
+          borderColor: "#33ABA0",
           borderRadius: "1px",
           yAxis: 0,
           animation: false,
@@ -228,7 +228,7 @@
             new Date(item.date).getTime(),
             item?.mark,
           ]),
-          color: "#F21C64",
+          color: "#4279E6",
           yAxis: 2,
           lineWidth: 1.3,
           animation: false,
@@ -239,7 +239,7 @@
           type: "spline",
           data: filteredData?.map((item) => [
             new Date(item.date).getTime(),
-            Math.floor(item?.implied_volatility * 100),
+            Math.ceil(item?.implied_volatility * 100 * 100) / 100, // ceil to 2 decimals
           ]),
           color: $mode === "light" ? "black" : "white",
           yAxis: 0,
@@ -466,7 +466,7 @@
         rawDataHistory = rawDataHistory?.sort(
           (a, b) => new Date(b?.date) - new Date(a?.date),
         );
-        displayList = rawDataHistory?.slice(0, 20);
+        displayList = rawDataHistory?.slice(0, 100);
       } else {
         config = null;
       }
@@ -572,7 +572,7 @@
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
                       builders={[builder]}
-                      class="mb-1 border-gray-300 dark:border-none shadow-xs text-white bg-black sm:hover:bg-defaultdark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded truncate"
+                      class="mb-1 border-gray-300 dark:border-none shadow-xs text-white bg-black sm:hover:bg-default dark:bg-[#000] h-[35px] flex flex-row justify-between items-center min-w-[130px] w-[140px] sm:w-auto  px-3  rounded truncate"
                     >
                       <span class="truncate text-sm"
                         >{formatDate(selectedDate)}</span
