@@ -2,7 +2,6 @@
   import { stockTicker } from "$lib/store";
   import { onDestroy } from "svelte";
   import { page } from "$app/stores";
-  import ScrollToTop from "$lib/components/ScrollToTop.svelte";
 
   let displaySubSection = "overview";
 
@@ -95,7 +94,5 @@
     </main>
 
     <slot />
-
-    <ScrollToTop />
   </div>
 </section>

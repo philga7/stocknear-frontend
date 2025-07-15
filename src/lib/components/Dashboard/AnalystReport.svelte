@@ -21,12 +21,13 @@
         class="text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted cursor-pointer"
         >{analystReport?.symbol}</a
       >
-      stock is "{analystReport?.consensusRating}" The 12-month stock price
-      forecast is ${analystReport?.highPriceTarget}, which is an {analystReport?.highPriceChange >
+      stock is <strong>"{analystReport?.consensusRating}"</strong>. The 12-month
+      stock price forecast is
+      <strong>${analystReport?.highPriceTarget}</strong>, which is an {analystReport?.highPriceChange >
       0
         ? "increase"
-        : "decrease"} of {analystReport?.highPriceChange}% from the latest
-      price.
+        : "decrease"} of <strong>{analystReport?.highPriceChange}%</strong> from
+      the latest price.
     </div>
     <table class="w-full text-right xs:text-sm sm: mt-5">
       <thead

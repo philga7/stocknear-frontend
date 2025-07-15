@@ -9,7 +9,7 @@
 
   export let data;
 
-  const isPro = ["Pro", "Plus"].includes(data?.user?.tier);
+  const isPro = ["Pro"].includes(data?.user?.tier);
 
   const formatDateToQuarter = (timestamp) => {
     const date = new Date(timestamp);

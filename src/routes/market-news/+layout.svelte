@@ -1,6 +1,4 @@
 <script lang="ts">
-  import ScrollToTop from "$lib/components/ScrollToTop.svelte";
-
   import { page } from "$app/stores";
 
   export let data;
@@ -74,8 +72,6 @@
           </nav>
 
           <slot />
-
-          <ScrollToTop />
         </main>
       </div>
     </div>

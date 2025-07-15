@@ -1,6 +1,6 @@
 <script lang="ts">
   import Infobox from "$lib/components/Infobox.svelte";
-  import { abbreviateNumber } from "$lib/utils";
+  import { abbreviateNumber, removeCompanyStrings } from "$lib/utils";
 
   export let marketStatus = 0;
   export let gainersList = [];
@@ -77,9 +77,10 @@
               >
               <td
                 class=" border border-gray-300 dark:border-gray-800 py-1.5 px-3 sm:py-2 lg:max-w-[210px] lg:truncate xl:px-3.5 xxxl:max-w-[250px] xxxl:px-4"
-                >{item?.name?.length > charNumber
-                  ? item?.name?.slice(0, charNumber) + "..."
-                  : item?.name}</td
+                >{removeCompanyStrings(item?.name)?.length > charNumber
+                  ? removeCompanyStrings(item?.name)?.slice(0, charNumber) +
+                    "..."
+                  : removeCompanyStrings(item?.name)}</td
               >
               <td
                 class="border border-gray-300 dark:border-gray-800 py-1.5 text-right px-3 sm:py-2 xl:px-3.5 xxxl:px-4"
@@ -176,9 +177,10 @@
               >
               <td
                 class=" border border-gray-300 dark:border-gray-800 py-1.5 px-3 sm:py-2 lg:max-w-[210px] lg:truncate xl:px-3.5 xxxl:max-w-[250px] xxxl:px-4"
-                >{item?.name?.length > charNumber
-                  ? item?.name?.slice(0, charNumber) + "..."
-                  : item?.name}</td
+                >{removeCompanyStrings(item?.name)?.length > charNumber
+                  ? removeCompanyStrings(item?.name)?.slice(0, charNumber) +
+                    "..."
+                  : removeCompanyStrings(item?.name)}</td
               >
               <td
                 class="border border-gray-300 dark:border-gray-800 py-1.5 text-right px-3 sm:py-2 xl:px-3.5 xxxl:px-4"

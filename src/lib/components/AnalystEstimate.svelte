@@ -900,6 +900,7 @@
                     </td>
                   {/each}
                 </tr>
+                <!--
                 <tr>
                   <th
                     class=" whitespace-nowrap text-sm sm:text-[1rem] text-start font-normal"
@@ -1001,7 +1002,7 @@
                     </td>
                   {/each}
                 </tr>
-
+-->
                 <tr>
                   <th
                     class=" whitespace-nowrap text-sm sm:text-[1rem] text-start font-normal"
