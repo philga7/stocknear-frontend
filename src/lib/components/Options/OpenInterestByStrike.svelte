@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { abbreviateNumber } from "$lib/utils";
   import { onMount } from "svelte";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
@@ -7,7 +6,6 @@
   import highcharts from "$lib/highcharts.ts";
   import { mode } from "mode-watcher";
   import { goto } from "$app/navigation";
-  import Infobox from "$lib/components/Infobox.svelte";
 
   export let data;
   export let ticker;
@@ -22,50 +20,123 @@
       (a, b) => new Date(a) - new Date(b),
     ),
   ];
-  let selectedDate = dateList[0];
+
+  // New variables for multiple selection
+  let selectedDates = new Set(["All"]); // Start with "All" selected
+  let checkedDates = new Set(["All"]); // Track which dates are checked
 
   let currentPrice = null;
-
-  rawData = rawData?.map((item) => {
-    return {
-      ...item,
-      put_call_ratio:
-        item?.call_oi > 0
-          ? Math.abs((item?.put_oi || 0) / item?.call_oi)
-          : null,
-    };
-  });
 
   function formatDate(dateStr) {
     try {
       let date = new Date(dateStr + "T00:00:00Z");
       let options = {
         timeZone: "UTC",
-        month: "short", // Full month name
-        day: "numeric", // Day without leading zero
-        year: "numeric", // Full year
+        month: "short",
+        day: "numeric",
+        year: "numeric",
       };
-
       let formatter = new Intl.DateTimeFormat("en-US", options);
-
       return formatter?.format(date);
     } catch (e) {
       return "n/a";
     }
   }
+
+  // Function to handle date selection changes
+  async function handleDateChange(dateValue) {
+    if (dateValue === "All") {
+      // If "All" is selected, clear other selections
+      if (checkedDates.has("All")) {
+        checkedDates.delete("All");
+        selectedDates.delete("All");
+      } else {
+        checkedDates.clear();
+        selectedDates.clear();
+        checkedDates.add("All");
+        selectedDates.add("All");
+      }
+    } else {
+      // If a specific date is selected
+      if (checkedDates.has(dateValue)) {
+        checkedDates.delete(dateValue);
+        selectedDates.delete(dateValue);
+      } else {
+        // Remove "All" if it was selected
+        checkedDates.delete("All");
+        selectedDates.delete("All");
+        checkedDates.add(dateValue);
+        selectedDates.add(dateValue);
+      }
+    }
+
+    // If no dates are selected, default to "All"
+    if (selectedDates.size === 0) {
+      checkedDates.add("All");
+      selectedDates.add("All");
+    }
+
+    // Update the arrays to trigger reactivity
+    selectedDates = new Set(selectedDates);
+    checkedDates = new Set(checkedDates);
+
+    // Recalculate data
+    updateDataForSelectedDates();
+    dateList = [...dateList];
+  }
+
+  function isDateChecked(dateValue) {
+    return checkedDates.has(dateValue);
+  }
+
+  function updateDataForSelectedDates() {
+    if (selectedDates.has("All")) {
+      rawData = aggregateDict(data?.getData) || [];
+    } else {
+      // Aggregate data for selected dates only
+      const selectedData = {};
+      selectedDates.forEach((date) => {
+        if (data?.getData[date]) {
+          selectedData[date] = data?.getData[date];
+        }
+      });
+      rawData = aggregateDict(selectedData) || [];
+    }
+
+    rawData = rawData?.map((item) => {
+      return {
+        ...item,
+        put_call_ratio:
+          item?.call_oi > 0
+            ? Math.abs((item?.put_oi || 0) / item?.call_oi)
+            : null,
+      };
+    });
+
+    displayList = rawData?.slice(0, 20);
+    config = plotData() || null;
+  }
+
+  // Get display text for selected dates
+  function getSelectedDatesText() {
+    if (selectedDates.has("All")) {
+      return "All Expiries";
+    } else if (selectedDates.size === 1) {
+      const singleDate = Array.from(selectedDates)[0];
+      return formatDate(singleDate);
+    } else {
+      return `${selectedDates.size} Expiries Selected`;
+    }
+  }
+
   function aggregateDict(data) {
     const map = new Map();
-
-    // pick which keys to accumulate
     const callKey = "call_oi";
     const putKey = "put_oi";
 
-    // flatten out all the points into one loop
     for (const pts of Object?.values(data)) {
       for (const pt of pts) {
         const { strike } = pt;
-
-        // on first sight of this strike, seed all four fields at zero
         if (!map?.has(strike)) {
           map?.set(strike, {
             strike,
@@ -73,8 +144,6 @@
             put_oi: 0,
           });
         }
-
-        // accumulate into the right buckets
         const agg = map.get(strike);
         agg[callKey] += pt[callKey] ?? 0;
         agg[putKey] += pt[putKey] ?? 0;
@@ -94,9 +163,7 @@
       }))
       ?.sort((a, b) => a.strike - b.strike);
 
-    // Extract arrays for categories and series data
     const strikes = processedData?.map((d) => d.strike);
-
     const allStrikes = Array.from(
       new Set([...strikes, ...[currentPrice]]),
     )?.sort((a, b) => a - b);
@@ -117,15 +184,15 @@
       credits: { enabled: false },
       legend: {
         enabled: true,
-        align: "center", // Positions legend at the left edge
-        verticalAlign: "top", // Positions legend at the top
-        layout: "horizontal", // Align items horizontally (use 'vertical' if preferred)
+        align: "center",
+        verticalAlign: "top",
+        layout: "horizontal",
         itemStyle: {
           color: $mode === "light" ? "black" : "white",
         },
-        symbolWidth: 14, // Controls the width of the legend symbol
-        symbolRadius: 1, // Creates circular symbols (adjust radius as needed)
-        squareSymbol: true, // Ensures symbols are circular, not square
+        symbolWidth: 14,
+        symbolRadius: 1,
+        squareSymbol: true,
       },
       title: {
         text: `<h3 class="mt-3 mb-1 text-[1rem] sm:text-lg">${ticker} Open Interest By Strike</h3>`,
@@ -136,8 +203,8 @@
         categories: allStrikes,
         gridLineWidth: 0,
         crosshair: {
-          color: $mode === "light" ? "black" : "white", // Set the color of the crosshair line
-          width: 1, // Adjust the line width as needed
+          color: $mode === "light" ? "black" : "white",
+          width: 1,
           dashStyle: "Solid",
         },
         plotLines: [
@@ -158,7 +225,6 @@
             color: $mode === "light" ? "#545454" : "white",
           },
           rotation: -45,
-          // Only display every 5th label
           formatter: function () {
             return this.pos % 4 === 0 ? this.value : "";
           },
@@ -176,8 +242,8 @@
       tooltip: {
         shared: true,
         useHTML: true,
-        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
-        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        borderColor: "rgba(255, 255, 255, 0.2)",
         borderWidth: 1,
         style: {
           color: "#fff",
@@ -186,17 +252,13 @@
         },
         borderRadius: 4,
         formatter: function () {
-          // Displaying "Strike" and the x value in the header
           let tooltipContent = `<span class="text-white m-auto text-black text-[1rem] font-[501]">Strike ${this?.x}</span><br>`;
-
-          // Loop through each point in the shared tooltip
           this.points.forEach((point) => {
             tooltipContent += `
         <span style="display:inline-block; width:10px; height:10px; background-color:${point.color}; border-radius:50%; margin-right:5px;"></span>
         <span class="text-white font-semibold text-sm">${point.series.name}:</span> 
         <span class="text-white font-normal text-sm">${point.y?.toLocaleString("en-US")}</span><br>`;
           });
-
           return tooltipContent;
         },
       },
@@ -234,7 +296,7 @@
   }
 
   async function handleScroll() {
-    const scrollThreshold = document.body.offsetHeight * 0.8; // 80% of the website height
+    const scrollThreshold = document.body.offsetHeight * 0.8;
     const isBottom = window.innerHeight + window.scrollY >= scrollThreshold;
 
     if (isBottom && displayList?.length !== rawData?.length) {
@@ -246,6 +308,7 @@
 
   onMount(() => {
     window.addEventListener("scroll", handleScroll);
+    updateDataForSelectedDates(); // Initialize data
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -253,21 +316,9 @@
 
   $: columns = [
     { key: "strike", label: "Strike Price", align: "left" },
-    {
-      key: "call_oi",
-      label: `Call OI`,
-      align: "right",
-    },
-    {
-      key: "put_oi",
-      label: `Put OI`,
-      align: "right",
-    },
-    {
-      key: "put_call_ratio",
-      label: `P/C OI`,
-      align: "right",
-    },
+    { key: "call_oi", label: `Call OI`, align: "right" },
+    { key: "put_oi", label: `Put OI`, align: "right" },
+    { key: "put_call_ratio", label: `P/C OI`, align: "right" },
   ];
 
   $: sortOrders = {
@@ -278,14 +329,12 @@
   };
 
   const sortData = (key) => {
-    // Reset all other keys to 'none' except the current key
     for (const k in sortOrders) {
       if (k !== key) {
         sortOrders[k].order = "none";
       }
     }
 
-    // Cycle through 'none', 'asc', 'desc' for the clicked key
     const orderCycle = ["none", "asc", "desc"];
     let originalData = rawData;
     const currentOrderIndex = orderCycle.indexOf(sortOrders[key].order);
@@ -293,14 +342,12 @@
       orderCycle[(currentOrderIndex + 1) % orderCycle.length];
     const sortOrder = sortOrders[key].order;
 
-    // Reset to original data when 'none' and stop further sorting
     if (sortOrder === "none") {
-      originalData = [...rawData]; // Reset originalData to rawDataVolume
+      originalData = [...rawData];
       displayList = originalData;
       return;
     }
 
-    // Define a generic comparison function
     const compareValues = (a, b) => {
       const { type } = sortOrders[key];
       let valueA, valueB;
@@ -330,31 +377,12 @@
       }
     };
 
-    // Sort using the generic comparison function
     displayList = [...originalData].sort(compareValues);
   };
 
-  $: {
-    if (selectedDate || $mode) {
-      if (selectedDate === "All") {
-        rawData = aggregateDict(data?.getData) || [];
-      } else {
-        rawData = data?.getData[selectedDate] || [];
-      }
-      rawData = rawData?.map((item) => {
-        return {
-          ...item,
-          put_call_ratio:
-            item?.call_oi > 0
-              ? Math.abs((item?.put_oi || 0) / item?.call_oi)
-              : null,
-        };
-      });
-
-      displayList = rawData?.slice(0, 20);
-
-      config = plotData() || null;
-    }
+  // Reactive statement to update when mode changes
+  $: if ($mode) {
+    config = plotData() || null;
   }
 </script>
 
@@ -366,12 +394,16 @@
   <p class="mt-3 mb-2">
     {#if rawData?.length > 0}
       Open interest data for <strong>{ticker}</strong> options contracts.
-      {#if selectedDate === "All"}
+      {#if selectedDates.has("All")}
         Displaying aggregated open interest across all expiration dates.
-      {:else}
+      {:else if selectedDates.size === 1}
         Showing open interest for contracts expiring on <strong
-          >{formatDate(selectedDate)}</strong
+          >{formatDate(Array.from(selectedDates)[0])}</strong
         >.
+      {:else}
+        Showing aggregated open interest for <strong
+          >{selectedDates.size}</strong
+        > selected expiration dates.
       {/if}
       Current stock price is <strong>${currentPrice}</strong>. Total call open
       interest is
@@ -411,13 +443,11 @@
       <DropdownMenu.Trigger asChild let:builder>
         <Button
           builders={[builder]}
-          class=" border border-gray-300 dark:border-gray-700 text-white  bg-black sm:hover:bg-default dark:default h-[38px] flex flex-row justify-between items-center min-w-[130px] max-w-[240px] sm:w-auto  px-3  rounded truncate"
+          class="border border-gray-300 dark:border-gray-700 text-white bg-black sm:hover:bg-default dark:default h-[38px] flex flex-row justify-between items-center min-w-[130px] max-w-[240px] sm:w-auto px-3 rounded truncate"
         >
-          <span class="truncate text-sm"
-            >Date Expiration | {selectedDate === "All"
-              ? "All Expiries"
-              : formatDate(selectedDate)}</span
-          >
+          <span class="truncate text-sm">
+            Date Expiration | {getSelectedDatesText()}
+          </span>
           <svg
             class="-mr-1 ml-2 h-5 w-5 inline-block"
             viewBox="0 0 20 20"
@@ -441,23 +471,27 @@
         alignOffset={0}
         class="min-w-56 w-auto max-w-60 max-h-[400px] overflow-y-auto scroller relative"
       >
-        <!-- Dropdown items -->
-        <DropdownMenu.Group class="pb-2"
-          >{#each dateList as item, index}
+        <DropdownMenu.Group class="pb-2">
+          {#each dateList as item, index}
             {#if data?.user?.tier === "Pro" || index === 0}
               <DropdownMenu.Item
-                on:click={() => {
-                  selectedDate = item;
-                }}
-                class="{selectedDate === item
-                  ? 'bg-gray-200 dark:bg-primary'
-                  : ''} sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
+                class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
               >
-                {#if item === "All"}
-                  All Expiries
-                {:else}
-                  {formatDate(item)}
-                {/if}
+                <div
+                  on:click|capture={(event) => event.preventDefault()}
+                  class="flex items-center"
+                >
+                  <label
+                    class="cursor-pointer"
+                    on:click={() => handleDateChange(item)}
+                    for={item}
+                  >
+                    <input type="checkbox" checked={isDateChecked(item)} />
+                    <span class="ml-2">
+                      {item === "All" ? "All Expiries" : formatDate(item)}
+                    </span>
+                  </label>
+                </div>
               </DropdownMenu.Item>
             {:else}
               <DropdownMenu.Item
@@ -480,8 +514,8 @@
                 </svg>
               </DropdownMenu.Item>
             {/if}
-          {/each}</DropdownMenu.Group
-        >
+          {/each}
+        </DropdownMenu.Group>
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   </div>
@@ -491,7 +525,6 @@
       <div>
         <div class="grow">
           <div class="relative">
-            <!-- Apply the blur class to the chart -->
             <div
               class="mt-5 shadow-xs sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
               use:highcharts={config}
@@ -525,7 +558,6 @@
             <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
               {item?.put_oi?.toLocaleString("en-US")}
             </td>
-
             <td class=" text-sm sm:text-[1rem] text-end whitespace-nowrap">
               {#if item?.put_call_ratio <= 1 && item?.put_call_ratio !== null}
                 <span class=" text-green-800 dark:text-[#00FC50]"

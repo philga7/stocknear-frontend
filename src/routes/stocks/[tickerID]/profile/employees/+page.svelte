@@ -308,12 +308,15 @@
           ? true
           : false;
 
-      growthRate = (
-        (employeeHistory?.at(0)?.employeeCount /
-          employeeHistory?.at(1)?.employeeCount -
-          1) *
-        100
-      )?.toFixed(2);
+      growthRate =
+        employeeHistory?.at(1)?.employeeCount > 0
+          ? (
+              (employeeHistory?.at(0)?.employeeCount /
+                employeeHistory?.at(1)?.employeeCount -
+                1) *
+              100
+            )?.toFixed(2)
+          : 0;
 
       htmlOutput = generateEmployeeInfoHTML();
     }
@@ -377,7 +380,7 @@
           </div>
           <div>
             Growth (1Y) <div
-              class="mt-0.5 text-lg {growthRate > 0
+              class="mt-0.5 text-lg {growthRate && growthRate > 0
                 ? "before:content-['+'] "
                 : ''} font-semibold bp:text-xl sm:mt-1.5 sm:text-2xl"
             >
