@@ -1051,7 +1051,8 @@
               <div
                 class="w-full m-auto mt-5 sm:mt-0 sm:pl-6 sm:pb-6 {Object?.keys(
                   data?.getNextEarnings || {},
-                )?.length !== 0
+                )?.length !== 0 &&
+                data?.getEarningsSurprise?.date !== data?.getNextEarnings?.date
                   ? ''
                   : 'hidden'}"
               >
