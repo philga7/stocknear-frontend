@@ -232,6 +232,7 @@
     { key: "marketCap", label: "Market Cap", align: "right" },
     { key: "revenue", label: "Revenue", align: "right" },
     { key: "adjDividend", label: "Cash Amount", align: "right" },
+    { key: "date", label: "Ex-Dividend Date", align: "right" },
     { key: "paymentDate", label: "Payment Date", align: "right" },
   ];
 
@@ -242,6 +243,7 @@
     revenue: { order: "none", type: "number" },
     adjDividend: { order: "none", type: "number" },
     paymentDate: { order: "none", type: "date" },
+    date: { order: "none", type: "date" },
   };
 
   $: originalData = rawWeekday[selectedWeekday];
@@ -492,6 +494,21 @@
                               </td>
 
                               <td class=" text-end text-sm sm:text-[1rem]">
+                                {item?.date !== null
+                                  ? new Date(item?.date)?.toLocaleString(
+                                      "en-US",
+                                      {
+                                        month: "short",
+                                        day: "numeric",
+                                        year: "numeric",
+                                        daySuffix: "2-digit",
+                                        timeZone: "UTC",
+                                      },
+                                    )
+                                  : "n/a"}
+                              </td>
+
+                              <td class=" text-end text-sm sm:text-[1rem]">
                                 {item?.paymentDate !== null
                                   ? new Date(item?.paymentDate)?.toLocaleString(
                                       "en-US",
@@ -500,6 +517,7 @@
                                         day: "numeric",
                                         year: "numeric",
                                         daySuffix: "2-digit",
+                                        timeZone: "UTC",
                                       },
                                     )
                                   : "n/a"}
