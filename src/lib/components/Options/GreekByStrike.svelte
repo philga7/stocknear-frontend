@@ -23,11 +23,110 @@
     ),
   ];
 
-  let selectedDate = dateList[0];
+  // New variables for multiple selection
+  let selectedDates = new Set(["All"]); // Start with "All" selected
+  let checkedDates = new Set(["All"]); // Track which dates are checked
 
   let rawData = [];
-
   let displayList = [];
+
+  // Function to handle date selection changes
+  async function handleDateChange(dateValue) {
+    if (dateValue === "All") {
+      // If "All" is selected, clear other selections
+      if (checkedDates.has("All")) {
+        checkedDates.delete("All");
+        selectedDates.delete("All");
+      } else {
+        checkedDates.clear();
+        selectedDates.clear();
+        checkedDates.add("All");
+        selectedDates.add("All");
+      }
+    } else {
+      // If a specific date is selected
+      if (checkedDates.has(dateValue)) {
+        checkedDates.delete(dateValue);
+        selectedDates.delete(dateValue);
+      } else {
+        // Remove "All" if it was selected
+        checkedDates.delete("All");
+        selectedDates.delete("All");
+        checkedDates.add(dateValue);
+        selectedDates.add(dateValue);
+      }
+    }
+
+    // If no dates are selected, default to "All"
+    if (selectedDates.size === 0) {
+      checkedDates.add("All");
+      selectedDates.add("All");
+    }
+
+    // Update the arrays to trigger reactivity
+    selectedDates = new Set(selectedDates);
+    checkedDates = new Set(checkedDates);
+
+    // Recalculate data
+    updateDataForSelectedDates();
+    dateList = [...dateList];
+  }
+
+  function isDateChecked(dateValue) {
+    return checkedDates.has(dateValue);
+  }
+
+  function updateDataForSelectedDates() {
+    if (selectedDates.has("All")) {
+      rawData = aggregateDict(data?.getData) || [];
+    } else {
+      // Aggregate data for selected dates only
+      const selectedData = {};
+      selectedDates.forEach((date) => {
+        if (data?.getData[date]) {
+          selectedData[date] = data?.getData[date];
+        }
+      });
+      rawData = aggregateDict(selectedData) || [];
+    }
+
+    rawData = rawData?.map((item) => {
+      if (title === "Gamma") {
+        return {
+          ...item,
+          net_gex: (item?.call_gex || 0) + (item?.put_gex || 0),
+          put_call_ratio:
+            item?.call_gex > 0
+              ? Math.abs((item?.put_gex || 0) / item?.call_gex)
+              : null,
+        };
+      } else {
+        return {
+          ...item,
+          net_dex: (item?.call_dex || 0) + (item?.put_dex || 0),
+          put_call_ratio:
+            item?.call_dex > 0
+              ? Math.abs((item?.put_dex || 0) / item?.call_dex)
+              : null,
+        };
+      }
+    });
+
+    displayList = rawData?.slice(0, 20);
+    config = plotData() || null;
+  }
+
+  // Get display text for selected dates
+  function getSelectedDatesText() {
+    if (selectedDates.has("All")) {
+      return "All Expiries";
+    } else if (selectedDates.size === 1) {
+      const singleDate = Array.from(selectedDates)[0];
+      return formatDate(singleDate);
+    } else {
+      return `${selectedDates.size} Expiries Selected`;
+    }
+  }
 
   function aggregateDict(data) {
     const map = new Map();
@@ -202,7 +301,7 @@
           style: {
             color: $mode === "light" ? "#545454" : "white",
           },
-          // Only display every 5th label
+          // Only display every 2nd label
           formatter: function () {
             return this.pos % 2 === 0 ? this.value : "";
           },
@@ -267,6 +366,7 @@
 
   onMount(() => {
     window.addEventListener("scroll", handleScroll);
+    updateDataForSelectedDates(); // Initialize data
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -362,39 +462,10 @@
   };
 
   let config = null;
-  $: {
-    if (selectedDate || $mode) {
-      if (selectedDate === "All") {
-        rawData = aggregateDict(data?.getData) || [];
-      } else {
-        rawData = data?.getData[selectedDate] || [];
-      }
-      rawData = rawData?.map((item) => {
-        if (title === "Gamma") {
-          return {
-            ...item,
-            net_gex: (item?.call_gex || 0) + (item?.put_gex || 0),
-            put_call_ratio:
-              item?.call_gex > 0
-                ? Math.abs((item?.put_gex || 0) / item?.call_gex)
-                : null,
-          };
-        } else {
-          return {
-            ...item,
-            net_dex: (item?.call_dex || 0) + (item?.put_dex || 0),
-            put_call_ratio:
-              item?.call_dex > 0
-                ? Math.abs((item?.put_dex || 0) / item?.call_dex)
-                : null,
-          };
-        }
-      });
 
-      displayList = rawData?.slice(0, 20);
-
-      config = plotData() || null;
-    }
+  // Reactive statement to update when mode changes
+  $: if ($mode) {
+    config = plotData() || null;
   }
 </script>
 
@@ -407,7 +478,7 @@
   <div class="mt-6 sm:mt-0">
     <Infobox
       text={title === "Gamma"
-        ? `Gamma Exposure (GEX) for ${ticker} options, representing the estimated dollar value of shares that option sellers must buy or sell to maintain delta neutrality for each 1% move in ${ticker}’s stock price.`
+        ? `Gamma Exposure (GEX) for ${ticker} options, representing the estimated dollar value of shares that option sellers must buy or sell to maintain delta neutrality for each 1% move in ${ticker}'s stock price.`
         : `Delta Exposure (DEX) for ${ticker} options, representing the estimated net number of ${ticker} shares that option sellers must hold or short to hedge their current options positions and maintain delta neutrality.`}
     />
   </div>
@@ -415,12 +486,15 @@
   <p class="mt-3 mb-2">
     {#if rawData?.length > 0}
       {title} exposure data for <strong>{ticker}</strong> options contracts.
-      {#if selectedDate === "All"}
+      {#if selectedDates.has("All")}
         Displaying aggregated exposure across all expiration dates.
-      {:else}
+      {:else if selectedDates.size === 1}
         Showing exposure for contracts expiring on <strong
-          >{formatDate(selectedDate)}</strong
+          >{formatDate(Array.from(selectedDates)[0])}</strong
         >.
+      {:else}
+        Showing aggregated exposure for <strong>{selectedDates.size}</strong> selected
+        expiration dates.
       {/if}
       Total call {title.toLowerCase()}
       exposure:
@@ -459,9 +533,7 @@
           class=" border border-gray-300 dark:border-gray-700  text-white bg-black sm:hover:bg-default dark:default h-[38px] flex flex-row justify-between items-center min-w-[130px] max-w-[240px] sm:w-auto  px-3  rounded truncate"
         >
           <span class="truncate text-sm"
-            >Date Expiration | {selectedDate === "All"
-              ? "All Expiries"
-              : formatDate(selectedDate)}</span
+            >Date Expiration | {getSelectedDatesText()}</span
           >
           <svg
             class="-mr-1 ml-2 h-5 w-5 inline-block"
@@ -486,23 +558,27 @@
         alignOffset={0}
         class="min-w-56 w-auto max-w-60 max-h-[400px] overflow-y-auto scroller relative"
       >
-        <!-- Dropdown items -->
-        <DropdownMenu.Group class="pb-2"
-          >{#each dateList as item, index}
+        <DropdownMenu.Group class="pb-2">
+          {#each dateList as item, index}
             {#if data?.user?.tier === "Pro" || index === 0}
               <DropdownMenu.Item
-                on:click={() => {
-                  selectedDate = item;
-                }}
-                class="{selectedDate === item
-                  ? 'bg-gray-200 dark:bg-primary'
-                  : ''} sm:hover:bg-gray-200 dark:sm:hover:bg-primary cursor-pointer "
+                class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
               >
-                {#if item === "All"}
-                  All Expiries
-                {:else}
-                  {formatDate(item)}
-                {/if}
+                <div
+                  on:click|capture={(event) => event.preventDefault()}
+                  class="flex items-center"
+                >
+                  <label
+                    class="cursor-pointer"
+                    on:click={() => handleDateChange(item)}
+                    for={item}
+                  >
+                    <input type="checkbox" checked={isDateChecked(item)} />
+                    <span class="ml-2">
+                      {item === "All" ? "All Expiries" : formatDate(item)}
+                    </span>
+                  </label>
+                </div>
               </DropdownMenu.Item>
             {:else}
               <DropdownMenu.Item
@@ -525,8 +601,8 @@
                 </svg>
               </DropdownMenu.Item>
             {/if}
-          {/each}</DropdownMenu.Group
-        >
+          {/each}
+        </DropdownMenu.Group>
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   </div>
