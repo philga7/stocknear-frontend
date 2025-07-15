@@ -781,18 +781,8 @@
                     "n/a"}</strong
                 >
                 contracts. The volume put-call ratio is
-                <strong>{overview?.pcVol?.toFixed(2) || "n/a"}</strong>,
-                indicating a
-                <strong>
-                  {overview?.pcVol
-                    ? overview?.pcVol > 1.2
-                      ? "bearish"
-                      : overview?.pcVol < 0.8
-                        ? "bullish"
-                        : "neutral"
-                    : "unknown"}
-                </strong>
-                sentiment in the market. Current net call premium flow is
+                <strong>{overview?.pcVol?.toFixed(2) || "n/a"}</strong>. Current
+                net call premium flow is
                 <strong
                   >{abbreviateNumber(
                     findLastNonNull(marketTideData, "net_call_premium"),
@@ -803,7 +793,42 @@
                   >{abbreviateNumber(
                     findLastNonNull(marketTideData, "net_put_premium"),
                   ) || "n/a"}</strong
-                >.
+                >, indicating a
+                <strong>
+                  {(() => {
+                    const netCallPremium = findLastNonNull(
+                      marketTideData,
+                      "net_call_premium",
+                    );
+                    const netPutPremium = findLastNonNull(
+                      marketTideData,
+                      "net_put_premium",
+                    );
+
+                    if (netCallPremium == null || netPutPremium == null) {
+                      return "unknown";
+                    }
+
+                    const netPremiumDiff = netCallPremium - netPutPremium;
+                    const totalPremium =
+                      Math.abs(netCallPremium) + Math.abs(netPutPremium);
+
+                    if (totalPremium === 0) {
+                      return "neutral";
+                    }
+
+                    const premiumRatio = netPremiumDiff / totalPremium;
+
+                    if (premiumRatio > 0.2) {
+                      return "bullish";
+                    } else if (premiumRatio < -0.2) {
+                      return "bearish";
+                    } else {
+                      return "neutral";
+                    }
+                  })()}
+                </strong>
+                sentiment in the market.
               </p>
 
               <div

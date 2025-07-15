@@ -424,7 +424,7 @@
                                 "en-US",
                               )}</span
                             >
-                            <span class="text-muted dark:text-slate-300 text-sm"
+                            <span class="text-white dark:text-slate-300 text-sm"
                               >Total Trades</span
                             >
                           </label>
@@ -439,11 +439,12 @@
                                       day: "numeric",
                                       year: "numeric",
                                       daySuffix: "2-digit",
+                                      timeZone: "UTC",
                                     },
                                   )
                                 : "n/a"}
                             </span>
-                            <span class="text-muted dark:text-slate-300 text-sm"
+                            <span class="text-white dark:text-slate-300 text-sm"
                               >Last Traded</span
                             >
                           </div>
