@@ -962,7 +962,7 @@
                   </h2>
                   {#if latestInfoDate(data?.getAnalystInsight?.date)}
                     <label
-                      class="bg-[#fff] rounded text-black font-semibold text-xs px-2 py-0.5 ml-3"
+                      class="bg-black dark:bg-[#fff] rounded text-white dark:text-black font-semibold text-xs px-2 py-0.5 ml-3"
                       >New</label
                     >
                   {/if}

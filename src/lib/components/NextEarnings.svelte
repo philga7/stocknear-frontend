@@ -50,14 +50,15 @@
       </div>
 
       <div class=" text-[1rem]">
-        {$displayCompanyName} is scheduled to release its earnings on {new Date(
-          rawData?.date ?? null,
-        )?.toLocaleString("en-US", {
-          month: "short",
-          day: "numeric",
-          year: "numeric",
-          timeZone: "Europe/Berlin",
-        })},
+        {$displayCompanyName} is scheduled to release its earnings on
+        <strong
+          >{new Date(rawData?.date ?? null)?.toLocaleString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+            timeZone: "UTC",
+          })}</strong
+        >,
         {#if compareTimes(rawData?.time, "16:00") > 0}
           after market closes.
         {:else if compareTimes(rawData?.time, "09:30") < 0}
@@ -82,7 +83,7 @@
             ></a
           >
         {:else}
-          <span class="font-semibold"
+          <span class="font-bold"
             >{@html abbreviateNumber(rawData?.revenueEst, true, true)}</span
           >, reflecting a
           <span
@@ -102,7 +103,7 @@
               : ""}
           {#if epsRatio !== null}
             and earnings per share of
-            <span class="font-semibold">{rawData?.epsEst}</span>, making a
+            <span class="font-bold">{rawData?.epsEst}</span>, making a
             <span
               class="{epsRatio > 0
                 ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
