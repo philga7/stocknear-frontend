@@ -489,7 +489,7 @@
                           <DropdownMenu.Trigger asChild let:builder>
                             <Button
                               builders={[builder]}
-                              class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-black sm:hover:bg-default text-white dark:bg-[#2A2E39] sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
+                              class="w-full border-gray-300 font-semibold dark:font-normal dark:border-gray-600 border bg-black sm:hover:bg-default  text-white dark:text-black dark:bg-white dark:sm:hover:bg-gray-100 sm:hover:bg-gray-100 ease-out  flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                             >
                               <span class="truncate">@Agents</span>
                               <svg
@@ -508,6 +508,10 @@
                             </Button>
                           </DropdownMenu.Trigger>
                           <DropdownMenu.Content
+                            side="bottom"
+                            align="start"
+                            sideOffset={10}
+                            alignOffset={0}
                             class="w-64 h-fit max-h-56 overflow-y-auto scroller"
                           >
                             {#if selectedGroup === "overview"}

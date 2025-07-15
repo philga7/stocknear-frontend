@@ -128,7 +128,7 @@
                     on:input={search}
                     type="text"
                     placeholder="Search Hedge Fund"
-                    class="w-fit py-[5.5px] pl-10 border bg-gray-200/60 shadow focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-300 px-3 focus:outline-none focus:ring-0 focus:border-gray-600 grow w-full sm:min-w-56 sm:max-w-xs"
+                    class="w-fit py-[5.5px] pl-10 border bg-gray-200/60 dark:bg-default shadow focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-300 px-3 focus:outline-none focus:ring-0 focus:border-gray-600 grow w-full sm:min-w-56 sm:max-w-xs"
                   />
                 </div>
               </div>
