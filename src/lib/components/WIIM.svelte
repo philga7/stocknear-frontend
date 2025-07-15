@@ -99,7 +99,7 @@
                           </span>
                           {#if latestInfoDate(item?.date)}
                             <label
-                              class="shadow bg-blue-100 border border-gray-200 dark:border-0 dark:bg-[#fff] rounded text-black font-semibold text-xs px-2 py-0.5 ml-3"
+                              class="bg-black text-white border border-gray-200 dark:border-0 dark:bg-[#fff] rounded dark:text-black font-semibold text-xs px-2 py-0.5 ml-3"
                               >New</label
                             >
                           {/if}

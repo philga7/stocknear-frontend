@@ -208,7 +208,7 @@
                       <li>
                         <a
                           href="https://github.com/stocknear"
-                          class="text-muted hover:text-gray-500"
+                          class="text-muted sm:hover:text-gray-800 dark:text-white dark:sm:hover:text-gray-300"
                           target="_blank"
                           rel="noopener noreferrer"
                           ><span class="sr-only">Github</span>
@@ -229,7 +229,7 @@
                       <li>
                         <a
                           href="https://x.com/intent/follow?screen_name=stocknear"
-                          class="text-muted hover:text-gray-500"
+                          class="text-muted sm:hover:text-gray-800 dark:text-white dark:sm:hover:text-gray-300"
                           target="_blank"
                           rel="noopener noreferrer"
                           ><span class="sr-only">Twitter</span>
@@ -245,10 +245,11 @@
                           ></a
                         >
                       </li>
+
                       <li>
                         <a
                           href="https://www.linkedin.com/in/dr-muslem-rahimi-013956172/"
-                          class="text-muted hover:text-gray-500"
+                          class="text-muted sm:hover:text-gray-800 dark:text-white dark:sm:hover:text-gray-300"
                           target="_blank"
                           rel="noopener noreferrer"
                           ><span class="sr-only">LinkedIn</span>
