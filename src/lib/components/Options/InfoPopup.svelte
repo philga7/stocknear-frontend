@@ -17,6 +17,11 @@
       allowHTML: true,
       placement: "bottom",
       theme: "light-border",
+      maxWidth: 300,
+      interactive: true,
+      trigger: "click mouseenter focus",
+      hideOnClick: true,
+      touch: ["hold", 500],
     });
   }
 </script>

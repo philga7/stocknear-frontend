@@ -1,50 +1,52 @@
 <script lang="ts">
-  export let title;
-  export let content;
-  export let id;
+  import tippy from "tippy.js";
+  import "tippy.js/dist/tippy.css";
+
+  export let title: string;
+  export let content: string;
+  export let id: string;
+
+  let infoIcon: HTMLElement;
+
+  // Initialize tippy on mount
+  $: if (infoIcon) {
+    tippy(infoIcon, {
+      content: `
+        <div class="text-sm text-white p-2 w-full">
+          <div class="font-bold mb-2">${title}</div>
+          <div>${content}</div>
+        </div>
+      `,
+      allowHTML: true,
+      placement: "bottom",
+      theme: "light-border",
+      maxWidth: 300,
+      interactive: true,
+      trigger: "click mouseenter focus",
+      hideOnClick: true,
+      touch: ["hold", 500],
+    });
+  }
 </script>
 
-<div class="relative">
-  <label
-    for={id}
-    class="absolute -bottom-1 left-0 cursor-pointer p-1 text-gray-500 dark:text-gray-300 dark:sm:hover:text-white"
+<div class="flex flex-row items-center whitespace-nowrap">
+  <div
+    bind:this={infoIcon}
+    class="cursor-pointer p-1 text-gray-500 dark:text-gray-300 dark:sm:hover:text-white"
   >
     <svg
-      class="h-[10.5px] w-[10.5px]"
-      viewBox="0 0 4 16"
-      fill="currentColor"
-      style="max-width:20px"
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-4 w-4 text-gray-600 cursor-pointer sm:hover:text-gray-800 dark:text-gray-200 dark:sm:hover:text-white"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="2"
     >
       <path
-        d="M0 6h4v10h-4v-10zm2-6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"
-      ></path>
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z"
+      />
     </svg>
-  </label>
-</div>
-
-<!-- Desktop modal using dialog component -->
-<input type="checkbox" {id} class="modal-toggle" />
-
-<dialog {id} class="modal p-3 sm:p-0 text-muted dark:text-white">
-  <label for={id} class="cursor-pointer modal-backdrop bg-[#000]/30"></label>
-
-  <!-- Desktop modal content -->
-  <div
-    class="modal-box rounded border border-gray-300 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
-  >
-    <div class="mx-auto h-1.5 w-20 shrink-0 rounded-full" />
-    <div class=" mb-5 text-center">
-      <h3 class="font-bold text-xl sm:text-2xl mb-5">{title}</h3>
-      <span class=" text-[1rem] font-normal">{@html content}</span>
-    </div>
-
-    <div class="border-t border-gray-300 dark:border-gray-600 mt-2 w-full">
-      <label
-        for={id}
-        class="mt-4 font-semibold text-xl m-auto flex justify-center cursor-pointer"
-      >
-        Close
-      </label>
-    </div>
   </div>
-</dialog>
+</div>
