@@ -1,11 +1,12 @@
 <script lang="ts">
   import { displayCompanyName, screenWidth, stockTicker } from "$lib/store";
-  import InfoModal from "$lib/components/InfoModal.svelte";
   import { onMount } from "svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import { goto } from "$app/navigation";
   import Infobox from "$lib/components/Infobox.svelte";
   import SEO from "$lib/components/SEO.svelte";
+  import InfoModal from "$lib/components/InfoModal.svelte";
+
   import { removeCompanyStrings } from "$lib/utils";
   export let data;
 
@@ -106,10 +107,13 @@
       numOfAnalyst = filteredAnalystCount === 0 ? "n/a" : filteredAnalystCount;
       priceTarget = medianPriceTarget;
       changesPercentage =
-        medianPriceTarget !== "-" && data?.getStockQuote?.price != null
-          ? ((medianPriceTarget / data?.getStockQuote.price - 1) * 100).toFixed(
-              2,
-            )
+        medianPriceTarget !== "-" &&
+        medianPriceTarget !== "n/a" &&
+        data?.getStockQuote?.price != null
+          ? (
+              (medianPriceTarget / data?.getStockQuote.price - 1) *
+              100
+            )?.toFixed(2)
           : "n/a";
 
       // Consensus rating calculation based on rating_current
@@ -219,21 +223,12 @@
             </h1>
             <div>
               <div class="flex flex-col w-full sm:w-fit items-end justify-end">
-                <label
-                  for="topAnalystModal"
-                  class="ml-auto mb-1 hidden sm:inline-block"
-                  ><svg
-                    class="size-[18px] text-gray-400 dark:text-dark-400 dark:hover:text-dark-300 sm:hover:text-gray-700 cursor-pointer"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    style="max-width:40px"
-                    ><path
-                      fill-rule="evenodd"
-                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
-                      clip-rule="evenodd"
-                    ></path></svg
-                  ></label
-                >
+                <InfoModal
+                  title="Top Analyst"
+                  content="Filter by only analysts with 4+ stars based on their success rate and
+          average return per rating. 4+ star analysts have a high accuracy and
+          high average return per rating."
+                />
                 <div
                   class="inline-flex justify-center w-full rounded sm:w-auto"
                 >
@@ -331,14 +326,14 @@
           >
             <div class="text-[1rem] font-normal">Upside</div>
             <div
-              class="mt-1 break-words font-semibold leading-8 text-xl sm:text-2xl {changesPercentage >=
-              0
+              class="mt-1 break-words font-semibold leading-8 text-xl sm:text-2xl {changesPercentage &&
+              changesPercentage >= 0
                 ? "before:content-['+'] after:content-['%'] text-green-800 dark:text-[#00FC50]"
-                : changesPercentage < 0
+                : changesPercentage && changesPercentage < 0
                   ? "after:content-['%'] text-red-800 dark:text-[#FF2F1F]"
                   : ''}"
             >
-              {changesPercentage}
+              {changesPercentage ?? "n/a"}
             </div>
           </div>
         </div>
@@ -714,33 +709,3 @@
     </div>
   </div>
 </section>
-
-<!--Start Create Watchlist Modal-->
-<input type="checkbox" id="topAnalystModal" class="modal-toggle" />
-
-<dialog id="topAnalystModal" class="modal p-3">
-  <label for="topAnalystModal" class="cursor-pointer modal-backdrop"></label>
-
-  <!-- Desktop modal content -->
-  <div
-    class="modal-box rounded border border-gray-300 dark:border-gray-600 w-full bg-white dark:bg-secondary flex flex-col items-center"
-  >
-    <div class=" mb-5 text-center">
-      <h3 class="font-bold text-2xl mb-5">Top Analyst</h3>
-      <span class=" text-[1rem] font-normal"
-        >Filter by only analysts with 4+ stars based on their success rate and
-        average return per rating. 4+ star analysts have a high accuracy and
-        high average return per rating.</span
-      >
-    </div>
-
-    <div class="border-t border-gray-300 dark:border-gray-600 mt-2 w-full">
-      <label
-        for="topAnalystModal"
-        class="cursor-pointer mt-4 font-semibold text-xl m-auto flex justify-center"
-      >
-        Close
-      </label>
-    </div>
-  </div>
-</dialog>

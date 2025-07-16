@@ -576,7 +576,7 @@
                     <div
                       class="{!['Plus', 'Pro']?.includes(data?.user?.tier)
                         ? 'blur-[3px]'
-                        : ''}  shadow-xs border border-gray-300 dark:border-gray-800 rounded"
+                        : ''}   border border-gray-300 dark:border-gray-800 rounded"
                       use:highcharts={config}
                     ></div>
                     <!-- Overlay with "Upgrade to Pro" -->
@@ -615,7 +615,7 @@
                 <div class="flex flex-row items-center w-fit w-[50%] ml-auto">
                   <Button
                     on:click={() => exportData("csv")}
-                    class="ml-2 w-full shadow-xs border-gray-300 dark:border-gray-600 border sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded truncate"
+                    class="ml-2 w-full  border-gray-300 dark:border-gray-600 border text-white bg-black sm:hover:bg-default dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                   >
                     <span class="truncate text-xs sm:text-sm">Download</span>
                     <svg
