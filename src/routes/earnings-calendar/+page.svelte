@@ -366,7 +366,7 @@
                       on:click={() => toggleDate(index)}
                       class=" m-auto w-full cursor-pointer h-16 {index ===
                       selectedWeekday
-                        ? 'bg-default text-white dark:bg-white text-black font-semibold'
+                        ? 'bg-default text-white dark:bg-white dark:text-black font-semibold'
                         : ''} rounded sm:rounded-none flex dark:bg-default border border-gray-300 dark:border-gray-600 mb-3"
                     >
                       <div

@@ -11,7 +11,6 @@
     "price",
     "ipoPrice",
     "return",
-    "changesPercentage",
     "eps",
     "ipoDate",
     "marketCap",
@@ -75,7 +74,7 @@
               </ul>
               <a
                 href={`/ipos/news`}
-                class="flex justify-center items-center rounded cursor-pointer w-full py-2 -mb-2 text-[1rem] text-center font-semibold text-white dark:text-black m-auto sm:hover:bg-blue-600 dark:sm:hover:bg-gray-300 bg-[#3B82F6] dark:bg-[#fff] transition duration-100"
+                class="flex justify-center items-center rounded cursor-pointer w-full py-2 -mb-2 text-[1rem] text-center font-semibold text-white dark:text-black m-auto sm:hover:bg-default dark:sm:hover:bg-gray-300 bg-black dark:bg-[#fff]"
               >
                 More IPO News
               </a>
