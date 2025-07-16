@@ -714,7 +714,7 @@
         builders={[builder]}
         class="ml-2 transition-all min-w-[110px]  bg-default text-white shadow-xs dark:border-gray-600 border sm:hover:bg-black dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 rounded truncate"
       >
-        <span class="w-fit text-sm sm:text-[1rem]">Indicators</span>
+        <span class="w-fit text-sm">Indicators</span>
         <svg
           class="ml-0.5 mt-1 h-5 w-5 inline-block shrink-0"
           viewBox="0 0 20 20"
