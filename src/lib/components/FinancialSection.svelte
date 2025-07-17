@@ -270,7 +270,7 @@
                       <DropdownMenu.Trigger asChild let:builder>
                         <Button
                           builders={[builder]}
-                          class="flex-shrink-0  w-full sm:w-fit border-gray-300 dark:border-gray-600 bg-black sm:hover:bg-default text-white dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-1.5  rounded truncate"
+                          class="flex-shrink-0  w-full sm:w-fit border border-gray-300 dark:border-gray-600 bg-black sm:hover:bg-default text-white dark:sm:hover:bg-primary ease-out  flex flex-row justify-between items-center px-3 py-1.5  rounded truncate"
                         >
                           <span class="truncate">{$timeFrame}</span>
                           <svg

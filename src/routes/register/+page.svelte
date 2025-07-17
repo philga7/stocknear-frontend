@@ -757,7 +757,7 @@
         </div>
 
         <p
-          class="pt-2 pb-1 text-sm w-full max-w-lg flex justify-center items-center"
+          class=" pb-1 text-sm w-full max-w-lg flex justify-center items-center"
         >
           You already have an account?
           <a
@@ -765,6 +765,21 @@
             class="text-blue-700 dark:text-blue-400 sm:hover:underline ml-1"
             >Sign in</a
           >
+        </p>
+
+        <p class="pb-1 text-xs text-center pb-20 sm:pb-0">
+          By registering you agree to Stocknear's
+          <a
+            href="/terms-of-use"
+            class="text-blue-700 dark:text-blue-400 sm:hover:underline"
+            >Terms of Use</a
+          >
+          and acknowledge that you've read our
+          <a
+            href="/privacy-policy"
+            class="text-blue-700 dark:text-blue-400 sm:hover:underline"
+            >Privacy Policy</a
+          >.
         </p>
       </form>
     {:else}

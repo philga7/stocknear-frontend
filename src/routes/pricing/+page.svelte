@@ -145,7 +145,7 @@
             class="sr-only peer"
           />
           <div
-            class="w-14 h-7 bg-[#09090B] border border-gray-600 rounded-full peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[0.40rem] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-blue-600 {mode ===
+            class="w-14 h-7 bg-[#09090B] border border-gray-600 rounded-full peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[0.40rem] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-black dark:bg-default {mode ===
             false
               ? 'after:translate-x-[-0.2rem]'
               : ''} "
@@ -161,7 +161,7 @@
     >
       <div
         style="opacity: 1; transform: translateY(20px);"
-        class=" rounded-xl transform transition-all duration-300 sm:hover:-translate-y-1 lg:flex flex-col relative bg-white dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-[8px] overflow-visible border border-gray-400 dark:border-zinc-600 p-6 isolate"
+        class=" rounded-xl transform transition-all duration-300 sm:hover:-translate-y-1 lg:flex flex-col relative bg-white dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-[3px] overflow-visible border border-gray-400 dark:border-zinc-600 p-6 isolate"
       >
         <h3 class="text-3xl font-bold">Basic</h3>
         <p class="text-muted dark:text-zinc-300 text-sm mt-1">
@@ -741,7 +741,7 @@
           {#if !data?.user}
             <label
               for="userLogin"
-              class="text-white cursor-pointer w-full py-3 px-4 bg-blue-600 rounded-[8px] font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
+              class="text-white cursor-pointer w-full py-3 px-4 bg-black dark:bg-white rounded-[3px] font-semibold sm:hover:bg-default dark:sm:hover:bg-gray-100 text-white dark:text-black transition duration-100 flex items-center justify-center"
               >Get Registered Now<svg
                 class="w-5 h-5 ml-2"
                 fill="none"
@@ -762,7 +762,7 @@
 
       <div
         style="opacity: 1; transform: translateY(20px);"
-        class="rounded-xl transform transition-all duration-300 sm:hover:-translate-y-1 relative flex flex-col relative bg-white dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-[8px] overflow-visible border border-gray-400 dark:border-zinc-600 p-6 isolate"
+        class="rounded-xl transform transition-all duration-300 sm:hover:-translate-y-1 relative flex flex-col relative bg-white dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-[3px] overflow-visible border border-gray-400 dark:border-zinc-600 p-6 isolate"
       >
         <h3 class="text-3xl font-bold">Plus</h3>
         <p class="text-muted dark:text-zinc-300 text-sm mt-1">
@@ -1128,7 +1128,7 @@
           <label
             for={!data?.user ? "userLogin" : ""}
             on:click={() => purchasePlan("plus")}
-            class="text-white cursor-pointer w-full py-3 px-4 bg-blue-600 rounded-[8px] font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
+            class="text-white cursor-pointer w-full py-3 px-4 bg-black dark:bg-white rounded-[3px] font-semibold sm:hover:bg-default dark:sm:hover:bg-gray-100 text-white dark:text-black transition duration-100 flex items-center justify-center"
             >Unlock Plus Access Now<svg
               class="w-5 h-5 ml-2"
               fill="none"
@@ -1147,11 +1147,11 @@
       </div>
       <div
         style="opacity: 1; transform: translateY(20px);"
-        class=" rounded-xl text-white transform transition-all duration-300 sm:hover:-translate-y-1 flex flex-col relative bg-[#18181B] dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-[8px] overflow-visible border border-gray-400 dark:border-zinc-600 p-6 isolate"
+        class=" rounded-xl text-white transform transition-all duration-300 sm:hover:-translate-y-1 flex flex-col relative bg-[#18181B] dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-[3px] overflow-visible border border-gray-400 dark:border-zinc-600 p-6 isolate"
       >
         <!--
         <div
-          class="hidden w-fit absolute -top-[20px] left-1/2 transform -translate-x-1/2 whitespace-nowrap m-auto px-4 py-1.5 rounded-[8px] text-sm font-medium backdrop-blur-xl
+          class="hidden w-fit absolute -top-[20px] left-1/2 transform -translate-x-1/2 whitespace-nowrap m-auto px-4 py-1.5 rounded-[3px] text-sm font-medium backdrop-blur-xl
               bg-pink-600 text-white shadow-xs"
         >
           <span class="flex items-center gap-1.5"
@@ -1302,7 +1302,7 @@
           <label
             for={!data?.user ? "userLogin" : ""}
             on:click={() => purchasePlan("pro")}
-            class="text-white cursor-pointer w-full py-3 px-4 bg-blue-600 rounded-[8px] font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
+            class="text-white cursor-pointer w-full py-3 px-4 bg-black dark:bg-white rounded-[3px] font-semibold sm:hover:bg-default dark:sm:hover:bg-gray-100 text-white dark:text-black transition duration-100 flex items-center justify-center"
             >Unlock Pro Access Now<svg
               class="w-5 h-5 ml-2"
               fill="none"
@@ -1322,7 +1322,7 @@
       <!--
       <div
         style="opacity: 1; transform: translateY(20px);"
-        class="transform transition-all duration-300 sm:hover:-translate-y-1 flex flex-col relative bg-white dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-[8px] overflow-visible border border-gray-400 dark:border-zinc-600 p-6 isolate"
+        class="transform transition-all duration-300 sm:hover:-translate-y-1 flex flex-col relative bg-white dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-[3px] overflow-visible border border-gray-400 dark:border-zinc-600 p-6 isolate"
       >
         <h3 class="text-3xl font-bold">Enterprise</h3>
         <p class="text-muted dark:text-zinc-300 text-sm mt-1">
@@ -1385,7 +1385,7 @@
         <div class="mt-auto pt-6 border-t border-zinc-700 mx-4">
           <a
             href={`mailto:${emailAddress}`}
-            class="text-white cursor-pointer w-full py-3 px-4 bg-blue-600 rounded-[8px] font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center"
+            class="text-white cursor-pointer w-full py-3 px-4 bg-black dark:bg-white rounded-[3px] font-semibold sm:hover:bg-default dark:sm:hover:bg-gray-100 text-white dark:text-black transition duration-100 flex items-center justify-center"
             >Contact Us</a
           >
         </div>
@@ -1393,7 +1393,7 @@
       -->
 
       <div
-        class="relative text-left w-full col-span-1 lg:col-span-3 text-white bg-[#18181B] dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-[8px] overflow-visible border border-zinc-200 dark:border-zinc-600 p-6 isolate translate-y-5 opacity-100"
+        class="relative text-left w-full col-span-1 lg:col-span-3 text-white bg-[#18181B] dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-[3px] overflow-visible border border-zinc-200 dark:border-zinc-600 p-6 isolate translate-y-5 opacity-100"
       >
         <div class="flex flex-row items-center justify-between">
           <h3 class="text-2xl md:text-3xl font-bold">Lifetime</h3>
@@ -1407,9 +1407,10 @@
         </p>
 
         <div class="mt-10 flex justify-center lg:justify-end mx-4 lg:mx-0">
-          <button
+          <label
+            for={data?.user ? "" : "userLogin"}
             on:click={() => purchasePlan("lifeTime")}
-            class="text-white cursor-pointer w-full lg:w-auto py-3 lg:mt-2 px-4 bg-blue-600 rounded-[8px] font-semibold sm:hover:bg-blue-700 transition duration-100 flex items-center justify-center lg:justify-end"
+            class="text-white cursor-pointer w-full lg:w-auto py-3 lg:mt-2 px-4 bg-black dark:bg-white rounded-[3px] font-semibold sm:hover:bg-default dark:sm:hover:bg-gray-100 text-white dark:text-black transition duration-100 flex items-center justify-center lg:justify-end"
           >
             Get Lifetime Now
             <svg
@@ -1426,7 +1427,7 @@
                 d="M9 5l7 7-7 7"
               ></path>
             </svg>
-          </button>
+          </label>
         </div>
       </div>
     </div>
