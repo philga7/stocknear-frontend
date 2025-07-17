@@ -36,21 +36,6 @@
   />
   <meta name="theme-color" content="#09090B" />
 
-  <!-- Schema.org JSON-LD -->
-  <script type="application/ld+json">
-    {JSON?.stringify({
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "url": baseURL,
-      "name": siteName,
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": `${baseURL}/search?q={search_term_string}`,
-        "query-input": "required name=search_term_string"
-      }
-    })}
-  </script>
-
   <!-- Open Graph -->
   <meta property="og:locale" content="en_US" />
   <meta property="og:site_name" content={siteName} />
