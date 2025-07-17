@@ -6,7 +6,6 @@ export const load = async ({ locals, params }) => {
       ticker: params.tickerID,
     };
 
-    // make the POST request to the endpoint
     const response = await fetch(apiURL + "/business-metrics", {
       method: "POST",
       headers: {
@@ -17,10 +16,26 @@ export const load = async ({ locals, params }) => {
     });
 
     const output = await response.json();
+
+    // Replace "/" with "-" in all names arrays
+    const replaceSlashes = (arr) =>
+      arr?.map((s) => s?.replace(/\//g, "-"));
+
+    if (output.revenue?.names) {
+      output.revenue.names = replaceSlashes(output.revenue.names);
+    }
+
+    if (output.geographic?.names) {
+      output.geographic.names = replaceSlashes(output.geographic.names);
+    }
+
+    if (output.operatingExpenses?.names) {
+      output.operatingExpenses.names = replaceSlashes(output.operatingExpenses.names);
+    }
+
     return output;
   };
 
-  // Make sure to return a promise
   return {
     getBusinessMetrics: await getBusinessMetrics(),
   };

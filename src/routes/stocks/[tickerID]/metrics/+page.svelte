@@ -11,18 +11,6 @@
 
   let subsectionTitles = [];
 
-  let sectionMap = Object.fromEntries(
-    subsectionTitles?.map((title) => {
-      let key = title
-        ?.toLowerCase()
-        ?.replace(/&/g, "") // Remove & symbol
-        ?.replace(/\s+/g, "-") // Replace spaces with dash
-        ?.replace(/-{2,}/g, "-") // Replace multiple dashes with single dash
-        ?.replace(/^-|-$/g, "") // Remove leading/trailing dashes
-        ?.trim();
-      return [key, key === "overview" ? "" : key];
-    }),
-  );
   let dataset;
   let geographicDataset;
   let operatingExpensesDataset;
