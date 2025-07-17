@@ -1,6 +1,8 @@
 <script lang="ts">
   import { displayCompanyName, stockTicker } from "$lib/store";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
+  import DownloadData from "$lib/components/DownloadData.svelte";
+
   import { Button } from "$lib/components/shadcn/button/index.js";
   import { goto } from "$app/navigation";
   import { mode } from "mode-watcher";
@@ -180,62 +182,6 @@
 
     return options;
   }
-
-  const exportData = (format = "csv") => {
-    if (["Pro", "Plus"]?.includes(data?.user?.tier)) {
-      // Add headers row
-      const csvRows = [];
-      csvRows.push("Date,Employees,Change,Growth");
-
-      // Add data rows
-      historyList.forEach((item, index) => {
-        const date = new Date(item.date).toLocaleString("en-US", {
-          month: "short",
-          day: "numeric",
-          year: "numeric",
-        });
-
-        const employees = item.employeeCount;
-
-        // Calculate change
-        const change =
-          index + 1 < historyList.length
-            ? item.employeeCount - historyList[index + 1].employeeCount
-            : 0;
-
-        // Calculate growth percentage
-        let growth = "0.00%";
-        if (index + 1 < historyList.length) {
-          const growthValue =
-            ((item.employeeCount - historyList[index + 1].employeeCount) /
-              item.employeeCount) *
-            100;
-          if (growthValue > 0) {
-            growth = `+${growthValue.toFixed(2)}%`;
-          } else if (growthValue < 0) {
-            growth = `-${Math.abs(growthValue).toFixed(2)}%`;
-          }
-        }
-
-        const csvRow = `${date},${employees},${change},${growth}`;
-        csvRows.push(csvRow);
-      });
-
-      // Create CSV blob and trigger download
-      const csv = csvRows.join("\n");
-      const blob = new Blob([csv], { type: "text/csv" });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.setAttribute("hidden", "");
-      a.setAttribute("href", url);
-      a.setAttribute("download", `${$stockTicker}_employees.csv`);
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    } else {
-      goto("/pricing");
-    }
-  };
 
   function generateEmployeeInfoHTML() {
     if (employeeHistory?.length !== 0 && !dateDistance) {
@@ -437,7 +383,7 @@
           </h1>
           {#if historyList?.length > 0}
             <div class="flex flex-row items-center w-fit sm:ml-auto">
-              <div class="relative inline-block text-left grow">
+              <div class="relative inline-block text-left grow mr-2">
                 <DropdownMenu.Root>
                   <DropdownMenu.Trigger asChild let:builder>
                     <Button
@@ -496,23 +442,12 @@
                   </DropdownMenu.Content>
                 </DropdownMenu.Root>
               </div>
-              <Button
-                on:click={() => exportData("csv")}
-                class="ml-2 w-fit border-gray-300  dark:border-gray-600 border bg-black text-white sm:hover:bg-default dark:bg-default dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded truncate"
-              >
-                <span class="truncate">Download</span>
-                <svg
-                  class="{['Pro', 'Plus']?.includes(data?.user?.tier)
-                    ? 'hidden'
-                    : ''} ml-1 -mt-0.5 w-3.5 h-3.5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  ><path
-                    fill="#A3A3A3"
-                    d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                  /></svg
-                >
-              </Button>
+
+              <DownloadData
+                {data}
+                rawData={historyList}
+                title={`employee_${$stockTicker}`}
+              />
             </div>
           {/if}
         </div>
@@ -569,6 +504,7 @@
                           day: "numeric",
                           year: "numeric",
                           daySuffix: "2-digit",
+                          timeZone: "UTC",
                         })}
                       </td>
                       <td

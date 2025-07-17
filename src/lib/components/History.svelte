@@ -1,12 +1,13 @@
 <script lang="ts">
   import { displayCompanyName, screenWidth } from "$lib/store";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
+  import DownloadData from "$lib/components/DownloadData.svelte";
+
   import Infobox from "$lib/components/Infobox.svelte";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
   import { goto } from "$app/navigation";
   import { onMount } from "svelte";
-  import { removeCompanyStrings } from "$lib/utils";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import highcharts from "$lib/highcharts.ts";
   import { mode } from "mode-watcher";
@@ -447,59 +448,6 @@
     stockList = [...originalData].sort(compareValues)?.slice(0, 50);
   };
 
-  async function exportData() {
-    if (["Pro", "Plus"]?.includes(data?.user?.tier)) {
-      let exportList = rawData?.map(
-        ({
-          time,
-          open,
-          high,
-          low,
-          close,
-          adjClose,
-          changesPercentage,
-          volume,
-        }) => ({
-          time,
-          open,
-          high,
-          low,
-          close,
-          adjClose,
-          changesPercentage,
-          volume,
-        }),
-      );
-
-      const csvRows = [];
-
-      // Add headers row
-      csvRows.push(
-        "time,open,high,low,close,adjClose,changesPercentage,volume",
-      );
-
-      // Add data rows
-      for (const row of exportList) {
-        const csvRow = `${row.time},${row.open},${row.high},${row.low},${row.close},${row.adjClose},${row.changesPercentage},${row.volume}`;
-        csvRows.push(csvRow);
-      }
-
-      // Create CSV blob and trigger download
-      const csv = csvRows.join("\n");
-      const blob = new Blob([csv], { type: "text/csv" });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.setAttribute("hidden", "");
-      a.setAttribute("href", url);
-      a.setAttribute("download", `${ticker}_price_history.csv`);
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    } else {
-      goto("/pricing");
-    }
-  }
-
   $: {
     if (timePeriod || $mode) {
       rawData = data?.getData || [];
@@ -537,8 +485,8 @@
                     <label
                       on:click={() => (plotPeriod = item)}
                       class="px-3 py-1 {plotPeriod === item
-                        ? 'bg-gray-300 dark:bg-white text-muted'
-                        : 'text-muted dark:text-white bg-gray-100 dark:bg-table text-opacity-[0.6]'} text-xs border border-gray-200 dark:border-gray-700 transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-[2px] cursor-pointer"
+                        ? 'bg-black dark:bg-white text-white dark:text-black'
+                        : 'shadow text-muted dark:text-white bg-gray-100 dark:bg-table '} text-xs border border-gray-200 dark:border-gray-700 transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded-[2px] cursor-pointer"
                     >
                       {item}
                     </label>
@@ -557,7 +505,7 @@
               >
                 <h2 class="text-xl sm:text-2xl font-bold">Historical Data</h2>
                 <div class="flex flex-row items-center ml-auto w-fit">
-                  <div class="relative inline-block text-left ml-auto">
+                  <div class="relative inline-block text-left ml-auto mr-2">
                     <DropdownMenu.Root>
                       <DropdownMenu.Trigger asChild let:builder>
                         <Button
@@ -649,23 +597,11 @@
                     </DropdownMenu.Root>
                   </div>
 
-                  <Button
-                    on:click={() => exportData()}
-                    class="ml-2 transition-all w-full bg-default text-white shadow-xs dark:border-gray-600 border sm:hover:bg-black dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 rounded truncate"
-                  >
-                    <span class="truncate">Download</span>
-                    <svg
-                      class="{['Pro', 'Plus']?.includes(data?.user?.tier)
-                        ? 'hidden'
-                        : ''} ml-1 -mt-0.5 w-3.5 h-3.5"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      ><path
-                        fill="currentColor"
-                        d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                      /></svg
-                    >
-                  </Button>
+                  <DownloadData
+                    {data}
+                    {rawData}
+                    title={`historical_price_${ticker}`}
+                  />
                 </div>
               </div>
 

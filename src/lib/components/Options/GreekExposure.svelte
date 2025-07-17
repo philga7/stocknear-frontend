@@ -392,8 +392,8 @@
               on:click={() => (timePeriod = item)}
               class="px-3 py-1 text-sm shadow-xs border border-gray-300 dark:border-gray-600 {timePeriod ===
               item
-                ? 'bg-gray-300 dark:bg-white text-black '
-                : ' bg-gray-100 dark:bg-table text-opacity-[0.6]'} transition ease-out duration-100 rounded cursor-pointer"
+                ? 'bg-black dark:bg-white text-white dark:text-black '
+                : ' bg-gray-100 dark:bg-table shadow'}  rounded cursor-pointer"
             >
               {item}
             </label>
@@ -403,7 +403,7 @@
               class="px-3 py-1 text-sm flex flex-row items-center border border-gray-300 dark:border-gray-600 {timePeriod ===
               item
                 ? 'bg-gray-300 dark:bg-white text-black '
-                : ' bg-gray-100 dark:bg-table text-opacity-[0.6]'} transition ease-out duration-100 rounded cursor-pointer"
+                : ' bg-gray-100 dark:bg-table text-opacity-[0.6]'}  rounded cursor-pointer"
             >
               {item}
               <svg
