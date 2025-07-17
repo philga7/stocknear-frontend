@@ -232,15 +232,21 @@
 
   function plotBarChart() {
     // Transform raw data
-    const sortedData = [...rawData].sort(
-      (a, b) => b?.open_interest - a?.open_interest,
-    );
+    let sortedData = [];
+    if (type === "oi") {
+      sortedData = [...rawData]?.sort(
+        (a, b) => b?.open_interest - a?.open_interest,
+      );
+    } else {
+      sortedData = [...rawData]?.sort((a, b) => b?.volume - a?.volume);
+    }
+
     const categories = sortedData?.map(
       (item) =>
         `${ticker} ${convertDateFormat(item.date_expiration)} ${item.strike_price}${item.option_type}`,
     );
     const data = sortedData.map((item) => ({
-      y: item.open_interest,
+      y: type === "oi" ? item.open_interest : item.volume,
       color: item.option_type === "P" ? "#f87171" : "#34d399", // red for Puts, greenish for Calls
       // Store the original data for tooltip access
       originalData: item,

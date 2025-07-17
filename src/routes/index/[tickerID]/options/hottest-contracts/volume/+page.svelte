@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { stockTicker, displayCompanyName } from "$lib/store";
+  import { indexTicker, displayCompanyName } from "$lib/store";
 
   import SEO from "$lib/components/SEO.svelte";
   import HottestContracts from "$lib/components/Options/HottestContracts.svelte";
@@ -9,8 +9,8 @@
 </script>
 
 <SEO
-  title={`${$displayCompanyName} (${$stockTicker}) | Explore the Hottest Options Contracts`}
-  description={`Analyze historical volume, open interest, and trends in option chains for ${$displayCompanyName} (${$stockTicker}). Discover actionable insights for trading decisions.`}
+  title={`${$displayCompanyName} (${$indexTicker}) | Explore the Hottest Options Contracts`}
+  description={`Analyze historical volume, open interest, and trends in option chains for ${$displayCompanyName} (${$indexTicker}). Discover actionable insights for trading decisions.`}
 />
 
 <section class="w-full overflow-hidden min-h-screen pb-40">
@@ -21,7 +21,7 @@
       {#if data?.getData?.volume?.length > 0}
         <HottestContracts
           {data}
-          ticker={$stockTicker?.toUpperCase()}
+          ticker={$indexTicker?.toUpperCase()}
           type="volume"
           title="Highest Volume Options"
         />

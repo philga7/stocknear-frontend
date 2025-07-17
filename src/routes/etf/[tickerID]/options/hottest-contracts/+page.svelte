@@ -18,8 +18,13 @@
     <div
       class="w-full relative flex justify-center items-center overflow-hidden"
     >
-      {#if data?.getData?.volume?.length > 0}
-        <HottestContracts {data} ticker={$etfTicker?.toUpperCase()} />
+      {#if data?.getData?.openInterest?.length > 0}
+        <HottestContracts
+          {data}
+          ticker={$etfTicker?.toUpperCase()}
+          type="oi"
+          title="Highest Open Interest Options"
+        />
       {:else}
         <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto">
           <div class="">
