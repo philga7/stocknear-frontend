@@ -9,9 +9,12 @@
 
   export let data;
   export let ticker;
+  export let title;
+  export let type;
 
   let isLoaded = false;
   let config = null;
+  let configBarChart = null;
 
   let optionHistoryList = [];
   let selectGraphType = "Vol/OI";
@@ -22,29 +25,53 @@
   let dateExpiration;
   let otmPercentage;
 
-  let rawDataVolume = [];
-  let rawDataOI = [];
-  let volumeList = [];
-  let openInterestList = [];
+  let rawData = [];
+  let tableData = [];
+
+  function convertDateFormat(dateString) {
+    // Check if the input is a valid string
+    if (!dateString || typeof dateString !== "string") {
+      return null;
+    }
+
+    // Split the date string by '-'
+    const parts = dateString.split("-");
+
+    // Validate that we have exactly 3 parts
+    if (parts.length !== 3) {
+      return null;
+    }
+
+    const [year, month, day] = parts;
+
+    // Basic validation
+    if (!year || !month || !day || year.length !== 4) {
+      return null;
+    }
+
+    // Return in mm/dd/yyyy format
+    return `${month}/${day}/${year?.slice(-2)}`;
+  }
 
   function initialize() {
     selectGraphType = "Vol/OI";
     rawDataHistory = [];
+    if (type === "oi") {
+      rawData = data?.getData?.openInterest?.map((item) => ({
+        ...item,
+        dte: daysLeft(item?.date_expiration),
+        otm: computeOTM(item?.strike_price, item?.option_type),
+      }));
+      tableData = rawData;
+    } else {
+      rawData = data?.getData?.volume?.map((item) => ({
+        ...item,
+        dte: daysLeft(item?.date_expiration),
+        otm: computeOTM(item?.strike_price, item?.option_type),
+      }));
 
-    rawDataVolume = data?.getData?.volume?.map((item) => ({
-      ...item,
-      dte: daysLeft(item?.date_expiration),
-      otm: computeOTM(item?.strike_price, item?.option_type),
-    }));
-
-    rawDataOI = data?.getData?.openInterest?.map((item) => ({
-      ...item,
-      dte: daysLeft(item?.date_expiration),
-      otm: computeOTM(item?.strike_price, item?.option_type),
-    }));
-
-    volumeList = rawDataVolume;
-    openInterestList = rawDataOI;
+      tableData = rawData;
+    }
   }
   function formatDate(dateStr) {
     // Convert the input date string to a Date object in New York time
@@ -156,7 +183,7 @@
 
     // Cycle through 'none', 'asc', 'desc' for the clicked key
     const orderCycle = ["none", "asc", "desc"];
-    let originalData = rawDataVolume;
+    let originalData = rawData;
     const currentOrderIndex = orderCycle.indexOf(sortOrders[key].order);
     sortOrders[key].order =
       orderCycle[(currentOrderIndex + 1) % orderCycle.length];
@@ -164,8 +191,8 @@
 
     // Reset to original data when 'none' and stop further sorting
     if (sortOrder === "none") {
-      originalData = [...rawDataVolume]; // Reset originalData to rawDataVolume
-      volumeList = originalData;
+      originalData = [...rawData]; // Reset originalData to rawData
+      tableData = originalData;
       return;
     }
 
@@ -200,66 +227,130 @@
     };
 
     // Sort using the generic comparison function
-    volumeList = [...originalData].sort(compareValues);
+    tableData = [...originalData].sort(compareValues);
   };
 
-  const sortDataOI = (key) => {
-    // Reset all other keys to 'none' except the current key
-    for (const k in sortOrders) {
-      if (k !== key) {
-        sortOrders[k].order = "none";
-      }
-    }
+  function plotBarChart() {
+    // Transform raw data
+    const sortedData = [...rawData].sort(
+      (a, b) => b?.open_interest - a?.open_interest,
+    );
+    const categories = sortedData?.map(
+      (item) =>
+        `${ticker} ${convertDateFormat(item.date_expiration)} ${item.strike_price}${item.option_type}`,
+    );
+    const data = sortedData.map((item) => ({
+      y: item.open_interest,
+      color: item.option_type === "P" ? "#f87171" : "#34d399", // red for Puts, greenish for Calls
+      // Store the original data for tooltip access
+      originalData: item,
+    }));
 
-    // Cycle through 'none', 'asc', 'desc' for the clicked key
-    const orderCycle = ["none", "asc", "desc"];
-    let originalData = rawDataOI;
-    const currentOrderIndex = orderCycle.indexOf(sortOrders[key].order);
-    sortOrders[key].order =
-      orderCycle[(currentOrderIndex + 1) % orderCycle.length];
-    const sortOrder = sortOrders[key].order;
+    const options = {
+      credits: {
+        enabled: false,
+      },
+      chart: {
+        backgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        plotBackgroundColor: $mode === "light" ? "#fff" : "#09090B",
+        type: "bar",
+        height: 360,
+        animation: false,
+      },
+      title: { text: null },
+      xAxis: {
+        categories,
+        title: null,
+        labels: {
+          style: {
+            color: $mode === "light" ? "#09090B" : "white",
+            fontSize: "12px",
+            fontWeight: "400",
+            whiteSpace: "nowrap", // 👈 prevent wrapping
+            textOverflow: "ellipsis", // optional: add ... if it overflows
+            overflow: "hidden", // optional: hide overflow
+          },
+          useHTML: true,
+          formatter: function () {
+            return this.value; // no <br>, just the original string
+          },
+        },
 
-    // Reset to original data when 'none' and stop further sorting
-    if (sortOrder === "none") {
-      originalData = [...rawDataOI]; // Reset originalData to rawDataOI
-      volumeList = originalData;
-      return;
-    }
+        lineWidth: 0,
+        tickLength: 0,
+      },
+      yAxis: {
+        min: 0,
+        title: null,
+        labels: {
+          style: { color: $mode === "light" ? "#545454" : "white" },
+        },
+        gridLineWidth: 0,
+        lineWidth: 0,
+        tickLength: 0,
+      },
+      plotOptions: {
+        series: {
+          pointWidth: 10, // fixed bar width
+        },
+        bar: {
+          dataLabels: {
+            enabled: true,
+            inside: false,
+            align: "right",
+            style: {
+              color: "#000",
+              fontSize: "12px",
+              fontWeight: "550",
+              textOutline: "none",
+            },
+            formatter: function () {
+              return this.y?.toLocaleString("en-US");
+            },
+          },
+          borderWidth: 0,
+          pointPadding: $screenWidth < 640 ? 0.02 : 0.18, // Much smaller padding on mobile for thicker bars
+          groupPadding: $screenWidth < 640 ? 0.4 : -0.1,
+          animation: false,
+          states: {
+            hover: { enabled: false },
+            inactive: { enabled: false },
+          },
+        },
+      },
+      tooltip: {
+        shared: false, // Changed to false since we're dealing with single series
+        useHTML: true,
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
+        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        borderWidth: 1,
+        style: {
+          color: "#fff",
+          fontSize: "16px",
+          padding: "10px",
+        },
+        borderRadius: 4,
+        formatter: function () {
+          // Access the original data from the point
+          const originalItem = this.point.originalData;
 
-    // Define a generic comparison function
-    const compareValues = (a, b) => {
-      const { type } = sortOrders[key];
-      let valueA, valueB;
+          let tooltipContent = `<span class="m-auto text-xs">${ticker} ${convertDateFormat(originalItem?.date_expiration)} ${originalItem.strike_price}${originalItem.option_type}</span><br>`;
+          tooltipContent += `<span class="font-normal text-sm">OI: ${this.y?.toLocaleString("en-US")}</span><br>`;
 
-      switch (type) {
-        case "date":
-          valueA = new Date(a[key]);
-          valueB = new Date(b[key]);
-          break;
-        case "string":
-          valueA = a[key].toUpperCase();
-          valueB = b[key].toUpperCase();
-          return sortOrder === "asc"
-            ? valueA.localeCompare(valueB)
-            : valueB.localeCompare(valueA);
-        case "number":
-        default:
-          valueA = parseFloat(a[key]);
-          valueB = parseFloat(b[key]);
-          break;
-      }
-
-      if (sortOrder === "asc") {
-        return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
-      } else {
-        return valueA > valueB ? -1 : valueA < valueB ? 1 : 0;
-      }
+          return tooltipContent;
+        },
+      },
+      series: [
+        {
+          name: "Open Interest",
+          data,
+          animation: false,
+        },
+      ],
+      legend: { enabled: false },
     };
-
-    // Sort using the generic comparison function
-    openInterestList = [...originalData].sort(compareValues);
-  };
-
+    return options;
+  }
   function plotContractHistory() {
     // Ensure rawDataHistory exists and sort it by date
     const sortedData =
@@ -597,7 +688,9 @@
   $: {
     if (ticker && typeof window !== "undefined") {
       isLoaded = false;
+
       initialize();
+      configBarChart = plotBarChart() || null;
       isLoaded = true;
     }
   }
@@ -610,10 +703,70 @@
     >
       <div class="sm:pl-7 sm:pb-7 sm:pt-7 w-full m-auto mt-2 sm:mt-0">
         <h2
-          class=" flex flex-row items-center text-xl sm:text-2xl font-bold w-fit mb-2 sm:mb-0"
+          class=" flex flex-row items-center text-xl sm:text-2xl font-bold w-fit"
         >
-          {ticker} Hottest Contracts (Highest Volume)
+          {ticker}
+          {title}
         </h2>
+
+        <p class="mt-4">
+          The highest {type === "oi" ? "open interest" : "volume"} is
+          <strong
+            >{type === "oi"
+              ? Math.max(
+                  ...rawData?.map((item) => item?.open_interest || 0),
+                )?.toLocaleString("en-US")
+              : Math.max(
+                  ...rawData?.map((item) => item?.volume || 0),
+                )?.toLocaleString("en-US")}</strong
+          >
+          contracts at the
+          <strong
+            >{type === "oi"
+              ? rawData?.find(
+                  (item) =>
+                    item?.open_interest ===
+                    Math.max(...rawData?.map((i) => i?.open_interest || 0)),
+                )?.strike_price
+              : rawData?.find(
+                  (item) =>
+                    item?.volume ===
+                    Math.max(...rawData?.map((i) => i?.volume || 0)),
+                )?.strike_price}</strong
+          >
+          {type === "oi"
+            ? rawData?.find(
+                (item) =>
+                  item?.open_interest ===
+                  Math.max(...rawData?.map((i) => i?.open_interest || 0)),
+              )?.option_type === "C"
+              ? "call"
+              : "put"
+            : rawData?.find(
+                  (item) =>
+                    item?.volume ===
+                    Math.max(...rawData?.map((i) => i?.volume || 0)),
+                )?.option_type === "C"
+              ? "call"
+              : "put"}
+          strike. The average implied volatility across all contracts is
+          <strong
+            >{(
+              rawData
+                ?.filter((item) => item?.iv)
+                ?.reduce((sum, item, _, arr) => sum + parseFloat(item.iv), 0) /
+                rawData?.filter((item) => item?.iv)?.length || 0
+            )?.toFixed(2)}%</strong
+          >.
+        </p>
+
+        {#if configBarChart}
+          <div
+            class=" sm:p-3 shadow-xs border border-gray-300 dark:border-gray-800 rounded mt-4 mb-4"
+            use:highcharts={configBarChart}
+          ></div>
+        {/if}
+
         <div class="w-full overflow-x-auto">
           <table
             class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
@@ -622,127 +775,11 @@
               <TableHeader {columns} {sortOrders} {sortData} />
             </thead>
             <tbody>
-              {#each volumeList as item, index}
+              {#each tableData as item, index}
                 <tr
                   class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
                     1 ===
-                    volumeList?.slice(0, 3)?.length &&
-                  !['Pro']?.includes(data?.user?.tier)
-                    ? 'opacity-[0.1]'
-                    : ''}"
-                >
-                  <td
-                    class=" text-sm sm:text-[1rem] text-start whitespace-nowrap"
-                  >
-                    <span
-                      class={item?.option_type === "C"
-                        ? "text-green-800 dark:text-[#00FC50]"
-                        : "text-red-800 dark:text-[#FF2F1F]"}
-                    >
-                      {item?.option_type === "C" ? "Call" : "Put"}
-                    </span>
-                    <label
-                      on:click={() => handleViewData(item)}
-                      on:mouseover={() =>
-                        getContractHistory(item?.option_symbol)}
-                      class="cursor-pointer text-blue-800 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white sm:hover:underline sm:hover:underline-offset-4"
-                    >
-                      {item?.strike_price}
-
-                      {" " + item?.date_expiration}
-
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="inline-block w-4 h-4 -mt-1"
-                        viewBox="0 0 512 512"
-                        fill="currentColor"
-                        ><path
-                          d="M104 496H72a24 24 0 01-24-24V328a24 24 0 0124-24h32a24 24 0 0124 24v144a24 24 0 01-24 24zM328 496h-32a24 24 0 01-24-24V232a24 24 0 0124-24h32a24 24 0 0124 24v240a24 24 0 01-24 24zM440 496h-32a24 24 0 01-24-24V120a24 24 0 0124-24h32a24 24 0 0124 24v352a24 24 0 01-24 24zM216 496h-32a24 24 0 01-24-24V40a24 24 0 0124-24h32a24 24 0 0124 24v432a24 24 0 01-24 24z"
-                        ></path></svg
-                      >
-                    </label>
-                  </td>
-                  <td
-                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
-                  >
-                    {item?.dte}
-                  </td>
-                  <td
-                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
-                  >
-                    {item?.otm}%
-                  </td>
-                  <td
-                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
-                  >
-                    {item?.last ?? "n/a"}
-                  </td>
-                  <td
-                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
-                  >
-                    {#if item?.low && item?.high}
-                      {item?.low}-{item?.high}
-                    {:else}
-                      n/a
-                    {/if}
-                  </td>
-                  <td
-                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
-                  >
-                    {item?.volume?.toLocaleString("en-US")}
-                  </td>
-                  <td
-                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
-                  >
-                    {item?.open_interest?.toLocaleString("en-US")}
-                  </td>
-                  <td
-                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
-                  >
-                    {#if item?.changeOI >= 0}
-                      <span class="text-green-800 dark:text-[#00FC50]"
-                        >+{item?.changeOI?.toLocaleString("en-US")}</span
-                      >
-                    {:else if item?.changeOI < 0}
-                      <span class="text-red-800 dark:text-[#FF2F1F]"
-                        >{item?.changeOI?.toLocaleString("en-US")}</span
-                      >
-                    {:else}
-                      n/a
-                    {/if}
-                  </td>
-                  <td class="text-sm sm:text-[1rem] text-end">
-                    {item?.iv ? item?.iv + "%" : "n/a"}
-                  </td>
-                  <td
-                    class=" text-sm sm:text-[1rem] text-end whitespace-nowrap"
-                  >
-                    {abbreviateNumber(item?.total_premium)}
-                  </td>
-                </tr>
-              {/each}
-            </tbody>
-          </table>
-        </div>
-
-        <h2
-          class=" flex flex-row items-center text-xl sm:text-2xl font-bold w-fit mt-10"
-        >
-          {ticker} Highest OI Contracts
-        </h2>
-        <div class="w-full overflow-x-auto">
-          <table
-            class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto mt-4"
-          >
-            <thead>
-              <TableHeader {columns} {sortOrders} sortData={sortDataOI} />
-            </thead>
-            <tbody>
-              {#each openInterestList as item, index}
-                <tr
-                  class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
-                    1 ===
-                    openInterestList?.slice(0, 3)?.length &&
+                    tableData?.slice(0, 3)?.length &&
                   !['Pro']?.includes(data?.user?.tier)
                     ? 'opacity-[0.1]'
                     : ''}"
@@ -926,8 +963,8 @@
             <label
               on:click={() => (selectGraphType = item)}
               class="px-3 py-1.5 {selectGraphType === item
-                ? 'shadow-xs bg-gray-100 dark:bg-white text-black '
-                : 'shadow-xs text-opacity-[0.6] border border-gray-300 dark:border-gray-600'} transition ease-out duration-100 sm:hover:bg-white sm:hover:text-black rounded cursor-pointer"
+                ? 'shadow-xs bg-black dark:bg-white text-white dark:text-black '
+                : 'shadow text-opacity-[0.6] border border-gray-300 dark:border-gray-600'} rounded cursor-pointer"
             >
               {item}
             </label>

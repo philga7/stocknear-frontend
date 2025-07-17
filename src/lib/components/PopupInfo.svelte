@@ -34,18 +34,20 @@
     if (!labelEl) return;
 
     tippy(labelEl, {
-      trigger: "mouseenter focus",
+      allowHTML: true,
       placement: "bottom",
       theme: "light-border",
-      allowHTML: true,
+      maxWidth: 500,
       interactive: true,
-      delay: [200, 100],
+      trigger: "click mouseenter focus",
+      hideOnClick: true,
+      touch: ["hold", 500],
       onShow: async (instance) => {
         instance.setContent("Loading…");
         await getInfoText();
         instance.setContent(`
-          <div class=" text-white  w-full mb-3">
-            <h4 class="font-bold mb-1 text-[1rem] w-full">${label}</h4>
+           <div class="text-sm sm:text-[1rem] text-white p-2 w-full">
+            <h4 class="font-bold mb-1 w-full">${label}</h4>
             <p>${content?.text}</p>
             ${
               content?.equation

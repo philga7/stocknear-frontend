@@ -12,15 +12,15 @@
   $: if (infoIcon) {
     tippy(infoIcon, {
       content: `
-        <div class="text-sm text-white p-2 w-full">
-          <div class="font-bold mb-2">${title}</div>
+        <div class="text-sm sm:text-[1rem] text-white p-2 w-full">
+          <div class="font-bold mb-2 ${title ? "" : "hidden"}">${title}</div>
           <div>${content}</div>
         </div>
       `,
       allowHTML: true,
       placement: "bottom",
       theme: "light-border",
-      maxWidth: 300,
+      maxWidth: 400,
       interactive: true,
       trigger: "click mouseenter focus",
       hideOnClick: true,

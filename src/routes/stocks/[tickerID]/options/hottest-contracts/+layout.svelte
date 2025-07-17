@@ -4,12 +4,12 @@
 
   export let data;
 
-  let displaySubSection = "strike";
+  let displaySubSection = "Open Interest";
 
   function changeSubSection(state) {
     const subSectionMap = {
-      strike: "/options/oi/strike",
-      expiry: "/options/oi/expiry",
+      oi: "/options/hottest-contracts/oi",
+      expiry: "/options/hottest-contracts/volume",
     };
 
     if (state !== "overview" && subSectionMap[state]) {
@@ -25,7 +25,7 @@
     if ($page?.url?.pathname) {
       const parts = $page?.url?.pathname.split("/");
       const sectionMap = {
-        strike: "strike",
+        oi: "oi",
         expiry: "expiry",
       };
 
@@ -36,7 +36,7 @@
       displaySubSection =
         Object?.keys(sectionMap)?.find(
           (key) => sectionMap[key] === foundSection,
-        ) || "strike";
+        ) || "oi";
     }
   }
 </script>
@@ -53,23 +53,23 @@
           >
             <ul class="flex flex-row items-center w-full">
               <a
-                href={`/stocks/${$stockTicker}/options/oi`}
-                on:click={() => changeSubSection("strike")}
-                class="p-2 px-5 cursor-pointer {displaySubSection === 'strike'
+                href={`/stocks/${$stockTicker}/options/hottest-contracts`}
+                on:click={() => changeSubSection("oi")}
+                class="p-2 px-5 cursor-pointer {displaySubSection === 'oi'
                   ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
                   : 'text-gray-600 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
               >
-                By Strike
+                By Open Interest
               </a>
 
               <a
-                href={`/stocks/${$stockTicker}/options/oi/expiry`}
+                href={`/stocks/${$stockTicker}/options/hottest-contracts/expiry`}
                 on:click={() => changeSubSection("expiry")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'expiry'
                   ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
                   : 'text-gray-600 dark:text-gray-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:bg-[#EEEEEE] dark:sm:hover:bg-primary/90'}"
               >
-                By Expiry
+                By Volume
               </a>
             </ul>
           </nav>
