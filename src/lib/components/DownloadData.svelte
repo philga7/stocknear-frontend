@@ -109,7 +109,7 @@
     align="end"
     sideOffset={10}
     alignOffset={0}
-    class="min-w-56 w-auto max-w-60 max-h-[400px] overflow-y-auto scroller relative"
+    class="min-w-36 w-auto max-w-60 max-h-[400px] overflow-y-auto scroller relative"
   >
     <DropdownMenu.Group>
       <DropdownMenu.Item

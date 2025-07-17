@@ -2,8 +2,8 @@
   import { displayCompanyName } from "$lib/store";
   import Infobox from "$lib/components/Infobox.svelte";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
-  import { Button } from "$lib/components/shadcn/button/index.js";
-  import { goto } from "$app/navigation";
+
+  import DownloadData from "$lib/components/DownloadData.svelte";
 
   import { onMount } from "svelte";
 
@@ -173,51 +173,6 @@
   dividendGrowth = rawData?.dividendGrowth;
 
   htmlOutput = generateDividendInfoHTML();
-
-  const exportData = (format = "csv") => {
-    if (["Pro", "Plus"]?.includes(data?.user?.tier)) {
-      const csvRows = [];
-
-      // Add headers row matching your table columns
-      csvRows.push(
-        "Date,Adjusted Dividend,Declaration Date,Record Date,Payment Date",
-      );
-
-      rawData?.history?.forEach((item) => {
-        const formatDate = (dateStr) => {
-          if (!dateStr) return "n/a";
-          const date = new Date(dateStr);
-          const year = date.getFullYear();
-          const month = `${date.getMonth() + 1}`.padStart(2, "0");
-          const day = `${date.getDate()}`.padStart(2, "0");
-          return `${year}-${month}-${day}`;
-        };
-
-        const row = [
-          formatDate(item?.date),
-          item?.adjDividend != null ? item?.adjDividend.toFixed(3) : "n/a",
-          formatDate(item?.declarationDate),
-          formatDate(item?.recordDate),
-          formatDate(item?.paymentDate),
-        ];
-
-        csvRows.push(row.join(","));
-      });
-
-      const csv = csvRows.join("\n");
-      const blob = new Blob([csv], { type: "text/csv" });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.setAttribute("hidden", "");
-      a.setAttribute("href", url);
-      a.setAttribute("download", `${ticker?.toLowerCase()}_dividend_data.csv`);
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    } else {
-      goto("/pricing");
-    }
-  };
 </script>
 
 <section class="w-full overflow-hidden h-full">
@@ -319,23 +274,11 @@
             class="flex flex-row justify-between items-center w-full mt-5 mb-4"
           >
             <h2 class="text-xl sm:text-2xl font-bold">Dividends History</h2>
-            <Button
-              on:click={() => exportData("csv")}
-              class="ml-2 transition-all w-fit bg-default text-white shadow-xs dark:border-gray-600 border sm:hover:bg-black dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 rounded truncate"
-            >
-              <span class="truncate text-xs sm:text-sm">Download</span>
-              <svg
-                class="{['Pro', 'Plus']?.includes(data?.user?.tier)
-                  ? 'hidden'
-                  : ''} ml-1 -mt-0.5 w-3.5 h-3.5"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                ><path
-                  fill="#A3A3A3"
-                  d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-                /></svg
-              >
-            </Button>
+            <DownloadData
+              {data}
+              rawData={rawData?.history}
+              title={`dividend_${ticker}`}
+            />
           </div>
 
           {#if stockList?.length > 0}
