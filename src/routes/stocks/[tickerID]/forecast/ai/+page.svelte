@@ -9,13 +9,32 @@
 
   export let data;
 
-  const isPro = ["Pro"].includes(data?.user?.tier);
+  const isPro = data?.user?.tier === "Pro";
 
-  const formatDateToQuarter = (timestamp) => {
+  const formatDate = (timestamp) => {
     const date = new Date(timestamp);
-    const year = date.getFullYear().toString().slice(-2); // Get last two digits of the year
-    const quarter = Math.floor(date.getMonth() / 3) + 1; // Determine quarter (Q1-Q4)
-    return `Q${quarter} '${year}`;
+    const year = date.getUTCFullYear().toString().slice(-2);
+    const monthIndex = date.getUTCMonth();
+    const day = date.getUTCDate();
+
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    const month = months[monthIndex];
+
+    return `${month} ${day}, '${year}`;
   };
 
   const calculatePriceChange = (targetPrice) =>
@@ -117,7 +136,7 @@
 
     tableDates = processedData
       ?.slice(0, -1)
-      ?.map((item) => formatDateToQuarter(item?.x));
+      ?.map((item) => formatDate(item?.x));
 
     tableScore = processedData
       ?.slice(0, -1)
@@ -132,7 +151,7 @@
         const change = ((item.y - prevY) / prevY) * 100; // Calculate percentage change
         return {
           quarter: tableDates[index],
-          change: Number(change?.toFixed(2)), // Format to 2 decimal places
+          change: change?.toFixed(2) ?? null, // Format to 2 decimal places
         };
       })
       ?.filter(Boolean); // Remove null values
@@ -600,7 +619,7 @@
                       ></div>
                     {/if}
                     <!-- Overlay with "Upgrade to Pro" -->
-                    {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
+                    {#if !isPro}
                       <div
                         class="font-bold text-lg sm:text-xl absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center text-muted dark:text-white"
                       >
@@ -703,7 +722,9 @@
                                     ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
                                     : "text-red-800 dark:text-[#FF2F1F]"}
                                 >
-                                  {item?.change}%
+                                  {item?.change && item?.change !== null
+                                    ? item?.change + "%"
+                                    : "n/a"}
                                 </span>
                               {:else}
                                 <a
@@ -731,7 +752,7 @@
                   </div>
 
                   <p class="mt-4">
-                    Following the AI Score for {removeCompanyStrings(
+                    Following the <strong>AI Score</strong> for {removeCompanyStrings(
                       $displayCompanyName,
                     )} the model shows that the average return would be
                     <span
@@ -753,7 +774,7 @@
               </h1>
             </div>
             <div class="w-full mb-6 mt-3">
-              {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
+              {#if !isPro}
                 <Infobox
                   text={`Using our AI model trained on historical seasonal data, we generated a 12-month forecast for ${removeCompanyStrings($displayCompanyName)}. The model predicts a ... Unlock content with
           <a
@@ -789,7 +810,7 @@
                       ></div>
                     {/if}
                     <!-- Overlay with "Upgrade to Pro" -->
-                    {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
+                    {#if !isPro}
                       <div
                         class="font-bold text-lg sm:text-xl absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center text-muted dark:text-white"
                       >
@@ -833,7 +854,7 @@
                           class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
                         >
                           <td class="py-[3px] text-left lg:py-0.5">Price</td>
-                          {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
+                          {#if !isPro}
                             <td class="whitespace-nowrap">
                               <a
                                 href="/pricing"
@@ -908,7 +929,7 @@
 
                         <tr class="text-sm sm:text-[1rem]">
                           <td class="py-[3px] text-left lg:py-0.5">Change</td>
-                          {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
+                          {#if !isPro}
                             <td class="whitespace-nowrap">
                               <a
                                 href="/pricing"
