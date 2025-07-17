@@ -14,10 +14,10 @@
 
     if (state !== "overview" && subSectionMap[state]) {
       displaySubSection = state;
-      //goto(`/stocks/${$etfTicker}${subSectionMap[state]}`);
+      //goto(`/etf/${$etfTicker}${subSectionMap[state]}`);
     } else {
       displaySubSection = state;
-      //goto(`/stocks/${$etfTicker}/statistics`);
+      //goto(`/etf/${$etfTicker}/statistics`);
     }
   }
 
@@ -53,7 +53,7 @@
           >
             <ul class="flex flex-row items-center w-full">
               <a
-                href={`/stocks/${$etfTicker}/options/hottest-contracts`}
+                href={`/etf/${$etfTicker}/options/hottest-contracts`}
                 on:click={() => changeSubSection("oi")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'oi'
                   ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'
@@ -63,7 +63,7 @@
               </a>
 
               <a
-                href={`/stocks/${$etfTicker}/options/hottest-contracts/volume`}
+                href={`/etf/${$etfTicker}/options/hottest-contracts/volume`}
                 on:click={() => changeSubSection("volume")}
                 class="p-2 px-5 cursor-pointer {displaySubSection === 'volume'
                   ? 'text-muted dark:text-white bg-[#EEEEEE] dark:bg-primary/90 font-semibold'

@@ -306,7 +306,7 @@
             align: "right",
             style: {
               color: "#000",
-              fontSize: "12px",
+              fontSize: "12.5px",
               fontWeight: "550",
               textOutline: "none",
             },
