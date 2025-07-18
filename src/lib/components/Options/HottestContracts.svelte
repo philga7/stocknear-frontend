@@ -272,7 +272,7 @@
             color: $mode === "light" ? "#09090B" : "white",
             fontSize: "12px",
             fontWeight: "400",
-            whiteSpace: "nowrap", // 👈 prevent wrapping
+            whiteSpace: "nowrap",
             textOverflow: "ellipsis", // optional: add ... if it overflows
             overflow: "hidden", // optional: hide overflow
           },
@@ -781,7 +781,7 @@
               <TableHeader {columns} {sortOrders} {sortData} />
             </thead>
             <tbody>
-              {#each tableData as item, index}
+              {#each data?.user?.tier === "Pro" ? tableData : tableData?.slice(0, 3) as item, index}
                 <tr
                   class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
                     1 ===

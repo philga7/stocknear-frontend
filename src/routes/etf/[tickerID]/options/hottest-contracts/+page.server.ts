@@ -19,7 +19,7 @@ export const load = async ({ locals, params }) => {
 
     let output = await response.json();
     output.volume = []
-    output.openInterest = user?.tier !== "Pro" ? output?.openInterest?.slice(0, 3) : output?.openInterest;
+    
 
     return output;
   }; 
