@@ -340,16 +340,14 @@
                     parameter="revenuePerEmployee"
                     label="Revenue Per Employee"
                     value={rawData?.revenuePerEmployee
-                      ? "$" +
-                        rawData?.revenuePerEmployee?.toLocaleString("en-US")
+                      ? "$" + abbreviateNumber(rawData?.revenuePerEmployee)
                       : "n/a"}
                   />
                   <PopupInfo
                     parameter="profitPerEmployee"
                     label="Profits Per Employee"
                     value={rawData?.profitPerEmployee
-                      ? "$" +
-                        rawData?.profitPerEmployee?.toLocaleString("en-US")
+                      ? "$" + abbreviateNumber(rawData?.profitPerEmployee)
                       : "n/a"}
                   />
                   <PopupInfo

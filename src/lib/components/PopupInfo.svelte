@@ -46,8 +46,7 @@
         instance.setContent("Loading…");
         await getInfoText();
         instance.setContent(`
-           <div class="text-sm sm:text-[1rem] text-white p-2 w-full">
-            <h4 class="font-bold mb-1 w-full">${label}</h4>
+           <div class="text-sm sm:text-[1rem] text-white p-2 min-w-96">
             <p>${content?.text}</p>
             ${
               content?.equation

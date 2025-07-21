@@ -148,7 +148,7 @@
     const xList = [];
     for (let i = financialData.length - 1; i >= 0; i--) {
       const statement = financialData[i];
-      const year = statement.fiscalYear.slice(-2);
+      const year = statement.fiscalYear?.slice(-2);
       const quarter = statement.period;
       xList.push(
         $selectedTimePeriod === "annual"
