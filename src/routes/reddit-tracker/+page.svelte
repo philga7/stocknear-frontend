@@ -128,121 +128,120 @@
           </div>
 
           <div class="grid gap-4 md:gap-8 grid-cols-1 text-start">
-            <Lazy>
-              <div class="order-1 overflow-x-auto h-full mt-5 sm:mt-0">
-                <div class="flex flex-row items-center">
-                  <div class="flex flex-col items-start w-full">
-                    <div class="flex flex-row w-full items-center">
-                      <div
-                        class="text-start text-xl w-full flex flex-row items-center mb-3"
+            <div class="order-1 overflow-x-auto h-full mt-5 sm:mt-0">
+              <div class="flex flex-row items-center">
+                <div class="flex flex-col items-start w-full">
+                  <div class="flex flex-row w-full items-center">
+                    <div
+                      class="text-start text-xl w-full flex flex-row items-center mb-3"
+                    >
+                      <span class="font-semibold">Trending Posts</span>
+                      <span class="text-sm ml-auto font-normal italic"
+                        >Updated {formattedDate}</span
                       >
-                        <span class="font-semibold">Trending Posts</span>
-                        <span class="text-sm ml-auto font-normal italic"
-                          >Updated {formattedDate}</span
-                        >
-                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="">
-                  {#each data?.getRedditTracker?.posts as item}
-                    <div
-                      class="flex flex-col items-start mb-3 p-3 border border-gray-300 dark:border-gray-800 rounded shadow-xs border-gray-200 dark:bg-[#141417]"
+              </div>
+              <div class="">
+                {#each data?.getRedditTracker?.posts as item}
+                  <div
+                    class="flex flex-col items-start mb-3 p-3 border border-gray-300 dark:border-gray-800 rounded shadow-xs border-gray-200 dark:bg-[#141417]"
+                  >
+                    <a
+                      href={"https://www.reddit.com" + item?.permalink}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      class="text-[1rem] sm:text-xl font-semibold mb-3 transition duration-100 sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
                     >
+                      {item?.title}
+                    </a>
+
+                    {#if item?.selftext?.length !== 0}
+                      <div class="text-sm sm:text-[1rem] mb-3">
+                        {#if $screenWidth < 640}
+                          {item?.selftext?.length > 400
+                            ? removeHttpsStrings(item?.selftext)?.slice(
+                                0,
+                                240,
+                              ) + "..."
+                            : removeHttpsStrings(item?.selftext)}
+                        {:else}
+                          {item?.selftext?.length > 1000
+                            ? removeHttpsStrings(item?.selftext)?.slice(
+                                0,
+                                800,
+                              ) + "..."
+                            : removeHttpsStrings(item?.selftext)}
+                        {/if}
+                      </div>
+                    {/if}
+
+                    <div class="flex flex-row items-center mb-5 mt-3">
+                      <label class="mr-4 text-sm">
+                        <ThumbsUp
+                          class="h-5 w-5 inline-block -mt-1 shrink-0 mr-1"
+                        />
+                        {item?.upvote_ratio}%
+                      </label>
+                      <label class="text-sm">
+                        <MessageCircle
+                          class="h-5 w-5 inline-block -mt-1 shrink-0 mr-1"
+                        />
+                        {item?.num_comments?.toLocaleString("en-US")}
+                      </label>
+                    </div>
+
+                    <label
+                      class="mt-2 mb-2 text-sm bg-white rounded px-3 py-1 text-black"
+                    >
+                      {item?.link_flair_text}
+                    </label>
+                    {#if item?.thumbnail !== null && item?.thumbnail}
+                      <div class="relative m-auto mt-4">
+                        <div
+                          class="absolute inset-0 bg-cover object-fill bg-center bg-[#000]"
+                        ></div>
+
+                        <!--<div class="absolute -inset-3 md:-inset-y-20 md:mt-10 bg-cover object-contain blur-[40px]" style="clip-path: polygon(0 0, 100% 0, 100% 90%, 0 90%); background-image: url('{getImageURL(posts.collectionId, posts.id, posts.thumbnail)}');"></div>-->
+                        <img
+                          src={item?.thumbnail}
+                          alt="post image"
+                          class="m-auto w-auto relative max-h-[520px] sm:max-h-[700px] rounded"
+                          style="position: relative;"
+                          loading="lazy"
+                        />
+                      </div>
+                    {/if}
+
+                    <div
+                      class="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full mt-3"
+                    >
+                      <a
+                        href={"https://www.reddit.com/user/" + item?.author}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        class="hidden sm:inline-block text-sm sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
+                      >
+                        Posted by {item?.author}
+                      </a>
                       <a
                         href={"https://www.reddit.com" + item?.permalink}
                         rel="noopener noreferrer"
                         target="_blank"
-                        class="text-[1rem] sm:text-xl font-semibold mb-3 transition duration-100 sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
+                        class="mt-2 sm:mt-0 text-sm sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
                       >
-                        {item?.title}
+                        {formatUtcTimestamp(item?.created_utc)}
+                        <Link
+                          class="h-3 w-3 inline-block shrink-0 -mt-1 ml-1"
+                        />
                       </a>
-
-                      {#if item?.selftext?.length !== 0}
-                        <div class="text-sm sm:text-[1rem] mb-3">
-                          {#if $screenWidth < 640}
-                            {item?.selftext?.length > 400
-                              ? removeHttpsStrings(item?.selftext)?.slice(
-                                  0,
-                                  240,
-                                ) + "..."
-                              : removeHttpsStrings(item?.selftext)}
-                          {:else}
-                            {item?.selftext?.length > 1000
-                              ? removeHttpsStrings(item?.selftext)?.slice(
-                                  0,
-                                  800,
-                                ) + "..."
-                              : removeHttpsStrings(item?.selftext)}
-                          {/if}
-                        </div>
-                      {/if}
-
-                      <div class="flex flex-row items-center mb-5 mt-3">
-                        <label class="mr-4 text-sm">
-                          <ThumbsUp
-                            class="h-5 w-5 inline-block -mt-1 shrink-0 mr-1"
-                          />
-                          {item?.upvote_ratio}%
-                        </label>
-                        <label class="text-sm">
-                          <MessageCircle
-                            class="h-5 w-5 inline-block -mt-1 shrink-0 mr-1"
-                          />
-                          {item?.num_comments?.toLocaleString("en-US")}
-                        </label>
-                      </div>
-
-                      <label
-                        class="mt-2 mb-2 text-sm bg-white rounded px-3 py-1 text-black"
-                      >
-                        {item?.link_flair_text}
-                      </label>
-                      {#if item?.thumbnail !== null && item?.thumbnail}
-                        <div class="relative m-auto mt-4">
-                          <div
-                            class="absolute inset-0 bg-cover object-fill bg-center bg-[#000]"
-                          ></div>
-
-                          <!--<div class="absolute -inset-3 md:-inset-y-20 md:mt-10 bg-cover object-contain blur-[40px]" style="clip-path: polygon(0 0, 100% 0, 100% 90%, 0 90%); background-image: url('{getImageURL(posts.collectionId, posts.id, posts.thumbnail)}');"></div>-->
-                          <img
-                            src={item?.thumbnail}
-                            alt="post image"
-                            class="m-auto w-auto relative max-h-[520px] sm:max-h-[700px] rounded"
-                            style="position: relative;"
-                            loading="lazy"
-                          />
-                        </div>
-                      {/if}
-
-                      <div
-                        class="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full mt-3"
-                      >
-                        <a
-                          href={"https://www.reddit.com/user/" + item?.author}
-                          rel="noopener noreferrer"
-                          target="_blank"
-                          class="hidden sm:inline-block text-sm sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
-                        >
-                          Posted by {item?.author}
-                        </a>
-                        <a
-                          href={"https://www.reddit.com" + item?.permalink}
-                          rel="noopener noreferrer"
-                          target="_blank"
-                          class="mt-2 sm:mt-0 text-sm sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
-                        >
-                          {formatUtcTimestamp(item?.created_utc)}
-                          <Link
-                            class="h-3 w-3 inline-block shrink-0 -mt-1 ml-1"
-                          />
-                        </a>
-                      </div>
                     </div>
-                  {/each}
-                </div>
+                  </div>
+                {/each}
               </div>
-            </Lazy>
+            </div>
+
             <Card.Root class="order-0 overflow-x-auto no-scrollbar">
               <Card.Header>
                 <div
