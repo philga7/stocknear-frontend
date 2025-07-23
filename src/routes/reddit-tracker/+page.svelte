@@ -7,7 +7,6 @@
   import Link from "lucide-svelte/icons/external-link";
   import ThumbsUp from "lucide-svelte/icons/thumbs-up";
   import MessageCircle from "lucide-svelte/icons/message-circle";
-  import Lazy from "$lib/components/Lazy.svelte";
 
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
   import SEO from "$lib/components/SEO.svelte";
@@ -358,7 +357,7 @@
                             ? 'text-green-800 dark:text-[#00FC50]'
                             : item?.avgSentiment < -0.1
                               ? 'text-red-800 dark:text-[#FF2F1F]'
-                              : 'text-yellow-600 dark:text-[#C6A755]'} "
+                              : 'text-orange-800 dark:text-[#C6A755]'} "
                           >{item?.avgSentiment > 0.4
                             ? "Bullish"
                             : item?.avgSentiment <= -0.1
