@@ -29,16 +29,20 @@
       if (cachedData) {
         rawData = cachedData;
       } else {
-        const postData = { params: selectedTimePeriod };
-        const response = await fetch("/api/heatmap", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(postData),
-        });
+        if (timePeriod === "1D") {
+          rawData = data?.getHeatMap;
+        } else {
+          const postData = { params: selectedTimePeriod };
+          const response = await fetch("/api/heatmap", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(postData),
+          });
 
-        rawData = await response.json();
+          rawData = await response.json();
+        }
         setCache(selectedTimePeriod, rawData, "getHeatmap");
       }
 

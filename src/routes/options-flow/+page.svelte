@@ -1934,7 +1934,7 @@
               class="bg-gray-100 dark:bg-primary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
             >
               <span
-                class="loading loading-spinner loading-md text-white dark:text-gray-400"
+                class="loading loading-spinner loading-md text-white dark:text-white"
               ></span>
             </label>
           </div>
