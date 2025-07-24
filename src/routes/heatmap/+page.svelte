@@ -56,7 +56,7 @@
 
         // Set a timeout to prevent hanging if iframe doesn't load properly
         const timeoutPromise = new Promise<void>((resolve) => {
-          setTimeout(() => resolve(), 50);
+          setTimeout(() => resolve(), 500);
         });
 
         await Promise.race([loadPromise, timeoutPromise]);
@@ -275,9 +275,10 @@
               <div class="flex justify-center items-center h-80">
                 <div class="relative">
                   <label
-                    class=" h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                    class="shadow-xs bg-default dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                   >
-                    <span class="loading loading-bars loading-md"></span>
+                    <span class="loading loading-spinner loading-md text-white"
+                    ></span>
                   </label>
                 </div>
               </div>
