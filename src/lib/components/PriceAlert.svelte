@@ -112,10 +112,7 @@
 <input type="checkbox" id="priceAlertModal" class="modal-toggle" />
 
 <dialog id="priceAlertModal" class="modal modal-middle p-2 sm:p-0 bg-[#000]/40">
-  <label
-    for="priceAlertModal"
-    class="cursor-pointer modal-backdrop"
-  ></label>
+  <label for="priceAlertModal" class="cursor-pointer modal-backdrop"></label>
 
   <div
     class="modal-box rounded w-full bg-white dark:bg-secondary border border-gray-300 dark:border-gray-600 min-h-fit h-[600px] sm:h-[500px]"
@@ -257,7 +254,7 @@
           </label>
           <button
             on:click={handleCreateAlert}
-            class="cursor-pointer bg-blue-500 dark:bg-white text-white dark:text-black py-2 px-4 rounded text-sm"
+            class="cursor-pointer bg-black dark:bg-white text-white dark:text-black py-2 px-4 rounded text-sm"
           >
             Save
           </button>

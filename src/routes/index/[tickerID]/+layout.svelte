@@ -551,7 +551,7 @@
               >
                 {#if item?.ticker?.includes($indexTicker)}
                   <svg
-                    class="w-full h-full rounded-full text-blue-500 dark:text-white"
+                    class="w-full h-full rounded-full text-black dark:text-white"
                     viewBox="0 0 48 48"
                     version="1.1"
                     xmlns="http://www.w3.org/2000/svg"

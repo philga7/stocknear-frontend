@@ -91,13 +91,13 @@
             <li>
               <a
                 class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
-                href="/newsletter/">Free Newsletter</a
+                href="/support/">Get Support</a
               >
             </li>
             <li>
               <a
                 class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
-                href="/support/">Get Support</a
+                href="/learning-center/">Learning Center</a
               >
             </li>
           </ul>
@@ -128,12 +128,7 @@
                 href="/sitemap/">Sitemap</a
               >
             </li>
-            <li>
-              <a
-                class="text-gray-300 hover:text-white dark:text-neutral-200 hover:dark:underline"
-                href="/learning-center/">Learning Center</a
-              >
-            </li>
+
             <!--
             <li>
               <a
