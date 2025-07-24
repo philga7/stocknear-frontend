@@ -72,9 +72,9 @@
     { key: "marketCap", label: "Market Cap", align: "right" },
     { key: "price", label: "Price", align: "right" },
     { key: "changesPercentage", label: "% Change", align: "right" },
-    { key: "totalShares", label: "Shares", align: "right" },
-    { key: "avgValue", label: "Avg. Value", align: "right" },
-    { key: "transactionType", label: "Transaction Type", align: "right" },
+    { key: "shares", label: "Shares", align: "right" },
+    { key: "value", label: "Market Value", align: "right" },
+    { key: "transactionType", label: "Type", align: "right" },
   ];
 
   let sortOrders = {
@@ -86,8 +86,8 @@
     marketCap: { order: "none", type: "number" },
     price: { order: "none", type: "number" },
     changesPercentage: { order: "none", type: "number" },
-    totalShares: { order: "none", type: "number" },
-    avgValue: { order: "none", type: "number" },
+    shares: { order: "none", type: "number" },
+    value: { order: "none", type: "number" },
     transactionType: { order: "none", type: "string" },
   };
 
@@ -278,13 +278,13 @@
                       <td
                         class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                       >
-                        {abbreviateNumber(item?.totalShares)}
+                        {item?.shares?.toLocaleString("en-US")}
                       </td>
 
                       <td
                         class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                       >
-                        {abbreviateNumber(item?.avgValue)}
+                        {abbreviateNumber(item?.value)}
                       </td>
 
                       <td
