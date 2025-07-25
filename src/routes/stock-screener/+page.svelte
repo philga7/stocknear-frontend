@@ -1498,7 +1498,7 @@
 
   async function handleDeleteStrategy() {
     const deletePromise = (async () => {
-      const postData = { strategyId: selectedStrategy };
+      const postData = { strategyId: selectedStrategy, type: "stockscreener" };
 
       const response = await fetch("/api/delete-strategy", {
         method: "POST",
@@ -1601,7 +1601,7 @@
     }
 
     // build postData object
-    const postData = {};
+    const postData = { type: "stockscreener" };
     for (const [key, value] of formData.entries()) {
       postData[key] = value;
     }
@@ -2000,6 +2000,7 @@ const handleKeyDown = (event) => {
       const postData = {
         strategyId: selectedStrategy,
         rules: ruleOfList,
+        type: "stockscreener",
       };
 
       const savePromise = (async () => {
@@ -4080,7 +4081,7 @@ const handleKeyDown = (event) => {
 
       <button
         type="submit"
-        class="cursor-pointer mt-2 py-2.5 bg-black dar text-whitek:bg-[#fff] dark:sm:hover:bg-gray-300 duration-100 w-full rounded m-auto text-white dark:text-black font-semibold text-md"
+        class="cursor-pointer mt-2 py-2.5 bg-black dark:bg-[#fff] dark:sm:hover:bg-gray-300 duration-100 w-full rounded m-auto text-white dark:text-black font-semibold text-md"
       >
         Create Screener
       </button>

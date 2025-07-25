@@ -2,6 +2,8 @@
   import { onMount, onDestroy } from "svelte";
   import { goto } from "$app/navigation";
   import { clearCache, screenWidth, getCache, setCache } from "$lib/store";
+  import Copy from "lucide-svelte/icons/copy";
+
   import { toast } from "svelte-sonner";
   import { mode } from "mode-watcher";
 
@@ -21,6 +23,7 @@
   let shouldLoadWorker = writable(false);
   export let data;
   export let form;
+
   let showFilters = true;
   let isLoaded = false;
   let syncWorker: Worker | undefined;
@@ -195,11 +198,11 @@
   }
 
   async function handleCreateStrategy() {
-    if (["Pro", "Plus"]?.includes(data?.user?.tier)) {
+    if (["Pro"]?.includes(data?.user?.tier)) {
       const closePopup = document.getElementById("addStrategy");
       closePopup?.dispatchEvent(new MouseEvent("click"));
     } else {
-      toast.info("Available only to Plus or Pro Member", {
+      toast.info("Available only to Pro Member", {
         style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
       });
     }
@@ -207,7 +210,10 @@
 
   async function handleDeleteStrategy() {
     const deletePromise = (async () => {
-      const postData = { strategyId: selectedStrategy };
+      const postData = {
+        strategyId: selectedStrategy,
+        type: "optionsScreener",
+      };
 
       const response = await fetch("/api/delete-strategy", {
         method: "POST",
@@ -310,7 +316,7 @@
     }
 
     // build postData object
-    const postData = {};
+    const postData = { type: "optionsScreener" };
     for (const [key, value] of formData.entries()) {
       postData[key] = value;
     }
@@ -332,7 +338,6 @@
         throw new Error("Server did not return a new strategy ID");
       }
 
-      // ——— SUCCESS: run your existing post-create logic ———
       toast.success("Screener created successfully!", {
         style: `
           border-radius: 5px;
@@ -633,10 +638,11 @@
       const postData = {
         strategyId: selectedStrategy,
         rules: ruleOfList,
+        type: "optionsScreener",
       };
 
       const savePromise = (async () => {
-        const response = await fetch("/api/save-options-screener", {
+        const response = await fetch("/api/save-strategy", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(postData),
@@ -1157,7 +1163,7 @@
 <svelte:window on:scroll={handleScroll} />
 
 <section
-  class="w-full max-w-3xl sm:max-w-(--breakpoint-xl) overflow-hidden min-h-screen pb-40 px-5"
+  class="w-full max-w-3xl sm:max-w-(--breakpoint-xl) overflow-hidden min-h-screen pb-40 px-5 mt-5"
 >
   <div class="text-sm sm:text-[1rem] breadcrumbs">
     <ul>
@@ -1172,71 +1178,14 @@
   <div class="sm:rounded">
     <div class="flex flex-col md:flex-row items-start md:items-center mb-5">
       <div class="w-full flex flex-row items-center sm:mt-4">
-        <h1 class=" text-3xl font-semibold">Options Screener</h1>
+        <h1 class="text-2xl sm:text-3xl font-semibold">Options Screener</h1>
         <span class="inline-block text-xs sm:text-sm font-semibold ml-2 mt-3">
           {filteredData?.length} Contracts Found
         </span>
       </div>
-      <!--
-      <div class="flex flex-row items-center w-full mt-5">
-        <div class="flex w-full sm:w-[50%] md:block md:w-auto sm:ml-auto">
-          <div
-            class="hidden text-sm sm:text-[1rem] font-semibold md:block sm:mb-1"
-          >
-            Popular Screens
-          </div>
-          <div class="relative inline-block text-left grow">
-            <DropdownMenu.Root>
-              <DropdownMenu.Trigger asChild let:builder>
-                <Button
-                  builders={[builder]}
-                  class="w-full  border-gray-300 dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded truncate"
-                >
-                  <span class="truncate"
-                    >{selectedPopularStrategy?.length !== 0
-                      ? selectedPopularStrategy
-                      : "Select popular"}</span
-                  >
-                  <svg
-                    class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    style="max-width:40px"
-                    aria-hidden="true"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                </Button>
-              </DropdownMenu.Trigger>
-              <DropdownMenu.Content
-                class="w-56 h-fit max-h-72 overflow-y-auto scroller"
-              >
-                <DropdownMenu.Label
-                  class="text-muted dark:text-gray-400 font-normal"
-                >
-                  Popular Strategies
-                </DropdownMenu.Label>
-                <DropdownMenu.Separator />
-                <DropdownMenu.Group>
-                  {#each popularStrategyList as item}
-                    <DropdownMenu.Item
-                      on:click={() => popularStrategy(item?.key)}
-                      class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
-                    >
-                      {item?.label}
-                    </DropdownMenu.Item>
-                  {/each}
-                </DropdownMenu.Group>
-              </DropdownMenu.Content>
-            </DropdownMenu.Root>
-          </div>
-        </div>
 
-        <div class="flex w-full sm:w-[50%] sm:ml-3 md:block md:w-auto ml-3">
+      <div class="flex flex-row items-center w-full mt-5 justify-end">
+        <div class="flex w-full sm:w-[50%] sm:ml-3 md:block md:w-auto">
           <div
             class="hidden text-sm sm:text-[1rem] font-semibold md:block sm:mb-1"
           >
@@ -1247,7 +1196,7 @@
               <DropdownMenu.Trigger asChild let:builder>
                 <Button
                   builders={[builder]}
-                  class="min-w-[110px]  w-full border-gray-300 dark:border-gray-600 border bg-white dark:bg-default sm:hover:bg-gray-100 dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2  rounded truncate"
+                  class="min-w-[110px]  w-full border-gray-300 dark:border-gray-600 border bg-black dark:bg-default sm:hover:bg-default dark:sm:hover:bg-primary text-white ease-out flex flex-row justify-between items-center px-3 py-2  rounded truncate"
                 >
                   <span class="truncate max-w-48"
                     >{selectedStrategy?.length !== 0
@@ -1311,7 +1260,7 @@
                         e.preventDefault();
                         switchStrategy(item);
                       }}
-                      class=" {item?.id === selectedStrategy
+                      class="whitespace-nowrap {item?.id === selectedStrategy
                         ? 'bg-gray-300 dark:bg-primary'
                         : ''} cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                     >
@@ -1345,7 +1294,6 @@
           </div>
         </div>
       </div>
-      -->
     </div>
 
     <div
@@ -1474,6 +1422,38 @@
               >
             </DropdownMenu.Content>
           </DropdownMenu.Root>
+
+          {#if data?.user}
+            <label
+              for={!data?.user ? "userLogin" : ""}
+              on:click={() => handleSave(true)}
+              class="text-[0.95rem] sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold text-white bg-black sm:hover:bg-default dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden"
+            >
+              <svg
+                class="h-5 w-5"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 32 32"
+                ><path
+                  fill="currentColor"
+                  d="M5 5v22h22V9.594l-.281-.313l-4-4L22.406 5zm2 2h3v6h12V7.437l3 3V25h-2v-9H9v9H7zm5 0h4v2h2V7h2v4h-8zm-1 11h10v7H11z"
+                /></svg
+              >
+              <div>Save</div>
+            </label>
+
+            {#if strategyList?.length > 0}
+              <label
+                for={!data?.user ? "userLogin" : ""}
+                on:click={() => {
+                  handleCreateStrategy();
+                }}
+                class="text-[0.95rem] sm:ml-3 cursor-pointer inline-flex items-center justify-center space-x-1 whitespace-nowrap rounded border border-gray-300 dark:border-none bg-blue-brand_light py-2 pl-3 pr-4 font-semibold text-white bg-black sm:hover:bg-default dark:bg-[#000] dark:sm:hover:bg-default/60 ease-out focus:outline-hidden"
+              >
+                <Copy class="w-4 h-4 inline-block mr-2" />
+                <div>Save as New</div>
+              </label>
+            {/if}
+          {/if}
 
           <!--
           {#if data?.user}
@@ -2405,7 +2385,7 @@
 
   <div
     class="modal-box w-full p-6 rounded border
-          bg-white dark:bg-secondary border border-gray-300 dark:border-gray-800"
+        bg-white dark:bg-secondary border border-gray-300 dark:border-gray-800"
   >
     <h1 class="text-2xl font-bold">New Screener</h1>
 
@@ -2424,7 +2404,7 @@
 
       <button
         type="submit"
-        class="cursor-pointer mt-2 py-2.5 bg-default sm:hover:bg-black dark:bg-[#fff] dark:sm:hover:bg-gray-300 duration-100 w-full rounded m-auto text-white dark:text-black font-semibold text-md"
+        class="cursor-pointer mt-2 py-2.5 bg-black dark:bg-[#fff] dark:sm:hover:bg-gray-300 duration-100 w-full rounded m-auto text-white dark:text-black font-semibold text-md"
       >
         Create Screener
       </button>

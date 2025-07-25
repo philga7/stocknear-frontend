@@ -4,7 +4,25 @@ import { loginUserSchema, registerUserSchema } from "$lib/schemas";
 
 
 export const load = async ({ locals }) => {
-  const { apiURL, apiKey } = locals;
+  const { apiURL, apiKey, pb, user } = locals;
+
+  const getAllStrategies = async () => {
+    let output = [];
+
+     try {
+        output = await pb.collection("optionsScreener").getFullList({
+        filter: `user="${user?.id}"`,
+        });
+            output?.sort((a, b) => new Date(b?.updated) - new Date(a?.updated));
+
+    }
+    catch(e) {
+        output = [];
+    }
+
+  
+    return output;
+  };
 
 
   const getScreenerData = async () => {
@@ -28,8 +46,13 @@ export const load = async ({ locals }) => {
   // Make sure to return a promise
   return {
     getScreenerData: await getScreenerData(),
+    getAllStrategies: await getAllStrategies(),
   };
 };
+
+
+
+
 
 export const actions = {
   login: async ({ request, locals }) => {
