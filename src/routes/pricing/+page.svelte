@@ -1319,84 +1319,14 @@
           >
         </div>
       </div>
-      <!--
-      <div
-        style="opacity: 1; transform: translateY(20px);"
-        class="transform transition-all duration-300 sm:hover:-translate-y-1 flex flex-col relative bg-white dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-[3px] overflow-visible border border-gray-400 dark:border-zinc-600 p-6 isolate"
-      >
-        <h3 class="text-3xl font-bold">Enterprise</h3>
-        <p class="text-muted dark:text-zinc-300 text-sm mt-1">
-          Best for Firms & Businesses
-        </p>
-        <div class="mt-4">
-          <span class="text-4xl font-bold">Custom</span>
-        </div>
-
-        <ul class="mt-6 mb-6 space-y-2">
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="">Everything in Pro and ...</span>
-          </li>
-
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="">Unlimited AI Credits</span>
-          </li>
-
-          <li class="flex items-start">
-            <svg
-              class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              ></path></svg
-            ><span class="">24/7 Support</span>
-          </li>
-        </ul>
-
-        <div class="mt-auto pt-6 border-t border-zinc-700 mx-4">
-          <a
-            href={`mailto:${emailAddress}`}
-            class="text-white cursor-pointer w-full py-3 px-4 bg-black dark:bg-white rounded-[3px] font-semibold sm:hover:bg-default dark:sm:hover:bg-gray-100 text-white dark:text-black transition duration-100 flex items-center justify-center"
-            >Contact Us</a
-          >
-        </div>
-      </div>
-      -->
 
       <div
         class="relative text-left w-full col-span-1 lg:col-span-3 text-white bg-[#18181B] dark:bg-zinc-900 bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-[3px] overflow-visible border border-zinc-200 dark:border-zinc-600 p-6 isolate translate-y-5 opacity-100"
       >
         <div class="flex flex-row items-center justify-between">
-          <h3 class="text-2xl md:text-3xl font-bold">Lifetime</h3>
+          <h3 class="text-2xl md:text-3xl font-bold">
+            Lifetime ({data?.getLTDCount} left)
+          </h3>
           <div>
             <span class="text-3xl md:text-4xl font-bold">$449</span>
           </div>
