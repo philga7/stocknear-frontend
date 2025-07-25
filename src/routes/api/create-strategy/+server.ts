@@ -15,7 +15,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     }
   } else {
       try {
-        output = await pb.collection("stockscreener").create(data)
+        output = await pb.collection("stocksScreener").create(data)
     }
     catch(e) {
         output = {};

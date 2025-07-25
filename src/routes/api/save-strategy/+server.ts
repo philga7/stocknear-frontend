@@ -23,7 +23,7 @@ export const POST = (async ({ request, locals }) => {
   } else {
 
     try {
-      output = await pb?.collection("stockscreener")?.update(data?.strategyId, {
+      output = await pb?.collection("stocksScreener")?.update(data?.strategyId, {
         'rules': data?.rules
       })
     }

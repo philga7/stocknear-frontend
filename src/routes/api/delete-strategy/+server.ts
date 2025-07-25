@@ -19,7 +19,7 @@ export const POST = (async ({ request, locals }) => {
   } else {
 
      try {
-        await pb.collection("stockscreener")?.delete(data?.strategyId)
+        await pb.collection("stocksScreener")?.delete(data?.strategyId)
         output = 'success';
     }
     catch(e) {

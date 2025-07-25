@@ -1498,7 +1498,7 @@
 
   async function handleDeleteStrategy() {
     const deletePromise = (async () => {
-      const postData = { strategyId: selectedStrategy, type: "stockscreener" };
+      const postData = { strategyId: selectedStrategy, type: "stocksScreener" };
 
       const response = await fetch("/api/delete-strategy", {
         method: "POST",
@@ -1601,7 +1601,7 @@
     }
 
     // build postData object
-    const postData = { type: "stockscreener" };
+    const postData = { type: "stocksScreener" };
     for (const [key, value] of formData.entries()) {
       postData[key] = value;
     }
@@ -2000,7 +2000,7 @@ const handleKeyDown = (event) => {
       const postData = {
         strategyId: selectedStrategy,
         rules: ruleOfList,
-        type: "stockscreener",
+        type: "stocksScreener",
       };
 
       const savePromise = (async () => {

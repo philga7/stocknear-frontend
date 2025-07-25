@@ -34,7 +34,7 @@ export const load = async ({ locals }) => {
     let output = [];
 
      try {
-        output = await pb.collection("stockscreener").getFullList({
+        output = await pb.collection("stocksScreener").getFullList({
         filter: `user="${user?.id}"`,
         });
             output?.sort((a, b) => new Date(b?.updated) - new Date(a?.updated));
