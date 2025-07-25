@@ -1,6 +1,5 @@
 export const load = async ({ locals }) => {
   const getRedditTracker = async () => {
-    let output;
 
     const { apiKey, apiURL } = locals;
 
@@ -12,9 +11,9 @@ export const load = async ({ locals }) => {
       },
     });
 
-    output = await response.json();
+    const output = await response.json();
 
-
+  
     return output;
   };
 
