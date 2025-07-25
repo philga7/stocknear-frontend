@@ -68,13 +68,14 @@
       : []),
     { key: "symbol", label: "Symbol", align: "left" },
     { key: "name", label: "Name", align: "left" },
+
     { key: "reportingName", label: "Member", align: "left" },
     { key: "marketCap", label: "Market Cap", align: "right" },
-    { key: "price", label: "Price", align: "right" },
-    { key: "changesPercentage", label: "% Change", align: "right" },
     { key: "shares", label: "Shares", align: "right" },
     { key: "value", label: "Market Value", align: "right" },
     { key: "transactionType", label: "Type", align: "right" },
+    { key: "transactionDate", label: "Transaction", align: "right" },
+    { key: "filingDate", label: "Filed", align: "right" },
   ];
 
   let sortOrders = {
@@ -89,6 +90,8 @@
     shares: { order: "none", type: "number" },
     value: { order: "none", type: "number" },
     transactionType: { order: "none", type: "string" },
+    filingDate: { order: "none", type: "date" },
+    transactionDate: { order: "none", type: "date" },
   };
 
   const sortData = (key) => {
@@ -148,7 +151,7 @@
     // Sort using the generic comparison function
     stockList = [...originalData].sort(compareValues)?.slice(0, 50);
   };
-  $: charNumber = $screenWidth < 640 ? 20 : 25;
+  $: charNumber = $screenWidth < 640 ? 20 : 40;
 
   $: checkedSymbol = "";
   function openGraph(symbol) {
@@ -261,23 +264,6 @@
                       <td
                         class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                       >
-                        {item?.price}
-                      </td>
-
-                      <td
-                        class="text-sm sm:text-[1rem] whitespace-nowrap text-end {item?.changesPercentage >=
-                        0
-                          ? 'text-green-800 dark:text-[#00FC50]'
-                          : 'text-red-800 dark:text-[#FF2F1F]'}"
-                      >
-                        {item?.changesPercentage > 0
-                          ? "+"
-                          : ""}{item?.changesPercentage}%
-                      </td>
-
-                      <td
-                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
-                      >
                         {item?.shares?.toLocaleString("en-US")}
                       </td>
 
@@ -291,6 +277,38 @@
                         class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                       >
                         {item?.transactionType}
+                      </td>
+
+                      <td
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                      >
+                        {item?.transactionDate
+                          ? new Date(item?.transactionDate).toLocaleDateString(
+                              "en-US",
+                              {
+                                month: "short",
+                                day: "2-digit",
+                                year: "numeric",
+                                timeZone: "UTC",
+                              },
+                            )
+                          : ""}
+                      </td>
+
+                      <td
+                        class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                      >
+                        {item?.filingDate
+                          ? new Date(item?.filingDate).toLocaleDateString(
+                              "en-US",
+                              {
+                                month: "short",
+                                day: "2-digit",
+                                year: "numeric",
+                                timeZone: "UTC",
+                              },
+                            )
+                          : ""}
                       </td>
                     </tr>
 
