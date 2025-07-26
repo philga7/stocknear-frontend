@@ -15,7 +15,7 @@
         <div class="relative pl-14">
           <dt class=" font-semibold leading-4 md:leading-7">
             <div
-              class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded bg-[#3B82F6] dark:bg-[#fff]"
+              class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded bg-black dark:bg-[#fff]"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +40,7 @@
         <div class="relative pl-14">
           <dt class=" font-semibold leading-4 md:leading-7">
             <div
-              class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded bg-[#3B82F6] dark:bg-[#fff]"
+              class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded bg-black dark:bg-[#fff]"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -65,7 +65,7 @@
         <div class="relative pl-14">
           <dt class=" font-semibold leading-4 md:leading-7">
             <div
-              class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded bg-[#3B82F6] dark:bg-[#fff]"
+              class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded bg-black dark:bg-[#fff]"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -90,7 +90,7 @@
         <div class="relative pl-14">
           <dt class=" font-semibold leading-4 md:leading-7">
             <div
-              class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded bg-[#3B82F6] dark:bg-[#fff]"
+              class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded bg-black dark:bg-[#fff]"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
