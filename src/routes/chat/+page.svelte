@@ -818,7 +818,7 @@
             </div>
 
             <div
-              class="bg-blue-100 dark:bg-[#2A2E39] p-6 rounded mt-8 text-center mb-8"
+              class="bg-gray-100 border border-gray-300 dark:border-gray-600 shadow-lg dark:bg-[#2A2E39] p-6 rounded mt-2 text-center mb-8"
             >
               <h2 class="text-xl sm:text-2xl font-bold mb-4">
                 Ready to Analyze Stocks?
@@ -828,7 +828,7 @@
                 for thousands of stocks.
               </p>
               <a
-                class="bg-blue-600 text-white px-4 py-2 rounded sm:hover:bg-blue-700 inline-block text-sm sm:text-[1rem] font-semibold"
+                class="bg-black dark:bg-white text-white dark:text-muted px-4 py-2 rounded sm:hover:bg-blue-700 inline-block text-sm sm:text-[1rem] font-semibold"
                 href="/login">Sign Up Today</a
               >
             </div>
