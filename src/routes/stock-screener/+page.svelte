@@ -873,7 +873,7 @@
       defaultValue: "any",
       category: "Valuation & Ratios",
     },
-    evToFCF: {
+    evToFreeCashFlow: {
       label: "EV / FCF",
       step: [50, 20, 10, 5, 1, 0],
       defaultCondition: "over",
@@ -3448,9 +3448,9 @@ const handleKeyDown = (event) => {
           <li>
             <button
               on:click={() => (displayTableTab = "general")}
-              class="cursor-pointer text-[1rem] block rounded px-2 py-1 focus:outline-hidden sm:hover:bg-gray-100 dark:sm:hover:bg-primary {displayTableTab ===
+              class="cursor-pointer text-[1rem] block rounded px-2 py-1 focus:outline-hidden sm:hover:text-white sm:hover:bg-default dark:sm:hover:bg-primary {displayTableTab ===
               'general'
-                ? 'font-semibold bg-gray-100 dark:bg-primary'
+                ? 'font-semibold bg-black text-white dark:bg-primary'
                 : ''}"
             >
               General
@@ -3459,9 +3459,9 @@ const handleKeyDown = (event) => {
           <li>
             <button
               on:click={() => (displayTableTab = "filters")}
-              class="cursor-pointer text-[1rem] flex flex-row items-center relative block rounded px-2 py-1 sm:hover:bg-gray-100 dark:sm:hover:bg-primary {displayTableTab ===
+              class="cursor-pointer text-[1rem] flex flex-row items-center relative block rounded px-2 py-1 sm:hover:text-white sm:hover:bg-default dark:sm:hover:bg-primary {displayTableTab ===
               'filters'
-                ? 'font-semibold bg-gray-100 dark:bg-primary'
+                ? 'font-semibold text-white bg-black dark:bg-primary'
                 : ''} focus:outline-hidden"
             >
               <span class="">Filters</span>
@@ -3478,9 +3478,9 @@ const handleKeyDown = (event) => {
           <li>
             <button
               on:click={() => changeTab("performance")}
-              class="cursor-pointer text-[1rem] block rounded px-2 py-1 focus:outline-hidden sm:hover:bg-gray-100 dark:sm:hover:bg-primary {displayTableTab ===
+              class="cursor-pointer text-[1rem] block rounded px-2 py-1 focus:outline-hidden sm:hover:text-white sm:hover:bg-default dark:sm:hover:bg-primary {displayTableTab ===
               'performance'
-                ? 'font-semibold bg-gray-100 dark:bg-primary'
+                ? 'font-semibold bg-black text-white dark:bg-primary'
                 : ''}"
             >
               Performance
@@ -3489,9 +3489,9 @@ const handleKeyDown = (event) => {
           <li>
             <button
               on:click={() => changeTab("analysts")}
-              class="cursor-pointer text-[1rem] block rounded px-2 py-1 focus:outline-hidden sm:hover:bg-gray-100 dark:sm:hover:bg-primary {displayTableTab ===
+              class="cursor-pointer text-[1rem] block rounded px-2 py-1 focus:outline-hidden sm:hover:text-white sm:hover:bg-default dark:sm:hover:bg-primary {displayTableTab ===
               'analysts'
-                ? 'font-semibold bg-gray-100 dark:bg-primary'
+                ? 'font-semibold bg-black text-white dark:bg-primary'
                 : ''}"
             >
               Analysts
@@ -3500,9 +3500,9 @@ const handleKeyDown = (event) => {
           <li>
             <button
               on:click={() => changeTab("dividends")}
-              class="cursor-pointer text-[1rem] block rounded px-2 py-1 focus:outline-hidden sm:hover:bg-gray-100 dark:sm:hover:bg-primary {displayTableTab ===
+              class="cursor-pointer text-[1rem] block rounded px-2 py-1 focus:outline-hidden sm:hover:text-white sm:hover:bg-default dark:sm:hover:bg-primary {displayTableTab ===
               'dividends'
-                ? 'font-semibold bg-gray-100 dark:bg-primary'
+                ? 'font-semibold bg-black text-white dark:bg-primary'
                 : ''}"
             >
               Dividends
@@ -3511,9 +3511,9 @@ const handleKeyDown = (event) => {
           <li>
             <button
               on:click={() => changeTab("financials")}
-              class="cursor-pointer text-[1rem] block rounded px-2 py-1 focus:outline-hidden sm:hover:bg-gray-100 dark:sm:hover:bg-primary {displayTableTab ===
+              class="cursor-pointer text-[1rem] block rounded px-2 py-1 focus:outline-hidden sm:hover:text-white sm:hover:bg-default dark:sm:hover:bg-primary {displayTableTab ===
               'financials'
-                ? 'font-semibold bg-gray-100 dark:bg-primary'
+                ? 'font-semibold bg-black text-white dark:bg-primary'
                 : ''}"
             >
               Financials
