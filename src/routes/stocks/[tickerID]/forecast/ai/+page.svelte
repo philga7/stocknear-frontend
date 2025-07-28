@@ -152,6 +152,7 @@
         return {
           quarter: tableDates[index],
           change: change?.toFixed(2) ?? null, // Format to 2 decimal places
+          price: prevY?.toFixed(2) ?? null, // Format price to 2 decimal places
         };
       })
       ?.filter(Boolean); // Remove null values
@@ -518,6 +519,137 @@
                 {removeCompanyStrings($displayCompanyName)} AI Score Forecast
               </h1>
             </div>
+
+            <p class="mt-4">
+              As of the latest evaluation, our AI model assigns a score of
+              <strong
+                >{#if isPro}
+                  {data?.getAIScore?.score || "n/a"}
+                {:else}
+                  <a
+                    href="/pricing"
+                    class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                  >
+                    Unlock Pro <svg
+                      class="w-4 h-4 mb-1 inline-block"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                      />
+                    </svg>
+                  </a>
+                {/if}</strong
+              >
+              out of 10, indicating a
+              <strong>
+                {#if isPro}
+                  {[10, 9, 8, 7]?.includes(data?.getAIScore?.score)
+                    ? "bullish"
+                    : [6, 5, 4]?.includes(data?.getAIScore?.score)
+                      ? "neutral"
+                      : "bearish"}
+                {:else}
+                  <a
+                    href="/pricing"
+                    class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                  >
+                    Unlock Pro <svg
+                      class="w-4 h-4 mb-1 inline-block"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                      />
+                    </svg>
+                  </a>
+                {/if}
+              </strong>
+              outlook. The model demonstrates an accuracy rate of
+              <strong>
+                {#if isPro}
+                  {data?.getAIScore?.accuracy
+                    ? data?.getAIScore?.accuracy + "%"
+                    : "n/a"}
+                {:else}
+                  <a
+                    href="/pricing"
+                    class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                  >
+                    Unlock Pro <svg
+                      class="w-4 h-4 mb-1 inline-block"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                      />
+                    </svg>
+                  </a>
+                {/if}
+              </strong>
+              based on historical backtesting. Following this AI Score methodology,
+              the average return would be
+              <strong
+                class={avgReturn >= 0 && isPro
+                  ? "text-green-800 dark:text-[#00FC50]"
+                  : avgReturn < 0 && isPro
+                    ? "text-red-800 dark:text-[#FF2F1F]"
+                    : ""}
+              >
+                {#if isPro}
+                  {avgReturn >= 0 ? "+" : ""}{avgReturn?.toFixed(2)}%
+                {:else}
+                  <a
+                    href="/pricing"
+                    class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                  >
+                    Unlock Pro <svg
+                      class="w-4 h-4 mb-1 inline-block"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                      />
+                    </svg>
+                  </a>
+                {/if}
+              </strong>. The current forecast suggests
+              <strong>
+                {#if isPro}
+                  {data?.getAIScore?.score > 6
+                    ? "positive momentum"
+                    : data?.getAIScore?.score < 5
+                      ? "potential downside risk"
+                      : "sideways movement"}
+                {:else}
+                  <a
+                    href="/pricing"
+                    class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                  >
+                    Unlock Pro <svg
+                      class="w-4 h-4 mb-1 inline-block"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                      />
+                    </svg>
+                  </a>
+                {/if}
+              </strong>
+              for the stock's near-term performance.
+            </p>
+
             <div class="w-full mb-10 mt-3">
               <div
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 mt-3"
@@ -554,7 +686,7 @@
                       {:else}
                         <a
                           href="/pricing"
-                          class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
+                          class="sm:hover:text-default dark:sm:hover:text-blue-400"
                           >Pro <svg
                             class="w-5 h-5 mb-1 inline-block"
                             xmlns="http://www.w3.org/2000/svg"
@@ -588,7 +720,7 @@
                     {:else}
                       <a
                         href="/pricing"
-                        class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400 text-xl font-bold"
+                        class="sm:hover:text-default dark:sm:hover:text-blue-400 text-xl font-bold"
                       >
                         Pro <svg
                           class="w-5 h-5 mb-1 inline-block"
@@ -625,7 +757,7 @@
                       >
                         <a
                           href="/pricing"
-                          class="sm:hover:text-blue-700 dark:sm:hover:text-white dark:text-white flex flex-row items-center"
+                          class="sm:hover:text-default dark:sm:hover:text-white dark:text-white flex flex-row items-center"
                         >
                           <span>Upgrade to Pro</span>
                           <svg
@@ -643,7 +775,7 @@
                   </div>
 
                   <div
-                    class="no-scrollbar mb-1 mt-2 overflow-x-auto px-1.5 text-center md:mb-0 md:px-0 lg:mt-5"
+                    class=" mb-1 mt-2 overflow-x-auto px-1.5 text-center md:mb-0 md:px-0 lg:mt-5"
                   >
                     <table
                       class="table table-sm table-compact w-full text-right text-tiny xs:text-sm"
@@ -678,7 +810,7 @@
                             <td
                               class="text-right whitespace-nowrap text-[1rem]"
                             >
-                              {#if index < 5 || isPro}
+                              {#if isPro}
                                 {val}
                                 {[10, 9, 8, 7].includes(Number(val))
                                   ? "(Bullish)"
@@ -688,7 +820,41 @@
                               {:else}
                                 <a
                                   href="/pricing"
-                                  class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
+                                  class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                                >
+                                  Pro
+                                  <svg
+                                    class="w-4 h-4 mb-1 inline-block"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      fill="currentColor"
+                                      d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                                    />
+                                  </svg>
+                                </a>
+                              {/if}
+                            </td>
+                          {/each}
+                        </tr>
+
+                        <tr
+                          class="font-normal text-sm sm:text-[1rem] whitespace-nowrap"
+                        >
+                          <td class="py-[3px] text-left lg:py-0.5 text-[1rem]"
+                            >Price</td
+                          >
+                          {#each tableQuarterChange as item, index}
+                            <td class="text-[1rem]">
+                              {#if isPro}
+                                {item?.price && item?.price !== null
+                                  ? "$" + item?.price
+                                  : "n/a"}
+                              {:else}
+                                <a
+                                  href="/pricing"
+                                  class="sm:hover:text-default dark:sm:hover:text-blue-400"
                                 >
                                   Pro
                                   <svg
@@ -712,11 +878,11 @@
                           class="font-normal text-sm sm:text-[1rem] whitespace-nowrap"
                         >
                           <td class="py-[3px] text-left lg:py-0.5 text-[1rem]"
-                            >QoQ Change</td
+                            >% Change</td
                           >
                           {#each tableQuarterChange as item, index}
                             <td class="text-[1rem]">
-                              {#if index < 5 || isPro}
+                              {#if isPro}
                                 <span
                                   class={item?.change > 0
                                     ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
@@ -729,7 +895,7 @@
                               {:else}
                                 <a
                                   href="/pricing"
-                                  class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
+                                  class="sm:hover:text-default dark:sm:hover:text-blue-400"
                                 >
                                   Pro
                                   <svg
@@ -750,18 +916,6 @@
                       </tbody>
                     </table>
                   </div>
-
-                  <p class="mt-4">
-                    Following the <strong>AI Score</strong> for {removeCompanyStrings(
-                      $displayCompanyName,
-                    )} the model shows that the average return would be
-                    <span
-                      class="font-semibold {avgReturn >= 0
-                        ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
-                        : 'text-red-800 dark:text-[#FF2F1F]'}"
-                      >{avgReturn?.toFixed(2)}%</span
-                    > based on the backtesting results.
-                  </p>
                 </div>
               </div>
             </div>
@@ -778,7 +932,7 @@
                 <Infobox
                   text={`Using our AI model trained on historical seasonal data, we generated a 12-month forecast for ${removeCompanyStrings($displayCompanyName)}. The model predicts a ... Unlock content with
           <a
-            class="inline-block ml-0.5 text-blue-700 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
+            class="inline-block ml-0.5  dark:text-blue-400 dark:sm:hover:text-white"
             href="/pricing"
             >Pro Subscription <svg
               class="w-4 h-4 mb-1 inline-block"
@@ -816,7 +970,7 @@
                       >
                         <a
                           href="/pricing"
-                          class="sm:hover:text-blue-700 dark:sm:hover:text-white dark:text-white flex flex-row items-center"
+                          class="sm:hover:text-default dark:sm:hover:text-white dark:text-white flex flex-row items-center"
                         >
                           <span>Upgrade to Pro</span>
                           <svg
@@ -858,7 +1012,7 @@
                             <td class="whitespace-nowrap">
                               <a
                                 href="/pricing"
-                                class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
+                                class="sm:hover:text-default dark:sm:hover:text-blue-400"
                                 >Pro <svg
                                   class="w-4 h-4 mb-1 inline-block"
                                   xmlns="http://www.w3.org/2000/svg"
@@ -874,7 +1028,7 @@
                             <td class="whitespace-nowrap">
                               <a
                                 href="/pricing"
-                                class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
+                                class="sm:hover:text-default dark:sm:hover:text-blue-400"
                                 >Pro <svg
                                   class="w-4 h-4 mb-1 inline-block"
                                   xmlns="http://www.w3.org/2000/svg"
@@ -890,7 +1044,7 @@
                             <td class="whitespace-nowrap">
                               <a
                                 href="/pricing"
-                                class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
+                                class="sm:hover:text-default dark:sm:hover:text-blue-400"
                                 >Pro <svg
                                   class="w-4 h-4 mb-1 inline-block"
                                   xmlns="http://www.w3.org/2000/svg"
@@ -906,7 +1060,7 @@
                             <td class="whitespace-nowrap">
                               <a
                                 href="/pricing"
-                                class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
+                                class="sm:hover:text-default dark:sm:hover:text-blue-400"
                                 >Pro <svg
                                   class="w-4 h-4 mb-1 inline-block"
                                   xmlns="http://www.w3.org/2000/svg"
@@ -933,7 +1087,7 @@
                             <td class="whitespace-nowrap">
                               <a
                                 href="/pricing"
-                                class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
+                                class="sm:hover:text-default dark:sm:hover:text-blue-400"
                               >
                                 Pro
                                 <svg
@@ -951,7 +1105,7 @@
                             <td class="whitespace-nowrap"
                               ><a
                                 href="/pricing"
-                                class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
+                                class="sm:hover:text-default dark:sm:hover:text-blue-400"
                                 >Pro <svg
                                   class="w-4 h-4 mb-1 inline-block"
                                   xmlns="http://www.w3.org/2000/svg"
@@ -967,7 +1121,7 @@
                             <td class="whitespace-nowrap"
                               ><a
                                 href="/pricing"
-                                class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
+                                class="sm:hover:text-default dark:sm:hover:text-blue-400"
                                 >Pro <svg
                                   class="w-4 h-4 mb-1 inline-block"
                                   xmlns="http://www.w3.org/2000/svg"
@@ -983,7 +1137,7 @@
                             <td class="whitespace-nowrap"
                               ><a
                                 href="/pricing"
-                                class="sm:hover:text-blue-700 dark:sm:hover:text-blue-400"
+                                class="sm:hover:text-default dark:sm:hover:text-blue-400"
                                 >Pro <svg
                                   class="w-4 h-4 mb-1 inline-block"
                                   xmlns="http://www.w3.org/2000/svg"

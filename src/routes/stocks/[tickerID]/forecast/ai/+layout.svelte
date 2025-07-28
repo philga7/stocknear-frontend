@@ -42,10 +42,15 @@
                 AI Score Definition
               </h3>
               <div class=" p-2">
-                The AI Score uses fundamental and technical indicators, along
-                with statistical data, to predict if a stock will be bullish in
-                the next quarter. It ranges from 1 to 10, with higher scores
-                indicating a greater likelihood of the prediction being correct.
+                The AI Score leverages advanced machine learning algorithms that
+                analyze a comprehensive blend of technical indicators,
+                fundamental metrics, market sentiment data, and historical price
+                patterns to forecast short-term stock momentum over the next 30
+                days. Scored on a scale of 1-10, where scores of 7+ indicate
+                bullish sentiment, 4-6 suggest neutral/sideways movement, and
+                1-3 signal bearish conditions. Higher scores reflect greater
+                statistical confidence in the directional prediction, backed by
+                rigorous backtesting across multiple market cycles.
               </div>
               <!--
             <div class="px-2">
