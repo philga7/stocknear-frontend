@@ -11,11 +11,19 @@
   export let rawData = [];
   export let metrics = {};
 
+  let isPro = data?.user?.tier === "Pro";
+
+  let currentPrice = Number(data?.getStockQuote?.price?.toFixed(2));
+
   let config;
 
   function getBarChart() {
     const xAxis = rawData?.map((item) => item?.size);
-    const yAxis = rawData?.map((item) => item?.price_level || 0);
+    let priceLevel = rawData?.map((item) => item?.price_level || 0);
+
+    priceLevel = Array.from(new Set([...priceLevel, ...[currentPrice]]))?.sort(
+      (a, b) => a - b,
+    );
 
     // Find max value index for highlighting
     const maxValueIndex = xAxis?.indexOf(Math.max(...xAxis));
@@ -45,7 +53,20 @@
       },
       xAxis: {
         endonTick: false,
-        categories: yAxis,
+        categories: priceLevel,
+        plotLines: [
+          {
+            value: priceLevel?.findIndex((s) => s === currentPrice),
+            color: $mode === "light" ? "#000" : "#fff",
+            dashStyle: "Dash",
+            width: 1.5,
+            label: {
+              text: `Current Price ${currentPrice}`,
+              style: { color: $mode === "light" ? "#000" : "#fff" },
+            },
+            zIndex: 5,
+          },
+        ],
         crosshair: {
           color: $mode === "light" ? "#545454" : "white", // Set the color of the crosshair line
           width: 1, // Adjust the line width as needed
@@ -149,19 +170,79 @@
   <main class="overflow-hidden">
     {#if rawData?.length !== 0 && Object?.keys(metrics)?.length > 0}
       <div class="w-full flex flex-col items-start">
-        <div class=" text-[1rem] mt-2 w-full">
-          {removeCompanyStrings($displayCompanyName)} has seen an average dark pool
-          trade size of
-          <strong
-            >{Math.floor(metrics?.avgTradeSize)?.toLocaleString(
-              "en-US",
-            )}</strong
-          >
-          and an average premium per trade of
-          <strong>${abbreviateNumber(metrics?.avgPremTrade)}</strong>, with a
-          total premium of
-          <strong>${abbreviateNumber(metrics?.totalPrem)}</strong>.
-        </div>
+        <p class="text-[1rem] mt-2 w-full sm:mb-4">
+          {removeCompanyStrings($displayCompanyName)} dark pool activity shows an
+          average trade size of
+          <strong>
+            {#if isPro}
+              {Math.floor(metrics?.avgTradeSize)?.toLocaleString("en-US")}
+            {:else}
+              <a
+                href="/pricing"
+                class="sm:hover:text-default dark:sm:hover:text-blue-400"
+              >
+                Unlock Pro <svg
+                  class="w-4 h-4 mb-1 inline-block"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                  />
+                </svg>
+              </a>
+            {/if}
+          </strong>
+          with
+          <strong>
+            {#if isPro}
+              ${abbreviateNumber(metrics?.avgPremTrade)}
+            {:else}
+              <a
+                href="/pricing"
+                class="sm:hover:text-default dark:sm:hover:text-blue-400"
+              >
+                Unlock Pro <svg
+                  class="w-4 h-4 mb-1 inline-block"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                  />
+                </svg>
+              </a>
+            {/if}
+          </strong>
+          average premium per trade.
+          <strong>Large trade sizes</strong> indicate institutional positioning,
+          while
+          <strong>elevated premiums</strong> suggest urgent execution needs,
+          often signaling significant market moves ahead. Total premium of
+          <strong>
+            {#if isPro}
+              ${abbreviateNumber(metrics?.totalPrem)}
+            {:else}
+              <a
+                href="/pricing"
+                class="sm:hover:text-default dark:sm:hover:text-blue-400"
+              >
+                Unlock Pro <svg
+                  class="w-4 h-4 mb-1 inline-block"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                  />
+                </svg>
+              </a>
+            {/if}
+          </strong> reflects the scale of institutional interest in this security.
+        </p>
       </div>
 
       <div class=" rounded mt-5 sm:mt-0">

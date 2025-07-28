@@ -131,34 +131,25 @@
         Hottest Trades
       </label>
       <InfoModal
-        title={"Hottest DP Trades"}
+        title={"Hottest Trades"}
         content={"Real-time hottest trades highlight significant premium flows, revealing where big players are active and hinting at market trends or sentiment."}
         id={"hottestDPTrade"}
       />
-      <a
-        href={`/dark-pool-flow?query=${ticker}`}
-        class="sm:hidden ml-auto px-3 py-1 text-sm border border-gray-300 dark:border-gray-700 bg-gray-100 shadow-xs dark:bg-white text-black '
-                   transition ease-out duration-100 rounded cursor-pointer"
-      >
-        View All
-      </a>
     </div>
 
     {#if rawData?.length !== 0}
-      <div class="w-full flex flex-col items-start">
+      <div class="w-full flex flex-col items-start sm:mt-3 mb-3">
         <div
           class="flex flex-row items-end justify-between w-full mt-2 sm:mt-0 mb-2"
         >
-          <div class="text-[1rem]">
-            Get in realtime the latest hottest trades based on premium.
-          </div>
-          <a
-            href={`/dark-pool-flow?query=${ticker}`}
-            class="hidden sm:inline-block ml-auto px-3 py-1 text-sm border border-gray-300 dark:border-gray-700 bg-black text-white sm:hover:bg-default dark:text-black dark:bg-white '
-                   transition ease-out duration-100 rounded cursor-pointer"
-          >
-            View All
-          </a>
+          <p class="text-[1rem]">
+            Real-time institutional trades ranked by premium paid and size
+            relative to average volume.
+            <strong>High premiums</strong> indicate urgent positioning by large
+            players, while elevated
+            <strong>size-to-volume ratios</strong> reveal unusual institutional activity
+            that often precedes significant price movements.
+          </p>
         </div>
       </div>
 
@@ -191,11 +182,11 @@
                 </td>
 
                 <td class="text-sm sm:text-[1rem] text-end">
-                  {abbreviateNumber(item?.size, false, true)}
+                  {item?.size?.toLocaleString("en-US")}
                 </td>
 
                 <td class="text-sm sm:text-[1rem] text-end">
-                  {abbreviateNumber(item?.volume, false, true)}
+                  {item?.volume?.toLocaleString("en-US")}
                 </td>
 
                 <td class="text-sm sm:text-[1rem] text-end">
@@ -206,7 +197,7 @@
                 </td>
 
                 <td class="text-sm sm:text-[1rem] text-end">
-                  {abbreviateNumber(item?.premium, false, true)}
+                  {abbreviateNumber(item?.premium)}
                 </td>
               </tr>
             {/each}

@@ -11,6 +11,7 @@
   export let data;
   let historicalDarkPool = data?.getHistoricalDarkPool || [];
   let priceLevel = data?.getPriceLevel?.priceLevel || [];
+
   let hottestTrades = data?.getPriceLevel?.hottestTrades || [];
 </script>
 
@@ -25,7 +26,7 @@
       class="w-full relative flex justify-center items-center overflow-hidden"
     >
       <div class="sm:pl-7 sm:pb-7 sm:pt-7 pt-4 w-full m-auto mt-2 sm:mt-0">
-        <div class="w-full mb-2">
+        <div class="w-full">
           {#if priceLevel?.length === 0 && hottestTrades?.length === 0 && historicalDarkPool?.length === 0}
             <Infobox
               text={`No Dark Pool activity are detected for ${$displayCompanyName}`}
@@ -44,9 +45,6 @@
                 id={"darkPoolInfo"}
               />
             </div>
-            <Infobox
-              text="Track the Dark Pool Trades of major whales to monitor hidden trading activity and trends."
-            />
           {/if}
         </div>
         {#if priceLevel?.length > 0}
