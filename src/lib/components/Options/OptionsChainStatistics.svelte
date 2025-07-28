@@ -165,14 +165,14 @@
       series: [
         {
           name: "IV",
-          data: [ivData?.current],
+          data: [ivData?.current > 100 ? 100 : (ivData?.current ?? 0)],
           animation: false,
           dataLabels: {
             useHTML: true, // ensure HTML works if you keep custom markup
             backgroundColor: "none", // removes background
             borderWidth: 0, // removes border
             shadow: false, // removes shadow
-            format: '<span class="text-lg font-bold">{y}% IV</span>',
+            format: `<span class="text-lg font-bold">${ivData?.current}% IV</span>`,
           },
           dial: {
             radius: "80%",
