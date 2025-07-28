@@ -159,18 +159,49 @@
 
     // Compute Average Return
     returns = processedData
-      ?.slice(1) // Skip the first value since there's no previous value for it
+      ?.slice(0, -1) // Exclude the last entry (current/latest) since it has no score or future data
       ?.map((item, index) => {
-        const prevY = processedData[index]?.y;
-        if (prevY == null || item.y == null) return null;
-        const returnPercentage = ((item.y - prevY) / prevY) * 100;
-        return returnPercentage;
+        const currentScore = item?.dataLabels?.format;
+        const nextItem = processedData[index + 1];
+
+        // Skip if no score available or no next data point
+        if (
+          !currentScore ||
+          !nextItem ||
+          item.y == null ||
+          nextItem.y == null
+        ) {
+          return null;
+        }
+
+        const score = Number(currentScore);
+        const currentPrice = item.y;
+        const nextPrice = nextItem.y;
+        const actualReturn = ((nextPrice - currentPrice) / currentPrice) * 100;
+
+        // Only include returns where you would have followed the AI prediction
+        // Bullish (score > 6): include positive returns (correct predictions)
+        // Bearish (score < 5): include negative returns as positive returns (since you'd short/avoid)
+        // Neutral (score = 5): exclude from calculation
+
+        if (score > 6) {
+          // Bullish prediction - include the actual return (positive if correct, negative if wrong)
+          return actualReturn;
+        } else if (score < 5) {
+          // Bearish prediction - invert the return (you'd profit from price decline)
+          return -actualReturn;
+        } else {
+          // Neutral - exclude from average calculation
+          return null;
+        }
       })
-      .filter(Boolean); // Remove null values
+      .filter((val) => val !== null); // Remove null values
 
     avgReturn =
-      returns?.reduce((sum, returnPercentage) => sum + returnPercentage, 0) /
-      returns?.length;
+      returns?.length > 0
+        ? returns.reduce((sum, returnPercentage) => sum + returnPercentage, 0) /
+          returns.length
+        : 0;
   }
 
   let price;
