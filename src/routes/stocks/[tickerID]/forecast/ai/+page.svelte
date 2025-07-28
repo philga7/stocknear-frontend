@@ -959,28 +959,132 @@
               </h1>
             </div>
             <div class="w-full mb-6 mt-3">
-              {#if !isPro}
-                <Infobox
-                  text={`Using our AI model trained on historical seasonal data, we generated a 12-month forecast for ${removeCompanyStrings($displayCompanyName)}. The model predicts a ... Unlock content with
-          <a
-            class="inline-block ml-0.5  dark:text-blue-400 dark:sm:hover:text-white"
-            href="/pricing"
-            >Pro Subscription <svg
-              class="w-4 h-4 mb-1 inline-block"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              ><path
-                fill="currentColor"
-                d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
-              /></svg
-            ></a
-          >`}
-                />
-              {:else}
-                <Infobox
-                  text={`Using our AI model trained on historical seasonal data, we generated a 12-month forecast for ${removeCompanyStrings($displayCompanyName)}. The model predicts a median target price of ${medianPriceTarget}, ranging from ${lowPriceTarget} to ${highPriceTarget}, indicating a ${medianChange > 0 ? "potential increase" : "potential decrease"} of ${medianChange}% from the current price of ${price}.`}
-                />
-              {/if}
+              <p class="mt-4">
+                Using our AI model trained on historical seasonal data, we
+                generated a 12-month forecast for {removeCompanyStrings(
+                  $displayCompanyName,
+                )}. The model predicts a median target price of
+                <strong>
+                  {#if isPro}
+                    ${medianPriceTarget}
+                  {:else}
+                    <a
+                      href="/pricing"
+                      class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                    >
+                      Unlock Pro <svg
+                        class="w-4 h-4 mb-1 inline-block"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                        />
+                      </svg>
+                    </a>
+                  {/if}
+                </strong>, ranging from
+                <strong>
+                  {#if isPro}
+                    ${lowPriceTarget}
+                  {:else}
+                    <a
+                      href="/pricing"
+                      class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                    >
+                      Unlock Pro <svg
+                        class="w-4 h-4 mb-1 inline-block"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                        />
+                      </svg>
+                    </a>
+                  {/if}
+                </strong>
+                to
+                <strong>
+                  {#if isPro}
+                    ${highPriceTarget}
+                  {:else}
+                    <a
+                      href="/pricing"
+                      class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                    >
+                      Unlock Pro <svg
+                        class="w-4 h-4 mb-1 inline-block"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                        />
+                      </svg>
+                    </a>
+                  {/if}
+                </strong>, indicating a
+                <strong
+                  class={medianChange >= 0 && isPro
+                    ? "text-green-800 dark:text-[#00FC50]"
+                    : medianChange < 0 && isPro
+                      ? "text-red-800 dark:text-[#FF2F1F]"
+                      : ""}
+                >
+                  {#if isPro}
+                    {medianChange > 0
+                      ? "potential increase"
+                      : "potential decrease"} of {medianChange >= 0
+                      ? "+"
+                      : ""}{medianChange}%
+                  {:else}
+                    <a
+                      href="/pricing"
+                      class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                    >
+                      Unlock Pro <svg
+                        class="w-4 h-4 mb-1 inline-block"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                        />
+                      </svg>
+                    </a>
+                  {/if}
+                </strong>
+                from the current price of
+                <strong>
+                  {#if isPro}
+                    ${price}
+                  {:else}
+                    <a
+                      href="/pricing"
+                      class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                    >
+                      Unlock Pro <svg
+                        class="w-4 h-4 mb-1 inline-block"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                        />
+                      </svg>
+                    </a>
+                  {/if}
+                </strong>. This forecast is based on comprehensive analysis of
+                seasonal patterns, market trends, and historical performance
+                data to provide insights into the stock's potential trajectory
+                over the next twelve months.
+              </p>
 
               <div>
                 <div class="grow pt-5">
