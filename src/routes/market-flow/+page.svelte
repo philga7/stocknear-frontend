@@ -16,6 +16,8 @@
   let marketTideData = data?.getData?.marketTide || {};
   let overview = data?.getData?.overview || {};
 
+  let isPro = data?.user?.tier === "Pro";
+
   function findLastNonNull(dataArray, key) {
     for (let i = dataArray.length - 1; i >= 0; i--) {
       if (
@@ -760,73 +762,199 @@
                     year: "numeric",
                   })}</strong
                 >, the total volume is
-                <strong
-                  >{(overview?.putVol + overview?.callVol)?.toLocaleString(
-                    "en-US",
-                  ) || "n/a"}</strong
-                >
+                <strong>
+                  {#if isPro}
+                    {(overview?.putVol + overview?.callVol)?.toLocaleString(
+                      "en-US",
+                    ) || "n/a"}
+                  {:else}
+                    <a
+                      href="/pricing"
+                      class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                    >
+                      Unlock Pro <svg
+                        class="w-4 h-4 mb-1 inline-block"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                        />
+                      </svg>
+                    </a>
+                  {/if}
+                </strong>
                 contracts, which is
                 <strong>
-                  {overview?.avg30Vol && overview?.avg30Vol > 0
-                    ? (
-                        ((overview?.callVol + overview?.putVol) /
-                          overview?.avg30Vol) *
-                        100
-                      )?.toFixed(2) + "%"
-                    : "n/a"}
+                  {#if isPro}
+                    {overview?.avg30Vol && overview?.avg30Vol > 0
+                      ? (
+                          ((overview?.callVol + overview?.putVol) /
+                            overview?.avg30Vol) *
+                          100
+                        )?.toFixed(2) + "%"
+                      : "n/a"}
+                  {:else}
+                    <a
+                      href="/pricing"
+                      class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                    >
+                      Unlock Pro <svg
+                        class="w-4 h-4 mb-1 inline-block"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                        />
+                      </svg>
+                    </a>
+                  {/if}
                 </strong>
                 of average daily volume of
-                <strong
-                  >{overview?.avg30Vol?.toLocaleString("en-US") ||
-                    "n/a"}</strong
-                >
-                contracts. The volume put-call ratio is
-                <strong>{overview?.pcVol?.toFixed(2) || "n/a"}</strong>. Current
-                net call premium flow is
-                <strong
-                  >{abbreviateNumber(
-                    findLastNonNull(marketTideData, "net_call_premium"),
-                  ) || "n/a"}</strong
-                >
-                and net put premium flow is
-                <strong
-                  >{abbreviateNumber(
-                    findLastNonNull(marketTideData, "net_put_premium"),
-                  ) || "n/a"}</strong
-                >, indicating a
                 <strong>
-                  {(() => {
-                    const netCallPremium = findLastNonNull(
-                      marketTideData,
-                      "net_call_premium",
-                    );
-                    const netPutPremium = findLastNonNull(
-                      marketTideData,
-                      "net_put_premium",
-                    );
+                  {#if isPro}
+                    {overview?.avg30Vol?.toLocaleString("en-US") || "n/a"}
+                  {:else}
+                    <a
+                      href="/pricing"
+                      class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                    >
+                      Unlock Pro <svg
+                        class="w-4 h-4 mb-1 inline-block"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                        />
+                      </svg>
+                    </a>
+                  {/if}
+                </strong>
+                contracts. The volume put-call ratio is
+                <strong>
+                  {#if isPro}
+                    {overview?.pcVol?.toFixed(2) || "n/a"}
+                  {:else}
+                    <a
+                      href="/pricing"
+                      class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                    >
+                      Unlock Pro <svg
+                        class="w-4 h-4 mb-1 inline-block"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                        />
+                      </svg>
+                    </a>
+                  {/if}
+                </strong>. Current net call premium flow is
+                <strong>
+                  {#if isPro}
+                    {abbreviateNumber(
+                      findLastNonNull(marketTideData, "net_call_premium"),
+                    ) || "n/a"}
+                  {:else}
+                    <a
+                      href="/pricing"
+                      class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                    >
+                      Unlock Pro <svg
+                        class="w-4 h-4 mb-1 inline-block"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                        />
+                      </svg>
+                    </a>
+                  {/if}
+                </strong>
+                and net put premium flow is
+                <strong>
+                  {#if isPro}
+                    {abbreviateNumber(
+                      findLastNonNull(marketTideData, "net_put_premium"),
+                    ) || "n/a"}
+                  {:else}
+                    <a
+                      href="/pricing"
+                      class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                    >
+                      Unlock Pro <svg
+                        class="w-4 h-4 mb-1 inline-block"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                        />
+                      </svg>
+                    </a>
+                  {/if}
+                </strong>, indicating a
+                <strong>
+                  {#if isPro}
+                    {(() => {
+                      const netCallPremium = findLastNonNull(
+                        marketTideData,
+                        "net_call_premium",
+                      );
+                      const netPutPremium = findLastNonNull(
+                        marketTideData,
+                        "net_put_premium",
+                      );
 
-                    if (netCallPremium == null || netPutPremium == null) {
-                      return "unknown";
-                    }
+                      if (netCallPremium == null || netPutPremium == null) {
+                        return "unknown";
+                      }
 
-                    const netPremiumDiff = netCallPremium - netPutPremium;
-                    const totalPremium =
-                      Math.abs(netCallPremium) + Math.abs(netPutPremium);
+                      const netPremiumDiff = netCallPremium - netPutPremium;
+                      const totalPremium =
+                        Math.abs(netCallPremium) + Math.abs(netPutPremium);
 
-                    if (totalPremium === 0) {
-                      return "neutral";
-                    }
+                      if (totalPremium === 0) {
+                        return "neutral";
+                      }
 
-                    const premiumRatio = netPremiumDiff / totalPremium;
+                      const premiumRatio = netPremiumDiff / totalPremium;
 
-                    if (premiumRatio > 0.2) {
-                      return "bullish";
-                    } else if (premiumRatio < -0.2) {
-                      return "bearish";
-                    } else {
-                      return "neutral";
-                    }
-                  })()}
+                      if (premiumRatio > 0.2) {
+                        return "bullish";
+                      } else if (premiumRatio < -0.2) {
+                        return "bearish";
+                      } else {
+                        return "neutral";
+                      }
+                    })()}
+                  {:else}
+                    <a
+                      href="/pricing"
+                      class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                    >
+                      Unlock Pro <svg
+                        class="w-4 h-4 mb-1 inline-block"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                        />
+                      </svg>
+                    </a>
+                  {/if}
                 </strong>
                 sentiment in the market.
               </p>
@@ -1011,11 +1139,29 @@
                     Low OI means less interest and lower liquidity."
                           />
                         </div>
-                        <span class="font-semibold text-sm sm:text-[1rem]"
-                          >{(
-                            overview?.putOI + overview?.callOI
-                          )?.toLocaleString("en-US")}</span
-                        >
+                        <span class="font-semibold text-sm sm:text-[1rem]">
+                          {#if isPro}
+                            {(
+                              overview?.putOI + overview?.callOI
+                            )?.toLocaleString("en-US")}
+                          {:else}
+                            <a
+                              href="/pricing"
+                              class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                            >
+                              <svg
+                                class="w-4 h-4 mb-1 inline-block"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  fill="currentColor"
+                                  d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                                />
+                              </svg>
+                            </a>
+                          {/if}
+                        </span>
                       </div>
 
                       <div class="flex flex-col">
@@ -1030,9 +1176,27 @@
                           />
                         </div>
 
-                        <span class="font-semibold text-sm sm:text-[1rem]"
-                          >{overview?.pcOI?.toFixed(2)}</span
-                        >
+                        <span class="font-semibold text-sm sm:text-[1rem]">
+                          {#if isPro}
+                            {overview?.pcOI?.toFixed(2)}
+                          {:else}
+                            <a
+                              href="/pricing"
+                              class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                            >
+                              <svg
+                                class="w-4 h-4 mb-1 inline-block"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  fill="currentColor"
+                                  d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                                />
+                              </svg>
+                            </a>
+                          {/if}
+                        </span>
                       </div>
 
                       <div class="flex flex-col">
@@ -1047,9 +1211,27 @@
                           />
                         </div>
 
-                        <span class="font-semibold text-sm sm:text-[1rem]"
-                          >{overview?.putOI?.toLocaleString("en-US")}</span
-                        >
+                        <span class="font-semibold text-sm sm:text-[1rem]">
+                          {#if isPro}
+                            {overview?.putOI?.toLocaleString("en-US")}
+                          {:else}
+                            <a
+                              href="/pricing"
+                              class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                            >
+                              <svg
+                                class="w-4 h-4 mb-1 inline-block"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  fill="currentColor"
+                                  d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                                />
+                              </svg>
+                            </a>
+                          {/if}
+                        </span>
                       </div>
 
                       <div class="flex flex-col">
@@ -1064,9 +1246,27 @@
                           />
                         </div>
 
-                        <span class="font-semibold text-sm sm:text-[1rem]"
-                          >{overview?.callOI?.toLocaleString("en-US")}</span
-                        >
+                        <span class="font-semibold text-sm sm:text-[1rem]">
+                          {#if isPro}
+                            {overview?.callOI?.toLocaleString("en-US")}
+                          {:else}
+                            <a
+                              href="/pricing"
+                              class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                            >
+                              <svg
+                                class="w-4 h-4 mb-1 inline-block"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  fill="currentColor"
+                                  d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                                />
+                              </svg>
+                            </a>
+                          {/if}
+                        </span>
                       </div>
 
                       <div class="flex flex-col">
@@ -1079,9 +1279,27 @@
                           />
                         </div>
 
-                        <span class="font-semibold text-sm sm:text-[1rem]"
-                          >{overview?.avg30OI?.toLocaleString("en-US")}</span
-                        >
+                        <span class="font-semibold text-sm sm:text-[1rem]">
+                          {#if isPro}
+                            {overview?.avg30OI?.toLocaleString("en-US")}
+                          {:else}
+                            <a
+                              href="/pricing"
+                              class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                            >
+                              <svg
+                                class="w-4 h-4 mb-1 inline-block"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  fill="currentColor"
+                                  d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                                />
+                              </svg>
+                            </a>
+                          {/if}
+                        </span>
                       </div>
 
                       <div class="flex flex-col">
@@ -1096,15 +1314,33 @@
                           />
                         </div>
 
-                        <span class="font-semibold text-sm sm:text-[1rem]"
-                          >{overview?.avg30OI && overview?.avg30OI > 0
-                            ? (
-                                ((overview?.callOI + overview?.putOI) /
-                                  overview?.avg30OI) *
-                                100
-                              )?.toFixed(2) + "%"
-                            : "n/a"}</span
-                        >
+                        <span class="font-semibold text-sm sm:text-[1rem]">
+                          {#if isPro}
+                            {overview?.avg30OI && overview?.avg30OI > 0
+                              ? (
+                                  ((overview?.callOI + overview?.putOI) /
+                                    overview?.avg30OI) *
+                                  100
+                                )?.toFixed(2) + "%"
+                              : "n/a"}
+                          {:else}
+                            <a
+                              href="/pricing"
+                              class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                            >
+                              <svg
+                                class="w-4 h-4 mb-1 inline-block"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  fill="currentColor"
+                                  d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                                />
+                              </svg>
+                            </a>
+                          {/if}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -1141,11 +1377,29 @@
                     Low volume suggests less trading and lower interest."
                           />
                         </div>
-                        <span class="font-semibold text-sm sm:text-[1rem]"
-                          >{(
-                            overview?.callVol + overview?.putVol
-                          )?.toLocaleString("en-US")}</span
-                        >
+                        <span class="font-semibold text-sm sm:text-[1rem]">
+                          {#if isPro}
+                            {(
+                              overview?.callVol + overview?.putVol
+                            )?.toLocaleString("en-US")}
+                          {:else}
+                            <a
+                              href="/pricing"
+                              class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                            >
+                              <svg
+                                class="w-4 h-4 mb-1 inline-block"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  fill="currentColor"
+                                  d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                                />
+                              </svg>
+                            </a>
+                          {/if}
+                        </span>
                       </div>
 
                       <div class="flex flex-col">
@@ -1160,9 +1414,27 @@
                           />
                         </div>
 
-                        <span class="font-semibold text-sm sm:text-[1rem]"
-                          >{overview?.pcVol?.toFixed(2)}</span
-                        >
+                        <span class="font-semibold text-sm sm:text-[1rem]">
+                          {#if isPro}
+                            {overview?.pcVol?.toFixed(2)}
+                          {:else}
+                            <a
+                              href="/pricing"
+                              class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                            >
+                              <svg
+                                class="w-4 h-4 mb-1 inline-block"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  fill="currentColor"
+                                  d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                                />
+                              </svg>
+                            </a>
+                          {/if}
+                        </span>
                       </div>
 
                       <div class="flex flex-col">
@@ -1177,9 +1449,27 @@
                           />
                         </div>
 
-                        <span class="font-semibold text-sm sm:text-[1rem]"
-                          >{overview?.putVol?.toLocaleString("en-US")}</span
-                        >
+                        <span class="font-semibold text-sm sm:text-[1rem]">
+                          {#if isPro}
+                            {overview?.putVol?.toLocaleString("en-US")}
+                          {:else}
+                            <a
+                              href="/pricing"
+                              class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                            >
+                              <svg
+                                class="w-4 h-4 mb-1 inline-block"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  fill="currentColor"
+                                  d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                                />
+                              </svg>
+                            </a>
+                          {/if}
+                        </span>
                       </div>
 
                       <div class="flex flex-col">
@@ -1194,9 +1484,27 @@
                           />
                         </div>
 
-                        <span class="font-semibold text-sm sm:text-[1rem]"
-                          >{overview?.callVol?.toLocaleString("en-US")}</span
-                        >
+                        <span class="font-semibold text-sm sm:text-[1rem]">
+                          {#if isPro}
+                            {overview?.callVol?.toLocaleString("en-US")}
+                          {:else}
+                            <a
+                              href="/pricing"
+                              class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                            >
+                              <svg
+                                class="w-4 h-4 mb-1 inline-block"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  fill="currentColor"
+                                  d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                                />
+                              </svg>
+                            </a>
+                          {/if}
+                        </span>
                       </div>
 
                       <div class="flex flex-col">
@@ -1209,9 +1517,27 @@
                           />
                         </div>
 
-                        <span class="font-semibold text-sm sm:text-[1rem]"
-                          >{overview?.avg30Vol?.toLocaleString("en-US")}</span
-                        >
+                        <span class="font-semibold text-sm sm:text-[1rem]">
+                          {#if isPro}
+                            {overview?.avg30Vol?.toLocaleString("en-US")}
+                          {:else}
+                            <a
+                              href="/pricing"
+                              class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                            >
+                              <svg
+                                class="w-4 h-4 mb-1 inline-block"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  fill="currentColor"
+                                  d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                                />
+                              </svg>
+                            </a>
+                          {/if}
+                        </span>
                       </div>
 
                       <div class="flex flex-col">
@@ -1226,15 +1552,33 @@
                           />
                         </div>
 
-                        <span class="font-semibold text-sm sm:text-[1rem]"
-                          >{overview?.avg30Vol && overview?.avg30Vol > 0
-                            ? (
-                                ((overview?.callVol + overview?.putVol) /
-                                  overview?.avg30Vol) *
-                                100
-                              )?.toFixed(2) + "%"
-                            : "n/a"}</span
-                        >
+                        <span class="font-semibold text-sm sm:text-[1rem]">
+                          {#if isPro}
+                            {overview?.avg30Vol && overview?.avg30Vol > 0
+                              ? (
+                                  ((overview?.callVol + overview?.putVol) /
+                                    overview?.avg30Vol) *
+                                  100
+                                )?.toFixed(2) + "%"
+                              : "n/a"}
+                          {:else}
+                            <a
+                              href="/pricing"
+                              class="sm:hover:text-default dark:sm:hover:text-blue-400"
+                            >
+                              <svg
+                                class="w-4 h-4 mb-1 inline-block"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  fill="currentColor"
+                                  d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                                />
+                              </svg>
+                            </a>
+                          {/if}
+                        </span>
                       </div>
                     </div>
                   </div>

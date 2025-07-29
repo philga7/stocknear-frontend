@@ -1,6 +1,6 @@
 export const load = async ({ locals }) => {
   const getData = async () => {
-    const { apiKey, apiURL, user } = locals;
+    const { apiKey, apiURL } = locals;
 
     const response = await fetch(apiURL + "/market-flow", {
       method: "GET",
@@ -10,9 +10,7 @@ export const load = async ({ locals }) => {
       },
     });
 
-  let output = await response?.json();
-    output.topPosNetPremium = user?.tier !== "Pro" ? output?.topPosNetPremium?.slice(0, 3) : output?.topPosNetPremium;
-     output.topNegNetPremium = user?.tier !== "Pro" ? output?.topNegNetPremium?.slice(0, 3) : output?.topNegNetPremium;
+  const output = await response?.json();
     return output;
   };
 
