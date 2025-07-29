@@ -2,6 +2,7 @@
   import { formatString, sectorNavigation, abbreviateNumber } from "$lib/utils";
   import Table from "$lib/components/Table/Table.svelte";
   import SEO from "$lib/components/SEO.svelte";
+  import Infobox from "$lib/components/Infobox.svelte";
 
   import defaultAvatar from "$lib/images/hedge-fund-avatar.png";
 
@@ -77,17 +78,22 @@
           <div class="w-full m-auto mt-12">
             <div class="items-center justify-between lg:flex">
               <div
-                class="flex space-x-3 border-b-[2px] border-below-title pb-3 lg:border-none lg:pb-0"
+                class="flex space-x-3 border-b-[2px] pb-3 lg:border-none lg:pb-0"
               >
-                <div
-                  class=" sm:-mt-3 shadow-lg rounded-full border border-slate-600 w-14 h-14 sm:w-20 sm:h-20 relative hedge-fund-striped bg-[#20202E] flex items-center justify-center"
-                >
-                  <img
-                    style="clip-path: circle(50%);"
-                    class="rounded-full w-10 sm:w-16"
-                    src={defaultAvatar}
-                    loading="eager"
-                  />
+                <div class="flex space-x-3 pb-3 lg:border-none lg:pb-0">
+                  <div class="shrink-0">
+                    <svg
+                      class="h-16 w-16 sm:h-20 sm:w-20 text-gray-500 dark:text-gray-200"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                      style="max-width:100px"
+                      ><path
+                        fill-rule="evenodd"
+                        d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+                        clip-rule="evenodd"
+                      ></path></svg
+                    >
+                  </div>
                 </div>
 
                 <div class="mt-0 pt-0.5 text-left">
@@ -217,67 +223,62 @@
               </div>
             </div>
 
-            <div class="mb-10 mt-10">
-              <div
-                class="relative my-3 space-y-2 rounded border border-gray-300 dark:border-gray-600 sm:my-6 p-4"
-              >
-                <div class="flex flex-col sm:flex-row">
-                  <div class="mb-2 font-semibold sm:mb-0">Main Sectors:</div>
-                  <div class="flex flex-wrap gap-x-2 gap-y-3 sm:ml-2">
-                    {#each data?.getHedgeFundsData?.mainSectors as item}
-                      <a
-                        href={sectorNavigation?.find(
-                          (listItem) => listItem?.title === item,
-                        )?.link}
-                        class="inline-block badge border-gray-300 dark:border-gray-800 rounded-[3px] bg-blue-100 dark:bg-primary duration-0 rounded-sm ml-1 px-3 m-auto text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted text-[1rem]"
-                      >
-                        {item}
-                      </a>
-                    {/each}
+            {#if data?.getHedgeFundsData?.mainSectors?.length > 0}
+              <div class="mb-10 mt-10">
+                <div
+                  class="relative my-3 space-y-2 rounded border border-gray-300 dark:border-gray-600 sm:my-6 p-4"
+                >
+                  <div class="flex flex-col sm:flex-row">
+                    <div class="mb-2 font-semibold sm:mb-0">Main Sectors:</div>
+                    <div class="flex flex-wrap gap-x-2 gap-y-3 sm:ml-2">
+                      {#each data?.getHedgeFundsData?.mainSectors as item}
+                        <a
+                          href={sectorNavigation?.find(
+                            (listItem) => listItem?.title === item,
+                          )?.link}
+                          class="inline-block badge border-gray-300 dark:border-gray-800 rounded-[3px] bg-blue-100 dark:bg-primary duration-0 rounded-sm ml-1 px-3 m-auto text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted text-[1rem]"
+                        >
+                          {item}
+                        </a>
+                      {/each}
+                    </div>
                   </div>
-                </div>
-                <div class="flex flex-col sm:flex-row">
-                  <div class="mb-2 whitespace-nowrap font-semibold sm:mb-0">
-                    Top Industries:
-                  </div>
-                  <div class="flex flex-wrap gap-x-2 gap-y-3 sm:ml-2">
-                    {#each data?.getHedgeFundsData?.mainIndustries as item}
-                      <a
-                        href={`/list/industry/${item?.replace(/ /g, "-")?.replace(/&/g, "and")?.replace(/-{2,}/g, "-")?.toLowerCase()}`}
-                        class="inline-block badge border-gray-300 dark:border-gray-800 rounded-[3px] bg-blue-100 dark:bg-primary duration-0 rounded-sm ml-1 px-3 m-auto text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted text-[1rem]"
-                      >
-                        {item}
-                      </a>
-                    {/each}
+                  <div class="flex flex-col sm:flex-row">
+                    <div class="mb-2 whitespace-nowrap font-semibold sm:mb-0">
+                      Top Industries:
+                    </div>
+
+                    <div class="flex flex-wrap gap-x-2 gap-y-3 sm:ml-2">
+                      {#each data?.getHedgeFundsData?.mainIndustries as item}
+                        <a
+                          href={`/list/industry/${item?.replace(/ /g, "-")?.replace(/&/g, "and")?.replace(/-{2,}/g, "-")?.toLowerCase()}`}
+                          class="inline-block badge border-gray-300 dark:border-gray-800 rounded-[3px] bg-blue-100 dark:bg-primary duration-0 rounded-sm ml-1 px-3 m-auto text-blue-700 dark:text-blue-400 dark:sm:hover:text-white sm:hover:text-muted text-[1rem]"
+                        >
+                          {item}
+                        </a>
+                      {/each}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div class="w-full m-auto mt-4">
-              <Table
-                {data}
-                rawData={data?.getHedgeFundsData?.holdings}
-                {excludedRules}
-                {defaultList}
-                {specificRows}
+              <div class="w-full m-auto mt-4">
+                <Table
+                  {data}
+                  rawData={data?.getHedgeFundsData?.holdings}
+                  {excludedRules}
+                  {defaultList}
+                  {specificRows}
+                />
+              </div>
+            {:else}
+              <Infobox
+                text={`The data of the hedge fund is currently not available.`}
               />
-            </div>
+            {/if}
           </div>
         </main>
       </div>
     </div>
   </div>
 </section>
-
-<style>
-  .hedge-fund-striped {
-    background-image: repeating-linear-gradient(
-      -45deg,
-      #a77120,
-      #a77120 10px,
-      #90621c 10px,
-      #90621c 20px
-    );
-  }
-</style>

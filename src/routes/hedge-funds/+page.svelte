@@ -1,6 +1,5 @@
 <script lang="ts">
-  import cardBackground from "$lib/images/bg-hedge-funds.png";
-  import defaultAvatar from "$lib/images/hedge-fund-avatar.png";
+  import TableHeader from "$lib/components/Table/TableHeader.svelte";
 
   import { abbreviateNumber, formatString } from "$lib/utils";
   import { onMount } from "svelte";
@@ -9,7 +8,7 @@
   export let data;
 
   let rawData = data?.getAllHedgeFunds;
-  let displayList = rawData?.slice(0, 20) ?? [];
+  let displayList = rawData?.slice(0, 100) ?? [];
   let inputValue = "";
 
   async function handleScroll() {
@@ -17,7 +16,7 @@
     const isBottom = window.innerHeight + window.scrollY >= scrollThreshold;
     if (isBottom && displayList?.length !== rawData?.length) {
       const nextIndex = displayList?.length;
-      const filteredNewResults = rawData?.slice(nextIndex, nextIndex + 20);
+      const filteredNewResults = rawData?.slice(nextIndex, nextIndex + 50);
       displayList = [...displayList, ...filteredNewResults];
     }
   }
@@ -47,11 +46,11 @@
 
     if (filterData?.length !== 0) {
       rawData = filterData;
-      displayList = [...filterData]?.slice(0, 20);
+      displayList = [...filterData]?.slice(0, 50);
     } else {
       // Reset to original data if no matches found
       rawData = data?.getAllHedgeFunds;
-      displayList = rawData?.slice(0, 20);
+      displayList = rawData?.slice(0, 50);
     }
   };
 
@@ -71,10 +70,110 @@
       } else {
         // Reset to original data if filter is empty
         rawData = data?.getAllHedgeFunds;
-        displayList = rawData?.slice(0, 20);
+        displayList = rawData?.slice(0, 50);
       }
     }, 500);
   }
+
+  let columns = [
+    { key: "rank", label: "Rank", align: "left" },
+    { key: "name", label: "Name", align: "left" },
+    { key: "marketValue", label: "AUM", align: "right" },
+    { key: "numberOfStocks", label: "Holdings", align: "right" },
+    { key: "turnover", label: "Turnover", align: "right" },
+    { key: "performancePercentage3Year", label: "3-Year Perf", align: "right" },
+    { key: "winRate", label: "Win Rate", align: "right" },
+  ];
+
+  let sortOrders = {
+    rank: { order: "none", type: "number" },
+    name: { order: "none", type: "string" },
+    marketValue: { order: "none", type: "number" },
+    numberOfStocks: { order: "none", type: "number" },
+    turnover: { order: "none", type: "number" },
+    performancePercentage3Year: { order: "none", type: "number" },
+    winRate: { order: "none", type: "number" },
+  };
+
+  const sortData = (key) => {
+    // Reset all other keys to 'none' except the current key
+    let originalData = [];
+
+    for (const k in sortOrders) {
+      if (k !== key) {
+        sortOrders[k].order = "none";
+      }
+    }
+
+    // Cycle through 'none', 'asc', 'desc' for the clicked key
+    const orderCycle = ["none", "asc", "desc"];
+    const currentOrderIndex = orderCycle.indexOf(
+      sortOrders[key]?.order || "none",
+    );
+    sortOrders[key] = {
+      ...(sortOrders[key] || {}),
+      order: orderCycle[(currentOrderIndex + 1) % orderCycle.length],
+    };
+    const sortOrder = sortOrders[key]?.order;
+
+    // Reset to original data when 'none' and stop further sorting
+    if (sortOrder === "none") {
+      let originalData = [...rawData]; // Reset originalData to rawData
+      displayList = originalData?.slice(0, 50); // Reset displayed data
+      return;
+    }
+
+    // Generic comparison function
+    const compareValues = (a, b) => {
+      const { type } = sortOrders[key];
+      let valueA, valueB;
+
+      switch (type) {
+        case "date":
+          valueA = new Date(a[key]);
+          valueB = new Date(b[key]);
+          break;
+        case "rating":
+        case "string":
+          // Retrieve values
+          valueA = a[key];
+          valueB = b[key];
+
+          // Handle null or undefined values, always placing them at the bottom
+          if (valueA == null && valueB == null) {
+            return 0; // Both are null/undefined, no need to change the order
+          } else if (valueA == null) {
+            return 1; // null goes to the bottom
+          } else if (valueB == null) {
+            return -1; // null goes to the bottom
+          }
+
+          // Convert the values to uppercase for case-insensitive comparison
+          valueA = valueA?.toUpperCase();
+          valueB = valueB?.toUpperCase();
+
+          // Perform the sorting based on ascending or descending order
+          return sortOrder === "asc"
+            ? valueA?.localeCompare(valueB)
+            : valueB?.localeCompare(valueA);
+        case "number":
+        default:
+          valueA = parseFloat(a[key]);
+          valueB = parseFloat(b[key]);
+          break;
+      }
+
+      if (sortOrder === "asc") {
+        return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
+      } else {
+        return valueA > valueB ? -1 : valueA < valueB ? 1 : 0;
+      }
+    };
+
+    // Sort and update the originalData and analystList
+    originalData = [...rawData].sort(compareValues);
+    displayList = originalData?.slice(0, 50); // Update the displayed data
+  };
 </script>
 
 <SEO
@@ -100,9 +199,11 @@
           class="relative flex justify-center items-center overflow-hidden w-full"
         >
           <main class="w-full">
-            <h1 class="mb-3 text-2xl sm:text-3xl font-bold">
-              All US Hedge Funds
-            </h1>
+            <div class="mb-6 border-[#2C6288] dark:border-white border-b-[2px]">
+              <h1 class="mb-1 text-2xl sm:text-3xl font-bold">
+                Top Hedge Funds in US
+              </h1>
+            </div>
             <div class="w-full pt-2">
               <div class="w-full flex flex-row items-center">
                 <div class="relative w-fit">
@@ -134,124 +235,104 @@
               </div>
             </div>
 
-            <div class="w-full m-auto mt-4">
+            <div class="w-full m-auto mt-5">
               <div
-                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-5"
+                class="w-full m-auto rounded-none sm:rounded mb-4 overflow-x-auto sm:overflow-hidden"
               >
-                {#each displayList as item}
-                  <a
-                    href={`/hedge-funds/${item?.cik}`}
-                    class="w-full cursor-pointer bg-black dark:bg-[#141417] sm:hover:bg-default text-white dark:sm:hover:bg-[#000] ease-in-out border dark:sm:hover:border-[#000] sm:hover:shadow-[#8C5F1B] border-gray-300 dark:border-gray-800 shadow-md rounded h-auto pb-4 pt-4 mb-7"
-                  >
-                    <div class="flex flex-col relative">
-                      <img
-                        class="absolute -mt-4 w-full m-auto rounded"
-                        src={cardBackground}
-                      />
-                      <div
-                        class="flex flex-col justify-center items-center rounded-2xl"
+                <table
+                  class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
+                >
+                  <thead>
+                    <TableHeader {columns} {sortOrders} {sortData} />
+                  </thead>
+                  <tbody>
+                    {#each displayList as item, index}
+                      <tr
+                        class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd{index +
+                          1 ===
+                          rawData?.length &&
+                        !['Pro', 'Plus']?.includes(data?.user?.tier)
+                          ? 'opacity-[0.1]'
+                          : ''}"
                       >
-                        <div
-                          class="-mt-3 shadow-lg rounded-full border border-slate-300 dark:border-slate-600 w-20 h-20 relative hedge-fund-striped bg-[#20202E] flex items-center justify-center"
-                        >
-                          <img
-                            style="clip-path: circle(50%);"
-                            class="rounded-full w-16"
-                            src={defaultAvatar}
-                            loading="lazy"
-                          />
-                        </div>
-                        <span
-                          class=" text-md font-semibold mt-2 mb-2 w-64 text-center"
-                        >
-                          {formatString(item?.name)}
-                        </span>
-                        <span class=" text-md mb-8">
-                          AUM: {abbreviateNumber(item?.marketValue)}
-                        </span>
-                      </div>
+                        <td class=" text-sm sm:text-[1rem] text-center">
+                          {item?.rank}
+                        </td>
 
-                      <div class="relative bottom-0 w-full px-8">
-                        <div
-                          class="flex flex-row justify-between items-center w-full mb-6"
+                        <td
+                          class="text-start text-sm sm:text-[1rem] whitespace-nowrap"
                         >
-                          <label
-                            class="cursor-pointer flex flex-col items-start"
-                          >
-                            <span class=" text-[1rem] font-semibold">
-                              {new Intl.NumberFormat("en", {
-                                minimumFractionDigits: 0,
-                                maximumFractionDigits: 0,
-                              }).format(item?.numberOfStocks)}
-                            </span>
-                            <span class=" text-sm"># of Holdings</span>
-                          </label>
+                          <a
+                            href={"/hedge-funds/" + item?.cik}
+                            class="font-semibold dark:font-normal text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
+                            >{formatString(item?.name)}
+                          </a>
+                        </td>
 
-                          <div class="flex flex-col items-end">
-                            <span class=" text-[1rem] font-semibold">
-                              {item?.turnover?.toFixed(2)}
-                            </span>
-                            <span class=" text-sm">Turnover</span>
-                          </div>
-                        </div>
-
-                        <div
-                          class="flex flex-row justify-between items-center w-full"
+                        <td
+                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                         >
-                          <label
-                            class="cursor-pointer flex flex-col items-start"
-                          >
-                            <div
-                              class="flex flex-row mt-1 text-[1rem] font-semibold"
+                          {abbreviateNumber(item?.marketValue)}
+                        </td>
+
+                        <td
+                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                        >
+                          {new Intl.NumberFormat("en", {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                          }).format(item?.numberOfStocks)}
+                        </td>
+
+                        <td
+                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                        >
+                          {item?.turnover?.toFixed(2)}
+                        </td>
+
+                        <!--
+                            <td class=" text-sm sm:text-[1rem] whitespace-nowrap  text-end">
+                              {item?.mainSectors?.at(0)}
+                            </td>
+                            -->
+
+                        <td
+                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                        >
+                          {#if item?.performancePercentage3Year >= 0}
+                            <span class="text-[#00FC50]"
+                              >+{abbreviateNumber(
+                                item?.performancePercentage3Year?.toFixed(2),
+                              )}%</span
                             >
-                              {#if item?.performancePercentage3Year >= 0}
-                                <span class="text-[#00FC50]"
-                                  >+{abbreviateNumber(
-                                    item?.performancePercentage3Year?.toFixed(
-                                      2,
-                                    ),
-                                  )}%</span
-                                >
-                              {:else}
-                                <span class="text-[#FF2F1F]"
-                                  >{abbreviateNumber(
-                                    item?.performancePercentage3Year?.toFixed(
-                                      2,
-                                    ),
-                                  )}%
-                                </span>
-                              {/if}
-                            </div>
-                            <span class=" text-sm">3-Year Performance</span>
-                          </label>
+                          {:else}
+                            <span class="text-[#FF2F1F]"
+                              >{abbreviateNumber(
+                                item?.performancePercentage3Year?.toFixed(2),
+                              )}%
+                            </span>
+                          {/if}
+                        </td>
 
-                          <div class="flex flex-col items-end">
-                            <div
-                              class="flex flex-row mt-1 text-[1rem] font-semibold"
+                        <td
+                          class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                        >
+                          {#if item?.winRate >= 0}
+                            <span class="text-[#00FC50]"
+                              >+{abbreviateNumber(
+                                item?.winRate?.toFixed(2),
+                              )}%</span
                             >
-                              {#if item?.winRate >= 0}
-                                <span class="text-[#00FC50]"
-                                  >+{abbreviateNumber(
-                                    item?.winRate?.toFixed(2),
-                                  )}%</span
-                                >
-                              {:else}
-                                <span class="text-[#FF2F1F]"
-                                  >{abbreviateNumber(
-                                    item?.winRate?.toFixed(2),
-                                  )}%
-                                </span>
-                              {/if}
-                            </div>
-                            <span class=" text-sm">Win Rate</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div></a
-                  >
-                {/each}
-
-                <!--<InfiniteLoading on:infinite={infiniteHandler} />-->
+                          {:else}
+                            <span class="text-[#FF2F1F]"
+                              >{abbreviateNumber(item?.winRate?.toFixed(2))}%
+                            </span>
+                          {/if}
+                        </td>
+                      </tr>
+                    {/each}
+                  </tbody>
+                </table>
               </div>
             </div>
           </main>
@@ -260,15 +341,3 @@
     </section>
   </body>
 </section>
-
-<style>
-  .hedge-fund-striped {
-    background-image: repeating-linear-gradient(
-      -45deg,
-      #a77120,
-      #a77120 10px,
-      #90621c 10px,
-      #90621c 20px
-    );
-  }
-</style>
