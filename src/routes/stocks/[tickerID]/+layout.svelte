@@ -83,6 +83,7 @@
   }
 
   async function updatePrePostQuote() {
+    console.log($isOpen, $isWeekend);
     if (!$isOpen && !$isWeekend) {
       try {
         const postData = { ticker: $stockTicker, path: "pre-post-quote" };
