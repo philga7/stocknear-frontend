@@ -4,8 +4,6 @@
   import SEO from "$lib/components/SEO.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
 
-  import defaultAvatar from "$lib/images/hedge-fund-avatar.png";
-
   export let data;
 
   let hedgeFundStats = data?.getHedgeFundsData;
@@ -17,6 +15,8 @@
     "marketValue",
     "avgPricePaid",
     "weight",
+    "putCallShare",
+    "filingDate",
     "price",
     "changesPercentage",
   ]);
@@ -29,6 +29,8 @@
     { name: "Market Value", rule: "marketValue" },
     { name: "Avg. Price Paid", rule: "avgPricePaid" },
     { name: "% Weight", rule: "weight" },
+    { name: "Asset Type", rule: "putCallShare" },
+    { name: "Filing Date", rule: "filingDate" },
   ];
 
   const specificRows = [
@@ -39,6 +41,8 @@
       type: "percentSign",
     },
     { name: "% Weight", rule: "weight", type: "percent" },
+    { name: "Asset Type", rule: "putCallShare", type: "string" },
+    { name: "Filing Date", rule: "filingDate", type: "date" },
     { name: "Avg. Price Paid", rule: "avgPricePaid", type: "float" },
     { name: "Market Value", rule: "marketValue", type: "int" },
   ];

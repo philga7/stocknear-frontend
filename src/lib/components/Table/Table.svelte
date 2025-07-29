@@ -594,6 +594,7 @@
       "score",
       "sector",
       "analystRating",
+      "putCallShare",
     ]);
 
     return Object.keys(data[0])?.reduce((orders, key) => {

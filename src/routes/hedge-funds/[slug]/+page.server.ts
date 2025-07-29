@@ -22,7 +22,7 @@ export const load = async ({ params, locals }) => {
 
     if (output?.holdings) {
       output.holdings = output?.holdings?.filter(
-        (item) => item?.sharesNumber && item?.symbol
+        (item) =>  item?.symbol
       );
     }
 
