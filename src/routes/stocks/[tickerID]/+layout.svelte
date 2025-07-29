@@ -71,7 +71,7 @@
     }
 
     clearScheduledUpdate();
-    timeoutId = setTimeout(updateOptionsFlowData, delay);
+    timeoutId = setTimeout(updatePrePostQuote, delay);
   }
 
   $: {
@@ -82,23 +82,25 @@
     }
   }
 
-  async function updateOptionsFlowData() {
-    try {
-      const postData = { ticker: $stockTicker, path: "pre-post-quote" };
-      const response = await fetch("/api/ticker-data", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(postData),
-      });
+  async function updatePrePostQuote() {
+    if (!$isOpen && !$isWeekend) {
+      try {
+        const postData = { ticker: $stockTicker, path: "pre-post-quote" };
+        const response = await fetch("/api/ticker-data", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(postData),
+        });
 
-      const output = (await response?.json()) || null;
-      if (output && !output?.message) {
-        prePostData = output;
+        const output = (await response?.json()) || null;
+        if (output && !output?.message) {
+          prePostData = output;
+        }
+      } catch (error) {
+        console.error("Failed to fetch real-time data:", error);
+      } finally {
+        scheduleNextUpdate();
       }
-    } catch (error) {
-      console.error("Failed to fetch real-time data:", error);
-    } finally {
-      scheduleNextUpdate();
     }
   }
 
