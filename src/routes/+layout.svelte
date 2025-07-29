@@ -136,6 +136,8 @@
   let cacheInterval: number;
 
   onMount(async () => {
+    checkMarketHour();
+
     if (!browser) return;
 
     if ("serviceWorker" in navigator) {
@@ -167,8 +169,6 @@
     }
 
     deferFunction(() => {
-      checkMarketHour();
-
       // Delay these tasks by 2 seconds to ensure they don't block main thread
       setTimeout(async () => {
         initDataLayer();
