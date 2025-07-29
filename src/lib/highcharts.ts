@@ -28,6 +28,9 @@ export default (node, config) => {
       accessibility: { enabled: false },
       chart: {
         ...(config.chart || {}),
+           style: {
+          fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, sans-serif',
+        },
         events: {
           ...(config.chart?.events || {}),
           load: function () {

@@ -343,7 +343,7 @@
   }
 
   function getPriceForecastChart() {
-    const historicalData = data?.getAnalystSummary?.pastPriceList || [];
+    const historicalData = data?.getPriceAnalysis?.pastPriceList || [];
     const forecastTargets = {
       low: lowPriceTarget,
       avg: avgPriceTarget,
@@ -1217,7 +1217,7 @@
                         </tr>
 
                         <tr class="text-sm sm:text-[1rem]">
-                          <td class="py-[3px] text-left lg:py-0.5">Change</td>
+                          <td class="py-[3px] text-left lg:py-0.5">% Change</td>
                           {#if !isPro}
                             <td class="whitespace-nowrap">
                               <a

@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { stockTicker, etfTicker, screenWidth } from "$lib/store";
-  import { abbreviateNumber } from "$lib/utils";
+  import { screenWidth } from "$lib/store";
   import highcharts from "$lib/highcharts.ts";
   import { mode } from "mode-watcher";
 
@@ -68,23 +67,63 @@
     let yMin = minValue * (1 - padding) === 0 ? null : minValue * (1 - padding);
     let yMax = maxValue * (1 + padding) === 0 ? null : maxValue * (1 + padding);
 
+    // Create volume impact indicators (bubbles for ALL dark pool activity)
+    const maxVolume = Math.max(
+      ...(darkPoolVolume?.map((v) => v.totalSize) || [0]),
+    );
+    const minVolume = Math.min(
+      ...(darkPoolVolume?.map((v) => v.totalSize) || [0]),
+    );
+
+    // Calculate a dynamic threshold to show meaningful spikes (top 80% or above average)
+    const avgVolume =
+      darkPoolVolume?.reduce((sum, item) => sum + item.totalSize, 0) /
+      (darkPoolVolume?.length || 1);
+    const volumeThreshold = Math.min(avgVolume * 1.2, maxVolume * 0.3); // Show more bubbles
+
+    const volumeImpactPoints =
+      darkPoolVolume
+        ?.filter((item) => item?.totalSize > volumeThreshold) // Lower threshold to catch more spikes
+        ?.map((item) => {
+          // Find corresponding price point
+          const timeStamp = new Date(item?.date).getTime();
+          const pricePoint = rawData?.find(
+            (p) => Math.abs(new Date(p.time).getTime() - timeStamp) < 300000,
+          ); // 5min tolerance
+
+          const x = Date.UTC(
+            new Date(item?.date).getUTCFullYear(),
+            new Date(item?.date).getUTCMonth(),
+            new Date(item?.date).getUTCDate(),
+            new Date(item?.date).getUTCHours(),
+            new Date(item?.date).getUTCMinutes(),
+          );
+
+          const y = pricePoint?.close || minValue || 0;
+          const z = item?.totalSize || 0;
+
+          // Only return valid data points with meaningful volume
+          return x && y && z > 0 ? { x, y, z } : null;
+        })
+        ?.filter(Boolean) || []; // Remove null/undefined values
+
     const options = {
       chart: {
         backgroundColor: $mode === "light" ? "#fff" : "#09090B",
         animation: false,
         height: 360,
       },
+
       credits: { enabled: false },
       legend: {
         enabled: true,
-        align: "center", // left side
-        verticalAlign: "top", // top edge
+        align: "center",
+        verticalAlign: "top",
         layout: "horizontal",
-        squareSymbol: false, // use our rectangle shape
+        squareSymbol: false,
         symbolWidth: 20,
         symbolHeight: 12,
         symbolRadius: 0,
-
         itemStyle: {
           color: $mode === "light" ? "black" : "white",
         },
@@ -95,18 +134,19 @@
         useHTML: true,
         style: { color: $mode === "light" ? "black" : "white" },
       },
+
       xAxis: {
         type: "datetime",
-        min: startTime, // Force start at 9:30
-        max: endTime, // Force end at 16:10
+        min: startTime,
+        max: endTime,
         crosshair: {
-          color: $mode === "light" ? "black" : "white", // Set the color of the crosshair line
-          width: 1, // Adjust the line width as needed
+          color: $mode === "light" ? "black" : "white",
+          width: 1,
           dashStyle: "Solid",
         },
         labels: {
           style: { color: $mode === "light" ? "#545454" : "white" },
-          distance: 10, // Increases space between label and axis
+          distance: 10,
           formatter: function () {
             const date = new Date(this?.value);
             const timeString = date?.toLocaleTimeString("en-US", {
@@ -117,10 +157,9 @@
           },
         },
         tickPositioner: function () {
-          // Create custom tick positions with wider spacing
           const positions = [];
           const info = this.getExtremes();
-          const tickCount = 5; // Reduce number of ticks displayed
+          const tickCount = 5;
           const interval = (info.max - info.min) / tickCount;
 
           for (let i = 0; i <= tickCount; i++) {
@@ -129,32 +168,55 @@
           return positions;
         },
       },
+
       yAxis: [
         {
-          // Primary yAxis for price
+          id: "price-axis",
           min: yMin ?? null,
           max: yMax ?? null,
-          title: { text: null },
-          labels: { style: { color: $mode === "light" ? "#545454" : "white" } },
+          title: {
+            text: $screenWidth < 640 ? null : "Stock Price",
+            style: {
+              color: $mode === "light" ? "#6b7280" : "#fff",
+            },
+          },
+          labels: {
+            style: {
+              color: $mode === "light" ? "#6b7280" : "#fff",
+            },
+            formatter: function () {
+              return `$${this.value?.toFixed(2)}`;
+            },
+          },
           gridLineWidth: 1,
           gridLineColor: $mode === "light" ? "#e5e7eb" : "#111827",
-          opposite: true,
+          tickAmount: 6,
+          opposite: false, // Stock price axis on the left
         },
         {
+          id: "volume-axis",
           title: {
-            text: $screenWidth < 640 ? null : "Total Trades",
-            style: { color: $mode === "light" ? "#545454" : "white" },
+            text: $screenWidth < 640 ? null : "Total Shares",
+            style: {
+              color: $mode === "light" ? "#6b7280" : "#fff",
+            },
           },
-          labels: { style: { color: $mode === "light" ? "#545454" : "white" } },
+          labels: {
+            style: {
+              color: $mode === "light" ? "#6b7280" : "#fff",
+            },
+          },
+
           gridLineWidth: 0,
-          opposite: false,
+          opposite: true, // Volume axis on the right
         },
       ],
+
       tooltip: {
-        shared: true,
+        shared: false, // Changed to false for better bubble tooltip handling
         useHTML: true,
-        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black
-        borderColor: "rgba(255, 255, 255, 0.2)", // Slightly visible white border
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        borderColor: "rgba(255, 255, 255, 0.2)",
         borderWidth: 1,
         style: {
           color: $mode === "light" ? "black" : "white",
@@ -171,14 +233,20 @@
 
           let tooltipContent = `<span class="text-white m-auto text-black text-sm font-normal">${formattedDate}</span><br>`;
 
-          // Loop through each point in the shared tooltip
-          this.points?.forEach((point) => {
-            tooltipContent += `<span class="text-white text-sm font-[501]">${point.series.name}: ${abbreviateNumber(point.y)}</span><br>`;
-          });
+          // Handle bubble series differently
+          if (this.series.type === "bubble") {
+            tooltipContent += `<span class="text-white text-sm font-[501]">${this.series.name}</span><br>`;
+            tooltipContent += `<span class="text-white text-sm font-[501]">Price: ${this.point.y?.toFixed(2)}</span><br>`;
+            tooltipContent += `<span class="text-white text-sm font-[501]">Volume: ${this.point.z?.toLocaleString("en-US")}</span><br>`;
+            tooltipContent += `<span class="text-white text-sm font-[400]">Rank: ${this.point.z === maxVolume ? "Highest" : this.point.z > avgVolume * 2 ? "High" : "Medium"} Impact</span>`;
+          } else {
+            tooltipContent += `<span class="text-white text-sm font-[501]">${this.series.name}: ${this.y?.toLocaleString("en-US")}</span><br>`;
+          }
 
           return tooltipContent;
         },
       },
+
       plotOptions: {
         series: {
           legendSymbol: "rectangle",
@@ -186,41 +254,71 @@
           marker: {
             enabled: false,
             states: {
-              hover: { enabled: false }, // Disable marker on hover
-              select: { enabled: false }, // Disable marker on selection
+              hover: { enabled: false },
+              select: { enabled: false },
             },
           },
         },
-        column: {
-          opacity: 1,
-          animation: false,
+        spline: {
+          lineWidth: 2.5,
+          shadow: false,
+        },
+        areaspline: {
+          lineWidth: 1.5,
+          fillOpacity: 0.3,
+          shadow: false,
+        },
+        bubble: {
+          minSize: 5, // Smaller minimum for small spikes
+          maxSize: 40, // Larger maximum for biggest spikes
+          opacity: 0.8,
           marker: {
-            enabled: false,
-            states: {
-              hover: { enabled: false }, // Disable marker on hover
-              select: { enabled: false }, // Disable marker on selection
-            },
+            enabled: true, // Enable markers for bubbles
+            fillOpacity: 0.8,
+            lineWidth: 1,
+            lineColor: $mode === "light" ? "#d97706" : "#f59e0b",
           },
+          dataLabels: {
+            enabled: false,
+          },
+          sizeBy: "z", // Size bubbles by z-value
+          zMin: minVolume, // Use actual minimum volume for scaling
+          zMax: maxVolume, // Use actual maximum volume for scaling
+          sizeByAbsoluteValue: false, // Use relative sizing for better proportion
         },
       },
+
       series: [
         {
-          name: "Price",
+          name: "Stock Price",
           type: "spline",
           data: seriesData,
-          color: $mode === "light" ? "#4681f4" : "#fff",
-          lineWidth: 1.3,
-          yAxis: 0, // Use primary yAxis
+          color: $mode === "light" ? "#000" : "#fff",
+          lineWidth: 2.5,
+          yAxis: "price-axis",
           animation: false,
+          shadow: false,
+          zIndex: 2,
         },
         {
           name: "DP Volume",
-          type: "column",
+          type: "areaspline",
           data: darkPoolSeries,
           color: "#F21C64",
           borderColor: "#F21C64",
-          yAxis: 1, // Use secondary yAxis
+          yAxis: "volume-axis",
           animation: false,
+          zIndex: 1,
+        },
+        {
+          name: "High Impact Orders",
+          type: "bubble",
+          data: volumeImpactPoints,
+          color: $mode === "light" ? "#f59e0b" : "#fbbf24",
+          yAxis: "price-axis",
+          animation: false,
+          zIndex: 3, // Highest z-index to appear on top
+          showInLegend: true,
         },
       ],
     };
