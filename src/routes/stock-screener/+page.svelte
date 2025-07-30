@@ -697,6 +697,38 @@
       varType: "percentSign",
       category: "Valuation & Ratios",
     },
+    cagrNext3YearEPS: {
+      label: "EPS Growth Next 3Y",
+      step: ["200%", "100%", "50%", "20%", "10%", "5%", "1%"],
+      defaultCondition: "over",
+      defaultValue: "any",
+      varType: "percentSign",
+      category: "Forecasts, Analysts & Price Targets",
+    },
+    cagrNext5YearEPS: {
+      label: "EPS Growth Next 5Y",
+      step: ["200%", "100%", "50%", "20%", "10%", "5%", "1%"],
+      defaultCondition: "over",
+      defaultValue: "any",
+      varType: "percentSign",
+      category: "Forecasts, Analysts & Price Targets",
+    },
+    cagrNext3YearRevenue: {
+      label: "Revenue Growth Next 3Y",
+      step: ["200%", "100%", "50%", "20%", "10%", "5%", "1%"],
+      defaultCondition: "over",
+      defaultValue: "any",
+      varType: "percentSign",
+      category: "Forecasts, Analysts & Price Targets",
+    },
+    cagrNext5YearRevenue: {
+      label: "Revenue Growth Next 5Y",
+      step: ["200%", "100%", "50%", "20%", "10%", "5%", "1%"],
+      defaultCondition: "over",
+      defaultValue: "any",
+      varType: "percentSign",
+      category: "Forecasts, Analysts & Price Targets",
+    },
     returnOnInvestedCapital: {
       label: "Return On Invested Capital",
       step: ["80%", "50%", "20%", "10%", "5%", "0%"],
@@ -3469,7 +3501,7 @@ const handleKeyDown = (event) => {
                 class="ml-2 rounded-full avatar w-5 h-5 text-xs font-semibold text-center shrink-0 flex items-center justify-center {ruleOfList?.length !==
                 0
                   ? 'text-white bg-red-500'
-                  : 'bg-gray-200 dark:bg-gray-600'}"
+                  : 'text-black dark:text-white bg-gray-200 dark:bg-gray-600'}"
               >
                 {ruleOfList?.length}
               </span>
