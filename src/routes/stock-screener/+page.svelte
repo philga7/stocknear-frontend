@@ -246,6 +246,14 @@
       defaultValue: "any",
       category: "Price & Volume",
     },
+    changesPercentage: {
+      label: "Price Change 1D",
+      step: ["20%", "10%", "5%", "1%", "0%"],
+      defaultCondition: "over",
+      defaultValue: "any",
+      varType: "percentSign",
+      category: "Performance",
+    },
     change1W: {
       label: "Price Change 1W",
       step: ["20%", "10%", "5%", "1%", "-1%", "-5%", "-10%", "-20%"],
