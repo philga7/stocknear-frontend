@@ -542,7 +542,7 @@
               <div
                 class="flex items-center justify-between space-x-2 px-1 py-1.5 leading-tight sm:py-0 border-b border-gray-300 dark:border-gray-600"
               >
-                <div class="hide-scroll mb-1">
+                <div class=" mb-1">
                   Date Expiration
                   <span class="relative" role="tooltip"
                     ><label
@@ -644,7 +644,7 @@
               <div
                 class="flex items-center justify-between space-x-2 px-1 py-1.5 leading-tight sm:py-0 border-b border-gray-300 dark:border-gray-600"
               >
-                <div class="hide-scroll mb-1">
+                <div class=" mb-1">
                   Strike Price
                   <span class="relative" role="tooltip"
                     ><label
@@ -723,7 +723,7 @@
               <div
                 class="flex items-center justify-between space-x-2 px-1 py-1.5 leading-tight sm:py-0 border-b border-gray-300 dark:border-gray-600"
               >
-                <div class="hide-scroll mb-1">
+                <div class=" mb-1">
                   Option Type
                   <span class="relative" role="tooltip"
                     ><label

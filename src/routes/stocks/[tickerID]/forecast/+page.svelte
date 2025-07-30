@@ -877,7 +877,7 @@
                 </div>
               {/if}
               <div
-                class="hide-scroll mb-1 mt-2 overflow-x-auto px-1.5 text-center md:mb-0 md:px-0 lg:mt-2"
+                class=" mb-1 mt-2 overflow-x-auto px-1.5 text-center md:mb-0 md:px-0 lg:mt-2"
               >
                 <table class="w-full text-right text-tiny xs:text-sm sm:">
                   <thead
@@ -1027,7 +1027,7 @@
                 </div>
               {/if}
               <div
-                class="hide-scroll mb-1 mt-2 overflow-x-auto px-1.5 text-center md:mb-0 md:px-0 lg:mt-2"
+                class=" mb-1 mt-2 overflow-x-auto px-1.5 text-center md:mb-0 md:px-0 lg:mt-2"
               >
                 <table
                   class="w-full text-right text-tiny xs:text-sm md:text-smaller"

@@ -5,6 +5,7 @@
   import Copy from "lucide-svelte/icons/copy";
   import { toast } from "svelte-sonner";
   import { mode } from "mode-watcher";
+  import InfoModal from "$lib/components/InfoModal.svelte";
 
   import {
     abbreviateNumber,
@@ -1496,26 +1497,6 @@
       rule.condition || allRules[rule.name].defaultCondition;
     valueMappings[rule.name] = rule.value || allRules[rule.name].defaultValue;
   });
-
-  async function getInfoText(parameter, title) {
-    tooltipTitle = title;
-    const cachedData = getCache(parameter, "getInfoText");
-    if (cachedData) {
-      infoText = cachedData;
-    } else {
-      const postData = { parameter };
-      const response = await fetch("/api/info-text", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(postData),
-      });
-
-      infoText = await response.json();
-      setCache(parameter, infoText, "getInfoText");
-    }
-  }
 
   async function handleCreateStrategy() {
     if (["Pro", "Plus"]?.includes(data?.user?.tier)) {
@@ -3062,33 +3043,15 @@ const handleKeyDown = (event) => {
             <div
               class="flex items-center justify-between space-x-2 px-1 py-1.5 text-[0.95rem] leading-tight"
             >
-              <div class="hide-scroll">
+              <div class=" flex flex-row items-start sm:items-end">
                 {row?.label?.length > 30
                   ? row?.label?.slice(0, 30)?.replace("[%]", "") + "..."
                   : row?.label?.replace("[%]", "")}
-                <span class="relative" role="tooltip"
-                  ><label
-                    for="mobileTooltip"
-                    on:click={() =>
-                      getInfoText(row?.rule, row?.label?.replace("[%]", ""))}
-                    class="relative"
-                    role="tooltip"
-                  >
-                    <span
-                      class="absolute -right-[15px] -top-[3px] cursor-pointer p-1 text-gray-500 dark:text-gray-300 dark:sm:hover:text-white"
-                    >
-                      <svg
-                        class="h-[10.5px] w-[10.5px]"
-                        viewBox="0 0 4 16"
-                        fill="currentColor"
-                        style="max-width:20px"
-                        ><path
-                          d="M0 6h4v10h-4v-10zm2-6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"
-                        ></path></svg
-                      >
-                    </span>
-                  </label></span
-                >
+                <InfoModal
+                  title={row?.label?.replace("[%]", "")}
+                  callAPI={true}
+                  parameter={row?.rule}
+                />
               </div>
 
               <div class="flex items-center">

@@ -932,7 +932,7 @@
               <div
                 class="flex items-center justify-between space-x-2 px-1 py-1.5 text-[0.95rem] leading-tight"
               >
-                <div class="hide-scroll">
+                <div class="">
                   {row?.label?.length > 20
                     ? row?.label?.slice(0, 20)?.replace("[%]", "") + "..."
                     : row?.label?.replace("[%]", "")}

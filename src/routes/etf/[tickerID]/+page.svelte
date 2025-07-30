@@ -724,7 +724,7 @@
               class="order-1 lg:order-5 grow overflow-hidden border-gray-300 dark:border-gray-800 py-0.5 xs:py-1 sm:px-0.5 sm:pb-3 sm:pt-2.5 lg:mb-0 lg:border-0 lg:border-l lg:border-sharp lg:px-0 lg:py-0 lg:pl-5 md:mb-4 md:border-b"
             >
               <div class="flex items-center justify-between py-1 sm:pt-0.5">
-                <div class="hide-scroll overflow-x-auto">
+                <div class=" overflow-x-auto">
                   <ul class="flex sm:space-x-2">
                     {#each intervals as interval}
                       <li>

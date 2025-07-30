@@ -140,7 +140,7 @@
         class="hflex flex-row items-center justify-between overflow-x-auto border-b border-gray-300 dark:border-gray-600 py-1.5"
       >
         <ul
-          class="hide-scroll mb-0.5 flex flex-row overflow-x-auto whitespace-nowrap text-lg"
+          class=" mb-0.5 flex flex-row overflow-x-auto whitespace-nowrap text-lg"
         >
           <li>
             <button
