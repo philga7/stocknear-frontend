@@ -97,7 +97,7 @@
 
       const filteredAnalystCount = recentData?.length ?? "n/a";
       const priceTargets = recentData
-        ?.map((item) => parseFloat(item.adjusted_pt_current))
+        ?.map((item) => parseFloat(item?.adjusted_pt_current))
         ?.filter((pt) => !isNaN(pt));
       const medianPriceTarget = priceTargets?.length
         ? priceTargets?.sort((a, b) => a - b)[
@@ -190,6 +190,26 @@
       window.removeEventListener("scroll", handleScroll);
     };
   });
+
+  function formatNumber(value) {
+    if (value == null || value === undefined || value === "") {
+      return "n/a";
+    }
+
+    const num = Number(value);
+
+    if (isNaN(num)) {
+      return "n/a";
+    }
+
+    // If it's a whole number, don't show decimals
+    if (num % 1 === 0) {
+      return num.toString();
+    }
+
+    // Otherwise, show up to 2 decimal places, removing trailing zeros
+    return parseFloat(num.toFixed(2)).toString();
+  }
 
   $: charNumber = $screenWidth < 640 ? 20 : 30;
 
@@ -490,28 +510,29 @@
                       <div class="flex flex-col items-end">
                         <div class="flex flex-row items-center">
                           {#if Math?.ceil(item?.adjusted_pt_prior) !== 0}
-                            <span class=" font-normal"
-                              >{Math?.ceil(item?.adjusted_pt_prior)}</span
-                            >
+                            <span class="font-normal">
+                              {formatNumber(item?.adjusted_pt_prior)}
+                            </span>
                             <svg
                               class="w-3 h-3 ml-1 mr-1 inline-block"
                               xmlns="http://www.w3.org/2000/svg"
                               viewBox="0 0 24 24"
-                              ><path
+                            >
+                              <path
                                 fill="none"
                                 stroke="currentColor"
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
                                 stroke-width="2.5"
                                 d="M4 12h16m0 0l-6-6m6 6l-6 6"
-                              /></svg
-                            >
+                              />
+                            </svg>
                             <span class=""
-                              >{Math?.ceil(item?.adjusted_pt_current)}</span
+                              >{formatNumber(item?.adjusted_pt_current)}</span
                             >
                           {:else if Math?.ceil(item?.adjusted_pt_current) !== 0}
                             <span class=""
-                              >{Math?.ceil(item?.adjusted_pt_current)}</span
+                              >{formatNumber(item?.adjusted_pt_current)}</span
                             >
                           {:else}
                             <span class="">n/a</span>
@@ -519,9 +540,8 @@
                         </div>
                       </div>
                     </td>
-
                     <td
-                      class="text-sm sm:text-[1rem] whitespace-nowrap text-end font-semibold"
+                      class="text-sm sm:text-[1rem] whitespace-nowrap text-end"
                     >
                       {#if Math?.ceil(item?.adjusted_pt_current) !== 0}
                         <span
@@ -565,6 +585,7 @@
                           day: "numeric",
                           year: "numeric",
                           daySuffix: "2-digit",
+                          timeZone: "UTC",
                         })}
                       </div>
                     </td>
