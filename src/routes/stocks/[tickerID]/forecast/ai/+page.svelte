@@ -9,7 +9,7 @@
 
   export let data;
 
-  const isPro = data?.user?.tier === "Pro";
+  const isSubscribed = ["Pro", "Plus"]?.includes(data?.user?.tier);
 
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
@@ -554,7 +554,7 @@
             <p class="mt-4">
               As of the latest evaluation, our AI model assigns a score of
               <strong
-                >{#if isPro}
+                >{#if isSubscribed}
                   {data?.getAIScore?.score || "n/a"}
                 {:else}
                   <a
@@ -576,7 +576,7 @@
               >
               out of 10, indicating a
               <strong>
-                {#if isPro}
+                {#if isSubscribed}
                   {[10, 9, 8, 7]?.includes(data?.getAIScore?.score)
                     ? "bullish"
                     : [6, 5, 4]?.includes(data?.getAIScore?.score)
@@ -602,7 +602,7 @@
               </strong>
               outlook. The model demonstrates an accuracy rate of
               <strong>
-                {#if isPro}
+                {#if isSubscribed}
                   {data?.getAIScore?.accuracy
                     ? data?.getAIScore?.accuracy + "%"
                     : "n/a"}
@@ -627,13 +627,13 @@
               based on historical backtesting. Following this AI Score methodology,
               the average return would be
               <strong
-                class={avgReturn >= 0 && isPro
+                class={avgReturn >= 0 && isSubscribed
                   ? "text-green-800 dark:text-[#00FC50]"
-                  : avgReturn < 0 && isPro
+                  : avgReturn < 0 && isSubscribed
                     ? "text-red-800 dark:text-[#FF2F1F]"
                     : ""}
               >
-                {#if isPro}
+                {#if isSubscribed}
                   {avgReturn >= 0 ? "+" : ""}{avgReturn?.toFixed(2)}%
                 {:else}
                   <a
@@ -654,7 +654,7 @@
                 {/if}
               </strong>. The current forecast suggests
               <strong>
-                {#if isPro}
+                {#if isSubscribed}
                   {data?.getAIScore?.score > 6
                     ? "positive momentum"
                     : data?.getAIScore?.score < 5
@@ -708,7 +708,7 @@
                   </div>
                   <div class="flex items-baseline">
                     <span class="text-xl font-bold">
-                      {#if isPro}
+                      {#if isSubscribed}
                         {[10, 9, 8, 7]?.includes(data?.getAIScore?.score)
                           ? "Bullish"
                           : [6, 5, 4]?.includes(data?.getAIScore?.score)
@@ -741,7 +741,7 @@
                     <span>Avg Return</span>
                   </div>
                   <div class="flex items-baseline">
-                    {#if isPro}
+                    {#if isSubscribed}
                       <span
                         class="text-xl font-bold {avgReturn >= 0
                           ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
@@ -775,14 +775,14 @@
                     <!-- Apply the blur class to the chart -->
                     {#if config}
                       <div
-                        class="{!isPro
+                        class="{!isSubscribed
                           ? 'blur-[3px]'
                           : ''} mt-5 shadow-xs sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
                         use:highcharts={configScore}
                       ></div>
                     {/if}
                     <!-- Overlay with "Upgrade to Pro" -->
-                    {#if !isPro}
+                    {#if !isSubscribed}
                       <div
                         class="font-bold text-lg sm:text-xl absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center text-muted dark:text-white"
                       >
@@ -841,7 +841,7 @@
                             <td
                               class="text-right whitespace-nowrap text-[1rem]"
                             >
-                              {#if isPro}
+                              {#if isSubscribed}
                                 {val}
                                 {[10, 9, 8, 7].includes(Number(val))
                                   ? "(Bullish)"
@@ -878,7 +878,7 @@
                           >
                           {#each tableQuarterChange as item, index}
                             <td class="text-[1rem]">
-                              {#if isPro}
+                              {#if isSubscribed}
                                 {item?.price && item?.price !== null
                                   ? "$" + item?.price
                                   : "n/a"}
@@ -913,7 +913,7 @@
                           >
                           {#each tableQuarterChange as item, index}
                             <td class="text-[1rem]">
-                              {#if isPro}
+                              {#if isSubscribed}
                                 <span
                                   class={item?.change > 0
                                     ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
@@ -965,7 +965,7 @@
                   $displayCompanyName,
                 )}. The model predicts a median target price of
                 <strong>
-                  {#if isPro}
+                  {#if isSubscribed}
                     ${medianPriceTarget}
                   {:else}
                     <a
@@ -986,7 +986,7 @@
                   {/if}
                 </strong>, ranging from
                 <strong>
-                  {#if isPro}
+                  {#if isSubscribed}
                     ${lowPriceTarget}
                   {:else}
                     <a
@@ -1008,7 +1008,7 @@
                 </strong>
                 to
                 <strong>
-                  {#if isPro}
+                  {#if isSubscribed}
                     ${highPriceTarget}
                   {:else}
                     <a
@@ -1029,13 +1029,13 @@
                   {/if}
                 </strong>, indicating a
                 <strong
-                  class={medianChange >= 0 && isPro
+                  class={medianChange >= 0 && isSubscribed
                     ? "text-green-800 dark:text-[#00FC50]"
-                    : medianChange < 0 && isPro
+                    : medianChange < 0 && isSubscribed
                       ? "text-red-800 dark:text-[#FF2F1F]"
                       : ""}
                 >
-                  {#if isPro}
+                  {#if isSubscribed}
                     {medianChange > 0
                       ? "potential increase"
                       : "potential decrease"} of {medianChange >= 0
@@ -1061,7 +1061,7 @@
                 </strong>
                 from the current price of
                 <strong>
-                  {#if isPro}
+                  {#if isSubscribed}
                     ${price}
                   {:else}
                     <a
@@ -1092,14 +1092,14 @@
                     <!-- Apply the blur class to the chart -->
                     {#if config}
                       <div
-                        class="{!isPro
+                        class="{!isSubscribed
                           ? 'blur-[3px]'
                           : ''} mt-5 shadow-xs sm:mt-0 sm:border sm:border-gray-300 dark:border-gray-800 rounded"
                         use:highcharts={config}
                       ></div>
                     {/if}
                     <!-- Overlay with "Upgrade to Pro" -->
-                    {#if !isPro}
+                    {#if !isSubscribed}
                       <div
                         class="font-bold text-lg sm:text-xl absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center text-muted dark:text-white"
                       >
@@ -1143,7 +1143,7 @@
                           class="border-b border-gray-300 dark:border-gray-600 font-normal text-sm sm:text-[1rem]"
                         >
                           <td class="py-[3px] text-left lg:py-0.5">Price</td>
-                          {#if !isPro}
+                          {#if !isSubscribed}
                             <td class="whitespace-nowrap">
                               <a
                                 href="/pricing"
@@ -1218,7 +1218,7 @@
 
                         <tr class="text-sm sm:text-[1rem]">
                           <td class="py-[3px] text-left lg:py-0.5">% Change</td>
-                          {#if !isPro}
+                          {#if !isSubscribed}
                             <td class="whitespace-nowrap">
                               <a
                                 href="/pricing"
