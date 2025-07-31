@@ -126,10 +126,14 @@
     sma20: {
       label: "20-Day Moving Average",
       step: [
-        "Stock Price > SMA20",
-        "SMA20 > SMA50",
-        "SMA20 > SMA100",
-        "SMA20 > SMA200",
+        "Price above SMA20",
+        "SMA20 above SMA50",
+        "SMA20 above SMA100",
+        "SMA20 above SMA200",
+        "Price below SMA20",
+        "SMA20 below SMA50",
+        "SMA20 below SMA100",
+        "SMA20 below SMA200",
       ],
       category: "Technical Analysis",
       defaultValue: "any",
@@ -137,10 +141,14 @@
     sma50: {
       label: "50-Day Moving Average",
       step: [
-        "Stock Price > SMA50",
-        "SMA50 > SMA20",
-        "SMA50 > SMA100",
-        "SMA50 > SMA200",
+        "Price above SMA50",
+        "SMA50 above SMA20",
+        "SMA50 above SMA100",
+        "SMA50 above SMA200",
+        "Price below SMA50",
+        "SMA50 below SMA20",
+        "SMA50 below SMA100",
+        "SMA50 below SMA200",
       ],
       category: "Technical Analysis",
       defaultValue: "any",
@@ -148,10 +156,14 @@
     sma100: {
       label: "100-Day Moving Average",
       step: [
-        "Stock Price > SMA100",
-        "SMA100 > SMA20",
-        "SMA100 > SMA50",
-        "SMA100 > SMA200",
+        "Price above SMA100",
+        "SMA100 above SMA20",
+        "SMA100 above SMA50",
+        "SMA100 above SMA200",
+        "Price below SMA100",
+        "SMA100 below SMA20",
+        "SMA100 below SMA50",
+        "SMA100 below SMA200",
       ],
       category: "Technical Analysis",
       defaultValue: "any",
@@ -159,10 +171,14 @@
     sma200: {
       label: "200-Day Moving Average",
       step: [
-        "Stock Price > SMA200",
-        "SMA200 > SMA20",
-        "SMA200 > SMA50",
-        "SMA200 > SMA100",
+        "Price above SMA200",
+        "SMA200 above SMA20",
+        "SMA200 above SMA50",
+        "SMA200 above SMA100",
+        "Price below SMA200",
+        "SMA200 below SMA20",
+        "SMA200 below SMA50",
+        "SMA200 below SMA100",
       ],
       category: "Technical Analysis",
       defaultValue: "any",
@@ -170,10 +186,14 @@
     ema20: {
       label: "20-Day Exp. Moving Average",
       step: [
-        "Stock Price > EMA20",
-        "EMA20 > EMA50",
-        "EMA20 > EMA100",
-        "EMA20 > EMA200",
+        "Price above EMA20",
+        "EMA20 above EMA50",
+        "EMA20 above EMA100",
+        "EMA20 above EMA200",
+        "Price below EMA20",
+        "EMA20 below EMA50",
+        "EMA20 below EMA100",
+        "EMA20 below EMA200",
       ],
       category: "Technical Analysis",
       defaultValue: "any",
@@ -181,10 +201,14 @@
     ema50: {
       label: "50-Day Exp. Moving Average",
       step: [
-        "Stock Price > EMA50",
-        "EMA50 > EMA20",
-        "EMA50 > EMA100",
-        "EMA50 > EMA200",
+        "Price above EMA50",
+        "EMA50 above EMA20",
+        "EMA50 above EMA100",
+        "EMA50 above EMA200",
+        "Price below EMA50",
+        "EMA50 below EMA20",
+        "EMA50 below EMA100",
+        "EMA50 below EMA200",
       ],
       category: "Technical Analysis",
       defaultValue: "any",
@@ -192,10 +216,14 @@
     ema100: {
       label: "100-Day Exp. Moving Average",
       step: [
-        "Stock Price > EMA100",
-        "EMA100 > EMA20",
-        "EMA100 > EMA50",
-        "EMA100 > EMA200",
+        "Price above EMA100",
+        "EMA100 above EMA20",
+        "EMA100 above EMA50",
+        "EMA100 above EMA200",
+        "Price below EMA100",
+        "EMA100 below EMA20",
+        "EMA100 below EMA50",
+        "EMA100 below EMA200",
       ],
       category: "Technical Analysis",
       defaultValue: "any",
@@ -203,10 +231,14 @@
     ema200: {
       label: "200-Day Exp. Moving Average",
       step: [
-        "Stock Price > EMA200",
-        "EMA200 > EMA20",
-        "EMA200 > EMA50",
-        "EMA200 > EMA100",
+        "Price above EMA200",
+        "EMA200 above EMA20",
+        "EMA200 above EMA50",
+        "EMA200 above EMA100",
+        "Price below EMA200",
+        "EMA200 below EMA20",
+        "EMA200 below EMA50",
+        "EMA200 below EMA100",
       ],
       category: "Technical Analysis",
       defaultValue: "any",
@@ -240,7 +272,7 @@
       category: "Fair Value",
     },
     price: {
-      label: "Stock Price",
+      label: "Price",
       step: [1000, 500, 400, 300, 200, 150, 100, 80, 60, 50, 20, 10, 5, 1],
       defaultCondition: "over",
       defaultValue: "any",
@@ -2348,7 +2380,7 @@ const handleKeyDown = (event) => {
       monthlyDividends: {
         name: "Monthly Dividends",
         rules: [
-          { name: "payoutFrequency", value: "Monthly" },
+          { condition: "", name: "payoutFrequency", value: "Monthly" },
           { condition: "over", name: "dividendYield", value: "0%" },
         ],
       },
@@ -3635,7 +3667,7 @@ const handleKeyDown = (event) => {
                       <td
                         class="whitespace-nowrap text-sm sm:text-[1rem] text-end"
                       >
-                        {#if ["ema20", "ema50", "ema100", "ema200", "earningsTime", "halalStocks", "sector", "industry", "country", "payoutFrequency"]?.includes(row?.rule)}
+                        {#if ["earningsTime", "halalStocks", "sector", "industry", "country", "payoutFrequency"]?.includes(row?.rule)}
                           {item[row?.rule]
                             ?.replace("After Market Close", "After Close")
                             ?.replace("Before Market Open", "Before Open")}

@@ -1,48 +1,52 @@
 import { sectorList, industryList, listOfRelevantCountries } from "$lib/utils";
 
+const generateMovingAverageConditions = () => {
+  const conditions = {};
+  const periods = [20, 50, 100, 200];
+  const maTypes = ['ema', 'sma'];
+  
+  // Generate conditions for each MA type
+  maTypes.forEach(maType => {
+    const maTypeUpper = maType.toUpperCase();
+    
+    // Price above MA conditions
+    periods.forEach(period => {
+      const key = `Price above ${maTypeUpper}${period}`;
+      conditions[key] = (item) => item.price > item[`${maType}${period}`];
+    });
+    
+    // Price below MA conditions
+    periods.forEach(period => {
+      const key = `Price below ${maTypeUpper}${period}`;
+      conditions[key] = (item) => item.price < item[`${maType}${period}`];
+    });
+    
+    // MA cross conditions (all combinations)
+    periods.forEach((period1, i) => {
+      periods.forEach((period2, j) => {
+        if (i !== j) { // Skip same period comparisons
+          const key = `${maTypeUpper}${period1} above ${maTypeUpper}${period2}`;
+          conditions[key] = (item) => item[`${maType}${period1}`] > item[`${maType}${period2}`];
+        }
+      });
+    });
+  });
+  
+  return conditions;
+};
+
+// Generate the moving average conditions
 const movingAverageConditions = {
-  // EMA conditions
-  "Stock Price > EMA20": (item) => item.price > item.ema20,
-  "Stock Price > EMA50": (item) => item.price > item.ema50,
-  "Stock Price > EMA100": (item) => item.price > item.ema100,
-  "Stock Price > EMA200": (item) => item.price > item.ema200,
-  "EMA20 > EMA50": (item) => item.ema20 > item.ema50,
-  "EMA20 > EMA100": (item) => item.ema20 > item.ema100,
-  "EMA20 > EMA200": (item) => item.ema20 > item.ema200,
-  "EMA50 > EMA20": (item) => item.ema50 > item.ema20,
-  "EMA50 > EMA100": (item) => item.ema50 > item.ema100,
-  "EMA50 > EMA200": (item) => item.ema50 > item.ema200,
-  "EMA100 > EMA20": (item) => item.ema100 > item.ema20,
-  "EMA100 > EMA50": (item) => item.ema100 > item.ema50,
-  "EMA100 > EMA200": (item) => item.ema100 > item.ema200,
-  "EMA200 > EMA20": (item) => item.ema200 > item.ema20,
-  "EMA200 > EMA50": (item) => item.ema200 > item.ema50,
-  "EMA200 > EMA100": (item) => item.ema200 > item.ema100,
-
-  // SMA conditions
-  "Stock Price > SMA20": (item) => item.price > item.sma20,
-  "Stock Price > SMA50": (item) => item.price > item.sma50,
-  "Stock Price > SMA100": (item) => item.price > item.sma100,
-  "Stock Price > SMA200": (item) => item.price > item.sma200,
-  "SMA20 > SMA50": (item) => item.sma20 > item.sma50,
-  "SMA20 > SMA100": (item) => item.sma20 > item.sma100,
-  "SMA20 > SMA200": (item) => item.sma20 > item.sma200,
-  "SMA50 > SMA20": (item) => item.sma50 > item.sma20,
-  "SMA50 > SMA100": (item) => item.sma50 > item.sma100,
-  "SMA50 > SMA200": (item) => item.sma50 > item.sma200,
-  "SMA100 > SMA20": (item) => item.sma100 > item.sma20,
-  "SMA100 > SMA50": (item) => item.sma100 > item.sma50,
-  "SMA100 > SMA200": (item) => item.sma100 > item.sma200,
-  "SMA200 > SMA20": (item) => item.sma200 > item.sma20,
-  "SMA200 > SMA50": (item) => item.sma200 > item.sma50,
-  "SMA200 > SMA100": (item) => item.sma200 > item.sma100,
-  // Add additional SMA conditions here
-
+  ...generateMovingAverageConditions(),
+  
+  // Additional non-MA conditions
   "Price > Graham Number": (item) => item.price > item.grahamNumber,
   "Price < Graham Number": (item) => item.price < item.grahamNumber,
   "Price > Lynch Fair Value": (item) => item.price > item.lynchFairValue,
   "Price < Lynch Fair Value": (item) => item.price < item.lynchFairValue,
 };
+
+
 
 // Convert the input to a value or return it as-is if it's already an array
 function convertUnitToValue(input: string | number | string[]) {
