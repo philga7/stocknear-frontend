@@ -229,7 +229,7 @@
                     on:input={search}
                     type="text"
                     placeholder="Search Hedge Fund"
-                    class="w-fit py-[5.5px] pl-10 border bg-gray-200/60 dark:bg-default shadow focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-300 px-3 focus:outline-none focus:ring-0 focus:border-gray-600 grow w-full sm:min-w-56 sm:max-w-xs"
+                    class="w-fit py-[5.5px] pl-10 border bg-gray-100 dark:bg-default shadow-sm focus:shadow focus:bg-white focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-800 dark:placeholder:text-gray-300 px-3 focus:outline-none focus:ring-0 dark:focus:border-gray-600 grow w-full sm:min-w-56 sm:max-w-xs"
                   />
                 </div>
               </div>
@@ -264,7 +264,7 @@
                         >
                           <a
                             href={"/hedge-funds/" + item?.cik}
-                            class="font-semibold dark:font-normal text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
+                            class="text-blue-800 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
                             >{formatString(item?.name)}
                           </a>
                         </td>
@@ -300,13 +300,13 @@
                           class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                         >
                           {#if item?.performancePercentage3Year >= 0}
-                            <span class="text-[#00FC50]"
+                            <span class="text-green-800 dark:text-[#00FC50]"
                               >+{abbreviateNumber(
                                 item?.performancePercentage3Year?.toFixed(2),
                               )}%</span
                             >
                           {:else}
-                            <span class="text-[#FF2F1F]"
+                            <span class="text-red-800 dark:text-[#FF2F1F]"
                               >{abbreviateNumber(
                                 item?.performancePercentage3Year?.toFixed(2),
                               )}%
@@ -318,13 +318,13 @@
                           class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
                         >
                           {#if item?.winRate >= 0}
-                            <span class="text-[#00FC50]"
+                            <span class="text-green-800 dark:text-[#00FC50]"
                               >+{abbreviateNumber(
                                 item?.winRate?.toFixed(2),
                               )}%</span
                             >
                           {:else}
-                            <span class="text-[#FF2F1F]"
+                            <span class="text-red-800 dark:text-[#FF2F1F]"
                               >{abbreviateNumber(item?.winRate?.toFixed(2))}%
                             </span>
                           {/if}
