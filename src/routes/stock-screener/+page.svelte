@@ -56,6 +56,47 @@
     { key: "strongCashFlow", label: "Strong Cash Flow" },
   ];
 
+  const onlySubscriberRules = [
+    "gexRatio",
+    "ivRank",
+    "iv30d",
+    "totalOI",
+    "changeOI",
+    "netCallPrem",
+    "netPutPrem",
+    "callVolume",
+    "putVolume",
+    "pcRatio",
+    "topAnalystRating",
+    "topAnalystCounter",
+    "topAnalystPriceTarget",
+    "topAnalystUpside",
+    "score",
+  ];
+
+  const checkedRules = [
+    "sma20",
+    "sma50",
+    "sma100",
+    "sma200",
+    "ema20",
+    "ema50",
+    "ema100",
+    "ema200",
+    "grahamNumber",
+    "lynchFairValue",
+    "analystRating",
+    "earningsTime",
+    "earningsDate",
+    "payoutFrequency",
+    "topAnalystRating",
+    "halalStocks",
+    "score",
+    "sector",
+    "industry",
+    "country",
+  ];
+
   let displayTableTab = "general";
   let otherTabRules = [];
 
@@ -908,7 +949,7 @@
       defaultCondition: "over",
       varType: "percentSign",
       defaultValue: "any",
-      category: "Financial Performance",
+      category: ["Most Popular", "Financial Performance"],
     },
     returnOnTangibleAssets: {
       label: "Return on Tangible Assets",
@@ -1359,7 +1400,7 @@
       step: ["Strong Buy", "Buy", "Hold", "Sell", "Strong Sell"],
       defaultCondition: "",
       defaultValue: "any",
-      category: ["Most Popular", "Forecasts, Analysts & Price Targets"],
+      category: "Forecasts, Analysts & Price Targets",
     },
     analystCounter: {
       label: "Analyst Count",
@@ -1388,7 +1429,7 @@
       step: ["Strong Buy", "Buy", "Hold", "Sell", "Strong Sell"],
       defaultCondition: "",
       defaultValue: "any",
-      category: "Forecasts, Analysts & Price Targets",
+      category: ["Most Popular", "Forecasts, Analysts & Price Targets"],
     },
     topAnalystCounter: {
       label: "Top Analyst Count",
@@ -1439,7 +1480,7 @@
       step: industryList,
       defaultCondition: "",
       defaultValue: "any",
-      category: "Company Info",
+      category: ["Most Popular", "Company Info"],
     },
     country: {
       label: "Country",
@@ -1591,22 +1632,7 @@
 
       checkedItems = new Map(
         ruleOfList
-          ?.filter((rule) =>
-            [
-              "analystRating",
-              "topAnalystRating",
-              "earningsTime",
-              "earningsDate",
-              "halalStocks",
-              "sector",
-              "payoutFrequency",
-              "country",
-              "score",
-              "industry",
-              "grahamNumber",
-              "lynchFairValue",
-            ].includes(rule.name),
-          )
+          ?.filter((rule) => checkedRules.includes(rule.name))
           ?.map((rule) => [rule.name, new Set(rule.value)]),
       );
 
@@ -1743,21 +1769,7 @@
     await updateStockScreenerData();
     checkedItems = new Map(
       ruleOfList
-        ?.filter((rule) =>
-          [
-            "analystRating",
-            "topAnalystRating",
-            "earningsTime",
-            "earningsDate",
-            "halalStocks",
-            "sector",
-            "country",
-            "score",
-            "industry",
-            "grahamNumber",
-            "lynchFairValue",
-          ]?.includes(rule.name),
-        ) // Only include specific rules
+        ?.filter((rule) => checkedRules?.includes(rule.name)) // Only include specific rules
         ?.map((rule) => [rule.name, new Set(rule.value)]), // Create Map from filtered rules
     );
   }
@@ -1765,23 +1777,7 @@
   function changeRule(state: string) {
     if (
       !["Pro", "Plus"]?.includes(data?.user?.tier) &&
-      [
-        "gexRatio",
-        "ivRank",
-        "iv30d",
-        "totalOI",
-        "changeOI",
-        "netCallPrem",
-        "netPutPrem",
-        "callVolume",
-        "putVolume",
-        "pcRatio",
-        "topAnalystRating",
-        "topAnalystCounter",
-        "topAnalystPriceTarget",
-        "topAnalystUpside",
-        "score",
-      ]?.includes(state)
+      onlySubscriberRules?.includes(state)
     ) {
       goto("/pricing");
     } else {
@@ -2136,30 +2132,7 @@ const handleKeyDown = (event) => {
 
   let checkedItems = new Map(
     ruleOfList
-      ?.filter((rule) =>
-        [
-          "sma20",
-          "sma50",
-          "sma100",
-          "sma200",
-          "ema20",
-          "ema50",
-          "ema100",
-          "ema200",
-          "grahamNumber",
-          "lynchFairValue",
-          "analystRating",
-          "earningsTime",
-          "earningsDate",
-          "payoutFrequency",
-          "topAnalystRating",
-          "halalStocks",
-          "score",
-          "sector",
-          "industry",
-          "country",
-        ]?.includes(rule.name),
-      ) // Only include specific rules
+      ?.filter((rule) => checkedRules?.includes(rule.name)) // Only include specific rules
       ?.map((rule) => [rule.name, new Set(rule.value)]), // Create Map from filtered rules
   );
 
@@ -2244,30 +2217,7 @@ const handleKeyDown = (event) => {
       checkedItems?.set(ruleName, new Set([valueKey]));
     }
 
-    if (
-      [
-        "sma20",
-        "sma50",
-        "sma100",
-        "sma200",
-        "ema20",
-        "ema50",
-        "ema100",
-        "ema200",
-        "grahamNumber",
-        "lynchFairValue",
-        "analystRating",
-        "earningsTime",
-        "earningsDate",
-        "payoutFrequency",
-        "topAnalystRating",
-        "halalStocks",
-        "score",
-        "sector",
-        "industry",
-        "country",
-      ]?.includes(ruleName)
-    ) {
+    if (checkedRules?.includes(ruleName)) {
       searchQuery = "";
       if (!Array.isArray(valueMappings[ruleName])) {
         valueMappings[ruleName] = [];
@@ -3174,7 +3124,7 @@ const handleKeyDown = (event) => {
                         alignOffset={0}
                         class="w-64 min-h-auto max-h-72 overflow-y-auto scroller"
                       >
-                        {#if !["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber", "lynchFairValue", "analystRating", "payoutFrequency", "topAnalystRating", "earningsTime", "earningsDate", "halalStocks", "score", "sector", "industry", "country"]?.includes(row?.rule)}
+                        {#if !checkedRules?.includes(row?.rule)}
                           <DropdownMenu.Label
                             class="absolute mt-2 h-11 border-gray-300 dark:border-gray-800 border-b -top-1 z-20 fixed sticky bg-white dark:bg-default"
                           >
@@ -3350,7 +3300,7 @@ const handleKeyDown = (event) => {
                           </div>
                         {/if}
                         <DropdownMenu.Group class="min-h-10 mt-2">
-                          {#if !["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber", "lynchFairValue", "analystRating", "payoutFrequency", "topAnalystRating", "earningsTime", "earningsDate", "halalStocks", "score", "sector", "industry", "country"]?.includes(row?.rule)}
+                          {#if !checkedRules?.includes(row?.rule)}
                             {#each row?.step as newValue, index}
                               {#if ruleCondition[row?.rule] === "between"}
                                 {#if newValue && row?.step[index + 1]}
@@ -3395,7 +3345,7 @@ const handleKeyDown = (event) => {
                                 </DropdownMenu.Item>
                               {/if}
                             {/each}
-                          {:else if ["sma20", "sma50", "sma100", "sma200", "ema20", "ema50", "ema100", "ema200", "grahamNumber", "lynchFairValue", "payoutFrequency", "earningsTime", "earningsDate"]?.includes(row?.rule)}
+                          {:else if checkedRules?.includes(row?.rule)}
                             {#each row?.step as item}
                               <DropdownMenu.Item
                                 class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
@@ -4044,10 +3994,14 @@ const handleKeyDown = (event) => {
               <div
                 class="flex w-full items-center space-x-1.5 py-1.5 md:w-1/2 lg:w-1/3 lg:py-1"
               >
-                {#if ["gexRatio", "ivRank", "iv30d", "totalOI", "changeOI", "netCallPrem", "netPutPrem", "callVolume", "putVolume", "pcRatio", "topAnalystRating", "topAnalystCounter", "topAnalystPriceTarget", "topAnalystUpside", "score"]?.includes(row?.rule) && !["Pro", "Plus"]?.includes(data?.user?.tier)}
-                  <label id={row?.rule} on:click={() => changeRule(row?.rule)}>
+                {#if onlySubscriberRules?.includes(row?.rule) && !["Pro", "Plus"]?.includes(data?.user?.tier)}
+                  <label
+                    id={row?.rule}
+                    on:click={() => changeRule(row?.rule)}
+                    class="flex flex-row items-center"
+                  >
                     <svg
-                      class="w-4 h-4 mb-1 inline-block cursor-pointer"
+                      class="w-4 h-4 mr-1 inline-block cursor-pointer"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       ><path
@@ -4055,6 +4009,11 @@ const handleKeyDown = (event) => {
                         d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
                       /></svg
                     >
+                    <div class="">
+                      <label for={row?.rule} class="cursor-pointer text-[1rem]"
+                        >{row?.label}</label
+                      >
+                    </div>
                   </label>
                 {:else}
                   <input
@@ -4066,12 +4025,12 @@ const handleKeyDown = (event) => {
                     )}
                     class="h-[18px] w-[18px] rounded-sm ring-offset-0 lg:h-4 lg:w-4"
                   />
+                  <div class="-mt-0.5">
+                    <label for={row?.rule} class="cursor-pointer text-[1rem]"
+                      >{row?.label}</label
+                    >
+                  </div>
                 {/if}
-                <div class="-mt-0.5">
-                  <label for={row?.rule} class="cursor-pointer text-[1rem]"
-                    >{row?.label}</label
-                  >
-                </div>
               </div>
             {/each}
           </div>
