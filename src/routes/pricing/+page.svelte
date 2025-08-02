@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
 
   import SEO from "$lib/components/SEO.svelte";
-  //import Discount from "$lib/components/Discount.svelte";
+  import Discount from "$lib/components/Discount.svelte";
   export let data;
   export let form;
 
@@ -130,7 +130,7 @@
       </h1>
     </div>
 
-    <!--<Discount />-->
+    <Discount />
 
     <div class="flex flex-row items-center justify-center">
       <div class="flex flex-row items-center ml-auto">

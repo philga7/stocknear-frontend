@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
-  let targetDate = new Date("2025-09-01");
+  let targetDate = new Date("2025-08-15");
 
   let days = "-";
   let hours = "-";
@@ -50,7 +50,7 @@
       Use Promo Code: <span class="font-extrabold">SUMMER25</span>
     </p>
   -->
-    <p class=" font-bold text-xl">Use Promo Code: SUMMER25</p>
+    <p class=" font-bold text-xl">Use Promo Code: SCREENER</p>
     <div
       class="grid grid-flow-col gap-5 font-bold text-center m-auto auto-cols-max justify-center mt-6"
     >
