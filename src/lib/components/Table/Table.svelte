@@ -14,10 +14,12 @@
   import { page } from "$app/stores";
   import { toast } from "svelte-sonner";
   import { mode } from "mode-watcher";
+  import Infobox from "$lib/components/Infobox.svelte";
 
   export let data;
   export let rawData;
   export let title = null;
+  export let date = null;
 
   export let excludedRules = new Set([
     "volume",
@@ -37,12 +39,24 @@
   ];
 
   export let hideLastRow = false;
+
   let originalData = [...rawData]; // Unaltered copy of raw data
   let ruleOfList = [...defaultList];
   let socket;
   let sortMode = false;
+  let inputValue = "";
 
   const defaultRules = defaultList?.map((item) => item?.rule);
+
+  let syncWorker: Worker | undefined = undefined;
+
+  // Handling messages from the worker
+  const handleMessage = async (event) => {
+    const filterData = event.data?.output;
+
+    rawData = filterData;
+    stockList = [...filterData]?.slice(0, 50);
+  };
 
   let pagePathName = $page?.url?.pathname;
   let testList = [];
@@ -430,7 +444,20 @@
     console.log("WebSocket restarted");
   }
 
+  const loadWorker = async () => {
+    syncWorker.postMessage({
+      rawData: originalData,
+      inputValue: inputValue,
+    });
+  };
+
   onMount(async () => {
+    if (!syncWorker) {
+      const SyncWorker = await import("$lib/workers/tableSearchWorker?worker");
+      syncWorker = new SyncWorker.default();
+      syncWorker.onmessage = handleMessage;
+    }
+
     try {
       const savedRules = localStorage?.getItem(pagePathName);
 
@@ -585,6 +612,20 @@
     }));
   }
 
+  async function search() {
+    inputValue = inputValue?.toLowerCase();
+
+    setTimeout(async () => {
+      if (inputValue?.length > 0) {
+        await loadWorker();
+      } else {
+        // Reset to original data if filter is empty
+        rawData = originalData;
+        stockList = originalData?.slice(0, 50);
+      }
+    }, 100);
+  }
+
   // Function to generate sortOrders based on keys in rawData
   function generateSortOrders(data) {
     const stringKeys = new Set([
@@ -699,305 +740,340 @@
 <!-- Content area -->
 
 <div
-  class="flex flex-row items-center justify-between w-full mt-5 text-muted dark:text-white"
+  class="w-full flex flex-col sm:flex-row items-center justify-start sm:justify-between w-full mt-5 text-muted sm:pt-2 sm:pb-2 dark:text-white sm:border-t sm:border-b sm:border-gray-300 sm:dark:border-gray-600"
 >
   {#if title}
-    <h2 class="text-xl sm:text-2xl font-semibold sm:font-bold">
-      {title}
-    </h2>
-  {/if}
-  <div class="ml-auto">
-    <DownloadData {data} {rawData} title={data?.getParams ?? "data"} />
-  </div>
-  <DropdownMenu.Root>
-    <DropdownMenu.Trigger asChild let:builder>
-      <Button
-        builders={[builder]}
-        class="ml-2 transition-all min-w-[110px]  bg-default text-white shadow-xs dark:border-gray-600 border sm:hover:bg-black dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 rounded truncate"
-      >
-        <span class="w-fit text-sm">Indicators</span>
-        <svg
-          class="ml-0.5 mt-1 h-5 w-5 inline-block shrink-0"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          style="max-width:40px"
-          aria-hidden="true"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-            clip-rule="evenodd"
-          ></path>
-        </svg>
-      </Button>
-    </DropdownMenu.Trigger>
-
-    <DropdownMenu.Content
-      side="bottom"
-      align="end"
-      sideOffset={10}
-      alignOffset={0}
-      class="w-60 max-h-[400px] overflow-y-auto scroller relative"
+    <div
+      class="flex flex-row items-center justify-between sm:justify-start w-full sm:w-fit whitespace-nowrap -mb-1 sm:mb-0"
     >
-      <!-- Search Input -->
-      <div
-        class="sticky fixed -top-1 z-40 bg-white dark:bg-default p-2 border-b border-gray-300 dark:border-gray-600"
+      <h2
+        class="text-start w-full mb-2 sm:mb-0 text-xl sm:text-2xl font-semibold"
       >
-        <div class="relative w-full">
-          <!-- Input Field -->
-          <input
-            bind:value={searchQuery}
-            on:input={handleInput}
-            autocomplete="off"
-            autofocus=""
-            class="text-sm w-full border-0 bg-white dark:bg-default focus:border-gray-200 focus:ring-0 focus:outline-none placeholder:text-gray-600 dark:placeholder:text-gray-400 dark:text-gray-300 pr-8"
-            type="text"
-            placeholder="Search indicators..."
-          />
+        {title}
+      </h2>
+      {#if date}
+        <span
+          class="text-sm sm:text-[0.9rem] text-gray-600 font-semibold dark:text-white ml-5 mt-1"
+        >
+          {date ? `Updated ${date}` : ""}
+        </span>
+      {/if}
+    </div>
+  {/if}
+  <div
+    class="flex items-center ml-auto border-t border-b border-gray-300 dark:border-gray-600 sm:border-none pt-2 pb-2 sm:pt-0 sm:pb-0 w-full"
+  >
+    <input
+      type="text"
+      bind:value={inputValue}
+      on:input={search}
+      placeholder="Find..."
+      class="ml-auto py-[5.5px] text-[0.85rem] sm:text-sm border bg-white shadow-xs focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-800 dark:placeholder:text-gray-300 px-3 focus:outline-none focus:ring-0 dark:focus:border-gray-600 grow w-full sm:min-w-56 sm:max-w-14"
+    />
 
-          <!-- Clear Button - Shown only when searchQuery has input -->
-          {#if searchQuery?.length > 0}
-            <button
-              on:click={() => (searchQuery = "")}
-              aria-label="Clear"
-              title="Clear"
-              tabindex="0"
-              class="absolute right-2 top-1/2 transform -translate-y-1/2"
-            >
-              <svg
-                class="h-5 w-5 text-icon cursor-pointer"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                ></path>
-              </svg>
-            </button>
-          {/if}
-        </div>
-      </div>
-      <!-- Dropdown items -->
-      <DropdownMenu.Group class="pb-2">
-        <!-- Added padding to avoid overlapping with Reset button -->
-        {#each searchQuery?.length !== 0 ? testList : allRows as item}
-          <DropdownMenu.Item
-            class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary"
+    <div class=" ml-2">
+      <DownloadData {data} {rawData} title={data?.getParams ?? "data"} />
+    </div>
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger asChild let:builder>
+        <Button
+          builders={[builder]}
+          class="ml-2 transition-all min-w-fit sm:min-w-[110px]  bg-default text-white shadow-xs dark:border-gray-600 border sm:hover:bg-black dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 rounded truncate"
+        >
+          <span class="w-fit text-[0.85rem] sm:text-sm">Indicators</span>
+          <svg
+            class="ml-0.5 mt-1 h-5 w-5 inline-block shrink-0"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            style="max-width:40px"
+            aria-hidden="true"
           >
-            <div class="flex items-center">
-              {#if defaultRules?.includes(item?.rule)}
-                <label
-                  on:click|capture={(event) => {
-                    event.preventDefault();
-                  }}
-                  class=""
-                >
-                  <input
-                    disabled={defaultRules?.includes(item?.rule) ? true : false}
-                    type="checkbox"
-                    class="rounded {defaultRules?.includes(item?.rule)
-                      ? 'checked:bg-gray-700'
-                      : 'checked:bg-blue-700'}"
-                    checked={isChecked(item?.name)}
-                  />
-                  <span class="ml-2">{item?.name}</span>
-                </label>
-              {:else if ["Pro", "Plus"]?.includes(data?.user?.tier) || excludedRules?.has(item?.rule)}
-                <label
-                  on:click|capture={(event) => {
-                    event.preventDefault();
-                    handleChangeValue(item?.name);
-                  }}
-                  class="cursor-pointer"
-                  for={item?.name}
-                >
-                  <input
-                    disabled={defaultRules?.includes(item?.rule) ? true : false}
-                    type="checkbox"
-                    class="rounded {defaultRules?.includes(item?.rule)
-                      ? 'checked:bg-gray-800'
-                      : 'checked:bg-blue-700'}"
-                    checked={isChecked(item?.name)}
-                  />
-                  <span class="ml-2">{item?.name}</span>
-                </label>
-              {:else}
-                <a href="/pricing" class="cursor-pointer">
-                  <svg
-                    class="h-[18px] w-[18px] inline-block text-icon group-hover:text-dark-400"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    style="max-width:40px"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                  <span class="ml-2">{item?.name}</span>
-                </a>
-              {/if}
-            </div>
-          </DropdownMenu.Item>
-        {/each}
-      </DropdownMenu.Group>
-      <!-- Reset Selection button -->
-      <div
-        class="sticky -bottom-1 bg-white dark:bg-default z-50 p-2 border-t border-gray-300 dark:border-gray-600 w-full flex justify-between items-center"
+            <path
+              fill-rule="evenodd"
+              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </Button>
+      </DropdownMenu.Trigger>
+
+      <DropdownMenu.Content
+        side="bottom"
+        align="end"
+        sideOffset={10}
+        alignOffset={0}
+        class="w-60 max-h-[400px] overflow-y-auto scroller relative"
       >
-        <label
-          on:click={handleResetAll}
-          class="w-full dark:sm:hover:text-white text-muted dark:text-gray-300 bg-white dark:bg-default text-start text-sm cursor-pointer"
+        <!-- Search Input -->
+        <div
+          class="sticky fixed -top-1 z-40 bg-white dark:bg-default p-2 border-b border-gray-300 dark:border-gray-600"
         >
-          Reset Selection
-        </label>
-        <label
-          on:click={handleSelectAll}
-          class="w-full flex justify-end dark:sm:hover:text-white text-muted dark:text-gray-300 bg-white dark:bg-default text-start text-sm cursor-pointer"
+          <div class="relative w-full">
+            <!-- Input Field -->
+            <input
+              bind:value={searchQuery}
+              on:input={handleInput}
+              autocomplete="off"
+              autofocus=""
+              class="text-sm w-full border-0 bg-white dark:bg-default focus:border-gray-200 focus:ring-0 focus:outline-none placeholder:text-gray-600 dark:placeholder:text-gray-400 dark:text-gray-300 pr-8"
+              type="text"
+              placeholder="Search indicators..."
+            />
+
+            <!-- Clear Button - Shown only when searchQuery has input -->
+            {#if searchQuery?.length > 0}
+              <button
+                on:click={() => (searchQuery = "")}
+                aria-label="Clear"
+                title="Clear"
+                tabindex="0"
+                class="absolute right-2 top-1/2 transform -translate-y-1/2"
+              >
+                <svg
+                  class="h-5 w-5 text-icon cursor-pointer"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  ></path>
+                </svg>
+              </button>
+            {/if}
+          </div>
+        </div>
+        <!-- Dropdown items -->
+        <DropdownMenu.Group class="pb-2">
+          <!-- Added padding to avoid overlapping with Reset button -->
+          {#each searchQuery?.length !== 0 ? testList : allRows as item}
+            <DropdownMenu.Item
+              class="sm:hover:bg-gray-200 dark:sm:hover:bg-primary"
+            >
+              <div class="flex items-center">
+                {#if defaultRules?.includes(item?.rule)}
+                  <label
+                    on:click|capture={(event) => {
+                      event.preventDefault();
+                    }}
+                    class=""
+                  >
+                    <input
+                      disabled={defaultRules?.includes(item?.rule)
+                        ? true
+                        : false}
+                      type="checkbox"
+                      class="rounded {defaultRules?.includes(item?.rule)
+                        ? 'checked:bg-gray-700'
+                        : 'checked:bg-blue-700'}"
+                      checked={isChecked(item?.name)}
+                    />
+                    <span class="ml-2">{item?.name}</span>
+                  </label>
+                {:else if ["Pro", "Plus"]?.includes(data?.user?.tier) || excludedRules?.has(item?.rule)}
+                  <label
+                    on:click|capture={(event) => {
+                      event.preventDefault();
+                      handleChangeValue(item?.name);
+                    }}
+                    class="cursor-pointer"
+                    for={item?.name}
+                  >
+                    <input
+                      disabled={defaultRules?.includes(item?.rule)
+                        ? true
+                        : false}
+                      type="checkbox"
+                      class="rounded {defaultRules?.includes(item?.rule)
+                        ? 'checked:bg-gray-800'
+                        : 'checked:bg-blue-700'}"
+                      checked={isChecked(item?.name)}
+                    />
+                    <span class="ml-2">{item?.name}</span>
+                  </label>
+                {:else}
+                  <a href="/pricing" class="cursor-pointer">
+                    <svg
+                      class="h-[18px] w-[18px] inline-block text-icon group-hover:text-dark-400"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      style="max-width:40px"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    <span class="ml-2">{item?.name}</span>
+                  </a>
+                {/if}
+              </div>
+            </DropdownMenu.Item>
+          {/each}
+        </DropdownMenu.Group>
+        <!-- Reset Selection button -->
+        <div
+          class="sticky -bottom-1 bg-white dark:bg-default z-50 p-2 border-t border-gray-300 dark:border-gray-600 w-full flex justify-between items-center"
         >
-          Select All
-        </label>
-      </div>
-    </DropdownMenu.Content>
-  </DropdownMenu.Root>
+          <label
+            on:click={handleResetAll}
+            class="w-full dark:sm:hover:text-white text-muted dark:text-gray-300 bg-white dark:bg-default text-start text-sm cursor-pointer"
+          >
+            Reset Selection
+          </label>
+          <label
+            on:click={handleSelectAll}
+            class="w-full flex justify-end dark:sm:hover:text-white text-muted dark:text-gray-300 bg-white dark:bg-default text-start text-sm cursor-pointer"
+          >
+            Select All
+          </label>
+        </div>
+      </DropdownMenu.Content>
+    </DropdownMenu.Root>
+  </div>
 </div>
 
-<div class="w-full overflow-x-auto text-muted dark:text-white">
-  <table
-    class="table table-sm table-compact rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto mt-2"
-  >
-    <thead>
-      <TableHeader {columns} {sortOrders} {sortData} />
-    </thead>
-    <tbody>
-      {#each stockList as item, index}
-        <tr
-          class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
-            1 ===
-            rawData?.length &&
-          !['Pro', 'Plus']?.includes(data?.user?.tier) &&
-          hideLastRow
-            ? 'opacity-[0.1]'
-            : ''}"
-        >
-          {#each columns as column}
-            <td
-              class="text-sm sm:text-[1rem] whitespace-nowrap"
-              class:text-left={column.align === "left"}
-              class:text-right={column.align === "right"}
-            >
-              {#if item[column.key] === null || item[column.key] === undefined}
-                n/a
-              {:else if column.key === "symbol"}
-                <HoverStockChart symbol={item[column.key]} />
-              {:else if column.key === "name"}
-                {#if item[column.key]?.length > charNumber}
-                  {item[column.key]?.slice(0, charNumber) + "..."}
+{#if stockList?.length > 0}
+  <div class="w-full overflow-x-auto text-muted dark:text-white">
+    <table
+      class="table table-sm table-compact rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto mt-2"
+    >
+      <thead>
+        <TableHeader {columns} {sortOrders} {sortData} />
+      </thead>
+      <tbody>
+        {#each stockList as item, index}
+          <tr
+            class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
+              1 ===
+              rawData?.length &&
+            !['Pro', 'Plus']?.includes(data?.user?.tier) &&
+            hideLastRow
+              ? 'opacity-[0.1]'
+              : ''}"
+          >
+            {#each columns as column}
+              <td
+                class="text-sm sm:text-[1rem] whitespace-nowrap"
+                class:text-left={column.align === "left"}
+                class:text-right={column.align === "right"}
+              >
+                {#if item[column.key] === null || item[column.key] === undefined}
+                  n/a
+                {:else if column.key === "symbol"}
+                  <HoverStockChart symbol={item[column.key]} />
+                {:else if column.key === "name"}
+                  {#if item[column.key]?.length > charNumber}
+                    {item[column.key]?.slice(0, charNumber) + "..."}
+                  {:else}
+                    {item[column.key]}
+                  {/if}
+                {:else if column?.type === "date"}
+                  {new Date(item[column.key]).toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                {:else if column?.type === "int"}
+                  {@html column.key === "marketCap" && item[column.key] === 0
+                    ? "n/a"
+                    : abbreviateNumber(item[column.key], false, true)}
+                {:else if column?.type === "decimal"}
+                  {item[column.key]?.toLocaleString("en-US")}
+                {:else if column?.type === "decimalSign"}
+                  {#if item[column.key] >= 0}
+                    <span class="text-green-800 dark:text-[#00FC50]"
+                      >+{item[column.key]?.toLocaleString("en-US")}</span
+                    >
+                  {:else if item[column.key] < 0}
+                    <span class="text-red-800 dark:text-[#FF2F1F]"
+                      >{item[column.key]?.toLocaleString("en-US")}</span
+                    >
+                  {/if}
+                {:else if column.key === "price"}
+                  <div class="relative flex items-center justify-end">
+                    {#if item?.previous !== null && item?.previous !== undefined && Math.abs(item?.previous - item[column?.key]) >= 0.01}
+                      <span
+                        class="absolute h-1 w-1 {item[column?.key] < 10
+                          ? 'right-[35px] sm:right-[40px]'
+                          : item[column?.key] < 100
+                            ? 'right-[40px] sm:right-[45px]'
+                            : 'right-[45px] sm:right-[55px]'} bottom-0 -top-0.5 sm:-top-1"
+                      >
+                        <span
+                          class="inline-flex rounded-full h-1 w-1 {item?.previous >
+                          item[column?.key]
+                            ? 'bg-red-600 dark:bg-[#FF2F1F]'
+                            : 'bg-green-600 dark:bg-[#00FC50]'} pulse-animation"
+                        ></span>
+                      </span>
+                    {/if}
+                    {item[column.key] !== null
+                      ? item[column.key]?.toFixed(2)
+                      : "n/a"}
+                  </div>
+                {:else if column.type === "percent"}
+                  {item[column.key] > 0.01
+                    ? item[column.key]?.toFixed(2) + "%"
+                    : "< 0.01%"}
+                {:else if column.type === "percentSign"}
+                  {#if item[column.key] > 0}
+                    <span class="text-green-800 dark:text-[#00FC50]"
+                      >+{abbreviateNumber(item[column.key]?.toFixed(2))}%</span
+                    >
+                  {:else if item[column.key] < 0}
+                    <span class="text-red-800 dark:text-[#FF2F1F]"
+                      >{abbreviateNumber(item[column.key]?.toFixed(2))}%</span
+                    >
+                  {:else}
+                    <span>{item[column.key]?.toFixed(2)}%</span>
+                  {/if}
+                {:else if column?.type === "rating"}
+                  {item[column.key]}
+                {:else if column.type === "sentiment"}
+                  <div
+                    class={item[column.key] >= 55
+                      ? "text-green-800 dark:text-[#00FC50]"
+                      : item[column.key] >= 50
+                        ? "text-[#E57C34]"
+                        : "text-red-800 dark:text-[#FF2F1F]"}
+                  >
+                    <div class="flex flex-row items-center justify-end">
+                      <div class="">
+                        {item[column.key] >= 80
+                          ? "Very Bullish"
+                          : item[column.key] >= 55
+                            ? "Bullish"
+                            : item[column.key] > 50
+                              ? "Mixed"
+                              : "Bearish"}
+                      </div>
+                      <div
+                        class="ml-2 px-1.5 py-1.5 border text-center rounded text-xs font-semibold"
+                      >
+                        {item[column.key]}
+                      </div>
+                    </div>
+                  </div>
                 {:else}
                   {item[column.key]}
                 {/if}
-              {:else if column?.type === "date"}
-                {new Date(item[column.key]).toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-              {:else if column?.type === "int"}
-                {@html column.key === "marketCap" && item[column.key] === 0
-                  ? "n/a"
-                  : abbreviateNumber(item[column.key], false, true)}
-              {:else if column?.type === "decimal"}
-                {item[column.key]?.toLocaleString("en-US")}
-              {:else if column?.type === "decimalSign"}
-                {#if item[column.key] >= 0}
-                  <span class="text-green-800 dark:text-[#00FC50]"
-                    >+{item[column.key]?.toLocaleString("en-US")}</span
-                  >
-                {:else if item[column.key] < 0}
-                  <span class="text-red-800 dark:text-[#FF2F1F]"
-                    >{item[column.key]?.toLocaleString("en-US")}</span
-                  >
-                {/if}
-              {:else if column.key === "price"}
-                <div class="relative flex items-center justify-end">
-                  {#if item?.previous !== null && item?.previous !== undefined && Math.abs(item?.previous - item[column?.key]) >= 0.01}
-                    <span
-                      class="absolute h-1 w-1 {item[column?.key] < 10
-                        ? 'right-[35px] sm:right-[40px]'
-                        : item[column?.key] < 100
-                          ? 'right-[40px] sm:right-[45px]'
-                          : 'right-[45px] sm:right-[55px]'} bottom-0 -top-0.5 sm:-top-1"
-                    >
-                      <span
-                        class="inline-flex rounded-full h-1 w-1 {item?.previous >
-                        item[column?.key]
-                          ? 'bg-red-600 dark:bg-[#FF2F1F]'
-                          : 'bg-green-600 dark:bg-[#00FC50]'} pulse-animation"
-                      ></span>
-                    </span>
-                  {/if}
-                  {item[column.key] !== null
-                    ? item[column.key]?.toFixed(2)
-                    : "n/a"}
-                </div>
-              {:else if column.type === "percent"}
-                {item[column.key] > 0.01
-                  ? item[column.key]?.toFixed(2) + "%"
-                  : "< 0.01%"}
-              {:else if column.type === "percentSign"}
-                {#if item[column.key] > 0}
-                  <span class="text-green-800 dark:text-[#00FC50]"
-                    >+{abbreviateNumber(item[column.key]?.toFixed(2))}%</span
-                  >
-                {:else if item[column.key] < 0}
-                  <span class="text-red-800 dark:text-[#FF2F1F]"
-                    >{abbreviateNumber(item[column.key]?.toFixed(2))}%</span
-                  >
-                {:else}
-                  <span>{item[column.key]?.toFixed(2)}%</span>
-                {/if}
-              {:else if column?.type === "rating"}
-                {item[column.key]}
-              {:else if column.type === "sentiment"}
-                <div
-                  class={item[column.key] >= 55
-                    ? "text-green-800 dark:text-[#00FC50]"
-                    : item[column.key] >= 50
-                      ? "text-[#E57C34]"
-                      : "text-red-800 dark:text-[#FF2F1F]"}
-                >
-                  <div class="flex flex-row items-center justify-end">
-                    <div class="">
-                      {item[column.key] >= 80
-                        ? "Very Bullish"
-                        : item[column.key] >= 55
-                          ? "Bullish"
-                          : item[column.key] > 50
-                            ? "Mixed"
-                            : "Bearish"}
-                    </div>
-                    <div
-                      class="ml-2 px-1.5 py-1.5 border text-center rounded text-xs font-semibold"
-                    >
-                      {item[column.key]}
-                    </div>
-                  </div>
-                </div>
-              {:else}
-                {item[column.key]}
-              {/if}
-            </td>
-          {/each}
-        </tr>
-      {/each}
-    </tbody>
-  </table>
-</div>
+              </td>
+            {/each}
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+  </div>
+{:else}
+  <div class="w-full flex items-center justify-start text-start">
+    <Infobox text={`No results found for "${inputValue}" `} />
+  </div>
+{/if}
 
 <style>
   @keyframes pulse {

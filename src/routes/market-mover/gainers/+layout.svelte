@@ -105,10 +105,8 @@
           </ul>
         </nav>
 
-        <div
-          class="flex flex-col justify-center items-center overflow-hidden mt-10"
-        >
-          <div class="controls groups w-full">
+        <div class="flex flex-col justify-center items-center overflow-hidden">
+          <div class="controls groups w-full hidden">
             <div
               class="title-group flex flex-row items-center justify-start mb-3"
             >

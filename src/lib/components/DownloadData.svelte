@@ -88,7 +88,7 @@
       builders={[builder]}
       class="border border-gray-300 dark:border-gray-700 text-white bg-black sm:hover:bg-default dark:default  flex flex-row justify-between items-center  max-w-[240px] sm:w-auto px-3 rounded truncate"
     >
-      <span class="truncate text-sm"> Download </span>
+      <span class="truncate text-[0.85rem] sm:text-sm"> Download </span>
       <svg
         class="-mr-1 ml-1 h-5 w-5 inline-block"
         viewBox="0 0 20 20"

@@ -21,4 +21,11 @@
   ];
 </script>
 
-<Table {data} {rawData} {excludedRules} {defaultList} />
+<Table
+  {data}
+  {rawData}
+  {excludedRules}
+  {defaultList}
+  title={"Gainers Today"}
+  date={"Aug 1, 2025"}
+/>
