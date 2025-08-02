@@ -8,7 +8,6 @@
   import { Button } from "$lib/components/shadcn/button/index.js";
   import { goto } from "$app/navigation";
   import { onMount } from "svelte";
-  import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import highcharts from "$lib/highcharts.ts";
   import { mode } from "mode-watcher";
 
@@ -548,14 +547,9 @@
                           >
                             Daily
                           </DropdownMenu.Item>
-                          <DropdownMenu.Item
-                            on:click={() => (timePeriod = "Weekly")}
-                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
-                          >
-                            Weekly
-                          </DropdownMenu.Item>
+
                           {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
-                            {#each ["Monthly", "Quarterly", "Annual"] as entry}
+                            {#each ["Weekly", "Monthly", "Quarterly", "Annual"] as entry}
                               <DropdownMenu.Item
                                 on:click={() => goto("/pricing")}
                                 class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
@@ -619,12 +613,7 @@
                     <tbody>
                       {#each stockList as item, index}
                         <tr
-                          class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
-                            1 ===
-                            rawData?.length &&
-                          !['Pro', 'Plus']?.includes(data?.user?.tier)
-                            ? 'opacity-[0.1]'
-                            : ''}"
+                          class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                         >
                           <td
                             class="text-start text-sm sm:text-[1rem] whitespace-nowrap"
@@ -703,7 +692,6 @@
                     </tbody>
                   </table>
                 </div>
-                <UpgradeToPro {data} />
               </div>
             {:else}
               <Infobox

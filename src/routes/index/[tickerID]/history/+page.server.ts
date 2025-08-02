@@ -15,7 +15,6 @@ export const load = async ({ locals, params }) => {
 
   let output = await response.json();
 
-  output = !["Pro","Plus"]?.includes(user?.tier) ? output?.reverse()?.slice(0,5): output
     return output;
   };
 
