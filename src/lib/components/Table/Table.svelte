@@ -740,7 +740,7 @@
 <!-- Content area -->
 
 <div
-  class="w-full flex flex-col sm:flex-row items-center justify-start sm:justify-between w-full mt-5 text-muted sm:pt-2 sm:pb-2 dark:text-white sm:border-t sm:border-b sm:border-gray-300 sm:dark:border-gray-600"
+  class="w-full flex flex-col sm:flex-row items-center justify-start sm:justify-between w-full mt-5 text-muted sm:pt-2 sm:pb-2 dark:text-white sm:border-t sm:border-b sm:border-gray-300 sm:dark:border-gray-800"
 >
   {#if title}
     <div
@@ -761,14 +761,14 @@
     </div>
   {/if}
   <div
-    class="flex items-center ml-auto border-t border-b border-gray-300 dark:border-gray-600 sm:border-none pt-2 pb-2 sm:pt-0 sm:pb-0 w-full"
+    class="flex items-center ml-auto border-t border-b border-gray-300 dark:border-gray-800 sm:border-none pt-2 pb-2 sm:pt-0 sm:pb-0 w-full"
   >
     <input
       type="text"
       bind:value={inputValue}
       on:input={search}
       placeholder="Find..."
-      class="ml-auto py-[5.5px] text-[0.85rem] sm:text-sm border bg-white shadow-xs focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-800 dark:placeholder:text-gray-300 px-3 focus:outline-none focus:ring-0 dark:focus:border-gray-600 grow w-full sm:min-w-56 sm:max-w-14"
+      class="ml-auto py-[7px] text-[0.85rem] sm:text-sm border bg-white dark:bg-default shadow-xs focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-800 dark:placeholder:text-gray-300 px-3 focus:outline-none focus:ring-0 dark:focus:border-gray-800 grow w-full sm:min-w-56 sm:max-w-14"
     />
 
     <div class=" ml-2">

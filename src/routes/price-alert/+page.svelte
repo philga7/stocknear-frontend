@@ -331,7 +331,7 @@
                       /></svg
                     >
                     {#if !editMode}
-                      <span class="ml-1 text-sm sm:text-[1rem]">
+                      <span class="ml-1 text-[0.85rem] sm:text-sm">
                         Edit Alert
                       </span>
                     {:else}
@@ -348,29 +348,11 @@
                   bind:touchedInput
                 >
                   <div class="relative w-full">
-                    <div
-                      class="absolute inset-y-0 left-0 flex items-center pl-2.5"
-                    >
-                      <svg
-                        class="h-4 w-4 text-icon xs:h-5 xs:w-5"
-                        fill="none"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="3"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        style="max-width: 40px"
-                        aria-hidden="true"
-                      >
-                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                        ></path>
-                      </svg>
-                    </div>
                     <Combobox.Input
                       on:input={search}
-                      class="shadow-xs text-sm sm:text-[1rem] controls-input focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-muted/80 dark:placeholder:text-white/80 px-3 py-2 pl-8 xs:pl-10 grow w-full sm:min-w-56 max-w-xs"
-                      placeholder="Add new stock"
-                      aria-label="Add new stock"
+                      class="py-[7px] text-[0.85rem] sm:text-sm border bg-white dark:bg-default shadow-xs focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-800 dark:placeholder:text-gray-300 px-3 focus:outline-none focus:ring-0 dark:focus:border-gray-600 grow w-full sm:min-w-56"
+                      placeholder="Find..."
+                      aria-label="Find..."
                     />
                   </div>
                   <Combobox.Content

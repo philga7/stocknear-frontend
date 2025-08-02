@@ -1293,29 +1293,11 @@
                     bind:touchedInput
                   >
                     <div class="relative sm:ml-3 w-full">
-                      <div
-                        class="absolute inset-y-0 left-0 flex items-center pl-2.5"
-                      >
-                        <svg
-                          class="h-4 w-4 text-icon xs:h-5 xs:w-5"
-                          fill="none"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="3"
-                          stroke="currentcolor"
-                          viewBox="0 0 24 24"
-                          style="max-width: 40px"
-                          aria-hidden="true"
-                        >
-                          <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                          ></path>
-                        </svg>
-                      </div>
                       <Combobox.Input
                         on:input={search}
-                        class="text-sm  controls-input bg-gray-200/60 dark:bg-default focus:outline-hidden border border-gray-400/60 dark:border-gray-600 rounded placeholder:text-gray-800 dark:placeholder:text-gray-200 px-3 py-1.5 pl-8 xs:pl-10 grow w-full sm:min-w-56"
-                        placeholder="Add new stock"
-                        aria-label="Add new stock"
+                        class="py-[7px] text-[0.85rem] sm:text-sm border bg-white dark:bg-default shadow-xs focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-800 dark:placeholder:text-gray-300 px-3 focus:outline-none focus:ring-0 dark:focus:border-gray-600 grow w-full sm:min-w-56"
+                        placeholder="Find..."
+                        aria-label="Find..."
                       />
                     </div>
 
@@ -1406,9 +1388,13 @@
                         /></svg
                       >
                       {#if !editMode}
-                        <span class="ml-1 text-sm"> Edit Watchlist </span>
+                        <span class="ml-1 text-[0.85rem] sm:text-sm">
+                          Edit Watchlist
+                        </span>
                       {:else}
-                        <span class="ml-1 text-sm"> Cancel </span>
+                        <span class="ml-1 text-[0.85rem] sm:text-sm">
+                          Cancel
+                        </span>
                       {/if}
                     </label>
                   </div>
@@ -1426,7 +1412,9 @@
                         builders={[builder]}
                         class=" sm:ml-auto min-w-[110px] w-full sm:w-fit border-gray-300 dark:border-gray-600 border bg-black sm:hover:bg-default text-white dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5  rounded truncate"
                       >
-                        <span class="truncate text-sm">Indicators</span>
+                        <span class="truncate text-[0.85rem] sm:text-sm"
+                          >Indicators</span
+                        >
                         <svg
                           class="-mr-1 ml-2 h-5 w-5 inline-block"
                           viewBox="0 0 20 20"
@@ -1598,7 +1586,9 @@
                         builders={[builder]}
                         class=" min-w-[110px] w-full sm:w-fit border-gray-300 dark:border-gray-600 border bg-black sm:hover:bg-default text-white dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2.5  rounded truncate"
                       >
-                        <span class="truncate text-sm">Bulk Download</span>
+                        <span class="truncate text-[0.85rem] sm:text-sm"
+                          >Bulk Download</span
+                        >
                         <svg
                           class="-mr-1 ml-2 h-5 w-5 inline-block"
                           viewBox="0 0 20 20"
