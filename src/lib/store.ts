@@ -57,7 +57,9 @@ export const closedPWA = writable(<boolean>false);
 export const executiveClicked = writable(<boolean>false);
 export const secFilingsClicked = writable(<boolean>false);
 
-export const newAvatar = writable(<string>"");
+export const displayTitle = writable(<string>"");
+export const displayDate = writable(<string>"");
+
 export const displayCompanyName = writable(<string>"");
 export const currentPrice = writable(<number>0);
 export const currentPortfolioPrice = writable(<number>0);

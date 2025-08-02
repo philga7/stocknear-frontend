@@ -2,8 +2,7 @@
   import SEO from "$lib/components/SEO.svelte";
   import { getLastTradingDay } from "$lib/utils";
   import { page } from "$app/stores";
-
-  import InfoModal from "$lib/components/InfoModal.svelte";
+  import { displayTitle, displayDate } from "$lib/store";
 
   export let data;
   const lastTradingDay = new Date(getLastTradingDay() ?? null)?.toLocaleString(
@@ -14,7 +13,7 @@
       year: "numeric",
     },
   );
-  const displayTitle = {
+  const titles = {
     gainers: "title Today",
     week: "Week title",
     month: "Month title",
@@ -30,6 +29,9 @@
   $: {
     const pathSegments = $page.url.pathname.split("/");
     timePeriod = pathSegments[pathSegments.length - 1];
+
+    $displayTitle = titles[timePeriod]?.replace("title", title);
+    $displayDate = lastTradingDay;
   }
 </script>
 
@@ -106,29 +108,6 @@
         </nav>
 
         <div class="flex flex-col justify-center items-center overflow-hidden">
-          <div class="controls groups w-full hidden">
-            <div
-              class="title-group flex flex-row items-center justify-start mb-3"
-            >
-              <h1 class="text-xl sm:text-2xl font-semibold">
-                {displayTitle[timePeriod]?.replace("title", title)}
-              </h1>
-              {#if timePeriod === "1D" && ["Gainers", "Losers"]?.includes(title)}
-                <InfoModal
-                  title={`${title} Today`}
-                  content={`The stocks with the highest percentage ${title === "Gainers" ? "gains" : "loss"} today, updated every two minutes during market open. Excludes stocks with a market cap under 10M and volume under 50K.`}
-                  id={"marketmoverId"}
-                />
-              {/if}
-
-              <div
-                class="mb-0 ml-5 mt-1 whitespace-nowrap text-sm font-semibold"
-              >
-                <span class="hidden lg:inline">Updated</span>
-                {lastTradingDay}
-              </div>
-            </div>
-          </div>
           <slot />
         </div>
       </main>

@@ -1,5 +1,6 @@
 <script lang="ts">
   import Table from "$lib/components/Table/Table.svelte";
+  import { displayTitle, displayDate } from "$lib/store";
 
   export let data;
 
@@ -26,6 +27,6 @@
   {rawData}
   {excludedRules}
   {defaultList}
-  title={"Gainers Today"}
-  date={"Aug 1, 2025"}
+  title={$displayTitle}
+  date={$displayDate}
 />
