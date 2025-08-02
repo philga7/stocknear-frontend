@@ -1,7 +1,6 @@
 <script lang="ts">
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
-  import Infobox from "$lib/components/Infobox.svelte";
   import SEO from "$lib/components/SEO.svelte";
   import AnalystInfo from "$lib/components/AnalystInfo.svelte";
 
@@ -138,16 +137,87 @@
         class="relative flex justify-center items-start overflow-hidden w-full"
       >
         <main class="w-full lg:pr-5">
-          <div class="mb-6 border-[#2C6288] dark:border-white border-b-[2px]">
+          <div class=" border-[#2C6288] dark:border-white border-b-[2px]">
             <h1 class="mb-3 text-2xl sm:text-3xl font-bold">
-              Analyst Live Flow
+              Latest Analyst Ratings
             </h1>
           </div>
 
-          <Infobox
-            text={"Stay ahead with real-time Wall Street analyst ratings, keeping you informed of the latest stock upgrades, downgrades and recommendations."}
-          />
+          <!-- Congress Trading Overview Paragraph -->
+          <p class="mt-4">
+            Overview of the latest Wall Street analyst activity. As of
+            <strong
+              >{new Date().toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+                timeZone: "UTC",
+              })}</strong
+            >, we are tracking
 
+            <strong>{rawData?.length?.toLocaleString("en-US") || "0"}</strong>
+
+            total analyst ratings and recommendations. The average analyst score
+            is
+
+            <strong
+              >{(() => {
+                const scores =
+                  rawData
+                    ?.filter((item) => item?.analystScore)
+                    ?.map((item) => item.analystScore) || [];
+                return scores.length > 0
+                  ? (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(
+                      1,
+                    )
+                  : "n/a";
+              })()}</strong
+            >
+
+            out of 5.0 stars. The average upside potential is
+
+            <strong
+              >{(() => {
+                const upsides =
+                  stockList
+                    ?.filter(
+                      (item) =>
+                        item?.upside !== null && item?.upside !== undefined,
+                    )
+                    ?.map((item) => item.upside) || [];
+                return upsides.length > 0
+                  ? (
+                      upsides.reduce((a, b) => a + b, 0) / upsides.length
+                    ).toFixed(1) + "%"
+                  : "n/a";
+              })()}</strong
+            >, indicating
+
+            <strong
+              >{(() => {
+                const upsides =
+                  stockList
+                    ?.filter(
+                      (item) =>
+                        item?.upside !== null && item?.upside !== undefined,
+                    )
+                    ?.map((item) => item.upside) || [];
+                const avgUpside =
+                  upsides.length > 0
+                    ? upsides.reduce((a, b) => a + b, 0) / upsides.length
+                    : 0;
+                if (avgUpside > 15) return "highly optimistic";
+                if (avgUpside > 10) return "optimistic";
+                if (avgUpside > 5) return "moderately positive";
+                if (avgUpside > 0) return "cautiously positive";
+                if (avgUpside > -5) return "neutral";
+                if (avgUpside > -10) return "cautious";
+                return "pessimistic";
+              })()}</strong
+            >
+
+            sentiment from Wall Street analysts.
+          </p>
           <div class="w-full m-auto mt-4">
             <div
               class="w-full m-auto rounded-none sm:rounded mb-4 overflow-x-auto"
@@ -159,12 +229,13 @@
                   <TableHeader {columns} {sortOrders} {sortData} />
                 </thead>
                 <tbody>
-                  {#each stockList as item, index}
+                  {#each ["Plus", "Pro"]?.includes(data?.user?.tier) ? stockList : stockList?.slice(0, 6) as item, index}
                     <tr
                       class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
                         1 ===
-                        stockList?.length &&
-                      !['Pro', 'Plus']?.includes(data?.user?.tier)
+                        (!['Pro', 'Plus']?.includes(data?.user?.tier)
+                          ? stockList?.slice(0, 6)?.length
+                          : 0) && !['Pro', 'Plus']?.includes(data?.user?.tier)
                         ? 'opacity-[0.1]'
                         : ''}"
                     >

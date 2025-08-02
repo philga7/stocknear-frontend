@@ -12,8 +12,6 @@
 
   export let data;
 
-  let cloudFrontUrl = import.meta.env.VITE_IMAGE_URL;
-
   let rawData = data?.getPoliticianRSS;
   let stockList = rawData?.slice(0, 50) || [];
 
@@ -60,7 +58,9 @@
 
   let columns = [
     { key: "representative", label: "Person", align: "left" },
-    { key: "ticker", label: "Company", align: "left" },
+    { key: "party", label: "Party", align: "right" },
+    { key: "ticker", label: "Symbol", align: "right" },
+    { key: "assetDescription", label: "Name", align: "right" },
     { key: "disclosureDate", label: "Filing Date", align: "right" },
     { key: "amount", label: "Amount", align: "right" },
     { key: "type", label: "Type", align: "right" },
@@ -68,7 +68,9 @@
 
   let sortOrders = {
     representative: { order: "none", type: "string" },
+    party: { order: "none", type: "string" },
     ticker: { order: "none", type: "string" },
+    assetDescription: { order: "none", type: "string" },
     disclosureDate: { order: "none", type: "date" },
     amount: { order: "none", type: "string" },
     type: { order: "none", type: "string" },
@@ -132,7 +134,7 @@
     stockList = [...originalData].sort(compareValues)?.slice(0, 50);
   };
 
-  $: charNumber = $screenWidth < 640 ? 20 : 40;
+  $: charNumber = $screenWidth < 640 ? 20 : 30;
 </script>
 
 <SEO
@@ -157,15 +159,101 @@
         class="relative flex justify-center items-start overflow-hidden w-full"
       >
         <main class="w-full lg:w-3/4 lg:pr-5">
-          <div class="mb-6 border-[#2C6288] dark:border-white border-b-[2px]">
+          <div class=" border-[#2C6288] dark:border-white border-b-[2px]">
             <h1 class="mb-1 text-2xl sm:text-3xl font-bold">
               Latest Trades of Politicians
             </h1>
           </div>
 
-          <Infobox
-            text="We provide real-time updates on the latest congressional trading activities."
-          />
+          <p class="mt-4">
+            Overview of the latest congressional trading activity. As of
+            <strong
+              >{new Date().toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              })}</strong
+            >, we are tracking
+            <strong>{rawData?.length?.toLocaleString("en-US") || "0"}</strong>
+            total transactions from members of Congress. Currently displaying the
+            most recent
+            <strong>{stockList?.length?.toLocaleString("en-US") || "0"}</strong>
+            trades. The buy-sell ratio shows
+            <strong
+              >{(() => {
+                const buys =
+                  stockList?.filter((item) => item?.type === "Bought")
+                    ?.length || 0;
+                const sells =
+                  stockList?.filter((item) => item?.type === "Sold")?.length ||
+                  0;
+                const total = buys + sells;
+                return total > 0
+                  ? `${((buys / total) * 100).toFixed(1)}% buys`
+                  : "n/a";
+              })()}</strong
+            >
+            versus
+            <strong
+              >{(() => {
+                const buys =
+                  stockList?.filter((item) => item?.type === "Bought")
+                    ?.length || 0;
+                const sells =
+                  stockList?.filter((item) => item?.type === "Sold")?.length ||
+                  0;
+                const total = buys + sells;
+                return total > 0
+                  ? `${((sells / total) * 100).toFixed(1)}% sells`
+                  : "n/a";
+              })()}</strong
+            >
+            among recent filings. The most active party is
+            <strong
+              >{(() => {
+                const partyCount = {};
+                stockList?.forEach((item) => {
+                  if (item?.party) {
+                    partyCount[item.party] = (partyCount[item.party] || 0) + 1;
+                  }
+                });
+                const mostActive = Object.entries(partyCount).sort(
+                  ([, a], [, b]) => b - a,
+                )[0];
+                return mostActive ? mostActive[0] : "n/a";
+              })()}</strong
+            >
+            with
+            <strong
+              >{(() => {
+                const partyCount = {};
+                stockList?.forEach((item) => {
+                  if (item?.party) {
+                    partyCount[item.party] = (partyCount[item.party] || 0) + 1;
+                  }
+                });
+                const mostActive = Object.entries(partyCount).sort(
+                  ([, a], [, b]) => b - a,
+                )[0];
+                return mostActive ? mostActive[1] : "0";
+              })()}</strong
+            >
+            transactions, indicating
+            <strong
+              >{(() => {
+                const buys =
+                  stockList?.filter((item) => item?.type === "Bought")
+                    ?.length || 0;
+                const sells =
+                  stockList?.filter((item) => item?.type === "Sold")?.length ||
+                  0;
+                if (buys > sells) return "bullish";
+                if (sells > buys) return "bearish";
+                return "neutral";
+              })()}</strong
+            >
+            sentiment among congressional members.
+          </p>
 
           <body class="w-full overflow-hidden m-auto">
             <section class="w-full overflow-hidden m-auto mt-5">
@@ -189,65 +277,46 @@
                               <tr
                                 class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                               >
-                                <th
-                                  class="text-sm sm:text-[1rem] whitespace-nowrap"
+                                <td
+                                  class="text-start text-sm sm:text-[1rem] whitespace-nowrap"
                                 >
-                                  <div class="flex flex-row items-center">
-                                    <div
-                                      class="shrink-0 rounded-full w-9 h-9 relative {item?.party ===
-                                      'Republican'
-                                        ? 'bg-[#98272B]'
-                                        : item?.party === 'Democratic'
-                                          ? 'bg-[#295AC7]'
-                                          : 'bg-[#4E2153]'} flex items-center justify-center"
-                                    >
-                                      <img
-                                        style="clip-path: circle(50%);"
-                                        class="rounded-full w-7"
-                                        src={`${cloudFrontUrl}/assets/senator/${item?.representative?.replace(/\s+/g, "_")}.png`}
-                                        loading="lazy"
-                                      />
-                                    </div>
-                                    <div class="flex flex-col ml-3 font-normal">
-                                      <a
-                                        href={`/politicians/${item?.id}`}
-                                        class="text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
-                                        >{getAbbreviatedName(
-                                          item?.representative?.replace(
-                                            "_",
-                                            " ",
-                                          ),
-                                        )}</a
-                                      >
-                                      <span class="">{item?.party}</span>
-                                    </div>
-                                  </div>
-                                  <!--{item?.firstName} {item?.lastName}-->
-                                </th>
+                                  <a
+                                    href={`/politicians/${item?.id}`}
+                                    class="text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
+                                    >{getAbbreviatedName(
+                                      item?.representative?.replace("_", " "),
+                                    )}</a
+                                  >
+                                </td>
+                                <td
+                                  class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                                >
+                                  {item?.party}
+                                </td>
 
                                 <td
-                                  class="text-start whitespace-nowrap text-sm sm:text-[1rem]"
+                                  class="text-end whitespace-nowrap text-sm sm:text-[1rem]"
                                 >
-                                  <div class="flex flex-col items-start">
-                                    <HoverStockChart
-                                      symbol={item?.ticker}
-                                      assetType={item?.assetType}
-                                    />
-
-                                    <span class=""
-                                      >{item?.assetDescription.length >
-                                      charNumber
-                                        ? formatString(
-                                            item?.assetDescription.slice(
-                                              0,
-                                              charNumber,
-                                            ),
-                                          ) + "..."
-                                        : formatString(item?.assetDescription)
-                                            ?.replace("- Common Stock", "")
-                                            ?.replace("Common Stock", "")}</span
-                                    >
-                                  </div>
+                                  <HoverStockChart
+                                    symbol={item?.ticker}
+                                    assetType={item?.assetType}
+                                  />
+                                </td>
+                                <td
+                                  class="text-end whitespace-nowrap text-sm sm:text-[1rem]"
+                                >
+                                  <span class=""
+                                    >{item?.assetDescription.length > charNumber
+                                      ? formatString(
+                                          item?.assetDescription.slice(
+                                            0,
+                                            charNumber,
+                                          ),
+                                        ) + "..."
+                                      : formatString(item?.assetDescription)
+                                          ?.replace("- Common Stock", "")
+                                          ?.replace("Common Stock", "")}</span
+                                  >
                                 </td>
 
                                 <td
