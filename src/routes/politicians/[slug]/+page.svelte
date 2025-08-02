@@ -115,7 +115,8 @@
     <ul>
       <li><a href="/" class="text-muted dark:text-gray-300">Home</a></li>
       <li>
-        <a href="/politicians" class="text-muted dark:text-gray-300">Congress</a
+        <a href="/politicians" class="text-muted dark:text-gray-300"
+          >Politicians</a
         >
       </li>
 
@@ -340,17 +341,17 @@
                       >
                         <span class="">
                           {#if item?.type === "Bought"}
-                            <span
-                              class="text-green-800 dark:text-[#00FC50] font-semibold dark:font-normal"
-                              >{item?.type}</span
+                            <span class="text-green-800 dark:text-[#00FC50]"
+                              >Buy</span
                             >
                           {:else if item?.type === "Sold"}
-                            <span
-                              class="text-red-800 dark:text-[#FF2F1F] font-semibold dark:font-normal"
-                              >{item?.type}</span
+                            <span class="text-red-800 dark:text-[#FF2F1F]"
+                              >Sell</span
                             >
                           {:else if item?.type === "Exchange"}
-                            <span class="text-[#C6A755]">Exchange</span>
+                            <span class="text-orange-800 dark:text-[#C6A755]"
+                              >Exchange</span
+                            >
                           {/if}
                         </span></td
                       >

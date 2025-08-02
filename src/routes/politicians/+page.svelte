@@ -1,9 +1,8 @@
 <script lang="ts">
-  import republicanBackground from "$lib/images/bg-republican.png";
-  import democraticBackground from "$lib/images/bg-democratic.png";
-  import otherBackground from "$lib/images/bg-other.png";
   import * as DropdownMenu from "$lib/components/shadcn/dropdown-menu/index.js";
   import { Button } from "$lib/components/shadcn/button/index.js";
+  import TableHeader from "$lib/components/Table/TableHeader.svelte";
+  import ArrowLogo from "lucide-svelte/icons/move-up-right";
 
   import SEO from "$lib/components/SEO.svelte";
 
@@ -15,7 +14,6 @@
 
   export let data;
 
-  let cloudFrontUrl = import.meta.env.VITE_IMAGE_URL;
   let syncWorker: Worker | undefined;
 
   let pagePathName = $page?.url?.pathname;
@@ -47,7 +45,7 @@
       return aIsFavorite ? -1 : 1;
     });
 
-    displayList = rawData?.slice(0, 20) ?? [];
+    displayList = rawData?.slice(0, 100) ?? [];
   };
 
   // Tell the web worker to filter our data
@@ -84,7 +82,7 @@
         return aIsFavorite ? -1 : 1;
       });
 
-      displayList = rawData?.slice(0, 20) ?? [];
+      displayList = rawData?.slice(0, 100) ?? [];
     }
   }
 
@@ -127,7 +125,7 @@
       return aIsFavorite ? -1 : 1;
     });
 
-    displayList = rawData?.slice(0, 20) ?? [];
+    displayList = rawData?.slice(0, 100) ?? [];
     isLoaded = true;
 
     window.addEventListener("scroll", handleScroll);
@@ -164,7 +162,7 @@
         } else {
           if (filterList?.length === 0) {
             rawData = [...data?.getAllPolitician];
-            displayList = rawData?.slice(0, 20);
+            displayList = rawData?.slice(0, 100);
           } else {
             await loadWorker();
           }
@@ -173,7 +171,7 @@
         // Reset to original data if filter is empty
         if (filterList?.length === 0) {
           rawData = [...data?.getAllPolitician];
-          displayList = rawData?.slice(0, 20);
+          displayList = rawData?.slice(0, 100);
         } else {
           await loadWorker();
         }
@@ -216,6 +214,80 @@
 
     saveList();
   }
+
+  let columns = [
+    { key: "representative", label: "Person", align: "left" },
+    { key: "party", label: "Party", align: "right" },
+    { key: "district", label: "District", align: "right" },
+    { key: "totalTrades", label: "Total Trades", align: "right" },
+    { key: "lastTrade", label: "Last Trade", align: "right" },
+  ];
+
+  let sortOrders = {
+    representative: { order: "none", type: "string" },
+    party: { order: "none", type: "string" },
+    district: { order: "none", type: "string" },
+    totalTrades: { order: "none", type: "number" },
+    lastTrade: { order: "none", type: "date" },
+  };
+
+  const sortData = (key) => {
+    // Reset all other keys to 'none' except the current key
+    for (const k in sortOrders) {
+      if (k !== key) {
+        sortOrders[k].order = "none";
+      }
+    }
+
+    // Cycle through 'none', 'asc', 'desc' for the clicked key
+    const orderCycle = ["none", "asc", "desc"];
+
+    let originalData = rawData;
+
+    const currentOrderIndex = orderCycle.indexOf(sortOrders[key].order);
+    sortOrders[key].order =
+      orderCycle[(currentOrderIndex + 1) % orderCycle.length];
+    const sortOrder = sortOrders[key].order;
+
+    // Reset to original data when 'none' and stop further sorting
+    if (sortOrder === "none") {
+      displayList = [...originalData]?.slice(0, 100); // Reset to original data (spread to avoid mutation)
+      return;
+    }
+
+    // Define a generic comparison function
+    const compareValues = (a, b) => {
+      const { type } = sortOrders[key];
+      let valueA, valueB;
+
+      switch (type) {
+        case "date":
+          valueA = new Date(a[key]);
+          valueB = new Date(b[key]);
+          break;
+        case "string":
+          valueA = a[key].toUpperCase();
+          valueB = b[key].toUpperCase();
+          return sortOrder === "asc"
+            ? valueA.localeCompare(valueB)
+            : valueB.localeCompare(valueA);
+        case "number":
+        default:
+          valueA = parseFloat(a[key]);
+          valueB = parseFloat(b[key]);
+          break;
+      }
+
+      if (sortOrder === "asc") {
+        return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
+      } else {
+        return valueA > valueB ? -1 : valueA < valueB ? 1 : 0;
+      }
+    };
+
+    // Sort using the generic comparison function
+    displayList = [...originalData].sort(compareValues)?.slice(0, 100);
+  };
 </script>
 
 <SEO
@@ -234,279 +306,241 @@
     </ul>
   </div>
 
-  <body class="w-full overflow-hidden m-auto">
-    {#if isLoaded}
-      <section class="w-full overflow-hidden m-auto mt-5">
-        <div class=" flex justify-center w-full m-auto overflow-hidden">
-          <div
-            class="relative flex justify-center items-center overflow-hidden w-full"
-          >
-            <main class="w-full">
-              <h1 class="mb-3 text-2xl sm:text-3xl font-bold">
-                All US Politicians
-              </h1>
-              <div class="w-full flex flex-row items-center">
-                <div class="relative w-fit">
-                  <div
-                    class="absolute inset-y-0 left-3 flex items-center pointer-events-none"
+  <div class="w-full overflow-hidden m-auto mt-5">
+    <div class="sm:p-0 flex justify-center w-full m-auto overflow-hidden">
+      <div
+        class="relative flex justify-center items-start overflow-hidden w-full"
+      >
+        <main class="w-full lg:w-3/4 lg:pr-5">
+          <h1 class="mb-3 text-2xl sm:text-3xl font-bold">
+            All US Politicians
+          </h1>
+          <div class="w-full flex flex-row items-center">
+            <div class="relative w-fit">
+              <div
+                class="absolute inset-y-0 left-3 flex items-center pointer-events-none"
+              >
+                <svg
+                  class="h-5 w-5 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+              </div>
+              <input
+                bind:value={inputValue}
+                on:input={search}
+                type="text"
+                placeholder="Find..."
+                class="w-fit py-[5.5px] pl-10 border bg-inherit shadow-xs focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-300 px-3 focus:outline-none focus:ring-0 focus:border-gray-600 grow w-full sm:min-w-56 sm:max-w-xs"
+              />
+            </div>
+
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger asChild let:builder>
+                <Button
+                  builders={[builder]}
+                  class="ml-3 border-gray-300 dark:border-gray-600 border border-gray-300 bg-black text-white sm:hover:bg-defaiöt dark:sm:hover:bg-primary ease-out  px-3 py-2  rounded "
+                >
+                  <span class="truncate">Filter by Party</span>
+                  <svg
+                    class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    style="max-width:40px"
+                    aria-hidden="true"
                   >
-                    <svg
-                      class="h-5 w-5 text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
+                    <path
+                      fill-rule="evenodd"
+                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </Button>
+              </DropdownMenu.Trigger>
+              <DropdownMenu.Content
+                side="bottom"
+                align="end"
+                sideOffset={10}
+                alignOffset={0}
+                class="w-56 h-fit max-h-72 overflow-y-auto scroller"
+              >
+                <DropdownMenu.Group>
+                  {#each ["Democratic", "Republican"] as item}
+                    <DropdownMenu.Item
+                      class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                     >
-                      <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                      ></path>
-                    </svg>
-                  </div>
-                  <input
-                    bind:value={inputValue}
-                    on:input={search}
-                    type="text"
-                    placeholder="Search Politician"
-                    class="w-fit py-[5.5px] pl-10 border bg-inherit shadow-xs focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-300 px-3 focus:outline-none focus:ring-0 focus:border-gray-600 grow w-full sm:min-w-56 sm:max-w-xs"
+                      <div class="flex items-center">
+                        <label
+                          class="cursor-pointer"
+                          on:click={() => handleChangeValue(item)}
+                          for={item}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={checkedItems.has(item)}
+                          />
+                          <span class="ml-2">{item}</span>
+                        </label>
+                      </div>
+                    </DropdownMenu.Item>
+                  {/each}
+                </DropdownMenu.Group>
+              </DropdownMenu.Content>
+            </DropdownMenu.Root>
+          </div>
+
+          <div class="w-full m-auto mt-4 overflow-x-auto">
+            <table
+              class="table table-sm table-compact no-scrollbar rounded-none sm:rounded w-full border border-gray-300 dark:border-gray-800 m-auto"
+            >
+              <thead>
+                <TableHeader {columns} {sortOrders} {sortData} />
+              </thead>
+              <tbody>
+                {#each displayList as item}
+                  <tr
+                    class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
+                  >
+                    <td
+                      class="text-start text-sm sm:text-[1rem] whitespace-nowrap flex flex-row items-center justify-between w-full"
+                    >
+                      <a
+                        href={`/politicians/${item?.id}`}
+                        class="text-blue-700 sm:hover:text-muted dark:sm:hover:text-white dark:text-blue-400"
+                        >{item?.representative?.replace("_", " ")}</a
+                      >
+
+                      <div
+                        id={item?.id}
+                        on:click|stopPropagation={(event) =>
+                          addToFavorite(event, item?.id)}
+                        class=" {favoriteList?.includes(item?.id)
+                          ? 'text-yellow-500 dark:text-[#FFA500]'
+                          : 'text-gray-400 dark:text-gray-300'}"
+                      >
+                        <svg
+                          class="{item?.id === animationId
+                            ? animationClass
+                            : ''} w-5 h-5 inline-block cursor-pointer shrink-0"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 16 16"
+                          ><path
+                            fill="currentColor"
+                            d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327l4.898.696c.441.062.612.636.282.95l-3.522 3.356l.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
+                          /></svg
+                        >
+                      </div>
+                    </td>
+                    <td
+                      class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                    >
+                      {item?.party}
+                    </td>
+
+                    <td
+                      class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                    >
+                      {item?.district?.length > 0 ? item?.district : "n/a"}
+                    </td>
+
+                    <td
+                      class="text-end whitespace-nowrap text-sm sm:text-[1rem]"
+                    >
+                      {item?.totalTrades?.toLocaleString("en-US")}
+                    </td>
+
+                    <td
+                      class="text-end text-sm sm:text-[1rem] whitespace-nowrap"
+                    >
+                      {new Date(item?.lastTrade)?.toLocaleString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                        daySuffix: "2-digit",
+                      })}
+                    </td>
+                  </tr>
+                {/each}
+              </tbody>
+            </table>
+          </div>
+        </main>
+
+        <aside class="hidden lg:block relative fixed w-1/4 ml-4">
+          {#if !["Pro", "Plus"]?.includes(data?.user?.tier)}
+            <div
+              class="w-full border border-gray-300 dark:border-gray-600 rounded h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
+            >
+              <a
+                href={"/pricing"}
+                class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
+              >
+                <div class="w-full flex justify-between items-center p-3 mt-3">
+                  <h2 class="text-start text-xl font-bold ml-3">
+                    Pro Subscription
+                  </h2>
+                  <ArrowLogo
+                    class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:"
                   />
                 </div>
+                <span class="p-3 ml-3 mr-3">
+                  Upgrade now for unlimited access to all data, tools and no
+                  ads.
+                </span>
+              </a>
+            </div>
+          {/if}
 
-                <DropdownMenu.Root>
-                  <DropdownMenu.Trigger asChild let:builder>
-                    <Button
-                      builders={[builder]}
-                      class="ml-3 border-gray-300 dark:border-gray-600 border border-gray-300 bg-black text-white sm:hover:bg-defaiöt dark:sm:hover:bg-primary ease-out  px-3 py-2  rounded "
-                    >
-                      <span class="truncate">Filter by Party</span>
-                      <svg
-                        class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        style="max-width:40px"
-                        aria-hidden="true"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                          clip-rule="evenodd"
-                        ></path>
-                      </svg>
-                    </Button>
-                  </DropdownMenu.Trigger>
-                  <DropdownMenu.Content
-                    side="bottom"
-                    align="end"
-                    sideOffset={10}
-                    alignOffset={0}
-                    class="w-56 h-fit max-h-72 overflow-y-auto scroller"
-                  >
-                    <DropdownMenu.Group>
-                      {#each ["Democratic", "Republican"] as item}
-                        <DropdownMenu.Item
-                          class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
-                        >
-                          <div class="flex items-center">
-                            <label
-                              class="cursor-pointer"
-                              on:click={() => handleChangeValue(item)}
-                              for={item}
-                            >
-                              <input
-                                type="checkbox"
-                                checked={checkedItems.has(item)}
-                              />
-                              <span class="ml-2">{item}</span>
-                            </label>
-                          </div>
-                        </DropdownMenu.Item>
-                      {:else}
-                        <DropdownMenu.Item
-                          class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
-                        >
-                          No country found
-                        </DropdownMenu.Item>
-                      {/each}
-                    </DropdownMenu.Group>
-                  </DropdownMenu.Content>
-                </DropdownMenu.Root>
-              </div>
-
-              <div class="w-full m-auto mt-4">
-                <div
-                  class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-5"
-                >
-                  {#each displayList as item}
-                    <a
-                      href={`/politicians/${item?.id}`}
-                      class="w-full cursor-pointer bg-black dark:bg-[#141417] sm:hover:bg-default text-white dark:sm:hover:bg-[#000] ease-in-out border dark:sm:hover:border-[#000] sm:hover:shadow-[#8C5F1B] border-gray-300 dark:border-gray-800 shadow-md rounded h-auto pb-4 pt-4 mb-7 {item?.party ===
-                      'Republican'
-                        ? 'sm:hover:shadow-[#80000D]'
-                        : item?.party === 'Democratic'
-                          ? 'sm:hover:shadow-[#1358C3]'
-                          : 'sm:hover:shadow-[#636465]'}  shadow-md rounded h-auto pb-4 pt-4 mb-7"
-                    >
-                      <div class="flex flex-col relative">
-                        <div
-                          id={item?.id}
-                          on:click|stopPropagation={(event) =>
-                            addToFavorite(event, item?.id)}
-                          class=" {favoriteList?.includes(item?.id)
-                            ? 'text-[#FFA500]'
-                            : ''} absolute top-0 right-5 z-20"
-                        >
-                          <svg
-                            class="{item?.id === animationId
-                              ? animationClass
-                              : ''} w-[22px] h-[22px] inline-block cursor-pointer shrink-0"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 16 16"
-                            ><path
-                              fill="currentColor"
-                              d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327l4.898.696c.441.062.612.636.282.95l-3.522 3.356l.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                            /></svg
-                          >
-                        </div>
-                        {#if item?.party === "Republican"}
-                          <img
-                            class="absolute -mt-4 w-full m-auto rounded"
-                            src={republicanBackground}
-                          />
-                        {:else if item?.party === "Democratic"}
-                          <img
-                            class="absolute -mt-4 w-[500px] m-auto rounded"
-                            src={democraticBackground}
-                          />
-                        {:else}
-                          <img
-                            class="absolute -mt-4 w-[500px] m-auto rounded"
-                            src={otherBackground}
-                          />
-                        {/if}
-                        <div
-                          class="flex flex-col justify-center items-center rounded-2xl"
-                        >
-                          <div
-                            class="-mt-3 shadow-lg rounded-full border border-gray-800 w-20 h-20 relative {item?.party ===
-                            'Republican'
-                              ? 'republican-striped bg-[#98272B]'
-                              : item?.party === 'Democratic'
-                                ? 'democratic-striped bg-[#295AC7]'
-                                : 'other-striped bg-[#20202E]'} flex items-center justify-center"
-                          >
-                            <img
-                              style="clip-path: circle(50%);"
-                              class="rounded-full w-16"
-                              src={`${cloudFrontUrl}/assets/senator/${item?.representative?.replace(/\s+/g, "_")}.png`}
-                              loading="lazy"
-                            />
-                          </div>
-                          <span class=" text-lg mt-2 mb-2">
-                            {item?.representative}
-                          </span>
-                          <span class=" text-md mb-8">
-                            {item?.party ?? "n/a"}
-                            {#if item?.district !== undefined && item?.district?.length !== 0}
-                              / {item?.district}
-                            {/if}
-                          </span>
-                        </div>
-
-                        <div
-                          class="flex flex-row justify-between items-center w-full px-10 pb-4"
-                        >
-                          <label
-                            class="cursor-pointer flex flex-col items-center"
-                          >
-                            <span class=" text-[1rem] font-semibold"
-                              >{item?.totalTrades?.toLocaleString(
-                                "en-US",
-                              )}</span
-                            >
-                            <span class="text-white dark:text-slate-300 text-sm"
-                              >Total Trades</span
-                            >
-                          </label>
-
-                          <div class="flex flex-col items-center">
-                            <span class=" text-[1rem] font-semibold">
-                              {item?.lastTrade?.length !== undefined
-                                ? new Date(item?.lastTrade)?.toLocaleString(
-                                    "en-US",
-                                    {
-                                      month: "short",
-                                      day: "numeric",
-                                      year: "numeric",
-                                      daySuffix: "2-digit",
-                                      timeZone: "UTC",
-                                    },
-                                  )
-                                : "n/a"}
-                            </span>
-                            <span class="text-white dark:text-slate-300 text-sm"
-                              >Last Traded</span
-                            >
-                          </div>
-                        </div>
-                      </div></a
-                    >
-                  {/each}
-
-                  <!--<InfiniteLoading on:infinite={infiniteHandler} />-->
-                </div>
-              </div>
-            </main>
-          </div>
-        </div>
-      </section>
-    {:else}
-      <div class="flex justify-center items-center h-80">
-        <div class="relative">
-          <label
-            class="shadow-xs bg-default dark:bg-secondary rounded h-14 w-14 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+          <div
+            class="w-full border border-gray-300 dark:border-gray-600 rounded h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
           >
-            <span
-              class="loading loading-spinner loading-md text-white dark:text-white"
-            ></span>
-          </label>
-        </div>
+            <a
+              href={"/politicians/flow-data"}
+              class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
+            >
+              <div class="w-full flex justify-between items-center p-3 mt-3">
+                <h2 class="text-start text-xl font-bold ml-3">
+                  Latest Congress Trading
+                </h2>
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:" />
+              </div>
+              <span class="p-3 ml-3 mr-3">
+                Get detailed reports on latest Congress trading transactions.
+              </span>
+            </a>
+          </div>
+          <div
+            class="w-full border border-gray-300 dark:border-gray-600 rounded h-fit pb-4 mt-4 cursor-pointer sm:hover:shadow-lg dark:sm:hover:bg-secondary transition ease-out duration-100"
+          >
+            <a
+              href={"/stock-screener"}
+              class="w-auto lg:w-full p-1 flex flex-col m-auto px-2 sm:px-0"
+            >
+              <div class="w-full flex justify-between items-center p-3 mt-3">
+                <h2 class="text-start text-xl font-bold ml-3">
+                  Stock Screener
+                </h2>
+                <ArrowLogo class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:" />
+              </div>
+              <span class="p-3 ml-3 mr-3">
+                Build your Stock Screener to find profitable stocks.
+              </span>
+            </a>
+          </div>
+        </aside>
       </div>
-    {/if}
-  </body>
+    </div>
+  </div>
 </section>
 
 <style>
-  .republican-striped {
-    background-image: repeating-linear-gradient(
-      -45deg,
-      #98272b,
-      #98272b 10px,
-      #840412 10px,
-      #840412 20px
-    );
-  }
-
-  .democratic-striped {
-    background-image: repeating-linear-gradient(
-      -45deg,
-      #295ac7,
-      #295ac7 10px,
-      #164d9d 10px,
-      #164d9d 20px
-    );
-  }
-
-  .other-striped {
-    background-image: repeating-linear-gradient(
-      -45deg,
-      #a4a6a8,
-      #a4a6a8 10px,
-      #c0c3c5 10px,
-      #c0c3c5 20px
-    );
-  }
-
   .heartbeat {
     animation: heartbeat-animation 0.3s;
     animation-timing-function: ease-in-out;

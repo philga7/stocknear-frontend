@@ -5,7 +5,6 @@
   import HoverStockChart from "$lib/components/HoverStockChart.svelte";
   //import UpgradeToPro from '$lib/components/UpgradeToPro.svelte';
   import ArrowLogo from "lucide-svelte/icons/move-up-right";
-  import Infobox from "$lib/components/Infobox.svelte";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
 
   import SEO from "$lib/components/SEO.svelte";
