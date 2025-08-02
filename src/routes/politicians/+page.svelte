@@ -10,7 +10,6 @@
   import { page } from "$app/stores";
 
   import { compareTwoStrings } from "string-similarity";
-  //  import * as XLSX from 'xlsx';
 
   export let data;
 
@@ -137,10 +136,11 @@
       //window.removeEventListener('keydown', handleKeyDown);
     };
   });
+  let newData = [];
 
   function search() {
     clearTimeout(timeoutId); // Clear any existing timeout
-    let newData = [];
+    newData = [];
 
     timeoutId = setTimeout(async () => {
       if (inputValue?.length > 0) {
@@ -176,7 +176,7 @@
           await loadWorker();
         }
       }
-    }, 500);
+    }, 50);
   }
 
   function saveList() {
@@ -315,85 +315,83 @@
           <h1 class="mb-3 text-2xl sm:text-3xl font-bold">
             All US Politicians
           </h1>
-          <div class="w-full flex flex-row items-center">
-            <div class="relative w-fit">
-              <div
-                class="absolute inset-y-0 left-3 flex items-center pointer-events-none"
+          <div
+            class="w-full flex flex-col sm:flex-row items-center justify-start sm:justify-between w-full mt-5 text-muted sm:pt-2 sm:pb-2 dark:text-white sm:border-t sm:border-b sm:border-gray-300 sm:dark:border-gray-800"
+          >
+            <div
+              class="flex flex-row items-center justify-between sm:justify-start w-full sm:w-fit whitespace-nowrap -mb-1 sm:mb-0"
+            >
+              <h2
+                class="text-start w-full mb-2 sm:mb-0 text-xl sm:text-2xl font-semibold"
               >
-                <svg
-                  class="h-5 w-5 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
-              </div>
-              <input
-                bind:value={inputValue}
-                on:input={search}
-                type="text"
-                placeholder="Find..."
-                class="w-fit py-[5.5px] pl-10 border bg-inherit shadow-xs focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-300 px-3 focus:outline-none focus:ring-0 focus:border-gray-600 grow w-full sm:min-w-56 sm:max-w-xs"
-              />
+                {rawData?.length?.toLocaleString("en-US")} Congress Members
+              </h2>
             </div>
 
-            <DropdownMenu.Root>
-              <DropdownMenu.Trigger asChild let:builder>
-                <Button
-                  builders={[builder]}
-                  class="ml-3 border-gray-300 dark:border-gray-600 border border-gray-300 bg-black text-white sm:hover:bg-defaiöt dark:sm:hover:bg-primary ease-out  px-3 py-2  rounded "
-                >
-                  <span class="truncate">Filter by Party</span>
-                  <svg
-                    class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    style="max-width:40px"
-                    aria-hidden="true"
+            <div
+              class="flex items-center ml-auto border-t border-b border-gray-300 dark:border-gray-800 sm:border-none pt-2 pb-2 sm:pt-0 sm:pb-0 w-full"
+            >
+              <input
+                type="text"
+                bind:value={inputValue}
+                on:input={search}
+                placeholder="Find..."
+                class="ml-auto py-[7px] text-[0.85rem] sm:text-sm border bg-white dark:bg-default shadow-xs focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-800 dark:placeholder:text-gray-300 px-3 focus:outline-none focus:ring-0 dark:focus:border-gray-800 grow w-full sm:min-w-56 sm:max-w-14"
+              />
+
+              <DropdownMenu.Root>
+                <DropdownMenu.Trigger asChild let:builder>
+                  <Button
+                    builders={[builder]}
+                    class="ml-2 transition-all min-w-fit sm:min-w-[110px]  bg-default text-white shadow-xs dark:border-gray-600 border sm:hover:bg-black dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 rounded truncate"
                   >
-                    <path
-                      fill-rule="evenodd"
-                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                </Button>
-              </DropdownMenu.Trigger>
-              <DropdownMenu.Content
-                side="bottom"
-                align="end"
-                sideOffset={10}
-                alignOffset={0}
-                class="w-56 h-fit max-h-72 overflow-y-auto scroller"
-              >
-                <DropdownMenu.Group>
-                  {#each ["Democratic", "Republican"] as item}
-                    <DropdownMenu.Item
-                      class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                    <span class="truncate">Filter by Party</span>
+                    <svg
+                      class="-mr-1 ml-1 h-5 w-5 xs:ml-2 inline-block"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      style="max-width:40px"
+                      aria-hidden="true"
                     >
-                      <div class="flex items-center">
-                        <label
-                          class="cursor-pointer"
-                          on:click={() => handleChangeValue(item)}
-                          for={item}
-                        >
-                          <input
-                            type="checkbox"
-                            checked={checkedItems.has(item)}
-                          />
-                          <span class="ml-2">{item}</span>
-                        </label>
-                      </div>
-                    </DropdownMenu.Item>
-                  {/each}
-                </DropdownMenu.Group>
-              </DropdownMenu.Content>
-            </DropdownMenu.Root>
+                      <path
+                        fill-rule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                  </Button>
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Content
+                  side="bottom"
+                  align="end"
+                  sideOffset={10}
+                  alignOffset={0}
+                  class="w-56 h-fit max-h-72 overflow-y-auto scroller"
+                >
+                  <DropdownMenu.Group>
+                    {#each ["Democratic", "Republican"] as item}
+                      <DropdownMenu.Item
+                        class="sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                      >
+                        <div class="flex items-center">
+                          <label
+                            class="cursor-pointer"
+                            on:click={() => handleChangeValue(item)}
+                            for={item}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={checkedItems.has(item)}
+                            />
+                            <span class="ml-2">{item}</span>
+                          </label>
+                        </div>
+                      </DropdownMenu.Item>
+                    {/each}
+                  </DropdownMenu.Group>
+                </DropdownMenu.Content>
+              </DropdownMenu.Root>
+            </div>
           </div>
 
           <div class="w-full m-auto mt-4 overflow-x-auto">
