@@ -79,6 +79,16 @@ function pickRandomCards(cards, userTier, count = 6) {
 // Load function
 export async function load({ locals }) {
   const { apiKey, apiURL, user } = locals;
+  
+  // Validate apiURL before proceeding
+  if (!apiURL) {
+    console.error('API URL is not configured. Dashboard data will be unavailable.');
+    return {
+      getDashboard: {},
+      selectedCards: pickRandomCards(allCards, user?.tier)
+    };
+  }
+  
   const cacheKey = `dashboard:${apiKey}`;
 
   // Check cache

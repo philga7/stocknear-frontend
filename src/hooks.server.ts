@@ -10,6 +10,11 @@ export const handle = sequence(async ({ event, resolve }) => {
   const fastifyURL = import.meta.env.VITE_USEAST_FASTIFY_URL;
   const wsURL = import.meta.env.VITE_USEAST_WS_URL;
   
+  // Validate apiURL environment variable
+  if (!apiURL) {
+    console.warn('VITE_USEAST_API_URL is not defined. API calls may fail.');
+  }
+  
   const themeMode = event?.cookies?.get("theme-mode") || "dark";
   
   
