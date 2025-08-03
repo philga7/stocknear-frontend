@@ -228,6 +228,49 @@
       category: selectedPlotCategory,
     });
   }
+
+  function presetStrategy(defaultTickers) {
+    isLoaded = false;
+    selectedPlotCategory = {
+      name: "Stock Price",
+      value: "close",
+      type: "price",
+    };
+
+    if (!Array.isArray(defaultTickers)) {
+      toast?.error("Invalid ticker list");
+      return;
+    }
+
+    const newTickers = [];
+
+    for (const rawTicker of defaultTickers) {
+      const ticker = rawTicker?.trim()?.toUpperCase();
+      if (!ticker) continue;
+
+      if (tickerList?.includes(ticker)) {
+        toast?.error(`Ticker ${ticker} is already included`);
+      } else {
+        newTickers.push(ticker);
+      }
+    }
+
+    if (newTickers.length > 0) {
+      tickerList = [...tickerList, ...newTickers];
+      handleSave();
+
+      // Clear input
+      setTimeout(() => {
+        inputValue = "";
+      }, 0);
+
+      downloadWorker?.postMessage({
+        tickerList,
+        category: selectedPlotCategory,
+      });
+    }
+  }
+
   function removeTicker(symbol) {
     const ticker = symbol?.trim()?.toUpperCase();
 
@@ -797,8 +840,8 @@
                       class="{tickerList?.length > 10
                         ? 'cursor-not-allowed'
                         : ''} text-sm sm:text-[1rem] controls-input shadow-xs focus:bg-gray-50 dark:focus:bg-[#121217] focus:outline-hidden border border-gray-300 dark:border-gray-600 rounded placeholder:text-gray-600 dark:placeholder:text-gray-200 px-3 py-2 pl-8 xs:pl-10 grow w-full "
-                      placeholder="Add new stock..."
-                      aria-label="Add new stock..."
+                      placeholder="Find..."
+                      aria-label="Find..."
                     />
                   </div>
 
@@ -1055,6 +1098,81 @@
               >
                 <div class="text-center text-xl font-semibold sm:text-2xl">
                   Add a symbol to get started
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 md:mt-10">
+              <h3 class="font-semibold text-xl md:text-2xl">
+                Popular Stock Comparisons
+              </h3>
+              <div class="my-4 sm:flex md:my-5">
+                <div class="grid grid-cols-2 gap-x-2 gap-y-1 sm:grid-cols-4">
+                  <a
+                    class="cursor-pointer flex justify-center rounded border border-gray-300 dark:border-gray-800 text-white bg-black px-1 py-2 text-sm font-semibold sm:hover:bg-default dark:bg-[#2A2E39] dark:sm:hover:bg-primary md:text-lg"
+                    on:click={() => presetStrategy(["NVDA", "INTC"])}
+                    >NVDA vs. INTC</a
+                  ><a
+                    class="cursor-pointer flex justify-center rounded border border-gray-300 dark:border-gray-800 text-white bg-black px-1 py-2 text-sm font-semibold sm:hover:bg-default dark:bg-[#2A2E39] dark:sm:hover:bg-primary md:text-lg"
+                    on:click={() => presetStrategy(["AAPL", "MSFT"])}
+                    >AAPL vs. MSFT</a
+                  ><a
+                    class="cursor-pointer flex justify-center rounded border border-gray-300 dark:border-gray-800 text-white bg-black px-1 py-2 text-sm font-semibold sm:hover:bg-default dark:bg-[#2A2E39] dark:sm:hover:bg-primary md:text-lg"
+                    on:click={() => presetStrategy(["GOOGL", "META"])}
+                    >GOOGL vs. META</a
+                  ><a
+                    class="cursor-pointer flex justify-center rounded border border-gray-300 dark:border-gray-800 text-white bg-black px-1 py-2 text-sm font-semibold sm:hover:bg-default dark:bg-[#2A2E39] dark:sm:hover:bg-primary md:text-lg"
+                    on:click={() => presetStrategy(["AMZN", "BABA"])}
+                    >AMZN vs. BABA</a
+                  ><a
+                    class="cursor-pointer flex justify-center rounded border border-gray-300 dark:border-gray-800 text-white bg-black px-1 py-2 text-sm font-semibold sm:hover:bg-default dark:bg-[#2A2E39] dark:sm:hover:bg-primary md:text-lg"
+                    on:click={() => presetStrategy(["TSLA", "RIVN"])}
+                    >TSLA vs. RIVN</a
+                  ><a
+                    class="cursor-pointer flex justify-center rounded border border-gray-300 dark:border-gray-800 text-white bg-black px-1 py-2 text-sm font-semibold sm:hover:bg-default dark:bg-[#2A2E39] dark:sm:hover:bg-primary md:text-lg"
+                    on:click={() => presetStrategy(["AMD", "INTC"])}
+                    >AMD vs. INTC</a
+                  ><a
+                    class="cursor-pointer flex justify-center rounded border border-gray-300 dark:border-gray-800 text-white bg-black px-1 py-2 text-sm font-semibold sm:hover:bg-default dark:bg-[#2A2E39] dark:sm:hover:bg-primary md:text-lg"
+                    on:click={() => presetStrategy(["SHOP", "SQ"])}
+                    >SHOP vs. SQ</a
+                  ><a
+                    class="cursor-pointer flex justify-center rounded border border-gray-300 dark:border-gray-800 text-white bg-black px-1 py-2 text-sm font-semibold sm:hover:bg-default dark:bg-[#2A2E39] dark:sm:hover:bg-primary md:text-lg"
+                    on:click={() => presetStrategy(["PYPL", "SQ"])}
+                    >PYPL vs. SQ</a
+                  ><a
+                    class="cursor-pointer flex justify-center rounded border border-gray-300 dark:border-gray-800 text-white bg-black px-1 py-2 text-sm font-semibold sm:hover:bg-default dark:bg-[#2A2E39] dark:sm:hover:bg-primary md:text-lg"
+                    on:click={() => presetStrategy(["NFLX", "DIS"])}
+                    >NFLX vs. DIS</a
+                  ><a
+                    class="cursor-pointer flex justify-center rounded border border-gray-300 dark:border-gray-800 text-white bg-black px-1 py-2 text-sm font-semibold sm:hover:bg-default dark:bg-[#2A2E39] dark:sm:hover:bg-primary md:text-lg"
+                    on:click={() => presetStrategy(["UBER", "LYFT"])}
+                    >UBER vs. LYFT</a
+                  ><a
+                    class="cursor-pointer flex justify-center rounded border border-gray-300 dark:border-gray-800 text-white bg-black px-1 py-2 text-sm font-semibold sm:hover:bg-default dark:bg-[#2A2E39] dark:sm:hover:bg-primary md:text-lg"
+                    on:click={() => presetStrategy(["COIN", "HOOD"])}
+                    >COIN vs. HOOD</a
+                  ><a
+                    class="cursor-pointer flex justify-center rounded border border-gray-300 dark:border-gray-800 text-white bg-black px-1 py-2 text-sm font-semibold sm:hover:bg-default dark:bg-[#2A2E39] dark:sm:hover:bg-primary md:text-lg"
+                    on:click={() => presetStrategy(["SPOT", "ROKU"])}
+                    >SPOT vs. ROKU</a
+                  ><a
+                    class="cursor-pointer flex justify-center rounded border border-gray-300 dark:border-gray-800 text-white bg-black px-1 py-2 text-sm font-semibold sm:hover:bg-default dark:bg-[#2A2E39] dark:sm:hover:bg-primary md:text-lg"
+                    on:click={() => presetStrategy(["CRM", "NOW"])}
+                    >CRM vs. NOW</a
+                  ><a
+                    class="cursor-pointer flex justify-center rounded border border-gray-300 dark:border-gray-800 text-white bg-black px-1 py-2 text-sm font-semibold sm:hover:bg-default dark:bg-[#2A2E39] dark:sm:hover:bg-primary md:text-lg"
+                    on:click={() => presetStrategy(["JNJ", "PFE"])}
+                    >JNJ vs. PFE</a
+                  ><a
+                    class="cursor-pointer flex justify-center rounded border border-gray-300 dark:border-gray-800 text-white bg-black px-1 py-2 text-sm font-semibold sm:hover:bg-default dark:bg-[#2A2E39] dark:sm:hover:bg-primary md:text-lg"
+                    on:click={() => presetStrategy(["NKE", "LULU"])}
+                    >NKE vs. LULU</a
+                  ><a
+                    class="cursor-pointer flex justify-center rounded border border-gray-300 dark:border-gray-800 text-white bg-black px-1 py-2 text-sm font-semibold sm:hover:bg-default dark:bg-[#2A2E39] dark:sm:hover:bg-primary md:text-lg"
+                    on:click={() => presetStrategy(["ABNB", "BKNG"])}
+                    >ABNB vs. BKNG</a
+                  >
                 </div>
               </div>
             </div>
