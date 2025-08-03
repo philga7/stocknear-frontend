@@ -2617,6 +2617,7 @@ const handleKeyDown = (event) => {
 
   let tabRuleList = [];
   let hoverStatus = false;
+
   async function changeTab(state) {
     displayTableTab = state;
 
