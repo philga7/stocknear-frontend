@@ -272,6 +272,7 @@
     allRows = sortIndicatorCheckMarks(allRows);
     await updateStockScreenerData();
 
+    console.log("Resetting all rules to default");
     saveRules();
   }
 
@@ -315,7 +316,7 @@
   }
 
   function sortIndicatorCheckMarks(allRows) {
-    return allRows.sort((a, b) => {
+    return allRows?.sort((a, b) => {
       const isAChecked = checkedItems.has(a?.name);
       const isBChecked = checkedItems.has(b?.name);
 
@@ -342,7 +343,7 @@
       }
 
       // If the user is Pro, sort alphabetically
-      return a.name.localeCompare(b.name);
+      return a?.name?.localeCompare(b.name);
     });
   }
 
@@ -358,7 +359,7 @@
     ruleOfList = [...ruleOfList];
 
     await updateStockScreenerData();
-    allRows = sortIndicatorCheckMarks(allRows);
+    //allRows = sortIndicatorCheckMarks(allRows);
     saveRules();
   }
 
@@ -778,6 +779,7 @@
       <DropdownMenu.Trigger asChild let:builder>
         <Button
           builders={[builder]}
+          on:click={() => (allRows = sortIndicatorCheckMarks(allRows))}
           class="ml-2 transition-all min-w-fit sm:min-w-[110px]  bg-default text-white shadow-xs dark:border-gray-600 border sm:hover:bg-black dark:sm:hover:bg-primary ease-out flex flex-row justify-between items-center px-3 py-2 rounded truncate"
         >
           <span class="w-fit text-[0.85rem] sm:text-sm">Indicators</span>
@@ -848,6 +850,16 @@
         </div>
         <!-- Dropdown items -->
         <DropdownMenu.Group class="pb-2">
+          {#if searchQuery?.length === 0}
+            <div class="px-2 py-1 text-xs text-gray-500 dark:text-gray-400">
+              Select indicators to display
+            </div>
+          {/if}
+          {#if searchQuery?.length !== 0 && testList?.length === 0}
+            <div class="px-2 py-1 text-xs text-gray-500 dark:text-gray-400">
+              No indicators found
+            </div>
+          {/if}
           <!-- Added padding to avoid overlapping with Reset button -->
           {#each searchQuery?.length !== 0 ? testList : allRows as item}
             <DropdownMenu.Item

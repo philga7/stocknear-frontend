@@ -1209,7 +1209,7 @@
                     </DropdownMenu.Trigger>
                     <DropdownMenu.Content
                       side="bottom"
-                      align="end"
+                      align="start"
                       sideOffset={10}
                       alignOffset={0}
                       class="w-56 h-fit max-h-72 overflow-y-auto scroller"

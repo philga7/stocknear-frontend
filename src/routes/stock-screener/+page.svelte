@@ -1802,37 +1802,16 @@
   };
 
   const loadWorker = async () => {
-    if (
-      ["performance", "analysts", "dividends", "financials"]?.includes(
-        displayTableTab,
-      ) ||
-      hoverStatus
-    ) {
-      syncWorker.postMessage({
-        stockScreenerData,
-        ruleOfList: [...ruleOfList, ...otherTabRules],
-      });
-    } else {
-      syncWorker.postMessage({
-        stockScreenerData,
-        ruleOfList,
-      });
-    }
+    syncWorker.postMessage({
+      stockScreenerData,
+      ruleOfList: [...ruleOfList, ...otherTabRules],
+    });
   };
 
   const updateStockScreenerData = async () => {
-    if (
-      ["performance", "analysts", "dividends", "financials"]?.includes(
-        displayTableTab,
-      ) ||
-      hoverStatus
-    ) {
-      downloadWorker.postMessage({
-        ruleOfList: [...ruleOfList, ...otherTabRules],
-      });
-    } else {
-      downloadWorker.postMessage({ ruleOfList: ruleOfList });
-    }
+    downloadWorker.postMessage({
+      ruleOfList: [...ruleOfList, ...otherTabRules],
+    });
   };
 
   function handleAddRule() {
@@ -2616,12 +2595,11 @@ const handleKeyDown = (event) => {
   }
 
   let tabRuleList = [];
-  let hoverStatus = false;
+
   async function changeTab(state) {
     displayTableTab = state;
 
     if (displayTableTab === "performance") {
-      hoverStatus = false;
       otherTabRules = [
         { name: "marketCap", value: "any" },
         { name: "change1W", value: "any" },
@@ -2635,7 +2613,6 @@ const handleKeyDown = (event) => {
 
       await updateStockScreenerData();
     } else if (displayTableTab === "analysts") {
-      hoverStatus = false;
       otherTabRules = [
         { name: "marketCap", value: "any" },
         { name: "analystRating", value: "any" },
@@ -2649,7 +2626,6 @@ const handleKeyDown = (event) => {
 
       await updateStockScreenerData();
     } else if (displayTableTab === "dividends") {
-      hoverStatus = false;
       otherTabRules = [
         { name: "marketCap", value: "any" },
         { name: "annualDividend", value: "any" },
@@ -2663,7 +2639,6 @@ const handleKeyDown = (event) => {
 
       await updateStockScreenerData();
     } else if (displayTableTab === "financials") {
-      hoverStatus = false;
       otherTabRules = [
         { name: "marketCap", value: "any" },
         { name: "revenue", value: "any" },

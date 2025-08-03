@@ -312,9 +312,7 @@
         class="relative flex justify-center items-start overflow-hidden w-full"
       >
         <main class="w-full lg:w-3/4 lg:pr-5">
-          <h1 class="mb-3 text-2xl sm:text-3xl font-bold">
-            All US Politicians
-          </h1>
+          <h1 class="text-2xl sm:text-3xl font-bold">All US Politicians</h1>
           <div
             class="w-full flex flex-col sm:flex-row items-center justify-start sm:justify-between w-full mt-5 text-muted sm:pt-2 sm:pb-2 dark:text-white sm:border-t sm:border-b sm:border-gray-300 sm:dark:border-gray-800"
           >
