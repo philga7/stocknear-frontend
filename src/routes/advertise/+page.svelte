@@ -6,9 +6,8 @@
 </script>
 
 <SEO
-  title="Advertise
-    With Us"
-  description="Advertise with Stocknear, the first fully open-source financial research platform for retail investors. Gain unparalleled visibility among traders, analysts, and investors worldwide with our high-engagement newsletter and dynamic investment tools."
+  title="Advertise With Us"
+  description="Partner with Stocknear, the premier open-source financial research platform. Reach over 6,000+ engaged investors, traders, and analysts with our high-conversion newsletter and innovative investment tools."
 />
 
 <section
@@ -34,55 +33,91 @@
         <main class="w-full lg:w-3/4 lg:pr-10">
           <div class="w-full m-auto">
             <div>
-              <p class=" mb-3 text-lg">
-                At Stocknear, we’re redefining financial research with the first
-                fully open-source platform designed to help small retail
-                investors. With our user-first approach, we ensure
-                lightning-fast performance and an intuitive experience for every
-                visitor.
+              <p class="mb-3 text-lg">
+                Stocknear is revolutionizing financial research as the world's
+                first fully open-source platform built specifically for retail
+                investors. Our cutting-edge technology delivers lightning-fast
+                performance and an intuitive user experience that keeps
+                investors coming back daily.
               </p>
 
-              <p class=" mb-3 text-lg">
-                By advertising with us, your brand gains unparalleled visibility
-                in a dynamic, innovative space where your message resonates
-                deeply. Our diverse audience includes long-term investors,
-                options traders, dividend investors, value investors, swing
-                traders, and data-driven analysts. Stocknear’s versatility makes
-                it a go-to platform for investors worldwide, catering to a broad
-                range of financial strategies and interests. This global reach
-                ensures your campaign connects with the right audience and
-                maximizes its impact.
+              <p class="mb-3 text-lg">
+                Partner with us to reach a highly targeted audience of serious
+                investors who actively seek quality financial content and tools.
+                Our community spans the full spectrum of investment
+                strategies—from conservative dividend investors and value
+                seekers to active options traders and technical analysts. This
+                diversity, combined with our global reach, ensures your message
+                connects with the exact audience that matters most to your
+                business.
               </p>
 
-              <p class="text-lg mb-2">
-                <strong>Why advertise in our newsletter?</strong>
+              <h2 class="font-bold text-xl mt-8 mb-4">
+                Newsletter Advertising That Delivers Results
+              </h2>
+
+              <p class="text-lg mb-4">
+                Our newsletter isn't just another email in the inbox—it's a
+                trusted daily resource that investors rely on for market
+                insights and opportunities.
               </p>
-              <ul class="list-disc pl-7 md:pl-5 text-lg">
+
+              <ul class="list-disc pl-7 md:pl-5 text-lg space-y-2 mb-8">
                 <li>
-                  Reach a focused audience of over <strong
-                    >+3000 active subscribers</strong
-                  >.
+                  <strong>6,000+ highly engaged subscribers</strong> who actively
+                  consume financial content
                 </li>
                 <li>
-                  Enjoy an impressive <strong>30% open rate</strong>, far above
-                  industry averages.
+                  <strong>30% open rate</strong>—significantly outperforming
+                  industry benchmarks
                 </li>
                 <li>
-                  Benefit from consistent visibility with newsletters sent <strong
-                    >Monday to Friday</strong
-                  > (holidays excluded).
+                  <strong>Consistent daily reach</strong> with newsletters delivered
+                  Monday through Friday
+                </li>
+                <li>
+                  <strong>Premium audience</strong> of decision-makers with disposable
+                  income for investment products and services
                 </li>
               </ul>
 
-              <h2 class="font-bold text-xl mt-10">Let’s Collaborate!</h2>
-              <p class="mt-3 text-lg">
-                Ready to showcase your brand to a highly targeted and engaged
-                audience?
-                <br />Contact us today at
+              <h2 class="font-bold text-xl mb-4">Why Choose Stocknear?</h2>
+
+              <ul class="list-disc pl-7 md:pl-5 text-lg space-y-2 mb-8">
+                <li>
+                  <strong>Targeted Reach:</strong> Connect directly with investors
+                  actively seeking financial solutions
+                </li>
+                <li>
+                  <strong>Trusted Platform:</strong> Benefit from our reputation
+                  as a reliable, unbiased financial resource
+                </li>
+                <li>
+                  <strong>Growing Community:</strong> Join us as we expand our influence
+                  in the retail investing space
+                </li>
+                <li>
+                  <strong>Flexible Options:</strong> Custom advertising solutions
+                  tailored to your budget and goals
+                </li>
+              </ul>
+
+              <h2 class="font-bold text-xl mb-4">Ready to Get Started?</h2>
+              <p class="text-lg">
+                Transform your marketing strategy with access to one of the most
+                engaged financial audiences online. Whether you're launching a
+                new product, building brand awareness, or driving conversions,
+                we'll help you achieve your goals.
+              </p>
+
+              <p class="mt-4 text-lg">
+                <strong>Get in touch today:</strong>
+                <br />Email us at
                 <a
-                  class="text-blue-700 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline"
+                  class="text-blue-700 dark:text-blue-400 sm:hover:text-muted dark:sm:hover:text-white sm:hover:underline font-medium"
                   href="mailto:contact@stocknear.com">contact@stocknear.com</a
-                >. We’d love to discuss how we can help your business grow.
+                > to discuss your advertising needs and discover how we can accelerate
+                your business growth.
               </p>
             </div>
           </div>
@@ -102,8 +137,9 @@
                   class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
                 />
               </div>
-              <span class=" p-3 ml-3 mr-3">
-                Learn more about why we're doing this here
+              <span class="p-3 ml-3 mr-3">
+                Support our mission to democratize financial research for retail
+                investors
               </span>
             </a>
           </div>
@@ -121,8 +157,8 @@
                   class="w-8 h-8 mr-3 shrink-0 text-gray-400 dark:text-white"
                 />
               </div>
-              <span class=" p-3 ml-3 mr-3">
-                Let me know if you need something
+              <span class="p-3 ml-3 mr-3">
+                Have questions? We're here to help with personalized solutions
               </span>
             </a>
           </div>

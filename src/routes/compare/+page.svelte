@@ -979,7 +979,9 @@
             {#if rawTableData?.length > 0 && isLoaded}
               {#key rawTableData}
                 <Table
-                  title="Comparison"
+                  title={`${rawTableData?.length} ${
+                    rawTableData?.length > 1 ? "Stocks" : "Stock"
+                  } Comparison`}
                   {data}
                   rawData={rawTableData}
                   {defaultList}
