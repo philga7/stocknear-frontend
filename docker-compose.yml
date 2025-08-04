@@ -1,16 +1,26 @@
 services:
   sveltekit:
-    build: .
+    profiles: ["frontend", "full"]
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - DOCKER_MODE=${DOCKER_MODE:-development}
     ports:
       - '3000:3000'
     volumes:
-      # Mount source code for development
-      - .:/app
+      # Conditional volume mounts based on mode
+      - ${VOLUME_MOUNT_SOURCE:-.}:/app
       - /app/node_modules
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=${NODE_ENV:-development}
       - PORT=3000
-      - VITE_USEAST_API_URL=http://localhost:8000
+      - VITE_USEAST_API_URL=http://fastapi:8000
+      - DOCKER_MODE=${DOCKER_MODE:-development}
+    depends_on:
+      fastapi:
+        condition: service_healthy
+        required: false
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/"]
       interval: 30s
@@ -20,6 +30,95 @@ services:
     restart: unless-stopped
     networks:
       - stocknear-network
+
+  fastapi:
+    profiles: ["backend", "full"]
+    build: 
+      context: ../stocknear-backend
+      dockerfile: Dockerfile
+      args:
+        - DOCKER_MODE=${DOCKER_MODE:-development}
+    ports:
+      - '8000:8000'
+    volumes:
+      # Conditional volume mounts based on mode
+      - ${BACKEND_DB_MOUNT:-../stocknear-backend/stocks.db}:/app/stocks.db
+      - ${BACKEND_ETF_MOUNT:-../stocknear-backend/etf.db}:/app/etf.db
+      - ${BACKEND_INDEX_MOUNT:-../stocknear-backend/index.db}:/app/index.db
+      - ${BACKEND_INSTITUTE_MOUNT:-../stocknear-backend/institute.db}:/app/institute.db
+      - ${BACKEND_CRYPTO_MOUNT:-../stocknear-backend/crypto.db}:/app/crypto.db
+      - ${BACKEND_JSON_MOUNT:-../stocknear-backend/json}:/app/json
+      - ${BACKEND_LOGS_MOUNT:-../stocknear-backend/logs}:/app/logs
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6380
+      - REDIS_DB=0
+      - PYTHONUNBUFFERED=1
+      - ENVIRONMENT=${DOCKER_MODE:-development}
+      - POCKETBASE_ADMIN_EMAIL=admin@stocknear.com
+      - POCKETBASE_ADMIN_PASSWORD=admin123
+      - OPENAI_API_KEY=dummy_key_for_development
+      - DOCKER_MODE=${DOCKER_MODE:-development}
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - stocknear-network
+
+  redis:
+    profiles: ["backend", "full"]
+    image: redis:7-alpine
+    ports:
+      - '6380:6379'
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      - stocknear-network
+
+  fastify:
+    profiles: ["backend", "full"]
+    build:
+      context: ../stocknear-backend/fastify
+      dockerfile: Dockerfile
+      args:
+        - DOCKER_MODE=${DOCKER_MODE:-development}
+    ports:
+      - '2000:2000'
+    volumes:
+      - ${FASTIFY_JSON_MOUNT:-../stocknear-backend/app/json}:/app/json
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - DOCKER_MODE=${DOCKER_MODE:-development}
+    depends_on:
+      - redis
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:2000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - stocknear-network
+
+volumes:
+  redis_data:
+    driver: local
 
 networks:
   stocknear-network:
