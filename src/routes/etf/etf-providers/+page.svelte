@@ -1,7 +1,5 @@
 <script lang="ts">
   import { abbreviateNumber, formatETFName } from "$lib/utils";
-  import { numberOfUnreadNotification } from "$lib/store";
-  import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
 
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import Infobox from "$lib/components/Infobox.svelte";
@@ -107,20 +105,15 @@
             <TableHeader {columns} {sortOrders} {sortData} />
           </thead>
           <tbody>
-            {#each etfProviderList as item, index}
+            {#each etfProviderList as item}
               <!-- row -->
               <tr
-                class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
-                  1 ===
-                  etfProviderList?.length &&
-                !['Pro', 'Plus']?.includes(data?.user?.tier)
-                  ? 'opacity-[0.1]'
-                  : ''}"
+                class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
               >
                 <td class="text-sm sm:text-[1rem] whitespace-nowrap">
                   <a
                     href={"/etf/etf-providers/" + item?.etfProvider}
-                    class="sm:hover:underline sm:hover:underline-offset-4"
+                    class="text-blue-800 sm:hover:text-muted dark:text-blue-400 dark:sm:hover:text-white"
                   >
                     {formatETFName(item?.etfProvider)}
                   </a>
@@ -146,7 +139,6 @@
           </tbody>
         </table>
       </div>
-      <UpgradeToPro {data} />
     </div>
   </div>
 </section>
