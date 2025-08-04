@@ -19,12 +19,13 @@ export const load = async ({ params, locals }) => {
     });
 
     const output = await response.json();
-
+    /*
     if (output?.holdings) {
       output.holdings = output?.holdings?.filter(
         (item) =>  item?.symbol
       );
     }
+      */
 
     return output;
   };
