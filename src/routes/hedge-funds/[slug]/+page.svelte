@@ -16,7 +16,6 @@
     "avgPricePaid",
     "weight",
     "putCallShare",
-    "filingDate",
     "price",
     "changesPercentage",
   ]);
@@ -30,7 +29,6 @@
     { name: "Avg. Price Paid", rule: "avgPricePaid" },
     { name: "% Weight", rule: "weight" },
     { name: "Asset Type", rule: "putCallShare" },
-    { name: "Filing Date", rule: "filingDate" },
   ];
 
   const specificRows = [
@@ -273,6 +271,13 @@
                   {excludedRules}
                   {defaultList}
                   {specificRows}
+                  title={`Filing Date: ${new Date(
+                    data?.getHedgeFundsData?.filingDate,
+                  ).toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}`}
                 />
               </div>
             {:else}
