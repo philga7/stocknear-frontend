@@ -197,49 +197,51 @@
   allRows = sortIndicatorCheckMarks(allRows);
 
   const handleDownloadMessage = (event) => {
-    let updateData = event?.data?.rawData ?? []; // Use a new variable for updated data
-    // Check if both arrays exist and have data
-    if (!updateData?.length || !rawData?.length) {
-      return;
-    }
+    let updateData = event?.data?.rawData ?? [];
+    if (!updateData?.length || !rawData?.length) return;
+
+    // Create a map for faster symbol lookup
+    const updateDataMap = new Map(
+      updateData.map((item) => [item.symbol, item]),
+    );
 
     // Create a new array to ensure reactivity
-    const updatedRawData = [...rawData];
+    const updatedRawData = rawData.map((item) => {
+      const updatedItem = updateDataMap.get(item.symbol);
+      if (!updatedItem) return item;
 
-    for (let i = 0; i < updateData.length; i++) {
-      if (updatedRawData[i]) {
-        // Create a new object to merge the data
-        let newData = {};
+      let newData = { ...updatedItem };
 
-        // Merge fields from updateData
-        Object.assign(newData, updateData[i]);
-
-        // Merge fields from defaultRules that are missing in updateData
-        defaultRules.forEach((rule) => {
-          if (!(rule in updateData[i]) && rule in updatedRawData[i]) {
-            newData[rule] = updatedRawData[i][rule];
-          }
-        });
-
-        // Preserve the original 'priceTarget' and other default rule values
-        for (let rule of defaultRules) {
-          if (rule in updatedRawData[i]) {
-            newData[rule] = updatedRawData[i][rule];
-          }
+      // Merge fields from defaultRules that are missing in updatedItem
+      defaultRules.forEach((rule) => {
+        if (!(rule in updatedItem) && rule in item) {
+          newData[rule] = item[rule];
         }
+      });
 
-        // Ensure 'rank' and 'years' are added if they are missing in updateData
-        if (!("rank" in updateData[i]) && "rank" in updatedRawData[i]) {
-          newData.rank = updatedRawData[i]["rank"];
+      ruleOfList?.forEach((rule) => {
+        if (!(rule in updatedItem) && rule in item) {
+          newData[rule] = item[rule];
         }
-        if (!("years" in updateData[i]) && "years" in updatedRawData[i]) {
-          newData.years = updatedRawData[i]["years"];
-        }
+      });
 
-        // Update the specific item in the array
-        updatedRawData[i] = newData;
+      // Preserve original values from rawData if present
+      for (let rule of defaultRules) {
+        if (rule in item) {
+          newData[rule] = item[rule];
+        }
       }
-    }
+
+      // Ensure 'rank' and 'years' are added if missing
+      if (!("rank" in updatedItem) && "rank" in item) {
+        newData.rank = item.rank;
+      }
+      if (!("years" in updatedItem) && "years" in item) {
+        newData.years = item.years;
+      }
+
+      return newData;
+    });
 
     // Trigger reactivity by creating a new reference
     rawData = [...updatedRawData];

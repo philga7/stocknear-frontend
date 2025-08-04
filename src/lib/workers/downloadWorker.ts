@@ -36,6 +36,8 @@ onmessage = async (event) => {
   const { ruleOfList, tickerList } = event.data || {};
   const rawData = await getIndicatorData(ruleOfList, tickerList);
 
+  
+    
   postMessage({ message: "success", rawData });
 };
 
