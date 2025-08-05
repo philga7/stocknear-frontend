@@ -4,6 +4,8 @@
   import Input from "$lib/components/Input.svelte";
   import TextArea from "$lib/components/TextArea.svelte";
   import { enhance } from "$app/forms";
+  import { toast } from "svelte-sonner";
+  import { mode } from "mode-watcher";
 
   export let data;
   export let form;
@@ -32,10 +34,16 @@
           messageSent = false;
           errorMessage = true;
           await update();
+          toast.error("Something went wrong. Please try again...", {
+            style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
+          });
           break;
         case "error":
           messageSent = false;
           errorMessage = true;
+          toast.error("Something went wrong. Please try again...", {
+            style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
+          });
           break;
         default:
           await update();
