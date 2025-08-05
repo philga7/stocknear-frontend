@@ -1084,7 +1084,7 @@
                   <input
                     id="modal-search"
                     class="focus:outline-none sm:ml-2 text-[1rem] placeholder-gray-500 dark:placeholder-gray-300 border-transparent bg-white dark:bg-secondary focus:border-transparent focus:ring-0 flex items-center justify-center w-full px-0 py-1.5"
-                    placeholder="Stock or ETF symbol..."
+                    placeholder="Find..."
                     bind:value={filterQuery}
                     on:input={debouncedHandleInput}
                     autocomplete="off"

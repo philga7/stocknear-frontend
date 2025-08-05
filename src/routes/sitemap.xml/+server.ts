@@ -98,20 +98,13 @@ function escapeXml(unsafe) {
     .replace(/'/g, "&apos;");
 }
 
-const createUrlElement = (loc, { lastmod, changefreq, priority } = {}) => {
+const createUrlElement = (loc, {  } = {}) => {
   let lastmodTag = "";
-  if (lastmod) {
-    const formattedDate = formatLastmod(lastmod);
-    if (formattedDate) {
-      lastmodTag = `<lastmod>${formattedDate}</lastmod>`;
-    }
-  }
+
   return `
   <url>
     <loc>${escapeXml(loc)}</loc>
     ${lastmodTag}
-    ${changefreq ? `<changefreq>${changefreq}</changefreq>` : ""}
-    ${priority ? `<priority>${priority}</priority>` : ""}
   </url>
   `;
 };
@@ -167,13 +160,13 @@ const sitemap = (stocks, articles, pages, tutorials) => `<?xml version="1.0" enc
   ${articles
     .map(item => {
       const loc = `${website}/blog/article/${convertToSlug(item?.title)}`;
-      return createUrlElement(loc, { ...articleSettings, lastmod: item.created });
+      return createUrlElement(loc, { ...articleSettings });
     })
     .join("")}
   ${tutorials
     .map(item => {
       const loc = `${website}/learning-center/article/${convertToSlug(item?.title)}`;
-      return createUrlElement(loc, { ...tutorialSettings, lastmod: item.created });
+      return createUrlElement(loc, { ...tutorialSettings });
     })
     .join("")}
   ${stocks
