@@ -331,7 +331,7 @@
                   </div>
                   <div class="flex items-baseline">
                     <span class="text-xl font-semibold">
-                      {abbreviateNumber(rawData?.revenue, true)}</span
+                      {abbreviateNumber(rawData?.revenue)}</span
                     >
                   </div>
                 </div>
@@ -344,7 +344,9 @@
                   </div>
                   <div class="flex items-baseline">
                     <span class="text-xl font-semibold"
-                      >{rawData?.growthRevenue}%</span
+                      >{rawData?.growthRevenue
+                        ? rawData?.growthRevenue + "%"
+                        : "n/a"}</span
                     >
                   </div>
                 </div>
@@ -357,7 +359,7 @@
                   </div>
                   <div class="flex items-baseline">
                     <span class="text-xl font-semibold"
-                      >{rawData?.priceToSalesRatio}</span
+                      >{rawData?.priceToSalesRatio ?? "n/a"}</span
                     >
                   </div>
                 </div>
@@ -370,10 +372,7 @@
                   </div>
                   <div class="flex items-baseline">
                     <span class="text-xl font-semibold"
-                      >{abbreviateNumber(
-                        rawData?.revenuePerEmployee,
-                        true,
-                      )}</span
+                      >{abbreviateNumber(rawData?.revenuePerEmployee)}</span
                     >
                   </div>
                 </div>
@@ -386,7 +385,8 @@
                   </div>
                   <div class="flex items-baseline">
                     <span class="text-xl font-semibold"
-                      >{rawData?.employees?.toLocaleString("en-US")}</span
+                      >{rawData?.employees?.toLocaleString("en-US") ??
+                        "n/a"}</span
                     >
                   </div>
                 </div>

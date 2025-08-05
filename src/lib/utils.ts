@@ -819,7 +819,7 @@ export function abbreviateNumber(
 ) {
   // Check if number is null or undefined, return "-" if true
   if (number == null) {
-    return "-";
+    return "n/a";
   }
 
   const negative = number < 0;

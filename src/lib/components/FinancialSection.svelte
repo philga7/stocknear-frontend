@@ -16,6 +16,8 @@
   import TableMode from "lucide-svelte/icons/grid-2x2";
   import ChartMode from "lucide-svelte/icons/chart-column-increasing";
   import Download from "lucide-svelte/icons/download";
+  import { mode } from "mode-watcher";
+  import { toast } from "svelte-sonner";
 
   import { goto } from "$app/navigation";
 
@@ -191,6 +193,15 @@
 
   $: {
     if ($timeFrame || $selectedTimePeriod) {
+      if (
+        ["MAX", "10Y"].includes($timeFrame) &&
+        !["Pro", "Plus"].includes(data?.user?.tier)
+      ) {
+        $timeFrame = "5Y"; // Default to 5Y if user is not Pro/Plus
+        toast.error("Only available for Plus and Pro users.", {
+          style: `border-radius: 5px; background: #fff; color: #000; border-color: ${$mode === "light" ? "#F9FAFB" : "#4B5563"}; font-size: 15px;`,
+        });
+      }
       if ($selectedTimePeriod === "annual") {
         fullStatement = data?.getData?.annual;
       } else if ($selectedTimePeriod === "quarterly") {
@@ -293,7 +304,7 @@
                         align="end"
                         sideOffset={10}
                         alignOffset={0}
-                        class="w-56 h-fit max-h-72 overflow-y-auto scroller"
+                        class=" h-fit max-h-72 overflow-y-auto scroller"
                       >
                         <DropdownMenu.Label
                           class="text-muted dark:text-gray-400 font-normal"
@@ -306,19 +317,45 @@
                             on:click={() => ($timeFrame = "5Y")}
                             class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                           >
-                            5 years
+                            5Y
                           </DropdownMenu.Item>
                           <DropdownMenu.Item
                             on:click={() => ($timeFrame = "10Y")}
                             class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
                           >
-                            10 years
+                            10Y
+                            <svg
+                              class="{['Pro', 'Plus']?.includes(
+                                data?.user?.tier,
+                              )
+                                ? 'hidden'
+                                : ''} ml-2 w-3.5 h-3.5"
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              ><path
+                                fill="currentColor"
+                                d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                              /></svg
+                            >
                           </DropdownMenu.Item>
                           <DropdownMenu.Item
                             on:click={() => ($timeFrame = "MAX")}
-                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary"
+                            class="cursor-pointer sm:hover:bg-gray-300 dark:sm:hover:bg-primary flex flex-row items-center"
                           >
                             Max
+                            <svg
+                              class="{['Pro', 'Plus']?.includes(
+                                data?.user?.tier,
+                              )
+                                ? 'hidden'
+                                : ''} ml-2 w-3.5 h-3.5"
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              ><path
+                                fill="currentColor"
+                                d="M17 9V7c0-2.8-2.2-5-5-5S7 4.2 7 7v2c-1.7 0-3 1.3-3 3v7c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3v-7c0-1.7-1.3-3-3-3M9 7c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"
+                              /></svg
+                            >
                           </DropdownMenu.Item>
                         </DropdownMenu.Group>
                       </DropdownMenu.Content>
@@ -384,7 +421,7 @@
                             </td>
                           {:else}
                             <td
-                              class="min-w-[130px] font-semibold text-sm text-end"
+                              class="min-w-[130px] font-semibold text-sm text-end border-l border-gray-300 dark:border-gray-800"
                             >
                               {item?.period + " " + item?.fiscalYear}
                             </td>

@@ -670,23 +670,29 @@
                   <div class="flex items-baseline">
                     <span class="text-xl font-semibold"
                       >{changePercentageYearAgo > 100
-                        ? "> 100"
-                        : changePercentageYearAgo?.toFixed(1)}%</span
+                        ? "> 100%"
+                        : changePercentageYearAgo
+                          ? changePercentageYearAgo?.toFixed(1) + "%"
+                          : "n/a"}</span
                     >
-                    <div class="flex flex-col ml-2">
-                      <span
-                        class="text-sm {changePercentageYearAgo >= 0 &&
-                        changePercentageYearAgo !== null
-                          ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
-                          : changePercentageYearAgo < 0 &&
-                              changePercentageYearAgo !== null
-                            ? 'text-red-800 dark:text-[#FF2F1F]'
-                            : ''}"
-                      >
-                        {changePercentageYearAgo >= 0 ? "Positive" : "Negative"}
-                        Trend
-                      </span>
-                    </div>
+                    {#if changePercentageYearAgo}
+                      <div class="flex flex-col ml-2">
+                        <span
+                          class="text-sm {changePercentageYearAgo >= 0 &&
+                          changePercentageYearAgo !== null
+                            ? "before:content-['+'] text-green-800 dark:text-[#00FC50]"
+                            : changePercentageYearAgo < 0 &&
+                                changePercentageYearAgo !== null
+                              ? 'text-red-800 dark:text-[#FF2F1F]'
+                              : ''}"
+                        >
+                          {changePercentageYearAgo >= 0
+                            ? "Positive"
+                            : "Negative"}
+                          Trend
+                        </span>
+                      </div>
+                    {/if}
                   </div>
                 </div>
               </div>

@@ -5,7 +5,6 @@
   import Infobox from "$lib/components/Infobox.svelte";
   import TableHeader from "$lib/components/Table/TableHeader.svelte";
   import HoverStockChart from "$lib/components/HoverStockChart.svelte";
-  import UpgradeToPro from "$lib/components/UpgradeToPro.svelte";
   import SEO from "$lib/components/SEO.svelte";
 
   export let data;
@@ -197,12 +196,7 @@
               {#each etfProviderData as item, index}
                 <!-- row -->
                 <tr
-                  class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd {index +
-                    1 ===
-                    etfProviderData?.length &&
-                  !['Pro', 'Plus']?.includes(data?.user?.tier)
-                    ? 'opacity-[0.1]'
-                    : ''}"
+                  class="dark:sm:hover:bg-[#245073]/10 odd:bg-[#F6F7F8] dark:odd:bg-odd"
                 >
                   <td class=" text-sm sm:text-[1rem] whitespace-nowrap">
                     <HoverStockChart symbol={item?.symbol} assetType={"etf"} />
@@ -262,7 +256,6 @@
             </tbody>
           </table>
         </div>
-        <UpgradeToPro {data} />
       </div>
     </div>
   {:else}
