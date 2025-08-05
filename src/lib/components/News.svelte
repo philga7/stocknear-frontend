@@ -190,7 +190,7 @@
                   <!-- Show the YouTube iframe when the user clicks play -->
                   <div class="w-full aspect-video mb-4">
                     <iframe
-                      class="w-full h-full rounded border border-gray-800"
+                      class="w-full h-full rounded border border-gray-300 dark:border-gray-800"
                       src={`https://www.youtube.com/embed/${checkIfYoutubeVideo(item.url)}`}
                       frameborder="0"
                       allow="clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -215,7 +215,9 @@
                   </div>
                 {/if}
                 <div class="mt-3 w-full">
-                  <h3 class="text-sm dark:text-white/80 truncate mb-2">
+                  <h3
+                    class="text-sm text-gray-800 dark:text-white/80 truncate mb-2"
+                  >
                     {formatDate(item?.publishedDate)} &#183; {item?.site}
                   </h3>
                   <a
@@ -251,7 +253,9 @@
                     </div>
                   </a>
                   <div class="mt-3 sm:mt-0 w-full">
-                    <h3 class="text-sm text-white/80 truncate mb-2">
+                    <h3
+                      class="text-sm text-gray-800 dark:text-white/80 truncate mb-2"
+                    >
                       {formatDate(item?.publishedDate)} &#183; {item?.site}
                     </h3>
                     <a
@@ -307,7 +311,7 @@
       {#if newsList?.length !== rawData?.length && filteredNewsList?.length > 0 && displaySection === "all"}
         <label
           on:click={loadMoreData}
-          class="shadow-lg rounded cursor-pointer w-5/6 sm:w-full flex justify-center items-center py-3 h-full text-sm sm:text-[1rem] text-center font-semibold text-black m-auto sm:hover:bg-gray-300 bg-[#fff]"
+          class=" rounded cursor-pointer w-5/6 sm:w-full flex justify-center items-center py-3 h-full text-sm sm:text-[1rem] text-center font-semibold text-white dark:text-black m-auto sm:hover:bg-default dark:sm:hover:bg-gray-300 bg-black dark:bg-[#fff]"
         >
           Load More News
         </label>
