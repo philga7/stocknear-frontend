@@ -5,12 +5,13 @@
   import { isPWAInstalled } from "$lib/utils";
   import { closedPWA } from "$lib/store";
   import SEO from "$lib/components/SEO.svelte";
+  import FeatureWrapper from "$lib/components/FeatureWrapper.svelte";
   import MarketMover from "$lib/components/Dashboard/MarketMover.svelte";
   import UpcomingEarnings from "$lib/components/Dashboard/UpcomingEarnings.svelte";
   import OptionsFlow from "$lib/components/Dashboard/OptionsFlow.svelte";
   import Wiim from "$lib/components/Dashboard/Wiim.svelte";
   import AnalystReport from "$lib/components/Dashboard/AnalystReport.svelte";
-  //import AIAgent from "$lib/components/Dashboard/AIAgent.svelte";
+  import AIAgent from "$lib/components/Dashboard/AIAgent.svelte";
 
   export let data;
   export let form;
@@ -135,11 +136,16 @@
           options data, dark pool orders, news, financials, forecasts, charts
           and more.
         </p>
-        <!--
-        <div class="mx-auto max-w-[95%] md:max-w-[85%]">
-          <AIAgent {data} {form} />
-        </div>
-        -->
+        <FeatureWrapper 
+          featureName="aiAgentWidget"
+          fallbackContent="AI Agent temporarily unavailable"
+          showLoadingState={true}
+          loadingText="Loading AI Agent..."
+        >
+          <div class="mx-auto max-w-[95%] md:max-w-[85%]">
+            <AIAgent {data} {form} />
+          </div>
+        </FeatureWrapper>
       </div>
     </div>
 
@@ -149,30 +155,72 @@
           class="-mt-12 grid max-w-[90%] grid-cols-2 gap-4 sm:grid-cols-3 md:-mt-10 lg:grid-cols-6 xl:-mt-12 xl:max-w-[80%] xl:gap-6"
         >
           {#each data?.selectedCards as card}
-            <a
-              href={card.href}
-              class="border border-gray-300 dark:border-gray-600 flex flex-col justify-center items-center p-4 bg-white dark:bg-secondary rounded-[5px] shadow font-semibold gap-2 hover:shadow-lg text-center dark:hover:shadow-dark-600 dark:hover:shadow-md"
+            <FeatureWrapper 
+              featureName="addToWatchlistAction"
+              fallbackContent="Action temporarily unavailable"
+              showLoadingState={false}
             >
-              {@html card.icon}
-              <div>{card.label}</div>
-            </a>
+              <a
+                href={card.href}
+                class="border border-gray-300 dark:border-gray-600 flex flex-col justify-center items-center p-4 bg-white dark:bg-secondary rounded-[5px] shadow font-semibold gap-2 hover:shadow-lg text-center dark:hover:shadow-dark-600 dark:hover:shadow-md"
+              >
+                {@html card.icon}
+                <div>{card.label}</div>
+              </a>
+            </FeatureWrapper>
           {/each}
         </div>
       </div>
     </div>
     <div class="mb-8 pb-3 pt-6 md:pt-8 lg:pt-10">
-      <MarketMover {gainersList} {losersList} {marketStatus} {charNumber} />
+      <FeatureWrapper 
+        featureName="marketMoverWidget"
+        fallbackContent="Market data temporarily unavailable"
+        showLoadingState={true}
+        loadingText="Loading market data..."
+      >
+        <MarketMover {gainersList} {losersList} {marketStatus} {charNumber} />
+      </FeatureWrapper>
 
       <div
         class="mx-auto flex flex-col px-3 pt-6 xs:px-4 sm:px-5 md:pt-8 lg:grid lg:max-w-[1200px] lg:grid-cols-3 lg:justify-evenly lg:gap-8 lg:pt-10"
       >
-        <Wiim {wiim} />
+        <FeatureWrapper 
+          featureName="wiimWidget"
+          fallbackContent="WIIM data temporarily unavailable"
+          showLoadingState={true}
+          loadingText="Loading WIIM data..."
+        >
+          <Wiim {wiim} />
+        </FeatureWrapper>
 
         <div class="flex flex-col space-y-6 pt-6 lg:space-y-8 lg:pt-0">
-          <AnalystReport {analystReport} />
+          <FeatureWrapper 
+            featureName="analystReportWidget"
+            fallbackContent="Analyst reports temporarily unavailable"
+            showLoadingState={true}
+            loadingText="Loading analyst reports..."
+          >
+            <AnalystReport {analystReport} />
+          </FeatureWrapper>
 
-          <UpcomingEarnings {upcomingEarnings} />
-          <OptionsFlow {optionsFlowList} />
+          <FeatureWrapper 
+            featureName="upcomingEarningsWidget"
+            fallbackContent="Earnings calendar temporarily unavailable"
+            showLoadingState={true}
+            loadingText="Loading earnings data..."
+          >
+            <UpcomingEarnings {upcomingEarnings} />
+          </FeatureWrapper>
+          
+          <FeatureWrapper 
+            featureName="optionsFlowWidget"
+            fallbackContent="Options flow data temporarily unavailable"
+            showLoadingState={true}
+            loadingText="Loading options flow..."
+          >
+            <OptionsFlow {optionsFlowList} />
+          </FeatureWrapper>
         </div>
       </div>
     </div>

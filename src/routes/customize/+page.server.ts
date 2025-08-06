@@ -19,8 +19,20 @@ export async function load({ locals,cookies }) {
     }
   };
 
+  const getFeatureSettings = async () => {
+    try {
+      const raw = cookies.get("custom-feature-settings");
+      if (!raw || raw === "undefined") return [];
+      return JSON.parse(raw);
+    } catch (e) {
+      console.error(e);
+      return [];
+    }
+  };
+
   return {
-    getCustomSettings: await getCustomSettings()
+    getCustomSettings: await getCustomSettings(),
+    getFeatureSettings: await getFeatureSettings()
   };
 }
 
