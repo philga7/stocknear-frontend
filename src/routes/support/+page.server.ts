@@ -12,9 +12,7 @@ export const actions = {
     
     data.email = email;
     data.category = "support";
-    
-    const fifteenMinutesAgo = new Date(Date.now() - 15 * 60 * 1000);
-    
+        
     try {
       // Check recent submissions by same email
       const list = await pb.collection("support").getFullList({
@@ -22,8 +20,7 @@ export const actions = {
         sort: "-created",
       });
      
-      const recentTickets = list?.filter(item => new Date(item?.created) >= fifteenMinutesAgo);
-      if (recentTickets?.length > 0) {
+      if (list?.length > 0) {
         console.log("Rate limit check failed for email:", email); // Fixed: removed extra quote and parenthesis
         throw error(
           429,
