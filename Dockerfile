@@ -2,7 +2,7 @@
 ARG DOCKER_MODE=development
 
 # Development stage with volume mounts
-FROM node:18-alpine AS development
+FROM node:20-alpine AS development
 ARG DOCKER_MODE
 ENV NODE_ENV=development
 ENV PORT=3000
@@ -44,7 +44,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "3000"]
 
 # Production stage with backend integration
-FROM node:18-alpine AS production
+FROM node:20-alpine AS production
 ARG DOCKER_MODE
 ENV NODE_ENV=production
 ENV PORT=3000

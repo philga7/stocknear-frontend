@@ -1,6 +1,6 @@
 <script lang="ts">
   import * as Card from "$lib/components/shadcn/card/index.ts";
-  import * as Table from "$lib/components/shadcn/table/index.ts";
+  import * as Table from "$lib/components/shadcn/Table/index.ts";
   import Infobox from "$lib/components/Infobox.svelte";
   import { abbreviateNumber } from "$lib/utils";
 
