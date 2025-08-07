@@ -16,6 +16,7 @@ services:
       - NODE_ENV=${NODE_ENV:-development}
       - PORT=3000
       - VITE_USEAST_API_URL=http://fastapi:8000
+      - VITE_STOCKNEAR_API_KEY=XZljulUL7SjsicoTbIsIW0qVitXzz7Mb
       - DOCKER_MODE=${DOCKER_MODE:-development}
     depends_on:
       fastapi:
@@ -116,8 +117,30 @@ services:
     networks:
       - stocknear-network
 
+  pocketbase:
+    profiles: ["backend", "full"]
+    image: ghcr.io/ghcr/pocketbase/pocketbase:latest
+    ports:
+      - '8090:8090'
+    volumes:
+      - pocketbase_data:/pb_data
+    environment:
+      - POCKETBASE_ADMIN_EMAIL=${POCKETBASE_ADMIN_EMAIL:-admin@stocknear.com}
+      - POCKETBASE_ADMIN_PASSWORD=${POCKETBASE_ADMIN_PASSWORD:-admin123}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8090/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - stocknear-network
+
 volumes:
   redis_data:
+    driver: local
+  pocketbase_data:
     driver: local
 
 networks:
