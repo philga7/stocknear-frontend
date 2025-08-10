@@ -1,7 +1,7 @@
 # StockNear Frontend Makefile
 # Provides convenient commands for managing the Docker setup with profiles and mode detection
 
-.PHONY: help setup start stop restart logs status clean test build frontend backend full dev prod fullstack fullstack-dev fullstack-prod fullstack-test fullstack-build fullstack-clean fullstack-logs fullstack-status fullstack-shell fullstack-hybrid fullstack-hybrid-dev fullstack-hybrid-prod fullstack-cross-repo fullstack-mode-detect
+.PHONY: help setup start stop restart logs status clean test build frontend backend full dev prod fullstack fullstack-dev fullstack-prod fullstack-test fullstack-build fullstack-clean fullstack-logs fullstack-status fullstack-shell fullstack-hybrid fullstack-hybrid-dev fullstack-hybrid-prod fullstack-cross-repo fullstack-mode-detect pocketbase-init
 
 # Default target
 help:
@@ -18,6 +18,7 @@ help:
 	@echo "  stop-fastapi  - Stop FastAPI service only"
 	@echo "  stop-redis    - Stop Redis service only"
 	@echo "  stop-fastify  - Stop Fastify service only"
+	@echo "  stop-pocketbase- Stop PocketBase service only"
 	@echo "  restart  - Restart all services"
 	@echo "  logs     - View logs for all services"
 	@echo "  status   - Show status of all services"
@@ -57,11 +58,25 @@ detect:
 	@echo "🔍 Running mode detection..."
 	@./scripts/detect-mode.sh
 
+# Initialize PocketBase admin and schema (idempotent)
+pocketbase-init:
+	@echo "🛠️  Initializing PocketBase (admin + schema)..."
+	@echo "Waiting for PocketBase health..."
+	@until curl -sSf http://localhost:8090/api/health >/dev/null; do echo "Waiting for PocketBase..."; sleep 2; done
+	@./scripts/setup-pocketbase-admin.sh
+	@echo "Waiting for PocketBase restart..."
+	@sleep 2
+	@until curl -sSf http://localhost:8090/api/health >/dev/null; do echo "Waiting for PocketBase after admin setup..."; sleep 2; done
+	@echo "Ensuring users collection has tier and credits fields..."
+	@POCKETBASE_URL=http://pocketbase:8090 POCKETBASE_ADMIN_EMAIL=$${POCKETBASE_ADMIN_EMAIL:-admin@stocknear.com} POCKETBASE_ADMIN_PASSWORD=$${POCKETBASE_ADMIN_PASSWORD:-admin123} docker-compose exec -T sveltekit node /app/scripts/pocketbase/ensure-users-tier-credits.js
+	@echo "✅ PocketBase initialization complete."
+
 # Initialize and start all services (recommended for first time)
 setup:
 	@echo "🚀 Setting up StockNear Frontend..."
 	@./scripts/detect-mode.sh
 	@docker-compose --profile full up -d --build
+	@$(MAKE) pocketbase-init
 	@echo "Full-stack setup complete! Access at http://localhost:3000"
 
 # Start all services
@@ -104,6 +119,10 @@ stop-redis:
 stop-fastify:
 	@echo "Stopping Fastify service..."
 	@docker-compose stop fastify || docker-compose --profile backend stop fastify
+
+stop-pocketbase:
+	@echo "Stopping PocketBase service..."
+	@docker-compose stop pocketbase || docker-compose --profile backend stop pocketbase
 
 # Restart all services
 restart:
@@ -153,6 +172,9 @@ logs-fastapi:
 
 logs-fastify:
 	@docker-compose logs -f fastify
+
+logs-pocketbase:
+	@docker-compose logs -f pocketbase
 
 # Profile-specific commands
 frontend:
@@ -234,6 +256,8 @@ fullstack-test:
 	@curl -s http://localhost:2000/health || echo "Fastify service not responding"
 	@echo "Testing Redis connection..."
 	@docker-compose --profile full exec redis redis-cli ping || echo "Redis not responding"
+	@echo "Testing PocketBase service..."
+	@curl -s http://localhost:8090/api/health || echo "PocketBase service not responding"
 
 fullstack-build:
 	@echo "🔨 Building full-stack Docker images..."
@@ -352,8 +376,8 @@ info:
 	@echo "StockNear Frontend Docker Information"
 	@echo "Profiles: frontend, backend, full"
 	@echo "Modes: development, production"
-	@echo "Services: sveltekit, fastapi, redis, fastify"
-	@echo "Ports: 3000 (frontend), 8000 (fastapi), 2000 (fastify), 6380 (redis)"
+	@echo "Services: sveltekit, fastapi, redis, fastify, pocketbase"
+	@echo "Ports: 3000 (frontend), 8000 (fastapi), 2000 (fastify), 6380 (redis), 8090 (pocketbase)"
 	@echo "Network: stocknear-network"
 	@./scripts/detect-mode.sh
 

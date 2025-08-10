@@ -521,15 +521,13 @@ export const formatDateRange = (lastDateStr) => {
   // Format first and last dates
   const firstDateFormatted = firstDate.toLocaleString("en-US", {
     month: "short",
-    day: "numeric",
-    year: "numeric",
     day: "2-digit",
+    year: "numeric",
   });
   const lastDateFormatted = lastDate.toLocaleString("en-US", {
     month: "short",
-    day: "numeric",
-    year: "numeric",
     day: "2-digit",
+    year: "numeric",
   });
   // Construct and return the formatted date range string
   return `${firstDateFormatted} - ${lastDateFormatted}`;

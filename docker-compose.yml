@@ -16,7 +16,8 @@ services:
       - NODE_ENV=${NODE_ENV:-development}
       - PORT=3000
       - VITE_USEAST_API_URL=http://fastapi:8000
-      - VITE_STOCKNEAR_API_KEY=XZljulUL7SjsicoTbIsIW0qVitXzz7Mb
+      - VITE_STOCKNEAR_API_KEY=zBxyPP1_LR978Zj_VBQ0vyoNVGD-ouUT
+      - VITE_USEAST_POCKETBASE_URL=http://pocketbase:8090
       - DOCKER_MODE=${DOCKER_MODE:-development}
     depends_on:
       fastapi:
@@ -56,6 +57,7 @@ services:
       - REDIS_DB=0
       - PYTHONUNBUFFERED=1
       - ENVIRONMENT=${DOCKER_MODE:-development}
+      - STOCKNEAR_API_KEY=zBxyPP1_LR978Zj_VBQ0vyoNVGD-ouUT
       - POCKETBASE_ADMIN_EMAIL=admin@stocknear.com
       - POCKETBASE_ADMIN_PASSWORD=admin123
       - OPENAI_API_KEY=dummy_key_for_development
@@ -119,7 +121,7 @@ services:
 
   pocketbase:
     profiles: ["backend", "full"]
-    image: ghcr.io/ghcr/pocketbase/pocketbase:latest
+    image: elestio/pocketbase:latest
     ports:
       - '8090:8090'
     volumes:
