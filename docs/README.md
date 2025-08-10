@@ -20,6 +20,7 @@ This directory contains organized documentation for the StockNear Frontend proje
 - **DEVELOPMENT_AND_DEPLOYMENT_CONFIGURATION.md** - Development and deployment configuration guide
 - **DOCKER_PROFILES.md** - Docker profiles and configuration
 - **DOCKER.md** - Docker setup and usage instructions
+- **POCKETBASE_SETUP.md** - PocketBase setup and admin account configuration
 
 ## Quick Navigation
 

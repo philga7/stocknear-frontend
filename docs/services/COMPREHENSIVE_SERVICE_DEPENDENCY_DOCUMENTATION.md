@@ -101,11 +101,15 @@ This document provides a complete synthesis of all service dependencies, critica
 #### Environment Variables
 - `VITE_DISCORD_BOT_TOKEN` - Discord bot authentication
 - `VITE_DISCORD_URL` - Community links
+- `VITE_USEAST_POCKETBASE_URL` - PocketBase authentication service
+- `POCKETBASE_ADMIN_EMAIL` - PocketBase admin email
+- `POCKETBASE_ADMIN_PASSWORD` - PocketBase admin password
 
 #### Criticality Assessment
 - **User Access**: OAuth2 authentication flow
 - **Community Features**: Discord role assignment
 - **Premium Access**: Pro tier Discord benefits
+- **User Authentication**: PocketBase user management and authentication
 - **Failure Impact**: User access and community features affected
 
 #### Graceful Degradation Strategies
@@ -114,6 +118,8 @@ This document provides a complete synthesis of all service dependencies, critica
 - Proper connection cleanup
 - Status reporting for assignment results
 - OAuth2 state verification
+- PocketBase authentication fallback to guest mode
+- User session management with local storage backup
 
 ### 4. Content Delivery Services (LOW) 🟢
 
@@ -133,6 +139,37 @@ This document provides a complete synthesis of all service dependencies, critica
 - Optional service design
 - Application continues without images
 - Thumbnail generation support
+
+### 4.5. PocketBase Service (HIGH) 🟡
+
+#### Service Overview
+PocketBase provides user authentication, database functionality, and content management for the StockNear application. It serves as the primary backend for user management and data persistence.
+
+#### Environment Variables
+- `VITE_USEAST_POCKETBASE_URL` - PocketBase service URL (default: http://pocketbase:8090)
+- `POCKETBASE_ADMIN_EMAIL` - Admin email for initial setup (default: admin@stocknear.com)
+- `POCKETBASE_ADMIN_PASSWORD` - Admin password for initial setup (default: admin123)
+
+#### Service Configuration
+- **Image**: `elestio/pocketbase:latest`
+- **Port**: 8090 (host) -> 8090 (container)
+- **Volume**: `pocketbase_data:/pb_data` for data persistence
+- **Admin Panel**: `http://localhost:8090/_/`
+- **API Health**: `http://localhost:8090/api/health`
+- **Network**: `stocknear-network` bridge network
+
+#### Criticality Assessment
+- **User Authentication**: Primary user management system
+- **Data Persistence**: User preferences and application data
+- **Content Management**: Dynamic content and media storage
+- **Failure Impact**: User access issues, data loss potential
+
+#### Graceful Degradation Strategies
+- Guest mode when authentication fails
+- Local storage backup for user preferences
+- Fallback to static content when dynamic content unavailable
+- Session recovery mechanisms
+- Data export/import capabilities for backup
 
 ### 5. Push Notification Services (LOW) 🟢
 
@@ -325,6 +362,7 @@ NODE_ENV=development
 | FastAPI | `http://localhost:8000/` | 200 OK | 30s |
 | Fastify | `http://localhost:2000/health` | 200 OK | 30s |
 | Redis | `redis-cli ping` | PONG | 30s |
+| PocketBase | `http://localhost:8090/api/health` | 200 OK with JSON | 30s |
 
 ### Monitoring Dashboard
 
@@ -422,6 +460,15 @@ curl -H "Authorization: Bearer $VITE_LEMON_SQUEEZY_API_KEY" \
 ```bash
 # Check PocketBase status
 curl -f http://localhost:8090/api/health
+
+# Verify PocketBase admin panel access
+curl -I http://localhost:8090/_/
+
+# Check PocketBase environment variables
+docker exec stocknear-frontend-pocketbase-1 env | grep POCKETBASE
+
+# Test SvelteKit connection to PocketBase
+docker exec stocknear-frontend-sveltekit-1 curl -f http://pocketbase:8090/api/health
 
 # Verify Discord bot token
 # Test bot connectivity in Discord
